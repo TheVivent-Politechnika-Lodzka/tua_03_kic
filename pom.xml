@@ -9,9 +9,14 @@
     <version>1.0-SNAPSHOT</version>
     <name>ssbd03</name>
     <packaging>war</packaging>
-<developers>
-    
-</developers>
+
+    <developers>
+        <developer>
+            <name>Paulina Papiernik</name>
+            <id>229977</id>
+        </developer>
+    </developers>
+
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.target>1.8</maven.compiler.target>
