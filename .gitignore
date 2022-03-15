@@ -31,6 +31,7 @@ target/
 
 # Intellij Idea IDE
 .idea/
+*.iml
 
 # Eclipse IDE
 .classpath
