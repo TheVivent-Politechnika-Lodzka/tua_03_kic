@@ -10,7 +10,10 @@
     <name>ssbd03</name>
     <packaging>war</packaging>
 <developers>
-    
+    <developer>
+        <name>Radosław Zyzik</name>
+        <id>230049</id>
+    </developer>
 </developers>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
