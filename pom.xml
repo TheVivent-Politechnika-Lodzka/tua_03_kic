@@ -9,12 +9,18 @@
     <version>1.0-SNAPSHOT</version>
     <name>ssbd03</name>
     <packaging>war</packaging>
-<developers>
-    <developer>
-        <name>Radosław Zyzik</name>
-        <id>230049</id>
-    </developer>
-</developers>
+
+    <developers>
+        <developer>
+            <name>Radosław Zyzik</name>
+            <id>230049</id>
+        </developer>
+        <developer>
+            <name>Daniel Modrzejewski</name>
+            <id>229963</id>
+        </developer>
+    </developers>
+
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.target>1.8</maven.compiler.target>
