@@ -15,6 +15,30 @@
             <name>Adam Kapuściński</name>
             <id>229907</id>
         </developer>
+        <developer>
+            <name>Paulina Papiernik</name>
+            <id>229977</id>
+        </developer>
+        <developer>
+            <name>Damian Szczeciński</name>
+            <id>230016</id>
+        </developer>
+        <developer>
+            <name>Tomasz Ciszewski</name>
+            <id>229854</id>
+        </developer>
+        <developer>
+            <name>Radosław Zyzik</name>
+            <id>230049</id>
+        </developer>
+        <developer>
+            <name>Daniel Modrzejewski</name>
+            <id>229963</id>
+        </developer>
+        <developer>
+            <name>Jakub Lewandowski</name>
+            <id>229939</id>
+        </developer>
     </developers>
 
     <properties>
