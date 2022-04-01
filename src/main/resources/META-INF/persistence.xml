@@ -16,13 +16,13 @@
     <persistence-unit name="ssbd03authPU" transaction-type="JTA">
         <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
         <jta-data-source>java:app/jdbc/ssbd03auth</jta-data-source>
-        <exclude-unlisted-classes>true</exclude-unlisted-classes>
         <class>pl.lodz.p.it.ssbd2022.ssbd03.model.AccessLevel</class>
         <class>pl.lodz.p.it.ssbd2022.ssbd03.model.Account</class>
         <class>pl.lodz.p.it.ssbd2022.ssbd03.model.DataAdministrator</class>
         <class>pl.lodz.p.it.ssbd2022.ssbd03.model.DataClient</class>
         <class>pl.lodz.p.it.ssbd2022.ssbd03.model.DataDoctor</class>
         <class>pl.lodz.p.it.ssbd2022.ssbd03.model.DataPersonal</class>
+        <exclude-unlisted-classes>true</exclude-unlisted-classes>
         <properties>
              <property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQLDialect"/>
              <property name="hibernate.show_sql" value="true"/>
@@ -32,13 +32,13 @@
     <persistence-unit name="ssbd03mokPU" transaction-type="JTA">
         <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
         <jta-data-source>java:app/jdbc/ssbd03mok</jta-data-source>
-        <exclude-unlisted-classes>true</exclude-unlisted-classes>
         <class>pl.lodz.p.it.ssbd2022.ssbd03.model.AccessLevel</class>
-                <class>pl.lodz.p.it.ssbd2022.ssbd03.model.Account</class>
-                <class>pl.lodz.p.it.ssbd2022.ssbd03.model.DataAdministrator</class>
-                <class>pl.lodz.p.it.ssbd2022.ssbd03.model.DataClient</class>
-                <class>pl.lodz.p.it.ssbd2022.ssbd03.model.DataDoctor</class>
-                <class>pl.lodz.p.it.ssbd2022.ssbd03.model.DataPersonal</class>
+        <class>pl.lodz.p.it.ssbd2022.ssbd03.model.Account</class>
+        <class>pl.lodz.p.it.ssbd2022.ssbd03.model.DataAdministrator</class>
+        <class>pl.lodz.p.it.ssbd2022.ssbd03.model.DataClient</class>
+        <class>pl.lodz.p.it.ssbd2022.ssbd03.model.DataDoctor</class>
+        <class>pl.lodz.p.it.ssbd2022.ssbd03.model.DataPersonal</class>
+        <exclude-unlisted-classes>true</exclude-unlisted-classes>
         <properties>
              <property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQLDialect"/>
              <property name="hibernate.show_sql" value="true"/>
@@ -48,13 +48,13 @@
     <persistence-unit name="ssbd03mopPU" transaction-type="JTA">
         <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
         <jta-data-source>java:app/jdbc/ssbd03mop</jta-data-source>
-        <exclude-unlisted-classes>true</exclude-unlisted-classes>
         <class>pl.lodz.p.it.ssbd2022.ssbd03.model.AccessLevel</class>
-                <class>pl.lodz.p.it.ssbd2022.ssbd03.model.Account</class>
-                <class>pl.lodz.p.it.ssbd2022.ssbd03.model.DataAdministrator</class>
-                <class>pl.lodz.p.it.ssbd2022.ssbd03.model.DataClient</class>
-                <class>pl.lodz.p.it.ssbd2022.ssbd03.model.DataDoctor</class>
-                <class>pl.lodz.p.it.ssbd2022.ssbd03.model.DataPersonal</class>
+        <class>pl.lodz.p.it.ssbd2022.ssbd03.model.Account</class>
+        <class>pl.lodz.p.it.ssbd2022.ssbd03.model.DataAdministrator</class>
+        <class>pl.lodz.p.it.ssbd2022.ssbd03.model.DataClient</class>
+        <class>pl.lodz.p.it.ssbd2022.ssbd03.model.DataDoctor</class>
+        <class>pl.lodz.p.it.ssbd2022.ssbd03.model.DataPersonal</class>
+        <exclude-unlisted-classes>true</exclude-unlisted-classes>
         <properties>
              <property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQLDialect"/>
              <property name="hibernate.show_sql" value="true"/>
