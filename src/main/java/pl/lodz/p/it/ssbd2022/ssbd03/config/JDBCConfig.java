@@ -56,7 +56,8 @@ import java.sql.Connection;
         isolationLevel = Connection.TRANSACTION_READ_COMMITTED)
 
 @Stateless
-public class JDBConfig {
+public class JDBCConfig {
     @PersistenceContext(unitName = "ssbd03adminPU")
     private EntityManager em;
+
 }
