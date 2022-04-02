@@ -5,17 +5,19 @@
              version="3.0">
     <persistence-unit name="ssbd03adminPU" transaction-type="JTA">
         <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
-        <jta-data-source>java:app/jdbc/ssbd03admin</jta-data-source>
         <exclude-unlisted-classes>false</exclude-unlisted-classes>
         <properties>
-             <property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQLDialect"/>
-             <property name="hibernate.show_sql" value="true"/>
-             <property name="hibernate.hibernate.connection.driver_class" value="org.postgresql.Driver"/>
+            <property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQLDialect"/>
+            <property name="hibernate.connection.driver_class" value="org.postgresql.Driver"/>
+
+            <property name="hibernate.show_sql" value="true"/>
+            <property name="hibernate.format_sql" value="true"/>
+            <property name="hibernate.hibernate.connection.driver_class" value="org.postgresql.Driver"/>
         </properties>
     </persistence-unit>
     <persistence-unit name="ssbd03authPU" transaction-type="JTA">
         <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
-        <jta-data-source>java:app/jdbc/ssbd03auth</jta-data-source>
+<!--        <jta-data-source>java:app/jdbc/ssbd03auth</jta-data-source>-->
         <class>pl.lodz.p.it.ssbd2022.ssbd03.model.AccessLevel</class>
         <class>pl.lodz.p.it.ssbd2022.ssbd03.model.Account</class>
         <class>pl.lodz.p.it.ssbd2022.ssbd03.model.DataAdministrator</class>
@@ -23,14 +25,17 @@
         <class>pl.lodz.p.it.ssbd2022.ssbd03.model.DataDoctor</class>
         <exclude-unlisted-classes>true</exclude-unlisted-classes>
         <properties>
-             <property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQLDialect"/>
-             <property name="hibernate.show_sql" value="true"/>
-             <property name="hibernate.hibernate.connection.driver_class" value="org.postgresql.Driver"/>
+            <property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQLDialect"/>
+            <property name="hibernate.connection.driver_class" value="org.postgresql.Driver"/>
+
+            <property name="hibernate.show_sql" value="true"/>
+            <property name="hibernate.format_sql" value="true"/>
+            <property name="hibernate.hibernate.connection.driver_class" value="org.postgresql.Driver"/>
         </properties>
     </persistence-unit>
     <persistence-unit name="ssbd03mokPU" transaction-type="JTA">
         <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
-        <jta-data-source>java:app/jdbc/ssbd03mok</jta-data-source>
+<!--        <jta-data-source>java:app/jdbc/ssbd03mok</jta-data-source>-->
         <class>pl.lodz.p.it.ssbd2022.ssbd03.model.AccessLevel</class>
         <class>pl.lodz.p.it.ssbd2022.ssbd03.model.Account</class>
         <class>pl.lodz.p.it.ssbd2022.ssbd03.model.DataAdministrator</class>
@@ -38,14 +43,17 @@
         <class>pl.lodz.p.it.ssbd2022.ssbd03.model.DataDoctor</class>
         <exclude-unlisted-classes>true</exclude-unlisted-classes>
         <properties>
-             <property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQLDialect"/>
-             <property name="hibernate.show_sql" value="true"/>
-             <property name="hibernate.hibernate.connection.driver_class" value="org.postgresql.Driver"/>
+            <property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQLDialect"/>
+            <property name="hibernate.connection.driver_class" value="org.postgresql.Driver"/>
+
+            <property name="hibernate.show_sql" value="true"/>
+            <property name="hibernate.format_sql" value="true"/>
+            <property name="hibernate.hibernate.connection.driver_class" value="org.postgresql.Driver"/>
         </properties>
     </persistence-unit>
     <persistence-unit name="ssbd03mopPU" transaction-type="JTA">
         <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
-        <jta-data-source>java:app/jdbc/ssbd03mop</jta-data-source>
+<!--        <jta-data-source>java:app/jdbc/ssbd03mop</jta-data-source>-->
         <class>pl.lodz.p.it.ssbd2022.ssbd03.model.AccessLevel</class>
         <class>pl.lodz.p.it.ssbd2022.ssbd03.model.Account</class>
         <class>pl.lodz.p.it.ssbd2022.ssbd03.model.DataAdministrator</class>
@@ -53,9 +61,12 @@
         <class>pl.lodz.p.it.ssbd2022.ssbd03.model.DataDoctor</class>
         <exclude-unlisted-classes>true</exclude-unlisted-classes>
         <properties>
-             <property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQLDialect"/>
-             <property name="hibernate.show_sql" value="true"/>
-             <property name="hibernate.hibernate.connection.driver_class" value="org.postgresql.Driver"/>
+            <property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQLDialect"/>
+            <property name="hibernate.connection.driver_class" value="org.postgresql.Driver"/>
+
+            <property name="hibernate.show_sql" value="true"/>
+            <property name="hibernate.format_sql" value="true"/>
+            <property name="hibernate.hibernate.connection.driver_class" value="org.postgresql.Driver"/>
         </properties>
     </persistence-unit>
 </persistence>
