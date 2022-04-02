@@ -6,7 +6,7 @@
     <persistence-unit name="ssbd03adminPU" transaction-type="JTA">
         <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
         <jta-data-source>java:app/jdbc/ssbd03admin</jta-data-source>
-        <exclude-unlisted-classes>true</exclude-unlisted-classes>
+        <exclude-unlisted-classes>false</exclude-unlisted-classes>
         <properties>
              <property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQLDialect"/>
              <property name="hibernate.show_sql" value="true"/>
@@ -21,7 +21,6 @@
         <class>pl.lodz.p.it.ssbd2022.ssbd03.model.DataAdministrator</class>
         <class>pl.lodz.p.it.ssbd2022.ssbd03.model.DataClient</class>
         <class>pl.lodz.p.it.ssbd2022.ssbd03.model.DataDoctor</class>
-        <class>pl.lodz.p.it.ssbd2022.ssbd03.model.DataPersonal</class>
         <exclude-unlisted-classes>true</exclude-unlisted-classes>
         <properties>
              <property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQLDialect"/>
@@ -37,7 +36,6 @@
         <class>pl.lodz.p.it.ssbd2022.ssbd03.model.DataAdministrator</class>
         <class>pl.lodz.p.it.ssbd2022.ssbd03.model.DataClient</class>
         <class>pl.lodz.p.it.ssbd2022.ssbd03.model.DataDoctor</class>
-        <class>pl.lodz.p.it.ssbd2022.ssbd03.model.DataPersonal</class>
         <exclude-unlisted-classes>true</exclude-unlisted-classes>
         <properties>
              <property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQLDialect"/>
@@ -53,7 +51,6 @@
         <class>pl.lodz.p.it.ssbd2022.ssbd03.model.DataAdministrator</class>
         <class>pl.lodz.p.it.ssbd2022.ssbd03.model.DataClient</class>
         <class>pl.lodz.p.it.ssbd2022.ssbd03.model.DataDoctor</class>
-        <class>pl.lodz.p.it.ssbd2022.ssbd03.model.DataPersonal</class>
         <exclude-unlisted-classes>true</exclude-unlisted-classes>
         <properties>
              <property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQLDialect"/>
