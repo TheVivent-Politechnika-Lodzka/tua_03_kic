@@ -43,6 +43,18 @@ import java.sql.Connection;
         transactional = true,
         isolationLevel = Connection.TRANSACTION_READ_COMMITTED)
 
+@DataSourceDefinition( // Operacje realizowane przez moduł aplikacji
+        name = "java:app/jdbc/ssbd03mop",
+        className = "org.postgresql.ds.PGSimpleDataSource",
+        user = "ssbd03mop",
+        password = "cyberpunk2077",
+        serverName = "127.0.0.1",
+//        serverName = "studdev.it.p.lodz.pl",
+        portNumber = 5432,
+        databaseName = "ssbd03",
+        transactional = true,
+        isolationLevel = Connection.TRANSACTION_READ_COMMITTED)
+
 @Stateless
 public class JDBConfig {
     @PersistenceContext(unitName = "ssbd03adminPU")
