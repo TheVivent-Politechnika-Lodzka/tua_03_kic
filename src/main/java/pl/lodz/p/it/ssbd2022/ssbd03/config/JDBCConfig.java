@@ -60,4 +60,5 @@ public class JDBCConfig {
     @PersistenceContext(unitName = "ssbd03adminPU")
     private EntityManager em;
 
+
 }

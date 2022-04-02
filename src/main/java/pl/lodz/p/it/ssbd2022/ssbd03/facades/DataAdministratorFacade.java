@@ -11,8 +11,8 @@ public class DataAdministratorFacade extends AbstractFacade<DataAdministrator>{
     private EntityManager em;
 
 
-    public DataAdministratorFacade(Class entityClass) {
-        super(entityClass);
+    public DataAdministratorFacade() {
+        super(DataAdministrator.class);
     }
 
     @Override
