@@ -12,8 +12,9 @@ import java.sql.Connection;
         className = "org.postgresql.ds.PGSimpleDataSource",
         user = "ssbd03admin",
         password = "cyberpunk2077",
-        serverName = "studdev.it.p.lodz.pl",
-        portNumber = 22222,
+        serverName = "127.0.0.1",
+//        serverName = "studdev.it.p.lodz.pl",
+        portNumber = 5432,
         databaseName = "ssbd03",
         initialPoolSize = 1,
         minPoolSize = 0,
@@ -21,12 +22,13 @@ import java.sql.Connection;
         maxIdleTime = 10)
 
 @DataSourceDefinition( // Implementacja uwierzytelniania w aplikacji
-        name = "java:app/jdbc/ssbd03glassfish",
+        name = "java:app/jdbc/ssbd03auth",
         className = "org.postgresql.ds.PGSimpleDataSource",
-        user = "ssbd03glassfish",
+        user = "ssbd03auth",
         password = "cyberpunk2077",
-        serverName = "studdev.it.p.lodz.pl",
-        portNumber = 22222,
+        serverName = "127.0.0.1",
+//        serverName = "studdev.it.p.lodz.pl",
+        portNumber = 5432,
         databaseName = "ssbd03")
 
 @DataSourceDefinition( // Operacje realizowane przez moduł aplikacji
@@ -34,8 +36,9 @@ import java.sql.Connection;
         className = "org.postgresql.ds.PGSimpleDataSource",
         user = "ssbd03mok",
         password = "cyberpunk2077",
-        serverName = "studdev.it.p.lodz.pl",
-        portNumber = 22222,
+        serverName = "127.0.0.1",
+//        serverName = "studdev.it.p.lodz.pl",
+        portNumber = 5432,
         databaseName = "ssbd03",
         transactional = true,
         isolationLevel = Connection.TRANSACTION_READ_COMMITTED)
