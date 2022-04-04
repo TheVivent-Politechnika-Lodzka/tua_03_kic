@@ -1,81 +1,58 @@
 package pl.lodz.p.it.ssbd2022.ssbd03.model;
 
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.NamedQueries;
-import jakarta.persistence.NamedQuery;
-import jakarta.persistence.OneToOne;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+import pl.lodz.p.it.ssbd2022.ssbd03.common.AbstractEntity;
 
 import java.io.Serializable;
+import java.util.UUID;
 
 @Entity
 @Table(name = "access_level")
-@ToString
+@Inheritance(strategy = InheritanceType.JOINED)
+@DiscriminatorColumn(discriminatorType = DiscriminatorType.STRING, name = "access_level")
 @NamedQueries({
         @NamedQuery(name = "AccessLevel.findAll", query = "SELECT a FROM AccessLevel a"),
-        @NamedQuery(name = "AccessLevel.findById", query = "SELECT a FROM AccessLevel a WHERE a.id = :id"),
-        @NamedQuery(name = "AccessLevel.findByLevel", query = "select a from AccessLevel a order by a.level"),
-        @NamedQuery(name = "AccessLevel.findByActive", query = "select a from AccessLevel a order by a.active"),
-        @NamedQuery(name = "AccessLevel.findByVersion", query = "select a from AccessLevel a order by a.version")
+        @NamedQuery(name = "AccessLevel.findByLogin", query = "SELECT a FROM AccessLevel a WHERE a.account.login = :login"),
+//        @NamedQuery(name = "AccessLevel.findById", query = "SELECT a FROM AccessLevel a WHERE a.id = :id"),
+//        @NamedQuery(name = "AccessLevel.findByLevel", query = "select a from AccessLevel a order by a.level"),
+//        @NamedQuery(name = "AccessLevel.findByActive", query = "select a from AccessLevel a order by a.active"),
+//        @NamedQuery(name = "AccessLevel.findByVersion", query = "select a from AccessLevel a order by a.version")
 })
-public class AccessLevel implements Serializable {
-
-
+@ToString(callSuper = true)
+public abstract class AccessLevel extends AbstractEntity implements Serializable {
     private static final long serialVersionUID = 1L;
-    @Id
-    @Column(name = "id")
-    @Getter
-    private Long id;
 
-    @Column(name = "poziom")
+    @Id
+    @Basic(optional = false)
+    @Column(name = "id")
+    @GeneratedValue()
+    @Getter
+    private UUID id;
+
+    @Column(name = "access_level", insertable = false, updatable = false, length = 20)
     @Getter @Setter
     private String level;
 
-    @Column(name = "aktywny")
+    @Basic(optional = false)
+    @Column(name = "active", nullable = false)
     @Getter @Setter
-    private boolean active;
+    private boolean active = true;
 
-    @Column(name = "wersja")
+    @JoinColumn(name = "account_id", referencedColumnName = "id", updatable = false)
+    @ManyToOne(optional = false, cascade = CascadeType.PERSIST)
     @Getter @Setter
-    private long version;
+    private Account account;
 
-    @JoinColumn(name = "account_id", referencedColumnName = "id")
-    @ManyToOne(optional = false)
-    private Account accountId;
+//    @OneToOne(cascade = CascadeType.ALL, mappedBy = "accessLevel")
+//    private DataDoctor dataDoctor;
+//
+//    @OneToOne(cascade = CascadeType.ALL, mappedBy = "accessLevel")
+//    private DataClient dataClient;
+//
+//    @OneToOne(cascade = CascadeType.ALL, mappedBy = "accessLevel")
+//    private DataAdministrator dataAdministrator;
 
-    @OneToOne(cascade = CascadeType.ALL, mappedBy = "accessLevel")
-    private DataDoctor dataDoctor;
-
-    @OneToOne(cascade = CascadeType.ALL, mappedBy = "accessLevel")
-    private DataClient dataClient;
-
-    @OneToOne(cascade = CascadeType.ALL, mappedBy = "accessLevel")
-    private DataAdministrator dataAdministrator;
-
-    @Override
-    public int hashCode() {
-        int hash = 0;
-        hash += (id != null ? id.hashCode() : 0);
-        return hash;
-    }
-
-    @Override
-    public boolean equals(Object object) {
-        if (!(object instanceof AccessLevel)) {
-            return false;
-        }
-        AccessLevel other = (AccessLevel) object;
-        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
-            return false;
-        }
-        return true;
-    }
 }

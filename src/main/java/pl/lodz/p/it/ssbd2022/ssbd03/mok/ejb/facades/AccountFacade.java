@@ -1,15 +1,16 @@
-package pl.lodz.p.it.ssbd2022.ssbd03.facades;
+package pl.lodz.p.it.ssbd2022.ssbd03.mok.ejb.facades;
 
+import jakarta.ejb.Stateless;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.TypedQuery;
+import pl.lodz.p.it.ssbd2022.ssbd03.common.AbstractFacade;
 import pl.lodz.p.it.ssbd2022.ssbd03.model.Account;
 
-import java.util.List;
+@Stateless
+public class AccountFacade extends AbstractFacade<Account> {
 
-public class AccountFacade extends AbstractFacade {
-
-    @PersistenceContext(unitName = "ssbd03adminPU")
+    @PersistenceContext(unitName = "ssbd03mokPU")
     private EntityManager em;
 
     public AccountFacade() {

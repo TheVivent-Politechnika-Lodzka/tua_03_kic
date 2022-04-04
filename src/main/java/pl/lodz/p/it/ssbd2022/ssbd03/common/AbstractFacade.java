@@ -1,4 +1,4 @@
-package pl.lodz.p.it.ssbd2022.ssbd03.facades;
+package pl.lodz.p.it.ssbd2022.ssbd03.common;
 
 import jakarta.persistence.EntityManager;
 
@@ -38,7 +38,7 @@ public abstract class AbstractFacade<T> {
     public int count(){
         jakarta.persistence.criteria.CriteriaQuery cq = getEntityManager().getCriteriaBuilder().createQuery();
         jakarta.persistence.criteria.Root<T> rt = cq.from(entityClass);
-        cq.select(getEntityManager().getCriteriaBuilder().createQuery(rt));
+        cq.select(rt); // nie wiem czy to jest dobrze
         jakarta.persistence.Query q = getEntityManager().createQuery(cq);
         return ((Long) q.getSingleResult()).intValue();
     }
