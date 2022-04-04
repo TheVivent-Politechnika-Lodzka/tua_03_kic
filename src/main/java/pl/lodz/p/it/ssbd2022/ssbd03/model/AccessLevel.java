@@ -4,8 +4,10 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+import pl.lodz.p.it.ssbd2022.ssbd03.common.AbstractEntity;
 
 import java.io.Serializable;
+import java.util.UUID;
 
 @Entity
 @Table(name = "access_level")
@@ -26,9 +28,9 @@ public abstract class AccessLevel extends AbstractEntity implements Serializable
     @Id
     @Basic(optional = false)
     @Column(name = "id")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue()
     @Getter
-    private Long id;
+    private UUID id;
 
     @Column(name = "access_level", insertable = false, updatable = false, length = 20)
     @Getter @Setter

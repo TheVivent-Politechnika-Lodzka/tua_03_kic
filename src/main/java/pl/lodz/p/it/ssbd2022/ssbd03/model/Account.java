@@ -2,13 +2,14 @@ package pl.lodz.p.it.ssbd2022.ssbd03.model;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.*;
+import pl.lodz.p.it.ssbd2022.ssbd03.common.AbstractEntity;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.UUID;
 
 @Entity
 @Table(name = "account")
@@ -31,9 +32,9 @@ public class Account extends AbstractEntity implements Serializable {
     @Id
     @Basic(optional = false)
     @Column(name = "id", nullable = false)
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue()
     @Getter
-    private Long id;
+    private UUID id;
 
     @Basic(optional = false)
     @Size(min = 3, max = 20)
