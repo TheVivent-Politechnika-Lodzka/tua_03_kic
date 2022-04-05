@@ -39,7 +39,7 @@ public class Account extends AbstractEntity implements Serializable {
     @Basic(optional = false)
     @Size(min = 3, max = 20)
     @Column(name = "login", unique = true, nullable = false)
-    @Getter
+    @Getter @Setter
     private String login;
 
     @Basic(optional = false)
