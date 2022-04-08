@@ -29,17 +29,10 @@ public class Account extends AbstractEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    @Id
-    @Basic(optional = false)
-    @Column(name = "id", nullable = false)
-    @GeneratedValue()
-    @Getter
-    private UUID id;
-
     @Basic(optional = false)
     @Size(min = 3, max = 20)
     @Column(name = "login", unique = true, nullable = false)
-    @Getter
+    @Getter @Setter
     private String login;
 
     @Basic(optional = false)

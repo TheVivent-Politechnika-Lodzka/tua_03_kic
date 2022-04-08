@@ -25,13 +25,6 @@ import java.util.UUID;
 public abstract class AccessLevel extends AbstractEntity implements Serializable {
     private static final long serialVersionUID = 1L;
 
-    @Id
-    @Basic(optional = false)
-    @Column(name = "id")
-    @GeneratedValue()
-    @Getter
-    private UUID id;
-
     @Column(name = "access_level", insertable = false, updatable = false, length = 20)
     @Getter @Setter
     private String level;
@@ -45,14 +38,5 @@ public abstract class AccessLevel extends AbstractEntity implements Serializable
     @ManyToOne(optional = false, cascade = CascadeType.PERSIST)
     @Getter @Setter
     private Account account;
-
-//    @OneToOne(cascade = CascadeType.ALL, mappedBy = "accessLevel")
-//    private DataDoctor dataDoctor;
-//
-//    @OneToOne(cascade = CascadeType.ALL, mappedBy = "accessLevel")
-//    private DataClient dataClient;
-//
-//    @OneToOne(cascade = CascadeType.ALL, mappedBy = "accessLevel")
-//    private DataAdministrator dataAdministrator;
 
 }

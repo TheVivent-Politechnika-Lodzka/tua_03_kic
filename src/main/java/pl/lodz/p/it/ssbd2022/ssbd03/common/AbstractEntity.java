@@ -1,9 +1,6 @@
 package pl.lodz.p.it.ssbd2022.ssbd03.common;
 
-import jakarta.persistence.Basic;
-import jakarta.persistence.Column;
-import jakarta.persistence.MappedSuperclass;
-import jakarta.persistence.Version;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -12,7 +9,12 @@ import java.util.UUID;
 @MappedSuperclass
 public abstract class AbstractEntity {
 
-    public abstract UUID getId();
+    @Id
+    @Basic(optional = false)
+    @Column(name = "id", nullable = false)
+    @GeneratedValue()
+    @Getter
+    private UUID id;
 
     @Basic(optional = false)
     @Column(name = "version")

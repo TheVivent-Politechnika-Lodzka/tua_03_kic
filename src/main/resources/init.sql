@@ -7,8 +7,8 @@ GRANT SELECT,INSERT,DELETE,UPDATE ON TABLE data_client TO ssbd03mok;
 GRANT SELECT,INSERT,DELETE,UPDATE ON TABLE data_doctor TO ssbd03mok;
 GRANT SELECT,INSERT,DELETE,UPDATE ON TABLE data_administrator TO ssbd03mok;
 GRANT SELECT,INSERT,DELETE,UPDATE ON TABLE account TO ssbd03mok;
-GRANT SELECT,INSERT,DELETE,UPDATE ON TABLE account_personal TO ssbd03mok;
-GRANT SELECT,INSERT,DELETE,UPDATE ON TABLE acces_level TO ssbd03mok;
+GRANT SELECT,INSERT,DELETE,UPDATE ON TABLE account_details TO ssbd03mok;
+GRANT SELECT,INSERT,DELETE,UPDATE ON TABLE access_level TO ssbd03mok;
 
 -- uprawnienia dla konta AUTH
 -- zastanowić się, czy nie wystarczy sam SELECT
