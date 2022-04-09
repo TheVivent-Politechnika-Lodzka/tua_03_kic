@@ -1,12 +1,14 @@
 package pl.lodz.p.it.ssbd2022.ssbd03.utils;
 
+import jakarta.ejb.Stateless;
+import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.security.enterprise.identitystore.PasswordHash;
+import org.apache.commons.codec.digest.DigestUtils;
 
 import java.util.Map;
 
-//Klasa która nie hashuje nic :)
-
-public class NoHashAlgorithm implements PasswordHash {
+@ApplicationScoped
+public class HashAlgorithm implements PasswordHash {
     @Override
     public void initialize(Map<String, String> parameters) {
         PasswordHash.super.initialize(parameters);
@@ -14,11 +16,10 @@ public class NoHashAlgorithm implements PasswordHash {
 
     @Override
     public String generate(char[] chars) {
-        return new String(chars);
+        return DigestUtils.sha512Hex(new String(chars));
     }
-
     @Override
     public boolean verify(char[] chars, String s) {
-        return s.equals(new String(chars));
+        return s.equals(DigestUtils.sha512Hex(new String(chars)));
     }
 }

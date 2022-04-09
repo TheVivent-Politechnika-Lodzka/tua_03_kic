@@ -85,6 +85,12 @@
             <version>1.18.22</version>
             <scope>provided</scope>
         </dependency>
+        <!-- ############### hash ############### -->
+        <dependency>
+            <groupId>commons-codec</groupId>
+            <artifactId>commons-codec</artifactId>
+            <version>1.15</version>
+        </dependency>
         <!-- ############### database ############### -->
         <dependency>
             <groupId>org.hibernate.orm</groupId>

@@ -9,20 +9,22 @@ import pl.lodz.p.it.ssbd2022.ssbd03.model.Account;
 import pl.lodz.p.it.ssbd2022.ssbd03.model.DataAdministrator;
 import pl.lodz.p.it.ssbd2022.ssbd03.model.DataClient;
 import pl.lodz.p.it.ssbd2022.ssbd03.mok.ejb.facades.AccountFacade;
+import pl.lodz.p.it.ssbd2022.ssbd03.utils.HashAlgorithm;
 
 @Path("ping")
 public class TestPingPong {
 
     @Inject
     private AccountFacade accountFacade;
-
+    @Inject
+    private HashAlgorithm hashAlgorithm;
     @GET
     @Transactional(Transactional.TxType.REQUIRED)
     public Response ping() {
 
         Account account = new Account();
         account.setLogin("test"+String.valueOf(System.currentTimeMillis()));
-        account.setPassword("test");
+        account.setPassword(hashAlgorithm.generate("test".toCharArray()));
         account.setEmail("test@test.ts");
         account.setFirstName("test");
         account.setSurname("test");

@@ -37,7 +37,7 @@ public class Account extends AbstractEntity implements Serializable {
 
     @Basic(optional = false)
     @ToString.Exclude // Nie chcemy ujawniania skrótu hasła np. w dzienniku zdarzeń
-    @Column(name = "password")
+    @Column(name = "password",length = 128 , nullable = false)
     @Getter @Setter
     private String password;
 
