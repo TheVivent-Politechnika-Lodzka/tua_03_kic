@@ -234,12 +234,6 @@
                         <artifactId>exec-maven-plugin</artifactId>
                         <groupId>org.codehaus.mojo</groupId>
                         <version>3.0.0</version>
-                        <configuration>
-                            <environmentVariables>
-                                <PUBLIC_URL>http://localhost:3001/app</PUBLIC_URL>
-                                <REACT_APP_ROUTER_BASE>/app</REACT_APP_ROUTER_BASE>
-                            </environmentVariables>
-                        </configuration>
                         <executions>
                             <execution>
                                 <id>Install dependencies</id>

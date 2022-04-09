@@ -23,6 +23,10 @@ public class AuthenticationMechanism implements HttpAuthenticationMechanism {
     @Override
     public AuthenticationStatus validateRequest(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, HttpMessageContext httpMessageContext) throws AuthenticationException {
 
+        if (httpServletRequest.getRequestURL().toString().contains("/")) {
+            return httpMessageContext.doNothing();
+        }
+
         if (httpServletRequest.getRequestURL().toString().endsWith("/api/login") || httpServletRequest.getRequestURL().toString().endsWith("/api/ping") ) {
             return httpMessageContext.doNothing();
         }
