@@ -1,4 +1,4 @@
-package pl.lodz.p.it.ssbd2022.ssbd03.model;
+package pl.lodz.p.it.ssbd2022.ssbd03.mok.model;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Pattern;

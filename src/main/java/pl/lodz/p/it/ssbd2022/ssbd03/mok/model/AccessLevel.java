@@ -1,4 +1,4 @@
-package pl.lodz.p.it.ssbd2022.ssbd03.model;
+package pl.lodz.p.it.ssbd2022.ssbd03.mok.model;
 
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -7,7 +7,6 @@ import lombok.ToString;
 import pl.lodz.p.it.ssbd2022.ssbd03.common.AbstractEntity;
 
 import java.io.Serializable;
-import java.util.UUID;
 
 @Entity
 @Table(name = "access_level")

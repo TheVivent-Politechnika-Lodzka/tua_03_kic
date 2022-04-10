@@ -1,4 +1,4 @@
-package pl.lodz.p.it.ssbd2022.ssbd03.resources;
+package pl.lodz.p.it.ssbd2022.ssbd03.mok.endpoints;
 
 import jakarta.ejb.Stateless;
 import jakarta.inject.Inject;
@@ -10,7 +10,8 @@ import jakarta.security.enterprise.identitystore.IdentityStoreHandler;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
-import pl.lodz.p.it.ssbd2022.ssbd03.dto.CredentialDto;
+import pl.lodz.p.it.ssbd2022.ssbd03.mok.dto.CredentialDto;
+import pl.lodz.p.it.ssbd2022.ssbd03.mok.services.AuthService;
 import pl.lodz.p.it.ssbd2022.ssbd03.security.JWTGenerator;
 
 @Stateless
@@ -18,22 +19,14 @@ import pl.lodz.p.it.ssbd2022.ssbd03.security.JWTGenerator;
 public class TestLogin {
 
     @Inject
-    IdentityStoreHandler identityStoreHandler;
-
-    @Inject
-    JWTGenerator jwtGenerator;
+    private AuthService authService;
 
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     public Response authenticate(CredentialDto credentialDto) {
         Credential credential = new UsernamePasswordCredential(credentialDto.getLogin(), new Password(credentialDto.getPassword()));
-        CredentialValidationResult result = identityStoreHandler.validate(credential);
-        if (result.getStatus() == CredentialValidationResult.Status.VALID) {
-            return Response.accepted().entity(jwtGenerator.createJWT(result)).build();
-        } else {
-            return Response.status(Response.Status.UNAUTHORIZED).build();
-        }
-
+        String token = authService.authenticate(credential);
+        return Response.ok(token).build();
     }
     @GET
     @Produces(MediaType.APPLICATION_JSON)

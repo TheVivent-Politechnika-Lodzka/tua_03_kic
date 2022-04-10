@@ -5,7 +5,7 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.TypedQuery;
 import pl.lodz.p.it.ssbd2022.ssbd03.common.AbstractFacade;
-import pl.lodz.p.it.ssbd2022.ssbd03.model.Account;
+import pl.lodz.p.it.ssbd2022.ssbd03.mok.model.Account;
 
 @Stateless
 public class AccountFacade extends AbstractFacade<Account> {

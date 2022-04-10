@@ -1,4 +1,4 @@
-package pl.lodz.p.it.ssbd2022.ssbd03.dto;
+package pl.lodz.p.it.ssbd2022.ssbd03.mok.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

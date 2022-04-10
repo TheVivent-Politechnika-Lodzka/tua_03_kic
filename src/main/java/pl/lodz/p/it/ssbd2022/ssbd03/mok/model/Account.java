@@ -1,4 +1,4 @@
-package pl.lodz.p.it.ssbd2022.ssbd03.model;
+package pl.lodz.p.it.ssbd2022.ssbd03.mok.model;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
@@ -9,7 +9,6 @@ import pl.lodz.p.it.ssbd2022.ssbd03.common.AbstractEntity;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.UUID;
 
 @Entity
 @Table(name = "account")
