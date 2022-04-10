@@ -205,18 +205,6 @@
                     </execution>
                 </executions>
             </plugin>
-
-<!--                <configuration>-->
-<!--                    <environmentVariables>-->
-<!--                        <CI>true</CI>-->
-<!--                        &lt;!&ndash; The following parameters create an NPM sandbox for CI &ndash;&gt;-->
-<!--                        <NPM_CONFIG_PREFIX>${basedir}/src/main/webapp</NPM_CONFIG_PREFIX>-->
-<!--                        <NPM_CONFIG_CACHE>${basedir}/src/main/webapp/cache</NPM_CONFIG_CACHE>-->
-<!--                        <NPM_CONFIG_TMP>${project.build.directory}/npmtmp</NPM_CONFIG_TMP>-->
-<!--                    </environmentVariables>-->
-<!--                </configuration>-->
-<!--            </plugin>-->
-
         </plugins>
     </build>
 
