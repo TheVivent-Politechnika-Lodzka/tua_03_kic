@@ -10,17 +10,18 @@ import lombok.ToString;
 import java.io.Serializable;
 
 @Entity
-@Table(name = "data_doctor")
+@Table(name = "data_specialist")
+@DiscriminatorValue("SPECIALIST")
 @NamedQueries({
-        @NamedQuery(name = "DataDoctor.findAll", query = "SELECT d FROM DataDoctor d"),
-        @NamedQuery(name = "DataDoctor.findById", query = "select d from DataDoctor d order by d.id"),
+        @NamedQuery(name = "DataDoctor.findAll", query = "SELECT d FROM DataSpecialist d"),
+        @NamedQuery(name = "DataDoctor.findById", query = "select d from DataSpecialist d order by d.id"),
 //        @NamedQuery(name = "DataDoctor.findByIntercom", query = "select d from DataDoctor d order by d.intercom"),
-        @NamedQuery(name = "DataDoctor.findByPhone", query = "select d from DataDoctor d order by d.phoneNumber"),
+        @NamedQuery(name = "DataDoctor.findByPhone", query = "select d from DataSpecialist d order by d.phoneNumber"),
 //        @NamedQuery(name = "DataDoctor.findByyWersja", query = "select d from DataDoctor d order by d.version")
 })
 @ToString(callSuper = true)
 @NoArgsConstructor
-public class DataDoctor extends AccessLevel implements Serializable {
+public class DataSpecialist extends AccessLevel implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Basic(optional = false)
