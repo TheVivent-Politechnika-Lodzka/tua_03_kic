@@ -23,7 +23,16 @@ public class AuthenticationMechanism implements HttpAuthenticationMechanism {
     @Override
     public AuthenticationStatus validateRequest(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, HttpMessageContext httpMessageContext) throws AuthenticationException {
 
-        if (httpServletRequest.getRequestURL().toString().endsWith("/api/login") || httpServletRequest.getRequestURL().toString().endsWith("/api/ping") ) {
+        // zapewnia, że tylko zapytania do backendu są autoryzowane
+        // zapytania do frontendu (SPA) nie są autoryzowane
+        if (httpServletRequest.getPathInfo() == null) {
+            return httpMessageContext.doNothing();
+        }
+
+        // zezwolenie na logowanie, rejestrację oraz pingowanie
+        if (httpServletRequest.getPathInfo().endsWith("login")
+                || httpServletRequest.getPathInfo().endsWith("register")
+                || httpServletRequest.getPathInfo().endsWith("ping") ) {
             return httpMessageContext.doNothing();
         }
 
