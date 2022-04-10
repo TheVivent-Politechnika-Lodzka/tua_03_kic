@@ -5,18 +5,15 @@ import jakarta.inject.Inject;
 import jakarta.security.enterprise.credential.Credential;
 import jakarta.security.enterprise.credential.Password;
 import jakarta.security.enterprise.credential.UsernamePasswordCredential;
-import jakarta.security.enterprise.identitystore.CredentialValidationResult;
-import jakarta.security.enterprise.identitystore.IdentityStoreHandler;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import pl.lodz.p.it.ssbd2022.ssbd03.mok.dto.CredentialDto;
 import pl.lodz.p.it.ssbd2022.ssbd03.mok.services.AuthService;
-import pl.lodz.p.it.ssbd2022.ssbd03.security.JWTGenerator;
 
 @Stateless
 @Path("login")
-public class TestLogin {
+public class AuthEndpoint {
 
     @Inject
     private AuthService authService;
