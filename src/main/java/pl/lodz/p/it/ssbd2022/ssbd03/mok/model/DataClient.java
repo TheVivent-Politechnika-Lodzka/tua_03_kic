@@ -21,7 +21,7 @@ public class DataClient extends AccessLevel implements Serializable {
 
     @Basic(optional = false)
     @Pattern(regexp = "^[0-9]{11}$")
-    @Column(name = "pesel",length = 11)
+    @Column(name = "pesel", nullable = true, length = 11)
     @Getter @Setter
     private String pesel;
 

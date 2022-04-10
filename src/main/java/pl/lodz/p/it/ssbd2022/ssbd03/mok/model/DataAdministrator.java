@@ -21,7 +21,7 @@ public class DataAdministrator extends AccessLevel implements Serializable {
 
     @Basic(optional = false)
     @Pattern(regexp = "^[0-9]{3}-[0-9]{3}-[0-9]{3}$", message = "Phone number must be 9 digits, separated by '-'")
-    @Column(name = "phone_number", length = 11)
+    @Column(name = "phone_number", nullable = true, length = 11)
     @Getter @Setter
     private String phoneNumber;
 

@@ -25,7 +25,7 @@ public abstract class AccessLevel extends AbstractEntity implements Serializable
     private static final long serialVersionUID = 1L;
 
     @Column(name = "access_level", insertable = false, updatable = false, length = 20)
-    @Getter @Setter
+    @Getter
     private String level;
 
     @Basic(optional = false)

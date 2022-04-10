@@ -19,7 +19,7 @@ public abstract class AbstractEntity {
     @Basic(optional = false)
     @Column(name = "version")
     @Version // oznaczenie wersji rekordu w bazie
-    @Getter @Setter // stosujemy setter, dopóki nie dowiemy się jak go nie stosować
+    @Getter
     private Long version;
 
     // implementacja equals i hashCode,

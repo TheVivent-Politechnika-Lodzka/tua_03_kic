@@ -28,13 +28,13 @@ public class Account extends AbstractEntity implements Serializable {
 
     @Basic(optional = false)
     @Size(min = 3, max = 20)
-    @Column(name = "login", unique = true, nullable = false)
+    @Column(name = "login", unique = true, nullable = false, length = 20)
     @Getter @Setter
     private String login;
 
     @Basic(optional = false)
     @ToString.Exclude // Nie chcemy ujawniania skrótu hasła np. w dzienniku zdarzeń
-    @Column(name = "password",length = 128 , nullable = false)
+    @Column(name = "password", nullable = false, length = 128)
     @Getter @Setter
     private String password;
 
@@ -82,7 +82,7 @@ public class Account extends AbstractEntity implements Serializable {
 
     @Basic(optional = false)
     @Email
-    @Column(name = "email", table = "account_details", nullable = false)
+    @Column(name = "email", table = "account_details", nullable = false, length = 64)
     @Getter @Setter
     private String email;
 
