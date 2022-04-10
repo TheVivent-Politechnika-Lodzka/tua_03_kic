@@ -22,29 +22,12 @@ public class TestPingPong {
     @Transactional(Transactional.TxType.REQUIRED)
     public Response ping() {
 
-//        Account account = new Account();
-//        account.setLogin("test"+String.valueOf(System.currentTimeMillis()));
-//        account.setPassword(hashAlgorithm.generate("test".toCharArray()));
-//        account.setEmail("test@test.ts");
-//        account.setFirstName("test");
-//        account.setSurname("test");
-//        account.setActive(true);
-//        account.setConfirmed(true);
-//        DataAdministrator dataAdministrator = new DataAdministrator();
-//        dataAdministrator.setAccount(account);
-//        dataAdministrator.setPhoneNumber("123-456-789");
-//        account.getAccessLevelCollection().add(dataAdministrator);
-//        DataClient dataClient = new DataClient();
-//        dataClient.setAccount(account);
-//        dataClient.setPesel("12345678901");
-//        account.getAccessLevelCollection().add(dataClient);
-
         Account account = new Account();
-        account.setLogin("administrator");
-        account.setPassword(hashAlgorithm.generate("Password123!".toCharArray()));
-        account.setEmail("admin@kic.pl");
-        account.setFirstName("admin");
-        account.setSurname("admin");
+        account.setLogin("test"+String.valueOf(System.currentTimeMillis()));
+        account.setPassword(hashAlgorithm.generate("test".toCharArray()));
+        account.setEmail("test@test.ts");
+        account.setFirstName("test");
+        account.setSurname("test");
         account.setActive(true);
         account.setConfirmed(true);
         DataAdministrator dataAdministrator = new DataAdministrator();
