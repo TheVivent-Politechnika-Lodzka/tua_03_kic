@@ -11,5 +11,13 @@ GRANT SELECT,INSERT,DELETE,UPDATE ON TABLE account TO ssbd03mok;
 GRANT SELECT,INSERT,DELETE,UPDATE ON TABLE account_details TO ssbd03mok;
 GRANT SELECT,INSERT,DELETE,UPDATE ON TABLE access_level TO ssbd03mok;
 
+-- uprawnienia dla konta MOP
+GRANT SELECT ON TABLE data_client TO ssbd03mop;
+GRANT SELECT ON TABLE data_doctor TO ssbd03mop;
+GRANT SELECT ON TABLE data_administrator TO ssbd03mop;
+GRANT SELECT ON TABLE account TO ssbd03mop;
+GRANT SELECT ON TABLE account_details TO ssbd03mop;
+GRANT SELECT ON TABLE access_level TO ssbd03mop;
+
 -- uprawnienia dla konta AUTH
 GRANT SELECT ON TABLE auth_view TO ssbd03auth;
