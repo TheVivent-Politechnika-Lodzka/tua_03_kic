@@ -3,7 +3,15 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="https://jakarta.ee/xml/ns/jakartaee https://jakarta.ee/xml/ns/jakartaee/web-app_5_0.xsd"
          version="5.0">
+
+        <display-name>create-react-app-servlet</display-name>
+
+        <error-page>
+                <error-code>404</error-code>
+                <location>/index.html</location>
+        </error-page>
         <session-config>
                 <session-timeout>30</session-timeout>
         </session-config>
+
 </web-app>

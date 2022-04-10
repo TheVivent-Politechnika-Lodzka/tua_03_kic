@@ -48,3 +48,6 @@ target/
 # Netbeans IDE
 nb-configuration.xml
 nbproject/
+/node_modules/
+/node/
+/src/front/node_modules/
