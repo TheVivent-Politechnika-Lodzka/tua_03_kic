@@ -13,11 +13,9 @@ import java.io.Serializable;
 @Table(name = "data_specialist")
 @DiscriminatorValue("SPECIALIST")
 @NamedQueries({
-        @NamedQuery(name = "DataDoctor.findAll", query = "SELECT d FROM DataSpecialist d"),
-        @NamedQuery(name = "DataDoctor.findById", query = "select d from DataSpecialist d order by d.id"),
-//        @NamedQuery(name = "DataDoctor.findByIntercom", query = "select d from DataDoctor d order by d.intercom"),
-        @NamedQuery(name = "DataDoctor.findByPhone", query = "select d from DataSpecialist d order by d.phoneNumber"),
-//        @NamedQuery(name = "DataDoctor.findByyWersja", query = "select d from DataDoctor d order by d.version")
+        @NamedQuery(name = "DataDoctor.findAll", query = "select d from DataSpecialist d"),
+        @NamedQuery(name = "DataDoctor.findById", query = "select d from DataSpecialist d where d.id = :id"),
+        @NamedQuery(name = "DataDoctor.findByPhoneNumber", query = "select d from DataSpecialist d where d.phoneNumber = :phoneNumber"),
 })
 @ToString(callSuper = true)
 @NoArgsConstructor

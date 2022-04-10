@@ -11,9 +11,8 @@ import java.io.Serializable;
 @DiscriminatorValue("CLIENT")
 @NamedQueries({
         @NamedQuery(name = "DataClient.findAll", query = "SELECT d FROM DataClient d"),
-        @NamedQuery(name = "DataClient.findById", query = "select d from DataClient d order by d.id"),
-        @NamedQuery(name = "DataClient.findByPesel", query = "select d from DataClient d order by d.pesel"),
-//        @NamedQuery(name = "DataClient.findByVersion", query = "select d from DataClient d order by d.version")
+        @NamedQuery(name = "DataClient.findById", query = "select d from DataClient d where d.id = :id"),
+        @NamedQuery(name = "DataClient.findByPesel", query = "select d from DataClient d where d.pesel = :pesel"),
 })
 @ToString(callSuper = true)
 @NoArgsConstructor @AllArgsConstructor

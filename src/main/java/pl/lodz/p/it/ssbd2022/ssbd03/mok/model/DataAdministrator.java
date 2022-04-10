@@ -10,10 +10,9 @@ import java.io.Serializable;
 @Table(name = "data_administrator")
 @DiscriminatorValue("ADMINISTRATOR")
 @NamedQueries({
-        @NamedQuery(name = "DataAdministrator.findAll", query = "SELECT d FROM DataAdministrator d"),
-        @NamedQuery(name = "DataAdministrator.findById", query = "select d from DataAdministrator d order by d.id"),
-        @NamedQuery(name = "DataAdministrator.findByPhone", query = "select d from DataAdministrator d order by d.phoneNumber"),
-//        @NamedQuery(name = "DataAdministrator.findByVersion", query = "select d from DataAdministrator d order by d.version")
+        @NamedQuery(name = "DataAdministrator.findAll", query = "select d from DataAdministrator d"),
+        @NamedQuery(name = "DataAdministrator.findById", query = "select d from DataAdministrator d where d.id = :id"),
+        @NamedQuery(name = "DataAdministrator.findByPhoneNumber", query = "select d from DataAdministrator d where d.phoneNumber = :phoneNumber"),
 })
 @ToString(callSuper = true)
 @NoArgsConstructor @AllArgsConstructor

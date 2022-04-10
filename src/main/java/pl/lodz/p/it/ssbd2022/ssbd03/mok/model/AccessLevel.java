@@ -13,12 +13,12 @@ import java.io.Serializable;
 @Inheritance(strategy = InheritanceType.JOINED)
 @DiscriminatorColumn(discriminatorType = DiscriminatorType.STRING, name = "access_level")
 @NamedQueries({
-        @NamedQuery(name = "AccessLevel.findAll", query = "SELECT a FROM AccessLevel a"),
-        @NamedQuery(name = "AccessLevel.findByLogin", query = "SELECT a FROM AccessLevel a WHERE a.account.login = :login"),
-//        @NamedQuery(name = "AccessLevel.findById", query = "SELECT a FROM AccessLevel a WHERE a.id = :id"),
-//        @NamedQuery(name = "AccessLevel.findByLevel", query = "select a from AccessLevel a order by a.level"),
-//        @NamedQuery(name = "AccessLevel.findByActive", query = "select a from AccessLevel a order by a.active"),
-//        @NamedQuery(name = "AccessLevel.findByVersion", query = "select a from AccessLevel a order by a.version")
+        @NamedQuery(name = "AccessLevel.findAll", query = "select a from AccessLevel a"),
+        @NamedQuery(name = "AccessLevel.findByLogin", query = "select a from AccessLevel a where a.account.login = :login"),
+        @NamedQuery(name = "AccessLevel.findById", query = "select a from AccessLevel a where a.id = :id"),
+        @NamedQuery(name = "AccessLevel.findByAccountId", query = "select a from AccessLevel a where a.account.id = :id"),
+        @NamedQuery(name = "AccessLevel.findByAccessLevel", query = "select a from AccessLevel a WHERE a.level = :level")
+//        @NamedQuery(name = "AccessLevel.findByActive", query = "select a from AccessLevel a order by a.active")
 })
 @ToString(callSuper = true)
 public abstract class AccessLevel extends AbstractEntity implements Serializable {

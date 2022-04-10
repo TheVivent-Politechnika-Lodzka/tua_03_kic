@@ -14,13 +14,11 @@ import java.util.Collection;
 @Table(name = "account")
 @SecondaryTable(name = "account_details")
 @NamedQueries({
-        @NamedQuery(name = "Account.findAll", query = "SELECT a FROM Account a"),
-        @NamedQuery(name = "Account.findById", query = "select a from Account a order by a.id"),
+        @NamedQuery(name = "Account.findAll", query = "select a from Account a"),
+        @NamedQuery(name = "Account.findById", query = "select a from Account a where a.id = :id"),
         @NamedQuery(name = "Account.findByLogin", query = "select a from Account a where a.login = :login"),
-//        @NamedQuery(name = "Account.findByPassword", query = "select a from Account a order by a.password"),
         @NamedQuery(name = "Account.findByConfirmed", query = "select a from Account a order by a.confirmed"),
         @NamedQuery(name = "Account.findByActive", query = "select a from Account a order by a.active"),
-//      @NamedQuery(name = "Account.findByVersion", query = "select a from Account a order by a.version")//
 })
 @ToString
 @NoArgsConstructor
