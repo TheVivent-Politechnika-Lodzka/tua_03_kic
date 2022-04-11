@@ -18,7 +18,7 @@ INSERT INTO data_administrator (phone_number, id) VALUES ('123-456-789', '000000
 INSERT INTO access_level (account_id, active, version, access_level, id)  values ('00000000-0000-0000-0000-000000000000', true, 0, 'CLIENT', '00000000-0000-0000-0000-000000000001');
 INSERT INTO data_client (pesel, id) VALUES ('12345678901', '00000000-0000-0000-0000-000000000001');
 INSERT INTO access_level (account_id, active, version, access_level, id)  values ('00000000-0000-0000-0000-000000000000', true, 0, 'SPECIALIST', '00000000-0000-0000-0000-000000000002');
-INSERT INTO data_specialist (pesel, id) VALUES ('123-456-789', '00000000-0000-0000-0000-000000000002');
+INSERT INTO data_specialist (phone_number, id) VALUES ('123-456-789', '00000000-0000-0000-0000-000000000002');
 
 -- uprawnienia dla konta MOK
 GRANT SELECT,INSERT,DELETE,UPDATE ON TABLE data_client TO ssbd03mok;
