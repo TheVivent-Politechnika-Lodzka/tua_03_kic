@@ -18,6 +18,7 @@ public class TestPingPong {
     private AccountFacade accountFacade;
     @Inject
     private HashAlgorithm hashAlgorithm;
+
     @GET
     @Transactional(Transactional.TxType.REQUIRED)
     public Response ping() {
