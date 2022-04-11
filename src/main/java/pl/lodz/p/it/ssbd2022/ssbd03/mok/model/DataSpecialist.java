@@ -6,8 +6,11 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import pl.lodz.p.it.ssbd2022.ssbd03.mop.model.Appointment;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Collection;
 
 @Entity
 @Table(name = "data_specialist")
@@ -28,4 +31,12 @@ public class DataSpecialist extends AccessLevel implements Serializable {
     @Getter @Setter
     //TODO: pager?
     private String phoneNumber;
+
+//    @OneToMany(cascade = {CascadeType.REMOVE, CascadeType.PERSIST}, mappedBy = "account")
+//    @Getter
+//    private Collection<AccessLevel> accessLevelCollection = new ArrayList<>();
+
+    @OneToMany(cascade = {CascadeType.REMOVE, CascadeType.PERSIST}, mappedBy = "specialist")
+    @Getter
+    private Collection<Appointment> appointmentCollection = new ArrayList<>();
 }

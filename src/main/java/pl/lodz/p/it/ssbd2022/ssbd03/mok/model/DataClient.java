@@ -3,8 +3,12 @@ package pl.lodz.p.it.ssbd2022.ssbd03.mok.model;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Pattern;
 import lombok.*;
+import pl.lodz.p.it.ssbd2022.ssbd03.mop.model.Appointment;
+import pl.lodz.p.it.ssbd2022.ssbd03.mop.model.Review;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Collection;
 
 @Entity
 @Table(name = "data_client")
@@ -24,5 +28,13 @@ public class DataClient extends AccessLevel implements Serializable {
     @Column(name = "pesel", nullable = true, length = 11)
     @Getter @Setter
     private String pesel;
+
+    @OneToMany(cascade = {CascadeType.REMOVE, CascadeType.PERSIST}, mappedBy = "client")
+    @Getter
+    private Collection<Appointment> appointmentCollection = new ArrayList<>();
+
+    @OneToMany(cascade = {CascadeType.REMOVE, CascadeType.PERSIST}, mappedBy = "client")
+    @Getter
+    private Collection<Review> reviewCollection = new ArrayList<>();
 
 }

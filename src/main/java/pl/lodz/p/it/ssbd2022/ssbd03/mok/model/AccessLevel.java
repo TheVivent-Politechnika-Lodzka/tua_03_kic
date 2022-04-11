@@ -34,7 +34,7 @@ public abstract class AccessLevel extends AbstractEntity implements Serializable
     private boolean active = true;
 
     @JoinColumn(name = "account_id", referencedColumnName = "id", updatable = false)
-    @ManyToOne(optional = false, cascade = CascadeType.PERSIST)
+    @ManyToOne(optional = false)
     @Getter @Setter
     private Account account;
 
