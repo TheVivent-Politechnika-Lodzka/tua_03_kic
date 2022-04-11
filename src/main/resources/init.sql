@@ -1,6 +1,11 @@
 -- indeksy
 CREATE INDEX access_level_account_id ON access_level USING btree(account_id);
-CREATE INDEX login_account ON account USING btree(login);
+CREATE INDEX review_client_id ON review USING btree(client_id);
+CREATE INDEX review_implant_id ON review USING btree(implant_id);
+CREATE INDEX appointment_client_id ON appointment USING btree(client_id);
+CREATE INDEX appointment_specialist_id ON appointment USING btree(specialist_id);
+CREATE INDEX appointment_implant_id ON appointment USING btree(implant_id);
+CREATE INDEX account_login ON account USING btree(login);
 CREATE OR REPLACE VIEW auth_view AS SELECT login, password, access_level FROM account JOIN access_level ON account.id = access_level.account_id WHERE account.active = true AND account.confirmed = true
 
 -- wygenerowanie użytkownika administratora
@@ -23,6 +28,10 @@ GRANT SELECT,INSERT,DELETE,UPDATE ON TABLE account TO ssbd03mok;
 GRANT SELECT,INSERT,DELETE,UPDATE ON TABLE account_details TO ssbd03mok;
 GRANT SELECT,INSERT,DELETE,UPDATE ON TABLE access_level TO ssbd03mok;
 
+GRANT SELECT ON TABLE appointment TO ssbd03mok;
+GRANT SELECT ON TABLE implant TO ssbd03mok;
+GRANT SELECT ON TABLE review TO ssbd03mok;
+
 -- uprawnienia dla konta MOP
 GRANT SELECT ON TABLE data_client TO ssbd03mop;
 GRANT SELECT ON TABLE data_specialist TO ssbd03mop;
@@ -30,6 +39,10 @@ GRANT SELECT ON TABLE data_administrator TO ssbd03mop;
 GRANT SELECT ON TABLE account TO ssbd03mop;
 GRANT SELECT ON TABLE account_details TO ssbd03mop;
 GRANT SELECT ON TABLE access_level TO ssbd03mop;
+
+GRANT SELECT,INSERT,UPDATE ON TABLE appointment TO ssbd03mop;
+GRANT SELECT,INSERT,UPDATE ON TABLE implant TO ssbd03mop;
+GRANT SELECT,INSERT,DELETE ON TABLE review TO ssbd03mop;
 
 -- uprawnienia dla konta AUTH
 GRANT SELECT ON TABLE auth_view TO ssbd03auth;

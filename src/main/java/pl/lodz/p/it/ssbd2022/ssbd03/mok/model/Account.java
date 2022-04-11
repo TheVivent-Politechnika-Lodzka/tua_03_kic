@@ -3,8 +3,11 @@ package pl.lodz.p.it.ssbd2022.ssbd03.mok.model;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Size;
+import jakarta.ws.rs.client.Client;
 import lombok.*;
 import pl.lodz.p.it.ssbd2022.ssbd03.common.AbstractEntity;
+import pl.lodz.p.it.ssbd2022.ssbd03.mop.model.Appointment;
+import pl.lodz.p.it.ssbd2022.ssbd03.mop.model.Review;
 
 import java.io.Serializable;
 import java.util.ArrayList;
