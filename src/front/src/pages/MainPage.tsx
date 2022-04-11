@@ -9,16 +9,20 @@ const MainPage = () => {
 
   const handleSubmit = async (event: any) => {
     event.preventDefault();
-    const response = await fetch("http://localhost:8080/api/mok/login", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        login,
-        password,
-      }),
-    });
+    const response = await fetch(
+      // "http://studapp.it.p.lodz.pl:8003/api/mok/login",
+      "http://localhost:8080/api/mok/login",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          login,
+          password,
+        }),
+      }
+    );
 
     const data = await response.text();
     setToken(data);
