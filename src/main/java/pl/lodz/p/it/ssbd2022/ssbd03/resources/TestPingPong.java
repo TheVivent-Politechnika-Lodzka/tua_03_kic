@@ -5,9 +5,9 @@ import jakarta.transaction.Transactional;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.core.Response;
-import pl.lodz.p.it.ssbd2022.ssbd03.model.Account;
-import pl.lodz.p.it.ssbd2022.ssbd03.model.DataAdministrator;
-import pl.lodz.p.it.ssbd2022.ssbd03.model.DataClient;
+import pl.lodz.p.it.ssbd2022.ssbd03.mok.model.Account;
+import pl.lodz.p.it.ssbd2022.ssbd03.mok.model.DataAdministrator;
+import pl.lodz.p.it.ssbd2022.ssbd03.mok.model.DataClient;
 import pl.lodz.p.it.ssbd2022.ssbd03.mok.ejb.facades.AccountFacade;
 import pl.lodz.p.it.ssbd2022.ssbd03.utils.HashAlgorithm;
 

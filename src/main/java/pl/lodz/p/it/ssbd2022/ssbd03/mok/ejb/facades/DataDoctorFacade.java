@@ -4,10 +4,10 @@ import jakarta.ejb.Stateless;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import pl.lodz.p.it.ssbd2022.ssbd03.common.AbstractFacade;
-import pl.lodz.p.it.ssbd2022.ssbd03.model.DataDoctor;
+import pl.lodz.p.it.ssbd2022.ssbd03.mok.model.DataSpecialist;
 
 @Stateless
-public class DataDoctorFacade extends AbstractFacade<DataDoctor> {
+public class DataDoctorFacade extends AbstractFacade<DataSpecialist> {
 
     @PersistenceContext(unitName = "ssbd03mokPU")
     private EntityManager em;
@@ -18,6 +18,6 @@ public class DataDoctorFacade extends AbstractFacade<DataDoctor> {
     }
 
     public DataDoctorFacade(){
-        super(DataDoctor.class);
+        super(DataSpecialist.class);
     }
 }

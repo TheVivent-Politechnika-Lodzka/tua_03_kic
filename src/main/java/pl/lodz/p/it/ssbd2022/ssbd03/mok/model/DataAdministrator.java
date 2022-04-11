@@ -1,4 +1,4 @@
-package pl.lodz.p.it.ssbd2022.ssbd03.model;
+package pl.lodz.p.it.ssbd2022.ssbd03.mok.model;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Pattern;
@@ -10,10 +10,9 @@ import java.io.Serializable;
 @Table(name = "data_administrator")
 @DiscriminatorValue("ADMINISTRATOR")
 @NamedQueries({
-        @NamedQuery(name = "DataAdministrator.findAll", query = "SELECT d FROM DataAdministrator d"),
-        @NamedQuery(name = "DataAdministrator.findById", query = "select d from DataAdministrator d order by d.id"),
-        @NamedQuery(name = "DataAdministrator.findByPhone", query = "select d from DataAdministrator d order by d.phoneNumber"),
-//        @NamedQuery(name = "DataAdministrator.findByVersion", query = "select d from DataAdministrator d order by d.version")
+        @NamedQuery(name = "DataAdministrator.findAll", query = "select d from DataAdministrator d"),
+        @NamedQuery(name = "DataAdministrator.findById", query = "select d from DataAdministrator d where d.id = :id"),
+        @NamedQuery(name = "DataAdministrator.findByPhoneNumber", query = "select d from DataAdministrator d where d.phoneNumber = :phoneNumber"),
 })
 @ToString(callSuper = true)
 @NoArgsConstructor @AllArgsConstructor
@@ -22,7 +21,7 @@ public class DataAdministrator extends AccessLevel implements Serializable {
 
     @Basic(optional = false)
     @Pattern(regexp = "^[0-9]{3}-[0-9]{3}-[0-9]{3}$", message = "Phone number must be 9 digits, separated by '-'")
-    @Column(name = "phone_number", length = 11)
+    @Column(name = "phone_number", nullable = true, length = 11)
     @Getter @Setter
     private String phoneNumber;
 

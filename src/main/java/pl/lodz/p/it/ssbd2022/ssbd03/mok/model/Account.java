@@ -1,4 +1,4 @@
-package pl.lodz.p.it.ssbd2022.ssbd03.model;
+package pl.lodz.p.it.ssbd2022.ssbd03.mok.model;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
@@ -9,19 +9,16 @@ import pl.lodz.p.it.ssbd2022.ssbd03.common.AbstractEntity;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.UUID;
 
 @Entity
 @Table(name = "account")
 @SecondaryTable(name = "account_details")
 @NamedQueries({
-        @NamedQuery(name = "Account.findAll", query = "SELECT a FROM Account a"),
-        @NamedQuery(name = "Account.findById", query = "select a from Account a order by a.id"),
+        @NamedQuery(name = "Account.findAll", query = "select a from Account a"),
+        @NamedQuery(name = "Account.findById", query = "select a from Account a where a.id = :id"),
         @NamedQuery(name = "Account.findByLogin", query = "select a from Account a where a.login = :login"),
-//        @NamedQuery(name = "Account.findByPassword", query = "select a from Account a order by a.password"),
         @NamedQuery(name = "Account.findByConfirmed", query = "select a from Account a order by a.confirmed"),
         @NamedQuery(name = "Account.findByActive", query = "select a from Account a order by a.active"),
-//      @NamedQuery(name = "Account.findByVersion", query = "select a from Account a order by a.version")//
 })
 @ToString
 @NoArgsConstructor
@@ -31,13 +28,13 @@ public class Account extends AbstractEntity implements Serializable {
 
     @Basic(optional = false)
     @Size(min = 3, max = 20)
-    @Column(name = "login", unique = true, nullable = false)
+    @Column(name = "login", unique = true, nullable = false, length = 20)
     @Getter @Setter
     private String login;
 
     @Basic(optional = false)
     @ToString.Exclude // Nie chcemy ujawniania skrótu hasła np. w dzienniku zdarzeń
-    @Column(name = "password",length = 128 , nullable = false)
+    @Column(name = "password", nullable = false, length = 128)
     @Getter @Setter
     private String password;
 
@@ -85,7 +82,7 @@ public class Account extends AbstractEntity implements Serializable {
 
     @Basic(optional = false)
     @Email
-    @Column(name = "email", table = "account_details", nullable = false)
+    @Column(name = "email", table = "account_details", nullable = false, length = 64)
     @Getter @Setter
     private String email;
 
