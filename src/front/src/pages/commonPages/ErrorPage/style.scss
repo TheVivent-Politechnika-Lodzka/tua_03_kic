@@ -1,0 +1,50 @@
+.errorbox {
+  padding-top: 30vh;
+}
+
+.errortext {
+  text-align: center;
+  color: white;
+  font-size: 45px;
+}
+
+.linktext {
+  padding-top: 50px;
+  text-align: center;
+  color: white;
+  font-size: 35px;
+}
+
+.icon {
+  color: "white";
+  padding-right: 20px;
+}
+
+.button {
+  //   width: 500px;
+  //   color: rgb(7, 7, 28);
+  //   padding: 14px 22px;
+  background-image: linear-gradient(50deg, #00c4ff, #e92828);
+  margin-top: 50px;
+  width: 400px;
+  height: 80px;
+  border-radius: 1000px;
+  //   border: none;
+  //   cursor: pointer;
+  //   font-weight: 700;
+  //   transition: box-shadow 300ms ease;
+  position: relative;
+
+  text-align: center;
+  vertical-align: middle;
+  line-height: 80px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.button:active {
+  transform: translateY(4px);
+}
+.button:hover {
+  box-shadow: 5px 5px 5px rgb(255, 255, 255);
+}
