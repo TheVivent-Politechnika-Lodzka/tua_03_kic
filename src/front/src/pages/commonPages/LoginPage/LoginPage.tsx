@@ -1,6 +1,7 @@
 import { useState } from "react";
+import { Button, Form } from "react-bootstrap";
+//import "bootstrap/dist/css/bootstrap.min.css";
 import "./style.scss";
-import { Link } from "react-router-dom";
 
 const LoginPage = () => {
   const [login, setLogin] = useState("");
@@ -31,89 +32,33 @@ const LoginPage = () => {
   return (
     <div>
       <div>
-        <Link to="/" style={{ textDecoration: "none" }}>
-          <img src="./../logo.jpg" alt="Logo" height="80px" />
-        </Link>
-      </div>
-      <div className="login_section">
-        <div className="login_left">
-          <div className="titletext">Zaloguj się</div>
-          <div className="login_box">
-            <div className="description_box">
-              <div>
-                <label>Login lub mail</label>
-              </div>
-              <div>
-                <label>Haslo</label>
-              </div>
-            </div>
-            <div className="input_box">
-              <div>
-                <input value={login} onChange={(e)=> setLogin(e.target.value)}></input>
-              </div>
-              <div>
-                <input value={password} onChange={(e)=> setPassword(e.target.value)}></input>
-              </div>
-            </div>
-          </div>
-          <div className="login_button" onClick={handleSubmit}>Zaloguj</div>
-          <div>{token}</div>
+        <div className="text_token">
+          {token ? "Token: " + token : "Zaloguj się"}
         </div>
+        <Form onSubmit={handleSubmit}>
+          <Form.Group className="text_token" controlId="formBasicEmail">
+            <Form.Label>Login</Form.Label>
+            <Form.Control
+              type="text"
+              placeholder="Login"
+              value={login}
+              onChange={(e) => setLogin(e.target.value)}
+            />
+          </Form.Group>
 
-        <div className="login_right">
-          <div className="titletext">Nie masz jeszcze konta ?</div>
-          <div className="undertitletext">Zarejestruj się</div>
-          <div className="login_box">
-            <div className="description_box">
-              <div>
-                <label>Mail</label>
-              </div>
-              <div>
-                <label>Imie</label>
-              </div>
-              <div>
-                <label>Nazwisko</label>
-              </div>
-              <div>
-                <label>Login</label>
-              </div>
-              <div>
-                <label>PESEL</label>
-              </div>
-              <div>
-                <label>Hasło</label>
-              </div>
-              <div>
-                <label>Powtorz hasło</label>
-              </div>
-            </div>
-            <div className="input_box">
-              <div>
-                <input></input>
-              </div>
-              <div>
-                <input></input>
-              </div>
-              <div>
-                <input></input>
-              </div>
-              <div>
-                <input></input>
-              </div>
-              <div>
-                <input></input>
-              </div>
-              <div>
-                <input></input>
-              </div>
-              <div>
-                <input></input>
-              </div>
-            </div>
-
-            <div className="login_button">Zarejestruj</div>
-          </div>
-        </div>
+          <Form.Group className="text_token" controlId="formBasicPassword">
+            <Form.Label>Password</Form.Label>
+            <Form.Control
+              type="password"
+              placeholder="Password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+            />
+          </Form.Group>
+          <Button variant="primary" type="submit">
+            Submit
+          </Button>
+        </Form>
       </div>
     </div>
   );

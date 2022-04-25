@@ -3,7 +3,6 @@ import "./style.scss";
 const Slider = () => {
   const scrolldown = () => {
     const height = document.querySelector("#sliderdiv").offsetHeight;
-    //window.scroll(0, height,behavior: 'smooth');
     window.scrollTo({
       top: height,
       left: 0,
@@ -15,7 +14,7 @@ const Slider = () => {
     <div id="sliderdiv">
       <div className="sliderText">
         Kliniczny Instytut Cyberwszczepów
-        <div className="scrollbutton" onClick={scrolldown}>
+        <div className="scroll_Button" onClick={scrolldown}>
           Dowiedz się więcej
         </div>
       </div>
