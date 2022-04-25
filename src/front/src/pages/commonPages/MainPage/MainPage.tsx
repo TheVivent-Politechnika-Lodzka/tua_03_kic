@@ -7,18 +7,19 @@ const MainPage = () => {
   return (
     <div>
       <TopBar />
-
       <div className="slider_section">
         <Slider />
       </div>
 
-      <div>
-        <div className="content">
+      <div className="content_section">
+        <div className="box_info">
           <div className="title">DLACZEGO MY?</div>
-          <div className="text">jest wiele powodów a to tylko parę z nich</div>
-          <div className="card_section">
-            <div className="card_square">
-              <div className="item-wrapper-square">
+          <div className="second_title">
+            jest wiele powodów a to tylko parę z nich
+          </div>
+          <div className="items_list">
+            <div className="single_item_circle">
+              <div className="item_image">
                 <img src="brain.jpg" alt="brain.jpg" />
               </div>
               <div className="text_box">
@@ -32,8 +33,8 @@ const MainPage = () => {
                 </div>
               </div>
             </div>
-            <div className="card_square">
-              <div className="item-wrapper-square">
+            <div className="single_item_circle">
+              <div className="item_image">
                 <img src="doctor.jpg" alt="doctor" />
               </div>
               <div className="text_box">
@@ -45,12 +46,12 @@ const MainPage = () => {
                   typesetting industry. Lorem Ipsum has been the industry's
                   standard dummy text ever since the 1500s, when an unknown
                   printer took a galley of type and scrambled it to make a type
-                  specimen book{" "}
+                  specimen book
                 </div>
               </div>
             </div>
-            <div className="card_square">
-              <div className="item-wrapper-square">
+            <div className="single_item_circle">
+              <div className="item_image">
                 <img src="klient.jpg" alt="klient" />
               </div>
               <div className="text_box">
@@ -68,32 +69,32 @@ const MainPage = () => {
             </div>
           </div>
         </div>
-        <div className="content">
-          <div className="title">NASZE KLINIKI</div>
-
-          <div className="text">kliniki w trzech dogodnych lokalizacjach</div>
-
-          <div className="card_section">
-            <div className="card">
-              <div className="item-wrapper">
-                <img src="klinika1.jpg" alt="klinika1" />
-                <div className="city_name">KIC Badlandy</div>
-                <div className="street_name">ul. Oak Lawn 204 </div>
-              </div>
+      </div>
+      <div className="box_info">
+        <div className="title">NASZE KLINIKI</div>
+        <div className="second_title">
+          kliniki w trzech dogodnych lokalizacjach
+        </div>
+        <div className="items_list">
+          <div className="card">
+            <div className="item-wrapper">
+              <img src="klinika1.jpg" alt="klinika1" />
+              <div className="city_name">KIC Badlandy</div>
+              <div className="street_name">ul. Oak Lawn 204 </div>
             </div>
-            <div className="card">
-              <div className="item-wrapper">
-                <img src="klinika2.jpg" alt="klinika2" />
-                <div className="city_name">KIC Pacifica</div>
-                <div className="street_name">ul. Racine Avenue 23 </div>
-              </div>
+          </div>
+          <div className="card">
+            <div className="item-wrapper">
+              <img src="klinika2.jpg" alt="klinika2" />
+              <div className="city_name">KIC Pacifica</div>
+              <div className="street_name">ul. Racine Avenue 23 </div>
             </div>
-            <div className="card">
-              <div className="item-wrapper">
-                <img src="klinika3.jpg" alt="klinika3" />
-                <div className="city_name">KIC Westbrook</div>
-                <div className="street_name">ul. Paul 342</div>
-              </div>
+          </div>
+          <div className="card">
+            <div className="item-wrapper">
+              <img src="klinika3.jpg" alt="klinika3" />
+              <div className="city_name">KIC Westbrook</div>
+              <div className="street_name">ul. Paul 342</div>
             </div>
           </div>
         </div>
