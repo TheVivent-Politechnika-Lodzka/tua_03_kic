@@ -1,11 +1,15 @@
-import ContactBar from "../../../component/ContactBar";
+import ContactBar from "../../../component/ContactBar/ContactBar";
 import Slider from "../../../component/Slider";
-import TopBar from "../../../component/TopBar";
+import TopBar from "../../../component/TopBar/SelectorTopBar";
 import "./style.scss";
 
+
 const MainPage = () => {
+  
+
   return (
     <div>
+
       <TopBar />
       <div className="slider_section">
         <Slider />
