@@ -1,12 +1,18 @@
+import jwtDecode from "jwt-decode";
 import { useState } from "react";
 import { Button, Form } from "react-bootstrap";
-//import "bootstrap/dist/css/bootstrap.min.css";
+import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { login as loginDispatch } from "../../../redux/userSlice";
 import "./style.scss";
 
 const LoginPage = () => {
   const [login, setLogin] = useState("");
   const [password, setPassword] = useState("");
   const [token, setToken] = useState("");
+
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const handleSubmit = async (event: any) => {
     event.preventDefault();
@@ -24,9 +30,15 @@ const LoginPage = () => {
         }),
       }
     );
-
     const data = await response.text();
+    const decoded = await jwtDecode(data);
     setToken(data);
+    console.log("====================================");
+    console.log(decoded);
+    console.log("====================================");
+    localStorage.setItem("jwtToken", data);
+    dispatch(loginDispatch(decoded));
+    navigate("/", { replace: true });
   };
 
   return (
