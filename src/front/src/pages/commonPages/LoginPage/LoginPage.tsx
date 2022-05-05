@@ -3,10 +3,12 @@ import { useState } from "react";
 import { Button, Form } from "react-bootstrap";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { useLoginMutation } from "../../../api/api";
 import { login as loginDispatch } from "../../../redux/userSlice";
 import "./style.scss";
 
 const LoginPage = () => {
+  const [authenticate, { isLoading }] = useLoginMutation();
   const [login, setLogin] = useState("");
   const [password, setPassword] = useState("");
   const [token, setToken] = useState("");
@@ -16,27 +18,31 @@ const LoginPage = () => {
 
   const handleSubmit = async (event: any) => {
     event.preventDefault();
-    const response = await fetch(
-      // "http://studapp.it.p.lodz.pl:8003/api/mok/login",
-      "http://localhost:8080/api/mok/login",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          login,
-          password,
-        }),
-      }
-    );
-    const data = await response.text();
-    const decoded = await jwtDecode(data);
-    setToken(data);
-    console.log("====================================");
-    console.log(decoded);
-    console.log("====================================");
-    localStorage.setItem("jwtToken", data);
+    const decoded = await authenticate({
+      login,
+      password,
+    });
+    // const response = await fetch(
+    //   // "http://studapp.it.p.lodz.pl:8003/api/mok/login",
+    //   "http://localhost:8080/api/mok/login",
+    //   {
+    //     method: "POST",
+    //     headers: {
+    //       "Content-Type": "application/json",
+    //     },
+    //     body: JSON.stringify({
+    //       login,
+    //       password,
+    //     }),
+    //   }
+    // );
+    // const data = await response.text();
+    // const decoded = await jwtDecode(data);
+    // setToken(data);
+    // console.log("====================================");
+    // console.log(decoded);
+    // console.log("====================================");
+    // localStorage.setItem("jwtToken", data);
     dispatch(loginDispatch(decoded));
     navigate("/", { replace: true });
   };
