@@ -1,6 +1,8 @@
 package pl.lodz.p.it.ssbd2022.ssbd03.mok.services;
 
 import jakarta.ejb.Stateless;
+import jakarta.ejb.TransactionAttribute;
+import jakarta.ejb.TransactionAttributeType;
 import jakarta.inject.Inject;
 import jakarta.security.enterprise.credential.Credential;
 import jakarta.security.enterprise.identitystore.CredentialValidationResult;
@@ -13,7 +15,7 @@ import pl.lodz.p.it.ssbd2022.ssbd03.mok.model.Account;
 import pl.lodz.p.it.ssbd2022.ssbd03.security.JWTGenerator;
 
 @Stateless
-@Transactional(Transactional.TxType.REQUIRED)
+@TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
 public class MOKService {
 
     @Inject

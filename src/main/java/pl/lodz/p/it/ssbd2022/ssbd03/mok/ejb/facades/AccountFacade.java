@@ -1,6 +1,8 @@
 package pl.lodz.p.it.ssbd2022.ssbd03.mok.ejb.facades;
 
 import jakarta.ejb.Stateless;
+import jakarta.ejb.TransactionAttribute;
+import jakarta.ejb.TransactionAttributeType;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.TypedQuery;
@@ -8,6 +10,7 @@ import pl.lodz.p.it.ssbd2022.ssbd03.common.AbstractFacade;
 import pl.lodz.p.it.ssbd2022.ssbd03.mok.model.Account;
 
 @Stateless
+@TransactionAttribute(TransactionAttributeType.MANDATORY)
 public class AccountFacade extends AbstractFacade<Account> {
 
     @PersistenceContext(unitName = "ssbd03mokPU")

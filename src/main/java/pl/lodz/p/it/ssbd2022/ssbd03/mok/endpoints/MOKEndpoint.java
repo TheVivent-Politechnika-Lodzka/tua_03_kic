@@ -4,6 +4,8 @@ import jakarta.annotation.security.DenyAll;
 import jakarta.annotation.security.PermitAll;
 import jakarta.annotation.security.RolesAllowed;
 import jakarta.ejb.Stateless;
+import jakarta.ejb.TransactionAttribute;
+import jakarta.ejb.TransactionAttributeType;
 import jakarta.inject.Inject;
 import jakarta.security.enterprise.credential.Credential;
 import jakarta.security.enterprise.credential.Password;
@@ -21,6 +23,7 @@ import pl.lodz.p.it.ssbd2022.ssbd03.security.AuthContext;
 @Stateless
 @Path("mok")
 @DenyAll
+@TransactionAttribute(TransactionAttributeType.NEVER)
 public class MOKEndpoint {
 
     @Inject
