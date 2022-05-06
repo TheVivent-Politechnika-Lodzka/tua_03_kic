@@ -21,7 +21,7 @@ public class AuthContext {
             return null;
         }
         try {
-            return mokService.findAccountByLogin(securityContext.getCallerPrincipal().getName());
+            return mokService.findByLogin(securityContext.getCallerPrincipal().getName());
         } catch (Exception e) {
             return null;
         }

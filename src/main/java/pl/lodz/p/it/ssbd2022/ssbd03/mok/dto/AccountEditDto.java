@@ -13,15 +13,12 @@ public class AccountEditDto {
     private String firstName;
     @NotNull
     private String surname;
-    @NotNull
-    private String email;
 
     private Long version;
 
     public AccountEditDto(Account account) {
         this.firstName = account.getFirstName();
         this.surname = account.getSurname();
-        this.email = account.getEmail();
         this.version = account.getVersion();
     }
 

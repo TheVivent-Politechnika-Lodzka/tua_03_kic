@@ -7,6 +7,7 @@ import jakarta.security.enterprise.identitystore.CredentialValidationResult;
 import jakarta.security.enterprise.identitystore.IdentityStoreHandler;
 import jakarta.transaction.Transactional;
 import jakarta.ws.rs.ClientErrorException;
+import pl.lodz.p.it.ssbd2022.ssbd03.mok.dto.AccountEditDto;
 import pl.lodz.p.it.ssbd2022.ssbd03.mok.ejb.facades.AccountFacade;
 import pl.lodz.p.it.ssbd2022.ssbd03.mok.model.Account;
 import pl.lodz.p.it.ssbd2022.ssbd03.security.JWTGenerator;
@@ -32,6 +33,12 @@ public class MOKService {
         throw new ClientErrorException("Invalid username or password", 401);
     }
 
+    public Account findByLogin(String login) {
+        return accountFacade.findByLogin(login);
+    }
+
+
+
     public void deactivate(String login) {
         Account account = accountFacade.findByLogin(login);
         if (account == null) {
@@ -48,5 +55,12 @@ public class MOKService {
         }
         account.setActive(true);
         accountFacade.edit(account);
+    }
+
+    public Account edit(Account account, Account editData) {
+        account.setFirstName(editData.getFirstName());
+        account.setSurname(editData.getSurname());
+        accountFacade.edit(account);
+        return account;
     }
 }
