@@ -8,7 +8,7 @@ import java.io.Serializable;
 
 @Entity
 @Table(name = "data_administrator")
-@DiscriminatorValue("ADMINISTRATOR")
+@DiscriminatorValue(DataAdministrator.LEVEL_NAME)
 @NamedQueries({
         @NamedQuery(name = "DataAdministrator.findAll", query = "select d from DataAdministrator d"),
         @NamedQuery(name = "DataAdministrator.findById", query = "select d from DataAdministrator d where d.id = :id"),
@@ -16,6 +16,8 @@ import java.io.Serializable;
 @ToString(callSuper = true)
 @NoArgsConstructor
 public class DataAdministrator extends AccessLevel implements Serializable {
+    public static final String LEVEL_NAME = "ADMINISTRATOR";
+
     private static final long serialVersionUID = 1L;
 
 }

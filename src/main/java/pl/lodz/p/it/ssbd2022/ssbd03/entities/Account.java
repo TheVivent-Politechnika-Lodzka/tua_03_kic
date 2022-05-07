@@ -60,7 +60,6 @@ public class Account extends AbstractEntity implements Serializable {
     private Collection<AccessLevel> accessLevelCollection = new ArrayList<>();
 
     public void addAccessLevel(AccessLevel accessLevel) {
-        removeAccessLevel(accessLevel);
         accessLevelCollection.add(accessLevel);
         accessLevel.setAccount(this);
     }

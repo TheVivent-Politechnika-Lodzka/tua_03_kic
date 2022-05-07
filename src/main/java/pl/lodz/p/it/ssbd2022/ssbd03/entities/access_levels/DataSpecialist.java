@@ -13,7 +13,7 @@ import java.util.Collection;
 
 @Entity
 @Table(name = "data_specialist")
-@DiscriminatorValue("SPECIALIST")
+@DiscriminatorValue(DataSpecialist.LEVEL_NAME)
 @NamedQueries({
         @NamedQuery(name = "DataDoctor.findAll", query = "select d from DataSpecialist d"),
         @NamedQuery(name = "DataDoctor.findById", query = "select d from DataSpecialist d where d.id = :id"),
@@ -21,6 +21,9 @@ import java.util.Collection;
 @ToString(callSuper = true)
 @NoArgsConstructor
 public class DataSpecialist extends AccessLevel implements Serializable {
+
+    public static final String LEVEL_NAME = "SPECIALIST";
+
     private static final long serialVersionUID = 1L;
 
 //    @OneToMany(cascade = {CascadeType.REMOVE, CascadeType.PERSIST}, mappedBy = "specialist")
