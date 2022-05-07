@@ -1,15 +1,20 @@
-package pl.lodz.p.it.ssbd2022.ssbd03.mok.model;
+package pl.lodz.p.it.ssbd2022.ssbd03.entities.access_levels;
 
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 import pl.lodz.p.it.ssbd2022.ssbd03.common.AbstractEntity;
+import pl.lodz.p.it.ssbd2022.ssbd03.entities.Account;
 
 import java.io.Serializable;
 
 @Entity
-@Table(name = "access_level")
+@Table(
+        name = "access_level",
+        indexes = {@Index(name = "access_level_account_fk", columnList = "account_id")},
+        uniqueConstraints = {@UniqueConstraint(name = "CONSTRAINT_UNIQUE_ACCESS_LEVEL_FOR_ACCOUNT", columnNames = {"account_id", "access_level"})}
+)
 @Inheritance(strategy = InheritanceType.JOINED)
 @DiscriminatorColumn(discriminatorType = DiscriminatorType.STRING, name = "access_level")
 @NamedQueries({
