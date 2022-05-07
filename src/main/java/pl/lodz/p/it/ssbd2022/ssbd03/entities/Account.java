@@ -105,13 +105,13 @@ public class Account extends AbstractEntity implements Serializable {
 
     @Basic(optional = false)
     @Pattern(regexp = "^[0-9]{3}-[0-9]{3}-[0-9]{3}$", message = "Phone number must be 9 digits, separated by '-'")
-    @Column(name = "phone_number", nullable = true, length = 11)
+    @Column(name = "phone_number", table = "account_details", nullable = true, length = 11)
     @Getter @Setter
     private String phoneNumber;
 
     @Basic(optional = false)
     @Pattern(regexp = "^[0-9]{11}$")
-    @Column(name = "pesel", nullable = true, length = 11)
+    @Column(name = "pesel", table = "account_details", nullable = true, length = 11)
     @Getter @Setter
     private String pesel;
 
