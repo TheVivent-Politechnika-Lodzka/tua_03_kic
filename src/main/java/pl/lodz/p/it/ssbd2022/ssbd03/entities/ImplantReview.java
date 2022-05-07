@@ -11,7 +11,16 @@ import java.io.Serializable;
 import java.util.Date;
 
 @Entity
-@Table(name="review")
+@Table(
+        name="implant_review",
+        indexes = {
+                @Index(name = "review_client_id", columnList = "client_id"),
+                @Index(name = "review_implant_id", columnList = "implant_id")
+        },
+        uniqueConstraints = {
+                @UniqueConstraint(name = "review_client_id_implant_id", columnNames = {"client_id", "implant_id"})
+        }
+)
 @NamedQueries({
         @NamedQuery(name = "Review.findAll", query = "select a from ImplantReview a"),
         @NamedQuery(name = "Review.findById", query = "select a from ImplantReview a where a.id = :id"),

@@ -13,7 +13,12 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 @Entity
-@Table(name = "account")
+@Table(
+        name = "account",
+        indexes = {
+                @Index(name = "account_login", columnList = "login", unique = true),
+        }
+)
 @SecondaryTable(name = "account_details")
 @NamedQueries({
         @NamedQuery(name = "Account.findAll", query = "select a from Account a"),
@@ -86,7 +91,6 @@ public class Account extends AbstractEntity implements Serializable {
     @Getter @Setter
     private String firstName;
 
-
     @Basic(optional = false)
     @Size(min = 3, max = 30)
     @Column(name = "surname", table = "account_details", nullable = false, length = 30)
@@ -110,6 +114,5 @@ public class Account extends AbstractEntity implements Serializable {
     @Column(name = "pesel", nullable = true, length = 11)
     @Getter @Setter
     private String pesel;
-
 
 }

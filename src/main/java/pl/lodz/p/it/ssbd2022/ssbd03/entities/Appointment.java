@@ -17,7 +17,14 @@ import java.io.Serializable;
 import java.util.Date;
 
 @Entity
-@Table(name="appointment")
+@Table(
+        name="appointment",
+        indexes = {
+                @Index(name = "appointment_client_id", columnList = "client_id"),
+                @Index(name = "appointment_specialist_id", columnList = "specialist_id"),
+                @Index(name = "appointment_implant_id", columnList = "implant_id"),
+        }
+)
 @NamedQueries({
         @NamedQuery(name = "Appointment.findAll", query = "select a from Appointment a"),
         @NamedQuery(name = "Appointment.findById", query = "select a from Appointment a where a.id = :id"),
@@ -31,7 +38,7 @@ public class Appointment extends AbstractEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    @JoinColumn(name = "account_id", referencedColumnName = "id", updatable = false)
+    @JoinColumn(name = "client_id", referencedColumnName = "id", updatable = false)
     @ManyToOne(optional = false)
     @Getter @Setter
     private Account client;

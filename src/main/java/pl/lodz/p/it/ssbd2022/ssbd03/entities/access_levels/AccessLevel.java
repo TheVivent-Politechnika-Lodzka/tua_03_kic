@@ -12,7 +12,7 @@ import java.io.Serializable;
 @Entity
 @Table(
         name = "access_level",
-        indexes = {@Index(name = "access_level_account_fk", columnList = "account_id")},
+        indexes = {@Index(name = "access_level_account_id", columnList = "account_id")},
         uniqueConstraints = {@UniqueConstraint(name = "CONSTRAINT_UNIQUE_ACCESS_LEVEL_FOR_ACCOUNT", columnNames = {"account_id", "access_level"})}
 )
 @Inheritance(strategy = InheritanceType.JOINED)
