@@ -1,4 +1,4 @@
-package pl.lodz.p.it.ssbd2022.ssbd03;
+package pl.lodz.p.it.ssbd2022.ssbd03.common;
 
 import jakarta.annotation.PostConstruct;
 import jakarta.ejb.Singleton;
