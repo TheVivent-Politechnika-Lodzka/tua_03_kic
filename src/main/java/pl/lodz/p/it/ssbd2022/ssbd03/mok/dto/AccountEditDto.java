@@ -14,6 +14,10 @@ public class AccountEditDto {
     @NotNull
     private String surname;
 
+    // na późniejszą wersję (na innym branchu)
+    private String email;
+    private String phoneNumber;
+
     private Long version;
 
     public AccountEditDto(Account account) {

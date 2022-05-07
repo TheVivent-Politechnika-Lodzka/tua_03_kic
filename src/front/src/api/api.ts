@@ -1,16 +1,12 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import jwtDecode from "jwt-decode";
+import CredentialsDto from "./types/auth";
+import { AccountDto, AccountEditDto } from "./types/mok.dto";
 
 // TODO przenieść do .env / package.json
 // const BASE_URL = "http://studapp.it.p.lodz.pl:8003/api"
 const BASE_URL = "http://localhost:8080/api";
 const TOKEN_STORAGE_KEY = "AUTH_TOKEN";
-
-// TODO przenieść do własnego pliku
-export interface Credentials {
-  login: string;
-  password: string;
-}
 
 const api = createApi({
   baseQuery: fetchBaseQuery({
@@ -26,8 +22,8 @@ const api = createApi({
   }),
   // ENDPOINTY
   endpoints: (builder) => ({
-    login: builder.mutation<string, Credentials>({
-      query: (credentials: Credentials) => ({
+    login: builder.mutation<string, CredentialsDto>({
+      query: (credentials: CredentialsDto) => ({
         url: "/mok/login",
         method: "POST",
         body: credentials,
@@ -40,7 +36,19 @@ const api = createApi({
         },
       }),
     }),
+    editOwnAccount: builder.mutation<AccountDto, AccountEditDto>({
+      query: (account: AccountEditDto) => ({
+        url: "/mok/edit",
+        method: "PUT",
+        body: account,
+        responseHandler: async (response) => {
+          if (response.ok) {
+            return await response.json();
+          }
+        },
+      }),
+    }),
   }),
 });
 
-export const { useLoginMutation } = api;
+export const { useLoginMutation, useEditOwnAccountMutation } = api;

@@ -52,11 +52,7 @@ public class MOKEndpoint {
     }
 
     private AccountDto editAccount(Account account, AccountEditDto accountEditDto) {
-        Account editData = new Account();
-        editData.setFirstName(accountEditDto.getFirstName());
-        editData.setSurname(accountEditDto.getSurname());
-
-        Account editedAccount = mokService.edit(account, editData);
+        Account editedAccount = mokService.edit(account, accountEditDto.getFirstName(), accountEditDto.getSurname(), accountEditDto.getEmail(), accountEditDto.getPhoneNumber());
         return new AccountDto(editedAccount);
     }
 

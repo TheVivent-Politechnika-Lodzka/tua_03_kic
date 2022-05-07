@@ -59,9 +59,9 @@ public class MOKService {
         accountFacade.edit(account);
     }
 
-    public Account edit(Account account, Account editData) {
-        account.setFirstName(editData.getFirstName());
-        account.setSurname(editData.getSurname());
+    public Account edit(Account account, String firstName, String surname, String email, String phoneNumber) {
+        account.setFirstName(firstName);
+        account.setSurname(surname);
         accountFacade.edit(account);
         return account;
     }

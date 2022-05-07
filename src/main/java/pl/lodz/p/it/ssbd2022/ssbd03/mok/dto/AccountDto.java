@@ -18,6 +18,10 @@ public class AccountDto {
     @NotNull
     private String email;
 
+    // na późniejszą wersję (na innym branchy)
+    // @NotNull
+    private String phoneNumber;
+
     private Long version;
 
     public AccountDto(Account account) {
