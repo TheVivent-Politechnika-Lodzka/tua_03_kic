@@ -1,16 +1,9 @@
 package pl.lodz.p.it.ssbd2022.ssbd03.common;
 
-import jakarta.annotation.PostConstruct;
 import jakarta.annotation.sql.DataSourceDefinition;
 import jakarta.ejb.Stateless;
-import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
-import pl.lodz.p.it.ssbd2022.ssbd03.mok.ejb.facades.AccountFacade;
-import pl.lodz.p.it.ssbd2022.ssbd03.mok.model.Account;
-import pl.lodz.p.it.ssbd2022.ssbd03.mok.model.DataAdministrator;
-import pl.lodz.p.it.ssbd2022.ssbd03.mok.model.DataClient;
-import pl.lodz.p.it.ssbd2022.ssbd03.utils.HashAlgorithm;
 
 import java.sql.Connection;
 

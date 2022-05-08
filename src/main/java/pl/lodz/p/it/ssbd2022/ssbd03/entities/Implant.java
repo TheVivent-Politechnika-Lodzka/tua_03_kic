@@ -1,4 +1,4 @@
-package pl.lodz.p.it.ssbd2022.ssbd03.mop.model;
+package pl.lodz.p.it.ssbd2022.ssbd03.entities;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Size;
@@ -61,10 +61,7 @@ public class Implant extends AbstractEntity implements Serializable {
     @Getter @Setter
     private Duration duration;
 
-    @OneToMany(cascade = {CascadeType.REMOVE, CascadeType.PERSIST}, mappedBy = "implant", fetch = FetchType.LAZY)
-    @Getter
-    private Collection<Review> reviewCollection = new ArrayList<>();
-
-
-
+//    @OneToMany(cascade = {CascadeType.REMOVE, CascadeType.PERSIST}, mappedBy = "implant", fetch = FetchType.LAZY)
+//    @Getter
+//    private Collection<Review> reviewCollection = new ArrayList<>();
 }

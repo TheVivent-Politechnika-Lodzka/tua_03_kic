@@ -1,26 +1,33 @@
-package pl.lodz.p.it.ssbd2022.ssbd03.mop.model;
+package pl.lodz.p.it.ssbd2022.ssbd03.entities;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 import pl.lodz.p.it.ssbd2022.ssbd03.common.AbstractEntity;
-import pl.lodz.p.it.ssbd2022.ssbd03.mok.model.Account;
-import pl.lodz.p.it.ssbd2022.ssbd03.mok.model.DataClient;
+import pl.lodz.p.it.ssbd2022.ssbd03.entities.access_levels.DataClient;
 
 import java.io.Serializable;
 import java.util.Date;
 
 @Entity
-@Table(name="review")
+@Table(
+        name="implant_review",
+        indexes = {
+                @Index(name = "review_client_id", columnList = "client_id"),
+                @Index(name = "review_implant_id", columnList = "implant_id")
+        },
+        uniqueConstraints = {
+                @UniqueConstraint(name = "review_client_id_implant_id", columnNames = {"client_id", "implant_id"})
+        }
+)
 @NamedQueries({
-        @NamedQuery(name = "Review.findAll", query = "select a from Review a"),
-        @NamedQuery(name = "Review.findById", query = "select a from Review a where a.id = :id"),
+        @NamedQuery(name = "Review.findAll", query = "select a from ImplantReview a"),
+        @NamedQuery(name = "Review.findById", query = "select a from ImplantReview a where a.id = :id"),
 })
 @ToString
 @NoArgsConstructor
-public class Review extends AbstractEntity implements Serializable {
+public class ImplantReview extends AbstractEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
