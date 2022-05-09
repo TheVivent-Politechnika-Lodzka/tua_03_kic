@@ -3,7 +3,7 @@ import jwtDecode from "jwt-decode";
 
 // TODO przenieść do .env / package.json
 // const BASE_URL = "http://studapp.it.p.lodz.pl:8003/api"
-const BASE_URL = "http://localhost:8080/api";
+const BASE_URL = "https://localhost:8181/api";
 const TOKEN_STORAGE_KEY = "AUTH_TOKEN";
 
 // TODO przenieść do własnego pliku
