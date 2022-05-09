@@ -3,7 +3,7 @@ package pl.lodz.p.it.ssbd2022.ssbd03.security;
 import jakarta.ejb.Stateless;
 import jakarta.inject.Inject;
 import jakarta.security.enterprise.SecurityContext;
-import pl.lodz.p.it.ssbd2022.ssbd03.mok.model.Account;
+import pl.lodz.p.it.ssbd2022.ssbd03.entities.Account;
 import pl.lodz.p.it.ssbd2022.ssbd03.mok.services.MOKService;
 
 @Stateless
