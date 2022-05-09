@@ -11,7 +11,7 @@ import jakarta.transaction.Transactional;
 import jakarta.ws.rs.ClientErrorException;
 import pl.lodz.p.it.ssbd2022.ssbd03.mok.dto.AccountEditDto;
 import pl.lodz.p.it.ssbd2022.ssbd03.mok.ejb.facades.AccountFacade;
-import pl.lodz.p.it.ssbd2022.ssbd03.mok.model.Account;
+import pl.lodz.p.it.ssbd2022.ssbd03.entities.Account;
 import pl.lodz.p.it.ssbd2022.ssbd03.security.JWTGenerator;
 
 @Stateless

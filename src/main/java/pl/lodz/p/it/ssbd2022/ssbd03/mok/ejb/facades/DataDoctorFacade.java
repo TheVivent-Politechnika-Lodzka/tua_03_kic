@@ -6,7 +6,7 @@ import jakarta.ejb.TransactionAttributeType;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import pl.lodz.p.it.ssbd2022.ssbd03.common.AbstractFacade;
-import pl.lodz.p.it.ssbd2022.ssbd03.mok.model.DataSpecialist;
+import pl.lodz.p.it.ssbd2022.ssbd03.entities.access_levels.DataSpecialist;
 
 @Stateless
 @TransactionAttribute(TransactionAttributeType.MANDATORY)

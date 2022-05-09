@@ -22,15 +22,15 @@
     <persistence-unit name="ssbd03mokPU" transaction-type="JTA">
         <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
         <jta-data-source>java:app/jdbc/ssbd03mok</jta-data-source>
-        <class>pl.lodz.p.it.ssbd2022.ssbd03.mok.model.AccessLevel</class>
-        <class>pl.lodz.p.it.ssbd2022.ssbd03.mok.model.Account</class>
-        <class>pl.lodz.p.it.ssbd2022.ssbd03.mok.model.DataAdministrator</class>
-        <class>pl.lodz.p.it.ssbd2022.ssbd03.mok.model.DataClient</class>
-        <class>pl.lodz.p.it.ssbd2022.ssbd03.mok.model.DataSpecialist</class>
+        <class>pl.lodz.p.it.ssbd2022.ssbd03.entities.Account</class>
+        <class>pl.lodz.p.it.ssbd2022.ssbd03.entities.access_levels.AccessLevel</class>
+        <class>pl.lodz.p.it.ssbd2022.ssbd03.entities.access_levels.DataAdministrator</class>
+        <class>pl.lodz.p.it.ssbd2022.ssbd03.entities.access_levels.DataClient</class>
+        <class>pl.lodz.p.it.ssbd2022.ssbd03.entities.access_levels.DataSpecialist</class>
 
-        <class>pl.lodz.p.it.ssbd2022.ssbd03.mop.model.Appointment</class>
-        <class>pl.lodz.p.it.ssbd2022.ssbd03.mop.model.Implant</class>
-        <class>pl.lodz.p.it.ssbd2022.ssbd03.mop.model.Review</class>
+        <class>pl.lodz.p.it.ssbd2022.ssbd03.entities.Appointment</class>
+        <class>pl.lodz.p.it.ssbd2022.ssbd03.entities.Implant</class>
+        <class>pl.lodz.p.it.ssbd2022.ssbd03.entities.ImplantReview</class>
         <exclude-unlisted-classes>true</exclude-unlisted-classes>
         <properties>
             <property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQLDialect"/>
@@ -44,15 +44,15 @@
     <persistence-unit name="ssbd03mopPU" transaction-type="JTA">
         <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
         <jta-data-source>java:app/jdbc/ssbd03mop</jta-data-source>
-        <class>pl.lodz.p.it.ssbd2022.ssbd03.mop.model.Appointment</class>
-        <class>pl.lodz.p.it.ssbd2022.ssbd03.mop.model.Implant</class>
-        <class>pl.lodz.p.it.ssbd2022.ssbd03.mop.model.Review</class>
+        <class>pl.lodz.p.it.ssbd2022.ssbd03.entities.Appointment</class>
+        <class>pl.lodz.p.it.ssbd2022.ssbd03.entities.Implant</class>
+        <class>pl.lodz.p.it.ssbd2022.ssbd03.entities.ImplantReview</class>
 
-        <class>pl.lodz.p.it.ssbd2022.ssbd03.mok.model.AccessLevel</class>
-        <class>pl.lodz.p.it.ssbd2022.ssbd03.mok.model.Account</class>
-<!--        <class>pl.lodz.p.it.ssbd2022.ssbd03.mok.model.DataAdministrator</class>-->
-        <class>pl.lodz.p.it.ssbd2022.ssbd03.mok.model.DataClient</class>
-        <class>pl.lodz.p.it.ssbd2022.ssbd03.mok.model.DataSpecialist</class>
+        <class>pl.lodz.p.it.ssbd2022.ssbd03.entities.access_levels.AccessLevel</class>
+        <class>pl.lodz.p.it.ssbd2022.ssbd03.entities.Account</class>
+<!--        <class>pl.lodz.p.it.ssbd2022.ssbd03.entities.access_levels.DataAdministrator</class>-->
+        <class>pl.lodz.p.it.ssbd2022.ssbd03.entities.access_levels.DataClient</class>
+        <class>pl.lodz.p.it.ssbd2022.ssbd03.entities.access_levels.DataSpecialist</class>
         <exclude-unlisted-classes>true</exclude-unlisted-classes>
         <properties>
             <property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQLDialect"/>

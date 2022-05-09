@@ -1,20 +1,24 @@
-package pl.lodz.p.it.ssbd2022.ssbd03.mok.model;
+package pl.lodz.p.it.ssbd2022.ssbd03.entities;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
-import jakarta.ws.rs.client.Client;
 import lombok.*;
 import pl.lodz.p.it.ssbd2022.ssbd03.common.AbstractEntity;
-import pl.lodz.p.it.ssbd2022.ssbd03.mop.model.Appointment;
-import pl.lodz.p.it.ssbd2022.ssbd03.mop.model.Review;
+import pl.lodz.p.it.ssbd2022.ssbd03.entities.access_levels.AccessLevel;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 
 @Entity
-@Table(name = "account")
+@Table(
+        name = "account",
+        indexes = {
+                @Index(name = "account_login", columnList = "login", unique = true),
+        }
+)
 @SecondaryTable(name = "account_details")
 @NamedQueries({
         @NamedQuery(name = "Account.findAll", query = "select a from Account a"),
@@ -55,6 +59,16 @@ public class Account extends AbstractEntity implements Serializable {
     @Getter
     private Collection<AccessLevel> accessLevelCollection = new ArrayList<>();
 
+    public void addAccessLevel(AccessLevel accessLevel) {
+        accessLevelCollection.add(accessLevel);
+        accessLevel.setAccount(this);
+    }
+
+    public void removeAccessLevel(AccessLevel accessLevel) {
+        accessLevelCollection.remove(accessLevel);
+        accessLevel.setAccount(null);
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -76,7 +90,6 @@ public class Account extends AbstractEntity implements Serializable {
     @Getter @Setter
     private String firstName;
 
-
     @Basic(optional = false)
     @Size(min = 3, max = 30)
     @Column(name = "surname", table = "account_details", nullable = false, length = 30)
@@ -89,5 +102,16 @@ public class Account extends AbstractEntity implements Serializable {
     @Getter @Setter
     private String email;
 
+    @Basic(optional = false)
+    @Pattern(regexp = "^[0-9]{3}-[0-9]{3}-[0-9]{3}$", message = "Phone number must be 9 digits, separated by '-'")
+    @Column(name = "phone_number", table = "account_details", nullable = true, length = 11)
+    @Getter @Setter
+    private String phoneNumber;
+
+    @Basic(optional = false)
+    @Pattern(regexp = "^[0-9]{11}$")
+    @Column(name = "pesel", table = "account_details", nullable = true, length = 11)
+    @Getter @Setter
+    private String pesel;
 
 }
