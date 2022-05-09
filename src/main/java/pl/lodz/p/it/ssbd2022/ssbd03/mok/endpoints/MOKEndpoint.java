@@ -1,5 +1,6 @@
 package pl.lodz.p.it.ssbd2022.ssbd03.mok.endpoints;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.annotation.security.DenyAll;
 import jakarta.annotation.security.PermitAll;
 import jakarta.annotation.security.RolesAllowed;
@@ -19,6 +20,8 @@ import pl.lodz.p.it.ssbd2022.ssbd03.mok.dto.AccountEditDto;
 import pl.lodz.p.it.ssbd2022.ssbd03.mok.dto.CredentialDto;
 import pl.lodz.p.it.ssbd2022.ssbd03.mok.services.MOKService;
 import pl.lodz.p.it.ssbd2022.ssbd03.security.AuthContext;
+
+import java.io.IOException;
 
 @Stateless
 @Path("mok")
@@ -72,7 +75,30 @@ public class MOKEndpoint {
         return Response.ok().build();
     }
 
-
+    @POST
+    @Path("/jackson-test")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @PermitAll
+//    public Response jacksonTest(String accountDto){
+//
+//        ObjectMapper mapper = new ObjectMapper();
+//        try {
+//            AccountDto accountDto1 = mapper.readValue(accountDto, AccountDto.class);
+//            System.out.println("############################");
+//            System.out.println(accountDto1);
+//            System.out.println("############################");
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//
+//        return Response.ok().build();
+//    }
+    public Response jacksonTest(AccountDto accountDto) {
+        System.out.println("##############################");
+        System.out.println(accountDto);
+        System.out.println("##############################");
+        return Response.ok().build();
+    }
 
 
     @GET

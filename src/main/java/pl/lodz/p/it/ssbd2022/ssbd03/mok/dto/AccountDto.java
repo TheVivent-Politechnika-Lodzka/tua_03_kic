@@ -4,6 +4,10 @@ import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.Account;
+import pl.lodz.p.it.ssbd2022.ssbd03.mok.dto.access_levels.AccessLevelDto;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -23,6 +27,8 @@ public class AccountDto {
     private String phoneNumber;
 
     private Long version;
+
+    private ArrayList<AccessLevelDto> accessLevels;
 
     public AccountDto(Account account) {
         this.login = account.getLogin();
