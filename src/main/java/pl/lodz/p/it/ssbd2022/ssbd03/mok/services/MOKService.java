@@ -8,9 +8,11 @@ import jakarta.security.enterprise.identitystore.CredentialValidationResult;
 import jakarta.security.enterprise.identitystore.IdentityStoreHandler;
 import jakarta.transaction.Transactional;
 import jakarta.ws.rs.ClientErrorException;
+import pl.lodz.p.it.ssbd2022.ssbd03.entities.Account;
+import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.account.AccountNotFoundException;
+import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.account.InvalidCredentialsException;
 import pl.lodz.p.it.ssbd2022.ssbd03.interceptors.TrackerInterceptor;
 import pl.lodz.p.it.ssbd2022.ssbd03.mok.ejb.facades.AccountFacade;
-import pl.lodz.p.it.ssbd2022.ssbd03.entities.Account;
 import pl.lodz.p.it.ssbd2022.ssbd03.security.JWTGenerator;
 
 @Interceptors(TrackerInterceptor.class)
@@ -32,24 +34,21 @@ public class MOKService {
         if (result.getStatus() == CredentialValidationResult.Status.VALID) {
             return jwtGenerator.createJWT(result);
         }
-        throw new ClientErrorException("Invalid username or password", 401);
+        throw new InvalidCredentialsException();
     }
 
     public void deactivate(String login) {
         Account account = accountFacade.findByLogin(login);
-        if (account == null) {
-            throw new ClientErrorException("Account with login " + login + " does not exist", 404);
-        }
         account.setActive(false);
         accountFacade.edit(account);
     }
 
     public void activate(String login) {
+
         Account account = accountFacade.findByLogin(login);
-        if (account == null) {
-            throw new ClientErrorException("Account with login " + login + " does not exist", 404);
-        }
         account.setActive(true);
         accountFacade.edit(account);
+
+
     }
 }

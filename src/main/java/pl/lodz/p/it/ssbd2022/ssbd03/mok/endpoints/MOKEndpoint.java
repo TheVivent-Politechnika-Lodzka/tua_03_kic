@@ -50,13 +50,11 @@ public class MOKEndpoint {
     }
 
 
-
-
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @PermitAll
     @Path(("/ping"))
-    public Response test(){
+    public Response test() {
         return Response.ok("pong").build();
     }
 }

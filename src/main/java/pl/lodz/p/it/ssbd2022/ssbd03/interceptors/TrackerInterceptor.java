@@ -39,7 +39,7 @@ public class TrackerInterceptor {
             resultValue = invocationContext.proceed();
 
         } catch (Exception e) {
-            message.append(String.format(" Threw an exception: %s Cause: %s", e, e.getCause()));
+            message.append(String.format(" Threw an exception: %s ", e));
             log.severe(message.toString());
             throw e;
         }
