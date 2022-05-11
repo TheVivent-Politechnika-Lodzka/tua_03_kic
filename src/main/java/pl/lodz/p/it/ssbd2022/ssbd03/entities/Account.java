@@ -94,4 +94,8 @@ public class Account extends AbstractEntity implements Serializable {
     @Getter @Setter
     private String lastName;
 
+    public void setAccessLevelCollection(Collection<AccessLevel> accessLevelCollection) {
+        this.accessLevelCollection = accessLevelCollection;
+    }
+
 }

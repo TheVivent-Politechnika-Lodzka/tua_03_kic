@@ -22,6 +22,10 @@ import pl.lodz.p.it.ssbd2022.ssbd03.mok.ejb.facades.AccountFacade;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.Account;
 import pl.lodz.p.it.ssbd2022.ssbd03.interceptors.TrackerInterceptor;
 import pl.lodz.p.it.ssbd2022.ssbd03.security.JWTGenerator;
+import pl.lodz.p.it.ssbd2022.ssbd03.utils.PaginationData;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Interceptors(TrackerInterceptor.class)
 @Stateless
@@ -74,6 +78,18 @@ public class MOKService {
 
         accountFacade.edit(account);
         return account;
+    }
+
+    public PaginationData findInRange(int page, int limit) {
+        PaginationData paginationData = accountFacade.findInRange(page, limit);
+        List<Account> accounts = paginationData.getData();
+        List<AccountWithAccessLevelsDto> accountsDTO = new ArrayList<>();
+        for (Account account : accounts) {
+            accountsDTO.add(new AccountWithAccessLevelsDto(account));
+        }
+        paginationData.setData(accountsDTO);
+
+        return paginationData;
     }
 
     // TODO: ZNALEŹĆ LEPSZY SPOSÓB

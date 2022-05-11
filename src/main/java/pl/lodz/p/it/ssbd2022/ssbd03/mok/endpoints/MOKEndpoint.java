@@ -14,10 +14,14 @@ import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.Account;
+import pl.lodz.p.it.ssbd2022.ssbd03.mok.dto.AccountDto;
 import pl.lodz.p.it.ssbd2022.ssbd03.mok.dto.AccountWithAccessLevelsDto;
 import pl.lodz.p.it.ssbd2022.ssbd03.mok.dto.CredentialDto;
 import pl.lodz.p.it.ssbd2022.ssbd03.mok.services.MOKService;
 import pl.lodz.p.it.ssbd2022.ssbd03.security.AuthContext;
+import pl.lodz.p.it.ssbd2022.ssbd03.utils.PaginationData;
+
+import java.util.List;
 
 @Stateless
 @Path("mok")
@@ -70,6 +74,30 @@ public class MOKEndpoint {
         mokService.activate(login);
         return Response.ok().build();
     }
+
+    @GET
+    @Path("/account/{login}")
+    @Produces(MediaType.APPLICATION_JSON)
+    @PermitAll
+    public Response findByLogin(@PathParam("login") String login) {
+        Account account = mokService.findByLogin(login);
+        return Response.ok().entity(new AccountWithAccessLevelsDto(account)).build();
+    }
+
+    @GET
+    @Path("/account")
+    @Produces(MediaType.APPLICATION_JSON)
+    @PermitAll
+    public Response findInRange(@QueryParam("page") int page, @QueryParam("limit") int limit) {
+        PaginationData accountList = mokService.findInRange(page, limit);
+        return Response.ok().entity(accountList).build(
+        );
+    }
+
+
+
+
+
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
