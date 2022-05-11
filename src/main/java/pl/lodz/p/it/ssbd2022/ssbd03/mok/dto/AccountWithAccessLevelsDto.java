@@ -13,6 +13,7 @@ import pl.lodz.p.it.ssbd2022.ssbd03.mok.dto.access_levels.DataAdministratorDto;
 import pl.lodz.p.it.ssbd2022.ssbd03.mok.dto.access_levels.DataClientDto;
 import pl.lodz.p.it.ssbd2022.ssbd03.mok.dto.access_levels.DataSpecialistDto;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
@@ -28,7 +29,7 @@ public class AccountWithAccessLevelsDto {
 
     private Long version;
 
-    private List<AccessLevelDto> accessLevels;
+    private List<AccessLevelDto> accessLevels = new ArrayList<>();
 
     public AccountWithAccessLevelsDto(Account account) {
         this.login = account.getLogin();

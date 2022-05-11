@@ -23,39 +23,39 @@ public class AuthenticationMechanism implements HttpAuthenticationMechanism {
     @Override
     public AuthenticationStatus validateRequest(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, HttpMessageContext httpMessageContext) throws AuthenticationException {
 
-        return httpMessageContext.doNothing();
+//        return httpMessageContext.doNothing();
 
-//        // zapewnia, że tylko zapytania do backendu są autoryzowane
-//        // zapytania do frontendu (SPA) nie są autoryzowane
-//        if (httpServletRequest.getPathInfo() == null) {
-//            return httpMessageContext.doNothing();
-//        }
-//
-//        // zezwolenie na logowanie, rejestrację oraz pingowanie
-//        if (httpServletRequest.getPathInfo().endsWith("login")
-//                || httpServletRequest.getPathInfo().endsWith("register")
-//                || httpServletRequest.getPathInfo().endsWith("ping") ) {
-//            return httpMessageContext.doNothing();
-//        }
-//
-//        String headerAuth = httpServletRequest.getHeader("Authorization");
-//
-//        if (headerAuth == null || !headerAuth.startsWith("Bearer")) {
-//            return httpMessageContext.responseUnauthorized();
-//        }
-//
-//        String jwtToken = headerAuth.substring("Bearer ".length()).trim();
-//
-//        try {
-//            Claims claims = jwtGenerator.decodeJWT(jwtToken);
-//
-//            String login = claims.getSubject();
-//            String groups = claims.get("auth").toString();
-//
-//            return httpMessageContext.notifyContainerAboutLogin(login, new HashSet<>(Arrays.asList(groups.split(","))));
-//
-//        } catch (ExpiredJwtException | UnsupportedJwtException | MalformedJwtException | SignatureException | IllegalArgumentException e) {
-//            return httpMessageContext.responseUnauthorized();
-//        }
+        // zapewnia, że tylko zapytania do backendu są autoryzowane
+        // zapytania do frontendu (SPA) nie są autoryzowane
+        if (httpServletRequest.getPathInfo() == null) {
+            return httpMessageContext.doNothing();
+        }
+
+        // zezwolenie na logowanie, rejestrację oraz pingowanie
+        if (httpServletRequest.getPathInfo().endsWith("login")
+                || httpServletRequest.getPathInfo().endsWith("register")
+                || httpServletRequest.getPathInfo().endsWith("ping") ) {
+            return httpMessageContext.doNothing();
+        }
+
+        String headerAuth = httpServletRequest.getHeader("Authorization");
+
+        if (headerAuth == null || !headerAuth.startsWith("Bearer")) {
+            return httpMessageContext.responseUnauthorized();
+        }
+
+        String jwtToken = headerAuth.substring("Bearer ".length()).trim();
+
+        try {
+            Claims claims = jwtGenerator.decodeJWT(jwtToken);
+
+            String login = claims.getSubject();
+            String groups = claims.get("auth").toString();
+
+            return httpMessageContext.notifyContainerAboutLogin(login, new HashSet<>(Arrays.asList(groups.split(","))));
+
+        } catch (ExpiredJwtException | UnsupportedJwtException | MalformedJwtException | SignatureException | IllegalArgumentException e) {
+            return httpMessageContext.responseUnauthorized();
+        }
     }
 }

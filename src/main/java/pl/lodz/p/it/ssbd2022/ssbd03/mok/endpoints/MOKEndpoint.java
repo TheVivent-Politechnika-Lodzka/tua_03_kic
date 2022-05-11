@@ -47,11 +47,11 @@ public class MOKEndpoint {
     @Path("/edit")
     public AccountWithAccessLevelsDto editOwnAccount(AccountWithAccessLevelsDto accountEditDto) {
         Account currentUser = authContext.getCurrentUser();
-        return editAccount(currentUser, accountEditDto);
+        return editAccount(currentUser.getLogin(), accountEditDto);
     }
 
-    private AccountWithAccessLevelsDto editAccount(Account account, AccountWithAccessLevelsDto accountEditDto) {
-        Account editedAccount = mokService.edit(account, accountEditDto);
+    private AccountWithAccessLevelsDto editAccount(String login, AccountWithAccessLevelsDto accountEditDto) {
+        Account editedAccount = mokService.edit(login, accountEditDto);
         return new AccountWithAccessLevelsDto(editedAccount);
     }
 
