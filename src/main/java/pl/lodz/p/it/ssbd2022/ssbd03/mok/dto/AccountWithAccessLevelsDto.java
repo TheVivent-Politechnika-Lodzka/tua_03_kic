@@ -26,6 +26,10 @@ public class AccountWithAccessLevelsDto {
     private String firstName;
     @NotNull
     private String lastName;
+    @NotNull
+    private boolean confirmed;
+    @NotNull
+    private boolean active;
 
     private Long version;
 
@@ -35,12 +39,15 @@ public class AccountWithAccessLevelsDto {
         this.login = account.getLogin();
         this.firstName = account.getFirstName();
         this.version = account.getVersion();
+        this.confirmed = account.isConfirmed();
+        this.active = account.isActive();
+
         for (AccessLevel accessLevel : account.getAccessLevelCollection()) {
             if (accessLevel instanceof DataClient)
                 this.accessLevels.add(new DataClientDto((DataClient) accessLevel));
-            if(accessLevel instanceof DataSpecialist)
+            if (accessLevel instanceof DataSpecialist)
                 this.accessLevels.add(new DataSpecialistDto((DataSpecialist) accessLevel));
-            if(accessLevel instanceof DataAdministrator)
+            if (accessLevel instanceof DataAdministrator)
                 this.accessLevels.add(new DataAdministratorDto((DataAdministrator) accessLevel));
         }
     }
