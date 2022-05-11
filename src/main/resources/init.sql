@@ -1,4 +1,4 @@
-CREATE OR REPLACE VIEW auth_view AS SELECT login, password, access_level FROM account JOIN access_level ON account.id = access_level.account_id WHERE account.active = true AND account.confirmed = true
+CREATE OR REPLACE VIEW auth_view AS SELECT login, password, access_level FROM account JOIN access_level ON account.id = access_level.account_id WHERE account.active = true AND account.confirmed = true;
 
 -- uprawnienia dla konta MOK
 GRANT SELECT,INSERT,DELETE,UPDATE ON TABLE data_client TO ssbd03mok;

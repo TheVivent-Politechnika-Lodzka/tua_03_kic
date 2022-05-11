@@ -4,8 +4,8 @@ import CredentialsDto from "./types/auth";
 import { AccountDto, AccountEditDto } from "./types/mok.dto";
 
 // TODO przenieść do .env / package.json
-// const BASE_URL = "http://studapp.it.p.lodz.pl:8003/api"
-const BASE_URL = "http://localhost:8080/api";
+// const BASE_URL = "https://studapp.it.p.lodz.pl:8403/api"
+const BASE_URL = "https://localhost:8181/api";
 const TOKEN_STORAGE_KEY = "AUTH_TOKEN";
 
 const api = createApi({

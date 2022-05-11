@@ -4,6 +4,7 @@ import jakarta.ejb.Stateless;
 import jakarta.ejb.TransactionAttribute;
 import jakarta.ejb.TransactionAttributeType;
 import jakarta.inject.Inject;
+import jakarta.interceptor.Interceptors;
 import jakarta.security.enterprise.credential.Credential;
 import jakarta.security.enterprise.identitystore.CredentialValidationResult;
 import jakarta.security.enterprise.identitystore.IdentityStoreHandler;
@@ -12,8 +13,12 @@ import jakarta.ws.rs.ClientErrorException;
 import pl.lodz.p.it.ssbd2022.ssbd03.mok.dto.AccountEditDto;
 import pl.lodz.p.it.ssbd2022.ssbd03.mok.ejb.facades.AccountFacade;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.Account;
+import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.account.InvalidCredentialException;
+import pl.lodz.p.it.ssbd2022.ssbd03.interceptors.TrackerInterceptor;
+import pl.lodz.p.it.ssbd2022.ssbd03.mok.ejb.facades.AccountFacade;
 import pl.lodz.p.it.ssbd2022.ssbd03.security.JWTGenerator;
 
+@Interceptors(TrackerInterceptor.class)
 @Stateless
 @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
 public class MOKService {
@@ -43,18 +48,12 @@ public class MOKService {
 
     public void deactivate(String login) {
         Account account = accountFacade.findByLogin(login);
-        if (account == null) {
-            throw new ClientErrorException("Account with login " + login + " does not exist", 404);
-        }
         account.setActive(false);
         accountFacade.edit(account);
     }
 
     public void activate(String login) {
         Account account = accountFacade.findByLogin(login);
-        if (account == null) {
-            throw new ClientErrorException("Account with login " + login + " does not exist", 404);
-        }
         account.setActive(true);
         accountFacade.edit(account);
     }

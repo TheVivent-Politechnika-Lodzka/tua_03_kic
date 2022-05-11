@@ -1,8 +1,6 @@
 package pl.lodz.p.it.ssbd2022.ssbd03.entities;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.*;
 import pl.lodz.p.it.ssbd2022.ssbd03.common.AbstractEntity;
@@ -86,32 +84,14 @@ public class Account extends AbstractEntity implements Serializable {
 
     @Basic(optional = false)
     @Size(min = 3, max = 30)
-    @Column(name = "firstName", table = "account_details", nullable = false, length = 30)
+    @Column(name = "first_name", table = "account_details", nullable = false, length = 30)
     @Getter @Setter
     private String firstName;
 
     @Basic(optional = false)
     @Size(min = 3, max = 30)
-    @Column(name = "surname", table = "account_details", nullable = false, length = 30)
+    @Column(name = "last_name", table = "account_details", nullable = false, length = 30)
     @Getter @Setter
-    private String surname;
-
-    @Basic(optional = false)
-    @Email
-    @Column(name = "email", table = "account_details", nullable = false, length = 64)
-    @Getter @Setter
-    private String email;
-
-    @Basic(optional = false)
-    @Pattern(regexp = "^[0-9]{3}-[0-9]{3}-[0-9]{3}$", message = "Phone number must be 9 digits, separated by '-'")
-    @Column(name = "phone_number", table = "account_details", nullable = true, length = 11)
-    @Getter @Setter
-    private String phoneNumber;
-
-    @Basic(optional = false)
-    @Pattern(regexp = "^[0-9]{11}$")
-    @Column(name = "pesel", table = "account_details", nullable = true, length = 11)
-    @Getter @Setter
-    private String pesel;
+    private String lastName;
 
 }
