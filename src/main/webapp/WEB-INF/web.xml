@@ -6,6 +6,16 @@
 
         <display-name>create-react-app-servlet</display-name>
 
+        <security-constraint>
+                <web-resource-collection>
+                        <web-resource-name>All</web-resource-name>
+                        <url-pattern>/*</url-pattern>
+                </web-resource-collection>
+                <user-data-constraint>
+                        <transport-guarantee>CONFIDENTIAL</transport-guarantee>
+                </user-data-constraint>
+        </security-constraint>
+
         <security-role>
                 <role-name>ADMINISTRATOR</role-name>
         </security-role>
