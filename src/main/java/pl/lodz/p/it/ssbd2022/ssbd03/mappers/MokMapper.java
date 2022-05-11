@@ -5,12 +5,12 @@ import pl.lodz.p.it.ssbd2022.ssbd03.entities.access_levels.AccessLevel;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.access_levels.DataAdministrator;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.access_levels.DataClient;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.access_levels.DataSpecialist;
-import pl.lodz.p.it.ssbd2022.ssbd03.mok.dto.AccountDto;
+import pl.lodz.p.it.ssbd2022.ssbd03.mok.dto.AccountWithAccessLevelsDto;
 import pl.lodz.p.it.ssbd2022.ssbd03.mok.dto.access_levels.AccessLevelDto;
 
 public class MokMapper {
 
-    public static Account getAccount(AccountDto accountDto) {
+    public static Account getAccount(AccountWithAccessLevelsDto accountDto) {
         Account account = new Account();
         account.setLogin(accountDto.getLogin());
         account.setFirstName(accountDto.getFirstName());

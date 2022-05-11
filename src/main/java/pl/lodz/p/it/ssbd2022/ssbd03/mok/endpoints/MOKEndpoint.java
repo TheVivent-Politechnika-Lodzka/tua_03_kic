@@ -1,6 +1,5 @@
 package pl.lodz.p.it.ssbd2022.ssbd03.mok.endpoints;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.annotation.security.DenyAll;
 import jakarta.annotation.security.PermitAll;
 import jakarta.annotation.security.RolesAllowed;
@@ -15,13 +14,11 @@ import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.Account;
-import pl.lodz.p.it.ssbd2022.ssbd03.mok.dto.AccountDto;
+import pl.lodz.p.it.ssbd2022.ssbd03.mok.dto.AccountWithAccessLevelsDto;
 import pl.lodz.p.it.ssbd2022.ssbd03.mok.dto.AccountEditDto;
 import pl.lodz.p.it.ssbd2022.ssbd03.mok.dto.CredentialDto;
 import pl.lodz.p.it.ssbd2022.ssbd03.mok.services.MOKService;
 import pl.lodz.p.it.ssbd2022.ssbd03.security.AuthContext;
-
-import java.io.IOException;
 
 @Stateless
 @Path("mok")
@@ -49,14 +46,14 @@ public class MOKEndpoint {
     @Consumes(MediaType.APPLICATION_JSON)
     @RolesAllowed({ "ADMINISTRATOR", "SPECIALIST", "CLIENT" })
     @Path("/edit")
-    public AccountDto editOwnAccount(AccountEditDto accountEditDto) {
+    public AccountWithAccessLevelsDto editOwnAccount(AccountEditDto accountEditDto) {
         Account currentUser = authContext.getCurrentUser();
         return editAccount(currentUser, accountEditDto);
     }
 
-    private AccountDto editAccount(Account account, AccountEditDto accountEditDto) {
+    private AccountWithAccessLevelsDto editAccount(Account account, AccountEditDto accountEditDto) {
         Account editedAccount = mokService.edit(account, accountEditDto.getFirstName(), accountEditDto.getSurname(), accountEditDto.getEmail(), accountEditDto.getPhoneNumber());
-        return new AccountDto(editedAccount);
+        return new AccountWithAccessLevelsDto(editedAccount);
     }
 
     @GET
@@ -93,7 +90,7 @@ public class MOKEndpoint {
 //
 //        return Response.ok().build();
 //    }
-    public Response jacksonTest(AccountDto accountDto) {
+    public Response jacksonTest(AccountWithAccessLevelsDto accountDto) {
         System.out.println("##############################");
         System.out.println(accountDto);
         System.out.println("##############################");
