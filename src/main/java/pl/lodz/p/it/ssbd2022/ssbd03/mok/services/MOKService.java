@@ -7,10 +7,8 @@ import jakarta.security.enterprise.credential.Credential;
 import jakarta.security.enterprise.identitystore.CredentialValidationResult;
 import jakarta.security.enterprise.identitystore.IdentityStoreHandler;
 import jakarta.transaction.Transactional;
-import jakarta.ws.rs.ClientErrorException;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.Account;
-import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.account.AccountNotFoundException;
-import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.account.InvalidCredentialsException;
+import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.account.InvalidCredentialException;
 import pl.lodz.p.it.ssbd2022.ssbd03.interceptors.TrackerInterceptor;
 import pl.lodz.p.it.ssbd2022.ssbd03.mok.ejb.facades.AccountFacade;
 import pl.lodz.p.it.ssbd2022.ssbd03.security.JWTGenerator;
@@ -34,7 +32,7 @@ public class MOKService {
         if (result.getStatus() == CredentialValidationResult.Status.VALID) {
             return jwtGenerator.createJWT(result);
         }
-        throw new InvalidCredentialsException();
+        throw new InvalidCredentialException();
     }
 
     public void deactivate(String login) {

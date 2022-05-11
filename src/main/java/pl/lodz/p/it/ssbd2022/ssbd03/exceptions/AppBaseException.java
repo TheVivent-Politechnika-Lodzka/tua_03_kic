@@ -10,4 +10,12 @@ public class AppBaseException extends WebApplicationException {
     protected AppBaseException(String message, Response.Status status) {
         super(message, status);
     }
+
+    protected AppBaseException(Throwable cause, Response.Status status) throws IllegalArgumentException {
+        super(cause, status);
+    }
+
+    protected AppBaseException(String message, Throwable cause, Response.Status status) throws IllegalArgumentException {
+        super(message, cause, status);
+    }
 }
