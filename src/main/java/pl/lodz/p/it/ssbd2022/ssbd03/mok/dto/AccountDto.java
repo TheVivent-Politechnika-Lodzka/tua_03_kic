@@ -6,7 +6,6 @@ import lombok.NoArgsConstructor;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.Account;
 import pl.lodz.p.it.ssbd2022.ssbd03.mok.dto.access_levels.AccessLevelDto;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Data
@@ -22,13 +21,15 @@ public class AccountDto {
     @NotNull
     private String email;
 
-    // na późniejszą wersję (na innym branchy)
+    // na późniejszą wersję (na innym branchu)
     // @NotNull
     private String phoneNumber;
 
+    private String pesel;
+
     private Long version;
 
-    private ArrayList<AccessLevelDto> accessLevels;
+    private List<AccessLevelDto> accessLevels;
 
     public AccountDto(Account account) {
         this.login = account.getLogin();
@@ -37,5 +38,6 @@ public class AccountDto {
         this.email = account.getEmail();
         this.version = account.getVersion();
     }
+
 
 }
