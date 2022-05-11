@@ -1,6 +1,8 @@
 package pl.lodz.p.it.ssbd2022.ssbd03.mok.services;
 
 import jakarta.ejb.Stateless;
+import jakarta.ejb.TransactionAttribute;
+import jakarta.ejb.TransactionAttributeType;
 import jakarta.inject.Inject;
 import jakarta.security.enterprise.credential.Credential;
 import jakarta.security.enterprise.identitystore.CredentialValidationResult;
@@ -12,7 +14,7 @@ import pl.lodz.p.it.ssbd2022.ssbd03.entities.Account;
 import pl.lodz.p.it.ssbd2022.ssbd03.security.JWTGenerator;
 
 @Stateless
-@Transactional(Transactional.TxType.REQUIRED)
+@TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
 public class MOKService {
 
     @Inject
@@ -32,6 +34,12 @@ public class MOKService {
         throw new ClientErrorException("Invalid username or password", 401);
     }
 
+    public Account findByLogin(String login) {
+        return accountFacade.findByLogin(login);
+    }
+
+
+
     public void deactivate(String login) {
         Account account = accountFacade.findByLogin(login);
         if (account == null) {
@@ -48,5 +56,12 @@ public class MOKService {
         }
         account.setActive(true);
         accountFacade.edit(account);
+    }
+
+    public Account edit(Account account, String firstName, String surname, String email, String phoneNumber) {
+        account.setFirstName(firstName);
+        account.setLastName(surname);
+        accountFacade.edit(account);
+        return account;
     }
 }

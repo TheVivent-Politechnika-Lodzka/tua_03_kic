@@ -1,8 +1,11 @@
 package pl.lodz.p.it.ssbd2022.ssbd03.entities.access_levels;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.Pattern;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.ToString;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.Appointment;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.access_levels.AccessLevel;
@@ -26,7 +29,15 @@ public class DataSpecialist extends AccessLevel implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-//    @OneToMany(cascade = {CascadeType.REMOVE, CascadeType.PERSIST}, mappedBy = "specialist")
-//    @Getter
-//    private Collection<Appointment> appointmentCollection = new ArrayList<>();
+    @Basic(optional = false)
+    @Pattern(regexp = "^[0-9]{3}-[0-9]{3}-[0-9]{3}$", message = "Phone number must be 9 digits, separated by '-'")
+    @Column(name = "phone_number", nullable = false, length = 11)
+    @Getter @Setter
+    private String phoneNumber;
+
+    @Basic(optional = false)
+    @Email
+    @Column(name = "email", nullable = false, length = 64)
+    @Getter @Setter
+    private String email;
 }
