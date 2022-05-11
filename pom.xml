@@ -55,7 +55,6 @@
         <maven.compiler.target>17</maven.compiler.target>
         <maven.compiler.source>17</maven.compiler.source>
         <junit.version>5.8.1</junit.version>
-        <jakarta.version>9.1.0</jakarta.version>
     </properties>
 
 
@@ -63,9 +62,9 @@
         <!-- ############### jakarta ############### -->
         <dependency>
             <groupId>jakarta.platform</groupId>
-            <artifactId>jakarta.jakartaee-web-api</artifactId>
-            <version>${jakarta.version}</version>
-<!--            <scope>provided</scope>-->
+            <artifactId>jakarta.jakartaee-api</artifactId>
+            <version>9.1.0</version>
+            <scope>provided</scope>
         </dependency>
         <!-- ############### junit ############### -->
         <dependency>
@@ -165,10 +164,10 @@
                     </webResources>
                 </configuration>
             </plugin>
-<!--            <plugin>-->
-<!--                <groupId>org.apache.maven.plugins</groupId>-->
-<!--                <artifactId>maven-dependency-plugin</artifactId>-->
-<!--                <version>3.2.0</version>-->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <version>3.2.0</version>
 <!--                <executions>-->
 <!--                    <execution>-->
 <!--                        <phase>validate</phase>-->
@@ -195,7 +194,7 @@
 <!--                        </configuration>-->
 <!--                    </execution>-->
 <!--                </executions>-->
-<!--            </plugin>-->
+            </plugin>
 
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>

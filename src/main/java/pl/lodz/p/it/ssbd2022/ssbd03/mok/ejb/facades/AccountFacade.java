@@ -1,6 +1,9 @@
 package pl.lodz.p.it.ssbd2022.ssbd03.mok.ejb.facades;
 
+import jakarta.ejb.Stateful;
 import jakarta.ejb.Stateless;
+import jakarta.ejb.TransactionAttribute;
+import jakarta.ejb.TransactionAttributeType;
 import jakarta.interceptor.Interceptors;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.NoResultException;
@@ -12,7 +15,8 @@ import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.account.AccountNotFoundException;
 import pl.lodz.p.it.ssbd2022.ssbd03.interceptors.TrackerInterceptor;
 
 @Interceptors(TrackerInterceptor.class)
-@Stateless
+@Stateful
+@TransactionAttribute(TransactionAttributeType.MANDATORY)
 public class AccountFacade extends AbstractFacade<Account> {
 
     @PersistenceContext(unitName = "ssbd03mokPU")
@@ -28,13 +32,9 @@ public class AccountFacade extends AbstractFacade<Account> {
     }
 
     public Account findByLogin(String login){
-        try {
-            TypedQuery<Account> typedQuery = em.createNamedQuery("Account.findByLogin", Account.class);
-            typedQuery.setParameter("login", login);
-            return typedQuery.getSingleResult();
-        } catch (NoResultException e) {
-            throw new AccountNotFoundException();
-        }
+        TypedQuery<Account> typedQuery = em.createNamedQuery("Account.findByLogin", Account.class);
+        typedQuery.setParameter("login",login);
+        return typedQuery.getSingleResult();
     }
 
 }

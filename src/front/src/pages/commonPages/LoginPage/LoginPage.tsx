@@ -22,27 +22,6 @@ const LoginPage = () => {
       login,
       password,
     });
-    // const response = await fetch(
-    //   // "http://studapp.it.p.lodz.pl:8003/api/mok/login",
-    //   "http://localhost:8080/api/mok/login",
-    //   {
-    //     method: "POST",
-    //     headers: {
-    //       "Content-Type": "application/json",
-    //     },
-    //     body: JSON.stringify({
-    //       login,
-    //       password,
-    //     }),
-    //   }
-    // );
-    // const data = await response.text();
-    // const decoded = await jwtDecode(data);
-    // setToken(data);
-    // console.log("====================================");
-    // console.log(decoded);
-    // console.log("====================================");
-    // localStorage.setItem("jwtToken", data);
     dispatch(loginDispatch(decoded));
     navigate("/", { replace: true });
   };

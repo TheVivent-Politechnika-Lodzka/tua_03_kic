@@ -41,6 +41,7 @@ public abstract class AccessLevel extends AbstractEntity implements Serializable
     @JoinColumn(name = "account_id", referencedColumnName = "id", updatable = false)
     @ManyToOne(optional = false)
     @Getter @Setter
+    @ToString.Exclude
     private Account account;
 
 }

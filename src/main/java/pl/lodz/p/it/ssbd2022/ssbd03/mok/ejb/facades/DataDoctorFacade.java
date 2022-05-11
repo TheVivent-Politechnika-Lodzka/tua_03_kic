@@ -1,6 +1,8 @@
 package pl.lodz.p.it.ssbd2022.ssbd03.mok.ejb.facades;
 
 import jakarta.ejb.Stateless;
+import jakarta.ejb.TransactionAttribute;
+import jakarta.ejb.TransactionAttributeType;
 import jakarta.interceptor.Interceptors;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
@@ -10,6 +12,7 @@ import pl.lodz.p.it.ssbd2022.ssbd03.interceptors.TrackerInterceptor;
 
 @Interceptors(TrackerInterceptor.class)
 @Stateless
+@TransactionAttribute(TransactionAttributeType.MANDATORY)
 public class DataDoctorFacade extends AbstractFacade<DataSpecialist> {
 
     @PersistenceContext(unitName = "ssbd03mokPU")

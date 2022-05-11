@@ -23,6 +23,8 @@ public class AuthenticationMechanism implements HttpAuthenticationMechanism {
     @Override
     public AuthenticationStatus validateRequest(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, HttpMessageContext httpMessageContext) throws AuthenticationException {
 
+//        return httpMessageContext.doNothing();
+
         // zapewnia, że tylko zapytania do backendu są autoryzowane
         // zapytania do frontendu (SPA) nie są autoryzowane
         if (httpServletRequest.getPathInfo() == null) {
