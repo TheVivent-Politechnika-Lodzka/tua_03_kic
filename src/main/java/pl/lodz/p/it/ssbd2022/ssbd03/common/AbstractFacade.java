@@ -52,6 +52,8 @@ public abstract class AbstractFacade<T> {
      * @param pageNumber Numer strony
      * @param perPage Ilość encji, które mają zostać zwrócone
      * @return Encje, wraz z ich całkowitą ilością (jako liczba)
+     * @throws InvalidParametersException, gdy podano niepoprawną wartość parametru
+     * @throws DatabaseException, gdy wystąpi błąd związany z bazą danych
      */
     public PaginationData findInRange(int pageNumber, int perPage) {
         try {
@@ -81,7 +83,7 @@ public abstract class AbstractFacade<T> {
      * Pobiera liczbę wszystkich encji danego typu.
      *
      * @return liczbę wszystkich encji danego typu
-     * @throws DatabaseException
+     * @throws DatabaseException, gdy wystąpi błąd związany z bazą danych
      */
     public int count() {
         try {
