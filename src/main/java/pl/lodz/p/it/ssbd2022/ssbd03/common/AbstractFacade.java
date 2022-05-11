@@ -2,7 +2,7 @@ package pl.lodz.p.it.ssbd2022.ssbd03.common;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.criteria.CriteriaQuery;
-import jakarta.persistence.criteria.Root;
+import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.InvalidParametersException;
 import pl.lodz.p.it.ssbd2022.ssbd03.utils.PaginationData;
 
 import java.util.List;
@@ -43,19 +43,24 @@ public abstract class AbstractFacade<T> {
     }
 
     public PaginationData findInRange(int pageNumber, int perPage) {
-        CriteriaQuery criteriaQuery = getEntityManager().getCriteriaBuilder().createQuery();
-        criteriaQuery.select(criteriaQuery.from(entityClass));
+        try {
+            CriteriaQuery criteriaQuery = getEntityManager().getCriteriaBuilder().createQuery();
+            criteriaQuery.select(criteriaQuery.from(entityClass));
 
-        pageNumber -= 1;
+            pageNumber -= 1;
 
-        List data = getEntityManager()
-                .createQuery(criteriaQuery)
-                .setMaxResults(perPage)
-                .setFirstResult(pageNumber * perPage)
-                .getResultList();
+            List data = getEntityManager()
+                    .createQuery(criteriaQuery)
+                    .setMaxResults(perPage)
+                    .setFirstResult(pageNumber * perPage)
+                    .getResultList();
 
-        int totalCount = count();
-        return new PaginationData(totalCount, data);
+            int totalCount = count();
+            return new PaginationData(totalCount, data);
+        } catch (IllegalArgumentException e) {
+            throw new InvalidParametersException();
+        }
+
     }
 
     public int count() {

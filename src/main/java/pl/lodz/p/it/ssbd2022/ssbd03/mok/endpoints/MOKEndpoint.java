@@ -87,7 +87,7 @@ public class MOKEndpoint {
     @GET
     @Path("/account")
     @Produces(MediaType.APPLICATION_JSON)
-    @PermitAll
+    @RolesAllowed("ADMINISTRATOR")
     public Response findInRange(@QueryParam("page") int page, @QueryParam("limit") int limit) {
         PaginationData accountList = mokService.findInRange(page, limit);
         return Response.ok().entity(accountList).build(
