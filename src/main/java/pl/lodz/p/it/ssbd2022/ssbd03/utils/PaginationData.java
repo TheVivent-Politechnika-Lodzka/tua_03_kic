@@ -6,6 +6,9 @@ import lombok.Setter;
 
 import java.util.List;
 
+/**
+ * Klasa reprezentującą obiekt zwracany podczas stronicowania bazy danych
+ */
 @Getter
 @Setter
 @AllArgsConstructor

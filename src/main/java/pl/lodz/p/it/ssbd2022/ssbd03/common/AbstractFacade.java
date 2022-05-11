@@ -9,6 +9,7 @@ import pl.lodz.p.it.ssbd2022.ssbd03.utils.PaginationData;
 
 import java.util.List;
 
+
 public abstract class AbstractFacade<T> {
 
     private final Class<T> entityClass;
@@ -44,6 +45,14 @@ public abstract class AbstractFacade<T> {
         return getEntityManager().createQuery(criteriaQuery).getResultList();
     }
 
+    /***
+     *
+     * Zwraca listę encji danego typu z bazy danych, które zostały wcześniej stronicowane.
+     *
+     * @param pageNumber Numer strony
+     * @param perPage Ilość encji, które mają zostać zwrócone
+     * @return Encje, wraz z ich całkowitą ilością (jako liczba)
+     */
     public PaginationData findInRange(int pageNumber, int perPage) {
         try {
             CriteriaQuery criteriaQuery = getEntityManager().getCriteriaBuilder().createQuery();
@@ -67,10 +76,22 @@ public abstract class AbstractFacade<T> {
 
     }
 
+
+    /**
+     * Pobiera liczbę wszystkich encji danego typu.
+     *
+     * @return liczbę wszystkich encji danego typu
+     * @throws DatabaseException
+     */
     public int count() {
-        CriteriaQuery criteriaQuery = getEntityManager().getCriteriaBuilder().createQuery();
-        criteriaQuery.select(criteriaQuery.from(entityClass));
-        return getEntityManager().createQuery(criteriaQuery).getResultList().size();
+        try {
+            CriteriaQuery criteriaQuery = getEntityManager().getCriteriaBuilder().createQuery();
+            criteriaQuery.select(criteriaQuery.from(entityClass));
+            return getEntityManager().createQuery(criteriaQuery).getResultList().size();
+        } catch (PersistenceException e) {
+            throw new DatabaseException(e.getCause());
+        }
+
     }
 
 }
