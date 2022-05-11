@@ -9,4 +9,8 @@ public class InvalidParametersException extends AppBaseException {
     public InvalidParametersException() {
         super(INVALID_PARAMETERS, Response.Status.BAD_REQUEST);
     }
+
+    public InvalidParametersException(Throwable cause) {
+        super(INVALID_PARAMETERS, cause, Response.Status.BAD_REQUEST);
+    }
 }

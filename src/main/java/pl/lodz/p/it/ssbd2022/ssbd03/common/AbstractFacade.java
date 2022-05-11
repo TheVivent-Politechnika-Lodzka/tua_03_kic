@@ -1,7 +1,9 @@
 package pl.lodz.p.it.ssbd2022.ssbd03.common;
 
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceException;
 import jakarta.persistence.criteria.CriteriaQuery;
+import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.DatabaseException;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.InvalidParametersException;
 import pl.lodz.p.it.ssbd2022.ssbd03.utils.PaginationData;
 
@@ -59,6 +61,8 @@ public abstract class AbstractFacade<T> {
             return new PaginationData(totalCount, data);
         } catch (IllegalArgumentException e) {
             throw new InvalidParametersException();
+        } catch (PersistenceException e) {
+            throw new DatabaseException(e.getCause());
         }
 
     }
