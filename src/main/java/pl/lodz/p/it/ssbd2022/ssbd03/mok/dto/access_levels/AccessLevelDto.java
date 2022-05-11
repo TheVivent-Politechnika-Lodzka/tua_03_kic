@@ -4,7 +4,7 @@ import jakarta.json.bind.annotation.JsonbTypeDeserializer;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import pl.lodz.p.it.ssbd2022.ssbd03.common.AccessLevelDeserializer;
+import pl.lodz.p.it.ssbd2022.ssbd03.mappers.json.AccessLevelDeserializer;
 
 @Data
 @NoArgsConstructor

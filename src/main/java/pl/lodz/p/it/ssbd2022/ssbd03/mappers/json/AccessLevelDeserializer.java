@@ -1,4 +1,4 @@
-package pl.lodz.p.it.ssbd2022.ssbd03.common;
+package pl.lodz.p.it.ssbd2022.ssbd03.mappers.json;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.json.JsonObject;
