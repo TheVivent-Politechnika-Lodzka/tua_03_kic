@@ -1,6 +1,8 @@
 package pl.lodz.p.it.ssbd2022.ssbd03.mok.services;
 
 import jakarta.ejb.Stateless;
+import jakarta.ejb.TransactionAttribute;
+import jakarta.ejb.TransactionAttributeType;
 import jakarta.inject.Inject;
 import jakarta.interceptor.Interceptors;
 import jakarta.security.enterprise.credential.Credential;
@@ -15,7 +17,7 @@ import pl.lodz.p.it.ssbd2022.ssbd03.security.JWTGenerator;
 
 @Interceptors(TrackerInterceptor.class)
 @Stateless
-@Transactional(Transactional.TxType.REQUIRED)
+@TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
 public class MOKService {
 
     @Inject
@@ -35,6 +37,12 @@ public class MOKService {
         throw new InvalidCredentialException();
     }
 
+    public Account findByLogin(String login) {
+        return accountFacade.findByLogin(login);
+    }
+
+
+
     public void deactivate(String login) {
         Account account = accountFacade.findByLogin(login);
         account.setActive(false);
@@ -48,5 +56,12 @@ public class MOKService {
         accountFacade.edit(account);
 
 
+    }
+
+    public Account edit(Account account, String firstName, String surname, String email, String phoneNumber) {
+        account.setFirstName(firstName);
+        account.setLastName(surname);
+        accountFacade.edit(account);
+        return account;
     }
 }

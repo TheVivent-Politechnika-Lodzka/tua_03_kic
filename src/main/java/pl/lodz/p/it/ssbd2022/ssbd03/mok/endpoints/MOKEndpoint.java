@@ -4,18 +4,16 @@ import jakarta.annotation.security.PermitAll;
 import jakarta.annotation.security.RolesAllowed;
 import jakarta.ejb.Stateless;
 import jakarta.inject.Inject;
-import jakarta.interceptor.Interceptors;
 import jakarta.security.enterprise.credential.Credential;
 import jakarta.security.enterprise.credential.Password;
 import jakarta.security.enterprise.credential.UsernamePasswordCredential;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
-import pl.lodz.p.it.ssbd2022.ssbd03.interceptors.TrackerInterceptor;
+import jdk.jfr.Percentage;
 import pl.lodz.p.it.ssbd2022.ssbd03.mok.dto.CredentialDto;
 import pl.lodz.p.it.ssbd2022.ssbd03.mok.services.MOKService;
 
-@Interceptors(TrackerInterceptor.class)
 @Stateless
 @Path("mok")
 public class MOKEndpoint {
@@ -50,11 +48,13 @@ public class MOKEndpoint {
     }
 
 
+
+
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @PermitAll
     @Path(("/ping"))
-    public Response test() {
+    public Response test(){
         return Response.ok("pong").build();
     }
 }

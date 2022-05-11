@@ -37,13 +37,13 @@ public class StartupConfig {
         admin.setActive(true);
         admin.setConfirmed(true);
         admin.setFirstName("admin");
-        admin.setSurname("administracyjny");
-        admin.setPesel("00000000000");
-        admin.setPhoneNumber("000-000-000");
-        admin.setEmail("administrator@kic.agency");
+        admin.setLastName("administracyjny");
+
 
         DataAdministrator dataAdministrator = new DataAdministrator();
-        DataSpecialist dataSpecialist = new DataSpecialist();
+        dataAdministrator.setPhoneNumber("000-000-000");
+        dataAdministrator.setEmail("administrator@kic.agency");
+
         admin.addAccessLevel(dataAdministrator);
         em.persist(admin);
     }
@@ -55,13 +55,15 @@ public class StartupConfig {
         admin.setActive(true);
         admin.setConfirmed(true);
         admin.setFirstName("admin");
-        admin.setSurname("specjalny");
-        admin.setPesel("11111111111");
-        admin.setPhoneNumber("111-111-111");
-        admin.setEmail("specadmin@kic.agency");
+        admin.setLastName("specjalny");
 
         DataAdministrator dataAdministrator = new DataAdministrator();
+        dataAdministrator.setPhoneNumber("111-111-111");
+        dataAdministrator.setEmail("specadmin@kic.agency");
         DataSpecialist dataSpecialist = new DataSpecialist();
+        dataSpecialist.setPhoneNumber("111-111-111");
+        dataSpecialist.setEmail("specadmin@kic.agency");
+
         admin.addAccessLevel(dataAdministrator);
         admin.addAccessLevel(dataSpecialist);
         em.persist(admin);
@@ -74,13 +76,17 @@ public class StartupConfig {
         admin.setActive(true);
         admin.setConfirmed(true);
         admin.setFirstName("admin");
-        admin.setSurname("kliencki");
-        admin.setPesel("22222222222");
-        admin.setPhoneNumber("222-222-222");
-        admin.setEmail("klientadmin@kic.agency");
+        admin.setLastName("kliencki");
 
         DataAdministrator dataAdministrator = new DataAdministrator();
+        dataAdministrator.setPhoneNumber("222-222-222");
+        dataAdministrator.setEmail("klientadmin@kic.agency");
+
         DataClient dataClient = new DataClient();
+        dataClient.setPesel("22222222222");
+        dataClient.setPhoneNumber("222-222-222");
+        dataClient.setEmail("klientadmin@kic.agency");
+
         admin.addAccessLevel(dataAdministrator);
         admin.addAccessLevel(dataClient);
         em.persist(admin);
