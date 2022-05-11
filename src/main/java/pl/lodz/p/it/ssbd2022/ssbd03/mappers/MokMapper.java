@@ -7,6 +7,9 @@ import pl.lodz.p.it.ssbd2022.ssbd03.entities.access_levels.DataClient;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.access_levels.DataSpecialist;
 import pl.lodz.p.it.ssbd2022.ssbd03.mok.dto.AccountWithAccessLevelsDto;
 import pl.lodz.p.it.ssbd2022.ssbd03.mok.dto.access_levels.AccessLevelDto;
+import pl.lodz.p.it.ssbd2022.ssbd03.mok.dto.access_levels.DataAdministratorDto;
+import pl.lodz.p.it.ssbd2022.ssbd03.mok.dto.access_levels.DataClientDto;
+import pl.lodz.p.it.ssbd2022.ssbd03.mok.dto.access_levels.DataSpecialistDto;
 
 public class MokMapper {
 
@@ -14,10 +17,7 @@ public class MokMapper {
         Account account = new Account();
         account.setLogin(accountDto.getLogin());
         account.setFirstName(accountDto.getFirstName());
-        account.setSurname(accountDto.getSurname());
-        account.setEmail(accountDto.getEmail());
-        account.setPesel(accountDto.getPesel());
-        account.setPhoneNumber(accountDto.getPhoneNumber());
+        account.setLastName(accountDto.getLastName());
 
         for (AccessLevelDto accessLevelDto : accountDto.getAccessLevels()) {
             account.addAccessLevel(getAccessLevel(accessLevelDto));
@@ -28,15 +28,32 @@ public class MokMapper {
 
     public static AccessLevel getAccessLevel(AccessLevelDto accessLevelDto) {
 
-        return switch (accessLevelDto.getLevel()) {
-            case DataAdministrator.LEVEL_NAME -> new DataAdministrator();
-            case DataClient.LEVEL_NAME -> new DataClient();
-            case DataSpecialist.LEVEL_NAME -> new DataSpecialist();
-            default ->
-                    // TODO: Dać jakiś odpowiedni wyjątek
-                    throw new IllegalArgumentException("Unknown access level");
-        };
+        if(accessLevelDto instanceof DataAdministratorDto) {
+            DataAdministratorDto dataAdministratorDto = (DataAdministratorDto) accessLevelDto;
+            DataAdministrator dataAdministrator = new DataAdministrator();
+            dataAdministrator.setEmail(dataAdministratorDto.getEmail());
+            dataAdministrator.setPhoneNumber(dataAdministratorDto.getPhoneNumber());
+            return dataAdministrator;
+        }
 
+        if(accessLevelDto instanceof DataClientDto) {
+            DataClientDto dataClientDto = (DataClientDto) accessLevelDto;
+            DataClient dataClient = new DataClient();
+            dataClient.setEmail(dataClientDto.getEmail());
+            dataClient.setPhoneNumber(dataClientDto.getPhoneNumber());
+            dataClient.setPesel(dataClientDto.getPesel());
+            return dataClient;
+        }
+
+        if(accessLevelDto instanceof DataSpecialistDto) {
+            DataSpecialistDto dataSpecialistDto = (DataSpecialistDto) accessLevelDto;
+            DataSpecialist dataSpecialist = new DataSpecialist();
+            dataSpecialist.setEmail(dataSpecialistDto.getEmail());
+            dataSpecialist.setPhoneNumber(dataSpecialistDto.getPhoneNumber());
+            return dataSpecialist;
+        }
+
+        throw new IllegalArgumentException("Unknown access level type");
 
     }
 

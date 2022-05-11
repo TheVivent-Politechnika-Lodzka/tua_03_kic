@@ -8,14 +8,11 @@ import jakarta.interceptor.Interceptors;
 import jakarta.security.enterprise.credential.Credential;
 import jakarta.security.enterprise.identitystore.CredentialValidationResult;
 import jakarta.security.enterprise.identitystore.IdentityStoreHandler;
-import jakarta.transaction.Transactional;
 import jakarta.ws.rs.ClientErrorException;
-import pl.lodz.p.it.ssbd2022.ssbd03.mok.dto.AccountEditDto;
+import pl.lodz.p.it.ssbd2022.ssbd03.mok.dto.AccountWithAccessLevelsDto;
 import pl.lodz.p.it.ssbd2022.ssbd03.mok.ejb.facades.AccountFacade;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.Account;
-import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.account.InvalidCredentialException;
 import pl.lodz.p.it.ssbd2022.ssbd03.interceptors.TrackerInterceptor;
-import pl.lodz.p.it.ssbd2022.ssbd03.mok.ejb.facades.AccountFacade;
 import pl.lodz.p.it.ssbd2022.ssbd03.security.JWTGenerator;
 
 @Interceptors(TrackerInterceptor.class)
@@ -58,9 +55,10 @@ public class MOKService {
         accountFacade.edit(account);
     }
 
-    public Account edit(Account account, String firstName, String surname, String email, String phoneNumber) {
-        account.setFirstName(firstName);
-        account.setSurname(surname);
+    public Account edit(Account account, AccountWithAccessLevelsDto accountDto) {
+        account.setFirstName(accountDto.getFirstName());
+        account.setLastName(accountDto.getLastName());
+        // tu update access levels
         accountFacade.edit(account);
         return account;
     }

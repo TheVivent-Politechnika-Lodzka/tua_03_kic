@@ -9,6 +9,13 @@ import pl.lodz.p.it.ssbd2022.ssbd03.entities.access_levels.DataAdministrator;
 @NoArgsConstructor
 public class DataAdministratorDto extends AccessLevelDto{
 
-    String test;
+    String email;
+    String phoneNumber;
+
+    public DataAdministratorDto(DataAdministrator dataAdministrator) {
+        super(DataAdministrator.LEVEL_NAME);
+        this.email = dataAdministrator.getEmail();
+        this.phoneNumber = dataAdministrator.getPhoneNumber();
+    }
 
 }

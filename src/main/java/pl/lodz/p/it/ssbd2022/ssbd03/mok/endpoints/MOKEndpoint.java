@@ -15,7 +15,6 @@ import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.Account;
 import pl.lodz.p.it.ssbd2022.ssbd03.mok.dto.AccountWithAccessLevelsDto;
-import pl.lodz.p.it.ssbd2022.ssbd03.mok.dto.AccountEditDto;
 import pl.lodz.p.it.ssbd2022.ssbd03.mok.dto.CredentialDto;
 import pl.lodz.p.it.ssbd2022.ssbd03.mok.services.MOKService;
 import pl.lodz.p.it.ssbd2022.ssbd03.security.AuthContext;
@@ -46,13 +45,13 @@ public class MOKEndpoint {
     @Consumes(MediaType.APPLICATION_JSON)
     @RolesAllowed({ "ADMINISTRATOR", "SPECIALIST", "CLIENT" })
     @Path("/edit")
-    public AccountWithAccessLevelsDto editOwnAccount(AccountEditDto accountEditDto) {
+    public AccountWithAccessLevelsDto editOwnAccount(AccountWithAccessLevelsDto accountEditDto) {
         Account currentUser = authContext.getCurrentUser();
         return editAccount(currentUser, accountEditDto);
     }
 
-    private AccountWithAccessLevelsDto editAccount(Account account, AccountEditDto accountEditDto) {
-        Account editedAccount = mokService.edit(account, accountEditDto.getFirstName(), accountEditDto.getSurname(), accountEditDto.getEmail(), accountEditDto.getPhoneNumber());
+    private AccountWithAccessLevelsDto editAccount(Account account, AccountWithAccessLevelsDto accountEditDto) {
+        Account editedAccount = mokService.edit(account, accountEditDto);
         return new AccountWithAccessLevelsDto(editedAccount);
     }
 
@@ -71,32 +70,6 @@ public class MOKEndpoint {
         mokService.activate(login);
         return Response.ok().build();
     }
-
-    @POST
-    @Path("/jackson-test")
-    @Consumes(MediaType.APPLICATION_JSON)
-    @PermitAll
-//    public Response jacksonTest(String accountDto){
-//
-//        ObjectMapper mapper = new ObjectMapper();
-//        try {
-//            AccountDto accountDto1 = mapper.readValue(accountDto, AccountDto.class);
-//            System.out.println("############################");
-//            System.out.println(accountDto1);
-//            System.out.println("############################");
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//
-//        return Response.ok().build();
-//    }
-    public Response jacksonTest(AccountWithAccessLevelsDto accountDto) {
-        System.out.println("##############################");
-        System.out.println(accountDto);
-        System.out.println("##############################");
-        return Response.ok().build();
-    }
-
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
