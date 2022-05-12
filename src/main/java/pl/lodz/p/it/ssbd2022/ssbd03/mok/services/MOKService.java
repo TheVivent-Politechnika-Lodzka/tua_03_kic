@@ -13,6 +13,9 @@ import pl.lodz.p.it.ssbd2022.ssbd03.entities.access_levels.AccessLevel;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.access_levels.DataAdministrator;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.access_levels.DataClient;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.access_levels.DataSpecialist;
+import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.AppBaseException;
+import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.account.AccountPasswordIsTheSameException;
+import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.account.AccountPasswordMatchException;
 import pl.lodz.p.it.ssbd2022.ssbd03.mok.dto.AccountWithAccessLevelsDto;
 import pl.lodz.p.it.ssbd2022.ssbd03.mok.dto.access_levels.AccessLevelDto;
 import pl.lodz.p.it.ssbd2022.ssbd03.mok.dto.access_levels.DataAdministratorDto;
@@ -22,6 +25,7 @@ import pl.lodz.p.it.ssbd2022.ssbd03.mok.ejb.facades.AccountFacade;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.Account;
 import pl.lodz.p.it.ssbd2022.ssbd03.interceptors.TrackerInterceptor;
 import pl.lodz.p.it.ssbd2022.ssbd03.security.JWTGenerator;
+import pl.lodz.p.it.ssbd2022.ssbd03.utils.HashAlgorithm;
 
 @Interceptors(TrackerInterceptor.class)
 @Stateless
@@ -36,6 +40,9 @@ public class MOKService {
 
     @Inject
     private JWTGenerator jwtGenerator;
+
+    @Inject
+    private HashAlgorithm hashAlgorithm;
 
     public String authenticate(Credential credential) {
         CredentialValidationResult result = indentityStoreHandler.validate(credential);
@@ -110,6 +117,24 @@ public class MOKService {
 
         }
 
+    }
+    public void changeOwnPassword(String login, String newPassword, String oldPassword) {
+        Account account = accountFacade.findByLogin(login);
+        if (account == null) {
+            throw new ClientErrorException("Account with login " + login + " does not exist", 404);
+        }
+
+        if (oldPassword == null || !hashAlgorithm.verify(oldPassword.toCharArray(), account.getPassword())) {
+            //przemyslec budowanie wyjatkow
+            throw new AccountPasswordMatchException();
+        }
+        if(hashAlgorithm.verify(newPassword.toCharArray(),account.getPassword())){
+            //przemyslec budowanie wyjatkow
+            throw new AccountPasswordIsTheSameException();
+
+        }
+        account.setPassword(hashAlgorithm.generate(newPassword.toCharArray()));
+        accountFacade.edit(account);
     }
 
 }

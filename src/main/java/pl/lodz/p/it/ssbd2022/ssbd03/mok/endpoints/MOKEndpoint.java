@@ -10,11 +10,13 @@ import jakarta.inject.Inject;
 import jakarta.security.enterprise.credential.Credential;
 import jakarta.security.enterprise.credential.Password;
 import jakarta.security.enterprise.credential.UsernamePasswordCredential;
+import jakarta.validation.Valid;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.Account;
 import pl.lodz.p.it.ssbd2022.ssbd03.mok.dto.AccountWithAccessLevelsDto;
+import pl.lodz.p.it.ssbd2022.ssbd03.mok.dto.ChangePasswordDto;
 import pl.lodz.p.it.ssbd2022.ssbd03.mok.dto.CredentialDto;
 import pl.lodz.p.it.ssbd2022.ssbd03.mok.services.MOKService;
 import pl.lodz.p.it.ssbd2022.ssbd03.security.AuthContext;
@@ -77,5 +79,18 @@ public class MOKEndpoint {
     @Path(("/ping"))
     public Response test(){
         return Response.ok("pong").build();
+    }
+
+
+    //self
+    @PUT
+    @Consumes(MediaType.APPLICATION_JSON)
+    @PermitAll
+    @Path("/password")
+    public Response changeOwnPassword(@Valid ChangePasswordDto changePasswordDto) {
+        String principal = authContext.getCurrentUserLogin();
+
+        mokService.changeOwnPassword(principal, changePasswordDto.getNewPassword(),changePasswordDto.getOldPassword());
+        return Response.ok().build();
     }
 }
