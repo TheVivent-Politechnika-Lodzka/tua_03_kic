@@ -36,6 +36,9 @@ const api = createApi({
         },
       }),
     }),
+
+    findAllUsers: builder.mutation<AccountDto[], 
+
     editOwnAccount: builder.mutation<AccountDto, AccountEditDto>({
       query: (account: AccountEditDto) => ({
         url: "/mok/edit",
