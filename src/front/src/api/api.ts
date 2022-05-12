@@ -1,7 +1,7 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import jwtDecode from "jwt-decode";
 import CredentialsDto from "./types/auth";
-import { AccountDto, AccountEditDto } from "./types/mok.dto";
+import {AccountDto, AccountEditDto, AccountWithAccessLevelDto} from "./types/mok.dto";
 
 // TODO przenieść do .env / package.json
 // const BASE_URL = "https://studapp.it.p.lodz.pl:8403/api"
@@ -48,7 +48,20 @@ const api = createApi({
         },
       }),
     }),
+
+    getAccountByLogin: builder.mutation<AccountWithAccessLevelDto, string>({
+      query: (login: string) => ({
+        url: "/mok/"+login,
+        method: "GET",
+        responseHandler: async (response) => {
+          if (response.ok) {
+            return await response.json();
+          }
+        },
+      }),
+    }),
+
   }),
 });
 
-export const { useLoginMutation, useEditOwnAccountMutation } = api;
+export const { useLoginMutation, useEditOwnAccountMutation, useGetAccountByLoginMutation } = api;
