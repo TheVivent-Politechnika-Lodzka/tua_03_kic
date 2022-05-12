@@ -2,6 +2,7 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import jwtDecode from "jwt-decode";
 import CredentialsDto from "./types/auth";
 import { AccountDto, AccountEditDto } from "./types/mok.dto";
+import PaginationParams from "./types/queryParams/paginationParams";
 
 // TODO przenieść do .env / package.json
 // const BASE_URL = "https://studapp.it.p.lodz.pl:8403/api"
@@ -37,7 +38,18 @@ const api = createApi({
       }),
     }),
 
-    findAllUsers: builder.mutation<AccountDto[], 
+    findAllUsers: builder.mutation<AccountDto[], PaginationParams>({
+      query: ({page, limit}: PaginationParams) => ({
+        url: "/mok/account",
+        method: "GET",
+        params: {page, limit},
+        responseHandler: async (response) => {
+          if (response.ok) {
+            return await response.json();
+          }
+        }
+      })
+    }),
 
     editOwnAccount: builder.mutation<AccountDto, AccountEditDto>({
       query: (account: AccountEditDto) => ({
@@ -54,4 +66,4 @@ const api = createApi({
   }),
 });
 
-export const { useLoginMutation, useEditOwnAccountMutation } = api;
+export const { useLoginMutation, useFindAllUsersMutation, useEditOwnAccountMutation } = api;

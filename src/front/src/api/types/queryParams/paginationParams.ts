@@ -1,4 +1,4 @@
 export default interface PaginationParams {
-  page: string;
-  limit: string;
+  page: number;
+  limit: number;
 }

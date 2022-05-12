@@ -14,14 +14,11 @@ import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.Account;
-import pl.lodz.p.it.ssbd2022.ssbd03.mok.dto.AccountDto;
 import pl.lodz.p.it.ssbd2022.ssbd03.mok.dto.AccountWithAccessLevelsDto;
 import pl.lodz.p.it.ssbd2022.ssbd03.mok.dto.CredentialDto;
 import pl.lodz.p.it.ssbd2022.ssbd03.mok.services.MOKService;
 import pl.lodz.p.it.ssbd2022.ssbd03.security.AuthContext;
 import pl.lodz.p.it.ssbd2022.ssbd03.utils.PaginationData;
-
-import java.util.List;
 
 @Stateless
 @Path("mok")
@@ -47,7 +44,7 @@ public class MOKEndpoint {
 
     @PUT
     @Consumes(MediaType.APPLICATION_JSON)
-    @RolesAllowed({ "ADMINISTRATOR", "SPECIALIST", "CLIENT" })
+    @RolesAllowed({"ADMINISTRATOR", "SPECIALIST", "CLIENT"})
     @Path("/edit")
     public AccountWithAccessLevelsDto editOwnAccount(AccountWithAccessLevelsDto accountEditDto) {
         Account currentUser = authContext.getCurrentUser();
@@ -90,20 +87,15 @@ public class MOKEndpoint {
     @RolesAllowed("ADMINISTRATOR")
     public Response findInRange(@QueryParam("page") int page, @QueryParam("limit") int limit) {
         PaginationData accountList = mokService.findInRange(page, limit);
-        return Response.ok().entity(accountList).build(
-        );
+        return Response.ok().entity(accountList).build();
     }
-
-
-
-
 
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @PermitAll
     @Path(("/ping"))
-    public Response test(){
+    public Response test() {
         return Response.ok("pong").build();
     }
 }
