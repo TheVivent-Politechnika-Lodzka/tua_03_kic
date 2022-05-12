@@ -15,7 +15,7 @@ import pl.lodz.p.it.ssbd2022.ssbd03.mok.dto.access_levels.DataSpecialistDto;
 import java.util.ArrayList;
 import java.util.List;
 
-@Getter@Setter
+@Getter @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 public class AccountWithAccessLevelsDto {
@@ -26,9 +26,12 @@ public class AccountWithAccessLevelsDto {
     private String firstName;
     @NotNull
     private String lastName;
+    @NotNull
+    private boolean confirmed;
+    @NotNull
+    private boolean active;
 
     private Long version;
-
     private List<AccessLevelDto> accessLevels = new ArrayList<>();
 
 }

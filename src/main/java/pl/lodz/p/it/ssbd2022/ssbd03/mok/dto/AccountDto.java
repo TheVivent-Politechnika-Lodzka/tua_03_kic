@@ -14,6 +14,10 @@ public class AccountDto {
     private String firstName;
     @NotNull
     private String lastName;
+    @NotNull
+    private boolean confirmed;
+    @NotNull
+    private boolean active;
 
     private Long version;
 }

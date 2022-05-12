@@ -14,6 +14,8 @@ public class AccountMapper {
         account.setLogin(accountDto.getLogin());
         account.setFirstName(accountDto.getFirstName());
         account.setLastName(accountDto.getLastName());
+        account.setConfirmed(accountDto.isConfirmed());
+        account.setActive(accountDto.isActive());
 
         for (AccessLevelDto accessLevelDto : accountDto.getAccessLevels()) {
             account.addAccessLevel(createAccessLevelFromDto(accessLevelDto));
@@ -26,6 +28,8 @@ public class AccountMapper {
                 account.getLogin(),
                 account.getFirstName(),
                 account.getFirstName(),
+                account.isConfirmed(),
+                account.isActive(),
                 account.getVersion()
         );
     }
@@ -35,6 +39,8 @@ public class AccountMapper {
                 account.getLogin(),
                 account.getFirstName(),
                 account.getFirstName(),
+                account.isConfirmed(),
+                account.isActive(),
                 account.getVersion(),
                 AccessLevelMapper.createListOfAccessLevelDTO(account.getAccessLevelCollection())
         );
