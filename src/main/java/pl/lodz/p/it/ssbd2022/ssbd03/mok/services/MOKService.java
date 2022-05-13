@@ -1,5 +1,6 @@
 package pl.lodz.p.it.ssbd2022.ssbd03.mok.services;
 
+import com.sun.org.glassfish.external.statistics.annotations.Reset;
 import jakarta.ejb.Stateless;
 import jakarta.ejb.TransactionAttribute;
 import jakarta.ejb.TransactionAttributeType;
@@ -9,11 +10,14 @@ import jakarta.security.enterprise.credential.Credential;
 import jakarta.security.enterprise.identitystore.CredentialValidationResult;
 import jakarta.security.enterprise.identitystore.IdentityStoreHandler;
 import jakarta.ws.rs.ClientErrorException;
+import pl.lodz.p.it.ssbd2022.ssbd03.common.EmailConfig;
+import pl.lodz.p.it.ssbd2022.ssbd03.entities.ResetPasswordToken;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.access_levels.AccessLevel;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.access_levels.DataAdministrator;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.access_levels.DataClient;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.access_levels.DataSpecialist;
 import pl.lodz.p.it.ssbd2022.ssbd03.mok.dto.AccountWithAccessLevelsDto;
+import pl.lodz.p.it.ssbd2022.ssbd03.mok.dto.AccountWithTokenDTO;
 import pl.lodz.p.it.ssbd2022.ssbd03.mok.dto.access_levels.AccessLevelDto;
 import pl.lodz.p.it.ssbd2022.ssbd03.mok.dto.access_levels.DataAdministratorDto;
 import pl.lodz.p.it.ssbd2022.ssbd03.mok.dto.access_levels.DataClientDto;
@@ -21,7 +25,11 @@ import pl.lodz.p.it.ssbd2022.ssbd03.mok.dto.access_levels.DataSpecialistDto;
 import pl.lodz.p.it.ssbd2022.ssbd03.mok.ejb.facades.AccountFacade;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.Account;
 import pl.lodz.p.it.ssbd2022.ssbd03.interceptors.TrackerInterceptor;
+import pl.lodz.p.it.ssbd2022.ssbd03.mok.ejb.facades.ResetPasswordFacade;
 import pl.lodz.p.it.ssbd2022.ssbd03.security.JWTGenerator;
+import pl.lodz.p.it.ssbd2022.ssbd03.utils.HashAlgorithm;
+
+import java.util.UUID;
 
 @Interceptors(TrackerInterceptor.class)
 @Stateless
@@ -32,10 +40,19 @@ public class MOKService {
     private AccountFacade accountFacade;
 
     @Inject
+    private ResetPasswordFacade resetPasswordFacade;
+
+    @Inject
     private IdentityStoreHandler indentityStoreHandler;
 
     @Inject
     private JWTGenerator jwtGenerator;
+
+    @Inject
+    private EmailConfig emailConfig;
+
+    @Inject
+    private HashAlgorithm hashAlgorithm;
 
     public String authenticate(Credential credential) {
         CredentialValidationResult result = indentityStoreHandler.validate(credential);
@@ -82,7 +99,6 @@ public class MOKService {
             DataClient dataClient =  (DataClient) accessLevel;
             DataClientDto dataClientDto = (DataClientDto) accessLevelDto;
             dataClient.setPesel(dataClientDto.getPesel());
-            dataClient.setEmail(dataClientDto.getEmail());
             dataClient.setPhoneNumber(dataClientDto.getPhoneNumber());
             return;
         }
@@ -92,7 +108,7 @@ public class MOKService {
         try {
             DataAdministrator dataAdministrator =  (DataAdministrator) accessLevel;
             DataAdministratorDto dataAdministratorDto = (DataAdministratorDto) accessLevelDto;
-            dataAdministrator.setEmail(dataAdministratorDto.getEmail());
+            dataAdministrator.setEmail(dataAdministratorDto.getContactEmail());
             dataAdministrator.setPhoneNumber(dataAdministratorDto.getPhoneNumber());
             return;
         }
@@ -102,7 +118,7 @@ public class MOKService {
         try {
             DataSpecialist dataSpecialist =  (DataSpecialist) accessLevel;
             DataSpecialistDto dataSpecialistDto = (DataSpecialistDto) accessLevelDto;
-            dataSpecialist.setEmail(dataSpecialistDto.getEmail());
+            dataSpecialist.setEmail(dataSpecialistDto.getContactEmail());
             dataSpecialist.setPhoneNumber(dataSpecialistDto.getPhoneNumber());
             return;
         }
@@ -110,6 +126,31 @@ public class MOKService {
 
         }
 
+    }
+
+    public void reset(String login) {
+        Account account = accountFacade.findByLogin(login);
+        ResetPasswordToken resetPasswordToken = new ResetPasswordToken();
+        resetPasswordToken.setAccount(account);
+        resetPasswordFacade.create(resetPasswordToken);
+        emailConfig.sendEmail(
+                account.getEmail(),
+                "Reset password",
+                "Your link to reset password: \n"
+                        + "localhost:8080/mok/resetPassword/"
+                        + login + "/"
+                        + hashAlgorithm.generate(resetPasswordToken.getId().toString().toCharArray())
+        );
+    }
+
+    public void resetPassword(AccountWithTokenDTO accountWithTokenDTO) {
+        ResetPasswordToken resetPasswordToken = resetPasswordFacade.find(accountWithTokenDTO.getLogin());
+        if(hashAlgorithm.verify(resetPasswordToken.getId().toString().toCharArray(), accountWithTokenDTO.getToken())) {
+            Account account = accountFacade.findByLogin(accountWithTokenDTO.getLogin());
+            account.setPassword(hashAlgorithm.generate(accountWithTokenDTO.getPassword().toCharArray()));
+            accountFacade.edit(account);
+            resetPasswordFacade.remove(resetPasswordToken);
+        }
     }
 
 }
