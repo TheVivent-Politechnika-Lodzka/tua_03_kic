@@ -16,9 +16,12 @@ import jakarta.ws.rs.core.Response;
 import pl.lodz.p.it.ssbd2022.ssbd03.common.EmailConfig;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.Account;
 import pl.lodz.p.it.ssbd2022.ssbd03.mok.dto.AccountWithAccessLevelsDto;
+import pl.lodz.p.it.ssbd2022.ssbd03.mok.dto.AccountWithTokenDTO;
 import pl.lodz.p.it.ssbd2022.ssbd03.mok.dto.CredentialDto;
 import pl.lodz.p.it.ssbd2022.ssbd03.mok.services.MOKService;
 import pl.lodz.p.it.ssbd2022.ssbd03.security.AuthContext;
+
+import java.util.UUID;
 
 @Stateless
 @Path("mok")
@@ -32,9 +35,6 @@ public class MOKEndpoint {
     @Inject
     private AuthContext authContext;
 
-    @Inject
-    private EmailConfig emailConfig;
-
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @PermitAll
@@ -43,6 +43,22 @@ public class MOKEndpoint {
         Credential credential = new UsernamePasswordCredential(credentialDto.getLogin(), new Password(credentialDto.getPassword()));
         String token = mokService.authenticate(credential);
         return Response.ok(token).build();
+    }
+
+    @GET
+    @PermitAll
+    @Path("/reset/{login}")
+    public Response reset(@PathParam("login") String login) {
+        mokService.reset(login);
+        return Response.ok().build();
+    }
+
+    @GET
+    @PermitAll
+    @Path("/resetPassword")
+    public Response resetPassword(AccountWithTokenDTO accountWithTokenDTO) {
+        mokService.resetPassword(accountWithTokenDTO);
+        return Response.ok().build();
     }
 
     @PUT
