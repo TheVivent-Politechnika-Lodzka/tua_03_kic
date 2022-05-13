@@ -1,7 +1,7 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import jwtDecode from "jwt-decode";
 import CredentialsDto from "./types/auth";
-import {AccountDto, AccountEditDto, ChangeOwnPasswordDto} from "./types/mok.dto";
+import {AccountDto, AccountEditDto, AccountWithAccessLevelDto, ChangeOwnPasswordDto} from "./types/mok.dto";
 
 // TODO przenieść do .env / package.json
 // const BASE_URL = "https://studapp.it.p.lodz.pl:8403/api"
@@ -48,6 +48,19 @@ const api = createApi({
         },
       }),
     }),
+
+    getAccountByLogin: builder.mutation<AccountWithAccessLevelDto, string>({
+      query: (login: string) => ({
+        url: "/mok/"+login,
+        method: "GET",
+        responseHandler: async (response) => {
+          if (response.ok) {
+            return await response.json();
+          }
+        },
+      }),
+    }),
+
     changeOwnPassword: builder.mutation<string, ChangeOwnPasswordDto>({
       query: (changeOwnPasswordDto: ChangeOwnPasswordDto) => ({
         url: "/mok/password",
@@ -63,4 +76,4 @@ const api = createApi({
   }),
 });
 
-export const { useLoginMutation,useEditOwnAccountMutation, useChangeOwnPasswordMutation} = api;
+export const { useLoginMutation, useEditOwnAccountMutation, useGetAccountByLoginMutation, useChangeOwnPasswordMutation } = api;

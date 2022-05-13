@@ -4,9 +4,9 @@ import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import pl.lodz.p.it.ssbd2022.ssbd03.common.AbstractDto;
 
-@EqualsAndHashCode(callSuper = true)
-@Data
+@Getter @Setter
 @NoArgsConstructor
+@AllArgsConstructor
 public class AccountDto extends AbstractDto {
 
     @NotNull

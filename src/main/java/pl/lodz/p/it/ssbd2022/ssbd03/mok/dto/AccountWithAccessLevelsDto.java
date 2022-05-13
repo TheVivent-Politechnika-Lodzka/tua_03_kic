@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import pl.lodz.p.it.ssbd2022.ssbd03.common.AbstractDto;
+import lombok.*;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.Account;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.access_levels.AccessLevel;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.access_levels.DataAdministrator;
@@ -18,9 +19,9 @@ import pl.lodz.p.it.ssbd2022.ssbd03.mok.dto.access_levels.DataSpecialistDto;
 import java.util.ArrayList;
 import java.util.List;
 
-@EqualsAndHashCode(callSuper = true)
-@Data
+@Getter @Setter
 @NoArgsConstructor
+@AllArgsConstructor
 public class AccountWithAccessLevelsDto extends AbstractDto {
 
     @NotNull
