@@ -15,4 +15,8 @@ public class AccountDto extends AbstractDto {
     private String firstName;
     @NotNull
     private String lastName;
+    @NotNull
+    private boolean isActive;
+    @NotNull
+    private boolean isConfirmed;
 }

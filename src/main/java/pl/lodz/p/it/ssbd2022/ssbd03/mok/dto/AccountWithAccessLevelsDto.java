@@ -30,10 +30,12 @@ public class AccountWithAccessLevelsDto extends AbstractDto {
     private String firstName;
     @NotNull
     private String lastName;
+    @NotNull
+    private boolean isActive;
+    @NotNull
+    private boolean isConfirmed;
 
 
     private List<AccessLevelDto> accessLevels = new ArrayList<>();
-
-
 
 }

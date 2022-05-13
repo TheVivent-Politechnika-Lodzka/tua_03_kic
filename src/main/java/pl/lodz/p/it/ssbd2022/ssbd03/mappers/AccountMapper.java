@@ -41,7 +41,9 @@ public class AccountMapper {
         AccountDto accountDto = new AccountDto(
                 account.getLogin(),
                 account.getFirstName(),
-                account.getFirstName()
+                account.getFirstName(),
+                account.isActive(),
+                account.isConfirmed()
         );
         return (AccountDto) tagDto(accountDto, account);
     }
@@ -51,6 +53,8 @@ public class AccountMapper {
                 account.getLogin(),
                 account.getFirstName(),
                 account.getFirstName(),
+                account.isActive(),
+                account.isConfirmed(),
                 AccessLevelMapper.createListOfAccessLevelDTO(account.getAccessLevelCollection())
         );
         return (AccountWithAccessLevelsDto) tagDto(accountDto, account);
