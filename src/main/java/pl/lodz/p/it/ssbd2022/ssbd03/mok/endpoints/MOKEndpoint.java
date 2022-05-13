@@ -16,6 +16,7 @@ import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import pl.lodz.p.it.ssbd2022.ssbd03.common.EmailConfig;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.Account;
+import pl.lodz.p.it.ssbd2022.ssbd03.mappers.EntityToDtoMapper;
 import pl.lodz.p.it.ssbd2022.ssbd03.mok.dto.AccountWithAccessLevelsDto;
 import pl.lodz.p.it.ssbd2022.ssbd03.mok.dto.ChangePasswordDto;
 import pl.lodz.p.it.ssbd2022.ssbd03.mok.dto.CredentialDto;
@@ -35,7 +36,7 @@ public class MOKEndpoint {
     private AuthContext authContext;
 
     @Inject
-    private EmailConfig emailConfig;
+    private EntityToDtoMapper entityToDtoMapper;
 
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
@@ -58,7 +59,7 @@ public class MOKEndpoint {
 
     private AccountWithAccessLevelsDto editAccount(String login, AccountWithAccessLevelsDto accountEditDto) {
         Account editedAccount = mokService.edit(login, accountEditDto);
-        return new AccountWithAccessLevelsDto(editedAccount);
+        return entityToDtoMapper.getAccountWithAccessLevelsDto(editedAccount);
     }
 
     @GET
