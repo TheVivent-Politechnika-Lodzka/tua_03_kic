@@ -12,3 +12,8 @@ export interface AccountDto {
   email: string;
   phoneNumber: string;
 }
+
+export interface ChangeOwnPasswordDto {
+  oldPassword: string;
+  newPassword: string;
+}
