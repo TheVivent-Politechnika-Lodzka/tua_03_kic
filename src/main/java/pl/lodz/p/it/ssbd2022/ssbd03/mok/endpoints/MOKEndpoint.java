@@ -16,7 +16,6 @@ import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import pl.lodz.p.it.ssbd2022.ssbd03.common.EmailConfig;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.Account;
-import pl.lodz.p.it.ssbd2022.ssbd03.mappers.EntityToDtoMapper;
 import pl.lodz.p.it.ssbd2022.ssbd03.mappers.AccountMapper;
 import pl.lodz.p.it.ssbd2022.ssbd03.mok.dto.AccountWithAccessLevelsDto;
 import pl.lodz.p.it.ssbd2022.ssbd03.mok.dto.ChangePasswordDto;
@@ -48,6 +47,7 @@ public class MOKEndpoint {
         String token = mokService.authenticate(credential);
         return Response.ok(token).build();
     }
+
     @GET
     @Path("/{login}")
     @RolesAllowed("ADMINISTRATOR")
