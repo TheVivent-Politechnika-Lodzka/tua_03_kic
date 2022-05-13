@@ -53,8 +53,7 @@ public class MOKEndpoint {
         return Response.ok().build();
     }
 
-    @POST
-    @Consumes(MediaType.APPLICATION_JSON)
+    @GET
     @PermitAll
     @Path("/resetPassword")
     public Response resetPassword(AccountWithTokenDTO accountWithTokenDTO) {

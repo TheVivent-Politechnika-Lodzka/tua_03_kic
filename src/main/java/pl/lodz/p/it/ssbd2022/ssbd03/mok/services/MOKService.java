@@ -144,7 +144,7 @@ public class MOKService {
     }
 
     public void resetPassword(AccountWithTokenDTO accountWithTokenDTO) {
-        ResetPasswordToken resetPasswordToken = resetPasswordFacade.findResetPasswordToken(accountWithTokenDTO.getLogin());
+        ResetPasswordToken resetPasswordToken = resetPasswordFacade.find(accountWithTokenDTO.getLogin());
         if(hashAlgorithm.verify(resetPasswordToken.getId().toString().toCharArray(), accountWithTokenDTO.getToken())) {
             Account account = accountFacade.findByLogin(accountWithTokenDTO.getLogin());
             account.setPassword(hashAlgorithm.generate(accountWithTokenDTO.getPassword().toCharArray()));
