@@ -1,22 +1,19 @@
 package pl.lodz.p.it.ssbd2022.ssbd03.mok.dto.access_levels;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.access_levels.DataAdministrator;
 
-@Data
+@Getter @Setter
 @NoArgsConstructor
-@AllArgsConstructor
 public class DataAdministratorDto extends AccessLevelDto {
 
     String email;
     String phoneNumber;
 
-    public DataAdministratorDto(DataAdministrator dataAdministrator) {
+    public DataAdministratorDto(String email, String phoneNumber) {
         super(DataAdministrator.LEVEL_NAME);
-        this.email = dataAdministrator.getEmail();
-        this.phoneNumber = dataAdministrator.getPhoneNumber();
+        this.email = email;
+        this.phoneNumber = phoneNumber;
     }
 
 }
