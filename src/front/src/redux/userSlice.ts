@@ -23,10 +23,13 @@ export const userSlice = createSlice({
       return initialState;
     },
     login: (state, action) => {
+      return { ...state, ...action.payload.data };
+    },
+    relogin: (state, action) => {
       return { ...state, ...action.payload };
     },
   },
 });
 
-export const {login, logout} = userSlice.actions;
+export const {login, logout , relogin} = userSlice.actions;
 export default userSlice.reducer;
