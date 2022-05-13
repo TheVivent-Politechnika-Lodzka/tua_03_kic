@@ -1,12 +1,13 @@
 package pl.lodz.p.it.ssbd2022.ssbd03.mok.dto;
 
 import jakarta.validation.constraints.NotNull;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import pl.lodz.p.it.ssbd2022.ssbd03.common.AbstractDto;
 
+@EqualsAndHashCode(callSuper = true)
 @Data
 @NoArgsConstructor
-public class AccountDto {
+public class AccountDto extends AbstractDto {
 
     @NotNull
     private String login;
