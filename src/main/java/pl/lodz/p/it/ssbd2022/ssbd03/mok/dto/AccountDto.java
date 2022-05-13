@@ -15,6 +15,4 @@ public class AccountDto extends AbstractDto {
     private String firstName;
     @NotNull
     private String lastName;
-
-    private Long version;
 }

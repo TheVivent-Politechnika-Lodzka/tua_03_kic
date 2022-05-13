@@ -1,5 +1,6 @@
 package pl.lodz.p.it.ssbd2022.ssbd03.mappers;
 
+import jakarta.ejb.Stateless;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.Account;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.access_levels.AccessLevel;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.access_levels.DataAdministrator;
@@ -11,9 +12,10 @@ import pl.lodz.p.it.ssbd2022.ssbd03.mok.dto.access_levels.DataAdministratorDto;
 import pl.lodz.p.it.ssbd2022.ssbd03.mok.dto.access_levels.DataClientDto;
 import pl.lodz.p.it.ssbd2022.ssbd03.mok.dto.access_levels.DataSpecialistDto;
 
-public class MokMapper {
+@Stateless
+public class DtoToEntityMokMapper {
 
-    public static Account getAccount(AccountWithAccessLevelsDto accountDto) {
+    public Account getAccount(AccountWithAccessLevelsDto accountDto) {
         Account account = new Account();
         account.setLogin(accountDto.getLogin());
         account.setFirstName(accountDto.getFirstName());
@@ -26,7 +28,7 @@ public class MokMapper {
         return account;
     }
 
-    public static AccessLevel getAccessLevel(AccessLevelDto accessLevelDto) {
+    public AccessLevel getAccessLevel(AccessLevelDto accessLevelDto) {
 
         if(accessLevelDto instanceof DataAdministratorDto) {
             DataAdministratorDto dataAdministratorDto = (DataAdministratorDto) accessLevelDto;
