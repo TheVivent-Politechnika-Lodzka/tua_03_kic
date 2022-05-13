@@ -34,7 +34,7 @@ public class AuthenticationMechanism implements HttpAuthenticationMechanism {
         // zezwolenie na logowanie, rejestrację oraz pingowanie
         if (httpServletRequest.getPathInfo().endsWith("login")
                 || httpServletRequest.getPathInfo().endsWith("register")
-                || httpServletRequest.getPathInfo().endsWith("ping") ) {
+                || httpServletRequest.getPathInfo().endsWith("ping")) {
             return httpMessageContext.doNothing();
         }
 
