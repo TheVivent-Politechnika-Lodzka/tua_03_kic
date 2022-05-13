@@ -13,6 +13,11 @@ export interface AccountDto {
   phoneNumber: string;
 }
 
+export interface ChangeOwnPasswordDto {
+  oldPassword: string;
+  newPassword: string;
+}
+
 export interface AccessLevelDto{
   level: string,
   email?: string,

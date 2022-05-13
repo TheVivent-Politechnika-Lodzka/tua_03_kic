@@ -13,9 +13,11 @@ import jakarta.security.enterprise.credential.UsernamePasswordCredential;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
+import pl.lodz.p.it.ssbd2022.ssbd03.common.EmailConfig;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.Account;
 import pl.lodz.p.it.ssbd2022.ssbd03.mappers.AccountMapper;
 import pl.lodz.p.it.ssbd2022.ssbd03.mok.dto.AccountWithAccessLevelsDto;
+import pl.lodz.p.it.ssbd2022.ssbd03.mok.dto.ChangePasswordDto;
 import pl.lodz.p.it.ssbd2022.ssbd03.mok.dto.CredentialDto;
 import pl.lodz.p.it.ssbd2022.ssbd03.mok.services.MOKService;
 import pl.lodz.p.it.ssbd2022.ssbd03.security.AuthContext;
@@ -31,6 +33,9 @@ public class MOKEndpoint {
 
     @Inject
     private AuthContext authContext;
+
+    @Inject
+    private EmailConfig emailConfig;
 
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
@@ -60,7 +65,7 @@ public class MOKEndpoint {
 
     private AccountWithAccessLevelsDto editAccount(String login, AccountWithAccessLevelsDto accountEditDto) {
         Account editedAccount = mokService.edit(login, accountEditDto);
-        return AccountMapper.createAccountWithAccessLevelsDtoFromAccount(editedAccount);
+        return new AccountWithAccessLevelsDto(editedAccount);
     }
 
     @GET
@@ -88,4 +93,15 @@ public class MOKEndpoint {
     }
 
 
+    //self
+    @PUT
+    @Consumes(MediaType.APPLICATION_JSON)
+    @PermitAll
+    @Path("/password")
+    public Response changeOwnPassword(@Valid ChangePasswordDto changePasswordDto) {
+        String principal = authContext.getCurrentUserLogin();
+
+        mokService.changeOwnPassword(principal, changePasswordDto.getNewPassword(),changePasswordDto.getOldPassword());
+        return Response.ok().build();
+    }
 }
