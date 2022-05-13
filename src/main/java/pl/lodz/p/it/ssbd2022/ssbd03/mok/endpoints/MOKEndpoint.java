@@ -10,6 +10,7 @@ import jakarta.inject.Inject;
 import jakarta.security.enterprise.credential.Credential;
 import jakarta.security.enterprise.credential.Password;
 import jakarta.security.enterprise.credential.UsernamePasswordCredential;
+import jakarta.validation.Valid;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
@@ -36,7 +37,7 @@ public class MOKEndpoint {
     private AuthContext authContext;
 
     @Inject
-    private EmailConfig emailConfig;
+    private AccountMapper accountMapper;
 
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
@@ -52,7 +53,7 @@ public class MOKEndpoint {
     @RolesAllowed("ADMINISTRATOR")
     public Response getAccountDetailsByLogin(@PathParam("login") String login) {
         Account account = mokService.findByLogin(login);
-        return Response.ok(AccountMapper.createAccountWithAccessLevelsDtoFromAccount(account)).build();
+        return Response.ok(accountMapper.createAccountWithAccessLevelsDtoFromAccount(account)).build();
     }
 
     @PUT
@@ -66,7 +67,7 @@ public class MOKEndpoint {
 
     private AccountWithAccessLevelsDto editAccount(String login, AccountWithAccessLevelsDto accountEditDto) {
         Account editedAccount = mokService.edit(login, accountEditDto);
-        return new AccountWithAccessLevelsDto(editedAccount);
+        return accountMapper.createAccountWithAccessLevelsDtoFromAccount(editedAccount);
     }
 
     @GET
