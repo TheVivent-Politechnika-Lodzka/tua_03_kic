@@ -6,6 +6,7 @@ import jakarta.security.enterprise.identitystore.PasswordHash;
 import org.apache.commons.codec.digest.DigestUtils;
 
 import java.util.Map;
+import java.util.UUID;
 
 @ApplicationScoped
 public class HashAlgorithm implements PasswordHash {
@@ -22,4 +23,10 @@ public class HashAlgorithm implements PasswordHash {
     public boolean verify(char[] chars, String s) {
         return s.equals(DigestUtils.sha512Hex(new String(chars)));
     }
+
+    public String generateDtoTag(UUID entityId, Long entityVersion) {
+        String tag = entityId.toString() + entityVersion.toString();
+        return DigestUtils.sha256Hex(tag);
+    }
+
 }
