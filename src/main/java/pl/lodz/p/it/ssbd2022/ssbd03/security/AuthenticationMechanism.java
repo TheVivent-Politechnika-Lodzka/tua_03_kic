@@ -31,10 +31,11 @@ public class AuthenticationMechanism implements HttpAuthenticationMechanism {
             return httpMessageContext.doNothing();
         }
 
-        // zezwolenie na logowanie, rejestrację oraz pingowanie
+        // zezwolenie na logowanie, rejestrację oraz pingowanie + testy wysylania maila
         if (httpServletRequest.getPathInfo().endsWith("login")
                 || httpServletRequest.getPathInfo().endsWith("register")
-                || httpServletRequest.getPathInfo().endsWith("ping") ) {
+                || httpServletRequest.getPathInfo().endsWith("ping")
+                || httpServletRequest.getPathInfo().endsWith("mail") ) {
             return httpMessageContext.doNothing();
         }
 

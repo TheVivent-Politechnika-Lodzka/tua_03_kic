@@ -13,6 +13,7 @@ import jakarta.security.enterprise.credential.UsernamePasswordCredential;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
+import pl.lodz.p.it.ssbd2022.ssbd03.common.EmailConfig;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.Account;
 import pl.lodz.p.it.ssbd2022.ssbd03.mok.dto.AccountWithAccessLevelsDto;
 import pl.lodz.p.it.ssbd2022.ssbd03.mok.dto.CredentialDto;
@@ -77,5 +78,13 @@ public class MOKEndpoint {
     @Path(("/ping"))
     public Response test(){
         return Response.ok("pong").build();
+    }
+
+    @GET
+    @PermitAll
+    @Path(("/send/{mail}"))
+    public Response mail(@PathParam("mail") String mail) {
+        EmailConfig.sendEmail(mail);
+        return Response.ok("wyslano").build();
     }
 }
