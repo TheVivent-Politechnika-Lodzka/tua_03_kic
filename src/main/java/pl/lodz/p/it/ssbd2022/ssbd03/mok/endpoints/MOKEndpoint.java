@@ -32,6 +32,9 @@ public class MOKEndpoint {
     @Inject
     private AuthContext authContext;
 
+    @Inject
+    private EmailConfig emailConfig;
+
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @PermitAll
@@ -80,11 +83,4 @@ public class MOKEndpoint {
         return Response.ok("pong").build();
     }
 
-    @GET
-    @PermitAll
-    @Path(("/send/{mail}"))
-    public Response mail(@PathParam("mail") String mail) {
-        EmailConfig.sendEmail(mail);
-        return Response.ok("wyslano").build();
-    }
 }
