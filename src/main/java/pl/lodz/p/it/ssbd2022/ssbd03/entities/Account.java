@@ -1,7 +1,6 @@
 package pl.lodz.p.it.ssbd2022.ssbd03.entities;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Size;
 import lombok.*;
 import pl.lodz.p.it.ssbd2022.ssbd03.common.AbstractEntity;
@@ -94,12 +93,5 @@ public class Account extends AbstractEntity implements Serializable {
     @Column(name = "last_name", table = "account_details", nullable = false, length = 30)
     @Getter @Setter
     private String lastName;
-
-    @Basic(optional = false)
-    @Column(name = "email", table = "account_details", nullable = false, length = 128)
-    @Getter @Setter
-    @Email
-    private String email;
-
 
 }

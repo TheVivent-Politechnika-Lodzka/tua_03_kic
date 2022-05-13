@@ -1,6 +1,5 @@
 package pl.lodz.p.it.ssbd2022.ssbd03.mok.dto;
 
-import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -15,9 +14,6 @@ public class AccountDto {
     private String firstName;
     @NotNull
     private String lastName;
-    @NotNull
-    @Email
-    private String email;
 
     private Long version;
 }

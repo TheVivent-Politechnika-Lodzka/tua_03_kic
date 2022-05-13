@@ -31,7 +31,7 @@ public class MokMapper {
         if(accessLevelDto instanceof DataAdministratorDto) {
             DataAdministratorDto dataAdministratorDto = (DataAdministratorDto) accessLevelDto;
             DataAdministrator dataAdministrator = new DataAdministrator();
-            dataAdministrator.setEmail(dataAdministratorDto.getContactEmail());
+            dataAdministrator.setEmail(dataAdministratorDto.getEmail());
             dataAdministrator.setPhoneNumber(dataAdministratorDto.getPhoneNumber());
             return dataAdministrator;
         }
@@ -39,6 +39,7 @@ public class MokMapper {
         if(accessLevelDto instanceof DataClientDto) {
             DataClientDto dataClientDto = (DataClientDto) accessLevelDto;
             DataClient dataClient = new DataClient();
+            dataClient.setEmail(dataClientDto.getEmail());
             dataClient.setPhoneNumber(dataClientDto.getPhoneNumber());
             dataClient.setPesel(dataClientDto.getPesel());
             return dataClient;
@@ -47,7 +48,7 @@ public class MokMapper {
         if(accessLevelDto instanceof DataSpecialistDto) {
             DataSpecialistDto dataSpecialistDto = (DataSpecialistDto) accessLevelDto;
             DataSpecialist dataSpecialist = new DataSpecialist();
-            dataSpecialist.setEmail(dataSpecialistDto.getContactEmail());
+            dataSpecialist.setEmail(dataSpecialistDto.getEmail());
             dataSpecialist.setPhoneNumber(dataSpecialistDto.getPhoneNumber());
             return dataSpecialist;
         }

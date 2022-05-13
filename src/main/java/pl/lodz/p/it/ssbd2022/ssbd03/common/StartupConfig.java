@@ -38,7 +38,6 @@ public class StartupConfig {
         admin.setConfirmed(true);
         admin.setFirstName("admin");
         admin.setLastName("administracyjny");
-        admin.setEmail("szurySSBD@gmail.com");
 
 
         DataAdministrator dataAdministrator = new DataAdministrator();
@@ -57,7 +56,6 @@ public class StartupConfig {
         admin.setConfirmed(true);
         admin.setFirstName("admin");
         admin.setLastName("specjalny");
-        admin.setEmail("szurySSBD2@gmail.com");
 
         DataAdministrator dataAdministrator = new DataAdministrator();
         dataAdministrator.setPhoneNumber("111-111-111");
@@ -79,7 +77,6 @@ public class StartupConfig {
         admin.setConfirmed(true);
         admin.setFirstName("admin");
         admin.setLastName("kliencki");
-        admin.setEmail("szurySSBD3@gmail.com");
 
         DataAdministrator dataAdministrator = new DataAdministrator();
         dataAdministrator.setPhoneNumber("222-222-222");

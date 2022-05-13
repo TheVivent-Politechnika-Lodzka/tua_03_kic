@@ -32,11 +32,9 @@ public class AuthenticationMechanism implements HttpAuthenticationMechanism {
         }
 
         // zezwolenie na logowanie, rejestrację oraz pingowanie
-        // zezwolenie na zmianę hasła
         if (httpServletRequest.getPathInfo().endsWith("login")
                 || httpServletRequest.getPathInfo().endsWith("register")
-                || httpServletRequest.getPathInfo().endsWith("ping")
-                || httpServletRequest.getPathInfo().contains("reset") ) {
+                || httpServletRequest.getPathInfo().endsWith("ping")) {
             return httpMessageContext.doNothing();
         }
 

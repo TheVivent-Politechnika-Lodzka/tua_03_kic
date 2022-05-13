@@ -10,12 +10,12 @@ import pl.lodz.p.it.ssbd2022.ssbd03.entities.access_levels.DataSpecialist;
 @AllArgsConstructor
 public class DataSpecialistDto extends AccessLevelDto {
 
-    String contactEmail;
+    String email;
     String phoneNumber;
 
     public DataSpecialistDto(DataSpecialist dataSpecialist) {
         super(DataSpecialist.LEVEL_NAME);
-        this.contactEmail = dataSpecialist.getEmail();
+        this.email = dataSpecialist.getEmail();
         this.phoneNumber = dataSpecialist.getPhoneNumber();
     }
 

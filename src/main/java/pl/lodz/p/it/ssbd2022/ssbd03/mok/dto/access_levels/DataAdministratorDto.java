@@ -10,12 +10,12 @@ import pl.lodz.p.it.ssbd2022.ssbd03.entities.access_levels.DataAdministrator;
 @AllArgsConstructor
 public class DataAdministratorDto extends AccessLevelDto {
 
-    String contactEmail;
+    String email;
     String phoneNumber;
 
     public DataAdministratorDto(DataAdministrator dataAdministrator) {
         super(DataAdministrator.LEVEL_NAME);
-        this.contactEmail = dataAdministrator.getEmail();
+        this.email = dataAdministrator.getEmail();
         this.phoneNumber = dataAdministrator.getPhoneNumber();
     }
 
