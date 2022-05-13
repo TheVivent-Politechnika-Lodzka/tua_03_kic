@@ -30,23 +30,9 @@ public class AccountWithAccessLevelsDto extends AbstractDto {
     @NotNull
     private String lastName;
 
-    private Long version;
 
     private List<AccessLevelDto> accessLevels = new ArrayList<>();
 
-    public AccountWithAccessLevelsDto(Account account) {
-        this.login = account.getLogin();
-        this.firstName = account.getFirstName();
-        this.version = account.getVersion();
-        for (AccessLevel accessLevel : account.getAccessLevelCollection()) {
-            if (accessLevel instanceof DataClient)
-                this.accessLevels.add(new DataClientDto((DataClient) accessLevel));
-            if(accessLevel instanceof DataSpecialist)
-                this.accessLevels.add(new DataSpecialistDto((DataSpecialist) accessLevel));
-            if(accessLevel instanceof DataAdministrator)
-                this.accessLevels.add(new DataAdministratorDto((DataAdministrator) accessLevel));
-        }
-    }
 
 
 }
