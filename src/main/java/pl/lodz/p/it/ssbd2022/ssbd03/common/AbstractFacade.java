@@ -1,6 +1,8 @@
 package pl.lodz.p.it.ssbd2022.ssbd03.common;
 
 import jakarta.persistence.EntityManager;
+import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.database.InAppOptimisticLockException;
+import pl.lodz.p.it.ssbd2022.ssbd03.utils.HashAlgorithm;
 
 import java.util.List;
 
@@ -12,18 +14,40 @@ public abstract class AbstractFacade<T> {
     }
 
     protected abstract EntityManager getEntityManager();
+    protected abstract HashAlgorithm getHashAlgorithm();
 
     public void create(T entity){
         getEntityManager().persist(entity);
         getEntityManager().flush();
     }
 
-    public void edit(T entity){
+    private void verifyTag(AbstractEntity entity, String tagFromDto){
+        String entityTag = getHashAlgorithm().generateDtoTag(
+                entity.getId(),
+                entity.getVersion()
+        );
+        if (!entityTag.equals(tagFromDto))
+            throw new InAppOptimisticLockException();
+    }
+
+    public void edit(T entity, String tagFromDto){
+        if (entity instanceof AbstractEntity abstractEntity)
+            verifyTag(abstractEntity, tagFromDto);
+        unsafeEdit(entity);
+    }
+
+    public void unsafeEdit(T entity){
         getEntityManager().merge(entity);
         getEntityManager().flush();
     }
 
-    public void remove (T entity){
+    public void remove (T entity, String tagFromDto){
+        if (entity instanceof AbstractEntity abstractEntity)
+            verifyTag(abstractEntity, tagFromDto);
+        unsafeRemove(entity);
+    }
+
+    public void unsafeRemove(T entity){
         getEntityManager().remove(entity);
         getEntityManager().flush();
     }
