@@ -31,7 +31,7 @@ public class MokMapper {
         if(accessLevelDto instanceof DataAdministratorDto) {
             DataAdministratorDto dataAdministratorDto = (DataAdministratorDto) accessLevelDto;
             DataAdministrator dataAdministrator = new DataAdministrator();
-            dataAdministrator.setEmail(dataAdministratorDto.getContactEmail());
+            dataAdministrator.setContactEmail(dataAdministratorDto.getContactEmail());
             dataAdministrator.setPhoneNumber(dataAdministratorDto.getPhoneNumber());
             return dataAdministrator;
         }
@@ -47,7 +47,7 @@ public class MokMapper {
         if(accessLevelDto instanceof DataSpecialistDto) {
             DataSpecialistDto dataSpecialistDto = (DataSpecialistDto) accessLevelDto;
             DataSpecialist dataSpecialist = new DataSpecialist();
-            dataSpecialist.setEmail(dataSpecialistDto.getContactEmail());
+            dataSpecialist.setContactEmail(dataSpecialistDto.getContactEmail());
             dataSpecialist.setPhoneNumber(dataSpecialistDto.getPhoneNumber());
             return dataSpecialist;
         }

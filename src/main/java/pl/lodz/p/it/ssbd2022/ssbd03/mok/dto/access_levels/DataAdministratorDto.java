@@ -15,7 +15,7 @@ public class DataAdministratorDto extends AccessLevelDto {
 
     public DataAdministratorDto(DataAdministrator dataAdministrator) {
         super(DataAdministrator.LEVEL_NAME);
-        this.contactEmail = dataAdministrator.getEmail();
+        this.contactEmail = dataAdministrator.getContactEmail();
         this.phoneNumber = dataAdministrator.getPhoneNumber();
     }
 

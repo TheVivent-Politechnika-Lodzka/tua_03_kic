@@ -15,7 +15,7 @@ public class DataSpecialistDto extends AccessLevelDto {
 
     public DataSpecialistDto(DataSpecialist dataSpecialist) {
         super(DataSpecialist.LEVEL_NAME);
-        this.contactEmail = dataSpecialist.getEmail();
+        this.contactEmail = dataSpecialist.getContactEmail();
         this.phoneNumber = dataSpecialist.getPhoneNumber();
     }
 

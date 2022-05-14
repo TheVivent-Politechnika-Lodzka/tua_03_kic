@@ -1,6 +1,5 @@
 package pl.lodz.p.it.ssbd2022.ssbd03.mok.services;
 
-import com.sun.org.glassfish.external.statistics.annotations.Reset;
 import jakarta.ejb.Stateless;
 import jakarta.ejb.TransactionAttribute;
 import jakarta.ejb.TransactionAttributeType;
@@ -28,8 +27,6 @@ import pl.lodz.p.it.ssbd2022.ssbd03.interceptors.TrackerInterceptor;
 import pl.lodz.p.it.ssbd2022.ssbd03.mok.ejb.facades.ResetPasswordFacade;
 import pl.lodz.p.it.ssbd2022.ssbd03.security.JWTGenerator;
 import pl.lodz.p.it.ssbd2022.ssbd03.utils.HashAlgorithm;
-
-import java.util.UUID;
 
 @Interceptors(TrackerInterceptor.class)
 @Stateless
@@ -108,7 +105,7 @@ public class MOKService {
         try {
             DataAdministrator dataAdministrator =  (DataAdministrator) accessLevel;
             DataAdministratorDto dataAdministratorDto = (DataAdministratorDto) accessLevelDto;
-            dataAdministrator.setEmail(dataAdministratorDto.getContactEmail());
+            dataAdministrator.setContactEmail(dataAdministratorDto.getContactEmail());
             dataAdministrator.setPhoneNumber(dataAdministratorDto.getPhoneNumber());
             return;
         }
@@ -118,7 +115,7 @@ public class MOKService {
         try {
             DataSpecialist dataSpecialist =  (DataSpecialist) accessLevel;
             DataSpecialistDto dataSpecialistDto = (DataSpecialistDto) accessLevelDto;
-            dataSpecialist.setEmail(dataSpecialistDto.getContactEmail());
+            dataSpecialist.setContactEmail(dataSpecialistDto.getContactEmail());
             dataSpecialist.setPhoneNumber(dataSpecialistDto.getPhoneNumber());
             return;
         }
