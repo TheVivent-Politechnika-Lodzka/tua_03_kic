@@ -42,7 +42,7 @@ public class AccountMapper {
         AccountDto accountDto = new AccountDto(
                 account.getLogin(),
                 account.getFirstName(),
-                account.getFirstName(),
+                account.getLastName(),
                 account.isActive(),
                 account.isConfirmed(),
                 account.getEmail()
@@ -54,7 +54,7 @@ public class AccountMapper {
         AccountWithAccessLevelsDto accountDto = new AccountWithAccessLevelsDto(
                 account.getLogin(),
                 account.getFirstName(),
-                account.getFirstName(),
+                account.getLastName(),
                 account.isActive(),
                 account.isConfirmed(),
                 accessLevelMapper.createListOfAccessLevelDTO(account.getAccessLevelCollection())
