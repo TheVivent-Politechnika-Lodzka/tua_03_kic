@@ -1,5 +1,6 @@
 package pl.lodz.p.it.ssbd2022.ssbd03.mappers;
 
+import jakarta.ejb.Stateless;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.access_levels.AccessLevel;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.access_levels.DataAdministrator;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.access_levels.DataClient;
@@ -14,24 +15,25 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
+@Stateless
 public class AccessLevelMapper {
 
     // from entity to dto
 
-    public static DataClientDto createDataClientDtoFromEntity(DataClient dataClient) {
+    public DataClientDto createDataClientDtoFromEntity(DataClient dataClient) {
         return new DataClientDto(dataClient.getEmail(), dataClient.getPhoneNumber(), dataClient.getPesel());
     }
 
-    public static DataAdministratorDto createDataAdministratorDtoFromEntity(DataAdministrator dataAdministratort) {
+    public DataAdministratorDto createDataAdministratorDtoFromEntity(DataAdministrator dataAdministratort) {
         return new DataAdministratorDto(dataAdministratort.getPhoneNumber(), dataAdministratort.getEmail());
     }
 
-    public static DataSpecialistDto createDataSpecialistDtoFromEntity(DataSpecialist dataSpecialist) {
+    public DataSpecialistDto createDataSpecialistDtoFromEntity(DataSpecialist dataSpecialist) {
         return new DataSpecialistDto(dataSpecialist.getEmail(), dataSpecialist.getPhoneNumber());
     }
 
     // from dto to entity
-    public static DataClient createDataClientFromDto(DataClientDto dataClientDto) {
+    public DataClient createDataClientFromDto(DataClientDto dataClientDto) {
         DataClient dataClient = new DataClient();
         dataClient.setEmail(dataClientDto.getEmail());
         dataClient.setPhoneNumber(dataClientDto.getPhoneNumber());
@@ -40,14 +42,14 @@ public class AccessLevelMapper {
         return dataClient;
     }
 
-    public static DataAdministrator createDataAdministratorFromDto(DataAdministratorDto dataAdministratorDto) {
+    public DataAdministrator createDataAdministratorFromDto(DataAdministratorDto dataAdministratorDto) {
         DataAdministrator dataAdministrator = new DataAdministrator();
         dataAdministrator.setEmail(dataAdministratorDto.getEmail());
         dataAdministrator.setPhoneNumber(dataAdministratorDto.getPhoneNumber());
         return dataAdministrator;
     }
 
-    public static DataSpecialist createDataSpecialistFromDto(DataSpecialistDto dataSpecialistDto) {
+    public DataSpecialist createDataSpecialistFromDto(DataSpecialistDto dataSpecialistDto) {
         DataSpecialist dataSpecialist = new DataSpecialist();
         dataSpecialist.setEmail(dataSpecialistDto.getEmail());
         dataSpecialist.setPhoneNumber(dataSpecialistDto.getPhoneNumber());
@@ -55,7 +57,7 @@ public class AccessLevelMapper {
     }
 
     ///
-    public static AccessLevelDto createAccessLevelDtoFromEntity(AccessLevel accessLevel) {
+    public AccessLevelDto createAccessLevelDtoFromEntity(AccessLevel accessLevel) {
         if (accessLevel instanceof DataClient)
             return createDataClientDtoFromEntity((DataClient) accessLevel);
         if (accessLevel instanceof DataAdministrator)
@@ -65,14 +67,14 @@ public class AccessLevelMapper {
         return null;
     }
 
-    public static List<AccessLevelDto> createListOfAccessLevelDTO(Collection<AccessLevel> accessLevels) {
+    public List<AccessLevelDto> createListOfAccessLevelDTO(Collection<AccessLevel> accessLevels) {
         return null == accessLevels ? null : accessLevels.stream()
                 .filter(Objects::nonNull)
-                .map(AccessLevelMapper::createAccessLevelDtoFromEntity)
+                .map(this::createAccessLevelDtoFromEntity)
                 .collect(Collectors.toList());
     }
 
-    public static AccessLevel createAccessLevelFromDto(AccessLevelDto accessLevelDto) {
+    public AccessLevel createAccessLevelFromDto(AccessLevelDto accessLevelDto) {
 
         if (accessLevelDto instanceof DataAdministratorDto dataAdministratorDto) {
             return createDataAdministratorFromDto(dataAdministratorDto);

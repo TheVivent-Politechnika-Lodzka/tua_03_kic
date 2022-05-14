@@ -9,13 +9,14 @@ import pl.lodz.p.it.ssbd2022.ssbd03.mok.dto.AccountDto;
 import pl.lodz.p.it.ssbd2022.ssbd03.mok.dto.AccountWithAccessLevelsDto;
 import pl.lodz.p.it.ssbd2022.ssbd03.mok.dto.access_levels.AccessLevelDto;
 import pl.lodz.p.it.ssbd2022.ssbd03.utils.HashAlgorithm;
-
-import static pl.lodz.p.it.ssbd2022.ssbd03.mappers.AccessLevelMapper.createAccessLevelFromDto;
 @Stateless
 public class AccountMapper {
 
     @Inject
     private HashAlgorithm hashAlgorithm;
+
+    @Inject
+    private AccessLevelMapper accessLevelMapper;
 
     public Account createAccountFromDto(AccountWithAccessLevelsDto accountDto) {
         Account account = new Account();
@@ -24,7 +25,7 @@ public class AccountMapper {
         account.setLastName(accountDto.getLastName());
 
         for (AccessLevelDto accessLevelDto : accountDto.getAccessLevels()) {
-            account.addAccessLevel(createAccessLevelFromDto(accessLevelDto));
+            account.addAccessLevel(accessLevelMapper.createAccessLevelFromDto(accessLevelDto));
         }
         return account;
     }
@@ -55,7 +56,7 @@ public class AccountMapper {
                 account.getFirstName(),
                 account.isActive(),
                 account.isConfirmed(),
-                AccessLevelMapper.createListOfAccessLevelDTO(account.getAccessLevelCollection())
+                accessLevelMapper.createListOfAccessLevelDTO(account.getAccessLevelCollection())
         );
         return (AccountWithAccessLevelsDto) tagDto(accountDto, account);
     }
