@@ -16,10 +16,7 @@ import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.Account;
 import pl.lodz.p.it.ssbd2022.ssbd03.mappers.AccountMapper;
-import pl.lodz.p.it.ssbd2022.ssbd03.mok.dto.AccountWithAccessLevelsDto;
-import pl.lodz.p.it.ssbd2022.ssbd03.mok.dto.ResetPasswordDTO;
-import pl.lodz.p.it.ssbd2022.ssbd03.mok.dto.ChangePasswordDto;
-import pl.lodz.p.it.ssbd2022.ssbd03.mok.dto.CredentialDto;
+import pl.lodz.p.it.ssbd2022.ssbd03.mok.dto.*;
 import pl.lodz.p.it.ssbd2022.ssbd03.mok.services.MOKService;
 import pl.lodz.p.it.ssbd2022.ssbd03.security.AuthContext;
 
@@ -37,6 +34,17 @@ public class MOKEndpoint {
 
     @Inject
     private AccountMapper accountMapper;
+
+    //stwórz nowe konto
+    @POST
+    @Consumes(MediaType.APPLICATION_JSON)
+    @RolesAllowed("ADMINISTRATOR")
+    @Path("/account")
+    public Response createAccount(CreateAccountDto accountDto) {
+        Account account = accountMapper.createAccountfromCreateAccountDto(accountDto);
+        mokService.createAccount(account);
+        return Response.ok().build();
+    }
 
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
