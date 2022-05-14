@@ -1,16 +1,13 @@
-export interface AccountEditDto {
-  firstName: string;
-  surname: string;
-  email: string;
-  phoneNumber: string;
+export interface Tag {
+  tag: string;
 }
 
-export interface AccountDto {
+export interface AccountDto extends Tag{
   login: string;
   firstName: string;
-  surname: string;
-  email: string;
-  phoneNumber: string;
+  lastName: string;
+  active: boolean;
+  confirmed: boolean;
 }
 
 export interface ChangeOwnPasswordDto {
@@ -25,10 +22,10 @@ export interface AccessLevelDto{
   pesel?: string;
 }
 
-export interface AccountWithAccessLevelDto{
+export interface AccountWithAccessLevelDto extends Tag{
   login: string;
   firstName: string;
-  surname: string;
+  lastName: string;
   confirmed : boolean
   active : boolean
   accessLevels: AccessLevelDto[];
