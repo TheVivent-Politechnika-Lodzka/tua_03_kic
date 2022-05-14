@@ -44,7 +44,8 @@ public class AccountMapper {
                 account.getFirstName(),
                 account.getFirstName(),
                 account.isActive(),
-                account.isConfirmed()
+                account.isConfirmed(),
+                account.getEmail()
         );
         return (AccountDto) tagDto(accountDto, account);
     }

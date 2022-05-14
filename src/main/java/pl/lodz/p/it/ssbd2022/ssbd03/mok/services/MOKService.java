@@ -15,7 +15,6 @@ import pl.lodz.p.it.ssbd2022.ssbd03.entities.access_levels.AccessLevel;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.access_levels.DataAdministrator;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.access_levels.DataClient;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.access_levels.DataSpecialist;
-import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.AppBaseException;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.account.AccountNotFoundException;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.account.AccountPasswordIsTheSameException;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.account.AccountPasswordMatchException;
@@ -120,7 +119,7 @@ public class MOKService {
         try {
             DataSpecialist dataSpecialist =  (DataSpecialist) accessLevel;
             DataSpecialistDto dataSpecialistDto = (DataSpecialistDto) accessLevelDto;
-            dataSpecialist.setEmail(dataSpecialistDto.getEmail());
+            dataSpecialist.setContactEmail(dataSpecialistDto.getContactEmail());
             dataSpecialist.setPhoneNumber(dataSpecialistDto.getPhoneNumber());
             return;
         }

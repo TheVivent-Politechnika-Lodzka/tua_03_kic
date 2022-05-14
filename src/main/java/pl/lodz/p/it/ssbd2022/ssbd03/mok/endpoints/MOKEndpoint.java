@@ -14,7 +14,6 @@ import jakarta.validation.Valid;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
-import pl.lodz.p.it.ssbd2022.ssbd03.common.EmailConfig;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.Account;
 import pl.lodz.p.it.ssbd2022.ssbd03.mappers.AccountMapper;
 import pl.lodz.p.it.ssbd2022.ssbd03.mok.dto.AccountWithAccessLevelsDto;
@@ -86,7 +85,7 @@ public class MOKEndpoint {
 
     private AccountWithAccessLevelsDto editAccount(String login, AccountWithAccessLevelsDto accountEditDto) {
         Account editedAccount = mokService.edit(login, accountEditDto);
-        return new AccountWithAccessLevelsDto(editedAccount);
+        return accountMapper.createAccountWithAccessLevelsDtoFromAccount(editedAccount);
     }
 
     @GET
