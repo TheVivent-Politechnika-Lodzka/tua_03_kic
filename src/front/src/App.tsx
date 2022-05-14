@@ -9,7 +9,7 @@ import AdminPage from "./pages/adminPages/AdminPage/AdminPage";
 import ClientPage from "./pages/clientPages/ClientPage";
 import SpecialistPage from "./pages/specialistPages/SpecialistPage";
 import jwtDecode from "jwt-decode";
-import { relogin as loginDispatch } from "./redux/userSlice";
+import { login as loginDispatch } from "./redux/userSlice";
 
 function App() {
   const user = useStoreSelector((state) => state.user);

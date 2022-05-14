@@ -1,9 +1,7 @@
 import { useState } from "react";
 import { useDispatch } from "react-redux";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useLoginMutation } from "../../../api/api";
-import TopBar from "../../../component/TopBar/SelectorTopBar";
-import { useStoreSelector } from "../../../redux/reduxHooks";
 import { login as loginDispatch } from "../../../redux/userSlice";
 import "./style.scss";
 
@@ -15,7 +13,6 @@ const LoginPage = () => {
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const user = useStoreSelector((state) => state.user);
 
   const handleSubmit = async (event: any) => {
     event.preventDefault();
@@ -26,11 +23,15 @@ const LoginPage = () => {
         password,
       });
 
-      dispatch(loginDispatch(decoded));
-      if (user.sub !== "") {
+      // TODO poprawić parsowanie
+
+      if (JSON.parse(JSON.stringify(decoded)).data) {
+        dispatch(loginDispatch(JSON.parse(JSON.stringify(decoded)).data));
         navigate("/", { replace: true });
       } else {
-        setMessage("Niepoprawne dane");
+        const res = JSON.parse(JSON.stringify(decoded)).error;
+        if (res.status === 401) setMessage("Niepoprawne dane logowania");
+        else setMessage("Błąd serwera, spróbuj za chwilę");
       }
     } else {
       setMessage("Uzupełnij dane logowania");
