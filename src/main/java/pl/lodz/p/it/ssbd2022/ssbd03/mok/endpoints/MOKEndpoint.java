@@ -10,6 +10,7 @@ import jakarta.inject.Inject;
 import jakarta.security.enterprise.credential.Credential;
 import jakarta.security.enterprise.credential.Password;
 import jakarta.security.enterprise.credential.UsernamePasswordCredential;
+import jakarta.validation.Valid;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
@@ -65,7 +66,7 @@ public class MOKEndpoint {
 
     private AccountWithAccessLevelsDto editAccount(String login, AccountWithAccessLevelsDto accountEditDto) {
         Account editedAccount = mokService.edit(login, accountEditDto);
-        return new AccountWithAccessLevelsDto(editedAccount);
+        return AccountMapper.createAccountWithAccessLevelsDtoFromAccount(editedAccount);
     }
 
     @GET
