@@ -37,7 +37,7 @@ public class DataSpecialist extends AccessLevel implements Serializable {
 
     @Basic(optional = false)
     @Email
-    @Column(name = "email", nullable = false, length = 64)
+    @Column(name = "email", nullable = false, length = 128)
     @Getter @Setter
-    private String email;
+    private String contactEmail;
 }

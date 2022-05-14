@@ -1,14 +1,32 @@
-export interface AccountEditDto {
-  firstName: string;
-  surname: string;
-  email: string;
-  phoneNumber: string;
+export interface Tag {
+  tag: string;
 }
 
-export interface AccountDto {
+export interface AccountDto extends Tag{
   login: string;
   firstName: string;
-  surname: string;
-  email: string;
-  phoneNumber: string;
+  lastName: string;
+  active: boolean;
+  confirmed: boolean;
+}
+
+export interface ChangeOwnPasswordDto {
+  oldPassword: string;
+  newPassword: string;
+}
+
+export interface AccessLevelDto{
+  level: string,
+  email?: string,
+  phoneNumber?: string;
+  pesel?: string;
+}
+
+export interface AccountWithAccessLevelDto extends Tag{
+  login: string;
+  firstName: string;
+  lastName: string;
+  confirmed : boolean
+  active : boolean
+  accessLevels: AccessLevelDto[];
 }

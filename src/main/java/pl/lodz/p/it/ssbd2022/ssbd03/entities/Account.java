@@ -1,11 +1,9 @@
 package pl.lodz.p.it.ssbd2022.ssbd03.entities;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Size;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 import pl.lodz.p.it.ssbd2022.ssbd03.common.AbstractEntity;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.access_levels.AccessLevel;
 
@@ -37,27 +35,23 @@ public class Account extends AbstractEntity implements Serializable {
     @Basic(optional = false)
     @Size(min = 3, max = 20)
     @Column(name = "login", unique = true, nullable = false, length = 20)
-    @Getter
-    @Setter
+    @Getter @Setter
     private String login;
 
     @Basic(optional = false)
     @ToString.Exclude // Nie chcemy ujawniania skrótu hasła np. w dzienniku zdarzeń
     @Column(name = "password", nullable = false, length = 128)
-    @Getter
-    @Setter
+    @Getter @Setter
     private String password;
 
     @Basic(optional = false)
     @Column(name = "confirmed", nullable = false)
-    @Getter
-    @Setter
+    @Getter @Setter
     private boolean confirmed;
 
     @Basic(optional = false)
     @Column(name = "active", nullable = false)
-    @Getter
-    @Setter
+    @Getter @Setter
     private boolean active;
 
     @OneToMany(fetch = FetchType.EAGER, cascade = {CascadeType.REMOVE, CascadeType.PERSIST}, mappedBy = "account")
@@ -92,19 +86,21 @@ public class Account extends AbstractEntity implements Serializable {
     @Basic(optional = false)
     @Size(min = 3, max = 30)
     @Column(name = "first_name", table = "account_details", nullable = false, length = 30)
-    @Getter
-    @Setter
+    @Getter @Setter
     private String firstName;
 
     @Basic(optional = false)
     @Size(min = 3, max = 30)
     @Column(name = "last_name", table = "account_details", nullable = false, length = 30)
-    @Getter
-    @Setter
+    @Getter @Setter
     private String lastName;
 
-    public void setAccessLevelCollection(Collection<AccessLevel> accessLevelCollection) {
-        this.accessLevelCollection = accessLevelCollection;
-    }
+
+    @Basic(optional = false)
+    @Column(name = "email", table = "account_details", nullable = false, length = 128)
+    @Getter @Setter
+    @Email
+    private String email;
+
 
 }

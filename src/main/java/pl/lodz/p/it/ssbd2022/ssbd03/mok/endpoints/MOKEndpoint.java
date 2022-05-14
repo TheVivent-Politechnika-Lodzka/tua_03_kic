@@ -10,11 +10,15 @@ import jakarta.inject.Inject;
 import jakarta.security.enterprise.credential.Credential;
 import jakarta.security.enterprise.credential.Password;
 import jakarta.security.enterprise.credential.UsernamePasswordCredential;
+import jakarta.validation.Valid;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.Account;
+import pl.lodz.p.it.ssbd2022.ssbd03.mappers.AccountMapper;
 import pl.lodz.p.it.ssbd2022.ssbd03.mok.dto.AccountWithAccessLevelsDto;
+import pl.lodz.p.it.ssbd2022.ssbd03.mok.dto.ResetPasswordDTO;
+import pl.lodz.p.it.ssbd2022.ssbd03.mok.dto.ChangePasswordDto;
 import pl.lodz.p.it.ssbd2022.ssbd03.mok.dto.CredentialDto;
 import pl.lodz.p.it.ssbd2022.ssbd03.mok.services.MOKService;
 import pl.lodz.p.it.ssbd2022.ssbd03.security.AuthContext;
@@ -35,6 +39,9 @@ public class MOKEndpoint {
     @Inject
     private AuthContext authContext;
 
+    @Inject
+    private AccountMapper accountMapper;
+
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @PermitAll
@@ -43,6 +50,30 @@ public class MOKEndpoint {
         Credential credential = new UsernamePasswordCredential(credentialDto.getLogin(), new Password(credentialDto.getPassword()));
         String token = mokService.authenticate(credential);
         return Response.ok(token).build();
+    }
+    @GET
+    @Path("/{login}")
+    @RolesAllowed("ADMINISTRATOR")
+    public Response getAccountDetailsByLogin(@PathParam("login") String login) {
+        Account account = mokService.findByLogin(login);
+        return Response.ok(accountMapper.createAccountWithAccessLevelsDtoFromAccount(account)).build();
+    }
+
+    @GET
+    @PermitAll
+    @Path("/reset/{login}")
+    public Response reset(@PathParam("login") String login) {
+        mokService.reset(login);
+        return Response.ok().build();
+    }
+
+    @POST
+    @Consumes(MediaType.APPLICATION_JSON)
+    @PermitAll
+    @Path("/resetPassword")
+    public Response resetPassword(ResetPasswordDTO accountWithTokenDTO) {
+        mokService.resetPassword(accountWithTokenDTO);
+        return Response.ok().build();
     }
 
     @PUT
@@ -56,7 +87,7 @@ public class MOKEndpoint {
 
     private AccountWithAccessLevelsDto editAccount(String login, AccountWithAccessLevelsDto accountEditDto) {
         Account editedAccount = mokService.edit(login, accountEditDto);
-        return new AccountWithAccessLevelsDto(editedAccount);
+        return accountMapper.createAccountWithAccessLevelsDtoFromAccount(editedAccount);
     }
 
     @GET
@@ -81,7 +112,7 @@ public class MOKEndpoint {
     @PermitAll
     public Response findByLogin(@PathParam("login") String login) {
         Account account = mokService.findByLogin(login);
-        return Response.ok().entity(new AccountWithAccessLevelsDto(account)).build();
+        return Response.ok().entity(accountMapper.createAccountWithAccessLevelsDtoFromAccount(account)).build();
     }
 
     @GET
@@ -93,7 +124,7 @@ public class MOKEndpoint {
         List<Account> accounts = paginationData.getData();
         List<AccountWithAccessLevelsDto> accountsDTO = new ArrayList<>();
         for (Account account : accounts) {
-            accountsDTO.add(new AccountWithAccessLevelsDto(account));
+            accountsDTO.add(accountMapper.createAccountWithAccessLevelsDtoFromAccount(account));
         }
         paginationData.setData(accountsDTO);
         return Response.ok().entity(paginationData).build();
@@ -106,5 +137,18 @@ public class MOKEndpoint {
     @Path(("/ping"))
     public Response test() {
         return Response.ok("pong").build();
+    }
+
+
+    //self
+    @PUT
+    @Consumes(MediaType.APPLICATION_JSON)
+    @PermitAll
+    @Path("/password")
+    public Response changeOwnPassword(@Valid ChangePasswordDto changePasswordDto) {
+        String principal = authContext.getCurrentUserLogin();
+
+        mokService.changeOwnPassword(principal, changePasswordDto.getNewPassword(),changePasswordDto.getOldPassword());
+        return Response.ok().build();
     }
 }

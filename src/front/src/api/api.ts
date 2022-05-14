@@ -3,6 +3,7 @@ import jwtDecode from "jwt-decode";
 import CredentialsDto from "./types/auth";
 import { AccountDto, AccountEditDto } from "./types/mok.dto";
 import PaginationParams from "./types/queryParams/paginationParams";
+import {AccountDto, AccountEditDto, AccountWithAccessLevelDto, ChangeOwnPasswordDto} from "./types/mok.dto";
 
 // TODO przenieść do .env / package.json
 // const BASE_URL = "https://studapp.it.p.lodz.pl:8403/api"
@@ -63,7 +64,32 @@ const api = createApi({
         },
       }),
     }),
+
+    getAccountByLogin: builder.mutation<AccountWithAccessLevelDto, string>({
+      query: (login: string) => ({
+        url: "/mok/"+login,
+        method: "GET",
+        responseHandler: async (response) => {
+          if (response.ok) {
+            return await response.json();
+          }
+        },
+      }),
+    }),
+
+    changeOwnPassword: builder.mutation<string, ChangeOwnPasswordDto>({
+      query: (changeOwnPasswordDto: ChangeOwnPasswordDto) => ({
+        url: "/mok/password",
+        method: "PUT",
+        body: changeOwnPasswordDto,
+        responseHandler: async (response) => {
+          if (response.ok) {
+            return response.status;
+          }
+        },
+      }),
+    }),
   }),
 });
 
-export const { useLoginMutation, useFindAllUsersMutation, useEditOwnAccountMutation } = api;
+export const { useLoginMutation, useFindAllUsersMutation, useEditOwnAccountMutation, useGetAccountByLoginMutation, useChangeOwnPasswordMutation } = api;

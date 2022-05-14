@@ -38,11 +38,12 @@ public class StartupConfig {
         admin.setConfirmed(true);
         admin.setFirstName("admin");
         admin.setLastName("administracyjny");
+        admin.setEmail("szurySSBD@gmail.com");
 
 
         DataAdministrator dataAdministrator = new DataAdministrator();
         dataAdministrator.setPhoneNumber("000-000-000");
-        dataAdministrator.setEmail("administrator@kic.agency");
+        dataAdministrator.setContactEmail("administrator@kic.agency");
 
         admin.addAccessLevel(dataAdministrator);
         em.persist(admin);
@@ -56,13 +57,14 @@ public class StartupConfig {
         admin.setConfirmed(true);
         admin.setFirstName("admin");
         admin.setLastName("specjalny");
+        admin.setEmail("szurySSBD2@gmail.com");
 
         DataAdministrator dataAdministrator = new DataAdministrator();
         dataAdministrator.setPhoneNumber("111-111-111");
-        dataAdministrator.setEmail("specadmin@kic.agency");
+        dataAdministrator.setContactEmail("specadmin@kic.agency");
         DataSpecialist dataSpecialist = new DataSpecialist();
         dataSpecialist.setPhoneNumber("111-111-111");
-        dataSpecialist.setEmail("specadmin@kic.agency");
+        dataSpecialist.setContactEmail("specadmin@kic.agency");
 
         admin.addAccessLevel(dataAdministrator);
         admin.addAccessLevel(dataSpecialist);
@@ -77,15 +79,15 @@ public class StartupConfig {
         admin.setConfirmed(true);
         admin.setFirstName("admin");
         admin.setLastName("kliencki");
+        admin.setEmail("szurySSBD3@gmail.com");
 
         DataAdministrator dataAdministrator = new DataAdministrator();
         dataAdministrator.setPhoneNumber("222-222-222");
-        dataAdministrator.setEmail("klientadmin@kic.agency");
+        dataAdministrator.setContactEmail("klientadmin@kic.agency");
 
         DataClient dataClient = new DataClient();
         dataClient.setPesel("22222222222");
         dataClient.setPhoneNumber("222-222-222");
-        dataClient.setEmail("klientadmin@kic.agency");
 
         admin.addAccessLevel(dataAdministrator);
         admin.addAccessLevel(dataClient);
