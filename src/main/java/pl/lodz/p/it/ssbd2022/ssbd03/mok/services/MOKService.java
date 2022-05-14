@@ -82,13 +82,6 @@ public class MOKService {
 
     public PaginationData findInRange(int page, int limit) {
         PaginationData paginationData = accountFacade.findInRange(page, limit);
-        List<Account> accounts = paginationData.getData();
-        List<AccountWithAccessLevelsDto> accountsDTO = new ArrayList<>();
-        for (Account account : accounts) {
-            accountsDTO.add(new AccountWithAccessLevelsDto(account));
-        }
-        paginationData.setData(accountsDTO);
-
         return paginationData;
     }
 

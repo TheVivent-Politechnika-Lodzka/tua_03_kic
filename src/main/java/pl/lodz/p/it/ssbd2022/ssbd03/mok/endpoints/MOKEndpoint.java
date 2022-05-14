@@ -20,6 +20,9 @@ import pl.lodz.p.it.ssbd2022.ssbd03.mok.services.MOKService;
 import pl.lodz.p.it.ssbd2022.ssbd03.security.AuthContext;
 import pl.lodz.p.it.ssbd2022.ssbd03.utils.PaginationData;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Stateless
 @Path("mok")
 @DenyAll
@@ -86,8 +89,14 @@ public class MOKEndpoint {
     @Produces(MediaType.APPLICATION_JSON)
     @RolesAllowed("ADMINISTRATOR")
     public Response findInRange(@QueryParam("page") int page, @QueryParam("limit") int limit) {
-        PaginationData accountList = mokService.findInRange(page, limit);
-        return Response.ok().entity(accountList).build();
+        PaginationData paginationData = mokService.findInRange(page, limit);
+        List<Account> accounts = paginationData.getData();
+        List<AccountWithAccessLevelsDto> accountsDTO = new ArrayList<>();
+        for (Account account : accounts) {
+            accountsDTO.add(new AccountWithAccessLevelsDto(account));
+        }
+        paginationData.setData(accountsDTO);
+        return Response.ok().entity(paginationData).build();
     }
 
 
