@@ -16,8 +16,10 @@ public class AccountDto {
     @NotNull
     private String lastName;
     @NotNull
+    private boolean isActive;
+    @NotNull
+    private boolean isConfirmed;
+    @NotNull
     @Email
     private String email;
-
-    private Long version;
 }

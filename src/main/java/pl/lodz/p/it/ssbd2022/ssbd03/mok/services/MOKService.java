@@ -15,6 +15,10 @@ import pl.lodz.p.it.ssbd2022.ssbd03.entities.access_levels.AccessLevel;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.access_levels.DataAdministrator;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.access_levels.DataClient;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.access_levels.DataSpecialist;
+import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.AppBaseException;
+import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.account.AccountNotFoundException;
+import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.account.AccountPasswordIsTheSameException;
+import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.account.AccountPasswordMatchException;
 import pl.lodz.p.it.ssbd2022.ssbd03.mok.dto.AccountWithAccessLevelsDto;
 import pl.lodz.p.it.ssbd2022.ssbd03.mok.dto.AccountWithTokenDTO;
 import pl.lodz.p.it.ssbd2022.ssbd03.mok.dto.access_levels.AccessLevelDto;
@@ -44,6 +48,7 @@ public class MOKService {
 
     @Inject
     private JWTGenerator jwtGenerator;
+
 
     @Inject
     private EmailConfig emailConfig;
@@ -115,7 +120,7 @@ public class MOKService {
         try {
             DataSpecialist dataSpecialist =  (DataSpecialist) accessLevel;
             DataSpecialistDto dataSpecialistDto = (DataSpecialistDto) accessLevelDto;
-            dataSpecialist.setContactEmail(dataSpecialistDto.getContactEmail());
+            dataSpecialist.setEmail(dataSpecialistDto.getEmail());
             dataSpecialist.setPhoneNumber(dataSpecialistDto.getPhoneNumber());
             return;
         }
@@ -123,6 +128,24 @@ public class MOKService {
 
         }
 
+    }
+    public void changeOwnPassword(String login, String newPassword, String oldPassword) {
+        Account account = accountFacade.findByLogin(login);
+        if (account == null) {
+            throw new AccountNotFoundException();
+        }
+
+        if (oldPassword == null || !hashAlgorithm.verify(oldPassword.toCharArray(), account.getPassword())) {
+            //przemyslec budowanie wyjatkow
+            throw new AccountPasswordMatchException();
+        }
+        if(hashAlgorithm.verify(newPassword.toCharArray(),account.getPassword())){
+            //przemyslec budowanie wyjatkow
+            throw new AccountPasswordIsTheSameException();
+
+        }
+        account.setPassword(hashAlgorithm.generate(newPassword.toCharArray()));
+        accountFacade.edit(account);
     }
 
     public void reset(String login) {
