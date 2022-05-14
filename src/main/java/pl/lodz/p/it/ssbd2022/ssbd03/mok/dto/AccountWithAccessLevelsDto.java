@@ -1,6 +1,10 @@
 package pl.lodz.p.it.ssbd2022.ssbd03.mok.dto;
 
 import jakarta.validation.constraints.NotNull;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
+import pl.lodz.p.it.ssbd2022.ssbd03.common.AbstractDto;
 import lombok.*;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.Account;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.access_levels.AccessLevel;
@@ -18,7 +22,7 @@ import java.util.List;
 @Getter @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class AccountWithAccessLevelsDto {
+public class AccountWithAccessLevelsDto extends AbstractDto {
 
     @NotNull
     private String login;
@@ -27,11 +31,11 @@ public class AccountWithAccessLevelsDto {
     @NotNull
     private String lastName;
     @NotNull
-    private boolean confirmed;
+    private boolean isActive;
     @NotNull
-    private boolean active;
+    private boolean isConfirmed;
 
-    private Long version;
+
     private List<AccessLevelDto> accessLevels = new ArrayList<>();
 
 }
