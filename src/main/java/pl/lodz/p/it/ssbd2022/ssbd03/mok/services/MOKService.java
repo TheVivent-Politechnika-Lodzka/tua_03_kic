@@ -172,4 +172,8 @@ public class MOKService {
         }
     }
 
+    public void createAccount(Account account) {
+        accountFacade.create(account);
+    }
+
 }
