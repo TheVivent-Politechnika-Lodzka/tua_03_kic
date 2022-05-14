@@ -1,6 +1,7 @@
 package pl.lodz.p.it.ssbd2022.ssbd03.common;
 
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.OptimisticLockException;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.database.InAppOptimisticLockException;
 import pl.lodz.p.it.ssbd2022.ssbd03.utils.HashAlgorithm;
 
@@ -37,19 +38,28 @@ public abstract class AbstractFacade<T> {
     }
 
     public void unsafeEdit(T entity){
-        getEntityManager().merge(entity);
-        getEntityManager().flush();
+        try {
+            getEntityManager().merge(entity);
+            getEntityManager().flush();
+        } catch (OptimisticLockException e){
+            throw new InAppOptimisticLockException(e);
+        }
     }
 
-    public void remove (T entity, String tagFromDto){
+    public void remove(T entity, String tagFromDto){
         if (entity instanceof AbstractEntity abstractEntity)
             verifyTag(abstractEntity, tagFromDto);
         unsafeRemove(entity);
     }
 
     public void unsafeRemove(T entity){
+        try {
         getEntityManager().remove(entity);
         getEntityManager().flush();
+        } catch (OptimisticLockException e){
+            throw new InAppOptimisticLockException(e);
+        }
+
     }
 
     public T find(Object id){
