@@ -6,7 +6,7 @@ import lombok.*;
 @Getter @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class AccountWithTokenDTO {
+public class ResetPasswordDTO {
 
     @NotNull
     private String token;

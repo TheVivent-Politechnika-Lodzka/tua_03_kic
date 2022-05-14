@@ -19,7 +19,7 @@ import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.account.AccountNotFoundException;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.account.AccountPasswordIsTheSameException;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.account.AccountPasswordMatchException;
 import pl.lodz.p.it.ssbd2022.ssbd03.mok.dto.AccountWithAccessLevelsDto;
-import pl.lodz.p.it.ssbd2022.ssbd03.mok.dto.AccountWithTokenDTO;
+import pl.lodz.p.it.ssbd2022.ssbd03.mok.dto.ResetPasswordDTO;
 import pl.lodz.p.it.ssbd2022.ssbd03.mok.dto.access_levels.AccessLevelDto;
 import pl.lodz.p.it.ssbd2022.ssbd03.mok.dto.access_levels.DataAdministratorDto;
 import pl.lodz.p.it.ssbd2022.ssbd03.mok.dto.access_levels.DataClientDto;
@@ -162,7 +162,7 @@ public class MOKService {
         );
     }
 
-    public void resetPassword(AccountWithTokenDTO accountWithTokenDTO) {
+    public void resetPassword(ResetPasswordDTO accountWithTokenDTO) {
         ResetPasswordToken resetPasswordToken = resetPasswordFacade.findResetPasswordToken(accountWithTokenDTO.getLogin());
         if(hashAlgorithm.verify(resetPasswordToken.getId().toString().toCharArray(), accountWithTokenDTO.getToken())) {
             Account account = accountFacade.findByLogin(accountWithTokenDTO.getLogin());
