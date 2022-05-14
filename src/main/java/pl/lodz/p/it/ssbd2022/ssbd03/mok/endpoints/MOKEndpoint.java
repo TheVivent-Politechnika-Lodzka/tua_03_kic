@@ -36,7 +36,7 @@ public class MOKEndpoint {
     private AuthContext authContext;
 
     @Inject
-    private AccountMapper accountMapper;
+    private EmailConfig emailConfig;
 
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
@@ -47,13 +47,12 @@ public class MOKEndpoint {
         String token = mokService.authenticate(credential);
         return Response.ok(token).build();
     }
-
     @GET
     @Path("/{login}")
     @RolesAllowed("ADMINISTRATOR")
     public Response getAccountDetailsByLogin(@PathParam("login") String login) {
         Account account = mokService.findByLogin(login);
-        return Response.ok(accountMapper.createAccountWithAccessLevelsDtoFromAccount(account)).build();
+        return Response.ok(AccountMapper.createAccountWithAccessLevelsDtoFromAccount(account)).build();
     }
 
     @PUT
