@@ -37,10 +37,4 @@ public class DataClient extends AccessLevel implements Serializable {
     @Getter @Setter
     private String phoneNumber;
 
-    @Basic(optional = false)
-    @Email
-    @Column(name = "email", nullable = true, length = 64)
-    @Getter @Setter
-    private String email;
-
 }

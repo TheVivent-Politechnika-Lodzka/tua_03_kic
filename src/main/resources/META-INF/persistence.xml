@@ -27,6 +27,7 @@
         <class>pl.lodz.p.it.ssbd2022.ssbd03.entities.access_levels.DataAdministrator</class>
         <class>pl.lodz.p.it.ssbd2022.ssbd03.entities.access_levels.DataClient</class>
         <class>pl.lodz.p.it.ssbd2022.ssbd03.entities.access_levels.DataSpecialist</class>
+        <class>pl.lodz.p.it.ssbd2022.ssbd03.entities.ResetPasswordToken</class>
 
         <class>pl.lodz.p.it.ssbd2022.ssbd03.entities.Appointment</class>
         <class>pl.lodz.p.it.ssbd2022.ssbd03.entities.Implant</class>

@@ -14,10 +14,10 @@ import jakarta.validation.Valid;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
-import pl.lodz.p.it.ssbd2022.ssbd03.common.EmailConfig;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.Account;
 import pl.lodz.p.it.ssbd2022.ssbd03.mappers.AccountMapper;
 import pl.lodz.p.it.ssbd2022.ssbd03.mok.dto.AccountWithAccessLevelsDto;
+import pl.lodz.p.it.ssbd2022.ssbd03.mok.dto.ResetPasswordDTO;
 import pl.lodz.p.it.ssbd2022.ssbd03.mok.dto.ChangePasswordDto;
 import pl.lodz.p.it.ssbd2022.ssbd03.mok.dto.CredentialDto;
 import pl.lodz.p.it.ssbd2022.ssbd03.mok.services.MOKService;
@@ -53,6 +53,23 @@ public class MOKEndpoint {
     public Response getAccountDetailsByLogin(@PathParam("login") String login) {
         Account account = mokService.findByLogin(login);
         return Response.ok(accountMapper.createAccountWithAccessLevelsDtoFromAccount(account)).build();
+    }
+
+    @GET
+    @PermitAll
+    @Path("/reset/{login}")
+    public Response reset(@PathParam("login") String login) {
+        mokService.reset(login);
+        return Response.ok().build();
+    }
+
+    @POST
+    @Consumes(MediaType.APPLICATION_JSON)
+    @PermitAll
+    @Path("/resetPassword")
+    public Response resetPassword(ResetPasswordDTO accountWithTokenDTO) {
+        mokService.resetPassword(accountWithTokenDTO);
+        return Response.ok().build();
     }
 
     @PUT

@@ -21,21 +21,20 @@ public class AccessLevelMapper {
     // from entity to dto
 
     public DataClientDto createDataClientDtoFromEntity(DataClient dataClient) {
-        return new DataClientDto(dataClient.getEmail(), dataClient.getPhoneNumber(), dataClient.getPesel());
+        return new DataClientDto(dataClient.getPhoneNumber(), dataClient.getPesel());
     }
 
     public DataAdministratorDto createDataAdministratorDtoFromEntity(DataAdministrator dataAdministratort) {
-        return new DataAdministratorDto(dataAdministratort.getPhoneNumber(), dataAdministratort.getEmail());
+        return new DataAdministratorDto(dataAdministratort.getPhoneNumber(), dataAdministratort.getContactEmail());
     }
 
     public DataSpecialistDto createDataSpecialistDtoFromEntity(DataSpecialist dataSpecialist) {
-        return new DataSpecialistDto(dataSpecialist.getEmail(), dataSpecialist.getPhoneNumber());
+        return new DataSpecialistDto(dataSpecialist.getContactEmail(), dataSpecialist.getPhoneNumber());
     }
 
     // from dto to entity
     public DataClient createDataClientFromDto(DataClientDto dataClientDto) {
         DataClient dataClient = new DataClient();
-        dataClient.setEmail(dataClientDto.getEmail());
         dataClient.setPhoneNumber(dataClientDto.getPhoneNumber());
         dataClient.setPesel(dataClientDto.getPesel());
 
@@ -44,14 +43,14 @@ public class AccessLevelMapper {
 
     public DataAdministrator createDataAdministratorFromDto(DataAdministratorDto dataAdministratorDto) {
         DataAdministrator dataAdministrator = new DataAdministrator();
-        dataAdministrator.setEmail(dataAdministratorDto.getEmail());
+        dataAdministrator.setContactEmail(dataAdministratorDto.getContactEmail());
         dataAdministrator.setPhoneNumber(dataAdministratorDto.getPhoneNumber());
         return dataAdministrator;
     }
 
     public DataSpecialist createDataSpecialistFromDto(DataSpecialistDto dataSpecialistDto) {
         DataSpecialist dataSpecialist = new DataSpecialist();
-        dataSpecialist.setEmail(dataSpecialistDto.getEmail());
+        dataSpecialist.setContactEmail(dataSpecialistDto.getContactEmail());
         dataSpecialist.setPhoneNumber(dataSpecialistDto.getPhoneNumber());
         return dataSpecialist;
     }
