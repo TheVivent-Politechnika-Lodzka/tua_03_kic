@@ -3,10 +3,16 @@ import jwtDecode from "jwt-decode";
 import CredentialsDto from "./types/auth";
 import PaginationParams from "./types/queryParams/paginationParams";
 import {
+  AccessLevelDto,
   AccountDto,
   AccountWithAccessLevelDto,
   ChangeOwnPasswordDto,
 } from "./types/mok.dto";
+
+interface addAccessLevelData {
+  login: string;
+  accessLevel: AccessLevelDto;
+}
 
 // TODO przenieść do .env / package.json
 // const BASE_URL = "https://studapp.it.p.lodz.pl:8403/api"
@@ -89,6 +95,17 @@ const api = createApi({
           if (response.ok) {
             return response.status;
           }
+        },
+      }),
+    }),
+
+    addAccessLevel: builder.mutation<string, addAccessLevelData>({
+      query: (data: addAccessLevelData) => ({
+        url: `/mok/access-level/${data.login}`,
+        method: "PUT",
+        body: data.accessLevel,
+        responseHandler: async (response) => {
+          return response.status;
         },
       }),
     }),
