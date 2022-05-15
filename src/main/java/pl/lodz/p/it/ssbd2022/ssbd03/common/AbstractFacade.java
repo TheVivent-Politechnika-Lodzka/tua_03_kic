@@ -4,6 +4,7 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.OptimisticLockException;
 import jakarta.persistence.PersistenceException;
 import jakarta.persistence.criteria.CriteriaQuery;
+import org.hibernate.exception.ConstraintViolationException;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.DatabaseException;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.InvalidParametersException;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.database.InAppOptimisticLockException;
@@ -24,8 +25,15 @@ public abstract class AbstractFacade<T> {
     protected abstract HashAlgorithm getHashAlgorithm();
 
     public void create(T entity) {
-        getEntityManager().persist(entity);
-        getEntityManager().flush();
+        try {
+            getEntityManager().persist(entity);
+            getEntityManager().flush();
+        } catch (PersistenceException e) {
+            if (e.getCause() instanceof ConstraintViolationException)
+                throw (ConstraintViolationException) e.getCause();
+            throw e;
+        }
+
     }
 
     private void verifyTag(AbstractEntity entity, String tagFromDto){
@@ -49,6 +57,10 @@ public abstract class AbstractFacade<T> {
             getEntityManager().flush();
         } catch (OptimisticLockException e){
             throw new InAppOptimisticLockException(e);
+        } catch (PersistenceException e){
+            if (e.getCause() instanceof ConstraintViolationException)
+                throw (ConstraintViolationException) e.getCause();
+            throw new DatabaseException(e);
         }
     }
 
@@ -64,6 +76,10 @@ public abstract class AbstractFacade<T> {
         getEntityManager().flush();
         } catch (OptimisticLockException e){
             throw new InAppOptimisticLockException(e);
+        } catch (PersistenceException e){
+            if (e.getCause() instanceof ConstraintViolationException)
+                throw (ConstraintViolationException) e.getCause();
+            throw new DatabaseException(e);
         }
 
     }

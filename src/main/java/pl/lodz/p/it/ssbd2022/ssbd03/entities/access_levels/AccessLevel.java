@@ -29,7 +29,7 @@ import java.io.Serializable;
 public abstract class AccessLevel extends AbstractEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    public static final String CONSTRAINT_ACCESS_LEVEL_FOR_ACCOUNT_UNIQUE = "CONSTRAINT_UNIQUE_ACCESS_LEVEL_FOR_ACCOUNT";
+    public static final String CONSTRAINT_ACCESS_LEVEL_FOR_ACCOUNT_UNIQUE = "constraint_unique_access_level_for_account";
 
     @Column(name = "access_level", insertable = false, updatable = false, length = 20)
     @Getter
