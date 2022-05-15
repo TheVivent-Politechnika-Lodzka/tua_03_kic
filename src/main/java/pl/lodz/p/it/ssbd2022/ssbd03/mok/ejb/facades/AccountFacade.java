@@ -35,11 +35,10 @@ public class AccountFacade extends AbstractFacade<Account> {
         super(Account.class);
     }
 
-
-
     public Account findByLogin(String login) {
         TypedQuery<Account> typedQuery = entityManager.createNamedQuery("Account.findByLogin", Account.class);
         typedQuery.setParameter("login", login);
+        return typedQuery.getSingleResult();
     }
 
     @Override
