@@ -7,6 +7,7 @@ import pl.lodz.p.it.ssbd2022.ssbd03.common.AbstractEntity;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.Account;
 import pl.lodz.p.it.ssbd2022.ssbd03.mok.dto.AccountDto;
 import pl.lodz.p.it.ssbd2022.ssbd03.mok.dto.AccountWithAccessLevelsDto;
+import pl.lodz.p.it.ssbd2022.ssbd03.mok.dto.CreateAccountDto;
 import pl.lodz.p.it.ssbd2022.ssbd03.mok.dto.access_levels.AccessLevelDto;
 import pl.lodz.p.it.ssbd2022.ssbd03.utils.HashAlgorithm;
 @Stateless
@@ -17,6 +18,19 @@ public class AccountMapper {
 
     @Inject
     private AccessLevelMapper accessLevelMapper;
+
+    public Account createAccountfromCreateAccountDto(CreateAccountDto createAccountDto) {
+        Account account = new Account();
+        account.setLogin(createAccountDto.getLogin());
+        account.setFirstName(createAccountDto.getFirstName());
+        account.setLastName(createAccountDto.getLastName());
+        account.setEmail(createAccountDto.getEmail());
+        account.setPassword(hashAlgorithm.generate(createAccountDto.getPassword().toCharArray()));
+        account.setActive(true);
+        account.setConfirmed(true);
+
+        return account;
+    }
 
     public Account createAccountFromDto(AccountWithAccessLevelsDto accountDto) {
         Account account = new Account();
@@ -42,7 +56,7 @@ public class AccountMapper {
         AccountDto accountDto = new AccountDto(
                 account.getLogin(),
                 account.getFirstName(),
-                account.getFirstName(),
+                account.getLastName(),
                 account.isActive(),
                 account.isConfirmed(),
                 account.getEmail()
@@ -54,7 +68,7 @@ public class AccountMapper {
         AccountWithAccessLevelsDto accountDto = new AccountWithAccessLevelsDto(
                 account.getLogin(),
                 account.getFirstName(),
-                account.getFirstName(),
+                account.getLastName(),
                 account.isActive(),
                 account.isConfirmed(),
                 accessLevelMapper.createListOfAccessLevelDTO(account.getAccessLevelCollection())
