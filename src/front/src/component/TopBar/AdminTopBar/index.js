@@ -1,9 +1,12 @@
+import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { logout } from "../../../redux/userSlice";
 import "./style.scss";
+import {Logout} from "../SelectorTopBar";
 
 const AdminTopBar = () => {
   const navigate = useNavigate();
-
+  const dispatch = useDispatch();
   return (
     <div className="topBar">
       <div className="logo" onClick={() => navigate("/", { replace: false })}>
@@ -18,6 +21,7 @@ const AdminTopBar = () => {
         >
           ADMINPAGE
         </div>
+          <Logout/>
       </div>
     </div>
   );

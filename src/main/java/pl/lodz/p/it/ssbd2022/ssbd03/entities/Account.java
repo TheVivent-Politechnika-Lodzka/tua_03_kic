@@ -16,9 +16,17 @@ import java.util.Collection;
         name = "account",
         indexes = {
                 @Index(name = "account_login", columnList = "login", unique = true),
+        },
+        uniqueConstraints = {
+                @UniqueConstraint(columnNames = "login", name = Account.CONSTRAINT_LOGIN_UNIQUE)
         }
 )
-@SecondaryTable(name = "account_details")
+@SecondaryTable(
+        name = "account_details",
+        uniqueConstraints = {
+               @UniqueConstraint(columnNames = "email", name = Account.CONSTRAINT_EMAIL_UNIQUE)
+        }
+)
 @NamedQueries({
         @NamedQuery(name = "Account.findAll", query = "select a from Account a"),
         @NamedQuery(name = "Account.findById", query = "select a from Account a where a.id = :id"),
@@ -31,6 +39,8 @@ import java.util.Collection;
 public class Account extends AbstractEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
+    public static final String CONSTRAINT_LOGIN_UNIQUE = "account_login_unique";
+    public static final String CONSTRAINT_EMAIL_UNIQUE = "account_email_unique";
 
     @Basic(optional = false)
     @Size(min = 3, max = 20)

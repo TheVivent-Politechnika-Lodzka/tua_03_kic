@@ -15,7 +15,11 @@ import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.Account;
+import pl.lodz.p.it.ssbd2022.ssbd03.entities.access_levels.AccessLevel;
+import pl.lodz.p.it.ssbd2022.ssbd03.mappers.AccessLevelMapper;
 import pl.lodz.p.it.ssbd2022.ssbd03.mappers.AccountMapper;
+import pl.lodz.p.it.ssbd2022.ssbd03.mok.dto.*;
+import pl.lodz.p.it.ssbd2022.ssbd03.mok.dto.access_levels.AccessLevelDto;
 import pl.lodz.p.it.ssbd2022.ssbd03.mok.dto.AccountWithAccessLevelsDto;
 import pl.lodz.p.it.ssbd2022.ssbd03.mok.dto.ChangePasswordDto;
 import pl.lodz.p.it.ssbd2022.ssbd03.mok.dto.CredentialDto;
@@ -41,6 +45,30 @@ public class MOKEndpoint {
 
     @Inject
     private AccountMapper accountMapper;
+
+    @Inject
+    private AccessLevelMapper accessLevelMapper;
+
+    @PUT
+    @Consumes(MediaType.APPLICATION_JSON)
+    @RolesAllowed({"ADMINISTRATOR"})
+    @Path("/access-level/{login}")
+    public Response addAccessLevel(@PathParam("login") String login, @Valid AccessLevelDto accessLevelDto) {
+        AccessLevel accessLevel = accessLevelMapper.createAccessLevelFromDto(accessLevelDto);
+        Account account = mokService.addAccessLevel(login, accessLevel);
+        return Response.ok(accountMapper.createAccountWithAccessLevelsDtoFromAccount(account)).build();
+    }
+
+    //stwórz nowe konto
+    @POST
+    @Consumes(MediaType.APPLICATION_JSON)
+    @RolesAllowed("ADMINISTRATOR")
+    @Path("/account")
+    public Response createAccount(CreateAccountDto accountDto) {
+        Account account = accountMapper.createAccountfromCreateAccountDto(accountDto);
+        mokService.createAccount(account);
+        return Response.ok().build();
+    }
 
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
@@ -152,7 +180,7 @@ public class MOKEndpoint {
     public Response changeOwnPassword(@Valid ChangePasswordDto changePasswordDto) {
         String principal = authContext.getCurrentUserLogin();
 
-        mokService.changeOwnPassword(principal, changePasswordDto.getNewPassword(), changePasswordDto.getOldPassword());
+        mokService.changeOwnPassword(principal, changePasswordDto.getNewPassword(),changePasswordDto.getOldPassword());
         return Response.ok().build();
     }
 }

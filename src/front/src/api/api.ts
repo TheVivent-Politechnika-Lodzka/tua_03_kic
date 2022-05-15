@@ -1,9 +1,18 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import jwtDecode from "jwt-decode";
 import CredentialsDto from "./types/auth";
-import { AccountDto, AccountEditDto } from "./types/mok.dto";
 import PaginationParams from "./types/queryParams/paginationParams";
-import {AccountDto, AccountEditDto, AccountWithAccessLevelDto, ChangeOwnPasswordDto} from "./types/mok.dto";
+import {
+  AccessLevelDto,
+  AccountDto,
+  AccountWithAccessLevelDto,
+  ChangeOwnPasswordDto,
+} from "./types/mok.dto";
+
+interface addAccessLevelData {
+  login: string;
+  accessLevel: AccessLevelDto;
+}
 
 // TODO przenieść do .env / package.json
 // const BASE_URL = "https://studapp.it.p.lodz.pl:8403/api"
@@ -40,20 +49,20 @@ const api = createApi({
     }),
 
     findAllUsers: builder.mutation<AccountDto[], PaginationParams>({
-      query: ({page, limit}: PaginationParams) => ({
+      query: ({ page, limit }: PaginationParams) => ({
         url: "/mok/account",
         method: "GET",
-        params: {page, limit},
+        params: { page, limit },
         responseHandler: async (response) => {
           if (response.ok) {
             return await response.json();
           }
-        }
-      })
+        },
+      }),
     }),
 
-    editOwnAccount: builder.mutation<AccountDto, AccountEditDto>({
-      query: (account: AccountEditDto) => ({
+    editOwnAccount: builder.mutation<AccountDto, AccountWithAccessLevelDto>({
+      query: (account: AccountWithAccessLevelDto) => ({
         url: "/mok/edit",
         method: "PUT",
         body: account,
@@ -67,7 +76,7 @@ const api = createApi({
 
     getAccountByLogin: builder.mutation<AccountWithAccessLevelDto, string>({
       query: (login: string) => ({
-        url: "/mok/"+login,
+        url: "/mok/" + login,
         method: "GET",
         responseHandler: async (response) => {
           if (response.ok) {
@@ -89,7 +98,24 @@ const api = createApi({
         },
       }),
     }),
+
+    addAccessLevel: builder.mutation<string, addAccessLevelData>({
+      query: (data: addAccessLevelData) => ({
+        url: `/mok/access-level/${data.login}`,
+        method: "PUT",
+        body: data.accessLevel,
+        responseHandler: async (response) => {
+          return response.status;
+        },
+      }),
+    }),
   }),
 });
 
-export const { useLoginMutation, useFindAllUsersMutation, useEditOwnAccountMutation, useGetAccountByLoginMutation, useChangeOwnPasswordMutation } = api;
+export const {
+  useLoginMutation,
+  useFindAllUsersMutation,
+  useEditOwnAccountMutation,
+  useGetAccountByLoginMutation,
+  useChangeOwnPasswordMutation,
+} = api;
