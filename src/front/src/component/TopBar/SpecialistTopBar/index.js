@@ -1,5 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import "./style.scss";
+import {Logout} from "../SelectorTopBar";
 
 const SpecialistTopBar = () => {
   const navigate = useNavigate();
@@ -18,6 +19,7 @@ const SpecialistTopBar = () => {
         >
           SPECIALISTPAGE
         </div>
+          <Logout/>
       </div>
     </div>
   );
