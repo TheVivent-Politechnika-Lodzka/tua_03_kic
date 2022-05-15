@@ -1,6 +1,8 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import jwtDecode from "jwt-decode";
 import CredentialsDto from "./types/auth";
+import { AccountDto, AccountEditDto } from "./types/mok.dto";
+import PaginationParams from "./types/queryParams/paginationParams";
 import {AccountDto, AccountEditDto, AccountWithAccessLevelDto, ChangeOwnPasswordDto} from "./types/mok.dto";
 
 // TODO przenieść do .env / package.json
@@ -36,6 +38,20 @@ const api = createApi({
         },
       }),
     }),
+
+    findAllUsers: builder.mutation<AccountDto[], PaginationParams>({
+      query: ({page, limit}: PaginationParams) => ({
+        url: "/mok/account",
+        method: "GET",
+        params: {page, limit},
+        responseHandler: async (response) => {
+          if (response.ok) {
+            return await response.json();
+          }
+        }
+      })
+    }),
+
     editOwnAccount: builder.mutation<AccountDto, AccountEditDto>({
       query: (account: AccountEditDto) => ({
         url: "/mok/edit",
@@ -76,4 +92,4 @@ const api = createApi({
   }),
 });
 
-export const { useLoginMutation, useEditOwnAccountMutation, useGetAccountByLoginMutation, useChangeOwnPasswordMutation } = api;
+export const { useLoginMutation, useFindAllUsersMutation, useEditOwnAccountMutation, useGetAccountByLoginMutation, useChangeOwnPasswordMutation } = api;
