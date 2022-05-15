@@ -10,13 +10,13 @@ export interface AccountDto extends Tag{
   confirmed: boolean;
 }
 
-export interface RegisterAccountDto{
+export interface ClientAccountDto{
   email:string,
   firstName:string,
   lastName:string,
   login:string,
   pesel:string,
-  phoneNumber:string,
+  phone_number:string,
   password:string
 }
 

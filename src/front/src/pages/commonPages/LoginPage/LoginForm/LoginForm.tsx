@@ -61,7 +61,7 @@ const LoginForm = () => {
             className="form_field"
             placeholder="Hasło"
             name="password"
-            id="password"
+            id="password_login"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required

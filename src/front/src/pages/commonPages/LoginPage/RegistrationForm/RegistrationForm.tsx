@@ -1,15 +1,15 @@
 import "./style.scss";
 import { useState } from "react";
-import { useRegisterAccountMutation } from "../../../../api/api";
+import { useRegisterClientAccountMutation } from "../../../../api/api";
 
 const RegistrationForm = () => {
-  const [register] = useRegisterAccountMutation();
+  const [register] = useRegisterClientAccountMutation();
   const [email, setEmail] = useState("");
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [login, setLogin] = useState("");
   const [pesel, setPesel] = useState("");
-  const [phoneNumber, setPhoneNumber] = useState("");
+  const [phone_number, setPhoneNumber] = useState("");
   const [password, setPassword] = useState("");
   const [repeatPassword, setRepeatPassword] = useState("");
 
@@ -22,7 +22,7 @@ const RegistrationForm = () => {
       lastName,
       login,
       pesel,
-      phoneNumber,
+      phone_number,
       password,
     });
   };
@@ -42,7 +42,7 @@ const RegistrationForm = () => {
             onChange={(e) => setEmail(e.target.value)}
             required
           />
-          <label className="form_label">E-mail</label>
+          <label className="form_label">E-mail*</label>
         </div>
         <div className="form_group field">
           <input
@@ -55,7 +55,7 @@ const RegistrationForm = () => {
             onChange={(e) => setFirstName(e.target.value)}
             required
           />
-          <label className="form_label">Imię</label>
+          <label className="form_label">Imię*</label>
         </div>
 
         <div className="form_group field">
@@ -69,7 +69,7 @@ const RegistrationForm = () => {
             onChange={(e) => setLastName(e.target.value)}
             required
           />
-          <label className="form_label">Nazwisko</label>
+          <label className="form_label">Nazwisko*</label>
         </div>
 
         <div className="form_group field">
@@ -83,7 +83,7 @@ const RegistrationForm = () => {
             onChange={(e) => setLogin(e.target.value)}
             required
           />
-          <label className="form_label">Login</label>
+          <label className="form_label">Login*</label>
         </div>
         <div className="form_group field">
           <input
@@ -96,7 +96,7 @@ const RegistrationForm = () => {
             onChange={(e) => setPesel(e.target.value)}
             required
           />
-          <label className="form_label">PESEL</label>
+          <label className="form_label">PESEL*</label>
         </div>
 
         <div className="form_group field">
@@ -106,11 +106,11 @@ const RegistrationForm = () => {
             placeholder="Numer telefonu"
             name="phoneNumber"
             id="phoneNumber"
-            value={phoneNumber}
+            value={phone_number}
             onChange={(e) => setPhoneNumber(e.target.value)}
             required
           />
-          <label className="form_label">Numer telefonu</label>
+          <label className="form_label">Numer telefonu*</label>
         </div>
 
         <div className="form_group field">
@@ -119,12 +119,12 @@ const RegistrationForm = () => {
             className="form_field"
             placeholder="Hasło"
             name="password"
-            id="password"
+            id="password_register"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
           />
-          <label className="form_label">Hasło</label>
+          <label className="form_label">Hasło*</label>
         </div>
 
         <div className="form_group field">
@@ -138,7 +138,7 @@ const RegistrationForm = () => {
             onChange={(e) => setRepeatPassword(e.target.value)}
             required
           />
-          <label className="form_label">Powtórz hasło</label>
+          <label className="form_label">Powtórz hasło*</label>
         </div>
       </div>
 

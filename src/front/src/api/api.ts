@@ -6,7 +6,7 @@ import {
   AccountDto,
   AccountWithAccessLevelDto,
   ChangeOwnPasswordDto,
-  RegisterAccountDto,
+  ClientAccountDto,
 } from "./types/mok.dto";
 
 // TODO przenieść do .env / package.json
@@ -38,6 +38,19 @@ const api = createApi({
             const token = await response.text();
             localStorage.setItem(TOKEN_STORAGE_KEY, token);
             return jwtDecode(token);
+          }
+        },
+      }),
+    }),
+
+    registerClientAccount: builder.mutation<string, ClientAccountDto>({
+      query: (clientAccountDto: ClientAccountDto) => ({
+        url: "/mok/register",
+        method: "POST",
+        body: clientAccountDto,
+        responseHandler: async (response) => {
+          if (response.ok) {
+            return response.status;
           }
         },
       }),
@@ -94,18 +107,8 @@ const api = createApi({
       }),
     }),
 
-    registerAccount: builder.mutation<string, RegisterAccountDto>({
-      query: (registerAccountDto: RegisterAccountDto) => ({
-        url: "/mok/account/client",
-        method: "POST",
-        body: registerAccountDto,
-        responseHandler: async (response) => {
-          if (response.ok) {
-            return response.status;
-          }
-        },
-      }),
-    }),
+  
+
 
 
   }),
@@ -117,5 +120,5 @@ export const {
   useEditOwnAccountMutation,
   useGetAccountByLoginMutation,
   useChangeOwnPasswordMutation,
-  useRegisterAccountMutation,
+  useRegisterClientAccountMutation
 } = api;

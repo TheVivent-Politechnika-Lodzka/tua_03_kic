@@ -53,6 +53,16 @@ public class MOKEndpoint {
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @PermitAll
+    @Path("/register")
+    public Response createAccountClient(CreateClientAccountDto accountDto) {
+        Account account = accountMapper.createAccountfromCreateClientAccountDto(accountDto);
+        mokService.createAccount(account);
+        return Response.ok().build();
+    }
+
+    @POST
+    @Consumes(MediaType.APPLICATION_JSON)
+    @PermitAll
     @Path("/login")
     public Response authenticate(CredentialDto credentialDto) {
         Credential credential = new UsernamePasswordCredential(credentialDto.getLogin(), new Password(credentialDto.getPassword()));

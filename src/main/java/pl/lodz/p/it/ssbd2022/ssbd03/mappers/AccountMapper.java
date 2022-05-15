@@ -5,9 +5,11 @@ import jakarta.inject.Inject;
 import pl.lodz.p.it.ssbd2022.ssbd03.common.AbstractDto;
 import pl.lodz.p.it.ssbd2022.ssbd03.common.AbstractEntity;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.Account;
+import pl.lodz.p.it.ssbd2022.ssbd03.entities.access_levels.DataClient;
 import pl.lodz.p.it.ssbd2022.ssbd03.mok.dto.AccountDto;
 import pl.lodz.p.it.ssbd2022.ssbd03.mok.dto.AccountWithAccessLevelsDto;
 import pl.lodz.p.it.ssbd2022.ssbd03.mok.dto.CreateAccountDto;
+import pl.lodz.p.it.ssbd2022.ssbd03.mok.dto.CreateClientAccountDto;
 import pl.lodz.p.it.ssbd2022.ssbd03.mok.dto.access_levels.AccessLevelDto;
 import pl.lodz.p.it.ssbd2022.ssbd03.utils.HashAlgorithm;
 @Stateless
@@ -29,6 +31,22 @@ public class AccountMapper {
         account.setActive(true);
         account.setConfirmed(true);
 
+        return account;
+    }
+
+    public Account createAccountfromCreateClientAccountDto(CreateClientAccountDto createClientAccountDto) {
+        Account account = new Account();
+        account.setLogin(createClientAccountDto.getLogin());
+        account.setFirstName(createClientAccountDto.getFirstName());
+        account.setLastName(createClientAccountDto.getLastName());
+        account.setEmail(createClientAccountDto.getEmail());
+        account.setPassword(hashAlgorithm.generate(createClientAccountDto.getPassword().toCharArray()));
+        account.setActive(true);
+        account.setConfirmed(false);
+        DataClient dataClient = new DataClient();
+        dataClient.setPesel(createClientAccountDto.getPesel());
+        dataClient.setPhoneNumber(createClientAccountDto.getPhone_number());
+        account.addAccessLevel(dataClient);
         return account;
     }
 
@@ -75,6 +93,7 @@ public class AccountMapper {
         );
         return (AccountWithAccessLevelsDto) tagDto(accountDto, account);
     }
+
 
 
 }
