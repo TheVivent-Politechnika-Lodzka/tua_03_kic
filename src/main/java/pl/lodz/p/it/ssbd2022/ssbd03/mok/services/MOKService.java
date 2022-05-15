@@ -194,19 +194,18 @@ public class MOKService {
         accountFacade.create(account);
     }
 
-    public Account addAccessLevel(String login, AccessLevelDto accessLevelDto) {
+    public Account addAccessLevel(String login, AccessLevel accessLevel) {
         Account account = accountFacade.findByLogin(login);
-        account.getAccessLevelCollection().forEach(accessLevel -> {
-            if (accessLevelDto.getLevel().equals(DataSpecialist.LEVEL_NAME)
-                && accessLevel.getLevel().equals(DataClient.LEVEL_NAME)) {
+        account.getAccessLevelCollection().forEach(al -> {
+            if (accessLevel instanceof DataSpecialist
+                && al instanceof DataClient) {
                 throw AccessLevelViolationException.clientCantBeSpecialist();
             }
-            if (accessLevelDto.getLevel().equals(DataClient.LEVEL_NAME)
-                    && accessLevel.getLevel().equals(DataSpecialist.LEVEL_NAME)) {
+            if (accessLevel instanceof DataClient
+                    && al instanceof DataSpecialist) {
                 throw AccessLevelViolationException.specialistCantBeClient();
             }
         });
-        AccessLevel accessLevel = accessLevelMapper.createAccessLevelFromDto(accessLevelDto);
         account.addAccessLevel(accessLevel);
         accessLevelFacade.create(accessLevel);
         return account;
