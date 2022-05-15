@@ -2,6 +2,7 @@ import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { logout } from "../../../redux/userSlice";
 import "./style.scss";
+import {Logout} from "../SelectorTopBar";
 
 const AdminTopBar = () => {
   const navigate = useNavigate();
@@ -20,15 +21,7 @@ const AdminTopBar = () => {
         >
           ADMINPAGE
         </div>
-        <div
-          className="item"
-          onClick={() => {
-            dispatch(logout());
-            localStorage.setItem("AUTH_TOKEN", "");
-          }}
-        >
-          WYLOGUJ
-        </div>
+          <Logout/>
       </div>
     </div>
   );
