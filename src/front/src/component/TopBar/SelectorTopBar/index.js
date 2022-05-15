@@ -5,6 +5,19 @@ import SpecialistTopBar from "../SpecialistTopBar";
 import ClientTopBar from "../ClientTopBar";
 import GuestTopBar from "../GuestTopBar";
 
+export const Logout = () => {
+  const user = useStoreSelector(state => state.user);
+  const logout = () => {
+      localStorage.setItem("AUTH_TOKEN", "");
+      window.location.reload();
+  };
+  return (
+    <div className="item" onClick={logout}>
+        WYLOGUJ
+    </div>
+  );
+};
+
 const TopBar = () => {
   const user = useStoreSelector((state) => state.user);
 
