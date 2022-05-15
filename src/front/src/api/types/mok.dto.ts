@@ -10,6 +10,17 @@ export interface AccountDto extends Tag{
   confirmed: boolean;
 }
 
+export interface RegisterAccountDto{
+  email:string,
+  firstName:string,
+  lastName:string,
+  login:string,
+  pesel:string,
+  phoneNumber:string,
+  password:string
+}
+
+
 export interface ChangeOwnPasswordDto {
   oldPassword: string;
   newPassword: string;
