@@ -143,6 +143,7 @@ public class MOKService {
         }
 
     }
+
     public void changePassword(String login, String newPassword, String oldPassword) {
         Account account = accountFacade.findByLogin(login);
         if (account == null) {
