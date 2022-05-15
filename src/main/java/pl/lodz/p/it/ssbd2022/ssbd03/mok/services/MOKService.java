@@ -149,7 +149,7 @@ public class MOKService {
     public void changeOwnPassword(String login, String newPassword, String oldPassword) {
         Account account = accountFacade.findByLogin(login);
         if (account == null) {
-            throw new AccountNotFoundException();
+            throw AccountNotFoundException.notFoundByLogin();
         }
 
         if (oldPassword == null || !hashAlgorithm.verify(oldPassword.toCharArray(), account.getPassword())) {

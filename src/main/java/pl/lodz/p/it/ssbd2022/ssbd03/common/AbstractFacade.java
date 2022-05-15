@@ -120,7 +120,7 @@ public abstract class AbstractFacade<T> {
             int totalCount = count();
             return new PaginationData(totalCount, data);
         } catch (IllegalArgumentException e) {
-            throw new InvalidParametersException();
+            throw new InvalidParametersException(e.getCause());
         } catch (PersistenceException e) {
             throw new DatabaseException(e.getCause());
         }
