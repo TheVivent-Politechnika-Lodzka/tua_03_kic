@@ -13,7 +13,7 @@ import java.io.Serializable;
 @Table(
         name = "access_level",
         indexes = {@Index(name = "access_level_account_id", columnList = "account_id")},
-        uniqueConstraints = {@UniqueConstraint(name = "CONSTRAINT_UNIQUE_ACCESS_LEVEL_FOR_ACCOUNT", columnNames = {"account_id", "access_level"})}
+        uniqueConstraints = {@UniqueConstraint(name = AccessLevel.CONSTRAINT_ACCESS_LEVEL_FOR_ACCOUNT_UNIQUE, columnNames = {"account_id", "access_level"})}
 )
 @Inheritance(strategy = InheritanceType.JOINED)
 @DiscriminatorColumn(discriminatorType = DiscriminatorType.STRING, name = "access_level")
@@ -27,7 +27,9 @@ import java.io.Serializable;
 })
 @ToString(callSuper = true)
 public abstract class AccessLevel extends AbstractEntity implements Serializable {
+
     private static final long serialVersionUID = 1L;
+    public static final String CONSTRAINT_ACCESS_LEVEL_FOR_ACCOUNT_UNIQUE = "constraint_unique_access_level_for_account";
 
     @Column(name = "access_level", insertable = false, updatable = false, length = 20)
     @Getter

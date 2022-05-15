@@ -15,8 +15,11 @@ import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.Account;
+import pl.lodz.p.it.ssbd2022.ssbd03.entities.access_levels.AccessLevel;
+import pl.lodz.p.it.ssbd2022.ssbd03.mappers.AccessLevelMapper;
 import pl.lodz.p.it.ssbd2022.ssbd03.mappers.AccountMapper;
 import pl.lodz.p.it.ssbd2022.ssbd03.mok.dto.*;
+import pl.lodz.p.it.ssbd2022.ssbd03.mok.dto.access_levels.AccessLevelDto;
 import pl.lodz.p.it.ssbd2022.ssbd03.mok.services.MOKService;
 import pl.lodz.p.it.ssbd2022.ssbd03.security.AuthContext;
 import pl.lodz.p.it.ssbd2022.ssbd03.utils.PaginationData;
@@ -38,6 +41,19 @@ public class MOKEndpoint {
 
     @Inject
     private AccountMapper accountMapper;
+
+    @Inject
+    private AccessLevelMapper accessLevelMapper;
+
+    @PUT
+    @Consumes(MediaType.APPLICATION_JSON)
+    @RolesAllowed({"ADMINISTRATOR"})
+    @Path("/access-level/{login}")
+    public Response addAccessLevel(@PathParam("login") String login, @Valid AccessLevelDto accessLevelDto) {
+        AccessLevel accessLevel = accessLevelMapper.createAccessLevelFromDto(accessLevelDto);
+        Account account = mokService.addAccessLevel(login, accessLevel);
+        return Response.ok(accountMapper.createAccountWithAccessLevelsDtoFromAccount(account)).build();
+    }
 
     //stwórz nowe konto
     @POST
