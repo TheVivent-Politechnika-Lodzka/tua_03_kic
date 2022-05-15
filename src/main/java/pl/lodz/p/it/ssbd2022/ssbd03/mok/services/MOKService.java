@@ -15,15 +15,19 @@ import pl.lodz.p.it.ssbd2022.ssbd03.entities.access_levels.AccessLevel;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.access_levels.DataAdministrator;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.access_levels.DataClient;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.access_levels.DataSpecialist;
+import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.access_level.AccessLevelExistsException;
+import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.access_level.AccessLevelViolationException;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.account.AccountNotFoundException;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.account.AccountPasswordIsTheSameException;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.account.AccountPasswordMatchException;
+import pl.lodz.p.it.ssbd2022.ssbd03.mappers.AccessLevelMapper;
 import pl.lodz.p.it.ssbd2022.ssbd03.mok.dto.AccountWithAccessLevelsDto;
 import pl.lodz.p.it.ssbd2022.ssbd03.mok.dto.ResetPasswordDTO;
 import pl.lodz.p.it.ssbd2022.ssbd03.mok.dto.access_levels.AccessLevelDto;
 import pl.lodz.p.it.ssbd2022.ssbd03.mok.dto.access_levels.DataAdministratorDto;
 import pl.lodz.p.it.ssbd2022.ssbd03.mok.dto.access_levels.DataClientDto;
 import pl.lodz.p.it.ssbd2022.ssbd03.mok.dto.access_levels.DataSpecialistDto;
+import pl.lodz.p.it.ssbd2022.ssbd03.mok.ejb.facades.AccessLevelFacade;
 import pl.lodz.p.it.ssbd2022.ssbd03.mok.ejb.facades.AccountFacade;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.Account;
 import pl.lodz.p.it.ssbd2022.ssbd03.interceptors.TrackerInterceptor;
@@ -44,6 +48,9 @@ public class MOKService {
     private AccountFacade accountFacade;
 
     @Inject
+    private AccessLevelFacade accessLevelFacade;
+
+    @Inject
     private ResetPasswordFacade resetPasswordFacade;
 
     @Inject
@@ -52,6 +59,8 @@ public class MOKService {
     @Inject
     private JWTGenerator jwtGenerator;
 
+    @Inject
+    AccessLevelMapper accessLevelMapper;
 
     @Inject
     private EmailConfig emailConfig;
@@ -185,4 +194,21 @@ public class MOKService {
         accountFacade.create(account);
     }
 
+    public Account addAccessLevel(String login, AccessLevelDto accessLevelDto) {
+        Account account = accountFacade.findByLogin(login);
+        account.getAccessLevelCollection().forEach(accessLevel -> {
+            if (accessLevelDto.getLevel().equals(DataSpecialist.LEVEL_NAME)
+                && accessLevel.getLevel().equals(DataClient.LEVEL_NAME)) {
+                throw AccessLevelViolationException.clientCantBeSpecialist();
+            }
+            if (accessLevelDto.getLevel().equals(DataClient.LEVEL_NAME)
+                    && accessLevel.getLevel().equals(DataSpecialist.LEVEL_NAME)) {
+                throw AccessLevelViolationException.specialistCantBeClient();
+            }
+        });
+        AccessLevel accessLevel = accessLevelMapper.createAccessLevelFromDto(accessLevelDto);
+        account.addAccessLevel(accessLevel);
+        accessLevelFacade.create(accessLevel);
+        return account;
+    }
 }
