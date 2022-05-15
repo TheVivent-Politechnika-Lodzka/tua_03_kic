@@ -16,14 +16,30 @@ public class AccountNotFoundException extends AppBaseException {
         super(ACCOUNT_NOT_FOUND, Response.Status.NOT_FOUND);
     }
 
+    /**
+     * Metoda statyczna zwracająca wyjątek AccountNotFoundException
+     * w przypadku gdy nie odnaleziono użytkownika z podanym loginem
+     * @return wyjatek typu AccountNotFoundException
+     */
     public static AccountNotFoundException notFoundByLogin() {
         return new AccountNotFoundException(ACCOUNT_NOT_FOUND_BY_LOGIN);
     }
 
+    /**
+     * Metoda statyczna zwracająca wyjątek AccountNotFoundException
+     * w przypadku gdy nie odnaleziono użytkownika z podanym id
+     * @return wyjatek typu AccountNotFoundException
+     */
     public static AccountNotFoundException notFoundById() {
         return new AccountNotFoundException(ACCOUNT_NOT_FOUND_BY_ID);
     }
 
+    /**
+     * Prywatny konstruktor potrzebny do budowania wyjątku przy statycznych metodach
+     * znajdujących się w klasie AccountNotFoundException
+     * @param string wiadomość zawarta w wyjątku
+     * @return wyjatek typu AccountNotFoundException
+     */
     private AccountNotFoundException(String string) {
         super(string, Response.Status.NOT_FOUND);
     }
