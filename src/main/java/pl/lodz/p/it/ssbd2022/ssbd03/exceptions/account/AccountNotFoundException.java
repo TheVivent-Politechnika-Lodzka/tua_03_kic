@@ -8,9 +8,23 @@ import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.AppBaseException;
  */
 public class AccountNotFoundException extends AppBaseException {
 
-    private static final String ACCOUNT_NOT_FOUND_BY_LOGIN = "server.error.appBase.accountNotFound";
+    private static final String ACCOUNT_NOT_FOUND = "server.error.appBase.accountNotFound";
+    private static final String ACCOUNT_NOT_FOUND_BY_LOGIN = "server.error.appBase.accountNotFoundByLogin";
+    private static final String ACCOUNT_NOT_FOUND_BY_ID= "server.error.appBase.accountNotFoundById";
 
     public AccountNotFoundException() {
-        super(ACCOUNT_NOT_FOUND_BY_LOGIN, Response.Status.NOT_FOUND);
+        super(ACCOUNT_NOT_FOUND, Response.Status.NOT_FOUND);
+    }
+
+    public static AccountNotFoundException notFoundByLogin() {
+        return new AccountNotFoundException(ACCOUNT_NOT_FOUND_BY_LOGIN);
+    }
+
+    public static AccountNotFoundException notFoundById() {
+        return new AccountNotFoundException(ACCOUNT_NOT_FOUND_BY_ID);
+    }
+
+    private AccountNotFoundException(String string) {
+        super(string, Response.Status.NOT_FOUND);
     }
 }
