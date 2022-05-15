@@ -4,7 +4,7 @@ import jakarta.ws.rs.core.Response;
 
 public class DatabaseException extends AppBaseException{
 
-    private static final String DATABASE_ERROR = "Something went wrong in database";
+    private static final String DATABASE_ERROR = "server.error.appBase.databaseError";
 
     public DatabaseException() {
         super(DATABASE_ERROR, Response.Status.INTERNAL_SERVER_ERROR);
