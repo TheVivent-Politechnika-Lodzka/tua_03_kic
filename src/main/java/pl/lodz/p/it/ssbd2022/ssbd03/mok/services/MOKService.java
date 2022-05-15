@@ -29,6 +29,10 @@ import pl.lodz.p.it.ssbd2022.ssbd03.entities.Account;
 import pl.lodz.p.it.ssbd2022.ssbd03.interceptors.TrackerInterceptor;
 import pl.lodz.p.it.ssbd2022.ssbd03.mok.ejb.facades.ResetPasswordFacade;
 import pl.lodz.p.it.ssbd2022.ssbd03.security.JWTGenerator;
+import pl.lodz.p.it.ssbd2022.ssbd03.utils.PaginationData;
+
+import java.util.ArrayList;
+import java.util.List;
 import pl.lodz.p.it.ssbd2022.ssbd03.utils.HashAlgorithm;
 
 @Interceptors(TrackerInterceptor.class)
@@ -70,13 +74,13 @@ public class MOKService {
     public void deactivate(String login) {
         Account account = accountFacade.findByLogin(login);
         account.setActive(false);
-        accountFacade.edit(account);
+        accountFacade.unsafeEdit(account);
     }
 
     public void activate(String login) {
         Account account = accountFacade.findByLogin(login);
         account.setActive(true);
-        accountFacade.edit(account);
+        accountFacade.unsafeEdit(account);
     }
 
     public Account edit(String login, AccountWithAccessLevelsDto accountDto) {
@@ -90,8 +94,13 @@ public class MOKService {
             }
         }
 
-        accountFacade.edit(account);
+        accountFacade.edit(account, accountDto.getTag());
         return account;
+    }
+
+    public PaginationData findInRange(int page, int limit) {
+        PaginationData paginationData = accountFacade.findInRange(page, limit);
+        return paginationData;
     }
 
     // TODO: ZNALEŹĆ LEPSZY SPOSÓB
@@ -144,7 +153,7 @@ public class MOKService {
 
         }
         account.setPassword(hashAlgorithm.generate(newPassword.toCharArray()));
-        accountFacade.edit(account);
+        accountFacade.unsafeEdit(account);
     }
 
     public void reset(String login) {
@@ -167,8 +176,8 @@ public class MOKService {
         if(hashAlgorithm.verify(resetPasswordToken.getId().toString().toCharArray(), accountWithTokenDTO.getToken())) {
             Account account = accountFacade.findByLogin(accountWithTokenDTO.getLogin());
             account.setPassword(hashAlgorithm.generate(accountWithTokenDTO.getPassword().toCharArray()));
-            accountFacade.edit(account);
-            resetPasswordFacade.remove(resetPasswordToken);
+            accountFacade.unsafeEdit(account);
+            resetPasswordFacade.unsafeRemove(resetPasswordToken);
         }
     }
 

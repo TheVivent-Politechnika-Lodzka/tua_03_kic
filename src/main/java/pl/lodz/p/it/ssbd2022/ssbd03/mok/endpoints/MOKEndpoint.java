@@ -19,6 +19,10 @@ import pl.lodz.p.it.ssbd2022.ssbd03.mappers.AccountMapper;
 import pl.lodz.p.it.ssbd2022.ssbd03.mok.dto.*;
 import pl.lodz.p.it.ssbd2022.ssbd03.mok.services.MOKService;
 import pl.lodz.p.it.ssbd2022.ssbd03.security.AuthContext;
+import pl.lodz.p.it.ssbd2022.ssbd03.utils.PaginationData;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Stateless
 @Path("mok")
@@ -82,7 +86,7 @@ public class MOKEndpoint {
 
     @PUT
     @Consumes(MediaType.APPLICATION_JSON)
-    @RolesAllowed({ "ADMINISTRATOR", "SPECIALIST", "CLIENT" })
+    @RolesAllowed({"ADMINISTRATOR", "SPECIALIST", "CLIENT"})
     @Path("/edit")
     public AccountWithAccessLevelsDto editOwnAccount(AccountWithAccessLevelsDto accountEditDto) {
         Account currentUser = authContext.getCurrentUser();
@@ -111,10 +115,35 @@ public class MOKEndpoint {
     }
 
     @GET
+    @Path("/account/{login}")
+    @Produces(MediaType.APPLICATION_JSON)
+    @PermitAll
+    public Response findByLogin(@PathParam("login") String login) {
+        Account account = mokService.findByLogin(login);
+        return Response.ok().entity(accountMapper.createAccountWithAccessLevelsDtoFromAccount(account)).build();
+    }
+
+    @GET
+    @Path("/account")
+    @Produces(MediaType.APPLICATION_JSON)
+    @RolesAllowed("ADMINISTRATOR")
+    public Response findInRange(@QueryParam("page") int page, @QueryParam("limit") int limit) {
+        PaginationData paginationData = mokService.findInRange(page, limit);
+        List<Account> accounts = paginationData.getData();
+        List<AccountWithAccessLevelsDto> accountsDTO = new ArrayList<>();
+        for (Account account : accounts) {
+            accountsDTO.add(accountMapper.createAccountWithAccessLevelsDtoFromAccount(account));
+        }
+        paginationData.setData(accountsDTO);
+        return Response.ok().entity(paginationData).build();
+    }
+
+
+    @GET
     @Produces(MediaType.APPLICATION_JSON)
     @PermitAll
     @Path(("/ping"))
-    public Response test(){
+    public Response test() {
         return Response.ok("pong").build();
     }
 

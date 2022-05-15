@@ -64,7 +64,7 @@ public class Account extends AbstractEntity implements Serializable {
     @Getter @Setter
     private boolean active;
 
-    @OneToMany(cascade = {CascadeType.REMOVE, CascadeType.PERSIST}, mappedBy = "account")
+    @OneToMany(fetch = FetchType.EAGER, cascade = {CascadeType.REMOVE, CascadeType.PERSIST}, mappedBy = "account")
     @Getter
     private Collection<AccessLevel> accessLevelCollection = new ArrayList<>();
 
@@ -104,6 +104,7 @@ public class Account extends AbstractEntity implements Serializable {
     @Column(name = "last_name", table = "account_details", nullable = false, length = 30)
     @Getter @Setter
     private String lastName;
+
 
     @Basic(optional = false)
     @Column(name = "email", table = "account_details", nullable = false, length = 128)
