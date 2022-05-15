@@ -14,6 +14,7 @@ import jakarta.validation.Valid;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
+import pl.lodz.p.it.ssbd2022.ssbd03.common.TaggedDto;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.Account;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.access_levels.AccessLevel;
 import pl.lodz.p.it.ssbd2022.ssbd03.mappers.AccessLevelMapper;
@@ -127,11 +128,11 @@ public class MOKEndpoint {
         return Response.ok().build();
     }
 
-    @GET
+    @PATCH
     @Path("/activate/{login}")
     @RolesAllowed("ADMINISTRATOR")
-    public Response activate(@PathParam("login") String login) {
-        mokService.activate(login);
+    public Response activate(@PathParam("login") String login, TaggedDto dto) {
+        mokService.activate(login, dto.getTag());
         return Response.ok().build();
     }
 

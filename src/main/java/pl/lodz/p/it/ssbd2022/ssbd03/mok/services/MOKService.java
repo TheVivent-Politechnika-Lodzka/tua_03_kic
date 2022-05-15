@@ -86,10 +86,10 @@ public class MOKService {
         accountFacade.unsafeEdit(account);
     }
 
-    public void activate(String login) {
+    public void activate(String login, String tag) {
         Account account = accountFacade.findByLogin(login);
         account.setActive(true);
-        accountFacade.unsafeEdit(account);
+        accountFacade.edit(account, tag);
     }
 
     public Account edit(String login, AccountWithAccessLevelsDto accountDto) {
