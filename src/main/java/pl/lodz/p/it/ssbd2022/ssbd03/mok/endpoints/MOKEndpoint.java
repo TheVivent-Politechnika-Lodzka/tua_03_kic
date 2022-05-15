@@ -180,7 +180,7 @@ public class MOKEndpoint {
     public Response changeOwnPassword(@Valid ChangePasswordDto changePasswordDto) {
         String principal = authContext.getCurrentUserLogin();
 
-        mokService.changeOwnPassword(principal, changePasswordDto.getNewPassword(),changePasswordDto.getOldPassword());
+        mokService.changePassword(principal, changePasswordDto.getNewPassword(),changePasswordDto.getOldPassword());
         return Response.ok().build();
     }
 }
