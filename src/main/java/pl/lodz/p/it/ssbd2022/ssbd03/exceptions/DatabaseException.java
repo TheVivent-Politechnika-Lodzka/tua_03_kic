@@ -2,6 +2,9 @@ package pl.lodz.p.it.ssbd2022.ssbd03.exceptions;
 
 import jakarta.ws.rs.core.Response;
 
+/**
+ * Wyjątek reprezentujący błąd związany z bazą danych
+ */
 public class DatabaseException extends AppBaseException{
 
     private static final String DATABASE_ERROR = "server.error.appBase.databaseError";

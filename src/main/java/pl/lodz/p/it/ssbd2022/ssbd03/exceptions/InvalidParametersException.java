@@ -2,6 +2,9 @@ package pl.lodz.p.it.ssbd2022.ssbd03.exceptions;
 
 import jakarta.ws.rs.core.Response;
 
+/**
+ * Wyjątek reprezentujący błąd związany z niepoprawnie podanymi parametrami w żądaniu
+ */
 public class InvalidParametersException extends AppBaseException {
 
     private static final String INVALID_PARAMETERS = "server.error.appBase.invalidParameters";
