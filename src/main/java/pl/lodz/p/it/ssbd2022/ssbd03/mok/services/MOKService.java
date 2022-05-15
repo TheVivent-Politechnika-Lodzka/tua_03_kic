@@ -74,13 +74,13 @@ public class MOKService {
     public void deactivate(String login) {
         Account account = accountFacade.findByLogin(login);
         account.setActive(false);
-        accountFacade.edit(account);
+        accountFacade.unsafeEdit(account);
     }
 
     public void activate(String login) {
         Account account = accountFacade.findByLogin(login);
         account.setActive(true);
-        accountFacade.edit(account);
+        accountFacade.unsafeEdit(account);
     }
 
     public Account edit(String login, AccountWithAccessLevelsDto accountDto) {
@@ -94,7 +94,7 @@ public class MOKService {
             }
         }
 
-        accountFacade.edit(account);
+        accountFacade.edit(account, accountDto.getTag());
         return account;
     }
 
@@ -153,7 +153,7 @@ public class MOKService {
 
         }
         account.setPassword(hashAlgorithm.generate(newPassword.toCharArray()));
-        accountFacade.edit(account);
+        accountFacade.unsafeEdit(account);
     }
 
     public void reset(String login) {
@@ -176,8 +176,8 @@ public class MOKService {
         if(hashAlgorithm.verify(resetPasswordToken.getId().toString().toCharArray(), accountWithTokenDTO.getToken())) {
             Account account = accountFacade.findByLogin(accountWithTokenDTO.getLogin());
             account.setPassword(hashAlgorithm.generate(accountWithTokenDTO.getPassword().toCharArray()));
-            accountFacade.edit(account);
-            resetPasswordFacade.remove(resetPasswordToken);
+            accountFacade.unsafeEdit(account);
+            resetPasswordFacade.unsafeRemove(resetPasswordToken);
         }
     }
 

@@ -1,14 +1,16 @@
 package pl.lodz.p.it.ssbd2022.ssbd03.common;
 
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.OptimisticLockException;
 import jakarta.persistence.PersistenceException;
 import jakarta.persistence.criteria.CriteriaQuery;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.DatabaseException;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.InvalidParametersException;
+import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.database.InAppOptimisticLockException;
+import pl.lodz.p.it.ssbd2022.ssbd03.utils.HashAlgorithm;
 import pl.lodz.p.it.ssbd2022.ssbd03.utils.PaginationData;
 
 import java.util.List;
-
 
 public abstract class AbstractFacade<T> {
 
@@ -19,20 +21,51 @@ public abstract class AbstractFacade<T> {
     }
 
     protected abstract EntityManager getEntityManager();
+    protected abstract HashAlgorithm getHashAlgorithm();
 
     public void create(T entity) {
         getEntityManager().persist(entity);
         getEntityManager().flush();
     }
 
-    public void edit(T entity) {
-        getEntityManager().merge(entity);
-        getEntityManager().flush();
+    private void verifyTag(AbstractEntity entity, String tagFromDto){
+        String entityTag = getHashAlgorithm().generateDtoTag(
+                entity.getId(),
+                entity.getVersion()
+        );
+        if (!entityTag.equals(tagFromDto))
+            throw new InAppOptimisticLockException();
     }
 
-    public void remove(T entity) {
+    public void edit(T entity, String tagFromDto){
+        if (entity instanceof AbstractEntity abstractEntity)
+            verifyTag(abstractEntity, tagFromDto);
+        unsafeEdit(entity);
+    }
+
+    public void unsafeEdit(T entity){
+        try {
+            getEntityManager().merge(entity);
+            getEntityManager().flush();
+        } catch (OptimisticLockException e){
+            throw new InAppOptimisticLockException(e);
+        }
+    }
+
+    public void remove(T entity, String tagFromDto){
+        if (entity instanceof AbstractEntity abstractEntity)
+            verifyTag(abstractEntity, tagFromDto);
+        unsafeRemove(entity);
+    }
+
+    public void unsafeRemove(T entity){
+        try {
         getEntityManager().remove(entity);
         getEntityManager().flush();
+        } catch (OptimisticLockException e){
+            throw new InAppOptimisticLockException(e);
+        }
+
     }
 
     public T find(Object id) {
@@ -49,7 +82,7 @@ public abstract class AbstractFacade<T> {
      *
      * Zwraca listę encji danego typu z bazy danych, które zostały wcześniej stronicowane.
      *
-     * @param pageNumber Numer strony
+     * @param pageNumber Numer strony (startuje od 1)
      * @param perPage Ilość encji, które mają zostać zwrócone
      * @return Encje, wraz z ich całkowitą ilością (jako liczba)
      * @throws InvalidParametersException, gdy podano niepoprawną wartość parametru

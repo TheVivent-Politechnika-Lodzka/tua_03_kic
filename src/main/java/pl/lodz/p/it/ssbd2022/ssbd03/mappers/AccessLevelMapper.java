@@ -25,7 +25,7 @@ public class AccessLevelMapper {
     }
 
     public DataAdministratorDto createDataAdministratorDtoFromEntity(DataAdministrator dataAdministratort) {
-        return new DataAdministratorDto(dataAdministratort.getPhoneNumber(), dataAdministratort.getContactEmail());
+        return new DataAdministratorDto(dataAdministratort.getContactEmail(), dataAdministratort.getPhoneNumber());
     }
 
     public DataSpecialistDto createDataSpecialistDtoFromEntity(DataSpecialist dataSpecialist) {
