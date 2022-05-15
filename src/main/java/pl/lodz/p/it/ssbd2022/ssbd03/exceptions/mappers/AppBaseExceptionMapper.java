@@ -12,9 +12,10 @@ import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.AppBaseException;
 public class AppBaseExceptionMapper implements ExceptionMapper<AppBaseException> {
 
     /**
-     *
-     * @param e
-     * @return
+     * Metoda zwracająca odpowiedź w przypadku wyrzuconego wyjątki
+     * Zwraca status kodu HTTP, wiadomość wyjątku oraz przyczynę (o ile nie jest ona wartością pustą)
+     * @param e Wyrzucony wyjątek w aplikacji
+     * @return Odpowiedź HTTP serwera
      */
     @Override
     public Response toResponse(AppBaseException e) {
