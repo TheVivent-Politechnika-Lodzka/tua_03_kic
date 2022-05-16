@@ -30,7 +30,7 @@ public class RegisterClientAccountDto {
     private String lastName;
 
     @NotNull
-    private String phone_number;
+    private String phoneNumber;
 
     @NotNull
     private String pesel;

@@ -106,8 +106,8 @@ const api = createApi({
       }),
     }),
 
-    changeOwnPassword: builder.mutation<string, ChangeOwnPasswordDto>({
-      query: (changeOwnPasswordDto: ChangeOwnPasswordDto) => ({
+    changeOwnPassword: builder.mutation<string, ChangePasswordDto>({
+      query: (changeOwnPasswordDto: ChangePasswordDto) => ({
         url: "/mok/password",
         method: "PUT",
         body: changeOwnPasswordDto,
@@ -177,6 +177,5 @@ export const {
   useChangeOwnPasswordMutation,
   useRegisterClientAccountMutation,
   useActiveAccountMutation,
-  useRegisterClientAccountMutation,
   useGetOwnAccountDetailsQuery
 } = api;
