@@ -137,6 +137,16 @@ public class MOKEndpoint {
     }
 
     @GET
+    @Path(("/account"))
+    @Produces(MediaType.APPLICATION_JSON)
+    @RolesAllowed({"ADMINISTRATOR", "SPECIALIST", "CLIENT"})
+    public Response accountDetails(){
+        String user = authContext.getCurrentUserLogin();
+        Account account = mokService.findByLogin(user);
+        return Response.ok().entity(accountMapper.createAccountWithAccessLevelsDtoFromAccount(account)).build();
+    }
+
+    @GET
     @Path("/account/{login}")
     @Produces(MediaType.APPLICATION_JSON)
     @PermitAll
@@ -146,7 +156,7 @@ public class MOKEndpoint {
     }
 
     @GET
-    @Path("/account")
+    @Path("/accounts")
     @Produces(MediaType.APPLICATION_JSON)
     @RolesAllowed("ADMINISTRATOR")
     public Response findInRange(@QueryParam("page") int page, @QueryParam("limit") int limit) {
