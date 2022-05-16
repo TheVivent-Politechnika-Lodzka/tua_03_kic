@@ -42,7 +42,7 @@ public class StartupConfig {
 
 
         DataAdministrator dataAdministrator = new DataAdministrator();
-        dataAdministrator.setPhoneNumber("000-000-000");
+        dataAdministrator.setPhoneNumber("000000000");
         dataAdministrator.setContactEmail("administrator@kic.agency");
 
         admin.addAccessLevel(dataAdministrator);
@@ -60,10 +60,10 @@ public class StartupConfig {
         admin.setEmail("szurySSBD2@gmail.com");
 
         DataAdministrator dataAdministrator = new DataAdministrator();
-        dataAdministrator.setPhoneNumber("111-111-111");
+        dataAdministrator.setPhoneNumber("111111111");
         dataAdministrator.setContactEmail("specadmin@kic.agency");
         DataSpecialist dataSpecialist = new DataSpecialist();
-        dataSpecialist.setPhoneNumber("111-111-111");
+        dataSpecialist.setPhoneNumber("111111111");
         dataSpecialist.setContactEmail("specadmin@kic.agency");
 
         admin.addAccessLevel(dataAdministrator);
@@ -82,12 +82,12 @@ public class StartupConfig {
         admin.setEmail("szurySSBD3@gmail.com");
 
         DataAdministrator dataAdministrator = new DataAdministrator();
-        dataAdministrator.setPhoneNumber("222-222-222");
+        dataAdministrator.setPhoneNumber("222222222");
         dataAdministrator.setContactEmail("klientadmin@kic.agency");
 
         DataClient dataClient = new DataClient();
         dataClient.setPesel("22222222222");
-        dataClient.setPhoneNumber("222-222-222");
+        dataClient.setPhoneNumber("222222222");
 
         admin.addAccessLevel(dataAdministrator);
         admin.addAccessLevel(dataClient);
