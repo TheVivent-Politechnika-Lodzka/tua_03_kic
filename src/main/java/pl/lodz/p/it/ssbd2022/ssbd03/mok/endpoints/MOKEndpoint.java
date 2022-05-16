@@ -139,7 +139,7 @@ public class MOKEndpoint {
     @GET
     @Path(("/account"))
     @Produces(MediaType.APPLICATION_JSON)
-    @RolesAllowed({"ADMINISTRATOR", "SPECIALIST", "CLIENT"})
+    @PermitAll
     public Response accountDetails(){
         String user = authContext.getCurrentUserLogin();
         Account account = mokService.findByLogin(user);
