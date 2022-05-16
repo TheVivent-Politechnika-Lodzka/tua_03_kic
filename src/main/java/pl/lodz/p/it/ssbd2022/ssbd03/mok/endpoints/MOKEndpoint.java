@@ -175,7 +175,7 @@ public class MOKEndpoint {
     public Response changeOwnPassword(@Valid ChangeOwnPasswordDto changeOwnPasswordDto) {
         String principal = authContext.getCurrentUserLogin();
 
-        mokService.changePassword(principal, changeOwnPasswordDto.getNewPassword(), changeOwnPasswordDto.getOldPassword());
+        mokService.changeOwnPassword(principal, changeOwnPasswordDto.getNewPassword(), changeOwnPasswordDto.getOldPassword());
         return Response.ok().build();
     }
 
@@ -183,8 +183,8 @@ public class MOKEndpoint {
     @Path("/password/{login}")
     @Consumes(MediaType.APPLICATION_JSON)
     @RolesAllowed("ADMINISTRATOR")
-    public Response changeAccountPassword(@PathParam(value = "login") String login, @Valid ChangeOwnPasswordDto changeOwnPasswordDto) {
-        mokService.changePassword(login, changeOwnPasswordDto.getNewPassword(), changeOwnPasswordDto.getOldPassword());
+    public Response changeAccountPassword(@PathParam(value = "login") String login, @Valid ChangeAccountPasswordDto changeAccountPasswordDto) {
+        mokService.changeAccountPassword(login, changeAccountPasswordDto.getNewPassword());
         return Response.ok().build();
     }
 

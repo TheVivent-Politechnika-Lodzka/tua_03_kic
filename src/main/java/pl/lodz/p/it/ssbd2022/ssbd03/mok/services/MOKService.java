@@ -144,15 +144,29 @@ public class MOKService {
 
     }
 
-    public void changePassword(String login, String newPassword, String oldPassword) {
+    public void changeOwnPassword(String login, String newPassword, String oldPassword) {
         Account account = accountFacade.findByLogin(login);
         if (account == null) {
             throw AccountNotFoundException.notFoundByLogin();
         }
 
-        if (oldPassword == null || !hashAlgorithm.verify(oldPassword.toCharArray(), account.getPassword())) {
+        if (!hashAlgorithm.verify(oldPassword.toCharArray(), account.getPassword())) {
             throw new AccountPasswordMatchException();
         }
+        if(hashAlgorithm.verify(newPassword.toCharArray(),account.getPassword())){
+            throw new AccountPasswordIsTheSameException();
+
+        }
+        account.setPassword(hashAlgorithm.generate(newPassword.toCharArray()));
+        accountFacade.unsafeEdit(account);
+    }
+
+    public void changeAccountPassword(String login, String newPassword) {
+        Account account = accountFacade.findByLogin(login);
+        if (account == null) {
+            throw AccountNotFoundException.notFoundByLogin();
+        }
+
         if(hashAlgorithm.verify(newPassword.toCharArray(),account.getPassword())){
             throw new AccountPasswordIsTheSameException();
 
