@@ -38,8 +38,9 @@ public abstract class AbstractEntity {
 
     @PrePersist
     public void prePersist() {
-        createdAt = Instant.now();
-        lastModified = Instant.now();
+        Instant start = Instant.now();
+        createdAt = start;
+        lastModified = start;
     }
 
     @PreUpdate
