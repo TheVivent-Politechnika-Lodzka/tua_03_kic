@@ -15,7 +15,6 @@ import pl.lodz.p.it.ssbd2022.ssbd03.entities.access_levels.AccessLevel;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.access_levels.DataAdministrator;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.access_levels.DataClient;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.access_levels.DataSpecialist;
-import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.access_level.AccessLevelExistsException;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.access_level.AccessLevelViolationException;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.account.AccountNotFoundException;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.account.AccountPasswordIsTheSameException;
@@ -35,8 +34,6 @@ import pl.lodz.p.it.ssbd2022.ssbd03.mok.ejb.facades.ResetPasswordFacade;
 import pl.lodz.p.it.ssbd2022.ssbd03.security.JWTGenerator;
 import pl.lodz.p.it.ssbd2022.ssbd03.utils.PaginationData;
 
-import java.util.ArrayList;
-import java.util.List;
 import pl.lodz.p.it.ssbd2022.ssbd03.utils.HashAlgorithm;
 
 @Interceptors(TrackerInterceptor.class)
@@ -146,18 +143,17 @@ public class MOKService {
         }
 
     }
-    public void changeOwnPassword(String login, String newPassword, String oldPassword) {
+
+    public void changePassword(String login, String newPassword, String oldPassword) {
         Account account = accountFacade.findByLogin(login);
         if (account == null) {
             throw AccountNotFoundException.notFoundByLogin();
         }
 
         if (oldPassword == null || !hashAlgorithm.verify(oldPassword.toCharArray(), account.getPassword())) {
-            //przemyslec budowanie wyjatkow
             throw new AccountPasswordMatchException();
         }
         if(hashAlgorithm.verify(newPassword.toCharArray(),account.getPassword())){
-            //przemyslec budowanie wyjatkow
             throw new AccountPasswordIsTheSameException();
 
         }

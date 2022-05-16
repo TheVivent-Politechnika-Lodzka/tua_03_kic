@@ -39,7 +39,6 @@ public class AccessLevelFacade extends AbstractFacade<AccessLevel> {
         }
         catch (ConstraintViolationException e){
             if (e.getConstraintName().contains(AccessLevel.CONSTRAINT_ACCESS_LEVEL_FOR_ACCOUNT_UNIQUE)) {
-                System.out.println("the fuck");
                 throw new AccessLevelExistsException();
             }
 

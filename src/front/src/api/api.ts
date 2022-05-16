@@ -6,12 +6,17 @@ import {
   AccessLevelDto,
   AccountDto,
   AccountWithAccessLevelDto,
-  ChangeOwnPasswordDto,
+  ChangePasswordDto,
 } from "./types/mok.dto";
 
 interface addAccessLevelData {
   login: string;
   accessLevel: AccessLevelDto;
+}
+
+interface changeAccountPassword {
+  login: string;
+  changePassword: ChangePasswordDto;
 }
 
 // TODO przenieść do .env / package.json
@@ -86,15 +91,24 @@ const api = createApi({
       }),
     }),
 
-    changeOwnPassword: builder.mutation<string, ChangeOwnPasswordDto>({
-      query: (changeOwnPasswordDto: ChangeOwnPasswordDto) => ({
+    changeOwnPassword: builder.mutation<string, ChangePasswordDto>({
+      query: (changeOwnPasswordDto: ChangePasswordDto) => ({
         url: "/mok/password",
-        method: "PUT",
+        method: "PATCH",
         body: changeOwnPasswordDto,
         responseHandler: async (response) => {
-          if (response.ok) {
-            return response.status;
-          }
+          return response.status;
+        },
+      }),
+    }),
+
+    changeAccountPassword: builder.mutation<string, changeAccountPassword>({
+      query: ({ login, changePassword }: changeAccountPassword) => ({
+        url: `/mok/password/${login}`,
+        method: "PATCH",
+        body: changePassword,
+        responseHandler: async (response) => {
+          return response.status;
         },
       }),
     }),
@@ -117,5 +131,6 @@ export const {
   useFindAllUsersMutation,
   useEditOwnAccountMutation,
   useGetAccountByLoginMutation,
+  useChangeAccountPasswordMutation,
   useChangeOwnPasswordMutation,
 } = api;

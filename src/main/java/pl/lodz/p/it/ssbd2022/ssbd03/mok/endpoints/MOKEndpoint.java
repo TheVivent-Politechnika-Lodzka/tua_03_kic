@@ -21,10 +21,6 @@ import pl.lodz.p.it.ssbd2022.ssbd03.mappers.AccessLevelMapper;
 import pl.lodz.p.it.ssbd2022.ssbd03.mappers.AccountMapper;
 import pl.lodz.p.it.ssbd2022.ssbd03.mok.dto.*;
 import pl.lodz.p.it.ssbd2022.ssbd03.mok.dto.access_levels.AccessLevelDto;
-import pl.lodz.p.it.ssbd2022.ssbd03.mok.dto.AccountWithAccessLevelsDto;
-import pl.lodz.p.it.ssbd2022.ssbd03.mok.dto.ChangePasswordDto;
-import pl.lodz.p.it.ssbd2022.ssbd03.mok.dto.CredentialDto;
-import pl.lodz.p.it.ssbd2022.ssbd03.mok.dto.ResetPasswordDTO;
 import pl.lodz.p.it.ssbd2022.ssbd03.mok.services.MOKService;
 import pl.lodz.p.it.ssbd2022.ssbd03.security.AuthContext;
 import pl.lodz.p.it.ssbd2022.ssbd03.utils.PaginationData;
@@ -159,10 +155,28 @@ public class MOKEndpoint {
         }
         paginationData.setData(accountsDTO);
         return Response.ok().entity(paginationData).build();
-
-
+        
     }
 
+    @PATCH
+    @Path("/password")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @PermitAll
+    public Response changeOwnPassword(@Valid ChangePasswordDto changePasswordDto) {
+        String principal = authContext.getCurrentUserLogin();
+
+        mokService.changePassword(principal, changePasswordDto.getNewPassword(), changePasswordDto.getOldPassword());
+        return Response.ok().build();
+    }
+
+    @PATCH
+    @Path("/password/{login}")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @RolesAllowed("ADMINISTRATOR")
+    public Response changeAccountPassword(@PathParam(value = "login") String login, @Valid ChangePasswordDto changePasswordDto) {
+        mokService.changePassword(login, changePasswordDto.getNewPassword(), changePasswordDto.getOldPassword());
+        return Response.ok().build();
+    }
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
@@ -170,18 +184,5 @@ public class MOKEndpoint {
     @Path(("/ping"))
     public Response test() {
         return Response.ok("pong").build();
-    }
-
-
-    //self
-    @PUT
-    @Consumes(MediaType.APPLICATION_JSON)
-    @PermitAll
-    @Path("/password")
-    public Response changeOwnPassword(@Valid ChangePasswordDto changePasswordDto) {
-        String principal = authContext.getCurrentUserLogin();
-
-        mokService.changeOwnPassword(principal, changePasswordDto.getNewPassword(),changePasswordDto.getOldPassword());
-        return Response.ok().build();
     }
 }

@@ -10,7 +10,7 @@ export interface AccountDto extends Tag{
   confirmed: boolean;
 }
 
-export interface ChangeOwnPasswordDto {
+export interface ChangePasswordDto {
   oldPassword: string;
   newPassword: string;
 }
