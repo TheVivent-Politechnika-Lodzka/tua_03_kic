@@ -8,6 +8,7 @@ import {
   AccountWithAccessLevelDto,
   ClientAccountDto,
   ChangePasswordDto,
+  ActiveAccountDto,
 } from "./types/mok.dto";
 
 interface addAccessLevelData {
@@ -105,10 +106,10 @@ const api = createApi({
       }),
     }),
 
-    changeOwnPassword: builder.mutation<string, ChangePasswordDto>({
-      query: (changeOwnPasswordDto: ChangePasswordDto) => ({
+    changeOwnPassword: builder.mutation<string, ChangeOwnPasswordDto>({
+      query: (changeOwnPasswordDto: ChangeOwnPasswordDto) => ({
         url: "/mok/password",
-        method: "PATCH",
+        method: "PUT",
         body: changeOwnPasswordDto,
         responseHandler: async (response) => {
           return response.status;
@@ -140,6 +141,18 @@ const api = createApi({
       }),
     }),
 
+    activeAccount: builder.mutation<string, ActiveAccountDto>({
+      query: (activeAccountDto: ActiveAccountDto) => ({
+        url: "/mok/activeAccount",
+        method: "POST",
+        body: activeAccountDto,
+        responseHandler: async (response) => {
+          if (response.ok) {
+            return response.status;
+          }
+        },
+      }),
+    }),
 
 
 
@@ -162,6 +175,8 @@ export const {
   useGetAccountByLoginMutation,
   useChangeAccountPasswordMutation,
   useChangeOwnPasswordMutation,
+  useRegisterClientAccountMutation,
+  useActiveAccountMutation,
   useRegisterClientAccountMutation,
   useGetOwnAccountDetailsQuery
 } = api;

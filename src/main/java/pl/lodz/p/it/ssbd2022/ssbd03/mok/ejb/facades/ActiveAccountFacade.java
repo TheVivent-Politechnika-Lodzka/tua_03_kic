@@ -40,7 +40,7 @@ public class ActiveAccountFacade extends AbstractFacade<ActiveAccountToken> {
         super.create(entity);
     }
 
-    public ActiveAccountToken findActivePasswordToken(String login){
+    public ActiveAccountToken findToken(String login){
         TypedQuery<ActiveAccountToken> typedQuery = em.createNamedQuery("ActiveAccountToken.findByLogin", ActiveAccountToken.class);
         typedQuery.setParameter("login", login);
         return typedQuery.getSingleResult();

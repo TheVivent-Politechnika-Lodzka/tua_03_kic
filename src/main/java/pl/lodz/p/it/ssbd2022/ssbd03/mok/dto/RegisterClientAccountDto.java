@@ -11,7 +11,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class CreateClientAccountDto extends AccountDto {
+public class RegisterClientAccountDto {
 
     @NotNull
     private String password;
@@ -30,13 +30,7 @@ public class CreateClientAccountDto extends AccountDto {
     private String lastName;
 
     @NotNull
-    private boolean isActive;
-
-    @NotNull
-    private boolean isConfirmed;
-
-    @NotNull
-    private String phoneNumber;
+    private String phone_number;
 
     @NotNull
     private String pesel;

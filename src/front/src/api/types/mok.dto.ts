@@ -41,3 +41,7 @@ export interface AccountWithAccessLevelDto extends Tag{
   active : boolean
   accessLevels: AccessLevelDto[];
 }
+
+export interface ActiveAccountDto {
+  token: string;
+}

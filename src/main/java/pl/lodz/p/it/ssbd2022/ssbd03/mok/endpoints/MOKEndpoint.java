@@ -69,11 +69,11 @@ public class MOKEndpoint {
         return Response.ok().build();
     }
 
-    @POST
+    @PUT
     @Consumes(MediaType.APPLICATION_JSON)
     @PermitAll
     @Path("/register")
-    public Response createAccountClient(CreateClientAccountDto accountDto) {
+    public Response registerClientAccount(RegisterClientAccountDto accountDto) {
         Account account = accountMapper.createAccountfromCreateClientAccountDto(accountDto);
         mokService.registerClientAccount(account);
         return Response.ok().build();
