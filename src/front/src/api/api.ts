@@ -7,6 +7,7 @@ import {
   AccountWithAccessLevelDto,
   ChangeOwnPasswordDto,
   ClientAccountDto,
+  ActiveAccountDto,
 } from "./types/mok.dto";
 
 // TODO przenieść do .env / package.json
@@ -107,10 +108,18 @@ const api = createApi({
       }),
     }),
 
-  
-
-
-
+    activeAccount: builder.mutation<string, ActiveAccountDto>({
+      query: (activeAccountDto: ActiveAccountDto) => ({
+        url: "/mok/activeAccount",
+        method: "POST",
+        body: activeAccountDto,
+        responseHandler: async (response) => {
+          if (response.ok) {
+            return response.status;
+          }
+        },
+      }),
+    }),
   }),
 });
 
@@ -120,5 +129,6 @@ export const {
   useEditOwnAccountMutation,
   useGetAccountByLoginMutation,
   useChangeOwnPasswordMutation,
-  useRegisterClientAccountMutation
+  useRegisterClientAccountMutation,
+  useActiveAccountMutation,
 } = api;

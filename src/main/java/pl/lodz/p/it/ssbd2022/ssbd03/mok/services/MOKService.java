@@ -203,9 +203,8 @@ public class MOKService {
         emailConfig.sendEmail(
                 account.getEmail(),
                 "Active account - KIC",
-                "Your link to active account: \n"
-                        + "localhost:8181/activeAccount/"
-                        + token);
+                "Your link to active account: https://localhost:8181/active \n"
+                        + "Token: " + token);
     }
 
     public void confirm(String token) {
