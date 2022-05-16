@@ -22,6 +22,7 @@ import pl.lodz.p.it.ssbd2022.ssbd03.entities.access_levels.DataSpecialist;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.account.AccountNotFoundException;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.account.AccountPasswordIsTheSameException;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.account.AccountPasswordMatchException;
+import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.account.TokenExpierdException;
 import pl.lodz.p.it.ssbd2022.ssbd03.mok.dto.AccountWithAccessLevelsDto;
 import pl.lodz.p.it.ssbd2022.ssbd03.mok.dto.ResetPasswordDTO;
 import pl.lodz.p.it.ssbd2022.ssbd03.mok.dto.access_levels.AccessLevelDto;
@@ -209,6 +210,7 @@ public class MOKService {
 
     public void confirm(String token) {
         Claims claims = jwtGenerator.decodeJWT(token);
+        if(claims.getExpiration().before(new Date())) throw new TokenExpierdException();
         Account account = accountFacade.findByLogin(claims.getSubject());
         account.setConfirmed(true);
         accountFacade.unsafeEdit(account);
