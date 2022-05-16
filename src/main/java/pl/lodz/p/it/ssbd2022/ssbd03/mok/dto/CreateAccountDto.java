@@ -7,31 +7,30 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Getter @Setter
+import java.util.Locale;
+
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 public class CreateAccountDto extends AccountDto {
 
     @NotNull
     private String password;
-
     @NotNull
     private String login;
-
+    @NotNull
+    private String firstName;
+    @NotNull
+    private String lastName;
+    @NotNull
+    private boolean isActive;
+    @NotNull
+    private boolean isConfirmed;
     @NotNull
     @Email
     private String email;
-
     @NotNull
-    private String firstName;
-
-    @NotNull
-    private String lastName;
-
-    @NotNull
-    private boolean isActive;
-
-    @NotNull
-    private boolean isConfirmed;
+    private Locale language;
 
 }

@@ -8,6 +8,7 @@ import pl.lodz.p.it.ssbd2022.ssbd03.mok.dto.access_levels.AccessLevelDto;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 @Getter @Setter
 @NoArgsConstructor
@@ -24,6 +25,8 @@ public class AccountWithAccessLevelsDto extends TaggedDto {
     private boolean isActive;
     @NotNull
     private boolean isConfirmed;
+    @NotNull
+    private Locale language;
 
 
     private List<AccessLevelDto> accessLevels = new ArrayList<>();
