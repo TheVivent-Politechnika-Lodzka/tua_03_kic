@@ -9,7 +9,7 @@ import pl.lodz.p.it.ssbd2022.ssbd03.entities.access_levels.DataClient;
 import pl.lodz.p.it.ssbd2022.ssbd03.mok.dto.AccountDto;
 import pl.lodz.p.it.ssbd2022.ssbd03.mok.dto.AccountWithAccessLevelsDto;
 import pl.lodz.p.it.ssbd2022.ssbd03.mok.dto.CreateAccountDto;
-import pl.lodz.p.it.ssbd2022.ssbd03.mok.dto.CreateClientAccountDto;
+import pl.lodz.p.it.ssbd2022.ssbd03.mok.dto.RegisterClientAccountDto;
 import pl.lodz.p.it.ssbd2022.ssbd03.mok.dto.access_levels.AccessLevelDto;
 import pl.lodz.p.it.ssbd2022.ssbd03.utils.HashAlgorithm;
 @Stateless
@@ -34,18 +34,18 @@ public class AccountMapper {
         return account;
     }
 
-    public Account createAccountfromCreateClientAccountDto(CreateClientAccountDto createClientAccountDto) {
+    public Account createAccountfromCreateClientAccountDto(RegisterClientAccountDto registerClientAccountDto) {
         Account account = new Account();
-        account.setLogin(createClientAccountDto.getLogin());
-        account.setFirstName(createClientAccountDto.getFirstName());
-        account.setLastName(createClientAccountDto.getLastName());
-        account.setEmail(createClientAccountDto.getEmail());
-        account.setPassword(hashAlgorithm.generate(createClientAccountDto.getPassword().toCharArray()));
+        account.setLogin(registerClientAccountDto.getLogin());
+        account.setFirstName(registerClientAccountDto.getFirstName());
+        account.setLastName(registerClientAccountDto.getLastName());
+        account.setEmail(registerClientAccountDto.getEmail());
+        account.setPassword(hashAlgorithm.generate(registerClientAccountDto.getPassword().toCharArray()));
         account.setActive(true);
         account.setConfirmed(false);
         DataClient dataClient = new DataClient();
-        dataClient.setPesel(createClientAccountDto.getPesel());
-        dataClient.setPhoneNumber(createClientAccountDto.getPhone_number());
+        dataClient.setPesel(registerClientAccountDto.getPesel());
+        dataClient.setPhoneNumber(registerClientAccountDto.getPhone_number());
         account.addAccessLevel(dataClient);
         return account;
     }

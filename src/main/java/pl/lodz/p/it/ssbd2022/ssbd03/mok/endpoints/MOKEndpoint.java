@@ -14,9 +14,7 @@ import jakarta.validation.Valid;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
-import pl.lodz.p.it.ssbd2022.ssbd03.common.EmailConfig;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.Account;
-import pl.lodz.p.it.ssbd2022.ssbd03.entities.ActiveAccountToken;
 import pl.lodz.p.it.ssbd2022.ssbd03.mappers.AccountMapper;
 import pl.lodz.p.it.ssbd2022.ssbd03.mok.dto.*;
 import pl.lodz.p.it.ssbd2022.ssbd03.mok.services.MOKService;
@@ -52,11 +50,11 @@ public class MOKEndpoint {
         return Response.ok().build();
     }
 
-    @POST
+    @PUT
     @Consumes(MediaType.APPLICATION_JSON)
     @PermitAll
     @Path("/register")
-    public Response createAccountClient(CreateClientAccountDto accountDto) {
+    public Response registerClientAccount(RegisterClientAccountDto accountDto) {
         Account account = accountMapper.createAccountfromCreateClientAccountDto(accountDto);
         mokService.registerClientAccount(account);
         return Response.ok().build();

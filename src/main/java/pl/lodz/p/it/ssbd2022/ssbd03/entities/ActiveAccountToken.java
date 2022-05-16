@@ -9,7 +9,8 @@ import lombok.Setter;
 import pl.lodz.p.it.ssbd2022.ssbd03.common.AbstractEntity;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.time.Instant;
+
 
 @Entity
 @Table(
@@ -40,7 +41,7 @@ public class ActiveAccountToken extends AbstractEntity implements Serializable {
     @Basic(optional = false)
     @Column(name="expdate", nullable = false)
     @Getter
-    private Date expDate;
+    private Instant expDate;
 
 
 }

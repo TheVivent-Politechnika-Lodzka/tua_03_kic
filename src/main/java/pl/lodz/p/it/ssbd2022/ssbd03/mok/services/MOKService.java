@@ -37,9 +37,7 @@ import pl.lodz.p.it.ssbd2022.ssbd03.mok.ejb.facades.ResetPasswordFacade;
 import pl.lodz.p.it.ssbd2022.ssbd03.security.JWTGenerator;
 import pl.lodz.p.it.ssbd2022.ssbd03.utils.PaginationData;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.time.Instant;
 import pl.lodz.p.it.ssbd2022.ssbd03.utils.HashAlgorithm;
 
 @Interceptors(TrackerInterceptor.class)
@@ -194,10 +192,12 @@ public class MOKService {
         accountFacade.create(account);
     }
 
+    private final long HOUR = 60 * 60;
+
     public void registerClientAccount(Account account){
         accountFacade.create(account);
         String token = jwtGenerator.createJWTForEmail(account.getLogin());
-        Date date = new Date(new Date().getTime() + (60 * 60 * 1000));
+        Instant date = Instant.now().plusSeconds(HOUR);
         ActiveAccountToken activeAccountToken = new ActiveAccountToken(account,token,date);
         activeAccountFacade.create(activeAccountToken);
         emailConfig.sendEmail(
@@ -210,7 +210,7 @@ public class MOKService {
     public void confirm(String token) {
         Claims claims = jwtGenerator.decodeJWT(token);
         ActiveAccountToken activeAccountToken = activeAccountFacade.findToken(claims.getSubject());
-        if(activeAccountToken.getExpDate().before(new Date())) throw new TokenExpierdException();
+        if(activeAccountToken.getExpDate().isBefore(Instant.now())) throw new TokenExpierdException();
         Account account = accountFacade.findByLogin(claims.getSubject());
         account.setConfirmed(true);
         accountFacade.unsafeEdit(account);
