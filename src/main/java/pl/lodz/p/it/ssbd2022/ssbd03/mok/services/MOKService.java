@@ -209,7 +209,8 @@ public class MOKService {
 
     public void confirm(String token) {
         Claims claims = jwtGenerator.decodeJWT(token);
-        if(claims.getExpiration().before(new Date())) throw new TokenExpierdException();
+        ActiveAccountToken activeAccountToken = activeAccountFacade.findToken(claims.getSubject());
+        if(activeAccountToken.getExpDate().before(new Date())) throw new TokenExpierdException();
         Account account = accountFacade.findByLogin(claims.getSubject());
         account.setConfirmed(true);
         accountFacade.unsafeEdit(account);
