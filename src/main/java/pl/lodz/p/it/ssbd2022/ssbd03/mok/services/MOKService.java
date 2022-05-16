@@ -80,10 +80,10 @@ public class MOKService {
         return accountFacade.findByLogin(login);
     }
 
-    public void deactivate(String login) {
+    public void deactivate(String login, String tag) {
         Account account = accountFacade.findByLogin(login);
         account.setActive(false);
-        accountFacade.unsafeEdit(account);
+        accountFacade.edit(account, tag);
     }
 
     public void activate(String login, String tag) {

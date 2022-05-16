@@ -120,11 +120,11 @@ public class MOKEndpoint {
         return accountMapper.createAccountWithAccessLevelsDtoFromAccount(editedAccount);
     }
 
-    @GET
+    @PATCH
     @Path("/deactivate/{login}")
     @RolesAllowed("ADMINISTRATOR")
-    public Response deactivate(@PathParam("login") String login) {
-        mokService.deactivate(login);
+    public Response deactivate(@PathParam("login") String login, TaggedDto dto) {
+        mokService.deactivate(login, dto.getTag());
         return Response.ok().build();
     }
 
