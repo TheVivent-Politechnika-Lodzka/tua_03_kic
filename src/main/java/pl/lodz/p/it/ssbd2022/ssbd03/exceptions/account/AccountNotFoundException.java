@@ -12,10 +12,6 @@ public class AccountNotFoundException extends AppBaseException {
     private static final String ACCOUNT_NOT_FOUND_BY_LOGIN = "server.error.appBase.accountNotFoundByLogin";
     private static final String ACCOUNT_NOT_FOUND_BY_ID= "server.error.appBase.accountNotFoundById";
 
-    public AccountNotFoundException() {
-        super(ACCOUNT_NOT_FOUND, Response.Status.NOT_FOUND);
-    }
-
     /**
      * Metoda statyczna zwracająca wyjątek AccountNotFoundException
      * w przypadku gdy nie odnaleziono użytkownika z podanym loginem

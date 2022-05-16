@@ -9,6 +9,7 @@ import jakarta.json.stream.JsonParser;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.access_levels.DataAdministrator;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.access_levels.DataClient;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.access_levels.DataSpecialist;
+import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.SerializationDeserializationException;
 import pl.lodz.p.it.ssbd2022.ssbd03.mok.dto.AccountWithAccessLevelsDto;
 import pl.lodz.p.it.ssbd2022.ssbd03.mok.dto.access_levels.AccessLevelDto;
 import pl.lodz.p.it.ssbd2022.ssbd03.mok.dto.access_levels.DataAdministratorDto;
@@ -28,7 +29,7 @@ public class AccessLevelDeserializer implements JsonbDeserializer<AccessLevelDto
         try {
             return objectMapper.readValue(jsonObject.toString(), getAccessLevelClass(level));
         } catch (IOException e) {
-            throw new IllegalArgumentException("Cannot deserialize access level: " + level);
+            throw SerializationDeserializationException.deserializationError(level, e.getCause());
         }
     }
 
