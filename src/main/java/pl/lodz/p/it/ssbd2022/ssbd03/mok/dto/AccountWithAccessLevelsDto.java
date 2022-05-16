@@ -28,7 +28,6 @@ public class AccountWithAccessLevelsDto extends TaggedDto {
     @NotNull
     private Locale language;
 
-
     private List<AccessLevelDto> accessLevels = new ArrayList<>();
 
 }
