@@ -9,27 +9,25 @@ import java.util.Properties;
 
 @Stateless
 public class EmailConfig {
-    String from = "szury@kic.agency";
-    String host = "ssl0.ovh.net";
     Properties properties = System.getProperties();
 
     public void sendEmail(String to, String subject, String content) {
-        properties.put("mail.smtp.host", host);
-        properties.put("mail.smtp.port", "465");
-        properties.put("mail.smtp.ssl.enable", "true");
-        properties.put("mail.smtp.auth", "true");
+        properties.put("mail.smtp.host", Config.MAIL_SMTP_HOST);
+        properties.put("mail.smtp.port", Config.MAIL_SMTP_PORT);
+        properties.put("mail.smtp.ssl.enable", Config.MAIL_SMTP_SSL_ENABLE);
+        properties.put("mail.smtp.auth", Config.MAIL_SMTP_AUTH);
 
         Session session = Session.getInstance(properties, new Authenticator() {
             @Override
             protected PasswordAuthentication getPasswordAuthentication() {
-                return new PasswordAuthentication(from, "Password123!");
+                return new PasswordAuthentication(Config.MAIL_LOGIN, Config.MAIL_PASSWORD);
             }
         });
 
         session.setDebug(true);
         try {
             MimeMessage message = new MimeMessage(session);
-            message.setFrom(new InternetAddress(from));
+            message.setFrom(new InternetAddress(Config.MAIL_LOGIN));
             message.addRecipient(Message.RecipientType.TO, new InternetAddress(to));
 
             message.setSubject(subject);
