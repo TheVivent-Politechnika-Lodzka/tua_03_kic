@@ -123,6 +123,14 @@ const api = createApi({
         },
       }),
     }),
+
+    getOwnAccountDetails: builder.query<AccountWithAccessLevelDto ,void>({
+      query:() =>({url: '/mok/account',
+      responseHandler: async (response) => {
+        return await response.json();
+      },
+    })
+    })
   }),
 });
 
@@ -133,4 +141,5 @@ export const {
   useGetAccountByLoginMutation,
   useChangeAccountPasswordMutation,
   useChangeOwnPasswordMutation,
+  useGetOwnAccountDetailsQuery
 } = api;
