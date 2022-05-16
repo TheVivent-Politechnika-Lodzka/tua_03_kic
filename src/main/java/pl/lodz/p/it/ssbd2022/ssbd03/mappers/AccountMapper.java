@@ -2,7 +2,7 @@ package pl.lodz.p.it.ssbd2022.ssbd03.mappers;
 
 import jakarta.ejb.Stateless;
 import jakarta.inject.Inject;
-import pl.lodz.p.it.ssbd2022.ssbd03.common.AbstractDto;
+import pl.lodz.p.it.ssbd2022.ssbd03.common.TaggedDto;
 import pl.lodz.p.it.ssbd2022.ssbd03.common.AbstractEntity;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.Account;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.access_levels.DataClient;
@@ -62,7 +62,7 @@ public class AccountMapper {
         return account;
     }
 
-    public AbstractDto tagDto(AbstractDto dto, AbstractEntity entity) {
+    public TaggedDto tagDto(TaggedDto dto, AbstractEntity entity) {
         dto.setTag(hashAlgorithm.generateDtoTag(
                 entity.getId(),
                 entity.getVersion()

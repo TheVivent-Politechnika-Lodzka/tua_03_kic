@@ -5,7 +5,7 @@ import lombok.*;
 @Getter @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public abstract class AbstractDto {
+public class TaggedDto {
 
     String tag;
 

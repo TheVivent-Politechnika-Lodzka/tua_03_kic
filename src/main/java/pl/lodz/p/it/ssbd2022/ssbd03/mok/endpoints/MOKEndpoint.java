@@ -15,10 +15,14 @@ import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import pl.lodz.p.it.ssbd2022.ssbd03.common.EmailConfig;
+import pl.lodz.p.it.ssbd2022.ssbd03.common.TaggedDto;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.Account;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.ActiveAccountToken;
+import pl.lodz.p.it.ssbd2022.ssbd03.entities.access_levels.AccessLevel;
+import pl.lodz.p.it.ssbd2022.ssbd03.mappers.AccessLevelMapper;
 import pl.lodz.p.it.ssbd2022.ssbd03.mappers.AccountMapper;
 import pl.lodz.p.it.ssbd2022.ssbd03.mok.dto.*;
+import pl.lodz.p.it.ssbd2022.ssbd03.mok.dto.access_levels.AccessLevelDto;
 import pl.lodz.p.it.ssbd2022.ssbd03.mok.services.MOKService;
 import pl.lodz.p.it.ssbd2022.ssbd03.security.AuthContext;
 import pl.lodz.p.it.ssbd2022.ssbd03.utils.PaginationData;
@@ -40,6 +44,19 @@ public class MOKEndpoint {
 
     @Inject
     private AccountMapper accountMapper;
+
+    @Inject
+    private AccessLevelMapper accessLevelMapper;
+
+    @PUT
+    @Consumes(MediaType.APPLICATION_JSON)
+    @RolesAllowed({"ADMINISTRATOR"})
+    @Path("/access-level/{login}")
+    public Response addAccessLevel(@PathParam("login") String login, @Valid AccessLevelDto accessLevelDto) {
+        AccessLevel accessLevel = accessLevelMapper.createAccessLevelFromDto(accessLevelDto);
+        Account account = mokService.addAccessLevel(login, accessLevel);
+        return Response.ok(accountMapper.createAccountWithAccessLevelsDtoFromAccount(account)).build();
+    }
 
     //stwórz nowe konto
     @POST
@@ -71,6 +88,7 @@ public class MOKEndpoint {
         String token = mokService.authenticate(credential);
         return Response.ok(token).build();
     }
+
     @GET
     @Path("/{login}")
     @RolesAllowed("ADMINISTRATOR")
@@ -136,6 +154,16 @@ public class MOKEndpoint {
     }
 
     @GET
+    @Path(("/account"))
+    @Produces(MediaType.APPLICATION_JSON)
+    @PermitAll
+    public Response accountDetails(){
+        String user = authContext.getCurrentUserLogin();
+        Account account = mokService.findByLogin(user);
+        return Response.ok().entity(accountMapper.createAccountWithAccessLevelsDtoFromAccount(account)).build();
+    }
+
+    @GET
     @Path("/account/{login}")
     @Produces(MediaType.APPLICATION_JSON)
     @PermitAll
@@ -145,10 +173,11 @@ public class MOKEndpoint {
     }
 
     @GET
-    @Path("/account")
+    @Path("/accounts")
     @Produces(MediaType.APPLICATION_JSON)
     @RolesAllowed("ADMINISTRATOR")
     public Response findInRange(@QueryParam("page") int page, @QueryParam("limit") int limit) {
+
         PaginationData paginationData = mokService.findInRange(page, limit);
         List<Account> accounts = paginationData.getData();
         List<AccountWithAccessLevelsDto> accountsDTO = new ArrayList<>();
@@ -157,8 +186,28 @@ public class MOKEndpoint {
         }
         paginationData.setData(accountsDTO);
         return Response.ok().entity(paginationData).build();
+
     }
 
+    @PATCH
+    @Path("/password")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @PermitAll
+    public Response changeOwnPassword(@Valid ChangePasswordDto changePasswordDto) {
+        String principal = authContext.getCurrentUserLogin();
+
+        mokService.changePassword(principal, changePasswordDto.getNewPassword(), changePasswordDto.getOldPassword());
+        return Response.ok().build();
+    }
+
+    @PATCH
+    @Path("/password/{login}")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @RolesAllowed("ADMINISTRATOR")
+    public Response changeAccountPassword(@PathParam(value = "login") String login, @Valid ChangePasswordDto changePasswordDto) {
+        mokService.changePassword(login, changePasswordDto.getNewPassword(), changePasswordDto.getOldPassword());
+        return Response.ok().build();
+    }
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
@@ -166,18 +215,5 @@ public class MOKEndpoint {
     @Path(("/ping"))
     public Response test() {
         return Response.ok("pong").build();
-    }
-
-
-    //self
-    @PUT
-    @Consumes(MediaType.APPLICATION_JSON)
-    @PermitAll
-    @Path("/password")
-    public Response changeOwnPassword(@Valid ChangePasswordDto changePasswordDto) {
-        String principal = authContext.getCurrentUserLogin();
-
-        mokService.changeOwnPassword(principal, changePasswordDto.getNewPassword(),changePasswordDto.getOldPassword());
-        return Response.ok().build();
     }
 }

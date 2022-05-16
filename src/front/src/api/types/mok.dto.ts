@@ -21,7 +21,7 @@ export interface ClientAccountDto{
 }
 
 
-export interface ChangeOwnPasswordDto {
+export interface ChangePasswordDto {
   oldPassword: string;
   newPassword: string;
 }
