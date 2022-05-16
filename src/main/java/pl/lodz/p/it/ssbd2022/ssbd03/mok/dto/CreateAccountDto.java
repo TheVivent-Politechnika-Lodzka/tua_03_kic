@@ -6,26 +6,30 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import pl.lodz.p.it.ssbd2022.ssbd03.validation.FirstName;
+import pl.lodz.p.it.ssbd2022.ssbd03.validation.LastName;
+import pl.lodz.p.it.ssbd2022.ssbd03.validation.Login;
+import pl.lodz.p.it.ssbd2022.ssbd03.validation.Password;
 
 @Getter @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 public class CreateAccountDto extends AccountDto {
 
-    @NotNull
+    @Password
     private String password;
 
-    @NotNull
+    @Login
     private String login;
 
     @NotNull
     @Email
     private String email;
 
-    @NotNull
+    @FirstName
     private String firstName;
 
-    @NotNull
+    @LastName
     private String lastName;
 
     @NotNull
