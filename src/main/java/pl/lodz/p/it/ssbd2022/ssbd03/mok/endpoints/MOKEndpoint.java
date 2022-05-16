@@ -188,6 +188,16 @@ public class MOKEndpoint {
         return Response.ok().build();
     }
 
+    @PUT
+    @Path("/edit/{login}")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @RolesAllowed("ADMINISTRATOR")
+    public Response editOtherAccountData(@PathParam("login") String login, AccountWithAccessLevelsDto accountEditDto) {
+        mokService.edit(login, accountEditDto);
+        return Response.ok().build();
+    }
+
+
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @PermitAll
