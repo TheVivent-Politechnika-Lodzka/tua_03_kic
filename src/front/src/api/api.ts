@@ -6,7 +6,6 @@ import {
   AccessLevelDto,
   AccountDto,
   AccountWithAccessLevelDto,
-  ChangeOwnPasswordDto,
   ClientAccountDto,
   ChangePasswordDto,
 } from "./types/mok.dto";
@@ -106,8 +105,8 @@ const api = createApi({
       }),
     }),
 
-    changeOwnPassword: builder.mutation<string, ChangeOwnPasswordDto>({
-      query: (changeOwnPasswordDto: ChangeOwnPasswordDto) => ({
+    changeOwnPassword: builder.mutation<string, ChangePasswordDto>({
+      query: (changeOwnPasswordDto: ChangePasswordDto) => ({
         url: "/mok/password",
         method: "PATCH",
         body: changeOwnPasswordDto,
@@ -132,7 +131,7 @@ const api = createApi({
       query: (data: addAccessLevelData) => ({
         url: `/mok/access-level/${data.login}`,
         method: "PUT",
-        body: changeOwnPasswordDto,
+        body: data.accessLevel,
         responseHandler: async (response) => {
           if (response.ok) {
             return response.status;
@@ -163,6 +162,6 @@ export const {
   useGetAccountByLoginMutation,
   useChangeAccountPasswordMutation,
   useChangeOwnPasswordMutation,
-  useRegisterClientAccountMutation
+  useRegisterClientAccountMutation,
   useGetOwnAccountDetailsQuery
 } = api;

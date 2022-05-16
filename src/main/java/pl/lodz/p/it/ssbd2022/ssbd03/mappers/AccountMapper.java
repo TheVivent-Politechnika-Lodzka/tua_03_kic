@@ -45,7 +45,7 @@ public class AccountMapper {
         account.setConfirmed(false);
         DataClient dataClient = new DataClient();
         dataClient.setPesel(createClientAccountDto.getPesel());
-        dataClient.setPhoneNumber(createClientAccountDto.getPhone_number());
+        dataClient.setPhoneNumber(createClientAccountDto.getPhoneNumber());
         account.addAccessLevel(dataClient);
         return account;
     }

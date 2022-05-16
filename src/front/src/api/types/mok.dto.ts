@@ -16,7 +16,7 @@ export interface ClientAccountDto{
   lastName:string,
   login:string,
   pesel:string,
-  phone_number:string,
+  phoneNumber:string,
   password:string
 }
 

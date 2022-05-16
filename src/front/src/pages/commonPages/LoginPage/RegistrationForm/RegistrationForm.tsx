@@ -22,7 +22,7 @@ const RegistrationForm = () => {
       lastName,
       login,
       pesel,
-      phone_number,
+      phoneNumber: phone_number,
       password,
     });
   };

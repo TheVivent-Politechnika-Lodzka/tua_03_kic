@@ -36,7 +36,7 @@ public class CreateClientAccountDto extends AccountDto {
     private boolean isConfirmed;
 
     @NotNull
-    private String phone_number;
+    private String phoneNumber;
 
     @NotNull
     private String pesel;

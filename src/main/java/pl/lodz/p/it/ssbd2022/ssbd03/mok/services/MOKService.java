@@ -186,6 +186,23 @@ public class MOKService {
         );
     }
 
+    public void changePassword(String login, String newPassword, String oldPassword) {
+        Account account = accountFacade.findByLogin(login);
+        if (account == null) {
+            throw AccountNotFoundException.notFoundByLogin();
+        }
+
+        if (!hashAlgorithm.verify(oldPassword.toCharArray(), account.getPassword())) {
+            throw new AccountPasswordMatchException();
+        }
+        if(hashAlgorithm.verify(newPassword.toCharArray(),account.getPassword())){
+            throw new AccountPasswordIsTheSameException();
+
+        }
+        account.setPassword(hashAlgorithm.generate(newPassword.toCharArray()));
+        accountFacade.unsafeEdit(account);
+    }
+
     public void resetPassword(ResetPasswordDTO accountWithTokenDTO) {
         ResetPasswordToken resetPasswordToken = resetPasswordFacade.findResetPasswordToken(accountWithTokenDTO.getLogin());
         if(hashAlgorithm.verify(resetPasswordToken.getId().toString().toCharArray(), accountWithTokenDTO.getToken())) {
