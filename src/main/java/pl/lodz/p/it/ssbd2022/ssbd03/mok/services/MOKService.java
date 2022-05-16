@@ -36,6 +36,8 @@ import pl.lodz.p.it.ssbd2022.ssbd03.utils.PaginationData;
 
 import pl.lodz.p.it.ssbd2022.ssbd03.utils.HashAlgorithm;
 
+import java.util.Locale;
+
 @Interceptors(TrackerInterceptor.class)
 @Stateless
 @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
@@ -205,5 +207,10 @@ public class MOKService {
         account.addAccessLevel(accessLevel);
         accessLevelFacade.create(accessLevel);
         return account;
+    }
+
+    public void changeLanguage(AccountWithAccessLevelsDto account) {
+        Account accountNew = accountFacade.findByLogin(account.getLogin());
+        accountNew.setLanguage(account.getLanguage());
     }
 }

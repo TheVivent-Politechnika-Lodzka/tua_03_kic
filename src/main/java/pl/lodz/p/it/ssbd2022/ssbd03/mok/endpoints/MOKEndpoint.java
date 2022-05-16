@@ -178,6 +178,17 @@ public class MOKEndpoint {
         return Response.ok().build();
     }
 
+    // testowy endpoint - po testach do usuniecia
+    // do wysylania na razie trzeba przesalc obiekt language a w nim klucz language
+    @PATCH
+    @Path("/language")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @PermitAll
+    public Response changeLanguage(AccountWithAccessLevelsDto account) {
+        mokService.changeLanguage(account);
+        return Response.ok().build();
+    }
+
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @PermitAll
