@@ -12,6 +12,7 @@ GRANT SELECT,INSERT,DELETE,UPDATE ON TABLE reset_password_token TO ssbd03mok;
 GRANT SELECT ON TABLE appointment TO ssbd03mok;
 GRANT SELECT ON TABLE implant TO ssbd03mok;
 GRANT SELECT ON TABLE implant_review TO ssbd03mok;
+GRANT SELECT,INSERT ON TABLE active_account_token TO ssbd03mok;
 
 -- uprawnienia dla konta MOP
 GRANT SELECT ON TABLE data_client TO ssbd03mop;

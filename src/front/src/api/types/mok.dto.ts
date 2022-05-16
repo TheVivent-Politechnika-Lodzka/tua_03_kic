@@ -10,6 +10,17 @@ export interface AccountDto extends Tag{
   confirmed: boolean;
 }
 
+export interface ClientAccountDto{
+  email:string,
+  firstName:string,
+  lastName:string,
+  login:string,
+  pesel:string,
+  phoneNumber:string,
+  password:string
+}
+
+
 export interface ChangePasswordDto {
   oldPassword: string;
   newPassword: string;
@@ -29,4 +40,8 @@ export interface AccountWithAccessLevelDto extends Tag{
   confirmed : boolean
   active : boolean
   accessLevels: AccessLevelDto[];
+}
+
+export interface ActiveAccountDto {
+  token: string;
 }
