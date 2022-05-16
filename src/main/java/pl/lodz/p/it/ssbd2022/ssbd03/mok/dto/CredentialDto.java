@@ -13,9 +13,9 @@ import pl.lodz.p.it.ssbd2022.ssbd03.validation.Password;
 @AllArgsConstructor
 public class CredentialDto {
 
-    @NotNull
+    @Login
     private String login;
-    @NotNull
+    @Password
     private String password;
 
 }
