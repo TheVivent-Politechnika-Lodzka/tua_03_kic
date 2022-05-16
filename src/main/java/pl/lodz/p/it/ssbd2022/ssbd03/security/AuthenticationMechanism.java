@@ -36,7 +36,9 @@ public class AuthenticationMechanism implements HttpAuthenticationMechanism {
         if (httpServletRequest.getPathInfo().endsWith("login")
                 || httpServletRequest.getPathInfo().endsWith("register")
                 || httpServletRequest.getPathInfo().contains("reset")
-                || httpServletRequest.getPathInfo().endsWith("ping")) {
+                || httpServletRequest.getPathInfo().endsWith("ping")
+                || httpServletRequest.getPathInfo().endsWith("activeAccount")
+        ) {
             return httpMessageContext.doNothing();
         }
 
