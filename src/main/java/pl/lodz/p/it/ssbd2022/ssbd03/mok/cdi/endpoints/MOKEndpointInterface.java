@@ -3,12 +3,14 @@ package pl.lodz.p.it.ssbd2022.ssbd03.mok.cdi.endpoints;
 import jakarta.annotation.security.DenyAll;
 import jakarta.annotation.security.PermitAll;
 import jakarta.annotation.security.RolesAllowed;
+import jakarta.json.bind.annotation.JsonbTypeDeserializer;
 import jakarta.validation.Valid;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import pl.lodz.p.it.ssbd2022.ssbd03.common.Roles;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.MethodNotImplementedException;
+import pl.lodz.p.it.ssbd2022.ssbd03.mappers.json.AccessLevelDeserializer;
 import pl.lodz.p.it.ssbd2022.ssbd03.mok.dto.*;
 import pl.lodz.p.it.ssbd2022.ssbd03.mok.dto.access_levels.AccessLevelDto;
 
@@ -56,7 +58,7 @@ public interface MOKEndpointInterface {
     @Path("/deactivate/{login}")
     @RolesAllowed(Roles.ADMINISTRATOR)
     @Consumes(MediaType.APPLICATION_JSON)
-    default Response activateAccount(@PathParam("login") String login, @Valid ETagDto eTagDto) {
+    default Response deactivateAccount(@PathParam("login") String login, @Valid ETagDto eTagDto) {
         throw new MethodNotImplementedException();
     }
 
@@ -65,7 +67,7 @@ public interface MOKEndpointInterface {
     @Path("/activate/{login}")
     @RolesAllowed(Roles.ADMINISTRATOR)
     @Consumes(MediaType.APPLICATION_JSON)
-    default Response deactivateAccount(@PathParam("login") String login, @Valid ETagDto eTagDto) {
+    default Response activateAccount(@PathParam("login") String login, @Valid ETagDto eTagDto) {
         throw new MethodNotImplementedException();
     }
 

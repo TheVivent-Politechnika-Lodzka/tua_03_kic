@@ -88,6 +88,9 @@ public class MOKService {
     public void deactivate(String login, String tag) {
         Account account = accountFacade.findByLogin(login);
         account.setActive(false);
+        System.out.println("####################");
+        System.out.println(account.isActive());
+        System.out.println("####################");
         accountFacade.edit(account, tag);
     }
 

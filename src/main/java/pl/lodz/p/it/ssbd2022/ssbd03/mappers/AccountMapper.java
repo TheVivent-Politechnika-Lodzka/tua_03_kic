@@ -29,7 +29,7 @@ public class AccountMapper {
         account.setLastName(createAccountDto.getLastName());
         account.setEmail(createAccountDto.getEmail());
         account.setPassword(hashAlgorithm.generate(createAccountDto.getPassword().toCharArray()));
-        account.setActive(true);
+        account.setActive(false);
         account.setConfirmed(true);
         account.setLanguage(createAccountDto.getLanguage());
 
@@ -43,6 +43,7 @@ public class AccountMapper {
         account.setLastName(registerClientAccountDto.getLastName());
         account.setEmail(registerClientAccountDto.getEmail());
         account.setPassword(hashAlgorithm.generate(registerClientAccountDto.getPassword().toCharArray()));
+        account.setLanguage(registerClientAccountDto.getLanguage());
         account.setActive(true);
         account.setConfirmed(false);
         DataClient dataClient = new DataClient();
@@ -84,8 +85,8 @@ public class AccountMapper {
                 account.getLogin(),
                 account.getFirstName(),
                 account.getLastName(),
-                false,
-                true,
+                account.isActive(),
+                account.isConfirmed(),
                 account.getLanguage(),
                 accessLevelMapper.createListOfAccessLevelDTO(account.getAccessLevelCollection())
         );
