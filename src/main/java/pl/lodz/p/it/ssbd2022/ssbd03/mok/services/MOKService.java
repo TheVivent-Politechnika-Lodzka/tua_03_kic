@@ -87,16 +87,16 @@ public class MOKService {
         return accountFacade.findByLogin(login);
     }
 
-    public void deactivate(String login) {
+    public void deactivate(String login, String tag) {
         Account account = accountFacade.findByLogin(login);
         account.setActive(false);
-        accountFacade.unsafeEdit(account);
+        accountFacade.edit(account, tag);
     }
 
-    public void activate(String login) {
+    public void activate(String login, String tag) {
         Account account = accountFacade.findByLogin(login);
         account.setActive(true);
-        accountFacade.unsafeEdit(account);
+        accountFacade.edit(account, tag);
     }
 
     public Account edit(String login, AccountWithAccessLevelsDto accountDto) {
@@ -156,12 +156,26 @@ public class MOKService {
     public void changeOwnPassword(String login, String newPassword, String oldPassword) {
         Account account = accountFacade.findByLogin(login);
         if (account == null) {
-            throw new AccountNotFoundException();
+            throw AccountNotFoundException.notFoundByLogin();
         }
 
-        if (oldPassword == null || !hashAlgorithm.verify(oldPassword.toCharArray(), account.getPassword())) {
+        if (!hashAlgorithm.verify(oldPassword.toCharArray(), account.getPassword())) {
             throw new AccountPasswordMatchException();
         }
+        if(hashAlgorithm.verify(newPassword.toCharArray(),account.getPassword())){
+            throw new AccountPasswordIsTheSameException();
+
+        }
+        account.setPassword(hashAlgorithm.generate(newPassword.toCharArray()));
+        accountFacade.unsafeEdit(account);
+    }
+
+    public void changeAccountPassword(String login, String newPassword) {
+        Account account = accountFacade.findByLogin(login);
+        if (account == null) {
+            throw AccountNotFoundException.notFoundByLogin();
+        }
+
         if(hashAlgorithm.verify(newPassword.toCharArray(),account.getPassword())){
             throw new AccountPasswordIsTheSameException();
 

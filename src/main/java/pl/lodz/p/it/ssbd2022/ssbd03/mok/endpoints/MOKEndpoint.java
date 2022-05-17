@@ -131,16 +131,16 @@ public class MOKEndpoint {
     @GET
     @Path("/deactivate/{login}")
     @RolesAllowed("ADMINISTRATOR")
-    public Response deactivate(@PathParam("login") String login) {
-        mokService.deactivate(login);
+    public Response deactivate(@PathParam("login") String login, TaggedDto taggedDto) {
+        mokService.deactivate(login, taggedDto.getTag());
         return Response.ok().build();
     }
 
     @GET
     @Path("/activate/{login}")
     @RolesAllowed("ADMINISTRATOR")
-    public Response activate(@PathParam("login") String login) {
-        mokService.activate(login);
+    public Response activate(@PathParam("login") String login, TaggedDto taggedDto) {
+        mokService.activate(login, taggedDto.getTag());
         return Response.ok().build();
     }
 
@@ -193,10 +193,10 @@ public class MOKEndpoint {
     @Path("/password")
     @Consumes(MediaType.APPLICATION_JSON)
     @PermitAll
-    public Response changeOwnPassword(@Valid ChangePasswordDto changePasswordDto) {
+    public Response changeOwnPassword(@Valid ChangeOwnPasswordDto changeOwnPasswordDto) {
         String principal = authContext.getCurrentUserLogin();
 
-        mokService.changePassword(principal, changePasswordDto.getNewPassword(), changePasswordDto.getOldPassword());
+        mokService.changeOwnPassword(principal, changeOwnPasswordDto.getNewPassword(), changeOwnPasswordDto.getOldPassword());
         return Response.ok().build();
     }
 
@@ -204,8 +204,8 @@ public class MOKEndpoint {
     @Path("/password/{login}")
     @Consumes(MediaType.APPLICATION_JSON)
     @RolesAllowed("ADMINISTRATOR")
-    public Response changeAccountPassword(@PathParam(value = "login") String login, @Valid ChangePasswordDto changePasswordDto) {
-        mokService.changePassword(login, changePasswordDto.getNewPassword(), changePasswordDto.getOldPassword());
+    public Response changeAccountPassword(@PathParam(value = "login") String login, @Valid ChangeAccountPasswordDto changeAccountPasswordDto) {
+        mokService.changeAccountPassword(login, changeAccountPasswordDto.getNewPassword());
         return Response.ok().build();
     }
 
