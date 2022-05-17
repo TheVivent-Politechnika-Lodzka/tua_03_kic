@@ -5,9 +5,12 @@ import jakarta.inject.Inject;
 import pl.lodz.p.it.ssbd2022.ssbd03.common.AbstractEntity;
 import pl.lodz.p.it.ssbd2022.ssbd03.common.TaggedDto;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.Account;
+import pl.lodz.p.it.ssbd2022.ssbd03.entities.access_levels.DataClient;
 import pl.lodz.p.it.ssbd2022.ssbd03.mok.dto.AccountDto;
 import pl.lodz.p.it.ssbd2022.ssbd03.mok.dto.AccountWithAccessLevelsDto;
 import pl.lodz.p.it.ssbd2022.ssbd03.mok.dto.CreateAccountDto;
+import pl.lodz.p.it.ssbd2022.ssbd03.mok.dto.RegisterClientAccountDto;
+import pl.lodz.p.it.ssbd2022.ssbd03.mok.dto.RegisterClientAccountDto;
 import pl.lodz.p.it.ssbd2022.ssbd03.mok.dto.access_levels.AccessLevelDto;
 import pl.lodz.p.it.ssbd2022.ssbd03.utils.HashAlgorithm;
 @Stateless
@@ -33,7 +36,22 @@ public class AccountMapper {
         return account;
     }
 
-    // czy na pewno gdziekolwiek tego używamy?
+    public Account createAccountfromCreateClientAccountDto(RegisterClientAccountDto registerClientAccountDto) {
+        Account account = new Account();
+        account.setLogin(registerClientAccountDto.getLogin());
+        account.setFirstName(registerClientAccountDto.getFirstName());
+        account.setLastName(registerClientAccountDto.getLastName());
+        account.setEmail(registerClientAccountDto.getEmail());
+        account.setPassword(hashAlgorithm.generate(registerClientAccountDto.getPassword().toCharArray()));
+        account.setActive(true);
+        account.setConfirmed(false);
+        DataClient dataClient = new DataClient();
+        dataClient.setPesel(registerClientAccountDto.getPesel());
+        dataClient.setPhoneNumber(registerClientAccountDto.getPhoneNumber());
+        account.addAccessLevel(dataClient);
+        return account;
+    }
+
     public Account createAccountFromDto(AccountWithAccessLevelsDto accountDto) {
         Account account = new Account();
         account.setLogin(accountDto.getLogin());
@@ -80,6 +98,7 @@ public class AccountMapper {
         );
         return (AccountWithAccessLevelsDto) tagDto(accountDto, account);
     }
+
 
 
 }

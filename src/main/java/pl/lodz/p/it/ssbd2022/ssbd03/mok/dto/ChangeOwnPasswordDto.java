@@ -10,7 +10,7 @@ import lombok.Setter;
 @Getter @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class ChangePasswordDto {
+public class ChangeOwnPasswordDto {
     @NotNull
     private String oldPassword;
 

@@ -10,6 +10,7 @@ import ClientPage from "./pages/clientPages/ClientPage";
 import SpecialistPage from "./pages/specialistPages/SpecialistPage";
 import jwtDecode from "jwt-decode";
 import { login as loginDispatch } from "./redux/userSlice";
+import ActiveAccountPage from "./pages/commonPages/ActiveAccountPage/ActiveAccountPage";
 
 function App() {
   const user = useStoreSelector((state) => state.user);
@@ -51,6 +52,7 @@ function App() {
 
           <Route path="/" element={<MainPage />} />
           <Route path="/login" element={<LoginPage />} />
+          <Route path="/active" element={<ActiveAccountPage />} />
           <Route path="/*" element={<ErrorPage />} />
         </Routes>
       </Router>

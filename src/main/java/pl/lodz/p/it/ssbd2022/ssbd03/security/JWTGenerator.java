@@ -13,7 +13,8 @@ import java.util.Date;
 public class JWTGenerator {
 
     // to by należało dać do jakiegoś configa
-    private final long TIMEOUT = 30 * 60 * 1000;
+    private final long TIMEOUT30 = 30 * 60 * 1000;
+    private final long TIMEOUT60 = 60 * 60 * 1000;
     private final String SHAREDSECRET = "zjZi6JWZ99IT0Trx49MNitLpwPjQc81BOUZytttWprg=";
 
     public  String createJWT(CredentialValidationResult cred) {
@@ -22,7 +23,15 @@ public class JWTGenerator {
                 setSubject(cred.getCallerPrincipal().getName())
                 .claim("auth", String.join(",", cred.getCallerGroups()))
                 .signWith(SignatureAlgorithm.HS256, SHAREDSECRET)
-                .setExpiration(new Date(new Date().getTime() + TIMEOUT)).compact();
+                .setExpiration(new Date(new Date().getTime() + TIMEOUT30)).compact();
+        return token;
+    }
+
+    public String createJWTForEmail(String login) {
+        String token = Jwts.builder()
+                .setSubject(login)
+                .signWith(SignatureAlgorithm.HS256, SHAREDSECRET)
+                .setExpiration(new Date(new Date().getTime() + TIMEOUT60)).compact();
         return token;
     }
 
