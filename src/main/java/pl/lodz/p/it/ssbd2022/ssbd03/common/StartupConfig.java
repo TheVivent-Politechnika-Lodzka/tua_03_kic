@@ -12,6 +12,8 @@ import pl.lodz.p.it.ssbd2022.ssbd03.entities.access_levels.DataClient;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.access_levels.DataSpecialist;
 import pl.lodz.p.it.ssbd2022.ssbd03.utils.HashAlgorithm;
 
+import java.util.Locale;
+
 @Startup
 @Singleton
 public class StartupConfig {
@@ -39,6 +41,7 @@ public class StartupConfig {
         admin.setFirstName("admin");
         admin.setLastName("administracyjny");
         admin.setEmail("szurySSBD@gmail.com");
+        admin.setLanguage(new Locale("pl"));
 
 
         DataAdministrator dataAdministrator = new DataAdministrator();
@@ -58,6 +61,7 @@ public class StartupConfig {
         admin.setFirstName("admin");
         admin.setLastName("specjalny");
         admin.setEmail("szurySSBD2@gmail.com");
+        admin.setLanguage(new Locale("en"));
 
         DataAdministrator dataAdministrator = new DataAdministrator();
         dataAdministrator.setPhoneNumber("111111111");
@@ -80,6 +84,7 @@ public class StartupConfig {
         admin.setFirstName("admin");
         admin.setLastName("kliencki");
         admin.setEmail("szurySSBD3@gmail.com");
+        admin.setLanguage(new Locale("pl"));
 
         DataAdministrator dataAdministrator = new DataAdministrator();
         dataAdministrator.setPhoneNumber("222222222");

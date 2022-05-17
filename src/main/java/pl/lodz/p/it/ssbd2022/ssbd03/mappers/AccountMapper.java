@@ -2,12 +2,15 @@ package pl.lodz.p.it.ssbd2022.ssbd03.mappers;
 
 import jakarta.ejb.Stateless;
 import jakarta.inject.Inject;
-import pl.lodz.p.it.ssbd2022.ssbd03.common.TaggedDto;
 import pl.lodz.p.it.ssbd2022.ssbd03.common.AbstractEntity;
+import pl.lodz.p.it.ssbd2022.ssbd03.common.TaggedDto;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.Account;
+import pl.lodz.p.it.ssbd2022.ssbd03.entities.access_levels.DataClient;
 import pl.lodz.p.it.ssbd2022.ssbd03.mok.dto.AccountDto;
 import pl.lodz.p.it.ssbd2022.ssbd03.mok.dto.AccountWithAccessLevelsDto;
 import pl.lodz.p.it.ssbd2022.ssbd03.mok.dto.CreateAccountDto;
+import pl.lodz.p.it.ssbd2022.ssbd03.mok.dto.RegisterClientAccountDto;
+import pl.lodz.p.it.ssbd2022.ssbd03.mok.dto.RegisterClientAccountDto;
 import pl.lodz.p.it.ssbd2022.ssbd03.mok.dto.access_levels.AccessLevelDto;
 import pl.lodz.p.it.ssbd2022.ssbd03.utils.HashAlgorithm;
 @Stateless
@@ -28,7 +31,24 @@ public class AccountMapper {
         account.setPassword(hashAlgorithm.generate(createAccountDto.getPassword().toCharArray()));
         account.setActive(true);
         account.setConfirmed(true);
+        account.setLanguage(createAccountDto.getLanguage());
 
+        return account;
+    }
+
+    public Account createAccountfromCreateClientAccountDto(RegisterClientAccountDto registerClientAccountDto) {
+        Account account = new Account();
+        account.setLogin(registerClientAccountDto.getLogin());
+        account.setFirstName(registerClientAccountDto.getFirstName());
+        account.setLastName(registerClientAccountDto.getLastName());
+        account.setEmail(registerClientAccountDto.getEmail());
+        account.setPassword(hashAlgorithm.generate(registerClientAccountDto.getPassword().toCharArray()));
+        account.setActive(true);
+        account.setConfirmed(false);
+        DataClient dataClient = new DataClient();
+        dataClient.setPesel(registerClientAccountDto.getPesel());
+        dataClient.setPhoneNumber(registerClientAccountDto.getPhoneNumber());
+        account.addAccessLevel(dataClient);
         return account;
     }
 
@@ -59,7 +79,8 @@ public class AccountMapper {
                 account.getLastName(),
                 account.isActive(),
                 account.isConfirmed(),
-                account.getEmail()
+                account.getEmail(),
+                account.getLanguage()
         );
         return (AccountDto) tagDto(accountDto, account);
     }
@@ -71,10 +92,13 @@ public class AccountMapper {
                 account.getLastName(),
                 account.isActive(),
                 account.isConfirmed(),
+                account.getLanguage(),
                 accessLevelMapper.createListOfAccessLevelDTO(account.getAccessLevelCollection())
+
         );
         return (AccountWithAccessLevelsDto) tagDto(accountDto, account);
     }
+
 
 
 }

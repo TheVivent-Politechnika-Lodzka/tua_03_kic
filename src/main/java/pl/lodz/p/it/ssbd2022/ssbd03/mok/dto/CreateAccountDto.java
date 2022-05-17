@@ -1,5 +1,6 @@
 package pl.lodz.p.it.ssbd2022.ssbd03.mok.dto;
 
+import jakarta.json.bind.annotation.JsonbTypeDeserializer;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -11,7 +12,10 @@ import pl.lodz.p.it.ssbd2022.ssbd03.validation.LastName;
 import pl.lodz.p.it.ssbd2022.ssbd03.validation.Login;
 import pl.lodz.p.it.ssbd2022.ssbd03.validation.Password;
 
-@Getter @Setter
+import java.util.Locale;
+
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 public class CreateAccountDto extends AccountDto {
@@ -34,8 +38,9 @@ public class CreateAccountDto extends AccountDto {
 
     @NotNull
     private boolean isActive;
-
     @NotNull
     private boolean isConfirmed;
+    @NotNull
+    private Locale language;
 
 }

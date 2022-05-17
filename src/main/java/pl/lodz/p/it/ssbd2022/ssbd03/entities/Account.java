@@ -3,13 +3,17 @@ package pl.lodz.p.it.ssbd2022.ssbd03.entities;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Size;
-import lombok.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 import pl.lodz.p.it.ssbd2022.ssbd03.common.AbstractEntity;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.access_levels.AccessLevel;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Locale;
 
 @Entity
 @Table(
@@ -24,7 +28,7 @@ import java.util.Collection;
 @SecondaryTable(
         name = "account_details",
         uniqueConstraints = {
-               @UniqueConstraint(columnNames = "email", name = Account.CONSTRAINT_EMAIL_UNIQUE)
+                @UniqueConstraint(columnNames = "email", name = Account.CONSTRAINT_EMAIL_UNIQUE)
         }
 )
 @NamedQueries({
@@ -49,7 +53,7 @@ public class Account extends AbstractEntity implements Serializable {
     private String login;
 
     @Basic(optional = false)
-    @ToString.Exclude // Nie chcemy ujawniania skrótu hasła np. w dzienniku zdarzeń
+    @ToString.Exclude
     @Column(name = "password", nullable = false, length = 128)
     @Getter @Setter
     private String password;
@@ -67,6 +71,31 @@ public class Account extends AbstractEntity implements Serializable {
     @OneToMany(fetch = FetchType.EAGER, cascade = {CascadeType.REMOVE, CascadeType.PERSIST}, mappedBy = "account")
     @Getter
     private Collection<AccessLevel> accessLevelCollection = new ArrayList<>();
+
+    // ################ account details ######################
+
+    @Basic(optional = false)
+    @Size(min = 3, max = 30)
+    @Column(name = "first_name", table = "account_details", nullable = false, length = 30)
+    @Getter @Setter
+    private String firstName;
+
+    @Basic(optional = false)
+    @Size(min = 3, max = 30)
+    @Column(name = "last_name", table = "account_details", nullable = false, length = 30)
+    @Getter @Setter
+    private String lastName;
+
+    @Basic(optional = false)
+    @Column(name = "email", table = "account_details", nullable = false, length = 128)
+    @Getter @Setter
+    @Email
+    private String email;
+
+    @Basic(optional = false)
+    @Column(name = "language", table="account_details", nullable = false, length = 16)
+    @Getter @Setter
+    private Locale language;
 
     public void addAccessLevel(AccessLevel accessLevel) {
         accessLevelCollection.add(accessLevel);
@@ -90,27 +119,6 @@ public class Account extends AbstractEntity implements Serializable {
     public int hashCode() {
         return login.hashCode();
     }
-
-    // ################ account details ######################
-
-    @Basic(optional = false)
-    @Size(min = 3, max = 30)
-    @Column(name = "first_name", table = "account_details", nullable = false, length = 30)
-    @Getter @Setter
-    private String firstName;
-
-    @Basic(optional = false)
-    @Size(min = 3, max = 30)
-    @Column(name = "last_name", table = "account_details", nullable = false, length = 30)
-    @Getter @Setter
-    private String lastName;
-
-
-    @Basic(optional = false)
-    @Column(name = "email", table = "account_details", nullable = false, length = 128)
-    @Getter @Setter
-    @Email
-    private String email;
 
 
 }

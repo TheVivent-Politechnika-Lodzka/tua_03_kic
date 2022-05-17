@@ -6,15 +6,13 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import pl.lodz.p.it.ssbd2022.ssbd03.validation.Password;
 
 @Getter @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class ChangePasswordDto {
-    @NotNull
-    private String oldPassword;
+public class ChangeAccountPasswordDto {
 
-    @Password
+    @NotNull
+    @Size(min = 8, max = 64)
     private String newPassword;
 }
