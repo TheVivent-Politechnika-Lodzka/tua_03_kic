@@ -74,7 +74,7 @@ public class MOKEndpoint {
     @Consumes(MediaType.APPLICATION_JSON)
     @RolesAllowed("ADMINISTRATOR")
     @Path("/account")
-    public Response createAccount(CreateAccountDto accountDto) {
+    public Response createAccount(@Valid CreateAccountDto accountDto) {
         Account account = accountMapper.createAccountfromCreateAccountDto(accountDto);
         mokService.createAccount(account);
         return Response.ok().build();
@@ -94,7 +94,7 @@ public class MOKEndpoint {
     @Consumes(MediaType.APPLICATION_JSON)
     @PermitAll
     @Path("/login")
-    public Response authenticate(CredentialDto credentialDto) {
+    public Response authenticate(@Valid CredentialDto credentialDto) {
         Credential credential = new UsernamePasswordCredential(credentialDto.getLogin(), new Password(credentialDto.getPassword()));
         String token = mokService.authenticate(credential);
         return Response.ok(token).build();
@@ -120,7 +120,7 @@ public class MOKEndpoint {
     @Consumes(MediaType.APPLICATION_JSON)
     @PermitAll
     @Path("/resetPassword")
-    public Response resetPassword(ResetPasswordDTO accountWithTokenDTO) {
+    public Response resetPassword(@Valid ResetPasswordDTO accountWithTokenDTO) {
         mokService.resetPassword(accountWithTokenDTO);
         return Response.ok().build();
     }
@@ -129,7 +129,7 @@ public class MOKEndpoint {
     @Consumes(MediaType.APPLICATION_JSON)
     @RolesAllowed({"ADMINISTRATOR", "SPECIALIST", "CLIENT"})
     @Path("/edit")
-    public AccountWithAccessLevelsDto editOwnAccount(AccountWithAccessLevelsDto accountEditDto) {
+    public AccountWithAccessLevelsDto editOwnAccount(@Valid AccountWithAccessLevelsDto accountEditDto) {
         Account currentUser = authContext.getCurrentUser();
         return editAccount(currentUser.getLogin(), accountEditDto);
     }

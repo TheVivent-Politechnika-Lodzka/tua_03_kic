@@ -1,11 +1,18 @@
 package pl.lodz.p.it.ssbd2022.ssbd03.mok.dto;
 
+import jakarta.json.bind.annotation.JsonbTypeDeserializer;
+import jakarta.json.bind.annotation.JsonbTypeSerializer;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import pl.lodz.p.it.ssbd2022.ssbd03.mappers.json.LocaleSerializerDeserializer;
+import pl.lodz.p.it.ssbd2022.ssbd03.validation.FirstName;
+import pl.lodz.p.it.ssbd2022.ssbd03.validation.LastName;
+import pl.lodz.p.it.ssbd2022.ssbd03.validation.Login;
+import pl.lodz.p.it.ssbd2022.ssbd03.validation.Password;
 
 import java.util.Locale;
 
@@ -15,22 +22,29 @@ import java.util.Locale;
 @AllArgsConstructor
 public class CreateAccountDto extends AccountDto {
 
-    @NotNull
+    @Password
     private String password;
-    @NotNull
+
+    @Login
     private String login;
+
     @NotNull
+    @Email
+    private String email;
+
+    @FirstName
     private String firstName;
-    @NotNull
+
+    @LastName
     private String lastName;
+
     @NotNull
     private boolean isActive;
     @NotNull
     private boolean isConfirmed;
     @NotNull
-    @Email
-    private String email;
-    @NotNull
+    @JsonbTypeDeserializer(LocaleSerializerDeserializer.class)
+    @JsonbTypeSerializer(LocaleSerializerDeserializer.class)
     private Locale language;
 
 }

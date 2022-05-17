@@ -6,6 +6,9 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import pl.lodz.p.it.ssbd2022.ssbd03.common.TaggedDto;
+import pl.lodz.p.it.ssbd2022.ssbd03.validation.FirstName;
+import pl.lodz.p.it.ssbd2022.ssbd03.validation.LastName;
+import pl.lodz.p.it.ssbd2022.ssbd03.validation.Login;
 import pl.lodz.p.it.ssbd2022.ssbd03.mappers.json.LocaleSerializerDeserializer;
 
 import java.util.Locale;
@@ -15,11 +18,11 @@ import java.util.Locale;
 @AllArgsConstructor
 public class AccountDto extends TaggedDto {
 
-    @NotNull
+    @Login
     private String login;
-    @NotNull
+    @FirstName
     private String firstName;
-    @NotNull
+    @LastName
     private String lastName;
     @NotNull
     private boolean isActive;
