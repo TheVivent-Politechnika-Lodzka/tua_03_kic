@@ -6,7 +6,9 @@ import {
   AccessLevelDto,
   AccountDto,
   AccountWithAccessLevelDto,
+  ClientAccountDto,
   ChangePasswordDto,
+  ActiveAccountDto,
 } from "./types/mok.dto";
 import RemoveAccessLevelParams from "./types/queryParams/removeAccessLevelParams";
 
@@ -49,6 +51,19 @@ const api = createApi({
             const token = await response.text();
             localStorage.setItem(TOKEN_STORAGE_KEY, token);
             return jwtDecode(token);
+          }
+        },
+      }),
+    }),
+
+    registerClientAccount: builder.mutation<string, ClientAccountDto>({
+      query: (clientAccountDto: ClientAccountDto) => ({
+        url: "/mok/register",
+        method: "POST",
+        body: clientAccountDto,
+        responseHandler: async (response) => {
+          if (response.ok) {
+            return response.status;
           }
         },
       }),
@@ -135,6 +150,42 @@ const api = createApi({
         },
       }),
     }),
+
+    activeAccount: builder.mutation<string, ActiveAccountDto>({
+      query: (activeAccountDto: ActiveAccountDto) => ({
+        url: "/mok/activeAccount",
+        method: "POST",
+        body: activeAccountDto,
+        responseHandler: async (response) => {
+          if (response.ok) {
+            return response.status;
+          }
+        },
+      }),
+    }),
+
+
+
+
+
+    editOtherAccountData: builder.mutation<string, addAccessLevelData>({
+      query: (data: addAccessLevelData) => ({
+        url: `/mok/edit/${data.login}`,
+        method: "PUT",
+        body: data.accessLevel,
+        responseHandler: async (response) => {
+          return response.status;
+        },
+      }),
+    }),
+
+    getOwnAccountDetails: builder.query<AccountWithAccessLevelDto ,void>({
+      query:() =>({url: '/mok/account',
+      responseHandler: async (response) => {
+        return await response.json();
+      },
+    })
+    })
   }),
 });
 
@@ -145,4 +196,7 @@ export const {
   useGetAccountByLoginMutation,
   useChangeAccountPasswordMutation,
   useChangeOwnPasswordMutation,
+  useRegisterClientAccountMutation,
+  useActiveAccountMutation,
+  useGetOwnAccountDetailsQuery
 } = api;

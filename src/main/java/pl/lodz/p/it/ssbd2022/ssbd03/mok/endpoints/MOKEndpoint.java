@@ -14,8 +14,10 @@ import jakarta.validation.Valid;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
+import pl.lodz.p.it.ssbd2022.ssbd03.common.EmailConfig;
 import pl.lodz.p.it.ssbd2022.ssbd03.common.TaggedDto;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.Account;
+import pl.lodz.p.it.ssbd2022.ssbd03.entities.ActiveAccountToken;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.access_levels.AccessLevel;
 import pl.lodz.p.it.ssbd2022.ssbd03.mappers.AccessLevelMapper;
 import pl.lodz.p.it.ssbd2022.ssbd03.mappers.AccountMapper;
@@ -78,6 +80,16 @@ public class MOKEndpoint {
         return Response.ok().build();
     }
 
+    @PUT
+    @Consumes(MediaType.APPLICATION_JSON)
+    @PermitAll
+    @Path("/register")
+    public Response registerClientAccount(RegisterClientAccountDto accountDto) {
+        Account account = accountMapper.createAccountfromCreateClientAccountDto(accountDto);
+        mokService.registerClientAccount(account);
+        return Response.ok().build();
+    }
+
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @PermitAll
@@ -127,20 +139,39 @@ public class MOKEndpoint {
         return accountMapper.createAccountWithAccessLevelsDtoFromAccount(editedAccount);
     }
 
-    @PATCH
+    @GET
     @Path("/deactivate/{login}")
     @RolesAllowed("ADMINISTRATOR")
-    public Response deactivate(@PathParam("login") String login, TaggedDto dto) {
-        mokService.deactivate(login, dto.getTag());
+    public Response deactivate(@PathParam("login") String login, TaggedDto taggedDto) {
+        mokService.deactivate(login, taggedDto.getTag());
         return Response.ok().build();
     }
 
-    @PATCH
+    @GET
     @Path("/activate/{login}")
     @RolesAllowed("ADMINISTRATOR")
-    public Response activate(@PathParam("login") String login, TaggedDto dto) {
-        mokService.activate(login, dto.getTag());
+    public Response activate(@PathParam("login") String login, TaggedDto taggedDto) {
+        mokService.activate(login, taggedDto.getTag());
         return Response.ok().build();
+    }
+
+    @POST
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Path("/activeAccount")
+    @PermitAll
+    public Response activeAccountByToken(TokenDto tokenDto) {
+        mokService.confirm(tokenDto.getToken());
+        return Response.ok().build();
+    }
+
+    @GET
+    @Path(("/account"))
+    @Produces(MediaType.APPLICATION_JSON)
+    @PermitAll
+    public Response accountDetails(){
+        String user = authContext.getCurrentUserLogin();
+        Account account = mokService.findByLogin(user);
+        return Response.ok().entity(accountMapper.createAccountWithAccessLevelsDtoFromAccount(account)).build();
     }
 
     @GET
@@ -153,7 +184,7 @@ public class MOKEndpoint {
     }
 
     @GET
-    @Path("/account")
+    @Path("/accounts")
     @Produces(MediaType.APPLICATION_JSON)
     @RolesAllowed("ADMINISTRATOR")
     public Response findInRange(@QueryParam("page") int page, @QueryParam("limit") int limit) {
@@ -166,17 +197,17 @@ public class MOKEndpoint {
         }
         paginationData.setData(accountsDTO);
         return Response.ok().entity(paginationData).build();
-        
+
     }
 
     @PATCH
     @Path("/password")
     @Consumes(MediaType.APPLICATION_JSON)
     @PermitAll
-    public Response changeOwnPassword(@Valid ChangePasswordDto changePasswordDto) {
+    public Response changeOwnPassword(@Valid ChangeOwnPasswordDto changeOwnPasswordDto) {
         String principal = authContext.getCurrentUserLogin();
 
-        mokService.changePassword(principal, changePasswordDto.getNewPassword(), changePasswordDto.getOldPassword());
+        mokService.changeOwnPassword(principal, changeOwnPasswordDto.getNewPassword(), changeOwnPasswordDto.getOldPassword());
         return Response.ok().build();
     }
 
@@ -184,10 +215,20 @@ public class MOKEndpoint {
     @Path("/password/{login}")
     @Consumes(MediaType.APPLICATION_JSON)
     @RolesAllowed("ADMINISTRATOR")
-    public Response changeAccountPassword(@PathParam(value = "login") String login, @Valid ChangePasswordDto changePasswordDto) {
-        mokService.changePassword(login, changePasswordDto.getNewPassword(), changePasswordDto.getOldPassword());
+    public Response changeAccountPassword(@PathParam(value = "login") String login, @Valid ChangeAccountPasswordDto changeAccountPasswordDto) {
+        mokService.changeAccountPassword(login, changeAccountPasswordDto.getNewPassword());
         return Response.ok().build();
     }
+
+    @PUT
+    @Path("/edit/{login}")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @RolesAllowed("ADMINISTRATOR")
+    public Response editOtherAccountData(@PathParam("login") String login, AccountWithAccessLevelsDto accountEditDto) {
+        mokService.edit(login, accountEditDto);
+        return Response.ok().build();
+    }
+
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
