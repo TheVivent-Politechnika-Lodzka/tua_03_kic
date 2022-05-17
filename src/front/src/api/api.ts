@@ -10,6 +10,7 @@ import {
   ChangePasswordDto,
   ActiveAccountDto,
 } from "./types/mok.dto";
+import RemoveAccessLevelParams from "./types/queryParams/removeAccessLevelParams";
 
 interface addAccessLevelData {
   login: string;
@@ -109,7 +110,7 @@ const api = createApi({
     changeOwnPassword: builder.mutation<string, ChangePasswordDto>({
       query: (changeOwnPasswordDto: ChangePasswordDto) => ({
         url: "/mok/password",
-        method: "PUT",
+        method: "PATCH",
         body: changeOwnPasswordDto,
         responseHandler: async (response) => {
           return response.status;
@@ -133,6 +134,17 @@ const api = createApi({
         url: `/mok/access-level/${data.login}`,
         method: "PUT",
         body: data.accessLevel,
+        responseHandler: async (response) => {
+          return response.status;
+        },
+      }),
+    }),
+
+    removeAccessLevel: builder.mutation<string, RemoveAccessLevelParams>({
+      query: (params: RemoveAccessLevelParams) => ({
+        url: `/mok/access-level/${params.login}/${params.accessLevel}`,
+        method: "DELETE",
+        params: {tag: params.tag},
         responseHandler: async (response) => {
           return response.status;
         },

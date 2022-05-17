@@ -272,4 +272,19 @@ public class MOKService {
     }
 
 
+
+    public Account removeAccessLevel(String login, String accessLevel, String tag) {
+        Account account = accountFacade.findByLogin(login);
+
+        AccessLevel access = account.getAccessLevelCollection().stream()
+                .filter(level -> level.getLevel().equals(accessLevel))
+                .findFirst()
+                .orElse(null);
+
+        account.removeAccessLevel(access);
+
+        accessLevelFacade.unsafeRemove(access);
+
+        return account;
+    }
 }

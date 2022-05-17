@@ -58,6 +58,17 @@ public class MOKEndpoint {
         return Response.ok(accountMapper.createAccountWithAccessLevelsDtoFromAccount(account)).build();
     }
 
+    @DELETE
+    @Consumes(MediaType.APPLICATION_JSON)
+    @RolesAllowed({"ADMINISTRATOR"})
+    @Path("/access-level/{login}/{accessLevel}")
+    public Response removeAccessLevel(@PathParam("login") String login, @PathParam("accessLevel") String accessLevel,
+                                      @QueryParam("tag") String tag) {
+        Account newAccessLevelAccount = mokService.removeAccessLevel(login, accessLevel, tag);
+
+        return Response.ok(accountMapper.createAccountWithAccessLevelsDtoFromAccount(newAccessLevelAccount)).build();
+    }
+
     //stwórz nowe konto
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
