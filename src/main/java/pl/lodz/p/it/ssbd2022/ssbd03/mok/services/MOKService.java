@@ -1,15 +1,19 @@
 package pl.lodz.p.it.ssbd2022.ssbd03.mok.services;
 
+import io.jsonwebtoken.Claims;
 import jakarta.ejb.Stateless;
 import jakarta.ejb.TransactionAttribute;
 import jakarta.ejb.TransactionAttributeType;
 import jakarta.inject.Inject;
 import jakarta.interceptor.Interceptors;
 import jakarta.security.enterprise.credential.Credential;
+import jakarta.security.enterprise.credential.Password;
+import jakarta.security.enterprise.credential.UsernamePasswordCredential;
 import jakarta.security.enterprise.identitystore.CredentialValidationResult;
 import jakarta.security.enterprise.identitystore.IdentityStoreHandler;
 import jakarta.ws.rs.ClientErrorException;
 import pl.lodz.p.it.ssbd2022.ssbd03.common.EmailConfig;
+import pl.lodz.p.it.ssbd2022.ssbd03.entities.ActiveAccountToken;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.ResetPasswordToken;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.access_levels.AccessLevel;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.access_levels.DataAdministrator;
@@ -20,6 +24,7 @@ import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.account.AccountNotFoundException;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.account.AccountPasswordIsTheSameException;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.account.AccountPasswordMatchException;
 import pl.lodz.p.it.ssbd2022.ssbd03.mappers.AccessLevelMapper;
+import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.account.TokenExpierdException;
 import pl.lodz.p.it.ssbd2022.ssbd03.mok.dto.AccountWithAccessLevelsDto;
 import pl.lodz.p.it.ssbd2022.ssbd03.mok.dto.ResetPasswordDTO;
 import pl.lodz.p.it.ssbd2022.ssbd03.mok.dto.access_levels.AccessLevelDto;
@@ -30,10 +35,12 @@ import pl.lodz.p.it.ssbd2022.ssbd03.mok.ejb.facades.AccessLevelFacade;
 import pl.lodz.p.it.ssbd2022.ssbd03.mok.ejb.facades.AccountFacade;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.Account;
 import pl.lodz.p.it.ssbd2022.ssbd03.interceptors.TrackerInterceptor;
+import pl.lodz.p.it.ssbd2022.ssbd03.mok.ejb.facades.ActiveAccountFacade;
 import pl.lodz.p.it.ssbd2022.ssbd03.mok.ejb.facades.ResetPasswordFacade;
 import pl.lodz.p.it.ssbd2022.ssbd03.security.JWTGenerator;
 import pl.lodz.p.it.ssbd2022.ssbd03.utils.PaginationData;
 
+import java.time.Instant;
 import pl.lodz.p.it.ssbd2022.ssbd03.utils.HashAlgorithm;
 
 @Interceptors(TrackerInterceptor.class)
@@ -49,6 +56,9 @@ public class MOKService {
 
     @Inject
     private ResetPasswordFacade resetPasswordFacade;
+
+    @Inject
+    private ActiveAccountFacade activeAccountFacade;
 
     @Inject
     private IdentityStoreHandler indentityStoreHandler;
@@ -143,7 +153,6 @@ public class MOKService {
         }
 
     }
-
     public void changeOwnPassword(String login, String newPassword, String oldPassword) {
         Account account = accountFacade.findByLogin(login);
         if (account == null) {
@@ -190,6 +199,23 @@ public class MOKService {
         );
     }
 
+    public void changePassword(String login, String newPassword, String oldPassword) {
+        Account account = accountFacade.findByLogin(login);
+        if (account == null) {
+            throw AccountNotFoundException.notFoundByLogin();
+        }
+
+        if (!hashAlgorithm.verify(oldPassword.toCharArray(), account.getPassword())) {
+            throw new AccountPasswordMatchException();
+        }
+        if(hashAlgorithm.verify(newPassword.toCharArray(),account.getPassword())){
+            throw new AccountPasswordIsTheSameException();
+
+        }
+        account.setPassword(hashAlgorithm.generate(newPassword.toCharArray()));
+        accountFacade.unsafeEdit(account);
+    }
+
     public void resetPassword(ResetPasswordDTO accountWithTokenDTO) {
         ResetPasswordToken resetPasswordToken = resetPasswordFacade.findResetPasswordToken(accountWithTokenDTO.getLogin());
         if(hashAlgorithm.verify(resetPasswordToken.getId().toString().toCharArray(), accountWithTokenDTO.getToken())) {
@@ -220,4 +246,30 @@ public class MOKService {
         accessLevelFacade.create(accessLevel);
         return account;
     }
+
+    private final long HOUR = 60 * 60;
+
+    public void registerClientAccount(Account account){
+        accountFacade.create(account);
+        String token = jwtGenerator.createJWTForEmail(account.getLogin());
+        Instant date = Instant.now().plusSeconds(HOUR);
+        ActiveAccountToken activeAccountToken = new ActiveAccountToken(account,token,date);
+        activeAccountFacade.create(activeAccountToken);
+        emailConfig.sendEmail(
+                account.getEmail(),
+                "Active account - KIC",
+                "Your link to active account: https://localhost:8181/active \n"
+                        + "Token: " + token);
+    }
+
+    public void confirm(String token) {
+        Claims claims = jwtGenerator.decodeJWT(token);
+        ActiveAccountToken activeAccountToken = activeAccountFacade.findToken(claims.getSubject());
+        if(activeAccountToken.getExpDate().isBefore(Instant.now())) throw new TokenExpierdException();
+        Account account = accountFacade.findByLogin(claims.getSubject());
+        account.setConfirmed(true);
+        accountFacade.unsafeEdit(account);
+    }
+
+
 }

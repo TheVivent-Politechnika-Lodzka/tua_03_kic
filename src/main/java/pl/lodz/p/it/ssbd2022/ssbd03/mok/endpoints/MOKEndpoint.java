@@ -14,8 +14,10 @@ import jakarta.validation.Valid;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
+import pl.lodz.p.it.ssbd2022.ssbd03.common.EmailConfig;
 import pl.lodz.p.it.ssbd2022.ssbd03.common.TaggedDto;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.Account;
+import pl.lodz.p.it.ssbd2022.ssbd03.entities.ActiveAccountToken;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.access_levels.AccessLevel;
 import pl.lodz.p.it.ssbd2022.ssbd03.mappers.AccessLevelMapper;
 import pl.lodz.p.it.ssbd2022.ssbd03.mappers.AccountMapper;
@@ -64,6 +66,16 @@ public class MOKEndpoint {
     public Response createAccount(CreateAccountDto accountDto) {
         Account account = accountMapper.createAccountfromCreateAccountDto(accountDto);
         mokService.createAccount(account);
+        return Response.ok().build();
+    }
+
+    @PUT
+    @Consumes(MediaType.APPLICATION_JSON)
+    @PermitAll
+    @Path("/register")
+    public Response registerClientAccount(RegisterClientAccountDto accountDto) {
+        Account account = accountMapper.createAccountfromCreateClientAccountDto(accountDto);
+        mokService.registerClientAccount(account);
         return Response.ok().build();
     }
 
@@ -116,19 +128,28 @@ public class MOKEndpoint {
         return accountMapper.createAccountWithAccessLevelsDtoFromAccount(editedAccount);
     }
 
-    @PATCH
+    @GET
     @Path("/deactivate/{login}")
     @RolesAllowed("ADMINISTRATOR")
-    public Response deactivate(@PathParam("login") String login, TaggedDto dto) {
-        mokService.deactivate(login, dto.getTag());
+    public Response deactivate(@PathParam("login") String login) {
+        mokService.deactivate(login);
         return Response.ok().build();
     }
 
-    @PATCH
+    @GET
     @Path("/activate/{login}")
     @RolesAllowed("ADMINISTRATOR")
-    public Response activate(@PathParam("login") String login, TaggedDto dto) {
-        mokService.activate(login, dto.getTag());
+    public Response activate(@PathParam("login") String login) {
+        mokService.activate(login);
+        return Response.ok().build();
+    }
+
+    @POST
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Path("/activeAccount")
+    @PermitAll
+    public Response activeAccountByToken(TokenDto tokenDto) {
+        mokService.confirm(tokenDto.getToken());
         return Response.ok().build();
     }
 
@@ -165,7 +186,7 @@ public class MOKEndpoint {
         }
         paginationData.setData(accountsDTO);
         return Response.ok().entity(paginationData).build();
-        
+
     }
 
     @PATCH
@@ -187,6 +208,16 @@ public class MOKEndpoint {
         mokService.changeAccountPassword(login, changeAccountPasswordDto.getNewPassword());
         return Response.ok().build();
     }
+
+    @PUT
+    @Path("/edit/{login}")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @RolesAllowed("ADMINISTRATOR")
+    public Response editOtherAccountData(@PathParam("login") String login, AccountWithAccessLevelsDto accountEditDto) {
+        mokService.edit(login, accountEditDto);
+        return Response.ok().build();
+    }
+
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
