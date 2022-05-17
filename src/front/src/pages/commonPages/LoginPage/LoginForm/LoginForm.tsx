@@ -4,6 +4,7 @@ import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { useLoginMutation } from "../../../../api/api";
 import { login as loginDispatch } from "../../../../redux/userSlice";
+import { useTranslation } from "react-i18next";
 
 const LoginForm = () => {
   const [authenticate, { isLoading }] = useLoginMutation();
@@ -13,6 +14,7 @@ const LoginForm = () => {
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const { t } = useTranslation();
 
   const handleSubmit = async (event: any) => {
     event.preventDefault();
@@ -30,17 +32,17 @@ const LoginForm = () => {
         navigate("/", { replace: true });
       } else {
         const res = JSON.parse(JSON.stringify(decoded)).error;
-        if (res.status === 401) setMessage("Niepoprawne dane logowania");
-        else setMessage("Błąd serwera, spróbuj za chwilę");
+        if (res.status === 401) setMessage(t("wrong_data"));
+        else setMessage(t("server_error"));
       }
     } else {
-      setMessage("Uzupełnij dane logowania");
+      setMessage(t("refill_data"));
     }
   };
 
   return (
     <div className="login_left">
-      <div className="title_text">Zaloguj się</div>
+      <div className="title_text">{t("log_in")}</div>
       <div className="input_box">
         <div className="form_group field">
           <input
@@ -59,19 +61,19 @@ const LoginForm = () => {
           <input
             type="password"
             className="form_field"
-            placeholder="Hasło"
+            placeholder={t("password")}
             name="password"
             id="password_login"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
           />
-          <label className="form_label">Hasło</label>
+          <label className="form_label">{t("password")}</label>
         </div>
       </div>
 
       <div className="login_button" onClick={handleSubmit}>
-        ZALOGUJ
+        {t("log_in")}
       </div>
       <div className="message_text">{message}</div>
     </div>

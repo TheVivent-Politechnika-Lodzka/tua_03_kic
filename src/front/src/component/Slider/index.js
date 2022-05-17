@@ -1,6 +1,9 @@
+import { useTranslation } from "react-i18next";
 import "./style.scss";
 
 const Slider = () => {
+  const { t } = useTranslation();
+
   const scrolldown = () => {
     const height = document.querySelector("#sliderdiv").offsetHeight;
     window.scrollTo({
@@ -13,9 +16,9 @@ const Slider = () => {
   return (
     <div id="sliderdiv">
       <div className="sliderText">
-        Kliniczny Instytut Cyberwszczepów
+        {t("firm_name")}
         <div className="scroll_Button" onClick={scrolldown}>
-          Dowiedz się więcej
+          {t("more_inf")}
         </div>
       </div>
       <video autoPlay loop muted id="clip" width="100%">

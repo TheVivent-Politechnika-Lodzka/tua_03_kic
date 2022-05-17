@@ -1,4 +1,5 @@
 import { useNavigate } from "react-router-dom";
+import LangSelect from "../../../component/LangSelect/LangSelect";
 import LoginForm from "./LoginForm/LoginForm";
 import RegistrationForm from "./RegistrationForm/RegistrationForm";
 import "./style.scss";
@@ -10,6 +11,7 @@ const LoginPage = () => {
       <div  onClick={() => navigate("/", { replace: false })}>
         <img src="logo.jpg" alt="Logo" height="80px" />
       </div>
+      <LangSelect/>
       <div className="login_section">
         <LoginForm />
         <RegistrationForm />

@@ -18,7 +18,8 @@ const MainPage = () => {
         <div className="box_info">
           <div className="title">{t("why_us")}</div>
           <div className="second_title">
-            jest wiele powodów a to tylko parę z nich
+            {t("many_reason")}
+            
           </div>
           <div className="items_list">
             <div className="single_item_circle">
@@ -26,7 +27,7 @@ const MainPage = () => {
                 <img src="brain.jpg" alt="brain.jpg" />
               </div>
               <div className="text_box">
-                <div className="text_square_title">Własne laboratorium</div>
+                <div className="text_square_title"> {t("own_lab")}</div>
                 <div className="text_square">
                   Lorem Ipsum is simply dummy text of the printing and
                   typesetting industry. Lorem Ipsum has been the industry's
@@ -42,7 +43,7 @@ const MainPage = () => {
               </div>
               <div className="text_box">
                 <div className="text_square_title">
-                  Najwyższej klasy specjaliści
+                {t("best_specialist")}
                 </div>
                 <div className="text_square">
                   Lorem Ipsum is simply dummy text of the printing and
@@ -59,7 +60,8 @@ const MainPage = () => {
               </div>
               <div className="text_box">
                 <div className="text_square_title">
-                  Tysiące zadowolonych klietów
+                {t("satisfied_clients")}
+                
                 </div>
                 <div className="text_square">
                   Lorem Ipsum is simply dummy text of the printing and
@@ -74,9 +76,9 @@ const MainPage = () => {
         </div>
       </div>
       <div className="box_info">
-        <div className="title">NASZE KLINIKI</div>
+        <div className="title"> {t("our_clinic")}</div>
         <div className="second_title">
-          kliniki w trzech dogodnych lokalizacjach
+        {t("good_location")}
         </div>
         <div className="items_list">
           <div className="card">

@@ -4,17 +4,19 @@ import AdminTopBar from "../AdminTopBar";
 import SpecialistTopBar from "../SpecialistTopBar";
 import ClientTopBar from "../ClientTopBar";
 import GuestTopBar from "../GuestTopBar";
-import {logout} from "../../../redux/userSlice";
+import { logout } from "../../../redux/userSlice";
+import { useTranslation } from "react-i18next";
 
 export const Logout = () => {
-  const user = useStoreSelector(state => state.user);
+  const user = useStoreSelector((state) => state.user);
+  const { t } = useTranslation();
   const logout = () => {
-      localStorage.setItem("AUTH_TOKEN", "");
-      window.location.reload();
+    localStorage.setItem("AUTH_TOKEN", "");
+    window.location.reload();
   };
   return (
     <div className="item" onClick={logout}>
-        WYLOGUJ
+      {t("log_out")}
     </div>
   );
 };

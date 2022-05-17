@@ -1,26 +1,34 @@
 import "./style.scss";
 import { FaRobot } from "react-icons/fa";
-import { Link } from "react-router-dom";
+import { Link, Navigate, useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
+import LangSelect from "../../../component/LangSelect/LangSelect";
 
 const ErrorPage = () => {
+  const { t } = useTranslation();
+  const navigate = useNavigate();
   return (
     <div>
-      <div>
-        <Link to="/" style={{ textDecoration: "none" }}>
-          <img src="./../logo.jpg" alt="Logo" height="80px" />
-        </Link>
+      <div
+        onClick={() => {
+          navigate("/");
+        }}
+      >
+        <img src="./../logo.jpg" alt="Logo" height="80px" />
       </div>
+      <LangSelect />
       <div className="errorbox">
         <div className="errortext">
           <FaRobot size="50px" className="icon" />
-          Przykro mi, strona nie istnieje
+          {t("error_page")}
         </div>
 
         <div className="linktext">
-          Zapraszamy na stronę główną
-          <Link to="/" style={{ textDecoration: "none", color: "black" }}>
-            <div className="button">STRONA GŁÓWNA</div>
-          </Link>
+          {t("invite_main_page")}
+
+          <div className="button" onClick={() => navigate("/")}>
+            {t("main_page")}
+          </div>
         </div>
       </div>
     </div>
