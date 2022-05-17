@@ -1,0 +1,38 @@
+{
+  "firm_name": "Cyber Implant Installation Clinic",
+  "why_us": "WHY CHOOSE US?",
+  "many_reason": "there are many reasons",
+  "own_lab": "Own laboratory",
+  "best_specialist": "The best of the best specialist",
+  "satisfied_clients": "Thousands of satisfied clients ",
+  "our_clinic": "OUR CLINIC",
+  "good_location": "three clinic in good locations",
+
+  "contact": "Contact",
+  "social_media": "Social media",
+  "more_inf": "Find out more",
+  "log_in": "LOG IN",
+  "log_out": "LOG OUT",
+  "sign_in": "SIGN IN",
+  "cyber": "CYBER IMPLANT",
+  "specialist": "SPECIALIST",
+  "password": "Password",
+  "first_name": "First name*",
+  "last_name": "Last name*",
+  "phone_number": "Phone number*",
+  "password*": "Password*",
+  "rpassword": "Reapet password*",
+
+  "error_page": "Sorry, page doesn't exist",
+  "invite_main_page": "Go to Home Page",
+  "main_page": "HOME",
+
+  "insert_token": "Insert token from e-mail",
+  "active_account": "Active account",
+  "confirmed_account": "Account confirmed",
+  "nav_log": "Go to Login Page",
+
+  "wrong_data": "Wrong data",
+  "server_error": "Server Error, try again for a moment",
+  "refill_data": "Refill login data"
+}

@@ -1,6 +1,7 @@
 import "./style.scss";
 import { useState } from "react";
 import { useRegisterClientAccountMutation } from "../../../../api/api";
+import { useTranslation } from "react-i18next";
 
 const RegistrationForm = () => {
   const [register] = useRegisterClientAccountMutation();
@@ -27,9 +28,11 @@ const RegistrationForm = () => {
     });
   };
 
+  const { t } = useTranslation();
+
   return (
     <div className="register">
-      <div className="title_text">Zarejestruj</div>
+      <div className="title_text">{t("sign_in")}</div>
       <div className="input_box">
         <div className="form_group field">
           <input
@@ -48,28 +51,28 @@ const RegistrationForm = () => {
           <input
             type="firstName"
             className="form_field"
-            placeholder="Imię"
+            placeholder={t("first_name")}
             name="firstName"
             id="firstName"
             value={firstName}
             onChange={(e) => setFirstName(e.target.value)}
             required
           />
-          <label className="form_label">Imię*</label>
+          <label className="form_label">{t("first_name")}</label>
         </div>
 
         <div className="form_group field">
           <input
             type="lastName"
             className="form_field"
-            placeholder="Nazwisko"
+            placeholder={t("last_name")}
             name="lastName"
             id="lastName"
             value={lastName}
             onChange={(e) => setLastName(e.target.value)}
             required
           />
-          <label className="form_label">Nazwisko*</label>
+          <label className="form_label">{t("last_name")}</label>
         </div>
 
         <div className="form_group field">
@@ -103,47 +106,47 @@ const RegistrationForm = () => {
           <input
             type="text"
             className="form_field"
-            placeholder="Numer telefonu"
+            placeholder={t("phone_number")}
             name="phoneNumber"
             id="phoneNumber"
             value={phone_number}
             onChange={(e) => setPhoneNumber(e.target.value)}
             required
           />
-          <label className="form_label">Numer telefonu*</label>
+          <label className="form_label">{t("phone_number")}</label>
         </div>
 
         <div className="form_group field">
           <input
             type="password"
             className="form_field"
-            placeholder="Hasło"
+            placeholder={t("password*")}
             name="password"
             id="password_register"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
           />
-          <label className="form_label">Hasło*</label>
+          <label className="form_label">{t("password*")}</label>
         </div>
 
         <div className="form_group field">
           <input
             type="password"
             className="form_field"
-            placeholder="Powtórz hasło"
+            placeholder={t("rpassword")}
             name="repeatPassword"
             id="repeatPassword"
             value={repeatPassword}
             onChange={(e) => setRepeatPassword(e.target.value)}
             required
           />
-          <label className="form_label">Powtórz hasło*</label>
+          <label className="form_label">{t("rpassword")}</label>
         </div>
       </div>
 
       <div className="register_button" onClick={handleSubmit}>
-        ZAREJESTRUJ
+        {t("sign_in")}
       </div>
     </div>
   );

@@ -1,12 +1,15 @@
+import { useTranslation } from "react-i18next";
 import { FaPhoneAlt, FaInstagram, FaFacebook } from "react-icons/fa";
 import { HiOutlineMailOpen } from "react-icons/hi";
 import "./style.scss";
 
 const ContactBar = () => {
+  const { t } = useTranslation();
+
   return (
     <div className="contact_section">
       <div className="contact">
-        <div className="contact_section_title1">Kontakt</div>
+        <div className="contact_section_title1">{t("contact")}</div>
         <div className="contact_section_items">
           <div className="contact_section_item">
             <FaPhoneAlt className="contact_icon" />
@@ -19,7 +22,7 @@ const ContactBar = () => {
         </div>
       </div>
       <div className="social_media">
-        <div className="contact_section_title2">Media społecznościowe</div>
+        <div className="contact_section_title2">{t("social_media")}</div>
         <div className="contact_section_items">
           <div className="contact_section_item">
             <FaFacebook className="contact_icon" />
