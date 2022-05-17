@@ -31,7 +31,7 @@ public class DataSpecialist extends AccessLevel implements Serializable {
 
     @Basic(optional = false)
     @Pattern(regexp = "^[0-9]{9}$", message = "Phone number must be 9 digits")
-    @Column(name = "phone_number", nullable = false, length = 9)
+    @Column(name = "phone_number", nullable = true, length = 9)
     @Getter @Setter
     private String phoneNumber;
 

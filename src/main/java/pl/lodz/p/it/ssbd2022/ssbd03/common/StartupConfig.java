@@ -40,7 +40,7 @@ public class StartupConfig {
         admin.setConfirmed(true);
         admin.setFirstName("admin");
         admin.setLastName("administracyjny");
-        admin.setEmail("szurySSBD@gmail.com");
+        admin.setEmail("szurySSBD3@gmail.com");
         admin.setLanguage(new Locale("pl"));
 
 
@@ -83,7 +83,7 @@ public class StartupConfig {
         admin.setConfirmed(true);
         admin.setFirstName("admin");
         admin.setLastName("kliencki");
-        admin.setEmail("szurySSBD3@gmail.com");
+        admin.setEmail("szurySSBD@gmail.com");
         admin.setLanguage(new Locale("pl"));
 
         DataAdministrator dataAdministrator = new DataAdministrator();

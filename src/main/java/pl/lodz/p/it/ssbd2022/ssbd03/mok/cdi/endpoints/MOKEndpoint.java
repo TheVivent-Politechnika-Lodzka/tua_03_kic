@@ -124,7 +124,7 @@ public class MOKEndpoint {
 
     @PUT
     @Consumes(MediaType.APPLICATION_JSON)
-    @RolesAllowed({"ADMINISTRATOR", "SPECIALIST", "CLIENT"})
+    @PermitAll
     @Path("/edit")
     public AccountWithAccessLevelsDto editOwnAccount(@Valid AccountWithAccessLevelsDto accountEditDto) {
         Account currentUser = authContext.getCurrentUser();
