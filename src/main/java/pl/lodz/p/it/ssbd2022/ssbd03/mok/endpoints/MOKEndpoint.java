@@ -131,16 +131,16 @@ public class MOKEndpoint {
     @GET
     @Path("/deactivate/{login}")
     @RolesAllowed("ADMINISTRATOR")
-    public Response deactivate(@PathParam("login") String login) {
-        mokService.deactivate(login);
+    public Response deactivate(@PathParam("login") String login, TaggedDto taggedDto) {
+        mokService.deactivate(login, taggedDto.getTag());
         return Response.ok().build();
     }
 
     @GET
     @Path("/activate/{login}")
     @RolesAllowed("ADMINISTRATOR")
-    public Response activate(@PathParam("login") String login) {
-        mokService.activate(login);
+    public Response activate(@PathParam("login") String login, TaggedDto taggedDto) {
+        mokService.activate(login, taggedDto.getTag());
         return Response.ok().build();
     }
 
