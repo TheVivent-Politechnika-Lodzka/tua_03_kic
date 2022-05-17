@@ -6,7 +6,9 @@ import {
   AccessLevelDto,
   AccountDto,
   AccountWithAccessLevelDto,
+  ClientAccountDto,
   ChangePasswordDto,
+  ActiveAccountDto,
 } from "./types/mok.dto";
 
 interface addAccessLevelData {
@@ -53,6 +55,19 @@ const api = createApi({
       }),
     }),
 
+    registerClientAccount: builder.mutation<string, ClientAccountDto>({
+      query: (clientAccountDto: ClientAccountDto) => ({
+        url: "/mok/register",
+        method: "POST",
+        body: clientAccountDto,
+        responseHandler: async (response) => {
+          if (response.ok) {
+            return response.status;
+          }
+        },
+      }),
+    }),
+
     findAllUsers: builder.mutation<AccountDto[], PaginationParams>({
       query: ({ page, limit }: PaginationParams) => ({
         url: "/mok/account",
@@ -94,7 +109,7 @@ const api = createApi({
     changeOwnPassword: builder.mutation<string, ChangePasswordDto>({
       query: (changeOwnPasswordDto: ChangePasswordDto) => ({
         url: "/mok/password",
-        method: "PATCH",
+        method: "PUT",
         body: changeOwnPasswordDto,
         responseHandler: async (response) => {
           return response.status;
@@ -124,6 +139,23 @@ const api = createApi({
       }),
     }),
 
+    activeAccount: builder.mutation<string, ActiveAccountDto>({
+      query: (activeAccountDto: ActiveAccountDto) => ({
+        url: "/mok/activeAccount",
+        method: "POST",
+        body: activeAccountDto,
+        responseHandler: async (response) => {
+          if (response.ok) {
+            return response.status;
+          }
+        },
+      }),
+    }),
+
+
+
+
+
     editOtherAccountData: builder.mutation<string, addAccessLevelData>({
       query: (data: addAccessLevelData) => ({
         url: `/mok/edit/${data.login}`,
@@ -152,5 +184,7 @@ export const {
   useGetAccountByLoginMutation,
   useChangeAccountPasswordMutation,
   useChangeOwnPasswordMutation,
+  useRegisterClientAccountMutation,
+  useActiveAccountMutation,
   useGetOwnAccountDetailsQuery
 } = api;
