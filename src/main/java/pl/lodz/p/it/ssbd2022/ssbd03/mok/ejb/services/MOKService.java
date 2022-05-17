@@ -1,6 +1,7 @@
 package pl.lodz.p.it.ssbd2022.ssbd03.mok.ejb.services;
 
 import io.jsonwebtoken.Claims;
+import jakarta.ejb.Stateful;
 import jakarta.ejb.Stateless;
 import jakarta.ejb.TransactionAttribute;
 import jakarta.ejb.TransactionAttributeType;
@@ -42,7 +43,7 @@ import java.time.Instant;
 import pl.lodz.p.it.ssbd2022.ssbd03.utils.HashAlgorithm;
 
 @Interceptors(TrackerInterceptor.class)
-@Stateless
+@Stateful
 @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
 public class MOKService {
 

@@ -6,6 +6,7 @@ import jakarta.annotation.security.RolesAllowed;
 import jakarta.ejb.Stateless;
 import jakarta.ejb.TransactionAttribute;
 import jakarta.ejb.TransactionAttributeType;
+import jakarta.enterprise.context.RequestScoped;
 import jakarta.inject.Inject;
 import jakarta.security.enterprise.credential.Credential;
 import jakarta.security.enterprise.credential.Password;
@@ -28,7 +29,7 @@ import pl.lodz.p.it.ssbd2022.ssbd03.utils.PaginationData;
 import java.util.ArrayList;
 import java.util.List;
 
-@Stateless
+@RequestScoped
 @Path("mok")
 @DenyAll
 @TransactionAttribute(TransactionAttributeType.NEVER)
