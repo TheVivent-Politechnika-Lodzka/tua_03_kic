@@ -37,7 +37,7 @@ public abstract class AbstractFacade<T> {
     }
 
     private void verifyTag(AbstractEntity entity, String tagFromDto){
-        String entityTag = getHashAlgorithm().generateDtoTag(
+        String entityTag = getHashAlgorithm().generateETag(
                 entity.getId(),
                 entity.getVersion()
         );

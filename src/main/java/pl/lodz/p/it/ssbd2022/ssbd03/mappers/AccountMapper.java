@@ -3,13 +3,12 @@ package pl.lodz.p.it.ssbd2022.ssbd03.mappers;
 import jakarta.ejb.Stateless;
 import jakarta.inject.Inject;
 import pl.lodz.p.it.ssbd2022.ssbd03.common.AbstractEntity;
-import pl.lodz.p.it.ssbd2022.ssbd03.common.TaggedDto;
+import pl.lodz.p.it.ssbd2022.ssbd03.common.AbstractDto;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.Account;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.access_levels.DataClient;
 import pl.lodz.p.it.ssbd2022.ssbd03.mok.dto.AccountDto;
 import pl.lodz.p.it.ssbd2022.ssbd03.mok.dto.AccountWithAccessLevelsDto;
 import pl.lodz.p.it.ssbd2022.ssbd03.mok.dto.CreateAccountDto;
-import pl.lodz.p.it.ssbd2022.ssbd03.mok.dto.RegisterClientAccountDto;
 import pl.lodz.p.it.ssbd2022.ssbd03.mok.dto.RegisterClientAccountDto;
 import pl.lodz.p.it.ssbd2022.ssbd03.mok.dto.access_levels.AccessLevelDto;
 import pl.lodz.p.it.ssbd2022.ssbd03.utils.HashAlgorithm;
@@ -21,6 +20,9 @@ public class AccountMapper {
 
     @Inject
     private AccessLevelMapper accessLevelMapper;
+
+    @Inject
+    AbstractEntityMapper abstractEntityMapper;
 
     public Account createAccountfromCreateAccountDto(CreateAccountDto createAccountDto) {
         Account account = new Account();
@@ -61,15 +63,8 @@ public class AccountMapper {
         for (AccessLevelDto accessLevelDto : accountDto.getAccessLevels()) {
             account.addAccessLevel(accessLevelMapper.createAccessLevelFromDto(accessLevelDto));
         }
-        return account;
-    }
 
-    public TaggedDto tagDto(TaggedDto dto, AbstractEntity entity) {
-        dto.setTag(hashAlgorithm.generateDtoTag(
-                entity.getId(),
-                entity.getVersion()
-        ));
-        return dto;
+        return account;
     }
 
     public AccountDto createAccountDtoFromAccount(Account account) {
@@ -82,7 +77,8 @@ public class AccountMapper {
                 account.getEmail(),
                 account.getLanguage()
         );
-        return (AccountDto) tagDto(accountDto, account);
+
+        return (AccountDto) abstractEntityMapper.map(accountDto, account);
     }
 
     public AccountWithAccessLevelsDto createAccountWithAccessLevelsDtoFromAccount(Account account) {
@@ -94,9 +90,9 @@ public class AccountMapper {
                 account.isConfirmed(),
                 account.getLanguage(),
                 accessLevelMapper.createListOfAccessLevelDTO(account.getAccessLevelCollection())
-
         );
-        return (AccountWithAccessLevelsDto) tagDto(accountDto, account);
+
+        return (AccountWithAccessLevelsDto) abstractEntityMapper.map(accountDto, account);
     }
 
 

@@ -7,8 +7,6 @@ import jakarta.ejb.TransactionAttributeType;
 import jakarta.inject.Inject;
 import jakarta.interceptor.Interceptors;
 import jakarta.security.enterprise.credential.Credential;
-import jakarta.security.enterprise.credential.Password;
-import jakarta.security.enterprise.credential.UsernamePasswordCredential;
 import jakarta.security.enterprise.identitystore.CredentialValidationResult;
 import jakarta.security.enterprise.identitystore.IdentityStoreHandler;
 import jakarta.ws.rs.ClientErrorException;
@@ -42,8 +40,6 @@ import pl.lodz.p.it.ssbd2022.ssbd03.utils.PaginationData;
 
 import java.time.Instant;
 import pl.lodz.p.it.ssbd2022.ssbd03.utils.HashAlgorithm;
-
-import java.util.Locale;
 
 @Interceptors(TrackerInterceptor.class)
 @Stateless
@@ -112,7 +108,7 @@ public class MOKService {
             }
         }
 
-        accountFacade.edit(account, accountDto.getTag());
+        accountFacade.edit(account, accountDto.getETag());
         return account;
     }
 

@@ -1,6 +1,7 @@
 package pl.lodz.p.it.ssbd2022.ssbd03.mappers;
 
 import jakarta.ejb.Stateless;
+import jakarta.inject.Inject;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.access_levels.AccessLevel;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.access_levels.DataAdministrator;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.access_levels.DataClient;
@@ -18,18 +19,24 @@ import java.util.stream.Collectors;
 @Stateless
 public class AccessLevelMapper {
 
+    @Inject
+    private AbstractEntityMapper abstractEntityMapper;
+
     // from entity to dto
 
     public DataClientDto createDataClientDtoFromEntity(DataClient dataClient) {
-        return new DataClientDto(dataClient.getPhoneNumber(), dataClient.getPesel());
+        DataClientDto dto = new DataClientDto(dataClient.getPhoneNumber(), dataClient.getPesel());
+        return (DataClientDto) abstractEntityMapper.map(dto, dataClient);
     }
 
     public DataAdministratorDto createDataAdministratorDtoFromEntity(DataAdministrator dataAdministratort) {
-        return new DataAdministratorDto(dataAdministratort.getContactEmail(), dataAdministratort.getPhoneNumber());
+        DataAdministratorDto dto = new DataAdministratorDto(dataAdministratort.getContactEmail(), dataAdministratort.getPhoneNumber());
+        return (DataAdministratorDto) abstractEntityMapper.map(dto, dataAdministratort);
     }
 
     public DataSpecialistDto createDataSpecialistDtoFromEntity(DataSpecialist dataSpecialist) {
-        return new DataSpecialistDto(dataSpecialist.getContactEmail(), dataSpecialist.getPhoneNumber());
+        DataSpecialistDto dto = new DataSpecialistDto(dataSpecialist.getContactEmail(), dataSpecialist.getPhoneNumber());
+        return (DataSpecialistDto) abstractEntityMapper.map(dto, dataSpecialist);
     }
 
     // from dto to entity

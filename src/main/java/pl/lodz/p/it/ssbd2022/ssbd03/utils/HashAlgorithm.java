@@ -1,6 +1,5 @@
 package pl.lodz.p.it.ssbd2022.ssbd03.utils;
 
-import jakarta.ejb.Stateless;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.security.enterprise.identitystore.PasswordHash;
 import org.apache.commons.codec.digest.DigestUtils;
@@ -24,7 +23,7 @@ public class HashAlgorithm implements PasswordHash {
         return hash.equals(DigestUtils.sha512Hex(new String(toHash)));
     }
 
-    public String generateDtoTag(UUID entityId, Long entityVersion) {
+    public String generateETag(UUID entityId, Long entityVersion) {
         String tag = entityId.toString() + entityVersion.toString();
         return DigestUtils.sha256Hex(tag);
     }
