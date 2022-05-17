@@ -43,6 +43,8 @@ import pl.lodz.p.it.ssbd2022.ssbd03.utils.PaginationData;
 import java.time.Instant;
 import pl.lodz.p.it.ssbd2022.ssbd03.utils.HashAlgorithm;
 
+import java.util.Locale;
+
 @Interceptors(TrackerInterceptor.class)
 @Stateless
 @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
@@ -286,5 +288,10 @@ public class MOKService {
         accessLevelFacade.unsafeRemove(access);
 
         return account;
+    }
+
+    public void changeLanguage(AccountWithAccessLevelsDto account) {
+        Account accountNew = accountFacade.findByLogin(account.getLogin());
+        accountNew.setLanguage(account.getLanguage());
     }
 }

@@ -2,7 +2,6 @@ package pl.lodz.p.it.ssbd2022.ssbd03.mappers;
 
 import jakarta.ejb.Stateless;
 import jakarta.inject.Inject;
-import pl.lodz.p.it.ssbd2022.ssbd03.common.TaggedDto;
 import pl.lodz.p.it.ssbd2022.ssbd03.common.AbstractEntity;
 import pl.lodz.p.it.ssbd2022.ssbd03.common.TaggedDto;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.Account;
@@ -32,6 +31,7 @@ public class AccountMapper {
         account.setPassword(hashAlgorithm.generate(createAccountDto.getPassword().toCharArray()));
         account.setActive(true);
         account.setConfirmed(true);
+        account.setLanguage(createAccountDto.getLanguage());
 
         return account;
     }
@@ -79,7 +79,8 @@ public class AccountMapper {
                 account.getLastName(),
                 account.isActive(),
                 account.isConfirmed(),
-                account.getEmail()
+                account.getEmail(),
+                account.getLanguage()
         );
         return (AccountDto) tagDto(accountDto, account);
     }
@@ -91,7 +92,9 @@ public class AccountMapper {
                 account.getLastName(),
                 account.isActive(),
                 account.isConfirmed(),
+                account.getLanguage(),
                 accessLevelMapper.createListOfAccessLevelDTO(account.getAccessLevelCollection())
+
         );
         return (AccountWithAccessLevelsDto) tagDto(accountDto, account);
     }

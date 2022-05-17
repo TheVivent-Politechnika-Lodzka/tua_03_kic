@@ -1,11 +1,12 @@
-package pl.lodz.p.it.ssbd2022.ssbd03.exceptions;
+package pl.lodz.p.it.ssbd2022.ssbd03.exceptions.database;
 
 import jakarta.ws.rs.core.Response;
+import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.AppBaseException;
 
 /**
  * Wyjątek reprezentujący błąd związany z bazą danych
  */
-public class DatabaseException extends AppBaseException{
+public class DatabaseException extends AppBaseException {
 
     private static final String DATABASE_ERROR = "server.error.appBase.databaseError";
 

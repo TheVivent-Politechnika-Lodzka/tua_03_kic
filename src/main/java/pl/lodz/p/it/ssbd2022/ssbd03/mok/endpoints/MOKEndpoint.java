@@ -139,19 +139,19 @@ public class MOKEndpoint {
         return accountMapper.createAccountWithAccessLevelsDtoFromAccount(editedAccount);
     }
 
-    @GET
+    @PATCH
     @Path("/deactivate/{login}")
     @RolesAllowed("ADMINISTRATOR")
-    public Response deactivate(@PathParam("login") String login, TaggedDto taggedDto) {
-        mokService.deactivate(login, taggedDto.getTag());
+    public Response deactivate(@PathParam("login") String login, TaggedDto dto) {
+        mokService.deactivate(login, dto.getTag());
         return Response.ok().build();
     }
 
-    @GET
+    @PATCH
     @Path("/activate/{login}")
     @RolesAllowed("ADMINISTRATOR")
-    public Response activate(@PathParam("login") String login, TaggedDto taggedDto) {
-        mokService.activate(login, taggedDto.getTag());
+    public Response activate(@PathParam("login") String login, TaggedDto dto) {
+        mokService.activate(login, dto.getTag());
         return Response.ok().build();
     }
 
@@ -226,6 +226,17 @@ public class MOKEndpoint {
     @RolesAllowed("ADMINISTRATOR")
     public Response editOtherAccountData(@PathParam("login") String login, AccountWithAccessLevelsDto accountEditDto) {
         mokService.edit(login, accountEditDto);
+        return Response.ok().build();
+    }
+
+    // testowy endpoint - po testach do usuniecia
+    // do wysylania na razie trzeba przesalc obiekt language a w nim klucz language
+    @PATCH
+    @Path("/language")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @PermitAll
+    public Response changeLanguage(AccountWithAccessLevelsDto account) {
+        mokService.changeLanguage(account);
         return Response.ok().build();
     }
 
