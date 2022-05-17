@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.awt.*;
+import java.time.Instant;
 import java.util.UUID;
 
 @MappedSuperclass
@@ -22,6 +24,29 @@ public abstract class AbstractEntity {
     @Getter
     private Long version;
 
+    //pole zawierające datę utworzenia encji
+    @Basic(optional = false)
+    @Column(name = "created_at", updatable = false, nullable = false)
+    @Getter
+    private Instant createdAt;
+
+    //pole zawierające ostatnio modyfikację encji
+    @Basic(optional = false)
+    @Column(name = "last_modified", nullable = false)
+    @Getter
+    private Instant lastModified;
+
+    @PrePersist
+    public void prePersist() {
+        Instant start = Instant.now();
+        createdAt = start;
+        lastModified = start;
+    }
+
+    @PreUpdate
+    public void preUpdate() {
+        lastModified = Instant.now();
+    }
     // implementacja equals i hashCode,
     // dzięki temu nie trzeba implementować w każdej encji
     @Override
