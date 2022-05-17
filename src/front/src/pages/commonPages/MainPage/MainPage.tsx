@@ -2,14 +2,13 @@ import ContactBar from "../../../component/ContactBar/ContactBar";
 import Slider from "../../../component/Slider";
 import TopBar from "../../../component/TopBar/SelectorTopBar";
 import "./style.scss";
-
+import { useTranslation } from "react-i18next";
 
 const MainPage = () => {
-  
+  const { t } = useTranslation();
 
   return (
     <div>
-
       <TopBar />
       <div className="slider_section">
         <Slider />
@@ -17,7 +16,7 @@ const MainPage = () => {
 
       <div className="content_section">
         <div className="box_info">
-          <div className="title">DLACZEGO MY?</div>
+          <div className="title">{t("why_us")}</div>
           <div className="second_title">
             jest wiele powodów a to tylko parę z nich
           </div>

@@ -1,4 +1,5 @@
 import { useNavigate } from "react-router-dom";
+import LangSelect from "../../LangSelect/LangSelect";
 import "./style.scss";
 
 const GuestTopBar = () => {
@@ -12,6 +13,9 @@ const GuestTopBar = () => {
       <div className="links">
         <div className="item">CYBERWSZCZEPY</div>
         <div className="item">SPECJALIŚCI</div>
+        <div className="item">
+          <LangSelect />
+        </div>
 
         <div
           className="itembutton"

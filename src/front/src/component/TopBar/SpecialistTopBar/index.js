@@ -1,6 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import "./style.scss";
 import {Logout} from "../SelectorTopBar";
+import LangSelect from "../../LangSelect/LangSelect";
 
 const SpecialistTopBar = () => {
   const navigate = useNavigate();
@@ -18,6 +19,9 @@ const SpecialistTopBar = () => {
           onClick={() => navigate("/specialist", { replace: false })}
         >
           SPECIALISTPAGE
+        </div>
+        <div className="item">
+          <LangSelect />
         </div>
           <Logout/>
       </div>

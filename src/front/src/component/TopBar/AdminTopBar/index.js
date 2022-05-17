@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { logout } from "../../../redux/userSlice";
 import "./style.scss";
 import {Logout} from "../SelectorTopBar";
+import LangSelect from "../../LangSelect/LangSelect";
 
 const AdminTopBar = () => {
   const navigate = useNavigate();
@@ -20,6 +21,9 @@ const AdminTopBar = () => {
           onClick={() => navigate("/admin", { replace: false })}
         >
           ADMINPAGE
+        </div>
+        <div className="item">
+          <LangSelect />
         </div>
           <Logout/>
       </div>

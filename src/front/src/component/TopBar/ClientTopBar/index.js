@@ -1,6 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import "./style.scss";
 import {Logout} from "../SelectorTopBar";
+import LangSelect from "../../LangSelect/LangSelect";
 
 const ClientTopBar = () => {
   const navigate = useNavigate();
@@ -18,6 +19,9 @@ const ClientTopBar = () => {
           onClick={() => navigate("/client", { replace: false })}
         >
           CLIENTPAGE
+        </div>
+        <div className="item">
+          <LangSelect />
         </div>
           <Logout/>
       </div>
