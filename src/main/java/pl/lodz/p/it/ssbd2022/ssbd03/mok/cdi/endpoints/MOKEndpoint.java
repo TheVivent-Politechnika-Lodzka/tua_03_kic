@@ -1,4 +1,4 @@
-package pl.lodz.p.it.ssbd2022.ssbd03.mok.endpoints;
+package pl.lodz.p.it.ssbd2022.ssbd03.mok.cdi.endpoints;
 
 import jakarta.annotation.security.DenyAll;
 import jakarta.annotation.security.PermitAll;
@@ -14,16 +14,14 @@ import jakarta.validation.Valid;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
-import pl.lodz.p.it.ssbd2022.ssbd03.common.EmailConfig;
 import pl.lodz.p.it.ssbd2022.ssbd03.common.TaggedDto;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.Account;
-import pl.lodz.p.it.ssbd2022.ssbd03.entities.ActiveAccountToken;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.access_levels.AccessLevel;
 import pl.lodz.p.it.ssbd2022.ssbd03.mappers.AccessLevelMapper;
 import pl.lodz.p.it.ssbd2022.ssbd03.mappers.AccountMapper;
 import pl.lodz.p.it.ssbd2022.ssbd03.mok.dto.*;
 import pl.lodz.p.it.ssbd2022.ssbd03.mok.dto.access_levels.AccessLevelDto;
-import pl.lodz.p.it.ssbd2022.ssbd03.mok.services.MOKService;
+import pl.lodz.p.it.ssbd2022.ssbd03.mok.ejb.services.MOKService;
 import pl.lodz.p.it.ssbd2022.ssbd03.security.AuthContext;
 import pl.lodz.p.it.ssbd2022.ssbd03.utils.PaginationData;
 

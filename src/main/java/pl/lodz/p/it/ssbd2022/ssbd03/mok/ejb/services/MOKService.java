@@ -1,4 +1,4 @@
-package pl.lodz.p.it.ssbd2022.ssbd03.mok.services;
+package pl.lodz.p.it.ssbd2022.ssbd03.mok.ejb.services;
 
 import io.jsonwebtoken.Claims;
 import jakarta.ejb.Stateless;
