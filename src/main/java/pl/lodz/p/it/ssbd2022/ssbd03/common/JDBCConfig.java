@@ -14,7 +14,7 @@ import java.sql.Connection;
         password = Config.password,
         serverName = Config.serverName,
         portNumber = 5432,
-        databaseName = "ssbd03",
+        databaseName = Config.databaseName,
         initialPoolSize = 1,
         minPoolSize = 0,
         maxPoolSize = 1,
@@ -24,21 +24,19 @@ import java.sql.Connection;
         name = "java:app/jdbc/ssbd03auth",
         className = "org.postgresql.ds.PGSimpleDataSource",
         user = "ssbd03auth",
-        password = "cyberpunk2077",
-        serverName = "127.0.0.1",
-//        serverName = "studdev.it.p.lodz.pl",
+        password = Config.password,
+        serverName = Config.serverName,
         portNumber = 5432,
-        databaseName = "ssbd03")
+        databaseName = Config.databaseName)
 
 @DataSourceDefinition( // Operacje realizowane przez moduł aplikacji
         name = "java:app/jdbc/ssbd03mok",
         className = "org.postgresql.ds.PGSimpleDataSource",
         user = "ssbd03mok",
-        password = "cyberpunk2077",
-        serverName = "127.0.0.1",
-//        serverName = "studdev.it.p.lodz.pl",
+        password = Config.password,
+        serverName = Config.serverName,
         portNumber = 5432,
-        databaseName = "ssbd03",
+        databaseName = Config.databaseName,
         transactional = true,
         isolationLevel = Connection.TRANSACTION_READ_COMMITTED)
 
@@ -46,11 +44,10 @@ import java.sql.Connection;
         name = "java:app/jdbc/ssbd03mop",
         className = "org.postgresql.ds.PGSimpleDataSource",
         user = "ssbd03mop",
-        password = "cyberpunk2077",
-        serverName = "127.0.0.1",
-//        serverName = "studdev.it.p.lodz.pl",
+        password = Config.password,
+        serverName = Config.serverName,
         portNumber = 5432,
-        databaseName = "ssbd03",
+        databaseName = Config.databaseName,
         transactional = true,
         isolationLevel = Connection.TRANSACTION_READ_COMMITTED)
 

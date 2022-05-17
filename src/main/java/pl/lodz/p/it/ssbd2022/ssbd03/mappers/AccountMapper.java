@@ -84,8 +84,8 @@ public class AccountMapper {
                 account.getLogin(),
                 account.getFirstName(),
                 account.getLastName(),
-                account.isActive(),
-                account.isConfirmed(),
+                false,
+                true,
                 account.getLanguage(),
                 accessLevelMapper.createListOfAccessLevelDTO(account.getAccessLevelCollection())
         );
