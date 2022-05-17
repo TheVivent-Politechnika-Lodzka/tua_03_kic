@@ -1,10 +1,12 @@
 package pl.lodz.p.it.ssbd2022.ssbd03.exceptions;
 
+import jakarta.ejb.ApplicationException;
 import jakarta.ws.rs.core.Response;
 
 /**
  * Wyjątek reprezentujący błąd z serializacją lub deserializacją
  */
+@ApplicationException(rollback = true)
 public class SerializationDeserializationException extends AppBaseException {
 
     private static final String UNABLE_TO_SERIALIZE = "server.error.appBase.serialization";

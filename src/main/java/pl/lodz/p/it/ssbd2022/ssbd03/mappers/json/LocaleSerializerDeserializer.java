@@ -27,7 +27,7 @@ public class LocaleSerializerDeserializer implements JsonbSerializer<Locale>, Js
 
     @Override
     public void serialize(Locale locale, JsonGenerator jsonGenerator, SerializationContext serializationContext) {
-       serializationContext.serialize(new XD(locale.getLanguage()), jsonGenerator);
+        serializationContext.serialize(new XD(locale.getLanguage()), jsonGenerator);
     }
 
     @Override

@@ -1,8 +1,10 @@
 package pl.lodz.p.it.ssbd2022.ssbd03.exceptions.access_level;
 
+import jakarta.ejb.ApplicationException;
 import jakarta.ws.rs.core.Response;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.AppBaseException;
 
+@ApplicationException(rollback = true)
 public class AccessLevelExistsException extends AppBaseException {
 
     private static final String MESSAGE = "server.error.access_level.exists";
