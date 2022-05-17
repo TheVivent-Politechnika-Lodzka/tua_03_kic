@@ -134,9 +134,7 @@ const api = createApi({
         method: "PUT",
         body: data.accessLevel,
         responseHandler: async (response) => {
-          if (response.ok) {
-            return response.status;
-          }
+          return response.status;
         },
       }),
     }),
@@ -157,6 +155,17 @@ const api = createApi({
 
 
 
+
+    editOtherAccountData: builder.mutation<string, addAccessLevelData>({
+      query: (data: addAccessLevelData) => ({
+        url: `/mok/edit/${data.login}`,
+        method: "PUT",
+        body: data.accessLevel,
+        responseHandler: async (response) => {
+          return response.status;
+        },
+      }),
+    }),
 
     getOwnAccountDetails: builder.query<AccountWithAccessLevelDto ,void>({
       query:() =>({url: '/mok/account',
