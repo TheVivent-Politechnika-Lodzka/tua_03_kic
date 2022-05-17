@@ -11,7 +11,7 @@ import jakarta.security.enterprise.identitystore.CredentialValidationResult;
 import jakarta.security.enterprise.identitystore.IdentityStoreHandler;
 import jakarta.ws.rs.ClientErrorException;
 import pl.lodz.p.it.ssbd2022.ssbd03.common.EmailConfig;
-import pl.lodz.p.it.ssbd2022.ssbd03.entities.ActiveAccountToken;
+import pl.lodz.p.it.ssbd2022.ssbd03.entities.ConfirmationAccountToken;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.ResetPasswordToken;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.access_levels.AccessLevel;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.access_levels.DataAdministrator;
@@ -254,7 +254,7 @@ public class MOKService {
         accountFacade.create(account);
         String token = jwtGenerator.createJWTForEmail(account.getLogin());
         Instant date = Instant.now().plusSeconds(HOUR);
-        ActiveAccountToken activeAccountToken = new ActiveAccountToken(account,token,date);
+        ConfirmationAccountToken activeAccountToken = new ConfirmationAccountToken(account,token,date);
         activeAccountFacade.create(activeAccountToken);
         emailConfig.sendEmail(
                 account.getEmail(),
@@ -265,7 +265,7 @@ public class MOKService {
 
     public void confirm(String token) {
         Claims claims = jwtGenerator.decodeJWT(token);
-        ActiveAccountToken activeAccountToken = activeAccountFacade.findToken(claims.getSubject());
+        ConfirmationAccountToken activeAccountToken = activeAccountFacade.findToken(claims.getSubject());
         if(activeAccountToken.getExpDate().isBefore(Instant.now())) throw new TokenExpierdException();
         Account account = accountFacade.findByLogin(claims.getSubject());
         account.setConfirmed(true);

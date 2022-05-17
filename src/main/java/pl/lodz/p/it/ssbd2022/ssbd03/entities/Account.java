@@ -2,6 +2,7 @@ package pl.lodz.p.it.ssbd2022.ssbd03.entities;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -9,6 +10,10 @@ import lombok.Setter;
 import lombok.ToString;
 import pl.lodz.p.it.ssbd2022.ssbd03.common.AbstractEntity;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.access_levels.AccessLevel;
+import pl.lodz.p.it.ssbd2022.ssbd03.validation.FirstName;
+import pl.lodz.p.it.ssbd2022.ssbd03.validation.LastName;
+import pl.lodz.p.it.ssbd2022.ssbd03.validation.Login;
+import pl.lodz.p.it.ssbd2022.ssbd03.validation.Password;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -47,9 +52,9 @@ public class Account extends AbstractEntity implements Serializable {
     public static final String CONSTRAINT_EMAIL_UNIQUE = "account_email_unique";
 
     @Basic(optional = false)
-    @Size(min = 3, max = 20)
     @Column(name = "login", unique = true, nullable = false, length = 20)
     @Getter @Setter
+    @Login
     private String login;
 
     @Basic(optional = false)
@@ -61,11 +66,13 @@ public class Account extends AbstractEntity implements Serializable {
     @Basic(optional = false)
     @Column(name = "confirmed", nullable = false)
     @Getter @Setter
+    @NotNull
     private boolean confirmed;
 
     @Basic(optional = false)
     @Column(name = "active", nullable = false)
     @Getter @Setter
+    @NotNull
     private boolean active;
 
     @OneToMany(fetch = FetchType.EAGER, cascade = {CascadeType.REMOVE, CascadeType.PERSIST}, mappedBy = "account")
@@ -78,23 +85,26 @@ public class Account extends AbstractEntity implements Serializable {
     @Size(min = 3, max = 30)
     @Column(name = "first_name", table = "account_details", nullable = false, length = 30)
     @Getter @Setter
+    @FirstName
     private String firstName;
 
     @Basic(optional = false)
     @Size(min = 3, max = 30)
     @Column(name = "last_name", table = "account_details", nullable = false, length = 30)
     @Getter @Setter
+    @LastName
     private String lastName;
 
     @Basic(optional = false)
     @Column(name = "email", table = "account_details", nullable = false, length = 128)
     @Getter @Setter
-    @Email
+    @Email @NotNull
     private String email;
 
     @Basic(optional = false)
     @Column(name = "language", table="account_details", nullable = false, length = 16)
     @Getter @Setter
+    @NotNull
     private Locale language;
 
     public void addAccessLevel(AccessLevel accessLevel) {

@@ -1,9 +1,5 @@
 package pl.lodz.p.it.ssbd2022.ssbd03.common;
 
-import io.github.cdimascio.dotenv.Dotenv;
-
-import java.util.Objects;
-
 public class Config {
 
     // Dla JDBCConfig
