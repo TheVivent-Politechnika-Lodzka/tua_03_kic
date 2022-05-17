@@ -1,17 +1,18 @@
 package pl.lodz.p.it.ssbd2022.ssbd03.mok.dto;
 
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Getter
-@Setter
-@AllArgsConstructor
+@Getter @Setter
 @NoArgsConstructor
-public class TokenDto {
+@AllArgsConstructor
+public class ChangePasswordDto {
 
     @NotNull
-    private String token;
+    @Size(min = 8, max = 64)
+    private String newPassword;
 }

@@ -1,18 +1,17 @@
 package pl.lodz.p.it.ssbd2022.ssbd03.mok.dto;
 
 import jakarta.validation.constraints.NotNull;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import pl.lodz.p.it.ssbd2022.ssbd03.validation.Login;
 import pl.lodz.p.it.ssbd2022.ssbd03.validation.Password;
 
 @Getter @Setter
-@NoArgsConstructor
 @AllArgsConstructor
-public class CredentialDto {
+@NoArgsConstructor
+public class ResetPasswordTokenDto {
 
+    @NotNull
+    private String token;
     @Login
     private String login;
     @Password

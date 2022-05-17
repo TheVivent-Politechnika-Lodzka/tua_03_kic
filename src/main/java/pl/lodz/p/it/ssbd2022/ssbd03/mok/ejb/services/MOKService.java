@@ -2,7 +2,6 @@ package pl.lodz.p.it.ssbd2022.ssbd03.mok.ejb.services;
 
 import io.jsonwebtoken.Claims;
 import jakarta.ejb.Stateful;
-import jakarta.ejb.Stateless;
 import jakarta.ejb.TransactionAttribute;
 import jakarta.ejb.TransactionAttributeType;
 import jakarta.inject.Inject;
@@ -25,7 +24,7 @@ import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.account.AccountPasswordMatchExcep
 import pl.lodz.p.it.ssbd2022.ssbd03.mappers.AccessLevelMapper;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.account.TokenExpierdException;
 import pl.lodz.p.it.ssbd2022.ssbd03.mok.dto.AccountWithAccessLevelsDto;
-import pl.lodz.p.it.ssbd2022.ssbd03.mok.dto.ResetPasswordDTO;
+import pl.lodz.p.it.ssbd2022.ssbd03.mok.dto.ResetPasswordTokenDto;
 import pl.lodz.p.it.ssbd2022.ssbd03.mok.dto.access_levels.AccessLevelDto;
 import pl.lodz.p.it.ssbd2022.ssbd03.mok.dto.access_levels.DataAdministratorDto;
 import pl.lodz.p.it.ssbd2022.ssbd03.mok.dto.access_levels.DataClientDto;
@@ -215,7 +214,7 @@ public class MOKService {
         accountFacade.unsafeEdit(account);
     }
 
-    public void resetPassword(ResetPasswordDTO accountWithTokenDTO) {
+    public void resetPassword(ResetPasswordTokenDto accountWithTokenDTO) {
         ResetPasswordToken resetPasswordToken = resetPasswordFacade.findResetPasswordToken(accountWithTokenDTO.getLogin());
         if(hashAlgorithm.verify(resetPasswordToken.getId().toString().toCharArray(), accountWithTokenDTO.getToken())) {
             Account account = accountFacade.findByLogin(accountWithTokenDTO.getLogin());

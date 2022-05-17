@@ -2,14 +2,12 @@ package pl.lodz.p.it.ssbd2022.ssbd03.mappers;
 
 import jakarta.ejb.Stateless;
 import jakarta.inject.Inject;
-import pl.lodz.p.it.ssbd2022.ssbd03.common.AbstractEntity;
-import pl.lodz.p.it.ssbd2022.ssbd03.common.AbstractDto;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.Account;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.access_levels.DataClient;
 import pl.lodz.p.it.ssbd2022.ssbd03.mok.dto.AccountDto;
 import pl.lodz.p.it.ssbd2022.ssbd03.mok.dto.AccountWithAccessLevelsDto;
 import pl.lodz.p.it.ssbd2022.ssbd03.mok.dto.CreateAccountDto;
-import pl.lodz.p.it.ssbd2022.ssbd03.mok.dto.RegisterClientAccountDto;
+import pl.lodz.p.it.ssbd2022.ssbd03.mok.dto.RegisterClientDto;
 import pl.lodz.p.it.ssbd2022.ssbd03.mok.dto.access_levels.AccessLevelDto;
 import pl.lodz.p.it.ssbd2022.ssbd03.utils.HashAlgorithm;
 @Stateless
@@ -38,7 +36,7 @@ public class AccountMapper {
         return account;
     }
 
-    public Account createAccountfromCreateClientAccountDto(RegisterClientAccountDto registerClientAccountDto) {
+    public Account createAccountfromCreateClientAccountDto(RegisterClientDto registerClientAccountDto) {
         Account account = new Account();
         account.setLogin(registerClientAccountDto.getLogin());
         account.setFirstName(registerClientAccountDto.getFirstName());

@@ -20,7 +20,7 @@ import java.util.Locale;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class CreateAccountDto extends AccountDto {
+public class CreateAccountDto {
 
     @Password
     private String password;
@@ -38,10 +38,6 @@ public class CreateAccountDto extends AccountDto {
     @LastName
     private String lastName;
 
-    @NotNull
-    private boolean isActive;
-    @NotNull
-    private boolean isConfirmed;
     @NotNull
     @JsonbTypeDeserializer(LocaleSerializerDeserializer.class)
     @JsonbTypeSerializer(LocaleSerializerDeserializer.class)

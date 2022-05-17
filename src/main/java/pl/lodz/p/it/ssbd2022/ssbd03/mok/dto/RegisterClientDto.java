@@ -11,7 +11,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class RegisterClientAccountDto {
+public class RegisterClientDto {
 
     @NotNull
     private String password;

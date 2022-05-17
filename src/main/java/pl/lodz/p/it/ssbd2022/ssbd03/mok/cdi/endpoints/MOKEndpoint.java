@@ -3,7 +3,6 @@ package pl.lodz.p.it.ssbd2022.ssbd03.mok.cdi.endpoints;
 import jakarta.annotation.security.DenyAll;
 import jakarta.annotation.security.PermitAll;
 import jakarta.annotation.security.RolesAllowed;
-import jakarta.ejb.Stateless;
 import jakarta.ejb.TransactionAttribute;
 import jakarta.ejb.TransactionAttributeType;
 import jakarta.enterprise.context.RequestScoped;
@@ -15,7 +14,6 @@ import jakarta.validation.Valid;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
-import pl.lodz.p.it.ssbd2022.ssbd03.common.AbstractDto;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.Account;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.access_levels.AccessLevel;
 import pl.lodz.p.it.ssbd2022.ssbd03.mappers.AccessLevelMapper;
@@ -30,7 +28,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RequestScoped
-@Path("mok")
+@Path("cmok")
 @DenyAll
 @TransactionAttribute(TransactionAttributeType.NEVER)
 public class MOKEndpoint {
@@ -83,7 +81,7 @@ public class MOKEndpoint {
     @Consumes(MediaType.APPLICATION_JSON)
     @PermitAll
     @Path("/register")
-    public Response registerClientAccount(RegisterClientAccountDto accountDto) {
+    public Response registerClientAccount(RegisterClientDto accountDto) {
         Account account = accountMapper.createAccountfromCreateClientAccountDto(accountDto);
         mokService.registerClientAccount(account);
         return Response.ok().build();
@@ -93,7 +91,7 @@ public class MOKEndpoint {
     @Consumes(MediaType.APPLICATION_JSON)
     @PermitAll
     @Path("/login")
-    public Response authenticate(@Valid CredentialDto credentialDto) {
+    public Response authenticate(@Valid LoginCredentialsDto credentialDto) {
         Credential credential = new UsernamePasswordCredential(credentialDto.getLogin(), new Password(credentialDto.getPassword()));
         String token = mokService.authenticate(credential);
         return Response.ok(token).build();
@@ -119,7 +117,7 @@ public class MOKEndpoint {
     @Consumes(MediaType.APPLICATION_JSON)
     @PermitAll
     @Path("/resetPassword")
-    public Response resetPassword(@Valid ResetPasswordDTO accountWithTokenDTO) {
+    public Response resetPassword(@Valid ResetPasswordTokenDto accountWithTokenDTO) {
         mokService.resetPassword(accountWithTokenDTO);
         return Response.ok().build();
     }
@@ -158,7 +156,7 @@ public class MOKEndpoint {
     @Consumes(MediaType.APPLICATION_JSON)
     @Path("/activeAccount")
     @PermitAll
-    public Response activeAccountByToken(TokenDto tokenDto) {
+    public Response activeAccountByToken(RegisterClientConfirmDto tokenDto) {
         mokService.confirm(tokenDto.getToken());
         return Response.ok().build();
     }
@@ -214,7 +212,7 @@ public class MOKEndpoint {
     @Path("/password/{login}")
     @Consumes(MediaType.APPLICATION_JSON)
     @RolesAllowed("ADMINISTRATOR")
-    public Response changeAccountPassword(@PathParam(value = "login") String login, @Valid ChangeAccountPasswordDto changeAccountPasswordDto) {
+    public Response changeAccountPassword(@PathParam(value = "login") String login, @Valid ChangePasswordDto changeAccountPasswordDto) {
         mokService.changeAccountPassword(login, changeAccountPasswordDto.getNewPassword());
         return Response.ok().build();
     }
