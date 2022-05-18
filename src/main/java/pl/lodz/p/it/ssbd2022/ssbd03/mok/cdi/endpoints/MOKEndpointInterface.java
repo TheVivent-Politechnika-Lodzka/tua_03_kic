@@ -27,7 +27,7 @@ public interface MOKEndpointInterface {
 
 
     // MOK.1 Zarejestruj
-    @PUT
+    @POST
     @Path("/register")
     @PermitAll
     @Consumes(MediaType.APPLICATION_JSON)

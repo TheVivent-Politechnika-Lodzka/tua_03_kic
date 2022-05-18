@@ -41,7 +41,7 @@ public class ActiveAccountFacade extends AbstractFacade<ConfirmationAccountToken
     }
 
     public ConfirmationAccountToken findToken(String login){
-        TypedQuery<ConfirmationAccountToken> typedQuery = em.createNamedQuery("ActiveAccountToken.findByLogin", ConfirmationAccountToken.class);
+        TypedQuery<ConfirmationAccountToken> typedQuery = em.createNamedQuery("ConfirmationAccountToken.findByLogin", ConfirmationAccountToken.class);
         typedQuery.setParameter("login", login);
         return typedQuery.getSingleResult();
     }

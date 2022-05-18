@@ -1,13 +1,13 @@
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate, useParams } from "react-router-dom";
-import { useActiveAccountMutation } from "../../../api/api";
+import { useConfirmRegistrationMutation } from "../../../api/api";
 import "./style.scss";
 const ActiveAccountPage = () => {
   // TODO przerobic na pobranie tokenu z linku aktywacyjnego
   // let { token } = useParams();
   const [token, setToken] = useState("");
-  const [confirm, { isLoading }] = useActiveAccountMutation();
+  const [confirm, { isLoading }] = useConfirmRegistrationMutation();
   const [confirmed, setConfirmed] = useState(false);
 
   const { t } = useTranslation();

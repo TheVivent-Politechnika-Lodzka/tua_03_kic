@@ -16,7 +16,7 @@ public class RegisterClientConfirmDto {
     @NotNull
     private String token;
 
-    @Login
-    private String login;
+//    @Login
+//    private String login;
 
 }
