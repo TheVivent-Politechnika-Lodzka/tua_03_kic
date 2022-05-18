@@ -6,13 +6,14 @@ import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.AppBaseException;
 
 // TODO: Dodanie Javadoc
 @ApplicationException(rollback = true)
-public class AccessLevelExistsException extends AppBaseException {
+public class AccessLevelNotFoundException extends AppBaseException {
 
-    private static final String MESSAGE = "server.error.access_level.exists";
+    private static final String MESSAGE = "server.error.appBase.accessLevelNotFound";
 
 
-    public AccessLevelExistsException() {
-        super(MESSAGE, Response.Status.CONFLICT);
+    public AccessLevelNotFoundException() {
+        super(MESSAGE, Response.Status.NOT_FOUND);
     }
+
 
 }

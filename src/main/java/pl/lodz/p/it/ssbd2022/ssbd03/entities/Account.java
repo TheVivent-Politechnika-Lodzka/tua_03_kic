@@ -2,6 +2,7 @@ package pl.lodz.p.it.ssbd2022.ssbd03.entities;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -9,26 +10,32 @@ import lombok.Setter;
 import lombok.ToString;
 import pl.lodz.p.it.ssbd2022.ssbd03.common.AbstractEntity;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.access_levels.AccessLevel;
+import pl.lodz.p.it.ssbd2022.ssbd03.validation.FirstName;
+import pl.lodz.p.it.ssbd2022.ssbd03.validation.LastName;
+import pl.lodz.p.it.ssbd2022.ssbd03.validation.Login;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Locale;
 
+import static pl.lodz.p.it.ssbd2022.ssbd03.entities.Account.CONSTRAINT_EMAIL_UNIQUE;
+import static pl.lodz.p.it.ssbd2022.ssbd03.entities.Account.CONSTRAINT_LOGIN_UNIQUE;
+
 @Entity
 @Table(
         name = "account",
         indexes = {
-                @Index(name = "account_login", columnList = "login", unique = true),
+                @Index(name = "account_login", columnList = "login"),
         },
         uniqueConstraints = {
-                @UniqueConstraint(columnNames = "login", name = Account.CONSTRAINT_LOGIN_UNIQUE)
+                @UniqueConstraint(columnNames = "login", name = CONSTRAINT_LOGIN_UNIQUE)
         }
 )
 @SecondaryTable(
         name = "account_details",
         uniqueConstraints = {
-                @UniqueConstraint(columnNames = "email", name = Account.CONSTRAINT_EMAIL_UNIQUE)
+                @UniqueConstraint(columnNames = "email", name = CONSTRAINT_EMAIL_UNIQUE)
         }
 )
 @NamedQueries({
@@ -42,30 +49,36 @@ import java.util.Locale;
 @NoArgsConstructor
 public class Account extends AbstractEntity implements Serializable {
 
-    private static final long serialVersionUID = 1L;
     public static final String CONSTRAINT_LOGIN_UNIQUE = "account_login_unique";
     public static final String CONSTRAINT_EMAIL_UNIQUE = "account_email_unique";
+    private static final long serialVersionUID = 1L;
 
     @Basic(optional = false)
-    @Size(min = 3, max = 20)
-    @Column(name = "login", unique = true, nullable = false, length = 20)
-    @Getter @Setter
+    @Column(name = "login", nullable = false, length = 20)
+    @Getter
+    @Setter
+    @Login
     private String login;
 
     @Basic(optional = false)
     @ToString.Exclude
     @Column(name = "password", nullable = false, length = 128)
-    @Getter @Setter
+    @Getter
+    @Setter
     private String password;
 
     @Basic(optional = false)
     @Column(name = "confirmed", nullable = false)
-    @Getter @Setter
+    @Getter
+    @Setter
+    @NotNull
     private boolean confirmed;
 
     @Basic(optional = false)
     @Column(name = "active", nullable = false)
-    @Getter @Setter
+    @Getter
+    @Setter
+    @NotNull
     private boolean active;
 
     @OneToMany(fetch = FetchType.EAGER, cascade = {CascadeType.REMOVE, CascadeType.PERSIST}, mappedBy = "account")
@@ -77,24 +90,32 @@ public class Account extends AbstractEntity implements Serializable {
     @Basic(optional = false)
     @Size(min = 3, max = 30)
     @Column(name = "first_name", table = "account_details", nullable = false, length = 30)
-    @Getter @Setter
+    @Getter
+    @Setter
+    @FirstName
     private String firstName;
 
     @Basic(optional = false)
     @Size(min = 3, max = 30)
     @Column(name = "last_name", table = "account_details", nullable = false, length = 30)
-    @Getter @Setter
+    @Getter
+    @Setter
+    @LastName
     private String lastName;
 
     @Basic(optional = false)
     @Column(name = "email", table = "account_details", nullable = false, length = 128)
-    @Getter @Setter
+    @Getter
+    @Setter
     @Email
+    @NotNull
     private String email;
 
     @Basic(optional = false)
-    @Column(name = "language", table="account_details", nullable = false, length = 16)
-    @Getter @Setter
+    @Column(name = "language", table = "account_details", nullable = false, length = 16)
+    @Getter
+    @Setter
+    @NotNull
     private Locale language;
 
     public void addAccessLevel(AccessLevel accessLevel) {

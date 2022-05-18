@@ -2,6 +2,7 @@ package pl.lodz.p.it.ssbd2022.ssbd03.entities.access_levels;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -9,6 +10,7 @@ import lombok.Setter;
 import lombok.ToString;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.Appointment;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.access_levels.AccessLevel;
+import pl.lodz.p.it.ssbd2022.ssbd03.validation.PhoneNumber;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -31,13 +33,14 @@ public class DataSpecialist extends AccessLevel implements Serializable {
 
     @Basic(optional = false)
     @Pattern(regexp = "^[0-9]{9}$", message = "Phone number must be 9 digits")
-    @Column(name = "phone_number", nullable = false, length = 9)
+    @Column(name = "phone_number", nullable = true, length = 9)
     @Getter @Setter
+    @PhoneNumber
     private String phoneNumber;
 
     @Basic(optional = false)
-    @Email
     @Column(name = "email", nullable = false, length = 128)
     @Getter @Setter
+    @Email @NotNull
     private String contactEmail;
 }

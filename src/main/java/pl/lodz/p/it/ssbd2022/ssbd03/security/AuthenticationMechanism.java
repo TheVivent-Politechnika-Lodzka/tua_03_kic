@@ -35,9 +35,9 @@ public class AuthenticationMechanism implements HttpAuthenticationMechanism {
         // zezwolenie na zmianę hasła
         if (httpServletRequest.getPathInfo().endsWith("login")
                 || httpServletRequest.getPathInfo().endsWith("register")
-                || httpServletRequest.getPathInfo().contains("reset")
+                || httpServletRequest.getPathInfo().endsWith("register-confirm")
                 || httpServletRequest.getPathInfo().endsWith("ping")
-                || httpServletRequest.getPathInfo().endsWith("activeAccount")
+                || httpServletRequest.getPathInfo().contains("reset-password")
         ) {
             return httpMessageContext.doNothing();
         }

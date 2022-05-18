@@ -12,6 +12,10 @@ import pl.lodz.p.it.ssbd2022.ssbd03.validation.Password;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ChangeOwnPasswordDto {
+
+    @NotNull
+    private String eTag;
+
     @NotNull
     private String oldPassword;
 

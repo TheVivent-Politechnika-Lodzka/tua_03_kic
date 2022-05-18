@@ -5,13 +5,18 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import pl.lodz.p.it.ssbd2022.ssbd03.validation.Login;
 
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class TokenDto {
+public class RegisterClientConfirmDto {
 
     @NotNull
     private String token;
+
+//    @Login
+//    private String login;
+
 }

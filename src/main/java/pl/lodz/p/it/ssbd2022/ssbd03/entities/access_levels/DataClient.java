@@ -6,6 +6,8 @@ import jakarta.validation.constraints.Pattern;
 import lombok.*;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.Appointment;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.ImplantReview;
+import pl.lodz.p.it.ssbd2022.ssbd03.validation.Pesel;
+import pl.lodz.p.it.ssbd2022.ssbd03.validation.PhoneNumber;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -29,12 +31,14 @@ public class DataClient extends AccessLevel implements Serializable {
     @Pattern(regexp = "^[0-9]{11}$")
     @Column(name = "pesel", nullable = false, length = 11)
     @Getter @Setter
+    @Pesel
     private String pesel;
 
     @Basic(optional = false)
     @Pattern(regexp = "^[0-9]{9}$", message = "Phone number must be 9 digits")
     @Column(name = "phone_number", nullable = false, length = 9)
     @Getter @Setter
+    @PhoneNumber
     private String phoneNumber;
 
 }

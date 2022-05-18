@@ -1,10 +1,10 @@
 import "./style.scss";
 import { useState } from "react";
-import { useRegisterClientAccountMutation } from "../../../../api/api";
+import { useRegisterAccountMutation } from "../../../../api/api";
 import { useTranslation } from "react-i18next";
 
 const RegistrationForm = () => {
-  const [register] = useRegisterClientAccountMutation();
+  const [register] = useRegisterAccountMutation();
   const [email, setEmail] = useState("");
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
@@ -25,7 +25,14 @@ const RegistrationForm = () => {
       pesel,
       phoneNumber: phone_number,
       password,
+      language: {
+        language: "pl",
+      },
     });
+
+    if ("data" in registration) {
+      alert(registration.data);
+    }
   };
 
   const { t } = useTranslation();

@@ -20,21 +20,20 @@ import java.time.Instant;
         }
 )
 @NamedQueries({
-        @NamedQuery(name = "ActiveAccountToken.findByLogin", query = "select a from ActiveAccountToken a where a.account.login = :login"),
+        @NamedQuery(name = "ConfirmationAccountToken.findByLogin", query = "select a from ConfirmationAccountToken a where a.account.login = :login"),
 })
 
 @AllArgsConstructor
 @NoArgsConstructor
-public class ActiveAccountToken extends AbstractEntity implements Serializable {
+public class ConfirmationAccountToken extends AbstractEntity implements Serializable {
 
     @JoinColumn(name = "account_id", referencedColumnName = "id", updatable = false)
     @OneToOne(optional = false)
-    @Getter
-    @Setter
+    @Getter @Setter
     private Account account;
 
     @Basic(optional = false)
-    @Column(name="activetoken", unique = true,nullable = false)
+    @Column(name="confirmation_token", unique = true,nullable = false)
     @Getter
     private String activeToken;
 

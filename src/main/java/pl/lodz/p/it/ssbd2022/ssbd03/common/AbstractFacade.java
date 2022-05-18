@@ -24,6 +24,7 @@ public abstract class AbstractFacade<T> {
     protected abstract EntityManager getEntityManager();
     protected abstract HashAlgorithm getHashAlgorithm();
 
+    // TODO: Dodanie Javadoc
     public void create(T entity) {
         try {
             getEntityManager().persist(entity);
@@ -36,8 +37,9 @@ public abstract class AbstractFacade<T> {
 
     }
 
+    // TODO: Dodanie Javadoc
     private void verifyTag(AbstractEntity entity, String tagFromDto){
-        String entityTag = getHashAlgorithm().generateDtoTag(
+        String entityTag = getHashAlgorithm().generateETag(
                 entity.getId(),
                 entity.getVersion()
         );
@@ -45,12 +47,14 @@ public abstract class AbstractFacade<T> {
             throw new InAppOptimisticLockException();
     }
 
+    // TODO: Dodanie Javadoc
     public void edit(T entity, String tagFromDto){
         if (entity instanceof AbstractEntity abstractEntity)
             verifyTag(abstractEntity, tagFromDto);
         unsafeEdit(entity);
     }
 
+    // TODO: Dodanie Javadoc
     public void unsafeEdit(T entity){
         try {
             getEntityManager().merge(entity);
@@ -64,12 +68,14 @@ public abstract class AbstractFacade<T> {
         }
     }
 
+    // TODO: Dodanie Javadoc
     public void remove(T entity, String tagFromDto){
         if (entity instanceof AbstractEntity abstractEntity)
             verifyTag(abstractEntity, tagFromDto);
         unsafeRemove(entity);
     }
 
+    // TODO: Dodanie Javadoc
     public void unsafeRemove(T entity){
         try {
         getEntityManager().remove(entity);
@@ -84,10 +90,12 @@ public abstract class AbstractFacade<T> {
 
     }
 
+    // TODO: Dodanie Javadoc
     public T find(Object id) {
         return getEntityManager().find(entityClass, id);
     }
 
+    // TODO: Dodanie Javadoc / wyeliminować metodę
     public List findAll() {
         CriteriaQuery criteriaQuery = getEntityManager().getCriteriaBuilder().createQuery();
         criteriaQuery.select(criteriaQuery.from(entityClass));
@@ -105,6 +113,7 @@ public abstract class AbstractFacade<T> {
      * @throws DatabaseException, gdy wystąpi błąd związany z bazą danych
      */
     public PaginationData findInRange(int pageNumber, int perPage) {
+        // TODO: dodać łapanie wyjątku kiedy nie znaleziono konta
         try {
             CriteriaQuery criteriaQuery = getEntityManager().getCriteriaBuilder().createQuery();
             criteriaQuery.select(criteriaQuery.from(entityClass));

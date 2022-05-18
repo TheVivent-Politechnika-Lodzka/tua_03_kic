@@ -5,7 +5,7 @@ import jakarta.json.bind.annotation.JsonbTypeSerializer;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
-import pl.lodz.p.it.ssbd2022.ssbd03.common.TaggedDto;
+import pl.lodz.p.it.ssbd2022.ssbd03.common.AbstractDto;
 import pl.lodz.p.it.ssbd2022.ssbd03.validation.FirstName;
 import pl.lodz.p.it.ssbd2022.ssbd03.validation.LastName;
 import pl.lodz.p.it.ssbd2022.ssbd03.validation.Login;
@@ -16,7 +16,7 @@ import java.util.Locale;
 @Getter @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class AccountDto extends TaggedDto {
+public class AccountDto extends AbstractDto {
 
     @Login
     private String login;

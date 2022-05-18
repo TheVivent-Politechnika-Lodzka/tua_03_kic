@@ -6,7 +6,7 @@
 
     <groupId>pl.lodz.p.it.ssbd2022</groupId>
     <artifactId>ssbd03</artifactId>
-    <version>0.4.0</version>
+    <version>0.5.0</version>
     <name>ssbd03</name>
 
     <packaging>war</packaging>
@@ -86,11 +86,6 @@
             <version>1.18.22</version>
             <scope>provided</scope>
         </dependency>
-        <dependency>
-            <groupId>io.github.cdimascio</groupId>
-            <artifactId>dotenv-java</artifactId>
-            <version>2.2.3</version>
-        </dependency>
         <!-- ############### hash ############### -->
         <dependency>
             <groupId>commons-codec</groupId>
@@ -122,20 +117,20 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.1</version>
-<!--                <configuration>-->
-<!--                    <source>17</source>-->
-<!--                    <target>17</target>-->
-<!--                    <compilerArguments>-->
-<!--                        <endorseddirs>${endorsed.dir}</endorseddirs>-->
-<!--                    </compilerArguments>-->
-<!--                    <annotationProcessorPaths>-->
-<!--                        <path>-->
-<!--                            <groupId>org.projectlombok</groupId>-->
-<!--                            <artifactId>lombok</artifactId>-->
-<!--                            <version>1.18.22</version>-->
-<!--                        </path>-->
-<!--                    </annotationProcessorPaths>-->
-<!--                </configuration>-->
+                <!--                <configuration>-->
+                <!--                    <source>17</source>-->
+                <!--                    <target>17</target>-->
+                <!--                    <compilerArguments>-->
+                <!--                        <endorseddirs>${endorsed.dir}</endorseddirs>-->
+                <!--                    </compilerArguments>-->
+                <!--                    <annotationProcessorPaths>-->
+                <!--                        <path>-->
+                <!--                            <groupId>org.projectlombok</groupId>-->
+                <!--                            <artifactId>lombok</artifactId>-->
+                <!--                            <version>1.18.22</version>-->
+                <!--                        </path>-->
+                <!--                    </annotationProcessorPaths>-->
+                <!--                </configuration>-->
             </plugin>
 
 
@@ -173,32 +168,32 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-dependency-plugin</artifactId>
                 <version>3.2.0</version>
-<!--                <executions>-->
-<!--                    <execution>-->
-<!--                        <phase>validate</phase>-->
-<!--                        <goals>-->
-<!--                            <goal>copy</goal>-->
-<!--                        </goals>-->
-<!--                        <configuration>-->
-<!--                            <outputDirectory>${endorsed.dir}</outputDirectory>-->
-<!--                            <silent>true</silent>-->
-<!--                            <artifactItems>-->
-<!--                                <artifactItem>-->
-<!--                                    <groupId>jakarta.platform</groupId>-->
-<!--                                    <artifactId>jakarta.jakartaee-web-api</artifactId>-->
-<!--                                    <version>${jakarta.version}</version>-->
-<!--                                    <type>jar</type>-->
-<!--                                </artifactItem>-->
-<!--                                <artifactItem>-->
-<!--                                    <groupId>org.postgresql</groupId>-->
-<!--                                    <artifactId>postgresql</artifactId>-->
-<!--                                    <version>42.3.3</version>-->
-<!--                                    <type>jar</type>-->
-<!--                                </artifactItem>-->
-<!--                            </artifactItems>-->
-<!--                        </configuration>-->
-<!--                    </execution>-->
-<!--                </executions>-->
+                <!--                <executions>-->
+                <!--                    <execution>-->
+                <!--                        <phase>validate</phase>-->
+                <!--                        <goals>-->
+                <!--                            <goal>copy</goal>-->
+                <!--                        </goals>-->
+                <!--                        <configuration>-->
+                <!--                            <outputDirectory>${endorsed.dir}</outputDirectory>-->
+                <!--                            <silent>true</silent>-->
+                <!--                            <artifactItems>-->
+                <!--                                <artifactItem>-->
+                <!--                                    <groupId>jakarta.platform</groupId>-->
+                <!--                                    <artifactId>jakarta.jakartaee-web-api</artifactId>-->
+                <!--                                    <version>${jakarta.version}</version>-->
+                <!--                                    <type>jar</type>-->
+                <!--                                </artifactItem>-->
+                <!--                                <artifactItem>-->
+                <!--                                    <groupId>org.postgresql</groupId>-->
+                <!--                                    <artifactId>postgresql</artifactId>-->
+                <!--                                    <version>42.3.3</version>-->
+                <!--                                    <type>jar</type>-->
+                <!--                                </artifactItem>-->
+                <!--                            </artifactItems>-->
+                <!--                        </configuration>-->
+                <!--                    </execution>-->
+                <!--                </executions>-->
             </plugin>
 
             <plugin>
@@ -217,7 +212,6 @@
             </plugin>
         </plugins>
     </build>
-
 
 
     <profiles>

@@ -1,16 +1,19 @@
-package pl.lodz.p.it.ssbd2022.ssbd03.common;
+package pl.lodz.p.it.ssbd2022.ssbd03.global_services;
 
 import jakarta.ejb.Stateless;
 import jakarta.mail.*;
 import jakarta.mail.internet.InternetAddress;
 import jakarta.mail.internet.MimeMessage;
+import pl.lodz.p.it.ssbd2022.ssbd03.common.Config;
 
 import java.util.Properties;
 
 @Stateless
-public class EmailConfig {
+public class EmailService {
     Properties properties = System.getProperties();
 
+    // TODO: Dodanie Javadoc
+    // TODO: o ile to możliwe, wydzielenie z metody konfiguracji i połączenia do skrzynki do metody postConstruct
     public void sendEmail(String to, String subject, String content) {
         properties.put("mail.smtp.host", Config.MAIL_SMTP_HOST);
         properties.put("mail.smtp.port", Config.MAIL_SMTP_PORT);
