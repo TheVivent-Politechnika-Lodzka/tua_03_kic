@@ -32,16 +32,6 @@ const LoginForm = () => {
         if (res.error.status === 401) setMessage(t("wrong_data"));
       } else setMessage(t("server_error"));
 
-      // TODO poprawić parsowanie
-
-      // if (JSON.parse(JSON.stringify(decoded)).data) {
-      //   dispatch(loginDispatch(JSON.parse(JSON.stringify(decoded)).data));
-      //   navigate("/", { replace: true });
-      // } else {
-      //   const res = JSON.parse(JSON.stringify(decoded)).error;
-      //   if (res.status === 401) setMessage(t("wrong_data"));
-      //   else setMessage(t("server_error"));
-      // }
     } else {
       setMessage(t("refill_data"));
     }
