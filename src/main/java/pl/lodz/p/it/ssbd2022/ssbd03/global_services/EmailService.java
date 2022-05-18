@@ -1,14 +1,15 @@
-package pl.lodz.p.it.ssbd2022.ssbd03.common;
+package pl.lodz.p.it.ssbd2022.ssbd03.global_services;
 
 import jakarta.ejb.Stateless;
 import jakarta.mail.*;
 import jakarta.mail.internet.InternetAddress;
 import jakarta.mail.internet.MimeMessage;
+import pl.lodz.p.it.ssbd2022.ssbd03.common.Config;
 
 import java.util.Properties;
 
 @Stateless
-public class EmailConfig {
+public class EmailService {
     Properties properties = System.getProperties();
 
     public void sendEmail(String to, String subject, String content) {

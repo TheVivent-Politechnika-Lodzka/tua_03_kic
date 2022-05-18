@@ -15,7 +15,7 @@ import jakarta.security.enterprise.identitystore.CredentialValidationResult;
 import jakarta.security.enterprise.identitystore.IdentityStoreHandler;
 import jakarta.ws.rs.ClientErrorException;
 import pl.lodz.p.it.ssbd2022.ssbd03.common.Config;
-import pl.lodz.p.it.ssbd2022.ssbd03.common.EmailConfig;
+import pl.lodz.p.it.ssbd2022.ssbd03.global_services.EmailService;
 import pl.lodz.p.it.ssbd2022.ssbd03.common.Roles;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.Account;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.ConfirmationAccountToken;
@@ -61,7 +61,7 @@ public class MOKService implements MOKServiceInterface {
     private HashAlgorithm hashAlgorithm;
 
     @Inject
-    private EmailConfig emailConfig;
+    private EmailService emailConfig;
 
     @Inject
     private ActiveAccountFacade activeAccountFacade;
