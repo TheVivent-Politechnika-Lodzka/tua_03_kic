@@ -1,13 +1,8 @@
 package pl.lodz.p.it.ssbd2022.ssbd03.mok.cdi.endpoints;
 
 import jakarta.annotation.security.DenyAll;
-import jakarta.annotation.security.PermitAll;
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.inject.Inject;
-import jakarta.security.enterprise.credential.Credential;
-import jakarta.security.enterprise.credential.Password;
-import jakarta.security.enterprise.credential.UsernamePasswordCredential;
-import jakarta.ws.rs.GET;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.core.Response;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.Account;
@@ -16,9 +11,7 @@ import pl.lodz.p.it.ssbd2022.ssbd03.mappers.AccessLevelMapper;
 import pl.lodz.p.it.ssbd2022.ssbd03.mappers.AccountMapper;
 import pl.lodz.p.it.ssbd2022.ssbd03.mok.dto.*;
 import pl.lodz.p.it.ssbd2022.ssbd03.mok.dto.access_levels.AccessLevelDto;
-import pl.lodz.p.it.ssbd2022.ssbd03.mok.ejb.services.MOKService;
 import pl.lodz.p.it.ssbd2022.ssbd03.mok.ejb.services.MOKServiceInterface;
-import pl.lodz.p.it.ssbd2022.ssbd03.mok.ejb.services.TestService;
 import pl.lodz.p.it.ssbd2022.ssbd03.security.AuthContext;
 import pl.lodz.p.it.ssbd2022.ssbd03.utils.PaginationData;
 
@@ -28,86 +21,107 @@ import java.util.List;
 @RequestScoped
 @DenyAll
 @Path("/mok")
-public class MOKEndpoint implements MOKEndpointInterface{
+public class MOKEndpoint implements MOKEndpointInterface {
 
-    @Inject
-    private MOKService mokService;
-
-    @Inject
-    private AuthContext authContext;
-
-    @Inject
-    private AccountMapper accountMapper;
-
-    @Inject
-    private AccessLevelMapper accessLevelMapper;
+//    @Inject
+//    private MOKService mokService;
 
     @Inject
     MOKServiceInterface mokServiceInterface;
+    @Inject
+    private AuthContext authContext;
+    @Inject
+    private AccountMapper accountMapper;
+    @Inject
+    private AccessLevelMapper accessLevelMapper;
 
     @Override
     public Response register(RegisterClientDto registerClientDto) {
         Account account = accountMapper.createAccountfromCreateClientAccountDto(registerClientDto);
-        mokService.registerClientAccount(account);
+        mokServiceInterface.registerAccount(account);
         return Response.ok().build();
     }
 
     @Override
     public Response registerConfirm(RegisterClientConfirmDto registerConfirmDto) {
-        mokService.confirm(registerConfirmDto.getToken());
+        mokServiceInterface.confirmRegistration(registerConfirmDto.getToken());
         return Response.ok().build();
     }
 
     @Override
     public Response createAccount(CreateAccountDto createAccountDto) {
         Account account = accountMapper.createAccountfromCreateAccountDto(createAccountDto);
-        mokService.createAccount(account);
-        return Response.ok().build();
+        Account registeredAccount = mokServiceInterface.createAccount(account);
+        return Response.ok(
+                accountMapper.createAccountWithAccessLevelsDtoFromAccount(registeredAccount)
+        ).build();
     }
 
     @Override
     public Response activateAccount(String login, ETagDto eTagDto) {
-        mokService.activate(login, eTagDto.getETag());
-        return Response.ok().build();
+        Account activatedAccount = mokServiceInterface.activateAccount(login, eTagDto.getETag());
+        return Response.ok(
+                accountMapper.createAccountWithAccessLevelsDtoFromAccount(activatedAccount)
+        ).build();
     }
 
     @Override
     public Response deactivateAccount(String login, ETagDto eTagDto) {
-        mokService.deactivate(login, eTagDto.getETag());
-        return Response.ok().build();
+        Account deactivatedAccount = mokServiceInterface.deactivateAccount(login, eTagDto.getETag());
+        return Response.ok(
+                accountMapper.createAccountWithAccessLevelsDtoFromAccount(deactivatedAccount)
+        ).build();
     }
 
     @Override
     public Response addAccessLevel(String login, AccessLevelDto accessLevelDto) {
         AccessLevel accessLevel = accessLevelMapper.createAccessLevelFromDto(accessLevelDto);
-        Account account = mokService.addAccessLevel(login, accessLevel);
-        return Response.ok(accountMapper.createAccountWithAccessLevelsDtoFromAccount(account)).build();
+        Account account = mokServiceInterface.addAccessLevelToAccount(login, accessLevel);
+
+        return Response.ok(
+                accountMapper.createAccountWithAccessLevelsDtoFromAccount(account)
+        ).build();
     }
 
     @Override
-    public Response removeAccessLevel(String login, String accessLevel, String eTag) {
-        Account newAccessLevelAccount = mokService.removeAccessLevel(login, accessLevel, eTag);
-        return Response.ok(accountMapper.createAccountWithAccessLevelsDtoFromAccount(newAccessLevelAccount)).build();
+    public Response removeAccessLevel(String login, String accessLevelName, String eTag) {
+        Account newAccessLevelAccount = mokServiceInterface.removeAccessLevelFromAccount(login, accessLevelName, eTag);
+        return Response.ok(
+                accountMapper.createAccountWithAccessLevelsDtoFromAccount(newAccessLevelAccount)
+        ).build();
     }
 
     @Override
     public Response changeOwnPassword(ChangeOwnPasswordDto changeOwnPasswordDto) {
-        String principal = authContext.getCurrentUserLogin();
-        mokService.changeOwnPassword(principal, changeOwnPasswordDto.getNewPassword(), changeOwnPasswordDto.getOldPassword());
-        return Response.ok().build();
+        String login = authContext.getCurrentUserLogin();
+        Account account = mokServiceInterface.changeAccountPassword(
+                login, changeOwnPasswordDto.getOldPassword(), changeOwnPasswordDto.getNewPassword(),
+                changeOwnPasswordDto.getETag());
+
+        return Response.ok(
+                accountMapper.createAccountWithAccessLevelsDtoFromAccount(account)
+        ).build();
     }
 
     @Override
     public Response changePassword(String login, ChangePasswordDto changePasswordDto) {
-        mokService.changeAccountPassword(login, changePasswordDto.getNewPassword());
-        return Response.ok().build();
+        Account account = mokServiceInterface.changeAccountPassword(
+                login, changePasswordDto.getNewPassword(), changePasswordDto.getETag());
+
+        return Response.ok(
+                accountMapper.createAccountWithAccessLevelsDtoFromAccount(account)
+        ).build();
     }
 
     @Override
     public Response editOwnAccount(AccountWithAccessLevelsDto accountWithAccessLevelsDto) {
-        String currentUser = authContext.getCurrentUserLogin();
-        Account editedAccount = mokService.edit(currentUser, accountWithAccessLevelsDto);
-        return Response.ok(accountMapper.createAccountWithAccessLevelsDtoFromAccount(editedAccount)).build();
+        String login = authContext.getCurrentUserLogin();
+        Account update = accountMapper.createAccountFromDto(accountWithAccessLevelsDto);
+        Account editedAccount = mokServiceInterface.editAccount(login, update, accountWithAccessLevelsDto.getETag());
+
+        return Response.ok(
+                accountMapper.createAccountWithAccessLevelsDtoFromAccount(editedAccount)
+        ).build();
     }
 
     @Override
@@ -118,14 +132,14 @@ public class MOKEndpoint implements MOKEndpointInterface{
 
     @Override
     public Response login(LoginCredentialsDto loginCredentialsDto) {
-        Credential credential = new UsernamePasswordCredential(loginCredentialsDto.getLogin(), new Password(loginCredentialsDto.getPassword()));
-        String token = mokService.authenticate(credential);
+        String token = mokServiceInterface.authenticate(
+                loginCredentialsDto.getLogin(), loginCredentialsDto.getPassword());
         return Response.ok(token).build();
     }
 
     @Override
     public Response getAllAccounts(int page, int limit) {
-        PaginationData paginationData = mokService.findInRange(page, limit);
+        PaginationData paginationData = mokServiceInterface.findAllAccounts(page, limit);
         List<Account> accounts = paginationData.getData();
         List<AccountWithAccessLevelsDto> accountsDTO = new ArrayList<>();
         for (Account account : accounts) {
@@ -137,7 +151,7 @@ public class MOKEndpoint implements MOKEndpointInterface{
 
     @Override
     public Response resetPassword(String login) {
-        mokService.reset(login);
+        mokServiceInterface.resetPassword(login);
         return Response.ok().build();
     }
 
@@ -156,7 +170,7 @@ public class MOKEndpoint implements MOKEndpointInterface{
 
     @Override
     public Response getAccount(String login) {
-        Account account = mokService.findByLogin(login);
+        Account account = mokServiceInterface.findAccountByLogin(login);
         return Response.ok(accountMapper.createAccountWithAccessLevelsDtoFromAccount(account)).build();
     }
 }

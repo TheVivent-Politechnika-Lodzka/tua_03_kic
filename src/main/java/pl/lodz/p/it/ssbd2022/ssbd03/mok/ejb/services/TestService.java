@@ -41,7 +41,6 @@ import pl.lodz.p.it.ssbd2022.ssbd03.utils.PaginationData;
 
 import java.time.Instant;
 import java.util.Collection;
-import java.util.List;
 
 @Stateful
 @DenyAll
@@ -119,27 +118,27 @@ public class TestService implements MOKServiceInterface {
 
         for (AccessLevel accessLevel : accountFromDb.getAccessLevelCollection()) {
             // ------------ DataAdministrator ------------
-            if (accessLevel instanceof DataAdministrator dataAdministratorDB){
+            if (accessLevel instanceof DataAdministrator dataAdministratorDB) {
                 DataAdministrator dataAdministrator =
-                        (DataAdministrator) findAccessLevelByName(account.getAccessLevelCollection(), accessLevel.getLevel());
+                        (DataAdministrator) findAccessLevelByName(account.getAccessLevelCollection(), accessLevel.getClass());
                 if (dataAdministrator != null) {
                     dataAdministratorDB.setContactEmail(dataAdministrator.getContactEmail());
                     dataAdministratorDB.setPhoneNumber(dataAdministrator.getPhoneNumber());
                 }
             }
             // ------------ DataSpecialist ------------
-            if (accessLevel instanceof DataSpecialist dataSpecialistDB){
+            if (accessLevel instanceof DataSpecialist dataSpecialistDB) {
                 DataSpecialist dataSpecialist =
-                        (DataSpecialist) findAccessLevelByName(account.getAccessLevelCollection(), accessLevel.getLevel());
+                        (DataSpecialist) findAccessLevelByName(account.getAccessLevelCollection(), accessLevel.getClass());
                 if (dataSpecialist != null) {
                     dataSpecialistDB.setContactEmail(dataSpecialist.getContactEmail());
                     dataSpecialistDB.setPhoneNumber(dataSpecialist.getPhoneNumber());
                 }
             }
             // ------------ DataClient ------------
-            if (accessLevel instanceof DataClient dataClientDB){
+            if (accessLevel instanceof DataClient dataClientDB) {
                 DataClient dataClient =
-                        (DataClient) findAccessLevelByName(account.getAccessLevelCollection(), accessLevel.getLevel());
+                        (DataClient) findAccessLevelByName(account.getAccessLevelCollection(), accessLevel.getClass());
                 if (dataClient != null) {
                     dataClientDB.setPesel(dataClient.getPesel());
                     dataClientDB.setPhoneNumber(dataClient.getPhoneNumber());
@@ -151,14 +150,22 @@ public class TestService implements MOKServiceInterface {
 
         return accountFromDb;
     }
-    // NIE ROZŁĄCZAJ MNIE OD FUNKCJI WYŻEJ (sad face)
-    private AccessLevel findAccessLevelByName(Collection<AccessLevel> list, String name) {
-        return list.stream()
-                .filter(accessLevel -> accessLevel.getLevel().equals(name))
-                .findFirst().orElse(null);
+    // NIE ROZŁĄCZAJ MNIE OD FUNKCJI WYŻEJ (ಥ_ಥ)
+    private AccessLevel findAccessLevelByName(Collection<AccessLevel> list, Class<? extends AccessLevel> clazz) {
+        for (AccessLevel accessLevel : list)
+            if (accessLevel.getClass().equals(clazz))
+                return accessLevel;
+
+        return null;
+//        // TODO: AccessLevel nie ma wartości .getLevel(),
+//        //  ponieważ jest to wartość z bazy, a tu dostajemy encje z mappera
+//        return list.stream()
+//                .filter(accessLevel -> accessLevel.getLevel().equals(name))
+//                .findFirst().orElse(null);
     }
 
     @Override
+    @RolesAllowed(Roles.ADMINISTRATOR)
     public PaginationData findAllAccounts(int page, int size) {
         return accountFacade.findInRange(page, size);
     }
@@ -262,8 +269,7 @@ public class TestService implements MOKServiceInterface {
         if (access == null)
             throw new AccessLevelNotFoundException();
 
-        // TODO: sprawdzić, czy potrzebne (oby nie)
-//        account.removeAccessLevel(access);
+        account.removeAccessLevel(access);
 
         accessLevelFacade.remove(access, accessLevelEtag);
 

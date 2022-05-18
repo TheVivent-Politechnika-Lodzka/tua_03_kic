@@ -58,6 +58,7 @@ public class AccountMapper {
         account.setLogin(accountDto.getLogin());
         account.setFirstName(accountDto.getFirstName());
         account.setLastName(accountDto.getLastName());
+        account.setLanguage(accountDto.getLanguage());
 
         for (AccessLevelDto accessLevelDto : accountDto.getAccessLevels()) {
             account.addAccessLevel(accessLevelMapper.createAccessLevelFromDto(accessLevelDto));
