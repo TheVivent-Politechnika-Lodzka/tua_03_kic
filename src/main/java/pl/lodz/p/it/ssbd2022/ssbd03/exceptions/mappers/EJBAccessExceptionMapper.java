@@ -13,6 +13,6 @@ public class EJBAccessExceptionMapper implements ExceptionMapper<EJBAccessExcept
     // TODO: Dodanie Javadoc
     @Override
     public Response toResponse(EJBAccessException e) {
-        return Response.status(Response.Status.UNAUTHORIZED).entity(e.getLocalizedMessage()).build();
+        return Response.status(Response.Status.FORBIDDEN).entity(e.getLocalizedMessage()).build();
     }
 }
