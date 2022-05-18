@@ -1,11 +1,13 @@
 package pl.lodz.p.it.ssbd2022.ssbd03.mok.cdi.endpoints;
 
 import jakarta.annotation.security.DenyAll;
+import jakarta.annotation.security.PermitAll;
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.inject.Inject;
 import jakarta.security.enterprise.credential.Credential;
 import jakarta.security.enterprise.credential.Password;
 import jakarta.security.enterprise.credential.UsernamePasswordCredential;
+import jakarta.ws.rs.GET;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.core.Response;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.Account;
@@ -15,6 +17,8 @@ import pl.lodz.p.it.ssbd2022.ssbd03.mappers.AccountMapper;
 import pl.lodz.p.it.ssbd2022.ssbd03.mok.dto.*;
 import pl.lodz.p.it.ssbd2022.ssbd03.mok.dto.access_levels.AccessLevelDto;
 import pl.lodz.p.it.ssbd2022.ssbd03.mok.ejb.services.MOKService;
+import pl.lodz.p.it.ssbd2022.ssbd03.mok.ejb.services.MOKServiceInterface;
+import pl.lodz.p.it.ssbd2022.ssbd03.mok.ejb.services.TestService;
 import pl.lodz.p.it.ssbd2022.ssbd03.security.AuthContext;
 import pl.lodz.p.it.ssbd2022.ssbd03.utils.PaginationData;
 
@@ -37,6 +41,9 @@ public class MOKEndpoint implements MOKEndpointInterface{
 
     @Inject
     private AccessLevelMapper accessLevelMapper;
+
+    @Inject
+    MOKServiceInterface mokServiceInterface;
 
     @Override
     public Response register(RegisterClientDto registerClientDto) {

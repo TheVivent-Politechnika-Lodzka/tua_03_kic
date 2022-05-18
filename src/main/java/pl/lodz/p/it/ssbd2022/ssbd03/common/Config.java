@@ -17,6 +17,11 @@ public class Config {
     public static final String MAIL_SMTP_PORT = "465";
     public static final String MAIL_SMTP_AUTH = "true";
 
+    // JWT
+    public static final int JWT_EXPIRATION_SECONDS = 60 * 60; // 1h
+    public static final String JWT_SECRET = "zjZi6JWZ99IT0Trx49MNitLpwPjQc81BOUZytttWprg=";
+
     // Ogólne
     public static final int MAX_TX_RETRIES = 3;
+    public static final int REGISTER_TOKEN_EXPIRATION_SECONDS = 60 * 30; // 30min
 }

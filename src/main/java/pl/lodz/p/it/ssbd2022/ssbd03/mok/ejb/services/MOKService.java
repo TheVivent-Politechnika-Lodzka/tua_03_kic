@@ -88,9 +88,6 @@ public class MOKService {
     public void deactivate(String login, String tag) {
         Account account = accountFacade.findByLogin(login);
         account.setActive(false);
-        System.out.println("####################");
-        System.out.println(account.isActive());
-        System.out.println("####################");
         accountFacade.edit(account, tag);
     }
 
@@ -252,8 +249,8 @@ public class MOKService {
 
     public void registerClientAccount(Account account){
         accountFacade.create(account);
-        String token = jwtGenerator.createJWTForEmail(account.getLogin());
         Instant date = Instant.now().plusSeconds(HOUR);
+        String token = jwtGenerator.createJWTForEmail(account.getLogin(), date);
         ConfirmationAccountToken activeAccountToken = new ConfirmationAccountToken(account,token,date);
         activeAccountFacade.create(activeAccountToken);
         emailConfig.sendEmail(
