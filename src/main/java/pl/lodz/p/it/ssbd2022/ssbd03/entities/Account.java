@@ -48,6 +48,7 @@ import java.util.Locale;
 public class Account extends AbstractEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
+    // TODO: coś baza ignoruje te nazwy. Jakoś naprawić
     public static final String CONSTRAINT_LOGIN_UNIQUE = "account_login_unique";
     public static final String CONSTRAINT_EMAIL_UNIQUE = "account_email_unique";
 

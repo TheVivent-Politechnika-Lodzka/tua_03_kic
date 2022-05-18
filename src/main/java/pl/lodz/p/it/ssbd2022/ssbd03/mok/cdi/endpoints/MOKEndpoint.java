@@ -153,6 +153,7 @@ public class MOKEndpoint implements MOKEndpointInterface {
     @Override
     public Response getAllAccounts(int page, int limit) {
         // TODO: dodać powtarzanie transakcji
+        // TODO: zmniejszyć ilość danych o kontach na liście
         PaginationData paginationData = mokServiceInterface.findAllAccounts(page, limit);
         List<Account> accounts = paginationData.getData();
         List<AccountWithAccessLevelsDto> accountsDTO = new ArrayList<>();
