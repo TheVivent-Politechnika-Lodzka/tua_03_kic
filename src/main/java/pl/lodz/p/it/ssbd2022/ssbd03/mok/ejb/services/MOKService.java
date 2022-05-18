@@ -1,53 +1,70 @@
 package pl.lodz.p.it.ssbd2022.ssbd03.mok.ejb.services;
 
 import io.jsonwebtoken.Claims;
+import jakarta.annotation.security.DenyAll;
+import jakarta.annotation.security.PermitAll;
+import jakarta.annotation.security.RolesAllowed;
 import jakarta.ejb.Stateful;
 import jakarta.ejb.TransactionAttribute;
 import jakarta.ejb.TransactionAttributeType;
 import jakarta.inject.Inject;
 import jakarta.interceptor.Interceptors;
-import jakarta.security.enterprise.credential.Credential;
+import jakarta.security.enterprise.credential.Password;
+import jakarta.security.enterprise.credential.UsernamePasswordCredential;
 import jakarta.security.enterprise.identitystore.CredentialValidationResult;
 import jakarta.security.enterprise.identitystore.IdentityStoreHandler;
 import jakarta.ws.rs.ClientErrorException;
+import pl.lodz.p.it.ssbd2022.ssbd03.common.Config;
 import pl.lodz.p.it.ssbd2022.ssbd03.common.EmailConfig;
+import pl.lodz.p.it.ssbd2022.ssbd03.common.Roles;
+import pl.lodz.p.it.ssbd2022.ssbd03.entities.Account;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.ConfirmationAccountToken;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.ResetPasswordToken;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.access_levels.AccessLevel;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.access_levels.DataAdministrator;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.access_levels.DataClient;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.access_levels.DataSpecialist;
+import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.TokenInvalidException;
+import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.access_level.AccessLevelNotFoundException;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.access_level.AccessLevelViolationException;
-import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.account.AccountNotFoundException;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.account.AccountPasswordIsTheSameException;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.account.AccountPasswordMatchException;
-import pl.lodz.p.it.ssbd2022.ssbd03.mappers.AccessLevelMapper;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.account.TokenExpierdException;
-import pl.lodz.p.it.ssbd2022.ssbd03.mok.dto.AccountWithAccessLevelsDto;
-import pl.lodz.p.it.ssbd2022.ssbd03.mok.dto.ResetPasswordTokenDto;
-import pl.lodz.p.it.ssbd2022.ssbd03.mok.dto.access_levels.AccessLevelDto;
-import pl.lodz.p.it.ssbd2022.ssbd03.mok.dto.access_levels.DataAdministratorDto;
-import pl.lodz.p.it.ssbd2022.ssbd03.mok.dto.access_levels.DataClientDto;
-import pl.lodz.p.it.ssbd2022.ssbd03.mok.dto.access_levels.DataSpecialistDto;
+import pl.lodz.p.it.ssbd2022.ssbd03.interceptors.TrackerInterceptor;
 import pl.lodz.p.it.ssbd2022.ssbd03.mok.ejb.facades.AccessLevelFacade;
 import pl.lodz.p.it.ssbd2022.ssbd03.mok.ejb.facades.AccountFacade;
-import pl.lodz.p.it.ssbd2022.ssbd03.entities.Account;
-import pl.lodz.p.it.ssbd2022.ssbd03.interceptors.TrackerInterceptor;
 import pl.lodz.p.it.ssbd2022.ssbd03.mok.ejb.facades.ActiveAccountFacade;
 import pl.lodz.p.it.ssbd2022.ssbd03.mok.ejb.facades.ResetPasswordFacade;
 import pl.lodz.p.it.ssbd2022.ssbd03.security.JWTGenerator;
+import pl.lodz.p.it.ssbd2022.ssbd03.utils.HashAlgorithm;
 import pl.lodz.p.it.ssbd2022.ssbd03.utils.PaginationData;
 
 import java.time.Instant;
-import pl.lodz.p.it.ssbd2022.ssbd03.utils.HashAlgorithm;
+import java.util.Collection;
 
-@Interceptors(TrackerInterceptor.class)
 @Stateful
-@TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
-public class MOKService {
+@DenyAll
+@Interceptors(TrackerInterceptor.class)
+@TransactionAttribute(TransactionAttributeType.REQUIRED)
+public class MOKService implements MOKServiceInterface {
+
+    @Inject
+    private IdentityStoreHandler identityStoreHandler;
+
+    @Inject
+    private JWTGenerator jwtGenerator;
 
     @Inject
     private AccountFacade accountFacade;
+
+    @Inject
+    private HashAlgorithm hashAlgorithm;
+
+    @Inject
+    private EmailConfig emailConfig;
+
+    @Inject
+    private ActiveAccountFacade activeAccountFacade;
 
     @Inject
     private AccessLevelFacade accessLevelFacade;
@@ -55,184 +72,178 @@ public class MOKService {
     @Inject
     private ResetPasswordFacade resetPasswordFacade;
 
-    @Inject
-    private ActiveAccountFacade activeAccountFacade;
 
-    @Inject
-    private IdentityStoreHandler indentityStoreHandler;
-
-    @Inject
-    private JWTGenerator jwtGenerator;
-
-    @Inject
-    AccessLevelMapper accessLevelMapper;
-
-    @Inject
-    private EmailConfig emailConfig;
-
-    @Inject
-    private HashAlgorithm hashAlgorithm;
-
-    public String authenticate(Credential credential) {
-        CredentialValidationResult result = indentityStoreHandler.validate(credential);
+    @Override
+    @PermitAll
+    public String authenticate(String login, String password) {
+        UsernamePasswordCredential credential = new UsernamePasswordCredential(login, new Password(password));
+        CredentialValidationResult result = identityStoreHandler.validate(credential);
         if (result.getStatus() == CredentialValidationResult.Status.VALID) {
             return jwtGenerator.createJWT(result);
         }
         throw new ClientErrorException("Invalid username or password", 401);
     }
 
-    public Account findByLogin(String login) {
+    @Override
+    @PermitAll
+    public Account findAccountByLogin(String login) {
         return accountFacade.findByLogin(login);
     }
 
-    public void deactivate(String login, String tag) {
+    @Override
+    @RolesAllowed(Roles.ADMINISTRATOR)
+    public Account deactivateAccount(String login, String etag) {
         Account account = accountFacade.findByLogin(login);
         account.setActive(false);
-        accountFacade.edit(account, tag);
-    }
-
-    public void activate(String login, String tag) {
-        Account account = accountFacade.findByLogin(login);
-        account.setActive(true);
-        accountFacade.edit(account, tag);
-    }
-
-    public Account edit(String login, AccountWithAccessLevelsDto accountDto) {
-        Account account = this.findByLogin(login);
-        account.setFirstName(accountDto.getFirstName());
-        account.setLastName(accountDto.getLastName());
-        // tu update access levels
-        for (AccessLevelDto accessLevelDto : accountDto.getAccessLevels()) {
-            for (AccessLevel accessLevel : account.getAccessLevelCollection()) {
-                updateAccessLevelData(accessLevel, accessLevelDto);
-            }
-        }
-
-        accountFacade.edit(account, accountDto.getETag());
+        accountFacade.edit(account, etag);
         return account;
     }
 
-    public PaginationData findInRange(int page, int limit) {
-        PaginationData paginationData = accountFacade.findInRange(page, limit);
-        return paginationData;
-    }
-
-    // TODO: ZNALEŹĆ LEPSZY SPOSÓB
-    private void updateAccessLevelData(AccessLevel accessLevel, AccessLevelDto accessLevelDto) {
-        try {
-            DataClient dataClient =  (DataClient) accessLevel;
-            DataClientDto dataClientDto = (DataClientDto) accessLevelDto;
-            dataClient.setPesel(dataClientDto.getPesel());
-            dataClient.setPhoneNumber(dataClientDto.getPhoneNumber());
-            return;
-        }
-        catch (ClassCastException e) {
-
-        }
-        try {
-            DataAdministrator dataAdministrator =  (DataAdministrator) accessLevel;
-            DataAdministratorDto dataAdministratorDto = (DataAdministratorDto) accessLevelDto;
-            dataAdministrator.setContactEmail(dataAdministratorDto.getContactEmail());
-            dataAdministrator.setPhoneNumber(dataAdministratorDto.getPhoneNumber());
-            return;
-        }
-        catch (ClassCastException e) {
-
-        }
-        try {
-            DataSpecialist dataSpecialist =  (DataSpecialist) accessLevel;
-            DataSpecialistDto dataSpecialistDto = (DataSpecialistDto) accessLevelDto;
-            dataSpecialist.setContactEmail(dataSpecialistDto.getContactEmail());
-            dataSpecialist.setPhoneNumber(dataSpecialistDto.getPhoneNumber());
-            return;
-        }
-        catch (ClassCastException e) {
-
-        }
-
-    }
-    public void changeOwnPassword(String login, String newPassword, String oldPassword) {
+    @Override
+    @RolesAllowed(Roles.ADMINISTRATOR)
+    public Account activateAccount(String login, String etag) {
         Account account = accountFacade.findByLogin(login);
-        if (account == null) {
-            throw AccountNotFoundException.notFoundByLogin();
+        account.setActive(true);
+        accountFacade.edit(account, etag);
+        return account;
+    }
+
+    @Override
+    @PermitAll
+    public Account editAccount(String login, Account account, String etag) {
+        Account accountFromDb = accountFacade.findByLogin(login);
+        accountFromDb.setFirstName(account.getFirstName());
+        accountFromDb.setLastName(account.getLastName());
+        accountFromDb.setLanguage(account.getLanguage());
+
+        for (AccessLevel accessLevel : accountFromDb.getAccessLevelCollection()) {
+            // ------------ DataAdministrator ------------
+            if (accessLevel instanceof DataAdministrator dataAdministratorDB) {
+                DataAdministrator dataAdministrator =
+                        (DataAdministrator) findAccessLevelByName(account.getAccessLevelCollection(), accessLevel.getClass());
+                if (dataAdministrator != null) {
+                    dataAdministratorDB.setContactEmail(dataAdministrator.getContactEmail());
+                    dataAdministratorDB.setPhoneNumber(dataAdministrator.getPhoneNumber());
+                }
+            }
+            // ------------ DataSpecialist ------------
+            if (accessLevel instanceof DataSpecialist dataSpecialistDB) {
+                DataSpecialist dataSpecialist =
+                        (DataSpecialist) findAccessLevelByName(account.getAccessLevelCollection(), accessLevel.getClass());
+                if (dataSpecialist != null) {
+                    dataSpecialistDB.setContactEmail(dataSpecialist.getContactEmail());
+                    dataSpecialistDB.setPhoneNumber(dataSpecialist.getPhoneNumber());
+                }
+            }
+            // ------------ DataClient ------------
+            if (accessLevel instanceof DataClient dataClientDB) {
+                DataClient dataClient =
+                        (DataClient) findAccessLevelByName(account.getAccessLevelCollection(), accessLevel.getClass());
+                if (dataClient != null) {
+                    dataClientDB.setPesel(dataClient.getPesel());
+                    dataClientDB.setPhoneNumber(dataClient.getPhoneNumber());
+                }
+            }
         }
+
+        accountFacade.edit(accountFromDb, etag);
+
+        return accountFromDb;
+    }
+    // NIE ROZŁĄCZAJ MNIE OD FUNKCJI WYŻEJ (ಥ_ಥ)
+    private AccessLevel findAccessLevelByName(Collection<AccessLevel> list, Class<? extends AccessLevel> clazz) {
+        for (AccessLevel accessLevel : list)
+            if (accessLevel.getClass().equals(clazz))
+                return accessLevel;
+
+        return null;
+//        // TODO: AccessLevel nie ma wartości .getLevel(),
+//        //  ponieważ jest to wartość z bazy, a tu dostajemy encje z mappera
+//        return list.stream()
+//                .filter(accessLevel -> accessLevel.getLevel().equals(name))
+//                .findFirst().orElse(null);
+    }
+
+    @Override
+    @RolesAllowed(Roles.ADMINISTRATOR)
+    public PaginationData findAllAccounts(int page, int size) {
+        return accountFacade.findInRange(page, size);
+    }
+
+    @Override
+    @RolesAllowed(Roles.ADMINISTRATOR)
+    public Account changeAccountPassword(String login, String newPassword, String etag) {
+        Account account = accountFacade.findByLogin(login);
+
+        if (hashAlgorithm.verify(newPassword.toCharArray(), account.getPassword())) {
+            throw new AccountPasswordIsTheSameException();
+        }
+
+        account.setPassword(hashAlgorithm.generate(newPassword.toCharArray()));
+        accountFacade.edit(account, etag);
+        return account;
+    }
+
+    @Override
+    @PermitAll
+    public Account changeAccountPassword(String login, String oldPassword, String newPassword, String etag) {
+        Account account = accountFacade.findByLogin(login);
 
         if (!hashAlgorithm.verify(oldPassword.toCharArray(), account.getPassword())) {
             throw new AccountPasswordMatchException();
         }
-        if(hashAlgorithm.verify(newPassword.toCharArray(),account.getPassword())){
+        if (hashAlgorithm.verify(newPassword.toCharArray(), account.getPassword())) {
             throw new AccountPasswordIsTheSameException();
-
         }
+
         account.setPassword(hashAlgorithm.generate(newPassword.toCharArray()));
-        accountFacade.unsafeEdit(account);
+        accountFacade.edit(account, etag);
+        return account;
     }
 
-    public void changeAccountPassword(String login, String newPassword) {
-        Account account = accountFacade.findByLogin(login);
-        if (account == null) {
-            throw AccountNotFoundException.notFoundByLogin();
-        }
-
-        if(hashAlgorithm.verify(newPassword.toCharArray(),account.getPassword())){
-            throw new AccountPasswordIsTheSameException();
-
-        }
-        account.setPassword(hashAlgorithm.generate(newPassword.toCharArray()));
-        accountFacade.unsafeEdit(account);
-    }
-
-    public void reset(String login) {
-        Account account = accountFacade.findByLogin(login);
-        ResetPasswordToken resetPasswordToken = new ResetPasswordToken();
-        resetPasswordToken.setAccount(account);
-        resetPasswordFacade.create(resetPasswordToken);
+    @Override
+    @PermitAll
+    public Account registerAccount(Account account) {
+        accountFacade.create(account);
+        Instant date = Instant.now().plusSeconds(Config.REGISTER_TOKEN_EXPIRATION_SECONDS);
+        String token = jwtGenerator.createJWTForEmail(account.getLogin(), date);
+        ConfirmationAccountToken activeAccountToken = new ConfirmationAccountToken(account, token, date);
+        activeAccountFacade.create(activeAccountToken);
         emailConfig.sendEmail(
                 account.getEmail(),
-                "Reset password",
-                "Your link to reset password: \n"
-                        + "localhost:8080/mok/resetPassword/"
-                        + login + "/"
-                        + hashAlgorithm.generate(resetPasswordToken.getId().toString().toCharArray())
-        );
+                "Active account - KIC",
+                "Your link to active account: https://localhost:8181/active \n"
+                        + "Token: " + token);
+        return account;
     }
 
-    public void changePassword(String login, String newPassword, String oldPassword) {
-        Account account = accountFacade.findByLogin(login);
-        if (account == null) {
-            throw AccountNotFoundException.notFoundByLogin();
-        }
-
-        if (!hashAlgorithm.verify(oldPassword.toCharArray(), account.getPassword())) {
-            throw new AccountPasswordMatchException();
-        }
-        if(hashAlgorithm.verify(newPassword.toCharArray(),account.getPassword())){
-            throw new AccountPasswordIsTheSameException();
-
-        }
-        account.setPassword(hashAlgorithm.generate(newPassword.toCharArray()));
+    @Override
+    @PermitAll
+    // TODO: obsługa wyjątków z .decodeJwt()
+    public Account confirmRegistration(String token) {
+        Claims claims = jwtGenerator.decodeJWT(token);
+        ConfirmationAccountToken activeAccountToken = activeAccountFacade.findToken(claims.getSubject());
+        if (activeAccountToken.getExpDate().isBefore(Instant.now())) throw new TokenExpierdException();
+        Account account = accountFacade.findByLogin(claims.getSubject());
+        account.setConfirmed(true);
         accountFacade.unsafeEdit(account);
+        return account;
     }
 
-    public void resetPassword(ResetPasswordTokenDto accountWithTokenDTO) {
-        ResetPasswordToken resetPasswordToken = resetPasswordFacade.findResetPasswordToken(accountWithTokenDTO.getLogin());
-        if(hashAlgorithm.verify(resetPasswordToken.getId().toString().toCharArray(), accountWithTokenDTO.getToken())) {
-            Account account = accountFacade.findByLogin(accountWithTokenDTO.getLogin());
-            account.setPassword(hashAlgorithm.generate(accountWithTokenDTO.getPassword().toCharArray()));
-            accountFacade.unsafeEdit(account);
-            resetPasswordFacade.unsafeRemove(resetPasswordToken);
-        }
-    }
-
-    public void createAccount(Account account) {
+    @Override
+    @RolesAllowed(Roles.ADMINISTRATOR)
+    public Account createAccount(Account account) {
         accountFacade.create(account);
+        return accountFacade.findByLogin(account.getLogin());
     }
 
-    public Account addAccessLevel(String login, AccessLevel accessLevel) {
+    @Override
+    @RolesAllowed(Roles.ADMINISTRATOR)
+    public Account addAccessLevelToAccount(String login, AccessLevel accessLevel) {
         Account account = accountFacade.findByLogin(login);
         account.getAccessLevelCollection().forEach(al -> {
             if (accessLevel instanceof DataSpecialist
-                && al instanceof DataClient) {
+                    && al instanceof DataClient) {
                 throw AccessLevelViolationException.clientCantBeSpecialist();
             }
             if (accessLevel instanceof DataClient
@@ -245,49 +256,60 @@ public class MOKService {
         return account;
     }
 
-    private final long HOUR = 60 * 60;
-
-    public void registerClientAccount(Account account){
-        accountFacade.create(account);
-        Instant date = Instant.now().plusSeconds(HOUR);
-        String token = jwtGenerator.createJWTForEmail(account.getLogin(), date);
-        ConfirmationAccountToken activeAccountToken = new ConfirmationAccountToken(account,token,date);
-        activeAccountFacade.create(activeAccountToken);
-        emailConfig.sendEmail(
-                account.getEmail(),
-                "Active account - KIC",
-                "Your link to active account: https://localhost:8181/active \n"
-                        + "Token: " + token);
-    }
-
-    public void confirm(String token) {
-        Claims claims = jwtGenerator.decodeJWT(token);
-        ConfirmationAccountToken activeAccountToken = activeAccountFacade.findToken(claims.getSubject());
-        if(activeAccountToken.getExpDate().isBefore(Instant.now())) throw new TokenExpierdException();
-        Account account = accountFacade.findByLogin(claims.getSubject());
-        account.setConfirmed(true);
-        accountFacade.unsafeEdit(account);
-    }
-
-
-
-    public Account removeAccessLevel(String login, String accessLevel, String tag) {
+    @Override
+    @RolesAllowed(Roles.ADMINISTRATOR)
+    public Account removeAccessLevelFromAccount(String login, String accessLevelName, String accessLevelEtag) {
         Account account = accountFacade.findByLogin(login);
 
         AccessLevel access = account.getAccessLevelCollection().stream()
-                .filter(level -> level.getLevel().equals(accessLevel))
+                .filter(level -> level.getLevel().equals(accessLevelName))
                 .findFirst()
                 .orElse(null);
 
+        if (access == null)
+            throw new AccessLevelNotFoundException();
+
         account.removeAccessLevel(access);
 
-        accessLevelFacade.unsafeRemove(access);
+        accessLevelFacade.remove(access, accessLevelEtag);
 
         return account;
     }
 
-    public void changeLanguage(AccountWithAccessLevelsDto account) {
-        Account accountNew = accountFacade.findByLogin(account.getLogin());
-        accountNew.setLanguage(account.getLanguage());
+    @Override
+    @PermitAll
+    public Account resetPassword(String login) {
+        Account account = accountFacade.findByLogin(login);
+        ResetPasswordToken resetPasswordToken = new ResetPasswordToken();
+        resetPasswordToken.setAccount(account);
+        resetPasswordFacade.create(resetPasswordToken);
+        emailConfig.sendEmail(
+                account.getEmail(),
+                "Reset password",
+                "Your link to reset password: \n"
+                        + "localhost:8080/mok/resetPassword/"
+                        + login + "/"
+                        + hashAlgorithm.generate(resetPasswordToken.getId().toString().toCharArray())
+        );
+        return account;
+    }
+
+    @Override
+    @PermitAll
+    public Account confirmResetPassword(String login, String password, String token) {
+
+        ResetPasswordToken resetPasswordToken =
+                resetPasswordFacade.findResetPasswordToken(login);
+
+        if (!hashAlgorithm.verify(resetPasswordToken.getId().toString().toCharArray(), token))
+            throw new TokenInvalidException();
+
+
+        Account account = accountFacade.findByLogin(login);
+        account.setPassword(hashAlgorithm.generate(password.toCharArray()));
+        accountFacade.unsafeEdit(account);
+        resetPasswordFacade.unsafeRemove(resetPasswordToken);
+
+        return account;
     }
 }
