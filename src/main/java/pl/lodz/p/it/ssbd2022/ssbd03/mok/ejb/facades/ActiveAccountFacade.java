@@ -40,7 +40,9 @@ public class ActiveAccountFacade extends AbstractFacade<ConfirmationAccountToken
         super.create(entity);
     }
 
+    // TODO: Dodanie Javadoc
     public ConfirmationAccountToken findToken(String login){
+        // TODO: Dodać obsługę wyjątku nie znalezionego tokenu
         TypedQuery<ConfirmationAccountToken> typedQuery = em.createNamedQuery("ConfirmationAccountToken.findByLogin", ConfirmationAccountToken.class);
         typedQuery.setParameter("login", login);
         return typedQuery.getSingleResult();

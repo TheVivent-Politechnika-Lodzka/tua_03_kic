@@ -36,7 +36,9 @@ public class ResetPasswordFacade extends AbstractFacade<ResetPasswordToken> {
         return em;
     }
 
+    // TODO: Dodanie Javadoc
     public ResetPasswordToken findResetPasswordToken(String login) {
+        // TODO: Dodać obsługę wyjątku nie znalezionego tokenu
         TypedQuery<ResetPasswordToken> typedQuery = em.createNamedQuery("ResetPassword.findByLogin", ResetPasswordToken.class);
         typedQuery.setParameter("login", login);
         return typedQuery.getSingleResult();

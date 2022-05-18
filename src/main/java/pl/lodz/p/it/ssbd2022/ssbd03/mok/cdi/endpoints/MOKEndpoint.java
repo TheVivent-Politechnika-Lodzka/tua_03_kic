@@ -23,9 +23,6 @@ import java.util.List;
 @Path("/mok")
 public class MOKEndpoint implements MOKEndpointInterface {
 
-//    @Inject
-//    private MOKService mokService;
-
     @Inject
     MOKServiceInterface mokServiceInterface;
     @Inject
@@ -37,6 +34,8 @@ public class MOKEndpoint implements MOKEndpointInterface {
 
     @Override
     public Response register(RegisterClientDto registerClientDto) {
+        // TODO: dodać powtarzanie transakcji
+        // TODO: przenieść wysyłanie maila do endpointu
         Account account = accountMapper.createAccountfromCreateClientAccountDto(registerClientDto);
         mokServiceInterface.registerAccount(account);
         return Response.ok().build();
@@ -44,12 +43,14 @@ public class MOKEndpoint implements MOKEndpointInterface {
 
     @Override
     public Response registerConfirm(RegisterClientConfirmDto registerConfirmDto) {
+        // TODO: dodać powtarzanie transakcji
         mokServiceInterface.confirmRegistration(registerConfirmDto.getToken());
         return Response.ok().build();
     }
 
     @Override
     public Response createAccount(CreateAccountDto createAccountDto) {
+        // TODO: dodać powtarzanie transakcji
         Account account = accountMapper.createAccountfromCreateAccountDto(createAccountDto);
         Account registeredAccount = mokServiceInterface.createAccount(account);
         return Response.ok(
@@ -59,6 +60,7 @@ public class MOKEndpoint implements MOKEndpointInterface {
 
     @Override
     public Response activateAccount(String login, ETagDto eTagDto) {
+        // TODO: dodać powtarzanie transakcji
         Account activatedAccount = mokServiceInterface.activateAccount(login, eTagDto.getETag());
         return Response.ok(
                 accountMapper.createAccountWithAccessLevelsDtoFromAccount(activatedAccount)
@@ -67,6 +69,7 @@ public class MOKEndpoint implements MOKEndpointInterface {
 
     @Override
     public Response deactivateAccount(String login, ETagDto eTagDto) {
+        // TODO: dodać powtarzanie transakcji
         Account deactivatedAccount = mokServiceInterface.deactivateAccount(login, eTagDto.getETag());
         return Response.ok(
                 accountMapper.createAccountWithAccessLevelsDtoFromAccount(deactivatedAccount)
@@ -75,6 +78,7 @@ public class MOKEndpoint implements MOKEndpointInterface {
 
     @Override
     public Response addAccessLevel(String login, AccessLevelDto accessLevelDto) {
+        // TODO: dodać powtarzanie transakcji
         AccessLevel accessLevel = accessLevelMapper.createAccessLevelFromDto(accessLevelDto);
         Account account = mokServiceInterface.addAccessLevelToAccount(login, accessLevel);
 
@@ -85,6 +89,7 @@ public class MOKEndpoint implements MOKEndpointInterface {
 
     @Override
     public Response removeAccessLevel(String login, String accessLevelName, String eTag) {
+        // TODO: dodać powtarzanie transakcji
         Account newAccessLevelAccount = mokServiceInterface.removeAccessLevelFromAccount(login, accessLevelName, eTag);
         return Response.ok(
                 accountMapper.createAccountWithAccessLevelsDtoFromAccount(newAccessLevelAccount)
@@ -93,6 +98,7 @@ public class MOKEndpoint implements MOKEndpointInterface {
 
     @Override
     public Response changeOwnPassword(ChangeOwnPasswordDto changeOwnPasswordDto) {
+        // TODO: dodać powtarzanie transakcji
         String login = authContext.getCurrentUserLogin();
         Account account = mokServiceInterface.changeAccountPassword(
                 login, changeOwnPasswordDto.getOldPassword(), changeOwnPasswordDto.getNewPassword(),
@@ -105,6 +111,7 @@ public class MOKEndpoint implements MOKEndpointInterface {
 
     @Override
     public Response changePassword(String login, ChangePasswordDto changePasswordDto) {
+        // TODO: dodać powtarzanie transakcji
         Account account = mokServiceInterface.changeAccountPassword(
                 login, changePasswordDto.getNewPassword(), changePasswordDto.getETag());
 
@@ -115,6 +122,7 @@ public class MOKEndpoint implements MOKEndpointInterface {
 
     @Override
     public Response editOwnAccount(AccountWithAccessLevelsDto accountWithAccessLevelsDto) {
+        // TODO: dodać powtarzanie transakcji
         String login = authContext.getCurrentUserLogin();
         Account update = accountMapper.createAccountFromDto(accountWithAccessLevelsDto);
         Account editedAccount = mokServiceInterface.editAccount(login, update, accountWithAccessLevelsDto.getETag());
@@ -126,6 +134,7 @@ public class MOKEndpoint implements MOKEndpointInterface {
 
     @Override
     public Response editAccount(String login, AccountWithAccessLevelsDto accountWithAccessLevelsDto) {
+        // TODO: dodać powtarzanie transakcji
         Account update = accountMapper.createAccountFromDto(accountWithAccessLevelsDto);
         Account editedAccount = mokServiceInterface.editAccount(login, update, accountWithAccessLevelsDto.getETag());
         return Response.ok(
@@ -135,6 +144,7 @@ public class MOKEndpoint implements MOKEndpointInterface {
 
     @Override
     public Response login(LoginCredentialsDto loginCredentialsDto) {
+        // TODO: dodać powtarzanie transakcji
         String token = mokServiceInterface.authenticate(
                 loginCredentialsDto.getLogin(), loginCredentialsDto.getPassword());
         return Response.ok(token).build();
@@ -142,6 +152,7 @@ public class MOKEndpoint implements MOKEndpointInterface {
 
     @Override
     public Response getAllAccounts(int page, int limit) {
+        // TODO: dodać powtarzanie transakcji
         PaginationData paginationData = mokServiceInterface.findAllAccounts(page, limit);
         List<Account> accounts = paginationData.getData();
         List<AccountWithAccessLevelsDto> accountsDTO = new ArrayList<>();
@@ -154,12 +165,14 @@ public class MOKEndpoint implements MOKEndpointInterface {
 
     @Override
     public Response resetPassword(String login) {
+        // TODO: dodać powtarzanie transakcji
         mokServiceInterface.resetPassword(login);
         return Response.ok().build();
     }
 
     @Override
     public Response resetPasswordToken(ResetPasswordTokenDto resetPasswordDto) {
+        // TODO: dodać powtarzanie transakcji
         mokServiceInterface.confirmResetPassword(
                 resetPasswordDto.getLogin(), resetPasswordDto.getPassword(), resetPasswordDto.getToken()
         );
@@ -168,6 +181,7 @@ public class MOKEndpoint implements MOKEndpointInterface {
 
     @Override
     public Response getOwnAccount() {
+        // TODO: dodać powtarzanie transakcji
         String user = authContext.getCurrentUserLogin();
         Account account = mokServiceInterface.findAccountByLogin(user);
         return Response.ok().entity(accountMapper.createAccountWithAccessLevelsDtoFromAccount(account)).build();
@@ -175,6 +189,7 @@ public class MOKEndpoint implements MOKEndpointInterface {
 
     @Override
     public Response getAccount(String login) {
+        // TODO: dodać powtarzanie transakcji
         Account account = mokServiceInterface.findAccountByLogin(login);
         return Response.ok(accountMapper.createAccountWithAccessLevelsDtoFromAccount(account)).build();
     }

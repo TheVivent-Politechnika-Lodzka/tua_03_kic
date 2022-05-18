@@ -10,9 +10,11 @@ import jakarta.ws.rs.ext.Provider;
 import java.util.Iterator;
 
 
+// TODO: Dodanie Javadoc
 @Provider
 public class ConstraintViolationExceptionMapper implements ExceptionMapper<ConstraintViolationException> {
 
+    // TODO: Dodanie Javadoc
     @Override
     public Response toResponse(ConstraintViolationException e) {
         StringBuilder message = new StringBuilder();
@@ -24,6 +26,7 @@ public class ConstraintViolationExceptionMapper implements ExceptionMapper<Const
         return Response.status(Response.Status.BAD_REQUEST).entity(message.toString()).build();
     }
 
+    // TODO: Dodanie Javadoc
     private String getFieldName(Path path) {
         Iterator<Path.Node> nodes = path.iterator();
         String fieldName = null;

@@ -22,6 +22,7 @@ public class AccountMapper {
     @Inject
     AbstractEntityMapper abstractEntityMapper;
 
+    // TODO: Dodanie Javadoc
     public Account createAccountfromCreateAccountDto(CreateAccountDto createAccountDto) {
         Account account = new Account();
         account.setLogin(createAccountDto.getLogin());
@@ -36,6 +37,7 @@ public class AccountMapper {
         return account;
     }
 
+    // TODO: Dodanie Javadoc
     public Account createAccountfromCreateClientAccountDto(RegisterClientDto registerClientAccountDto) {
         Account account = new Account();
         account.setLogin(registerClientAccountDto.getLogin());
@@ -53,6 +55,7 @@ public class AccountMapper {
         return account;
     }
 
+    // TODO: Dodanie Javadoc
     public Account createAccountFromDto(AccountWithAccessLevelsDto accountDto) {
         Account account = new Account();
         account.setLogin(accountDto.getLogin());
@@ -67,6 +70,7 @@ public class AccountMapper {
         return account;
     }
 
+    // TODO: Dodanie Javadoc
     public AccountDto createAccountDtoFromAccount(Account account) {
         AccountDto accountDto = new AccountDto(
                 account.getLogin(),
@@ -81,6 +85,7 @@ public class AccountMapper {
         return (AccountDto) abstractEntityMapper.map(accountDto, account);
     }
 
+    // TODO: Dodanie Javadoc
     public AccountWithAccessLevelsDto createAccountWithAccessLevelsDtoFromAccount(Account account) {
         AccountWithAccessLevelsDto accountDto = new AccountWithAccessLevelsDto(
                 account.getLogin(),

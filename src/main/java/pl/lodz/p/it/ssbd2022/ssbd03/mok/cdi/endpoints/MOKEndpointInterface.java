@@ -27,6 +27,7 @@ public interface MOKEndpointInterface {
 
 
     // MOK.1 Zarejestruj
+    // TODO: Dodanie Javadoc
     @POST
     @Path("/register")
     @PermitAll
@@ -36,6 +37,7 @@ public interface MOKEndpointInterface {
     }
 
     // MOK.1 Zarejestruj
+    // TODO: Dodanie Javadoc
     @POST
     @Path("/register-confirm")
     @PermitAll
@@ -45,6 +47,7 @@ public interface MOKEndpointInterface {
     }
 
     // MOK.2 Utwórz konto
+    // TODO: Dodanie Javadoc
     @PUT
     @Path("/create")
     @RolesAllowed(Roles.ADMINISTRATOR)
@@ -54,6 +57,7 @@ public interface MOKEndpointInterface {
     }
 
     // MOK.3 Zablokuj konto
+    // TODO: Dodanie Javadoc
     @PATCH
     @Path("/deactivate/{login}")
     @RolesAllowed(Roles.ADMINISTRATOR)
@@ -63,6 +67,7 @@ public interface MOKEndpointInterface {
     }
 
     // MOK.4 Odblokuj konto
+    // TODO: Dodanie Javadoc
     @PATCH
     @Path("/activate/{login}")
     @RolesAllowed(Roles.ADMINISTRATOR)
@@ -72,6 +77,7 @@ public interface MOKEndpointInterface {
     }
 
     // MOK.5 Dołącz poziom dostępu do konta
+    // TODO: Dodanie Javadoc
     @PUT
     @Path("/access-level/{login}")
     @RolesAllowed(Roles.ADMINISTRATOR)
@@ -81,6 +87,7 @@ public interface MOKEndpointInterface {
     }
 
     // MOK.6 Odłącz poziom dostępu z konta
+    // TODO: Dodanie Javadoc
     @DELETE
     @Path("/access-level/{login}/{accessLevel}")
     @RolesAllowed(Roles.ADMINISTRATOR)
@@ -89,6 +96,7 @@ public interface MOKEndpointInterface {
     }
 
     // MOK.7 Zmień własne hasło
+    // TODO: Dodanie Javadoc
     @PATCH
     @Path("/password")
     @PermitAll
@@ -98,6 +106,7 @@ public interface MOKEndpointInterface {
     }
 
     // MOK.8 Zmień hasło innego użytkownika
+    // TODO: Dodanie Javadoc
     @PATCH
     @Path("/password/{login}")
     @RolesAllowed(Roles.ADMINISTRATOR)
@@ -107,6 +116,7 @@ public interface MOKEndpointInterface {
     }
 
     // MOK.9 Edytuj dane własnego konta
+    // TODO: Dodanie Javadoc
     @PUT
     @Path("/")
     @PermitAll
@@ -116,6 +126,7 @@ public interface MOKEndpointInterface {
     }
 
     // MOK.10 Edytuj dane konta innego użytkownika
+    // TODO: Dodanie Javadoc
     @PUT
     @Path("/{login}")
     @RolesAllowed(Roles.ADMINISTRATOR)
@@ -128,6 +139,7 @@ public interface MOKEndpointInterface {
     // nie dotyczy backendu
 
     // MOK.12 Zaloguj
+    // TODO: Dodanie Javadoc
     @POST
     @Path("/login")
     @PermitAll
@@ -137,6 +149,7 @@ public interface MOKEndpointInterface {
     }
 
     // MOK.13 przeglądaj listę wszystkich kont
+    // TODO: Dodanie Javadoc
     @GET
     @Path("/list")
     @RolesAllowed(Roles.ADMINISTRATOR)
@@ -146,6 +159,7 @@ public interface MOKEndpointInterface {
     }
 
     // MOK.14 Zresetuj hasło
+    // TODO: Dodanie Javadoc
     @POST
     @Path("/reset-password/{login}")
     @PermitAll
@@ -155,6 +169,7 @@ public interface MOKEndpointInterface {
     }
 
     // MOK.14 Zresetuj hasło
+    // TODO: Dodanie Javadoc
     @POST
     @Path("/reset-password-token")
     @PermitAll
@@ -164,6 +179,7 @@ public interface MOKEndpointInterface {
     }
 
     // MOK.15 Przeglądaj szczegóły własnego konta
+    // TODO: Dodanie Javadoc
     @GET
     @Path("/")
     @PermitAll
@@ -173,6 +189,7 @@ public interface MOKEndpointInterface {
     }
 
     // MOK.16 Przeglądaj szczegóły konta innego użytkownika
+    // TODO: Dodanie Javadoc
     @GET
     @Path("/{login}")
     @RolesAllowed(Roles.ADMINISTRATOR)

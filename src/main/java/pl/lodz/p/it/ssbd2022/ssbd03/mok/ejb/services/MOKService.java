@@ -50,25 +50,18 @@ public class MOKService implements MOKServiceInterface {
 
     @Inject
     private IdentityStoreHandler identityStoreHandler;
-
     @Inject
     private JWTGenerator jwtGenerator;
-
     @Inject
     private AccountFacade accountFacade;
-
     @Inject
     private HashAlgorithm hashAlgorithm;
-
     @Inject
     private EmailService emailConfig;
-
     @Inject
     private ActiveAccountFacade activeAccountFacade;
-
     @Inject
     private AccessLevelFacade accessLevelFacade;
-
     @Inject
     private ResetPasswordFacade resetPasswordFacade;
 
@@ -81,6 +74,7 @@ public class MOKService implements MOKServiceInterface {
         if (result.getStatus() == CredentialValidationResult.Status.VALID) {
             return jwtGenerator.createJWT(result);
         }
+        // TODO: zmienić na wyjątek dziedziczący po AppBaseException
         throw new ClientErrorException("Invalid username or password", 401);
     }
 
@@ -155,13 +149,7 @@ public class MOKService implements MOKServiceInterface {
         for (AccessLevel accessLevel : list)
             if (accessLevel.getClass().equals(clazz))
                 return accessLevel;
-
         return null;
-//        // TODO: AccessLevel nie ma wartości .getLevel(),
-//        //  ponieważ jest to wartość z bazy, a tu dostajemy encje z mappera
-//        return list.stream()
-//                .filter(accessLevel -> accessLevel.getLevel().equals(name))
-//                .findFirst().orElse(null);
     }
 
     @Override
@@ -209,6 +197,7 @@ public class MOKService implements MOKServiceInterface {
         String token = jwtGenerator.createJWTForEmail(account.getLogin(), date);
         ConfirmationAccountToken activeAccountToken = new ConfirmationAccountToken(account, token, date);
         activeAccountFacade.create(activeAccountToken);
+        // TODO: przenieść wysyłanie maila do endpointu (z upewnienieniem się, że transakcja się powiedzie)
         emailConfig.sendEmail(
                 account.getEmail(),
                 "Active account - KIC",
@@ -219,8 +208,8 @@ public class MOKService implements MOKServiceInterface {
 
     @Override
     @PermitAll
-    // TODO: obsługa wyjątków z .decodeJwt()
     public Account confirmRegistration(String token) {
+        // TODO: obsługa wyjątków z .decodeJwt()
         Claims claims = jwtGenerator.decodeJWT(token);
         ConfirmationAccountToken activeAccountToken = activeAccountFacade.findToken(claims.getSubject());
         if (activeAccountToken.getExpDate().isBefore(Instant.now())) throw new TokenExpierdException();
@@ -283,6 +272,7 @@ public class MOKService implements MOKServiceInterface {
         ResetPasswordToken resetPasswordToken = new ResetPasswordToken();
         resetPasswordToken.setAccount(account);
         resetPasswordFacade.create(resetPasswordToken);
+        // TODO: przenieść wysyłanie maila do endpointu (z upewnienieniem się, że transakcja się powiedzie)
         emailConfig.sendEmail(
                 account.getEmail(),
                 "Reset password",

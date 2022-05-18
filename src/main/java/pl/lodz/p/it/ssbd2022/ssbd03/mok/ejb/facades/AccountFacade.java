@@ -34,7 +34,9 @@ public class AccountFacade extends AbstractFacade<Account> {
         super(Account.class);
     }
 
+    // TODO: Dodanie Javadoc
     public Account findByLogin(String login) {
+        // TODO: dodać łapanie wyjątku kiedy nie znaleziono konta
         TypedQuery<Account> typedQuery = entityManager.createNamedQuery("Account.findByLogin", Account.class);
         typedQuery.setParameter("login", login);
         return typedQuery.getSingleResult();

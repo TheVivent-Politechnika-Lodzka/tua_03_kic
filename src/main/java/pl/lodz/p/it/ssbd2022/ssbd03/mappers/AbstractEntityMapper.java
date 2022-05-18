@@ -12,6 +12,8 @@ public class AbstractEntityMapper {
     @Inject
     private HashAlgorithm hashAlgorithm;
 
+    // TODO: Dodanie Javadoc
+    // TODO: zmiana nazwy metody?
     public AbstractDto map(AbstractDto dto, AbstractEntity entity) {
         String eTag = hashAlgorithm.generateETag(
                 entity.getId(),
