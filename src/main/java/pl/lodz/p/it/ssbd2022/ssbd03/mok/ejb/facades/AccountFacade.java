@@ -47,9 +47,6 @@ public class AccountFacade extends AbstractFacade<Account> {
         try {
             super.create(entity);
         } catch (ConstraintViolationException e) {
-            System.out.println("###############################");
-            System.out.println(e.getConstraintName());
-            System.out.println("###############################");
             if (e.getConstraintName().contains(Account.CONSTRAINT_LOGIN_UNIQUE)) {
                 throw AccountAlreadyExistsException.loginExists();
             } else if (e.getConstraintName().contains(Account.CONSTRAINT_EMAIL_UNIQUE)) {
