@@ -20,7 +20,7 @@ public class JWTGenerator {
                 setSubject(cred.getCallerPrincipal().getName())
                 .claim("auth", String.join(",", cred.getCallerGroups()))
                 .signWith(SignatureAlgorithm.HS256, Config.JWT_SECRET)
-                .setExpiration(new Date(new Date().getTime() + Config.JWT_EXPIRATION_SECONDS)).compact();
+                .setExpiration(new Date(new Date().getTime() + Config.JWT_EXPIRATION_SECONDS * 1000)).compact();
         return token;
     }
 
