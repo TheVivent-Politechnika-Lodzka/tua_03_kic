@@ -6,7 +6,7 @@ public class Config {
     public static final String password = "cyberpunk2077";
     public static final String databaseName = "ssbd03";
     public static final String serverName = "127.0.0.1";
-//    public static final String serverName = "studdev.it.p.lodz.
+//    public static final String serverName = "studdev.it.p.lodz.pl";
 
 
     // Dla EmailConfig
