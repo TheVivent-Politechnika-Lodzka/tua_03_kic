@@ -126,8 +126,11 @@ public class MOKEndpoint implements MOKEndpointInterface {
 
     @Override
     public Response editAccount(String login, AccountWithAccessLevelsDto accountWithAccessLevelsDto) {
-        mokService.edit(login, accountWithAccessLevelsDto);
-        return Response.ok().build();
+        Account update = accountMapper.createAccountFromDto(accountWithAccessLevelsDto);
+        Account editedAccount = mokServiceInterface.editAccount(login, update, accountWithAccessLevelsDto.getETag());
+        return Response.ok(
+                accountMapper.createAccountWithAccessLevelsDtoFromAccount(editedAccount)
+        ).build();
     }
 
     @Override
@@ -157,14 +160,16 @@ public class MOKEndpoint implements MOKEndpointInterface {
 
     @Override
     public Response resetPasswordToken(ResetPasswordTokenDto resetPasswordDto) {
-        mokService.resetPassword(resetPasswordDto);
+        mokServiceInterface.confirmResetPassword(
+                resetPasswordDto.getLogin(), resetPasswordDto.getPassword(), resetPasswordDto.getToken()
+        );
         return Response.ok().build();
     }
 
     @Override
     public Response getOwnAccount() {
         String user = authContext.getCurrentUserLogin();
-        Account account = mokService.findByLogin(user);
+        Account account = mokServiceInterface.findAccountByLogin(user);
         return Response.ok().entity(accountMapper.createAccountWithAccessLevelsDtoFromAccount(account)).build();
     }
 
