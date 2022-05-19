@@ -53,7 +53,7 @@ public abstract class AbstractManager {
     }
 
     public void afterCompletion(boolean committed) {
-        lastTransactionCommited = !committed;
+        lastTransactionCommited = committed;
         LOGGER.log(
             Level.INFO,
             "Transakcja o id={0}, zakończona w {1} (status: {2}); tożsamość {3}",
