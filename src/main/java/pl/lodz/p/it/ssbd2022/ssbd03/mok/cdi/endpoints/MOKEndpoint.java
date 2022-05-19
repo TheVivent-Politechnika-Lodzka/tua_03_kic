@@ -1,19 +1,17 @@
 package pl.lodz.p.it.ssbd2022.ssbd03.mok.cdi.endpoints;
 
 import jakarta.annotation.security.DenyAll;
-import jakarta.ejb.AccessLocalException;
-import jakarta.ejb.EJBAccessException;
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.inject.Inject;
+import jakarta.interceptor.Interceptors;
 import jakarta.ws.rs.Path;
-import jakarta.ws.rs.WebApplicationException;
 import jakarta.ws.rs.core.Response;
 import pl.lodz.p.it.ssbd2022.ssbd03.common.Config;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.Account;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.access_levels.AccessLevel;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.TransactionException;
-import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.database.DatabaseException;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.database.InAppOptimisticLockException;
+import pl.lodz.p.it.ssbd2022.ssbd03.interceptors.TrackerInterceptor;
 import pl.lodz.p.it.ssbd2022.ssbd03.mappers.AccessLevelMapper;
 import pl.lodz.p.it.ssbd2022.ssbd03.mappers.AccountMapper;
 import pl.lodz.p.it.ssbd2022.ssbd03.mok.dto.*;
@@ -24,11 +22,10 @@ import pl.lodz.p.it.ssbd2022.ssbd03.utils.PaginationData;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 @RequestScoped
 @DenyAll
+@Interceptors(TrackerInterceptor.class)
 @Path("/mok")
 public class MOKEndpoint implements MOKEndpointInterface {
 
@@ -45,32 +42,16 @@ public class MOKEndpoint implements MOKEndpointInterface {
     public Response register(RegisterClientDto registerClientDto) {
         // TODO: przenieść wysyłanie maila do endpointu
         int TXCounter = Config.MAX_TX_RETRIES;
-        boolean commitedTX = false;
+        boolean commitedTX;
         Account account = accountMapper.createAccountfromCreateClientAccountDto(registerClientDto);
         do {
-            try {
-                mokServiceInterface.registerAccount(account);
-                commitedTX = mokServiceInterface.isLastTransactionCommited();
-                if(!commitedTX) {
-                    //Informacja o odwołaniu tranzakcji -> logger
-                }
-            } catch (InAppOptimisticLockException iao) {
-                //Informacja o zaistnieniu blokady -> logger
-                commitedTX = true;
-                if (TXCounter < 2) {
-                    throw iao;
-                }
-            } catch (WebApplicationException wa) {
-                throw wa;
-            } catch (EJBAccessException | AccessLocalException ejbae) {
-                throw TransactionException.forbiddenAccess();
-            }
-            //Ew. łapanie innych, nieprzewidzianych wyzej wyjatkow
+            mokServiceInterface.registerAccount(account);
+            commitedTX = mokServiceInterface.isLastTransactionCommited();
             TXCounter--;
         } while (commitedTX && TXCounter > 0);
 
-        if (commitedTX) {
-            throw TransactionException.transactionRollback();
+        if(!commitedTX) {
+            throw new TransactionException();
         }
 
         return Response.ok().build();
