@@ -10,7 +10,7 @@ import java.util.logging.Logger;
 
 import static jakarta.ejb.TransactionAttributeType.NOT_SUPPORTED;
 
-public class AbstractManager {
+public abstract class AbstractManager {
 
     @Resource
     SessionContext sessionContext;
