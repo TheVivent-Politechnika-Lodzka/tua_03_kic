@@ -2,7 +2,7 @@ import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { logout } from "../../../redux/userSlice";
 import "./style.scss";
-import {Logout} from "../SelectorTopBar";
+import {Logout} from "../SelectorTopBar/SelectorTopBar";
 import LangSelect from "../../LangSelect/LangSelect";
 import { useTranslation } from "react-i18next";
 

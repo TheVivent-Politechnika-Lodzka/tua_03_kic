@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
-import LangSelect from "../../../component/LangSelect/LangSelect";
-import LoginForm from "./LoginForm/LoginForm";
-import RegistrationForm from "./RegistrationForm/RegistrationForm";
+import LangSelect from "../../../../component/LangSelect/LangSelect";
+import LoginForm from "../loginForm/LoginForm";
+import RegistrationForm from "../registerForm/RegistrationForm";
 import "./style.scss";
 
 const LoginPage = () => {
