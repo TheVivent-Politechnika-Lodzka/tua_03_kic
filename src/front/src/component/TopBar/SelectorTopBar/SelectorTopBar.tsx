@@ -1,9 +1,9 @@
-import "./style.scss";
+import styles from "./selectorTopBar.module.scss";
 import { useStoreSelector } from "../../../redux/reduxHooks";
-import AdminTopBar from "../AdminTopBar";
-import SpecialistTopBar from "../SpecialistTopBar";
-import ClientTopBar from "../ClientTopBar";
-import GuestTopBar from "../GuestTopBar";
+import AdminTopBar from "../AdminTopBar/AdminTopBar";
+import SpecialistTopBar from "../SpecialistTopBar/SpecialistTopBar";
+import ClientTopBar from "../ClientTopBar/ClientTopBar";
+import GuestTopBar from "../GuestTopBar/GuestTopBar";
 import { logout } from "../../../redux/userSlice";
 import { useTranslation } from "react-i18next";
 
@@ -15,7 +15,7 @@ export const Logout = () => {
     window.location.reload();
   };
   return (
-    <div className="item" onClick={logout}>
+    <div className={styles.item} onClick={logout}>
       {t("log_out")}
     </div>
   );

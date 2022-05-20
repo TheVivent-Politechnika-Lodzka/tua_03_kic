@@ -2,7 +2,7 @@ import { useNavigate } from "react-router-dom";
 import LangSelect from "../../../../component/Selector/LangBarSelect/LangSelect";
 import LoginForm from "../loginForm/LoginForm";
 import RegistrationForm from "../registerForm/RegistrationForm";
-import "./style.scss";
+import styles from "./loginPage.module.scss";
 
 const LoginPage = () => {
   const navigate = useNavigate();
@@ -12,7 +12,7 @@ const LoginPage = () => {
         <img src="logo.jpg" alt="Logo" height="80px" />
       </div>
       <LangSelect />
-      <div className="login_section">
+      <div className={styles.login_section}>
         <LoginForm />
         <RegistrationForm />
       </div>

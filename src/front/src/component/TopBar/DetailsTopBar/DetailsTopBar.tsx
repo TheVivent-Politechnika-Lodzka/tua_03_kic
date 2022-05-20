@@ -7,12 +7,6 @@ const DetailsTopBar = () => {
 
   return (
     <div className="topBar">
-      <div
-        className={styles.logo}
-        onClick={() => navigate("/", { replace: false })}
-      >
-        <img src="logo.jpg" alt="Logo" height="80px" />
-      </div>
       <div className={styles.right_side}>
         <div className={styles.account}>Imie nazwisko</div>
         <LangSelect />

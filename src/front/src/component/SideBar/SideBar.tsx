@@ -9,7 +9,16 @@ const SideBar = () => {
 
   return (
     <div className={styles.content}>
+      <div
+        className={styles.logo}
+        onClick={() => navigate("/", { replace: false })}
+      >
+        <img src="logo.jpg" alt="Logo" height="80px" />
+      </div>
       <div className={styles.item}>
+        Mój profil
+      </div>
+      <div className={styles.item2}>
         <SpecialistNavBar />
       </div>
       <div className={styles.item2}>

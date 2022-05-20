@@ -56,6 +56,7 @@ function App() {
           </Route>
           <Route element={<HomeLayout />}>
             <Route path="/" element={<MainPage />} />
+            
           </Route>
           <Route path="/login" element={<LoginPage />} />
           <Route path="/active" element={<ActivateAccountPage />} />

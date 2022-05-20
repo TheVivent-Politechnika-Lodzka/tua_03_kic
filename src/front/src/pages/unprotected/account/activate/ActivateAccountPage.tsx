@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useConfirmRegistrationMutation } from "../../../../api/api";
-import "./style.scss";
+import styles from "./activeAccountPage.module.scss";
 const ActivateAccountPage = () => {
   // TODO przerobic na pobranie tokenu z linku aktywacyjnego
   // let { token } = useParams();
@@ -26,15 +26,15 @@ const ActivateAccountPage = () => {
 
   return (
     <div>
-      <div className="text">{t("insert_token")}</div>
+      <div className={styles.text}>{t("insert_token")}</div>
       {token !== null ? (
         <>
           <input
-            className="token_input"
+            className={styles.token_input}
             value={token}
             onChange={(e) => setToken(e.target.value)}
           ></input>
-          <div className="confirm_button" onClick={handleSubmit}>
+          <div className={styles.confirm_button} onClick={handleSubmit}>
             {t("active_account")}
           </div>
         </>
@@ -44,8 +44,8 @@ const ActivateAccountPage = () => {
 
       {confirmed ? (
         <div>
-          <div className="text"> {t("confirmed_account")}</div>
-          <div className="confirm_button" onClick={() => navigate("/login")}>
+          <div className={styles.text}> {t("confirmed_account")}</div>
+          <div className={styles.confirm_button} onClick={() => navigate("/login")}>
             {t("nav_log")}
           </div>
         </div>

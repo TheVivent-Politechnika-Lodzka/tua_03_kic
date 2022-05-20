@@ -5,14 +5,16 @@ import styles from "./detailsLayout.module.scss";
 
 const DetailsLayout = () => {
   return (
-    <div className={styles.content}>
-      
-      <DetailsTopBar/>
-      <div className={styles.left_side}>
-        <SideBar />
-      </div>
-      <div className={styles.right_side}>
-        <Outlet />
+    <div>
+      <DetailsTopBar />
+
+      <div className={styles.content}>
+        <div className={styles.left_side}>
+          <SideBar />
+        </div>
+        <div className={styles.right_side}>
+          <Outlet />
+        </div>
       </div>
     </div>
   );
