@@ -3,6 +3,7 @@ package pl.lodz.p.it.ssbd2022.ssbd03.common;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.OptimisticLockException;
 import jakarta.persistence.PersistenceException;
+import jakarta.persistence.TypedQuery;
 import jakarta.persistence.criteria.CriteriaQuery;
 import org.hibernate.exception.ConstraintViolationException;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.database.DatabaseException;
@@ -112,7 +113,7 @@ public abstract class AbstractFacade<T> {
      * @throws InvalidParametersException, gdy podano niepoprawną wartość parametru
      * @throws DatabaseException, gdy wystąpi błąd związany z bazą danych
      */
-    public PaginationData findInRange(int pageNumber, int perPage) {
+    public PaginationData findInRange(int pageNumber, int perPage, String phrase) {
         // TODO: dodać łapanie wyjątku kiedy nie znaleziono konta
         try {
             CriteriaQuery criteriaQuery = getEntityManager().getCriteriaBuilder().createQuery();

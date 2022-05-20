@@ -1,9 +1,14 @@
 package pl.lodz.p.it.ssbd2022.ssbd03.mok.cdi.endpoints;
 
 import jakarta.annotation.security.DenyAll;
+import jakarta.annotation.security.RolesAllowed;
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.inject.Inject;
+import jakarta.ws.rs.GET;
 import jakarta.ws.rs.Path;
+import jakarta.ws.rs.Produces;
+import jakarta.ws.rs.QueryParam;
+import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.Account;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.access_levels.AccessLevel;
@@ -151,10 +156,10 @@ public class MOKEndpoint implements MOKEndpointInterface {
     }
 
     @Override
-    public Response getAllAccounts(int page, int limit) {
+    public Response getAllAccounts(int page, int limit, String phrase) {
         // TODO: dodać powtarzanie transakcji
         // TODO: zmniejszyć ilość danych o kontach na liście
-        PaginationData paginationData = mokServiceInterface.findAllAccounts(page, limit);
+        PaginationData paginationData = mokServiceInterface.findAllAccounts(page, limit, phrase);
         List<Account> accounts = paginationData.getData();
         List<AccountWithAccessLevelsDto> accountsDTO = new ArrayList<>();
         for (Account account : accounts) {
@@ -194,4 +199,17 @@ public class MOKEndpoint implements MOKEndpointInterface {
         Account account = mokServiceInterface.findAccountByLogin(login);
         return Response.ok(accountMapper.createAccountWithAccessLevelsDtoFromAccount(account)).build();
     }
+
+//    @Override
+//    public Response searchByPhrase(@QueryParam("phrase") String phrase) {
+//        List <Account> accounts = mokServiceInterface.searchByPhrase(phrase);
+//        List <AccountWithAccessLevelsDto> accountsDTO = new ArrayList<>();
+//
+//        for (Account account : accounts) {
+//            accountsDTO.add(accountMapper.createAccountWithAccessLevelsDtoFromAccount(account));
+//        }
+//
+//        return Response.ok().entity(accountsDTO).build();
+//    }
+
 }

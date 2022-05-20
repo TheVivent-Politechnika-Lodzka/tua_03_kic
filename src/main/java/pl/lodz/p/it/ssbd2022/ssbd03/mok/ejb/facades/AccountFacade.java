@@ -16,6 +16,9 @@ import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.account.AccountAlreadyExistsExcep
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.database.DatabaseException;
 import pl.lodz.p.it.ssbd2022.ssbd03.interceptors.TrackerInterceptor;
 import pl.lodz.p.it.ssbd2022.ssbd03.utils.HashAlgorithm;
+import pl.lodz.p.it.ssbd2022.ssbd03.utils.PaginationData;
+
+import java.util.List;
 
 @Interceptors(TrackerInterceptor.class)
 @Stateless
@@ -41,6 +44,27 @@ public class AccountFacade extends AbstractFacade<Account> {
         typedQuery.setParameter("login", login);
         return typedQuery.getSingleResult();
     }
+
+    // TODO: Dodanie Javadoc
+    @Override
+    public PaginationData findInRange(int pageNumber, int perPage, String phrase) {
+        if (phrase == null) {
+            return super.findInRange(pageNumber, perPage, null);
+        } else {
+            // TODO: dodać łapanie wyjątku kiedy nie znaleziono konta
+            TypedQuery<Account> typedQuery = entityManager.createNamedQuery("Account.searchByPhrase", Account.class);
+
+            pageNumber -= 1;
+            List<Account> data = typedQuery.setParameter("phrase", "%" + phrase + "%")
+                    .setMaxResults(perPage)
+                    .setFirstResult(pageNumber * perPage)
+                    .getResultList();
+
+            int totalCount = data.size();
+            return new PaginationData(totalCount, data);
+        }
+    }
+
 
     @Override
     public void create(Account entity) {

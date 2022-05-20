@@ -38,7 +38,7 @@ public interface MOKServiceInterface {
     }
 
     // TODO: Dodanie Javadoc
-    default PaginationData findAllAccounts(int page, int size) {
+    default PaginationData findAllAccounts(int page, int size, String phrase) {
         throw new MethodNotImplementedException();
     }
 
@@ -86,6 +86,7 @@ public interface MOKServiceInterface {
     default Account confirmResetPassword(String login, String password, String token) {
         throw new MethodNotImplementedException();
     }
+
 
 }
 
