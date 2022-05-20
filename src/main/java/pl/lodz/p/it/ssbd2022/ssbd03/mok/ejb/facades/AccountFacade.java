@@ -16,6 +16,7 @@ import pl.lodz.p.it.ssbd2022.ssbd03.common.AbstractFacade;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.Account;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.account.AccountAlreadyExistsException;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.database.DatabaseException;
+import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.InvalidParametersException;
 import pl.lodz.p.it.ssbd2022.ssbd03.interceptors.TrackerInterceptor;
 import pl.lodz.p.it.ssbd2022.ssbd03.utils.HashAlgorithm;
 import pl.lodz.p.it.ssbd2022.ssbd03.utils.PaginationData;
@@ -47,9 +48,19 @@ public class AccountFacade extends AbstractFacade<Account> {
         return typedQuery.getSingleResult();
     }
 
-    // TODO: Dodanie Javadoc
+    /**
+     *
+     * Zwraca listę stronicowanych użytkowników w bazie danych, w których imieniu i/lub nazwisku występuje dana fraza.
+     *
+     * @param pageNumber Numer strony (startuje od 1)
+     * @param perPage Ilość użytkowników, którzy mają zostać zwróceni
+     * @param phrase Fraza, która występuje w imieniu i/lub nazwisku szukanych użytkowników
+     * @return Znalezieni użytkownicy wraz z ich całkowitą ilością (jako liczba)
+     * @throws InvalidParametersException, gdy podano niepoprawną wartość parametru
+     * @throws DatabaseException, gdy wystąpi błąd związany z bazą danych
+     */
     public PaginationData findInRangeWithPhrase(int pageNumber, int perPage, String phrase) {
-            // TODO: dodać łapanie wyjątku kiedy nie znaleziono konta
+        try {
             TypedQuery<Account> typedQuery = entityManager.createNamedQuery("Account.searchByPhrase", Account.class);
 
             pageNumber -= 1;
@@ -63,6 +74,11 @@ public class AccountFacade extends AbstractFacade<Account> {
                     .getResultList().size();
 
             return new PaginationData(totalCount, data);
+        } catch (IllegalArgumentException e) {
+            throw new InvalidParametersException(e.getCause());
+        } catch (PersistenceException e) {
+            throw new DatabaseException(e.getCause());
+        }
     }
 
     @Override
