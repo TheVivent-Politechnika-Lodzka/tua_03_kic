@@ -159,7 +159,7 @@ public class MOKService implements MOKServiceInterface {
     @Override
     @RolesAllowed(Roles.ADMINISTRATOR)
     public PaginationData findAllAccounts(int page, int size, String phrase) {
-        return accountFacade.findInRange(page, size, phrase);
+        return accountFacade.findInRangeWithPhrase(page, size, phrase);
     }
 
     @Override

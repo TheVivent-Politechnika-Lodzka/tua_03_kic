@@ -159,7 +159,7 @@ public interface MOKEndpointInterface {
     @RolesAllowed(Roles.ADMINISTRATOR)
     @Produces(MediaType.APPLICATION_JSON)
     default Response getAllAccounts(@QueryParam("page") int page, @QueryParam("limit") int limit,
-                                    @QueryParam("phrase") String phrase) {
+                                    @QueryParam("phrase") @DefaultValue("") String phrase) {
         throw new MethodNotImplementedException();
     }
 

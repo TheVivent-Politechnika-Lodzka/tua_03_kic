@@ -113,7 +113,7 @@ public abstract class AbstractFacade<T> {
      * @throws InvalidParametersException, gdy podano niepoprawną wartość parametru
      * @throws DatabaseException, gdy wystąpi błąd związany z bazą danych
      */
-    public PaginationData findInRange(int pageNumber, int perPage, String phrase) {
+    public PaginationData findInRange(int pageNumber, int perPage) {
         // TODO: dodać łapanie wyjątku kiedy nie znaleziono konta
         try {
             CriteriaQuery criteriaQuery = getEntityManager().getCriteriaBuilder().createQuery();

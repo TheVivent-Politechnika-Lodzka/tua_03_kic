@@ -7,7 +7,9 @@ import jakarta.inject.Inject;
 import jakarta.interceptor.Interceptors;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
+import jakarta.persistence.PersistenceException;
 import jakarta.persistence.TypedQuery;
+import jakarta.persistence.criteria.CriteriaQuery;
 import lombok.Getter;
 import org.hibernate.exception.ConstraintViolationException;
 import pl.lodz.p.it.ssbd2022.ssbd03.common.AbstractFacade;
@@ -46,11 +48,7 @@ public class AccountFacade extends AbstractFacade<Account> {
     }
 
     // TODO: Dodanie Javadoc
-    @Override
-    public PaginationData findInRange(int pageNumber, int perPage, String phrase) {
-        if (phrase == null) {
-            return super.findInRange(pageNumber, perPage, null);
-        } else {
+    public PaginationData findInRangeWithPhrase(int pageNumber, int perPage, String phrase) {
             // TODO: dodać łapanie wyjątku kiedy nie znaleziono konta
             TypedQuery<Account> typedQuery = entityManager.createNamedQuery("Account.searchByPhrase", Account.class);
 
@@ -60,11 +58,12 @@ public class AccountFacade extends AbstractFacade<Account> {
                     .setFirstResult(pageNumber * perPage)
                     .getResultList();
 
-            int totalCount = data.size();
-            return new PaginationData(totalCount, data);
-        }
-    }
+            int totalCount = entityManager.createNamedQuery("Account.searchByPhrase", Account.class)
+                    .setParameter("phrase", "%" + phrase + "%")
+                    .getResultList().size();
 
+            return new PaginationData(totalCount, data);
+    }
 
     @Override
     public void create(Account entity) {
