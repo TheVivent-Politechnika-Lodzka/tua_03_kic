@@ -46,8 +46,7 @@ public class MOKEndpoint implements MOKEndpointInterface {
         do {
             mokServiceInterface.registerAccount(account);
             commitedTX = mokServiceInterface.isLastTransactionCommited();
-            TXCounter--;
-        } while (commitedTX && TXCounter > 0);
+        } while (!commitedTX && --TXCounter > 0);
 
         if (!commitedTX) {
             throw new TransactionException();
@@ -63,8 +62,7 @@ public class MOKEndpoint implements MOKEndpointInterface {
         do {
             mokServiceInterface.confirmRegistration(registerConfirmDto.getToken());
             commitedTX = mokServiceInterface.isLastTransactionCommited();
-            TXCounter--;
-        } while (commitedTX && TXCounter > 0);
+        } while (!commitedTX && --TXCounter > 0);
 
         if (!commitedTX) {
             throw new TransactionException();
@@ -82,8 +80,7 @@ public class MOKEndpoint implements MOKEndpointInterface {
         do {
             registeredAccount = mokServiceInterface.createAccount(account);
             commitedTX = mokServiceInterface.isLastTransactionCommited();
-            TXCounter--;
-        } while (commitedTX && TXCounter > 0);
+        } while (!commitedTX && --TXCounter > 0);
 
         if (!commitedTX) {
             throw new TransactionException();
@@ -102,8 +99,7 @@ public class MOKEndpoint implements MOKEndpointInterface {
         do {
             activatedAccount = mokServiceInterface.activateAccount(login, eTagDto.getETag());
             commitedTX = mokServiceInterface.isLastTransactionCommited();
-            TXCounter--;
-        } while (commitedTX && TXCounter > 0);
+        } while (!commitedTX && --TXCounter > 0);
 
         if (!commitedTX) {
             throw new TransactionException();
@@ -122,8 +118,7 @@ public class MOKEndpoint implements MOKEndpointInterface {
         do {
             deactivatedAccount = mokServiceInterface.deactivateAccount(login, eTagDto.getETag());
             commitedTX = mokServiceInterface.isLastTransactionCommited();
-            TXCounter--;
-        } while (commitedTX && TXCounter > 0);
+        } while (!commitedTX && --TXCounter > 0);
 
         if (!commitedTX) {
             throw new TransactionException();
@@ -143,8 +138,7 @@ public class MOKEndpoint implements MOKEndpointInterface {
         do {
             account = mokServiceInterface.addAccessLevelToAccount(login, accessLevel);
             commitedTX = mokServiceInterface.isLastTransactionCommited();
-            TXCounter--;
-        } while (commitedTX && TXCounter > 0);
+        } while (!commitedTX && --TXCounter > 0);
 
         if (!commitedTX) {
             throw new TransactionException();
@@ -163,8 +157,7 @@ public class MOKEndpoint implements MOKEndpointInterface {
         do {
             newAccessLevelAccount = mokServiceInterface.removeAccessLevelFromAccount(login, accessLevelName, eTag);
             commitedTX = mokServiceInterface.isLastTransactionCommited();
-            TXCounter--;
-        } while (commitedTX && TXCounter > 0);
+        } while (!commitedTX && --TXCounter > 0);
 
         if (!commitedTX) {
             throw new TransactionException();
@@ -189,8 +182,7 @@ public class MOKEndpoint implements MOKEndpointInterface {
                     changeOwnPasswordDto.getETag()
             );
             commitedTX = mokServiceInterface.isLastTransactionCommited();
-            TXCounter--;
-        } while (commitedTX && TXCounter > 0);
+        } while (!commitedTX && --TXCounter > 0);
 
         if (!commitedTX) {
             throw new TransactionException();
@@ -213,8 +205,7 @@ public class MOKEndpoint implements MOKEndpointInterface {
                     changePasswordDto.getETag()
             );
             commitedTX = mokServiceInterface.isLastTransactionCommited();
-            TXCounter--;
-        } while (commitedTX && TXCounter > 0);
+        } while (!commitedTX && --TXCounter > 0);
 
         if (!commitedTX) {
             throw new TransactionException();
@@ -234,8 +225,7 @@ public class MOKEndpoint implements MOKEndpointInterface {
         do {
             editedAccount = mokServiceInterface.editAccount(login, update, accountWithAccessLevelsDto.getETag());
             commitedTX = mokServiceInterface.isLastTransactionCommited();
-            TXCounter--;
-        } while (commitedTX && TXCounter > 0);
+        } while (!commitedTX && --TXCounter > 0);
 
         if (!commitedTX) {
             throw new TransactionException();
@@ -255,8 +245,7 @@ public class MOKEndpoint implements MOKEndpointInterface {
         do {
             editedAccount = mokServiceInterface.editAccount(login, update, accountWithAccessLevelsDto.getETag());
             commitedTX = mokServiceInterface.isLastTransactionCommited();
-            TXCounter--;
-        } while (commitedTX && TXCounter > 0);
+        } while (!commitedTX && --TXCounter > 0);
 
         if (!commitedTX) {
             throw new TransactionException();
@@ -278,8 +267,7 @@ public class MOKEndpoint implements MOKEndpointInterface {
                     loginCredentialsDto.getPassword()
             );
             commitedTX = mokServiceInterface.isLastTransactionCommited();
-            TXCounter--;
-        } while (commitedTX && TXCounter > 0);
+        } while (!commitedTX && --TXCounter > 0);
 
         if (!commitedTX) {
             throw new TransactionException();
@@ -297,8 +285,7 @@ public class MOKEndpoint implements MOKEndpointInterface {
         do {
             paginationData = mokServiceInterface.findAllAccounts(page, limit);
             commitedTX = mokServiceInterface.isLastTransactionCommited();
-            TXCounter--;
-        } while (commitedTX && TXCounter > 0);
+        } while (!commitedTX && --TXCounter > 0);
 
         if (!commitedTX) {
             throw new TransactionException();
@@ -320,8 +307,7 @@ public class MOKEndpoint implements MOKEndpointInterface {
         do {
             mokServiceInterface.resetPassword(login);
             commitedTX = mokServiceInterface.isLastTransactionCommited();
-            TXCounter--;
-        } while (commitedTX && TXCounter > 0);
+        } while (!commitedTX && --TXCounter > 0);
 
         if (!commitedTX) {
             throw new TransactionException();
@@ -341,8 +327,7 @@ public class MOKEndpoint implements MOKEndpointInterface {
                     resetPasswordDto.getToken()
             );
             commitedTX = mokServiceInterface.isLastTransactionCommited();
-            TXCounter--;
-        } while (commitedTX && TXCounter > 0);
+        } while (!commitedTX && --TXCounter > 0);
 
         if (!commitedTX) {
             throw new TransactionException();
@@ -360,8 +345,7 @@ public class MOKEndpoint implements MOKEndpointInterface {
         do {
             account = mokServiceInterface.findAccountByLogin(user);
             commitedTX = mokServiceInterface.isLastTransactionCommited();
-            TXCounter--;
-        } while (commitedTX && TXCounter > 0);
+        } while (!commitedTX && --TXCounter > 0);
 
         if (!commitedTX) {
             throw new TransactionException();
@@ -378,8 +362,7 @@ public class MOKEndpoint implements MOKEndpointInterface {
         do {
             account = mokServiceInterface.findAccountByLogin(login);
             commitedTX = mokServiceInterface.isLastTransactionCommited();
-            TXCounter--;
-        } while (commitedTX && TXCounter > 0);
+        } while (!commitedTX && --TXCounter > 0);
 
         if (!commitedTX) {
             throw new TransactionException();
