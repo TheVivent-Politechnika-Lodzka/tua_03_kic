@@ -10,6 +10,12 @@ import pl.lodz.p.it.ssbd2022.ssbd03.mok.dto.CreateAccountDto;
 import pl.lodz.p.it.ssbd2022.ssbd03.mok.dto.RegisterClientDto;
 import pl.lodz.p.it.ssbd2022.ssbd03.mok.dto.access_levels.AccessLevelDto;
 import pl.lodz.p.it.ssbd2022.ssbd03.utils.HashAlgorithm;
+
+import java.util.Collection;
+import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
+
 @Stateless
 public class AccountMapper {
 
@@ -100,6 +106,11 @@ public class AccountMapper {
         return (AccountWithAccessLevelsDto) abstractEntityMapper.map(accountDto, account);
     }
 
-
+    public List<AccountWithAccessLevelsDto> createListOfAccountWithAccessLevelDTO(Collection<Account> accounts){
+        return null == accounts ? null : accounts.stream()
+                .filter(Objects::nonNull)
+                .map(this::createAccountWithAccessLevelsDtoFromAccount)
+                .collect(Collectors.toList());
+    }
 
 }
