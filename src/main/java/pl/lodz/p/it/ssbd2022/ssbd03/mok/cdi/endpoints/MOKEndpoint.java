@@ -25,7 +25,6 @@ import java.util.List;
 
 @RequestScoped
 @DenyAll
-@Interceptors(TrackerInterceptor.class)
 @Path("/mok")
 public class MOKEndpoint implements MOKEndpointInterface {
 
