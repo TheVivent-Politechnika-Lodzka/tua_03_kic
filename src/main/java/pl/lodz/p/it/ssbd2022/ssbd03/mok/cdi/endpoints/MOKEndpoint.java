@@ -3,15 +3,12 @@ package pl.lodz.p.it.ssbd2022.ssbd03.mok.cdi.endpoints;
 import jakarta.annotation.security.DenyAll;
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.inject.Inject;
-import jakarta.interceptor.Interceptors;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.core.Response;
 import pl.lodz.p.it.ssbd2022.ssbd03.common.Config;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.Account;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.access_levels.AccessLevel;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.TransactionException;
-import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.database.InAppOptimisticLockException;
-import pl.lodz.p.it.ssbd2022.ssbd03.interceptors.TrackerInterceptor;
 import pl.lodz.p.it.ssbd2022.ssbd03.mappers.AccessLevelMapper;
 import pl.lodz.p.it.ssbd2022.ssbd03.mappers.AccountMapper;
 import pl.lodz.p.it.ssbd2022.ssbd03.mok.dto.*;
@@ -20,7 +17,6 @@ import pl.lodz.p.it.ssbd2022.ssbd03.mok.ejb.services.MOKServiceInterface;
 import pl.lodz.p.it.ssbd2022.ssbd03.security.AuthContext;
 import pl.lodz.p.it.ssbd2022.ssbd03.utils.PaginationData;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @RequestScoped
@@ -292,10 +288,7 @@ public class MOKEndpoint implements MOKEndpointInterface {
         }
 
         List<Account> accounts = paginationData.getData();
-        List<AccountWithAccessLevelsDto> accountsDTO = new ArrayList<>();
-        for (Account account : accounts) {
-            accountsDTO.add(accountMapper.createAccountWithAccessLevelsDtoFromAccount(account));
-        }
+        List<AccountWithAccessLevelsDto> accountsDTO = accountMapper.createListOfAccountWithAccessLevelDTO(accounts);
         paginationData.setData(accountsDTO);
         return Response.ok().entity(paginationData).build();
     }
