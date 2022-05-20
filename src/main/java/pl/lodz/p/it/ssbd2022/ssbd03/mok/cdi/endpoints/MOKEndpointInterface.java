@@ -9,10 +9,14 @@ import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import pl.lodz.p.it.ssbd2022.ssbd03.common.Roles;
+import pl.lodz.p.it.ssbd2022.ssbd03.entities.Account;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.MethodNotImplementedException;
 import pl.lodz.p.it.ssbd2022.ssbd03.mappers.json.AccessLevelDeserializer;
 import pl.lodz.p.it.ssbd2022.ssbd03.mok.dto.*;
 import pl.lodz.p.it.ssbd2022.ssbd03.mok.dto.access_levels.AccessLevelDto;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 public interface MOKEndpointInterface {
@@ -154,7 +158,8 @@ public interface MOKEndpointInterface {
     @Path("/list")
     @RolesAllowed(Roles.ADMINISTRATOR)
     @Produces(MediaType.APPLICATION_JSON)
-    default Response getAllAccounts(@QueryParam("page") int page, @QueryParam("limit") int limit) {
+    default Response getAllAccounts(@QueryParam("page") int page, @QueryParam("limit") int limit,
+                                    @QueryParam("phrase") @DefaultValue("") String phrase) {
         throw new MethodNotImplementedException();
     }
 

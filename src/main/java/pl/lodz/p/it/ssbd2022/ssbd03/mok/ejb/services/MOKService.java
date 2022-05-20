@@ -15,6 +15,7 @@ import jakarta.security.enterprise.credential.UsernamePasswordCredential;
 import jakarta.security.enterprise.identitystore.CredentialValidationResult;
 import jakarta.security.enterprise.identitystore.IdentityStoreHandler;
 import jakarta.ws.rs.ClientErrorException;
+import jakarta.ws.rs.core.Response;
 import pl.lodz.p.it.ssbd2022.ssbd03.common.AbstractManager;
 import pl.lodz.p.it.ssbd2022.ssbd03.common.Config;
 import pl.lodz.p.it.ssbd2022.ssbd03.global_services.EmailService;
@@ -33,6 +34,7 @@ import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.account.AccountPasswordIsTheSameE
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.account.AccountPasswordMatchException;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.account.TokenExpierdException;
 import pl.lodz.p.it.ssbd2022.ssbd03.interceptors.TrackerInterceptor;
+import pl.lodz.p.it.ssbd2022.ssbd03.mok.dto.AccountWithAccessLevelsDto;
 import pl.lodz.p.it.ssbd2022.ssbd03.mok.ejb.facades.AccessLevelFacade;
 import pl.lodz.p.it.ssbd2022.ssbd03.mok.ejb.facades.AccountFacade;
 import pl.lodz.p.it.ssbd2022.ssbd03.mok.ejb.facades.ActiveAccountFacade;
@@ -42,7 +44,9 @@ import pl.lodz.p.it.ssbd2022.ssbd03.utils.HashAlgorithm;
 import pl.lodz.p.it.ssbd2022.ssbd03.utils.PaginationData;
 
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 @Stateful
 @DenyAll
@@ -156,8 +160,8 @@ public class MOKService extends AbstractManager implements MOKServiceInterface, 
 
     @Override
     @RolesAllowed(Roles.ADMINISTRATOR)
-    public PaginationData findAllAccounts(int page, int size) {
-        return accountFacade.findInRange(page, size);
+    public PaginationData findAllAccounts(int page, int size, String phrase) {
+        return accountFacade.findInRangeWithPhrase(page, size, phrase);
     }
 
     @Override
@@ -304,4 +308,5 @@ public class MOKService extends AbstractManager implements MOKServiceInterface, 
 
         return account;
     }
+
 }

@@ -15,7 +15,7 @@ import {
     ResetPasswordTokenDto,
 } from "./types/apiParams";
 import {JWT} from "./types/common";
-import {PaginationParams} from "./types/queryParams";
+import {PaginationFilterParams, RemoveAccessLevelParams} from "./types/queryParams";
 
 // TODO przenieść do .env / package.json
 // const BASE_URL = "https://kic.agency:8403/api"
@@ -76,8 +76,8 @@ const api = createApi({
 
         // ZNAJDŹ WSZYSTKICH UŻYTKOWNIKÓW
         findAllUsers: builder.mutation<AccountWithAccessLevelsDto[],
-            PaginationParams>({
-            query: (params: PaginationParams) => ({
+            PaginationFilterParams>({
+            query: (params: PaginationFilterParams) => ({
                 url: "/mok/list",
                 method: "GET",
                 params: params,

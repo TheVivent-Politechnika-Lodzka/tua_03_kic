@@ -1,9 +1,14 @@
 package pl.lodz.p.it.ssbd2022.ssbd03.mok.cdi.endpoints;
 
 import jakarta.annotation.security.DenyAll;
+import jakarta.annotation.security.RolesAllowed;
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.inject.Inject;
+import jakarta.ws.rs.GET;
 import jakarta.ws.rs.Path;
+import jakarta.ws.rs.Produces;
+import jakarta.ws.rs.QueryParam;
+import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import pl.lodz.p.it.ssbd2022.ssbd03.common.Config;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.Account;
@@ -273,13 +278,13 @@ public class MOKEndpoint implements MOKEndpointInterface {
     }
 
     @Override
-    public Response getAllAccounts(int page, int limit) {
+    public Response getAllAccounts(int page, int limit, String phrase) {
         // TODO: zmniejszyć ilość danych o kontach na liście
         PaginationData paginationData;
         int TXCounter = Config.MAX_TX_RETRIES;
         boolean commitedTX;
         do {
-            paginationData = mokServiceInterface.findAllAccounts(page, limit);
+            paginationData = mokServiceInterface.findAllAccounts(page, limit, phrase);
             commitedTX = mokServiceInterface.isLastTransactionCommited();
         } while (!commitedTX && --TXCounter > 0);
 
@@ -363,4 +368,6 @@ public class MOKEndpoint implements MOKEndpointInterface {
 
         return Response.ok(accountMapper.createAccountWithAccessLevelsDtoFromAccount(account)).build();
     }
+
+
 }
