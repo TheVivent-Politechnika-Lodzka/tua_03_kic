@@ -14,6 +14,7 @@ import pl.lodz.p.it.ssbd2022.ssbd03.common.AbstractEntity;
 )
 @NamedQueries({
         @NamedQuery(name = "ResetPassword.findByLogin", query = "select r from ResetPasswordToken r where r.account.login = :login"),
+        @NamedQuery(name = "ResetPassword.findBeforeDate", query = "select r from ResetPasswordToken r where r.createdAt < :date")
 })
 public class ResetPasswordToken extends AbstractEntity implements java.io.Serializable {
 
