@@ -25,6 +25,7 @@ import pl.lodz.p.it.ssbd2022.ssbd03.entities.access_levels.AccessLevel;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.access_levels.DataAdministrator;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.access_levels.DataClient;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.access_levels.DataSpecialist;
+import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.InvalidParametersException;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.TokenInvalidException;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.access_level.AccessLevelNotFoundException;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.access_level.AccessLevelViolationException;
@@ -158,6 +159,9 @@ public class MOKService extends AbstractManager implements MOKServiceInterface, 
     @Override
     @RolesAllowed(Roles.ADMINISTRATOR)
     public PaginationData findAllAccounts(int page, int size, String phrase) {
+        if (page == 0 || size == 0) {
+            throw new InvalidParametersException();
+        }
         return accountFacade.findInRangeWithPhrase(page, size, phrase);
     }
 

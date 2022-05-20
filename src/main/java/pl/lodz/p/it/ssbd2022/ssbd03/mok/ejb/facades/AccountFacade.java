@@ -61,17 +61,20 @@ public class AccountFacade extends AbstractFacade<Account> {
         try {
             TypedQuery<Account> typedQuery = entityManager.createNamedQuery("Account.searchByPhrase", Account.class);
 
-            pageNumber -= 1;
+            pageNumber--;
+
             List<Account> data = typedQuery.setParameter("phrase", "%" + phrase + "%")
                     .setMaxResults(perPage)
                     .setFirstResult(pageNumber * perPage)
                     .getResultList();
 
+            pageNumber++;
             int totalCount = entityManager.createNamedQuery("Account.searchByPhrase", Account.class)
                     .setParameter("phrase", "%" + phrase + "%")
                     .getResultList().size();
+            int totalPages = (int) Math.ceil((double) totalCount / perPage);
 
-            return new PaginationData(totalCount, data);
+            return new PaginationData(totalCount, totalPages, pageNumber, data);
         } catch (IllegalArgumentException e) {
             throw new InvalidParametersException(e.getCause());
         } catch (PersistenceException e) {

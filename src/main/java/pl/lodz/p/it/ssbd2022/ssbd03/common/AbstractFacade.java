@@ -111,7 +111,7 @@ public abstract class AbstractFacade<T> {
             CriteriaQuery criteriaQuery = getEntityManager().getCriteriaBuilder().createQuery();
             criteriaQuery.select(criteriaQuery.from(entityClass));
 
-            pageNumber -= 1;
+            pageNumber--;
 
             List data = getEntityManager()
                     .createQuery(criteriaQuery)
@@ -119,8 +119,11 @@ public abstract class AbstractFacade<T> {
                     .setFirstResult(pageNumber * perPage)
                     .getResultList();
 
+            pageNumber++;
             int totalCount = count();
-            return new PaginationData(totalCount, data);
+            int totalPages = (int) Math.ceil((double) totalCount /  perPage);
+
+            return new PaginationData(totalCount, totalPages, pageNumber, data);
         } catch (IllegalArgumentException e) {
             throw new InvalidParametersException(e.getCause());
         } catch (PersistenceException e) {
