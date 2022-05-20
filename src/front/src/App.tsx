@@ -52,7 +52,7 @@ function App() {
             ) : (
               <></>
             )}
-            <Route path="/specialist" element={<SpecialistPage />} />
+       
           </Route>
           <Route element={<HomeLayout />}>
             <Route path="/" element={<MainPage />} />

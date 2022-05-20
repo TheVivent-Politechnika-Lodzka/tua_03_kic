@@ -5,6 +5,9 @@ import styles from "./adminTopBar.module.scss";
 import {Logout} from "../SelectorTopBar/SelectorTopBar";
 import LangSelect from "../../Selector/LangBarSelect/LangSelect";
 import { useTranslation } from "react-i18next";
+import AppointmentNavBar from "../../NavBar/AppointmentNavBar/appointmentNavBar";
+import ImplantNavBar from "../../NavBar/ImplantNavBar/ImplantNavBar";
+import SpecialistNavBar from "../../NavBar/SpecialistNavBar/SpecialistNavBar";
 
 const AdminTopBar = () => {
   const navigate = useNavigate();
@@ -16,13 +19,14 @@ const AdminTopBar = () => {
         <img src="logo.jpg" alt="Logo" height="80px" />
       </div>
       <div className={styles.links}>
-        <div className={styles.item}>{t("cyber")}</div>
-        <div className={styles.item}>{t("specialist")}</div>
-        <div
-          className={styles.item}
-          onClick={() => navigate("/admin", { replace: false })}
-        >
-          ADMINPAGE
+      <div className={styles.item}>
+          <AppointmentNavBar />
+        </div>
+        <div className={styles.item}>
+          <ImplantNavBar />
+        </div>
+        <div className={styles.item}>
+          <SpecialistNavBar />
         </div>
         <div className={styles.item}>
           <LangSelect />
