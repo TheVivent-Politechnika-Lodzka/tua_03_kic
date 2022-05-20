@@ -1,5 +1,5 @@
 import { useTranslation } from "react-i18next";
-import "./style.scss";
+import styles from "./slider.module.scss";
 
 const Slider = () => {
   const { t } = useTranslation();
@@ -15,9 +15,9 @@ const Slider = () => {
 
   return (
     <div id="sliderdiv">
-      <div className="sliderText">
+      <div className={styles.sliderText}>
         {t("firm_name")}
-        <div className="scroll_Button" onClick={scrolldown}>
+        <div className={styles.scroll_Button} onClick={scrolldown}>
           {t("more_inf")}
         </div>
       </div>

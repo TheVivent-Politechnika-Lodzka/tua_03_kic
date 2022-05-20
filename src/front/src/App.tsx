@@ -12,7 +12,7 @@ import jwtDecode from "jwt-decode";
 import { login as loginDispatch } from "./redux/userSlice";
 import ActivateAccountPage from "./pages/unprotected/account/activate/ActivateAccountPage";
 import HomeLayout from "./component/Layout/HomeLayout";
-
+import DetailsLayout from "./component/Layout/DetailsLayout";
 
 function App() {
   const user = useStoreSelector((state) => state.user);
@@ -36,22 +36,24 @@ function App() {
     <>
       <Router>
         <Routes>
-          {user.sub === "administrator" ? (
-            <Route path="/admin" element={<AdminPage />} />
-          ) : (
-            <></>
-          )}
-          {user.sub === "client" ? (
-            <Route path="/client" element={<ClientPage />} />
-          ) : (
-            <></>
-          )}
-          {user.sub === "specialist" ? (
+          <Route element={<DetailsLayout />}>
+            {user.sub === "administrator" ? (
+              <Route path="/admin" element={<AdminPage />} />
+            ) : (
+              <></>
+            )}
+            {user.sub === "client" ? (
+              <Route path="/client" element={<ClientPage />} />
+            ) : (
+              <></>
+            )}
+            {user.sub === "specialist" ? (
+              <Route path="/specialist" element={<SpecialistPage />} />
+            ) : (
+              <></>
+            )}
             <Route path="/specialist" element={<SpecialistPage />} />
-          ) : (
-            <></>
-          )}
-
+          </Route>
           <Route element={<HomeLayout />}>
             <Route path="/" element={<MainPage />} />
           </Route>
