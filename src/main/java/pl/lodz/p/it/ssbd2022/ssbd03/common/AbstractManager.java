@@ -1,6 +1,7 @@
 package pl.lodz.p.it.ssbd2022.ssbd03.common;
 
 import jakarta.annotation.Resource;
+import jakarta.annotation.security.PermitAll;
 import jakarta.ejb.SessionContext;
 import jakarta.ejb.TransactionAttribute;
 
@@ -22,6 +23,7 @@ public abstract class AbstractManager {
     private boolean lastTransactionCommited;
 
     @TransactionAttribute(NOT_SUPPORTED)
+    @PermitAll
     public boolean isLastTransactionCommited() {
         return lastTransactionCommited;
     }
