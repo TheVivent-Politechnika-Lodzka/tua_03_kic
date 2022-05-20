@@ -4,6 +4,7 @@ import io.jsonwebtoken.Claims;
 import jakarta.annotation.security.DenyAll;
 import jakarta.annotation.security.PermitAll;
 import jakarta.annotation.security.RolesAllowed;
+import jakarta.ejb.SessionSynchronization;
 import jakarta.ejb.Stateful;
 import jakarta.ejb.TransactionAttribute;
 import jakarta.ejb.TransactionAttributeType;
@@ -14,6 +15,7 @@ import jakarta.security.enterprise.credential.UsernamePasswordCredential;
 import jakarta.security.enterprise.identitystore.CredentialValidationResult;
 import jakarta.security.enterprise.identitystore.IdentityStoreHandler;
 import jakarta.ws.rs.ClientErrorException;
+import pl.lodz.p.it.ssbd2022.ssbd03.common.AbstractManager;
 import pl.lodz.p.it.ssbd2022.ssbd03.common.Config;
 import pl.lodz.p.it.ssbd2022.ssbd03.global_services.EmailService;
 import pl.lodz.p.it.ssbd2022.ssbd03.common.Roles;
@@ -46,7 +48,7 @@ import java.util.Collection;
 @DenyAll
 @Interceptors(TrackerInterceptor.class)
 @TransactionAttribute(TransactionAttributeType.REQUIRED)
-public class MOKService implements MOKServiceInterface {
+public class MOKService extends AbstractManager implements MOKServiceInterface, SessionSynchronization {
 
     @Inject
     private IdentityStoreHandler identityStoreHandler;

@@ -3,10 +3,15 @@ package pl.lodz.p.it.ssbd2022.ssbd03.mok.cdi.endpoints;
 import jakarta.annotation.security.DenyAll;
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.inject.Inject;
+import jakarta.interceptor.Interceptors;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.core.Response;
+import pl.lodz.p.it.ssbd2022.ssbd03.common.Config;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.Account;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.access_levels.AccessLevel;
+import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.TransactionException;
+import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.database.InAppOptimisticLockException;
+import pl.lodz.p.it.ssbd2022.ssbd03.interceptors.TrackerInterceptor;
 import pl.lodz.p.it.ssbd2022.ssbd03.mappers.AccessLevelMapper;
 import pl.lodz.p.it.ssbd2022.ssbd03.mappers.AccountMapper;
 import pl.lodz.p.it.ssbd2022.ssbd03.mok.dto.*;
@@ -20,6 +25,7 @@ import java.util.List;
 
 @RequestScoped
 @DenyAll
+@Interceptors(TrackerInterceptor.class)
 @Path("/mok")
 public class MOKEndpoint implements MOKEndpointInterface {
 
@@ -34,25 +40,56 @@ public class MOKEndpoint implements MOKEndpointInterface {
 
     @Override
     public Response register(RegisterClientDto registerClientDto) {
-        // TODO: dodać powtarzanie transakcji
         // TODO: przenieść wysyłanie maila do endpointu
+        int TXCounter = Config.MAX_TX_RETRIES;
+        boolean commitedTX;
         Account account = accountMapper.createAccountfromCreateClientAccountDto(registerClientDto);
-        mokServiceInterface.registerAccount(account);
+        do {
+            mokServiceInterface.registerAccount(account);
+            commitedTX = mokServiceInterface.isLastTransactionCommited();
+            TXCounter--;
+        } while (commitedTX && TXCounter > 0);
+
+        if (!commitedTX) {
+            throw new TransactionException();
+        }
+
         return Response.ok().build();
     }
 
     @Override
     public Response registerConfirm(RegisterClientConfirmDto registerConfirmDto) {
-        // TODO: dodać powtarzanie transakcji
-        mokServiceInterface.confirmRegistration(registerConfirmDto.getToken());
+        int TXCounter = Config.MAX_TX_RETRIES;
+        boolean commitedTX;
+        do {
+            mokServiceInterface.confirmRegistration(registerConfirmDto.getToken());
+            commitedTX = mokServiceInterface.isLastTransactionCommited();
+            TXCounter--;
+        } while (commitedTX && TXCounter > 0);
+
+        if (!commitedTX) {
+            throw new TransactionException();
+        }
+
         return Response.ok().build();
     }
 
     @Override
     public Response createAccount(CreateAccountDto createAccountDto) {
-        // TODO: dodać powtarzanie transakcji
         Account account = accountMapper.createAccountfromCreateAccountDto(createAccountDto);
-        Account registeredAccount = mokServiceInterface.createAccount(account);
+        Account registeredAccount;
+        int TXCounter = Config.MAX_TX_RETRIES;
+        boolean commitedTX;
+        do {
+            registeredAccount = mokServiceInterface.createAccount(account);
+            commitedTX = mokServiceInterface.isLastTransactionCommited();
+            TXCounter--;
+        } while (commitedTX && TXCounter > 0);
+
+        if (!commitedTX) {
+            throw new TransactionException();
+        }
+
         return Response.ok(
                 accountMapper.createAccountWithAccessLevelsDtoFromAccount(registeredAccount)
         ).build();
@@ -60,8 +97,19 @@ public class MOKEndpoint implements MOKEndpointInterface {
 
     @Override
     public Response activateAccount(String login, ETagDto eTagDto) {
-        // TODO: dodać powtarzanie transakcji
-        Account activatedAccount = mokServiceInterface.activateAccount(login, eTagDto.getETag());
+        Account activatedAccount;
+        int TXCounter = Config.MAX_TX_RETRIES;
+        boolean commitedTX;
+        do {
+            activatedAccount = mokServiceInterface.activateAccount(login, eTagDto.getETag());
+            commitedTX = mokServiceInterface.isLastTransactionCommited();
+            TXCounter--;
+        } while (commitedTX && TXCounter > 0);
+
+        if (!commitedTX) {
+            throw new TransactionException();
+        }
+
         return Response.ok(
                 accountMapper.createAccountWithAccessLevelsDtoFromAccount(activatedAccount)
         ).build();
@@ -69,8 +117,19 @@ public class MOKEndpoint implements MOKEndpointInterface {
 
     @Override
     public Response deactivateAccount(String login, ETagDto eTagDto) {
-        // TODO: dodać powtarzanie transakcji
-        Account deactivatedAccount = mokServiceInterface.deactivateAccount(login, eTagDto.getETag());
+        Account deactivatedAccount;
+        int TXCounter = Config.MAX_TX_RETRIES;
+        boolean commitedTX;
+        do {
+            deactivatedAccount = mokServiceInterface.deactivateAccount(login, eTagDto.getETag());
+            commitedTX = mokServiceInterface.isLastTransactionCommited();
+            TXCounter--;
+        } while (commitedTX && TXCounter > 0);
+
+        if (!commitedTX) {
+            throw new TransactionException();
+        }
+
         return Response.ok(
                 accountMapper.createAccountWithAccessLevelsDtoFromAccount(deactivatedAccount)
         ).build();
@@ -78,9 +137,19 @@ public class MOKEndpoint implements MOKEndpointInterface {
 
     @Override
     public Response addAccessLevel(String login, AccessLevelDto accessLevelDto) {
-        // TODO: dodać powtarzanie transakcji
         AccessLevel accessLevel = accessLevelMapper.createAccessLevelFromDto(accessLevelDto);
-        Account account = mokServiceInterface.addAccessLevelToAccount(login, accessLevel);
+        Account account;
+        int TXCounter = Config.MAX_TX_RETRIES;
+        boolean commitedTX;
+        do {
+            account = mokServiceInterface.addAccessLevelToAccount(login, accessLevel);
+            commitedTX = mokServiceInterface.isLastTransactionCommited();
+            TXCounter--;
+        } while (commitedTX && TXCounter > 0);
+
+        if (!commitedTX) {
+            throw new TransactionException();
+        }
 
         return Response.ok(
                 accountMapper.createAccountWithAccessLevelsDtoFromAccount(account)
@@ -89,8 +158,19 @@ public class MOKEndpoint implements MOKEndpointInterface {
 
     @Override
     public Response removeAccessLevel(String login, String accessLevelName, String eTag) {
-        // TODO: dodać powtarzanie transakcji
-        Account newAccessLevelAccount = mokServiceInterface.removeAccessLevelFromAccount(login, accessLevelName, eTag);
+        Account newAccessLevelAccount;
+        int TXCounter = Config.MAX_TX_RETRIES;
+        boolean commitedTX;
+        do {
+            newAccessLevelAccount = mokServiceInterface.removeAccessLevelFromAccount(login, accessLevelName, eTag);
+            commitedTX = mokServiceInterface.isLastTransactionCommited();
+            TXCounter--;
+        } while (commitedTX && TXCounter > 0);
+
+        if (!commitedTX) {
+            throw new TransactionException();
+        }
+
         return Response.ok(
                 accountMapper.createAccountWithAccessLevelsDtoFromAccount(newAccessLevelAccount)
         ).build();
@@ -98,11 +178,24 @@ public class MOKEndpoint implements MOKEndpointInterface {
 
     @Override
     public Response changeOwnPassword(ChangeOwnPasswordDto changeOwnPasswordDto) {
-        // TODO: dodać powtarzanie transakcji
         String login = authContext.getCurrentUserLogin();
-        Account account = mokServiceInterface.changeAccountPassword(
-                login, changeOwnPasswordDto.getOldPassword(), changeOwnPasswordDto.getNewPassword(),
-                changeOwnPasswordDto.getETag());
+        Account account;
+        int TXCounter = Config.MAX_TX_RETRIES;
+        boolean commitedTX;
+        do {
+            account = mokServiceInterface.changeAccountPassword(
+                    login,
+                    changeOwnPasswordDto.getOldPassword(),
+                    changeOwnPasswordDto.getNewPassword(),
+                    changeOwnPasswordDto.getETag()
+            );
+            commitedTX = mokServiceInterface.isLastTransactionCommited();
+            TXCounter--;
+        } while (commitedTX && TXCounter > 0);
+
+        if (!commitedTX) {
+            throw new TransactionException();
+        }
 
         return Response.ok(
                 accountMapper.createAccountWithAccessLevelsDtoFromAccount(account)
@@ -111,10 +204,22 @@ public class MOKEndpoint implements MOKEndpointInterface {
 
     @Override
     public Response changePassword(String login, ChangePasswordDto changePasswordDto) {
-        // TODO: dodać powtarzanie transakcji
-        Account account = mokServiceInterface.changeAccountPassword(
-                login, changePasswordDto.getNewPassword(), changePasswordDto.getETag());
+        Account account;
+        int TXCounter = Config.MAX_TX_RETRIES;
+        boolean commitedTX;
+        do {
+            account = mokServiceInterface.changeAccountPassword(
+                    login,
+                    changePasswordDto.getNewPassword(),
+                    changePasswordDto.getETag()
+            );
+            commitedTX = mokServiceInterface.isLastTransactionCommited();
+            TXCounter--;
+        } while (commitedTX && TXCounter > 0);
 
+        if (!commitedTX) {
+            throw new TransactionException();
+        }
         return Response.ok(
                 accountMapper.createAccountWithAccessLevelsDtoFromAccount(account)
         ).build();
@@ -122,10 +227,20 @@ public class MOKEndpoint implements MOKEndpointInterface {
 
     @Override
     public Response editOwnAccount(AccountWithAccessLevelsDto accountWithAccessLevelsDto) {
-        // TODO: dodać powtarzanie transakcji
         String login = authContext.getCurrentUserLogin();
         Account update = accountMapper.createAccountFromDto(accountWithAccessLevelsDto);
-        Account editedAccount = mokServiceInterface.editAccount(login, update, accountWithAccessLevelsDto.getETag());
+        Account editedAccount;
+        int TXCounter = Config.MAX_TX_RETRIES;
+        boolean commitedTX;
+        do {
+            editedAccount = mokServiceInterface.editAccount(login, update, accountWithAccessLevelsDto.getETag());
+            commitedTX = mokServiceInterface.isLastTransactionCommited();
+            TXCounter--;
+        } while (commitedTX && TXCounter > 0);
+
+        if (!commitedTX) {
+            throw new TransactionException();
+        }
 
         return Response.ok(
                 accountMapper.createAccountWithAccessLevelsDtoFromAccount(editedAccount)
@@ -134,9 +249,20 @@ public class MOKEndpoint implements MOKEndpointInterface {
 
     @Override
     public Response editAccount(String login, AccountWithAccessLevelsDto accountWithAccessLevelsDto) {
-        // TODO: dodać powtarzanie transakcji
         Account update = accountMapper.createAccountFromDto(accountWithAccessLevelsDto);
-        Account editedAccount = mokServiceInterface.editAccount(login, update, accountWithAccessLevelsDto.getETag());
+        Account editedAccount;
+        int TXCounter = Config.MAX_TX_RETRIES;
+        boolean commitedTX;
+        do {
+            editedAccount = mokServiceInterface.editAccount(login, update, accountWithAccessLevelsDto.getETag());
+            commitedTX = mokServiceInterface.isLastTransactionCommited();
+            TXCounter--;
+        } while (commitedTX && TXCounter > 0);
+
+        if (!commitedTX) {
+            throw new TransactionException();
+        }
+
         return Response.ok(
                 accountMapper.createAccountWithAccessLevelsDtoFromAccount(editedAccount)
         ).build();
@@ -144,17 +270,41 @@ public class MOKEndpoint implements MOKEndpointInterface {
 
     @Override
     public Response login(LoginCredentialsDto loginCredentialsDto) {
-        // TODO: dodać powtarzanie transakcji
-        String token = mokServiceInterface.authenticate(
-                loginCredentialsDto.getLogin(), loginCredentialsDto.getPassword());
+        String token;
+        int TXCounter = Config.MAX_TX_RETRIES;
+        boolean commitedTX;
+        do {
+            token = mokServiceInterface.authenticate(
+                    loginCredentialsDto.getLogin(),
+                    loginCredentialsDto.getPassword()
+            );
+            commitedTX = mokServiceInterface.isLastTransactionCommited();
+            TXCounter--;
+        } while (commitedTX && TXCounter > 0);
+
+        if (!commitedTX) {
+            throw new TransactionException();
+        }
+
         return Response.ok(token).build();
     }
 
     @Override
     public Response getAllAccounts(int page, int limit) {
-        // TODO: dodać powtarzanie transakcji
         // TODO: zmniejszyć ilość danych o kontach na liście
-        PaginationData paginationData = mokServiceInterface.findAllAccounts(page, limit);
+        PaginationData paginationData;
+        int TXCounter = Config.MAX_TX_RETRIES;
+        boolean commitedTX;
+        do {
+            paginationData = mokServiceInterface.findAllAccounts(page, limit);
+            commitedTX = mokServiceInterface.isLastTransactionCommited();
+            TXCounter--;
+        } while (commitedTX && TXCounter > 0);
+
+        if (!commitedTX) {
+            throw new TransactionException();
+        }
+
         List<Account> accounts = paginationData.getData();
         List<AccountWithAccessLevelsDto> accountsDTO = new ArrayList<>();
         for (Account account : accounts) {
@@ -166,32 +316,76 @@ public class MOKEndpoint implements MOKEndpointInterface {
 
     @Override
     public Response resetPassword(String login) {
-        // TODO: dodać powtarzanie transakcji
-        mokServiceInterface.resetPassword(login);
+        int TXCounter = Config.MAX_TX_RETRIES;
+        boolean commitedTX;
+        do {
+            mokServiceInterface.resetPassword(login);
+            commitedTX = mokServiceInterface.isLastTransactionCommited();
+            TXCounter--;
+        } while (commitedTX && TXCounter > 0);
+
+        if (!commitedTX) {
+            throw new TransactionException();
+        }
+
         return Response.ok().build();
     }
 
     @Override
     public Response resetPasswordToken(ResetPasswordTokenDto resetPasswordDto) {
-        // TODO: dodać powtarzanie transakcji
-        mokServiceInterface.confirmResetPassword(
-                resetPasswordDto.getLogin(), resetPasswordDto.getPassword(), resetPasswordDto.getToken()
-        );
+        int TXCounter = Config.MAX_TX_RETRIES;
+        boolean commitedTX;
+        do {
+            mokServiceInterface.confirmResetPassword(
+                    resetPasswordDto.getLogin(),
+                    resetPasswordDto.getPassword(),
+                    resetPasswordDto.getToken()
+            );
+            commitedTX = mokServiceInterface.isLastTransactionCommited();
+            TXCounter--;
+        } while (commitedTX && TXCounter > 0);
+
+        if (!commitedTX) {
+            throw new TransactionException();
+        }
+
         return Response.ok().build();
     }
 
     @Override
     public Response getOwnAccount() {
-        // TODO: dodać powtarzanie transakcji
         String user = authContext.getCurrentUserLogin();
-        Account account = mokServiceInterface.findAccountByLogin(user);
+        Account account;
+        int TXCounter = Config.MAX_TX_RETRIES;
+        boolean commitedTX;
+        do {
+            account = mokServiceInterface.findAccountByLogin(user);
+            commitedTX = mokServiceInterface.isLastTransactionCommited();
+            TXCounter--;
+        } while (commitedTX && TXCounter > 0);
+
+        if (!commitedTX) {
+            throw new TransactionException();
+        }
+
         return Response.ok().entity(accountMapper.createAccountWithAccessLevelsDtoFromAccount(account)).build();
     }
 
     @Override
     public Response getAccount(String login) {
-        // TODO: dodać powtarzanie transakcji
-        Account account = mokServiceInterface.findAccountByLogin(login);
+        Account account;
+        int TXCounter = Config.MAX_TX_RETRIES;
+        boolean commitedTX;
+        do {
+            account = mokServiceInterface.findAccountByLogin(login);
+            commitedTX = mokServiceInterface.isLastTransactionCommited();
+            TXCounter--;
+        } while (commitedTX && TXCounter > 0);
+
+        if (!commitedTX) {
+            throw new TransactionException();
+        }
+
         return Response.ok(accountMapper.createAccountWithAccessLevelsDtoFromAccount(account)).build();
     }
 }
