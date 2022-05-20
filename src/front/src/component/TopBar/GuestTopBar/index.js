@@ -1,6 +1,8 @@
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
-import LangSelect from "../../LangSelect/LangSelect";
+import ImplantNavBar from "../../NavBar/ImplantNavBar/ImplantNavBar";
+import LangSelect from "../../Selector/LangBarSelect/LangSelect";
+import SpecialistNavBar from "../../NavBar/SpecialistNavBar/SpecialistNavBar";
 import "./style.scss";
 
 const GuestTopBar = () => {
@@ -12,8 +14,12 @@ const GuestTopBar = () => {
         <img src="logo.jpg" alt="Logo" height="80px" />
       </div>
       <div className="links">
-        <div className="item">{t("cyber")}</div>
-        <div className="item">{t("specialist")}</div>
+        <div className="item">
+          <ImplantNavBar />
+        </div>
+        <div className="item">
+          <SpecialistNavBar />
+        </div>
         <div className="item">
           <LangSelect />
         </div>

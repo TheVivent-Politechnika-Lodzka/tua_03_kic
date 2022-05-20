@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { logout } from "../../../redux/userSlice";
 import "./style.scss";
 import {Logout} from "../SelectorTopBar/SelectorTopBar";
-import LangSelect from "../../LangSelect/LangSelect";
+import LangSelect from "../../Selector/LangBarSelect/LangSelect";
 import { useTranslation } from "react-i18next";
 
 const AdminTopBar = () => {

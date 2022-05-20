@@ -2,7 +2,7 @@ import "./style.scss";
 import { FaRobot } from "react-icons/fa";
 import { Link, Navigate, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import LangSelect from "../../../component/LangSelect/LangSelect";
+import LangSelect from "../../../component/Selector/LangBarSelect/LangSelect";
 
 const ErrorPage = () => {
   const { t } = useTranslation();

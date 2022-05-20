@@ -21,7 +21,7 @@ export const Logout = () => {
   );
 };
 
-const TopBar = () => {
+const SelectorBar = () => {
   const user = useStoreSelector((state) => state.user);
   //TODO przemyśleć, czy powinniśmy mieć konta z wieloma poziomami dostępu, na chwilę obecną nav jest zrobiont tak,
   //ToDo że jeżeli jesteś tylko adminem wchodzisz w admina, a jeżeli masz masz specjaliste lub konto to nieważne, czy jesteś
@@ -40,4 +40,4 @@ const TopBar = () => {
   }
 };
 
-export default TopBar;
+export default SelectorBar;

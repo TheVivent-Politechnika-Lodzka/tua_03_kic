@@ -1,6 +1,6 @@
 import ContactBar from "../../../component/ContactBar/ContactBar";
-import Slider from "../../../component/Slider";
-import TopBar from "../../../component/TopBar/SelectorTopBar/SelectorTopBar";
+import Slider from "../../../component/Slider/Slider";
+import SelectorBar from "../../../component/TopBar/SelectorTopBar/SelectorTopBar";
 import styles from "./homepage.module.scss";
 import { useTranslation } from "react-i18next";
 
@@ -9,7 +9,6 @@ const MainPage = () => {
 
   return (
     <div>
-      
       <div className={styles.slider_section}>
         <Slider />
       </div>
@@ -17,10 +16,7 @@ const MainPage = () => {
       <div className={styles.content_section}>
         <div className={styles.box_info}>
           <div className={styles.title}>{t("why_us")}</div>
-          <div className={styles.second_title}>
-            {t("many_reason")}
-            "
-          </div>
+          <div className={styles.second_title}>{t("many_reason")}"</div>
           <div className={styles.items_list}>
             <div className={styles.single_item_circle}>
               <div className={styles.item_image}>
@@ -43,7 +39,7 @@ const MainPage = () => {
               </div>
               <div className={styles.text_box}>
                 <div className={styles.text_square_title}>
-                {t("best_specialist")}
+                  {t("best_specialist")}
                 </div>
                 <div className={styles.text_square}>
                   Lorem Ipsum is simply dummy text of the printing and
@@ -60,8 +56,7 @@ const MainPage = () => {
               </div>
               <div className={styles.text_box}>
                 <div className={styles.text_square_title}>
-                {t("satisfied_clients")}
-                
+                  {t("satisfied_clients")}
                 </div>
                 <div className={styles.text_square}>
                   Lorem Ipsum is simply dummy text of the printing and
@@ -77,9 +72,7 @@ const MainPage = () => {
       </div>
       <div className={styles.box_info}>
         <div className={styles.title}> {t("our_clinic")}</div>
-        <div className={styles.second_title}>
-        {t("good_location")}
-        </div>
+        <div className={styles.second_title}>{t("good_location")}</div>
         <div className={styles.items_list}>
           <div className={styles.card}>
             <div className={styles.item_wrapper}>
