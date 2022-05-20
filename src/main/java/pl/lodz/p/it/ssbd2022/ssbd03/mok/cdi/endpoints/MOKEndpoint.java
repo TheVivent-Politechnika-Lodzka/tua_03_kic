@@ -200,16 +200,5 @@ public class MOKEndpoint implements MOKEndpointInterface {
         return Response.ok(accountMapper.createAccountWithAccessLevelsDtoFromAccount(account)).build();
     }
 
-//    @Override
-//    public Response searchByPhrase(@QueryParam("phrase") String phrase) {
-//        List <Account> accounts = mokServiceInterface.searchByPhrase(phrase);
-//        List <AccountWithAccessLevelsDto> accountsDTO = new ArrayList<>();
-//
-//        for (Account account : accounts) {
-//            accountsDTO.add(accountMapper.createAccountWithAccessLevelsDtoFromAccount(account));
-//        }
-//
-//        return Response.ok().entity(accountsDTO).build();
-//    }
 
 }

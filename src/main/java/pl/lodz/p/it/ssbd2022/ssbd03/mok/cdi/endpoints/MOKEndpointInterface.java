@@ -203,14 +203,4 @@ public interface MOKEndpointInterface {
         throw new MethodNotImplementedException();
     }
 
-    // wyszukiwanie konta po frazie (imię, nazwisko)
-//    // TODO: Dodanie Javadoc
-//    @GET
-//    @Path("/search")
-//    @Produces(MediaType.APPLICATION_JSON)
-//    @RolesAllowed("ADMINISTRATOR")
-//    default Response searchByPhrase(@QueryParam("phrase") String phrase) {
-//        throw new MethodNotImplementedException();
-//    }
-
 }
