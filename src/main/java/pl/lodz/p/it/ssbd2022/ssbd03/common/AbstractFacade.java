@@ -3,11 +3,10 @@ package pl.lodz.p.it.ssbd2022.ssbd03.common;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.OptimisticLockException;
 import jakarta.persistence.PersistenceException;
-import jakarta.persistence.TypedQuery;
 import jakarta.persistence.criteria.CriteriaQuery;
 import org.hibernate.exception.ConstraintViolationException;
-import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.database.DatabaseException;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.InvalidParametersException;
+import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.database.DatabaseException;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.database.InAppOptimisticLockException;
 import pl.lodz.p.it.ssbd2022.ssbd03.utils.HashAlgorithm;
 import pl.lodz.p.it.ssbd2022.ssbd03.utils.PaginationData;
@@ -23,6 +22,7 @@ public abstract class AbstractFacade<T> {
     }
 
     protected abstract EntityManager getEntityManager();
+
     protected abstract HashAlgorithm getHashAlgorithm();
 
     // TODO: Dodanie Javadoc
@@ -39,7 +39,7 @@ public abstract class AbstractFacade<T> {
     }
 
     // TODO: Dodanie Javadoc
-    private void verifyTag(AbstractEntity entity, String tagFromDto){
+    private void verifyTag(AbstractEntity entity, String tagFromDto) {
         String entityTag = getHashAlgorithm().generateETag(
                 entity.getId(),
                 entity.getVersion()
@@ -49,20 +49,20 @@ public abstract class AbstractFacade<T> {
     }
 
     // TODO: Dodanie Javadoc
-    public void edit(T entity, String tagFromDto){
+    public void edit(T entity, String tagFromDto) {
         if (entity instanceof AbstractEntity abstractEntity)
             verifyTag(abstractEntity, tagFromDto);
         unsafeEdit(entity);
     }
 
     // TODO: Dodanie Javadoc
-    public void unsafeEdit(T entity){
+    public void unsafeEdit(T entity) {
         try {
             getEntityManager().merge(entity);
             getEntityManager().flush();
-        } catch (OptimisticLockException e){
+        } catch (OptimisticLockException e) {
             throw new InAppOptimisticLockException(e);
-        } catch (PersistenceException e){
+        } catch (PersistenceException e) {
             if (e.getCause() instanceof ConstraintViolationException)
                 throw (ConstraintViolationException) e.getCause();
             throw new DatabaseException(e);
@@ -70,20 +70,20 @@ public abstract class AbstractFacade<T> {
     }
 
     // TODO: Dodanie Javadoc
-    public void remove(T entity, String tagFromDto){
+    public void remove(T entity, String tagFromDto) {
         if (entity instanceof AbstractEntity abstractEntity)
             verifyTag(abstractEntity, tagFromDto);
         unsafeRemove(entity);
     }
 
     // TODO: Dodanie Javadoc
-    public void unsafeRemove(T entity){
+    public void unsafeRemove(T entity) {
         try {
-        getEntityManager().remove(entity);
-        getEntityManager().flush();
-        } catch (OptimisticLockException e){
+            getEntityManager().remove(entity);
+            getEntityManager().flush();
+        } catch (OptimisticLockException e) {
             throw new InAppOptimisticLockException(e);
-        } catch (PersistenceException e){
+        } catch (PersistenceException e) {
             if (e.getCause() instanceof ConstraintViolationException)
                 throw (ConstraintViolationException) e.getCause();
             throw new DatabaseException(e);
@@ -94,13 +94,6 @@ public abstract class AbstractFacade<T> {
     // TODO: Dodanie Javadoc
     public T find(Object id) {
         return getEntityManager().find(entityClass, id);
-    }
-
-    // TODO: Dodanie Javadoc / wyeliminować metodę
-    public List findAll() {
-        CriteriaQuery criteriaQuery = getEntityManager().getCriteriaBuilder().createQuery();
-        criteriaQuery.select(criteriaQuery.from(entityClass));
-        return getEntityManager().createQuery(criteriaQuery).getResultList();
     }
 
     /***
@@ -114,7 +107,6 @@ public abstract class AbstractFacade<T> {
      * @throws DatabaseException, gdy wystąpi błąd związany z bazą danych
      */
     public PaginationData findInRange(int pageNumber, int perPage) {
-        // TODO: dodać łapanie wyjątku kiedy nie znaleziono konta
         try {
             CriteriaQuery criteriaQuery = getEntityManager().getCriteriaBuilder().createQuery();
             criteriaQuery.select(criteriaQuery.from(entityClass));
@@ -136,7 +128,6 @@ public abstract class AbstractFacade<T> {
         }
 
     }
-
 
     /**
      * Pobiera liczbę wszystkich encji danego typu.
