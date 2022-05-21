@@ -1,10 +1,11 @@
-import "./style.scss";
+import styles from "./loginForm.module.scss";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { useLoginMutation } from "../../../../api/api";
 import { login as loginDispatch } from "../../../../redux/userSlice";
 import { useTranslation } from "react-i18next";
+
 
 const LoginForm = () => {
   const [authenticate, { isLoading }] = useLoginMutation();
@@ -38,26 +39,26 @@ const LoginForm = () => {
   };
 
   return (
-    <div className="login_left">
-      <div className="title_text">{t("log_in")}</div>
-      <div className="input_box">
-        <div className="form_group field">
+    <div className={styles.login_left}>
+      <div className={styles.title_text}>{t("log_in")}</div>
+      <div className={styles.input_box}>
+        <div className={`${styles.form_group} ${styles.field}`}>
           <input
             type="input"
-            className="form_field"
+            className={styles.form_field}
             placeholder="Login"
             name="login"
             id="login"
             value={login}
-            onChange={(e) => setLogin(e.target.value)}
+            onChange={(e:any) => setLogin(e.target.value)}
             required
           />
-          <label className="form_label">Login</label>
+          <label className={styles.form_label}>Login</label>
         </div>
-        <div className="form_group field">
+        <div className={`${styles.form_group} ${styles.field}`}>
           <input
             type="password"
-            className="form_field"
+            className={styles.form_field}
             placeholder={t("password")}
             name="password"
             id="password_login"
@@ -65,14 +66,14 @@ const LoginForm = () => {
             onChange={(e) => setPassword(e.target.value)}
             required
           />
-          <label className="form_label">{t("password")}</label>
+          <label className={styles.form_label}>{t("password")}</label>
         </div>
       </div>
 
-      <div className="login_button" onClick={handleSubmit}>
+      <div className={styles.login_button} onClick={handleSubmit}>
         {t("log_in")}
       </div>
-      <div className="message_text">{message}</div>
+      <div className={styles.message_text}>{message}</div>
     </div>
   );
 };
