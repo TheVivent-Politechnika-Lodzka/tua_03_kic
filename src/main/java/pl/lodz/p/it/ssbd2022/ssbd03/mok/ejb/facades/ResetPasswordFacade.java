@@ -15,6 +15,9 @@ import pl.lodz.p.it.ssbd2022.ssbd03.entities.ResetPasswordToken;
 import pl.lodz.p.it.ssbd2022.ssbd03.interceptors.TrackerInterceptor;
 import pl.lodz.p.it.ssbd2022.ssbd03.utils.HashAlgorithm;
 
+import java.time.Instant;
+import java.util.List;
+
 
 @Interceptors(TrackerInterceptor.class)
 @Stateless
@@ -36,11 +39,23 @@ public class ResetPasswordFacade extends AbstractFacade<ResetPasswordToken> {
         return em;
     }
 
+    public void unsafeRemove(ResetPasswordToken resetPasswordToken) {
+        super.unsafeRemove(resetPasswordToken);
+    }
+
     // TODO: Dodanie Javadoc
     public ResetPasswordToken findResetPasswordToken(String login) {
         // TODO: Dodać obsługę wyjątku nie znalezionego tokenu
         TypedQuery<ResetPasswordToken> typedQuery = em.createNamedQuery("ResetPassword.findByLogin", ResetPasswordToken.class);
         typedQuery.setParameter("login", login);
         return typedQuery.getSingleResult();
+    }
+
+    // TODO: Dodanie Javadoc
+    public List<ResetPasswordToken> findResetPasswordToken(Instant date) {
+        // TODO: Dodać obsługę wyjątku nie znalezionego tokenu
+        TypedQuery<ResetPasswordToken> typedQuery = em.createNamedQuery("ResetPassword.findBeforeDate", ResetPasswordToken.class);
+        typedQuery.setParameter("date", date);
+        return typedQuery.getResultList();
     }
 }

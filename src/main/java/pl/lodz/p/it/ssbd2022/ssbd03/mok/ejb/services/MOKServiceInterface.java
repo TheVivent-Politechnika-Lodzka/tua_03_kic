@@ -2,6 +2,7 @@ package pl.lodz.p.it.ssbd2022.ssbd03.mok.ejb.services;
 
 import jakarta.annotation.security.DenyAll;
 import jakarta.ejb.Local;
+import pl.lodz.p.it.ssbd2022.ssbd03.common.ManagerLocalInterface;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.Account;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.access_levels.AccessLevel;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.MethodNotImplementedException;
@@ -10,7 +11,7 @@ import pl.lodz.p.it.ssbd2022.ssbd03.utils.PaginationData;
 import java.util.List;
 
 @Local
-public interface MOKServiceInterface {
+public interface MOKServiceInterface extends ManagerLocalInterface {
 
     // TODO: Dodanie Javadoc
     default String authenticate(String login, String password) {
@@ -38,7 +39,7 @@ public interface MOKServiceInterface {
     }
 
     // TODO: Dodanie Javadoc
-    default PaginationData findAllAccounts(int page, int size) {
+    default PaginationData findAllAccounts(int page, int size, String phrase) {
         throw new MethodNotImplementedException();
     }
 
@@ -86,6 +87,7 @@ public interface MOKServiceInterface {
     default Account confirmResetPassword(String login, String password, String token) {
         throw new MethodNotImplementedException();
     }
+
 
 }
 

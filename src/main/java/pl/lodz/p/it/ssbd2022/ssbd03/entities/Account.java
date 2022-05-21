@@ -44,6 +44,7 @@ import static pl.lodz.p.it.ssbd2022.ssbd03.entities.Account.CONSTRAINT_LOGIN_UNI
         @NamedQuery(name = "Account.findByLogin", query = "select a from Account a where a.login = :login"),
         @NamedQuery(name = "Account.findByConfirmed", query = "select a from Account a order by a.confirmed"),
         @NamedQuery(name = "Account.findByActive", query = "select a from Account a order by a.active"),
+        @NamedQuery(name = "Account.searchByPhrase", query = "select a from Account a where lower(concat(a.firstName, ' ', a.lastName)) like lower(:phrase)"),
 })
 @ToString
 @NoArgsConstructor

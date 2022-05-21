@@ -1,6 +1,7 @@
 package pl.lodz.p.it.ssbd2022.ssbd03.common;
 
 import jakarta.annotation.Resource;
+import jakarta.annotation.security.PermitAll;
 import jakarta.ejb.SessionContext;
 import jakarta.ejb.TransactionAttribute;
 
@@ -10,7 +11,7 @@ import java.util.logging.Logger;
 
 import static jakarta.ejb.TransactionAttributeType.NOT_SUPPORTED;
 
-public class AbstractManager {
+public abstract class AbstractManager {
 
     @Resource
     SessionContext sessionContext;
@@ -19,11 +20,12 @@ public class AbstractManager {
 
     private String transactionId;
 
-    private boolean lastTransactionRollback;
+    private boolean lastTransactionCommited;
 
     @TransactionAttribute(NOT_SUPPORTED)
-    public boolean isLastTransactionRollback() {
-        return lastTransactionRollback;
+    @PermitAll
+    public boolean isLastTransactionCommited() {
+        return lastTransactionCommited;
     }
 
     public void afterBegin() {
@@ -53,7 +55,7 @@ public class AbstractManager {
     }
 
     public void afterCompletion(boolean committed) {
-        lastTransactionRollback = !committed;
+        lastTransactionCommited = committed;
         LOGGER.log(
             Level.INFO,
             "Transakcja o id={0}, zakończona w {1} (status: {2}); tożsamość {3}",
