@@ -55,7 +55,7 @@ export interface RemoveAccessLevel {
 export interface changeOwnPasswordDto {
   oldPassword: string;
   newPassword: string;
-  eTag: string;
+  ETag: string;
 }
 
 export interface changePasswordDto {

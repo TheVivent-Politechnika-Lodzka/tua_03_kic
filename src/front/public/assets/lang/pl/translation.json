@@ -17,6 +17,10 @@
   "specialist": "SPECJALIŚCI",
   "appointment": "WIZYTY",
   "password": "Hasło",
+  "c_password": "Aktualne Hasło",
+  "n_password": "Nowe Hasło",
+  "change_password" : "Zmień Hasło",
+
   "first_name": "Imie*",
   "last_name": "Nazwisko*",
   "phone_number": "Numer telefonu*",
