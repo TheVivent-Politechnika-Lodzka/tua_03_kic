@@ -1,8 +1,8 @@
 import styles from "./sidebar.module.scss";
 import SpecialistNavBar from "../NavBar/SpecialistNavBar/SpecialistNavBar";
-import AppointmentNavBar from "../NavBar/AppointmentNavBar/appointmentNavBar";
-import ImplantNavBar from "../NavBar/ImplantNavBar/ImplantNavBar";
 import Logo from "../Logo/Logo";
+import AppointmentNavBar from "../NavBar/AppointmentNavBar/AppointmentNavBar";
+import ImplantNavBar from "../NavBar/ImplantNavBar/ImplantNavBar";
 
 const SideBar = () => {
   return (
