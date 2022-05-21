@@ -50,8 +50,12 @@ public interface MOKEndpointInterface {
         throw new MethodNotImplementedException();
     }
 
-    // MOK.2 Utwórz konto
-    // TODO: Dodanie Javadoc
+    /**\
+     * MOK.2 Utwórz konto
+     * @param createAccountDto dane konta
+     * @return Response zawierający status HTTP
+     * @throws MethodNotImplementedException jeśli metoda nie została zaimplementowana
+     */
     @PUT
     @Path("/create")
     @RolesAllowed(Roles.ADMINISTRATOR)
