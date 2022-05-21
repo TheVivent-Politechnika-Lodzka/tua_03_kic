@@ -14,6 +14,9 @@ import pl.lodz.p.it.ssbd2022.ssbd03.entities.ConfirmationAccountToken;
 import pl.lodz.p.it.ssbd2022.ssbd03.interceptors.TrackerInterceptor;
 import pl.lodz.p.it.ssbd2022.ssbd03.utils.HashAlgorithm;
 
+import java.time.Instant;
+import java.util.List;
+
 @Interceptors(TrackerInterceptor.class)
 @Stateless
 @TransactionAttribute(TransactionAttributeType.MANDATORY)
@@ -47,4 +50,17 @@ public class ActiveAccountFacade extends AbstractFacade<ConfirmationAccountToken
         typedQuery.setParameter("login", login);
         return typedQuery.getSingleResult();
     }
+
+
+    /**
+     * Metoda szuka wygasłe tokeny
+     *
+     * @return Lista wygasłych tokenów
+     */
+    public List<ConfirmationAccountToken> findExpiredTokens(){
+        TypedQuery<ConfirmationAccountToken> typedQuery = em.createNamedQuery("ConfirmationAccountToken.findExpired", ConfirmationAccountToken.class);
+        typedQuery.setParameter("now", Instant.now());
+        return typedQuery.getResultList();
+    }
+
 }
