@@ -1,6 +1,6 @@
 import styles from "./registrationForm.module.scss";
 import { useState } from "react";
-import { useRegisterAccountMutation } from "../../../../api/api";
+import { useRegisterAccountMutation } from "../../../api/api";
 import { useTranslation } from "react-i18next";
 
 const RegistrationForm = () => {

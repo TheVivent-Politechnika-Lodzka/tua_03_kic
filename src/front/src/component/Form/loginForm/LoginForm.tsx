@@ -2,8 +2,8 @@ import styles from "./loginForm.module.scss";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { useLoginMutation } from "../../../../api/api";
-import { login as loginDispatch } from "../../../../redux/userSlice";
+import { useLoginMutation } from "../../../api/api";
+import { login as loginDispatch } from "../../../redux/userSlice";
 import { useTranslation } from "react-i18next";
 
 

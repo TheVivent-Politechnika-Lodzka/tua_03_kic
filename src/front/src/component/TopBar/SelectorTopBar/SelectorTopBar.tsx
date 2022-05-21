@@ -27,13 +27,13 @@ const SelectorBar = () => {
   //ToDo że jeżeli jesteś tylko adminem wchodzisz w admina, a jeżeli masz masz specjaliste lub konto to nieważne, czy jesteś
   //TODO adminem i tak wejdziesz w konkretną opcję tylko.
   console.log(user);
-  if (user.auth === "ADMINISTRATOR") {
+  if (user.cur === "ADMINISTRATOR") {
     return <AdminTopBar />;
   }
-  if (user.auth.includes("SPECIALIST")) {
+  if (user.cur === "SPECIALIST") {
     return <SpecialistTopBar />;
   }
-  if (user.auth.includes("CLIENT")) {
+  if (user.cur === "CLIENT") {
     return <ClientTopBar />;
   } else {
     return <GuestTopBar />;

@@ -4,18 +4,14 @@ import ImplantNavBar from "../../NavBar/ImplantNavBar/ImplantNavBar";
 import LangSelect from "../../Selector/LangBarSelect/LangSelect";
 import SpecialistNavBar from "../../NavBar/SpecialistNavBar/SpecialistNavBar";
 import styles from "./guestTopBar.module.scss";
+import Logo from "../../Logo/Logo";
 
 const GuestTopBar = () => {
   const navigate = useNavigate();
   const { t } = useTranslation();
   return (
     <div className={styles.topBar}>
-      <div
-        className={styles.logo}
-        onClick={() => navigate("/", { replace: false })}
-      >
-        <img src="logo.jpg" alt="Logo" height="80px" />
-      </div>
+      <Logo/>
       <div className={styles.links}>
         <div className={styles.item}>
           <ImplantNavBar />
