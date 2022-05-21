@@ -25,7 +25,7 @@ const AdminTopBar = () => {
         <div className={styles.item}>
           <LangSelect />
         </div>
-        <div className={styles.item}>
+        <div className={styles.item_width}>
           <AccessLevelSelect />
         </div>
           <Logout/>

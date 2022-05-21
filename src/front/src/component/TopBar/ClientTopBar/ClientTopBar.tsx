@@ -31,7 +31,7 @@ const ClientTopBar = () => {
         >
           CLIENTPAGE
         </div>
-        <div className={styles.item}>
+        <div className={styles.item_width}>
           <AccessLevelSelect />
         </div>
         <div className={styles.item}>
