@@ -8,6 +8,8 @@ import { useTranslation } from "react-i18next";
 import AppointmentNavBar from "../../NavBar/AppointmentNavBar/appointmentNavBar";
 import ImplantNavBar from "../../NavBar/ImplantNavBar/ImplantNavBar";
 import SpecialistNavBar from "../../NavBar/SpecialistNavBar/SpecialistNavBar";
+import AccessLevelSelect from "../../Selector/AccessLevelSelect/AccessLevelSelect";
+import Logo from "../../Logo/Logo";
 
 const AdminTopBar = () => {
   const navigate = useNavigate();
@@ -15,9 +17,7 @@ const AdminTopBar = () => {
   const {t} = useTranslation();
   return (
     <div className={styles.topBar}>
-      <div className={styles.logo} onClick={() => navigate("/", { replace: false })}>
-        <img src="logo.jpg" alt="Logo" height="80px" />
-      </div>
+     <Logo/>
       <div className={styles.links}>
       <div className={styles.item}>
           <AppointmentNavBar />
@@ -30,6 +30,9 @@ const AdminTopBar = () => {
         </div>
         <div className={styles.item}>
           <LangSelect />
+        </div>
+        <div className={styles.item}>
+          <AccessLevelSelect />
         </div>
           <Logout/>
       </div>

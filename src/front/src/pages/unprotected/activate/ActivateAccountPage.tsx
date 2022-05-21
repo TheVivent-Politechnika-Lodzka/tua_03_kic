@@ -1,12 +1,9 @@
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate, useLocation } from "react-router-dom";
-import { useConfirmRegistrationMutation } from "../../../../api/api";
+import { useConfirmRegistrationMutation } from "../../../api/api";
 import styles from "./activeAccountPage.module.scss";
 const ActivateAccountPage = () => {
-  // TODO przerobic na pobranie tokenu z linku aktywacyjnego
-  // let { token } = useParams();
-
   const search = useLocation().search;
   const querytoken = new URLSearchParams(search).get("token");
 

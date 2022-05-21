@@ -1,21 +1,16 @@
 import "./style.scss";
 import { FaRobot } from "react-icons/fa";
-import { Link, Navigate, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import LangSelect from "../../../component/Selector/LangBarSelect/LangSelect";
+import Logo from "../../../component/Logo/Logo";
 
 const ErrorPage = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
   return (
     <div>
-      <div
-        onClick={() => {
-          navigate("/");
-        }}
-      >
-        <img src="./../logo.jpg" alt="Logo" height="80px" />
-      </div>
+      <Logo />
       <LangSelect />
       <div className="errorbox">
         <div className="errortext">
