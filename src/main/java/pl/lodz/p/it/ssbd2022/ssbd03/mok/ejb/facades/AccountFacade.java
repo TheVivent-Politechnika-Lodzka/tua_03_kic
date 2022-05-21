@@ -40,6 +40,11 @@ public class AccountFacade extends AbstractFacade<Account> {
         super(Account.class);
     }
 
+    /**
+     * Metoda zwraca konto o podanym loginie
+     * @param login    login
+     * @return account z podanym loginem
+     */
     // TODO: Dodanie Javadoc
     public Account findByLogin(String login) {
         // TODO: dodać łapanie wyjątku kiedy nie znaleziono konta
@@ -81,6 +86,11 @@ public class AccountFacade extends AbstractFacade<Account> {
         }
     }
 
+    /**
+     * Metoda dodaje nowe konto do bazy danych
+     * @param entity konto użytkownika
+     * @throws AccountAlreadyExistsException gdy użytkownik o podanym loginie lub emailu już istnieje
+     */
     @Override
     public void create(Account entity) {
         try {
