@@ -2,6 +2,7 @@ package pl.lodz.p.it.ssbd2022.ssbd03.mok.dto;
 
 import jakarta.json.bind.annotation.JsonbTypeDeserializer;
 import jakarta.json.bind.annotation.JsonbTypeSerializer;
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
 import lombok.NoArgsConstructor;
 import pl.lodz.p.it.ssbd2022.ssbd03.common.AbstractDto;
@@ -27,6 +28,9 @@ public class AccountWithAccessLevelsDto extends AbstractDto {
     private String firstName;
     @LastName
     private String lastName;
+    @Email
+    @NotNull
+    private String email;
     @NotNull
     private boolean isActive;
     @NotNull
