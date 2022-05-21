@@ -3,14 +3,14 @@ import "./App.css";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import MainPage from "./pages/unprotected/home/HomePage";
 import ErrorPage from "./pages/unprotected/error/ErrorPage";
-import LoginPage from "./pages/unprotected/account/loginPage/LoginPage";
+import LoginPage from "./pages/unprotected/loginPage/LoginPage";
 import { useStoreSelector, useStoreDispatch } from "./redux/reduxHooks";
 import AdminPage from "./pages/admin/AdminPage/AdminPage";
 import ClientPage from "./pages/client/ClientPage";
 import SpecialistPage from "./pages/specialist/SpecialistPage";
 import jwtDecode from "jwt-decode";
 import { login as loginDispatch } from "./redux/userSlice";
-import ActivateAccountPage from "./pages/unprotected/account/activate/ActivateAccountPage";
+import ActivateAccountPage from "./pages/unprotected/activate/ActivateAccountPage";
 import HomeLayout from "./component/Layout/HomeLayout";
 import DetailsLayout from "./component/Layout/DetailsLayout";
 
@@ -37,17 +37,17 @@ function App() {
       <Router>
         <Routes>
           <Route element={<DetailsLayout />}>
-            {user.sub === "administrator" ? (
+            {user.cur === "ADMINISTRATOR" ? (
               <Route path="/admin" element={<AdminPage />} />
             ) : (
               <></>
             )}
-            {user.sub === "client" ? (
+            {user.cur === "CLIENT" ? (
               <Route path="/client" element={<ClientPage />} />
             ) : (
               <></>
             )}
-            {user.sub === "specialist" ? (
+            {user.cur === "SPECIALIST" ? (
               <Route path="/specialist" element={<SpecialistPage />} />
             ) : (
               <></>
