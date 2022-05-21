@@ -43,9 +43,11 @@ const api = createApi({
                 method: "POST",
                 body: credentials,
                 responseHandler: async (response) => {
-                    const token = await response.text();
-                    localStorage.setItem(TOKEN_STORAGE_KEY, token);
-                    return jwtDecode(token);
+                    if (response.ok) {
+                        const token = await response.text();
+                        localStorage.setItem(TOKEN_STORAGE_KEY, token);
+                        return jwtDecode(token);
+                    }
                 },
             }),
         }),
