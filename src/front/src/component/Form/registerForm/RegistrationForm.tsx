@@ -1,6 +1,6 @@
-import "./style.scss";
+import styles from "./registrationForm.module.scss";
 import { useState } from "react";
-import { useRegisterAccountMutation } from "../../../../api/api";
+import { useRegisterAccountMutation } from "../../../api/api";
 import { useTranslation } from "react-i18next";
 
 const RegistrationForm = () => {
@@ -38,26 +38,26 @@ const RegistrationForm = () => {
   const { t } = useTranslation();
 
   return (
-    <div className="register">
-      <div className="title_text">{t("sign_in")}</div>
-      <div className="input_box">
-        <div className="form_group field">
+    <div className={styles.register}>
+      <div className={styles.title_text}>{t("sign_in")}</div>
+      <div className={styles.input_box}>
+        <div className={`${styles.form_group} ${styles.field}`}>
           <input
             type="email"
-            className="form_field"
+            className={styles.form_field}
             placeholder="E-mail"
             name="email"
             id="email"
             value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            onChange={(e: any) => setEmail(e.target.value)}
             required
           />
-          <label className="form_label">E-mail*</label>
+          <label className={styles.form_label}>E-mail*</label>
         </div>
-        <div className="form_group field">
+        <div className={`${styles.form_group} ${styles.field}`}>
           <input
             type="firstName"
-            className="form_field"
+            className={styles.form_field}
             placeholder={t("first_name")}
             name="firstName"
             id="firstName"
@@ -65,13 +65,13 @@ const RegistrationForm = () => {
             onChange={(e) => setFirstName(e.target.value)}
             required
           />
-          <label className="form_label">{t("first_name")}</label>
+          <label className={styles.form_label}>{t("first_name")}</label>
         </div>
 
-        <div className="form_group field">
+        <div className={`${styles.form_group} ${styles.field}`}>
           <input
             type="lastName"
-            className="form_field"
+            className={styles.form_field}
             placeholder={t("last_name")}
             name="lastName"
             id="lastName"
@@ -79,80 +79,80 @@ const RegistrationForm = () => {
             onChange={(e) => setLastName(e.target.value)}
             required
           />
-          <label className="form_label">{t("last_name")}</label>
+          <label className={styles.form_label}>{t("last_name")}</label>
         </div>
 
-        <div className="form_group field">
+        <div className={`${styles.form_group} ${styles.field}`}>
           <input
             type="text"
-            className="form_field"
+            className={styles.form_field}
             placeholder="Login"
             name="login"
             id="login"
             value={login}
-            onChange={(e) => setLogin(e.target.value)}
+            onChange={(e: any) => setLogin(e.target.value)}
             required
           />
-          <label className="form_label">Login*</label>
+          <label className={styles.form_label}>Login*</label>
         </div>
-        <div className="form_group field">
+        <div className={`${styles.form_group} ${styles.field}`}>
           <input
             type="text"
-            className="form_field"
+            className={styles.form_field}
             placeholder="PESEL"
             name="pesel"
             id="pesel"
             value={pesel}
-            onChange={(e) => setPesel(e.target.value)}
+            onChange={(e: any) => setPesel(e.target.value)}
             required
           />
-          <label className="form_label">PESEL*</label>
+          <label className={styles.form_label}>PESEL*</label>
         </div>
 
-        <div className="form_group field">
+        <div className={`${styles.form_group} ${styles.field}`}>
           <input
             type="text"
-            className="form_field"
+            className={styles.form_field}
             placeholder={t("phone_number")}
             name="phoneNumber"
             id="phoneNumber"
             value={phone_number}
-            onChange={(e) => setPhoneNumber(e.target.value)}
+            onChange={(e: any) => setPhoneNumber(e.target.value)}
             required
           />
-          <label className="form_label">{t("phone_number")}</label>
+          <label className={styles.form_label}>{t("phone_number")}</label>
         </div>
 
-        <div className="form_group field">
+        <div className={`${styles.form_group} ${styles.field}`}>
           <input
             type="password"
-            className="form_field"
+            className={styles.form_field}
             placeholder={t("password*")}
             name="password"
             id="password_register"
             value={password}
-            onChange={(e) => setPassword(e.target.value)}
+            onChange={(e: any) => setPassword(e.target.value)}
             required
           />
-          <label className="form_label">{t("password*")}</label>
+          <label className={styles.form_label}>{t("password*")}</label>
         </div>
 
-        <div className="form_group field">
+        <div className={`${styles.form_group} ${styles.field}`}>
           <input
             type="password"
-            className="form_field"
+            className={styles.form_field}
             placeholder={t("rpassword")}
             name="repeatPassword"
             id="repeatPassword"
             value={repeatPassword}
-            onChange={(e) => setRepeatPassword(e.target.value)}
+            onChange={(e: any) => setRepeatPassword(e.target.value)}
             required
           />
-          <label className="form_label">{t("rpassword")}</label>
+          <label className={styles.form_label}>{t("rpassword")}</label>
         </div>
       </div>
 
-      <div className="register_button" onClick={handleSubmit}>
+      <div className={styles.register_button} onClick={handleSubmit}>
         {t("sign_in")}
       </div>
     </div>

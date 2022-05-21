@@ -1,19 +1,18 @@
 import { createSlice } from "@reduxjs/toolkit";
 
+interface UserState {
+  sub: string;
+  auth: string[];
+  cur: string;
+  exp: string;
+}
 
-
-  interface UserState {
-    sub: string;
-    auth: string[] | string;
-    exp: string;
-  }
-  
-
-  const initialState: UserState = {
-    sub: "",
-    auth: [],
-    exp: "",
-  };
+const initialState: UserState = {
+  sub: "",
+  auth: [],
+  cur: "",
+  exp: "",
+};
 
 export const userSlice = createSlice({
   name: "user",
@@ -23,10 +22,29 @@ export const userSlice = createSlice({
       return initialState;
     },
     login: (state, action) => {
-      return { ...state, ...action.payload };
+      const data = action.payload;
+      const res = {
+        sub: data.sub,
+        auth: data.auth.split(","),
+        cur: data.auth.split(",")[0],
+        exp: data.exp,
+      };
+
+      return { ...state, ...res };
+    },
+    changeLevel: (state, action) => {
+      const data = action.payload;
+      const res = {
+        sub: data.sub,
+        auth: data.auth,
+        cur: data.auth[data.index],
+        exp: data.exp,
+      };
+
+      return { ...state, ...res };
     },
   },
 });
 
-export const {login, logout} = userSlice.actions;
+export const { login, logout, changeLevel } = userSlice.actions;
 export default userSlice.reducer;

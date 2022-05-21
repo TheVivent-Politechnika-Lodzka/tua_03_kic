@@ -1,20 +1,13 @@
 import styles from "./sidebar.module.scss";
 import SpecialistNavBar from "../NavBar/SpecialistNavBar/SpecialistNavBar";
-import { useNavigate } from "react-router";
 import AppointmentNavBar from "../NavBar/AppointmentNavBar/appointmentNavBar";
 import ImplantNavBar from "../NavBar/ImplantNavBar/ImplantNavBar";
+import Logo from "../Logo/Logo";
 
 const SideBar = () => {
-  const navigate = useNavigate();
-
   return (
     <div className={styles.content}>
-      <div
-        className={styles.logo}
-        onClick={() => navigate("/", { replace: false })}
-      >
-        <img src="logo.jpg" alt="Logo" height="80px" />
-      </div>
+      <Logo/>
       <div className={styles.item}>
         Mój profil
       </div>
