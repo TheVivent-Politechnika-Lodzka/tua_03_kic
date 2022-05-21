@@ -84,6 +84,11 @@ public class MOKService extends AbstractManager implements MOKServiceInterface, 
         throw new ClientErrorException("Invalid username or password", 401);
     }
 
+    /**
+     * Metoda zwracająca konto o podanym loginie
+     * @param login login
+     * @return konto o podanym loginie
+     */
     @Override
     @PermitAll
     public Account findAccountByLogin(String login) {
@@ -226,6 +231,11 @@ public class MOKService extends AbstractManager implements MOKServiceInterface, 
         return account;
     }
 
+    /**
+     * Metoda tworząca nowe konto i zwtracająca nowo utworzone konto z bazy danych
+     * @param account konto do utworzenia
+     * @return utworzone konto wyszukane z bazy danych po loginie
+     */
     @Override
     @RolesAllowed(Roles.ADMINISTRATOR)
     public Account createAccount(Account account) {
