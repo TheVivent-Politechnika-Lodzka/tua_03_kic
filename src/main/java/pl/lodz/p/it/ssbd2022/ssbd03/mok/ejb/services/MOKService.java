@@ -207,8 +207,9 @@ public class MOKService extends AbstractManager implements MOKServiceInterface, 
         emailConfig.sendEmail(
                 account.getEmail(),
                 "Active account - KIC",
-                "Your link to active account: https://localhost:8181/active \n"
-                        + "Token: " + token);
+                "Your link to active account: https://localhost:8181/active?token=" + token
+                        +"\n \n or \n \n" +
+                        "https://kic.agency:8403/active?token=" + token);
         return account;
     }
 
