@@ -19,7 +19,6 @@ public class UnconfirmedAccountCleanerService {
     private AccountFacade accountFacade;
 
 
-
     /**
      * Metoda wywoływana przez serwer aplikacji co minutę.
      * Usuwa niepotwierdzone konta z nieważnymi tokenami.
@@ -27,7 +26,6 @@ public class UnconfirmedAccountCleanerService {
     @Schedule(hour = "*", minute = "*/1", persistent = false)
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
     private void searchForTokens() {
-        System.out.println("UnconfirmedAccountCleanerService.searchForTokens()");
         activeAccountFacade.findExpiredTokens().forEach((token) -> {
             activeAccountFacade.unsafeRemove(token);
             accountFacade.unsafeRemove(token.getAccount());
