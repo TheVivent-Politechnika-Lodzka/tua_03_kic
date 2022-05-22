@@ -73,9 +73,10 @@ public interface MOKEndpointInterface {
     // MOK.4 Odblokuj konto
     /**
      * Metoda odblokowująca konto użytkownika, które zostało uprzednio zablokowane przez administratora
-     * @param login     Login konta, które ma zostać odblokowane
-     * @param eTagDto
-     * @return
+     *
+     * @param login   Login konta, które ma zostać odblokowane
+     * @param eTagDto Obiekt DTO, zawierający w sobie eTag
+     * @return Odpowiedź HTTP
      * @throws MethodNotImplementedException w momencie, gdy metoda jest niezaimplementowana
      */
     @PATCH
