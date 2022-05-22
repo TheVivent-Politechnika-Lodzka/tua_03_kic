@@ -24,6 +24,8 @@
   "password*": "Password*",
   "rpassword": "Reapet password*",
 
+  "active": "Active account",
+
   "error_page": "Sorry, page doesn't exist",
   "invite_main_page": "Go to Home Page",
   "main_page": "HOME",
