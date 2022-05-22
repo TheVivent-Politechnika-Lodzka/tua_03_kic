@@ -84,7 +84,14 @@ public interface MOKServiceInterface extends ManagerLocalInterface {
         throw new MethodNotImplementedException();
     }
 
-    // TODO: Dodanie Javadoc
+
+    /**
+     * Dodaj poziom dostępu do konta użytkownika
+     *
+     * @param login       login użytkownika
+     * @param accessLevel dodawany poziom dostępu
+     * @return zaaktualizowane konto użytkownika
+     */
     default Account addAccessLevelToAccount(String login, AccessLevel accessLevel) {
         throw new MethodNotImplementedException();
     }

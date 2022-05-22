@@ -88,7 +88,14 @@ public interface MOKEndpointInterface {
     }
 
     // MOK.5 Dołącz poziom dostępu do konta
-    // TODO: Dodanie Javadoc
+    /**
+     * Metoda dodająca poziom dostępu do konta użytkownika
+     *
+     * @param login   Login konta, które ma zostać odblokowane
+     * @param accessLevelDto Obiekt DTO, zawierający informacje o dołączanym poziomie dostępu
+     * @return Odpowiedź HTTP
+     * @throws MethodNotImplementedException w momencie, gdy metoda jest niezaimplementowana
+     */
     @PUT
     @Path("/access-level/{login}")
     @RolesAllowed(Roles.ADMINISTRATOR)
