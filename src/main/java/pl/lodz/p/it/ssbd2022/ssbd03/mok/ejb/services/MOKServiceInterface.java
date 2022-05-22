@@ -4,6 +4,7 @@ import jakarta.annotation.security.DenyAll;
 import jakarta.ejb.Local;
 import pl.lodz.p.it.ssbd2022.ssbd03.common.ManagerLocalInterface;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.Account;
+import pl.lodz.p.it.ssbd2022.ssbd03.entities.ResetPasswordToken;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.access_levels.AccessLevel;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.MethodNotImplementedException;
 import pl.lodz.p.it.ssbd2022.ssbd03.utils.PaginationData;
@@ -101,7 +102,7 @@ public interface MOKServiceInterface extends ManagerLocalInterface {
      * @return Obiekt konta użytkownika, który będzie mógł zresetować hasło
      * @throws MethodNotImplementedException w momencie, gdy metoda jest niezaimplementowana
      */
-    default Account resetPassword(String login) {
+    default ResetPasswordToken resetPassword(String login) {
         throw new MethodNotImplementedException();
     }
 

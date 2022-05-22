@@ -274,7 +274,7 @@ public class MOKService extends AbstractManager implements MOKServiceInterface, 
 
     @Override
     @PermitAll
-    public Account resetPassword(String login) {
+    public ResetPasswordToken resetPassword(String login) {
         Account account = accountFacade.findByLogin(login);
         ResetPasswordToken resetPasswordToken = new ResetPasswordToken();
         resetPasswordToken.setAccount(account);
@@ -284,11 +284,11 @@ public class MOKService extends AbstractManager implements MOKServiceInterface, 
                 account.getEmail(),
                 "Reset password",
                 "Your link to reset password: \n"
-                        + "localhost:8080/mok/resetPassword/"
-                        + login + "/"
+                        + "localhost:8080/mok/reset-password-token \n"
+                        + "Your data to reset password: \nlogin: " + login + "\ntoken:"
                         + hashAlgorithm.generate(resetPasswordToken.getId().toString().toCharArray())
         );
-        return account;
+        return resetPasswordToken;
     }
 
     @Override
