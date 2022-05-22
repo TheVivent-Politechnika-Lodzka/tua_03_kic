@@ -94,10 +94,10 @@ public class MOKService extends AbstractManager implements MOKServiceInterface, 
 
     @Override
     @RolesAllowed(Roles.ADMINISTRATOR)
-    public Account deactivateAccount(String login, String etag) {
+    public Account deactivateAccount(String login, String eTag) {
         Account account = accountFacade.findByLogin(login);
         account.setActive(false);
-        accountFacade.edit(account, etag);
+        accountFacade.edit(account, eTag);
         return account;
     }
 

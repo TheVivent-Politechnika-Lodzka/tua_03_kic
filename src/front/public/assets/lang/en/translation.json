@@ -26,6 +26,7 @@
   "rpassword": "Reapet password*",
 
   "active": "Active account",
+  "deactive": "Deactivate account",
 
   "c_password": "Current Password",
   "n_password": "New Password",
@@ -52,6 +53,7 @@
   "header_email": "Email",
   "header_is_active": "Is active",
   "header_change_password": "Change password",
+  "header_manage_activity": "Block or unblock account",
   "cell_active": "Active",
   "cell_inctive": "Inactive",
 

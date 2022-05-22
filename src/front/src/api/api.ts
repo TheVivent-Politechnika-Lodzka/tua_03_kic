@@ -230,35 +230,31 @@ const api = createApi({
       }),
     }),
 
-    // ZABLOKUJ KONTO
-    deactivateAccount: builder.mutation<
-      AccountWithAccessLevelsDto,
-      AccountActivationDto
-    >({
-      query: ({ login, tag }: AccountActivationDto) => ({
-        url: `/mok/deactivate/${login}`,
-        method: "PATCH",
-        body: { ETag: tag },
-        responseHandler: async (response) => {
-          return await response.json();
-        },
-      }),
-    }),
+        // ZABLOKUJ KONTO
+        deactivateAccount: builder.mutation<AccountWithAccessLevelsDto,
+            AccountActivationDto>({
+            query: ({login, tag}: AccountActivationDto) => ({
+                url: `/mok/deactivate/${login}`,
+                method: "PATCH",
+                body: {ETag: tag.ETag},
+                responseHandler: async (response) => {
+                    return await response.json();
+                },
+            }),
+        }),
 
-    // ODBLOKUJ KONTO
-    activateAccount: builder.mutation<
-      AccountWithAccessLevelsDto,
-      AccountActivationDto
-    >({
-      query: ({ login, tag }: AccountActivationDto) => ({
-        url: `/mok/activate/${login}`,
-        method: "PATCH",
-        body: { ETag: tag },
-        responseHandler: async (response) => {
-          return await response.json();
-        },
-      }),
-    }),
+        // ODBLOKUJ KONTO
+        activateAccount: builder.mutation<AccountWithAccessLevelsDto,
+            AccountActivationDto>({
+            query: ({login, tag}: AccountActivationDto) => ({
+                url: `/mok/activate/${login}`,
+                method: "PATCH",
+                body: {ETag: tag.ETag},
+                responseHandler: async (response) => {
+                    return await response.json();
+                },
+            }),
+        }),
 
     // ZRESETUJ HASŁO - wysłanie prośby
     resetPasswordRequest: builder.mutation<number, string>({
