@@ -20,7 +20,7 @@
   "password": "Hasło",
   "c_password": "Aktualne Hasło",
   "n_password": "Nowe Hasło",
-  "change_password" : "Zmień Hasło",
+  "change_password": "Zmień Hasło",
 
   "first_name": "Imie*",
   "last_name": "Nazwisko*",
@@ -42,4 +42,29 @@
   "wrong_data": "Niepoprawne dane logowania",
   "server_error": "Błąd serwera, spróbuj za chwilę",
   "refill_data": "Uzupełnij dane logowania",
+
+  "button": {
+    "addAccessLevel": {
+      "buttonText": "Dodaj poziom dostępu",
+      "dialog": {
+        "title": "Dodaj poziom dostępu",
+        "cancel": "Anuluj",
+        "add": "Dodaj",
+        "select": {
+          "client": "KLIENT",
+          "specialist": "SPECJALISTA",
+          "administrator": "ADMINISTRATOR"
+        },
+        "email": {
+          "placeholder": "E-mail"
+        },
+        "phone": {
+          "placeholder": "Numer telefonu"
+        },
+        "pesel": {
+          "placeholder": "Pesel"
+        }
+      }
+    }
+  }
 }
