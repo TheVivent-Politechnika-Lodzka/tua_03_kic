@@ -24,6 +24,12 @@
   "password*": "Password*",
   "rpassword": "Reapet password*",
 
+  "active": "Active account",
+
+  "c_password": "Current Password",
+  "n_password": "New Password",
+  "change_password" : "Change Password",
+
   "error_page": "Sorry, page doesn't exist",
   "invite_main_page": "Go to Home Page",
   "main_page": "HOME",

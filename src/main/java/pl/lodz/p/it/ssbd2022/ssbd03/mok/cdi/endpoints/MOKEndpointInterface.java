@@ -71,7 +71,14 @@ public interface MOKEndpointInterface {
     }
 
     // MOK.4 Odblokuj konto
-    // TODO: Dodanie Javadoc
+    /**
+     * Metoda odblokowująca konto użytkownika, które zostało uprzednio zablokowane przez administratora
+     *
+     * @param login   Login konta, które ma zostać odblokowane
+     * @param eTagDto Obiekt DTO, zawierający w sobie eTag
+     * @return Odpowiedź HTTP
+     * @throws MethodNotImplementedException w momencie, gdy metoda jest niezaimplementowana
+     */
     @PATCH
     @Path("/activate/{login}")
     @RolesAllowed(Roles.ADMINISTRATOR)
@@ -100,7 +107,12 @@ public interface MOKEndpointInterface {
     }
 
     // MOK.7 Zmień własne hasło
-    // TODO: Dodanie Javadoc
+    /**
+     * Metoda zmieniająca hasło aktualnego użytkownika, wywoływana z poziomu endpointa.
+     * Metoda dostepna dla kont z dowolnym poziomem dostepu.
+     * @param changeOwnPasswordDto Obiekt Dto zawierający etag, stare (aktualne) hasło oraz nowe hasło
+     * @return odpowiedź HHTP
+     */
     @PATCH
     @Path("/password")
     @PermitAll

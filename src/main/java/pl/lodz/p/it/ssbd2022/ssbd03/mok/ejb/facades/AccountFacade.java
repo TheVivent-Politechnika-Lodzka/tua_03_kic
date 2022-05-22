@@ -40,12 +40,25 @@ public class AccountFacade extends AbstractFacade<Account> {
         super(Account.class);
     }
 
-    // TODO: Dodanie Javadoc
+    /**
+     *
+     * Metoda wyszukująca konkretne konto względem wprowadzonego loginu
+     *
+     * @param login Login użytkownika, którego szukamy
+     * @return Obiekt znalezionego konta
+     * @throws InvalidParametersException, gdy podano niepoprawną wartość parametru
+     * @throws DatabaseException, gdy wystąpi błąd związany z bazą danych
+     */
     public Account findByLogin(String login) {
-        // TODO: dodać łapanie wyjątku kiedy nie znaleziono konta
-        TypedQuery<Account> typedQuery = entityManager.createNamedQuery("Account.findByLogin", Account.class);
-        typedQuery.setParameter("login", login);
-        return typedQuery.getSingleResult();
+        try {
+            TypedQuery<Account> typedQuery = entityManager.createNamedQuery("Account.findByLogin", Account.class);
+            typedQuery.setParameter("login", login);
+            return typedQuery.getSingleResult();
+        } catch (IllegalArgumentException iae) {
+            throw new InvalidParametersException(iae.getCause());
+        } catch (PersistenceException pe) {
+            throw new DatabaseException(pe.getCause());
+        }
     }
 
     /**
