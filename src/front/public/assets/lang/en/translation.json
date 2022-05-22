@@ -23,6 +23,8 @@
   "phone_number": "Phone number*",
   "password*": "Password*",
   "rpassword": "Reapet password*",
+  "forget_password": "Forget password?",
+  "reset_password": "Reset password",
 
   "active": "Active account",
 
@@ -41,5 +43,8 @@
 
   "wrong_data": "Wrong data",
   "server_error": "Server Error, try again for a moment",
-  "refill_data": "Refill login data"
+  "refill_data": "Refill login data",
+
+  "email_send": "Check your email",
+  "email_error": "Wrong login"
 }

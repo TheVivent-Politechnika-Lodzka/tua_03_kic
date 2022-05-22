@@ -13,6 +13,7 @@ import { login as loginDispatch } from "./redux/userSlice";
 import ActivateAccountPage from "./pages/unprotected/activate/ActivateAccountPage";
 import HomeLayout from "./component/Layout/HomeLayout";
 import DetailsLayout from "./component/Layout/DetailsLayout";
+import ResetPasswordForm from "./component/Form/resetPasswordForm/RessetPasswordForm";
 
 function App() {
   const user = useStoreSelector((state) => state.user);
@@ -60,6 +61,7 @@ function App() {
           </Route>
           <Route path="/login" element={<LoginPage />} />
           <Route path="/active" element={<ActivateAccountPage />} />
+          <Route path="/reset-password" element={<ResetPasswordForm />} />
           <Route path="/*" element={<ErrorPage />} />
         </Routes>
       </Router>

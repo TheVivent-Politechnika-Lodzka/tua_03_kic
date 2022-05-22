@@ -37,6 +37,10 @@ const LoginForm = () => {
     }
   };
 
+  const handlePassword = async (event: any) => {
+    navigate("/reset-password");
+  };
+
   return (
     <div className={styles.login_left}>
       <div className={styles.title_text}>{t("log_in")}</div>
@@ -71,6 +75,9 @@ const LoginForm = () => {
 
       <div className={styles.login_button} onClick={handleSubmit}>
         {t("log_in")}
+      </div>
+      <div className={styles.login_button} onClick={handlePassword}>
+        {t("forget_password")}
       </div>
       <div className={styles.message_text}>{message}</div>
     </div>

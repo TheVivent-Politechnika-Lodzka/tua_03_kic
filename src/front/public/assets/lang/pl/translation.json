@@ -21,6 +21,8 @@
   "c_password": "Aktualne Hasło",
   "n_password": "Nowe Hasło",
   "change_password" : "Zmień Hasło",
+  "forget_password": "Zapomniałeś hasła?",
+  "reset_password": "Zresetuj hasło",
 
   "first_name": "Imie*",
   "last_name": "Nazwisko*",
@@ -42,4 +44,7 @@
   "wrong_data": "Niepoprawne dane logowania",
   "server_error": "Błąd serwera, spróbuj za chwilę",
   "refill_data": "Uzupełnij dane logowania",
+
+  "email_send": "Sprawdź maila",
+  "email_error": "Niepoprawny login"
 }
