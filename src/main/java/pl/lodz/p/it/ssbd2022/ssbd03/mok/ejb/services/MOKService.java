@@ -15,10 +15,8 @@ import jakarta.security.enterprise.credential.UsernamePasswordCredential;
 import jakarta.security.enterprise.identitystore.CredentialValidationResult;
 import jakarta.security.enterprise.identitystore.IdentityStoreHandler;
 import jakarta.ws.rs.ClientErrorException;
-import jakarta.ws.rs.core.Response;
 import pl.lodz.p.it.ssbd2022.ssbd03.common.AbstractManager;
 import pl.lodz.p.it.ssbd2022.ssbd03.common.Config;
-import pl.lodz.p.it.ssbd2022.ssbd03.global_services.EmailService;
 import pl.lodz.p.it.ssbd2022.ssbd03.common.Roles;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.Account;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.ConfirmationAccountToken;
@@ -27,14 +25,15 @@ import pl.lodz.p.it.ssbd2022.ssbd03.entities.access_levels.AccessLevel;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.access_levels.DataAdministrator;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.access_levels.DataClient;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.access_levels.DataSpecialist;
+import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.InvalidParametersException;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.TokenInvalidException;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.access_level.AccessLevelNotFoundException;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.access_level.AccessLevelViolationException;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.account.AccountPasswordIsTheSameException;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.account.AccountPasswordMatchException;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.account.TokenExpierdException;
+import pl.lodz.p.it.ssbd2022.ssbd03.global_services.EmailService;
 import pl.lodz.p.it.ssbd2022.ssbd03.interceptors.TrackerInterceptor;
-import pl.lodz.p.it.ssbd2022.ssbd03.mok.dto.AccountWithAccessLevelsDto;
 import pl.lodz.p.it.ssbd2022.ssbd03.mok.ejb.facades.AccessLevelFacade;
 import pl.lodz.p.it.ssbd2022.ssbd03.mok.ejb.facades.AccountFacade;
 import pl.lodz.p.it.ssbd2022.ssbd03.mok.ejb.facades.ActiveAccountFacade;
@@ -44,9 +43,7 @@ import pl.lodz.p.it.ssbd2022.ssbd03.utils.HashAlgorithm;
 import pl.lodz.p.it.ssbd2022.ssbd03.utils.PaginationData;
 
 import java.time.Instant;
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 
 @Stateful
 @DenyAll
@@ -84,6 +81,11 @@ public class MOKService extends AbstractManager implements MOKServiceInterface, 
         throw new ClientErrorException("Invalid username or password", 401);
     }
 
+    /**
+     * Metoda zwracająca konto o podanym loginie
+     * @param login login
+     * @return konto o podanym loginie
+     */
     @Override
     @PermitAll
     public Account findAccountByLogin(String login) {
@@ -150,6 +152,7 @@ public class MOKService extends AbstractManager implements MOKServiceInterface, 
 
         return accountFromDb;
     }
+
     // NIE ROZŁĄCZAJ MNIE OD FUNKCJI WYŻEJ (ಥ_ಥ)
     private AccessLevel findAccessLevelByName(Collection<AccessLevel> list, Class<? extends AccessLevel> clazz) {
         for (AccessLevel accessLevel : list)
@@ -161,6 +164,9 @@ public class MOKService extends AbstractManager implements MOKServiceInterface, 
     @Override
     @RolesAllowed(Roles.ADMINISTRATOR)
     public PaginationData findAllAccounts(int page, int size, String phrase) {
+        if (page == 0 || size == 0) {
+            throw new InvalidParametersException();
+        }
         return accountFacade.findInRangeWithPhrase(page, size, phrase);
     }
 
@@ -226,6 +232,11 @@ public class MOKService extends AbstractManager implements MOKServiceInterface, 
         return account;
     }
 
+    /**
+     * Metoda tworząca nowe konto i zwtracająca nowo utworzone konto z bazy danych
+     * @param account konto do utworzenia
+     * @return utworzone konto wyszukane z bazy danych po loginie
+     */
     @Override
     @RolesAllowed(Roles.ADMINISTRATOR)
     public Account createAccount(Account account) {

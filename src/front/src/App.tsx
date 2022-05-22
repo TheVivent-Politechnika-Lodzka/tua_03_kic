@@ -15,6 +15,8 @@ import HomeLayout from "./component/Layout/HomeLayout";
 import DetailsLayout from "./component/Layout/DetailsLayout";
 import ResetPasswordForm from "./component/Form/resetPasswordForm/ResetPasswordForm";
 import ResetPasswordTokenForm from "./component/Form/resetPasswordTokenForm/ResetPasswordTokenForm";
+import UserManagment from "./pages/admin/UserManagment/UserManagment";
+import CreateAccountPage from "./pages/admin/AdminPage/createAccountPage/CreateAccountPage";
 
 function App() {
   const user = useStoreSelector((state) => state.user);
@@ -40,7 +42,11 @@ function App() {
         <Routes>
           <Route element={<DetailsLayout />}>
             {user.cur === "ADMINISTRATOR" ? (
-              <Route path="/admin" element={<AdminPage />} />
+              <>
+                <Route path="/admin" element={<AdminPage />} />
+                <Route path="/admin/users" element={<UserManagment />} />
+                <Route path="/createAccount" element={<CreateAccountPage />} />
+              </>
             ) : (
               <></>
             )}

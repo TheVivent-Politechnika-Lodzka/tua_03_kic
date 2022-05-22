@@ -29,7 +29,7 @@ const AccessLevelSelect = () => {
   };
 
   return (
-    <FormControl fullWidth>
+    <FormControl focused={true} color="primary">
       <InputLabel id="accesslevel_select">Poziom dostępu</InputLabel>
       <Select
         labelId="demo-simple-select-label"

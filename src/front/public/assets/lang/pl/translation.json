@@ -14,6 +14,7 @@
   "log_in": "ZALOGUJ",
   "log_out": "WYLOGUJ",
   "sign_in": "ZAREJESTRUJ",
+  "users": "UŻYTKOWNICY",
   "cyber": "CYBERWSZCZEP",
   "specialist": "SPECJALIŚCI",
   "appointment": "WIZYTY",
@@ -48,5 +49,55 @@
   "refill_data": "Uzupełnij dane logowania",
 
   "email_send": "Sprawdź maila",
-  "email_error": "Niepoprawny login"
+  "email_error": "Niepoprawny login",
+
+  "users_administration_page": "Użytkownicy",
+  "search_by_phrase_placeholder": "Wyszukaj po frazie",
+  "header_login": "Login",
+  "header_first_name": "Imię",
+  "header_last_name": "Nazwisko",
+  "header_level_access_level": "Poziomy dostępu",
+  "header_email": "Email",
+  "header_is_active": "Czy jest aktywny",
+  "header_change_password": "Zmień hasło",
+  "cell_active": "Aktywny",
+  "cell_inactive": "Nieaktywny",
+
+  "refill_data": "Uzupełnij dane logowania",
+
+  "CreateAccountForm": {
+    "form_title": "Utwórz konto",
+    "email": "Email*",
+    "first_name": "Imie*",
+    "last_name": "Nazwisko*",
+    "login": "Identyfikator*",
+    "password": "Hasło*",
+    "lenguage": "Język*",
+    "submit": "Stwórz konto"
+  },
+
+  "button": {
+    "addAccessLevel": {
+      "buttonText": "Dodaj poziom dostępu",
+      "dialog": {
+        "title": "Dodaj poziom dostępu",
+        "cancel": "Anuluj",
+        "add": "Dodaj",
+        "select": {
+          "client": "KLIENT",
+          "specialist": "SPECJALISTA",
+          "administrator": "ADMINISTRATOR"
+        },
+        "email": {
+          "placeholder": "E-mail"
+        },
+        "phone": {
+          "placeholder": "Numer telefonu"
+        },
+        "pesel": {
+          "placeholder": "Pesel"
+        }
+      }
+    }
+  }
 }

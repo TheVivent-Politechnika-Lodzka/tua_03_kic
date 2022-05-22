@@ -1,6 +1,9 @@
 package pl.lodz.p.it.ssbd2022.ssbd03.common;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.time.Instant;
 

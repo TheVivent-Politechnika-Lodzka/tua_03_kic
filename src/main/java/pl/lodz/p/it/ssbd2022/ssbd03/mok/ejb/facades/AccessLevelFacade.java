@@ -11,8 +11,8 @@ import lombok.Getter;
 import org.hibernate.exception.ConstraintViolationException;
 import pl.lodz.p.it.ssbd2022.ssbd03.common.AbstractFacade;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.access_levels.AccessLevel;
-import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.database.DatabaseException;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.access_level.AccessLevelExistsException;
+import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.database.DatabaseException;
 import pl.lodz.p.it.ssbd2022.ssbd03.interceptors.TrackerInterceptor;
 import pl.lodz.p.it.ssbd2022.ssbd03.utils.HashAlgorithm;
 
@@ -25,19 +25,25 @@ public class AccessLevelFacade extends AbstractFacade<AccessLevel> {
     @Getter
     private EntityManager entityManager;
 
-    @Inject @Getter
+    @Inject
+    @Getter
     private HashAlgorithm hashAlgorithm;
 
-    public AccessLevelFacade(){
+    public AccessLevelFacade() {
         super(AccessLevel.class);
     }
 
+    /**
+     * Tworzy nowy poziom dostępu
+     *
+     * @param entity - nowy poziom dostępu
+     * @throws AccessLevelExistsException - jeśli dany poziom dostępu dla danego użytkownika już istnieje
+     */
     @Override
     public void create(AccessLevel entity) {
         try {
             super.create(entity);
-        }
-        catch (ConstraintViolationException e){
+        } catch (ConstraintViolationException e) {
             if (e.getConstraintName().contains(AccessLevel.CONSTRAINT_ACCESS_LEVEL_FOR_ACCOUNT_UNIQUE)) {
                 throw new AccessLevelExistsException();
             }
