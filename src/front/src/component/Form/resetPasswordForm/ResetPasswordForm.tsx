@@ -4,7 +4,7 @@ import {useState} from "react";
 import {useTranslation} from "react-i18next";
 
 
-const RessetPasswordForm = () => {
+const ResetPasswordForm = () => {
     const[sendEmail] = useResetPasswordRequestMutation();
     const[login, setLogin] = useState("");
     const[message, setMessage] = useState("");
@@ -24,7 +24,7 @@ const RessetPasswordForm = () => {
     const { t } = useTranslation();
 
     return (
-        <div className={styles.register}>
+        <div className={styles.reset}>
             <div className={styles.title_text}>{t("reset_password")}</div>
             <div className={styles.input_box}>
                 <div className={`${styles.form_group} ${styles.field}`}>
@@ -41,7 +41,7 @@ const RessetPasswordForm = () => {
                     <label className={styles.form_label}>Login</label>
                 </div>
             </div>
-            <div className={styles.login_button} onClick={handleSubmit}>
+            <div className={styles.reset_button} onClick={handleSubmit}>
                 {t("reset_password")}
             </div>
             <div className={styles.message_text}>{message}</div>
@@ -49,4 +49,4 @@ const RessetPasswordForm = () => {
     );
 };
 
-export default RessetPasswordForm;
+export default ResetPasswordForm;

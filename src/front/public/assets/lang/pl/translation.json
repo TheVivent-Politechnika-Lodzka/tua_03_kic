@@ -23,6 +23,7 @@
   "change_password" : "Zmień Hasło",
   "forget_password": "Zapomniałeś hasła?",
   "reset_password": "Zresetuj hasło",
+  "password_changed": "Hasło zostało zmienione",
 
   "first_name": "Imie*",
   "last_name": "Nazwisko*",
@@ -36,6 +37,7 @@
   "invite_main_page": "Zapraszamy na stronę główną",
   "main_page": "STRONA GŁÓWNA",
 
+  "wrong_data": "Niepoprawne dane",
   "insert_token": "Wprowadź token z maila",
   "active_account": "Aktywuj konto",
   "confirmed_account": "Konto potwierdzone",

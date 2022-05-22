@@ -25,6 +25,7 @@
   "rpassword": "Reapet password*",
   "forget_password": "Forget password?",
   "reset_password": "Reset password",
+  "password_changed": "Password changed",
 
   "active": "Active account",
 
@@ -36,6 +37,7 @@
   "invite_main_page": "Go to Home Page",
   "main_page": "HOME",
 
+  "wrong_data": "Wrong data",
   "insert_token": "Insert token from e-mail",
   "active_account": "Active account",
   "confirmed_account": "Account confirmed",
