@@ -1,11 +1,6 @@
-import { Input, InputBase } from "@mui/material";
 import { useEffect, useState } from "react";
-import { Button, Table } from "react-bootstrap";
 import { useFindAllUsersMutation } from "../../api/api";
-import {
-  AccountWithAccessLevelsDto,
-  AccountWithAccessLevelsDtoWithLogin,
-} from "../../api/types/apiParams";
+import { AccountWithAccessLevelsDto } from "../../api/types/apiParams";
 import styles from "./clientPage.module.scss";
 
 interface ViewAccount {
@@ -37,13 +32,15 @@ const ClientPage = () => {
           email,
           isActive,
           firstName,
-          lastName
+          lastName,
         }: AccountWithAccessLevelsDto): ViewAccount => {
           return {
             firstName: firstName,
             lastName: lastName,
             login: login,
-            accessLevels: ["test", "nowe"],
+            accessLevels: accessLevels.map(({ level }) => {
+              return `${level}\n`;
+            }),
             email: email,
             active: true,
           };
@@ -56,8 +53,12 @@ const ClientPage = () => {
   return (
     <div className={styles.pageLayout}>
       <h2>Users</h2>
-      <input type="text" className={styles.searchInput} placeholder="Wyszukaj po frazie"/>
-      <Table className={styles.table}>
+      <input
+        type="text"
+        className={styles.searchInput}
+        placeholder="Wyszukaj po frazie"
+      />
+      <table className={styles.table}>
         <thead>
           <tr>
             <th>Login</th>
@@ -70,22 +71,26 @@ const ClientPage = () => {
           </tr>
         </thead>
         <tbody>
-          {account?.map(({ login, firstName, lastName, accessLevels, email, active }) => {
-            console.log(active);
-            return (
-              <tr key={email}>
-                <td>{login}</td>
-                <td>{firstName}</td>
-                <td>{lastName}</td>
-                <td>{accessLevels}</td>
-                <td>{email}</td>
-                <td>{active ? "Aktywny" : "Nieaktywny"}</td>
-                <td><button className={styles.button}>Zmień hasło</button></td>
-              </tr>
-            );
-          })}
+          {account?.map(
+            ({ login, firstName, lastName, accessLevels, email, active }) => {
+              console.log(active);
+              return (
+                <tr key={email}>
+                  <td>{login}</td>
+                  <td>{firstName}</td>
+                  <td>{lastName}</td>
+                  <td>{accessLevels}</td>
+                  <td>{email}</td>
+                  <td>{active ? "Aktywny" : "Nieaktywny"}</td>
+                  <td>
+                    <button className={styles.button}>Zmień hasło</button>
+                  </td>
+                </tr>
+              );
+            }
+          )}
         </tbody>
-      </Table>
+      </table>
     </div>
   );
 };
