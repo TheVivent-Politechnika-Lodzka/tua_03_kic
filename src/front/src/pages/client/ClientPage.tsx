@@ -1,4 +1,6 @@
+import { Input, InputBase } from "@mui/material";
 import { useEffect, useState } from "react";
+import { Button, Table } from "react-bootstrap";
 import { useFindAllUsersMutation } from "../../api/api";
 import {
   AccountWithAccessLevelsDto,
@@ -8,6 +10,8 @@ import styles from "./clientPage.module.scss";
 
 interface ViewAccount {
   login: string;
+  firstName: string;
+  lastName: string;
   accessLevels: string[];
   email: string;
   active: boolean;
@@ -32,8 +36,12 @@ const ClientPage = () => {
           accessLevels,
           email,
           isActive,
+          firstName,
+          lastName
         }: AccountWithAccessLevelsDto): ViewAccount => {
           return {
+            firstName: firstName,
+            lastName: lastName,
             login: login,
             accessLevels: ["test", "nowe"],
             email: email,
@@ -48,29 +56,36 @@ const ClientPage = () => {
   return (
     <div className={styles.pageLayout}>
       <h2>Users</h2>
-      <table>
+      <input type="text" className={styles.searchInput} placeholder="Wyszukaj po frazie"/>
+      <Table className={styles.table}>
         <thead>
           <tr>
             <th>Login</th>
+            <th>Imie</th>
+            <th>Nazwisko</th>
             <th>Poziomy dostępu</th>
             <th>Email</th>
             <th>Czy aktywny</th>
+            <th>Zmień hasło</th>
           </tr>
         </thead>
         <tbody>
-          {account?.map(({ login, accessLevels, email, active }) => {
+          {account?.map(({ login, firstName, lastName, accessLevels, email, active }) => {
             console.log(active);
             return (
               <tr key={email}>
                 <td>{login}</td>
+                <td>{firstName}</td>
+                <td>{lastName}</td>
                 <td>{accessLevels}</td>
                 <td>{email}</td>
                 <td>{active ? "Aktywny" : "Nieaktywny"}</td>
+                <td><button className={styles.button}>Zmień hasło</button></td>
               </tr>
             );
           })}
         </tbody>
-      </table>
+      </Table>
     </div>
   );
 };
