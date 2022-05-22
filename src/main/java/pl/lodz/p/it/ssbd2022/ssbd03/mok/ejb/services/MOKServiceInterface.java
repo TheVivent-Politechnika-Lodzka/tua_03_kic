@@ -33,14 +33,22 @@ public interface MOKServiceInterface extends ManagerLocalInterface {
      *
      * @param login Login konta, które ma zostać odblokowane
      * @param eTag  Zmienna zawierająca eTag
-     * @return Odpowiedź HTTP
+     * @return Zmodyfikowane konto
      * @throws MethodNotImplementedException w momencie, gdy metoda jest niezaimplementowana
      */
     default Account activateAccount(String login, String eTag) {
         throw new MethodNotImplementedException();
     }
 
-    // TODO: Dodanie Javadoc
+    /**
+     * Metoda odblokowująca konto użytkownika, które zostało uprzednio zablokowane przez administratora
+     *
+     * @param login Login konta, które ma zostać zmodyfikowane
+     * @param account modyfikacje do konta
+     * @param etag  Zmienna zawierająca eTag
+     * @return Zmodyfikowane konto
+     * @throws MethodNotImplementedException w momencie, gdy metoda jest niezaimplementowana
+     */
     default Account editAccount(String login, Account account, String etag) {
         throw new MethodNotImplementedException();
     }
