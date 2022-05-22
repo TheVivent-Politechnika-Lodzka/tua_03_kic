@@ -25,4 +25,7 @@ public class Config {
     public static final int MAX_TX_RETRIES = 3;
     public static final int REGISTER_TOKEN_EXPIRATION_SECONDS = 60 * 30; // 30min
     public static final int RESET_PASSWORD_TOKEN_EXPIRATION_SECONDS = 60 * 15; // 15min
+
+    // Do SPA
+    public static final String WEBSITE_URL = "http://localhost:3000";
 }
