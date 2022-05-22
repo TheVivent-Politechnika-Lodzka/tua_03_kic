@@ -14,6 +14,7 @@ import ActivateAccountPage from "./pages/unprotected/activate/ActivateAccountPag
 import HomeLayout from "./component/Layout/HomeLayout";
 import DetailsLayout from "./component/Layout/DetailsLayout";
 import UserManagment from "./pages/admin/UserManagment/UserManagment";
+import CreateAccountPage from "./pages/admin/AdminPage/createAccountPage/CreateAccountPage";
 
 function App() {
   const user = useStoreSelector((state) => state.user);
@@ -42,6 +43,7 @@ function App() {
               <>
                 <Route path="/admin" element={<AdminPage />} />
                 <Route path="/admin/users" element={<UserManagment />} />
+                <Route path="/createAccount" element={<CreateAccountPage />} />
               </>
             ) : (
               <></>

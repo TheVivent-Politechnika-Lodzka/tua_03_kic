@@ -17,13 +17,19 @@
   "cyber": "CYBER IMPLANT",
   "users": "USERS",
   "specialist": "SPECIALIST",
-  "appointment":"APPOINTMENT",
+  "appointment": "APPOINTMENT",
   "password": "Password",
   "first_name": "First name*",
   "last_name": "Last name*",
   "phone_number": "Phone number*",
   "password*": "Password*",
   "rpassword": "Reapet password*",
+
+  "active": "Active account",
+
+  "c_password": "Current Password",
+  "n_password": "New Password",
+  "change_password": "Change Password",
 
   "error_page": "Sorry, page doesn't exist",
   "invite_main_page": "Go to Home Page",
@@ -48,6 +54,44 @@
   "header_is_active": "Is active",
   "header_change_password": "Change password",
   "cell_active": "Active",
-  "cell_inctive": "Inactive"
+  "cell_inctive": "Inactive",
 
+  "refill_data": "Refill login data",
+
+  "CreateAccountForm": {
+    "form_title": "Create account",
+    "email": "Email*",
+    "first_name": "First name*",
+    "last_name": "Last name*",
+    "login": "Login*",
+    "password": "Password*",
+    "lenguage": "Lenguage*",
+    "submit": "Create account"
+  },
+
+
+  "button": {
+    "addAccessLevel": {
+      "buttonText": "Add Access Level",
+      "dialog": {
+        "title": "Add Access Level",
+        "cancel": "Cancel",
+        "add": "Add",
+        "select": {
+          "client": "CLIENT",
+          "specialist": "SPECIALIST",
+          "administrator": "ADMINISTRATOR"
+        },
+        "email": {
+          "placeholder": "Email"
+        },
+        "phone": {
+          "placeholder": "Phone Number"
+        },
+        "pesel": {
+          "placeholder": "Pesel"
+        }
+      }
+    }
+  }
 }

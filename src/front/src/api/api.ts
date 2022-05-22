@@ -15,11 +15,8 @@ import {
   RemoveAccessLevel,
   ResetPasswordTokenDto,
 } from "./types/apiParams";
-import { JWT, PaginationData } from "./types/common";
-import {
-  PaginationFilterParams,
-  RemoveAccessLevelParams,
-} from "./types/queryParams";
+import {JWT} from "./types/common";
+import {PaginationFilterParams, RemoveAccessLevelParams} from "./types/queryParams";
 
 // TODO przenieść do .env / package.json
 // const BASE_URL = "https://kic.agency:8403/api"
@@ -147,17 +144,28 @@ const api = createApi({
       }),
     }),
 
-    // ZMIEŃ WŁASNE HASŁO
-    changeOwnPassword: builder.mutation<string, changeOwnPasswordDto>({
-      query: (changeOwnPasswordDto: changeOwnPasswordDto) => ({
-        url: "/mok/password",
-        method: "PATCH",
-        body: changeOwnPasswordDto,
-        responseHandler: async (response) => {
-          return await response.json();
-        },
-      }),
-    }),
+        // PRZEGLĄDAJ SZCZEGÓŁY SWOJEGO KONTA - plasterek
+        getOwnAccountDetailsWorkaround: builder.mutation<AccountWithAccessLevelsDto, void>({
+            query: () => ({
+                url: "/mok",
+                method: "GET",
+                responseHandler: async (response) => {
+                    return await response.json();
+                },
+            }),
+        }),
+
+        // ZMIEŃ WŁASNE HASŁO
+        changeOwnPassword: builder.mutation<string, changeOwnPasswordDto>({
+            query: (changeOwnPasswordDto: changeOwnPasswordDto) => ({
+                url: "/mok/password",
+                method: "PATCH",
+                body: changeOwnPasswordDto,
+                responseHandler: async (response) => {
+                    return await response.json();
+                },
+            }),
+        }),
 
     // ZMIEŃ HASŁO INNEGO UŻYTKOWNIKA
     changeAccountPassword: builder.mutation<
@@ -216,35 +224,31 @@ const api = createApi({
       }),
     }),
 
-    // ZABLOKUJ KONTO
-    deactivateAccount: builder.mutation<
-      AccountWithAccessLevelsDto,
-      AccountActivationDto
-    >({
-      query: ({ login, tag }: AccountActivationDto) => ({
-        url: `/mok/deactivate/${login}`,
-        method: "PATCH",
-        body: { eTag: tag },
-        responseHandler: async (response) => {
-          return await response.json();
-        },
-      }),
-    }),
+        // ZABLOKUJ KONTO
+        deactivateAccount: builder.mutation<AccountWithAccessLevelsDto,
+            AccountActivationDto>({
+            query: ({login, tag}: AccountActivationDto) => ({
+                url: `/mok/deactivate/${login}`,
+                method: "PATCH",
+                body: {ETag: tag},
+                responseHandler: async (response) => {
+                    return await response.json();
+                },
+            }),
+        }),
 
-    // ODBLOKUJ KONTO
-    activateAccount: builder.mutation<
-      AccountWithAccessLevelsDto,
-      AccountActivationDto
-    >({
-      query: ({ login, tag }: AccountActivationDto) => ({
-        url: `/mok/activate/${login}`,
-        method: "PATCH",
-        body: { eTag: tag },
-        responseHandler: async (response) => {
-          return await response.json();
-        },
-      }),
-    }),
+        // ODBLOKUJ KONTO
+        activateAccount: builder.mutation<AccountWithAccessLevelsDto,
+            AccountActivationDto>({
+            query: ({login, tag}: AccountActivationDto) => ({
+                url: `/mok/activate/${login}`,
+                method: "PATCH",
+                body: {ETag: tag},
+                responseHandler: async (response) => {
+                    return await response.json();
+                },
+            }),
+        }),
 
     // ZRESETUJ HASŁO - wysłanie prośby
     resetPasswordRequest: builder.mutation<number, string>({
@@ -272,21 +276,22 @@ const api = createApi({
 });
 
 export const {
-  useLoginMutation,
-  useAddAccessLevelMutation,
-  useChangeAccountPasswordMutation,
-  useChangeOwnPasswordMutation,
-  useConfirmRegistrationMutation,
-  useEditOtherAccountDataMutation,
-  useEditOwnAccountMutation,
-  useFindAllUsersMutation,
-  useGetAccountByLoginMutation,
-  useGetOwnAccountDetailsQuery,
-  useRemoveAccessLevelMutation,
-  useRegisterAccountMutation,
-  useResetPasswordRequestMutation,
-  useResetPasswordChangeMutation,
-  useActivateAccountMutation,
-  useDeactivateAccountMutation,
-  useCreateAccountMutation,
+    useLoginMutation,
+    useAddAccessLevelMutation,
+    useChangeAccountPasswordMutation,
+    useChangeOwnPasswordMutation,
+    useConfirmRegistrationMutation,
+    useEditOtherAccountDataMutation,
+    useEditOwnAccountMutation,
+    useFindAllUsersMutation,
+    useGetAccountByLoginMutation,
+    useGetOwnAccountDetailsQuery,
+    useRemoveAccessLevelMutation,
+    useRegisterAccountMutation,
+    useResetPasswordRequestMutation,
+    useResetPasswordChangeMutation,
+    useActivateAccountMutation,
+    useDeactivateAccountMutation,
+    useCreateAccountMutation,
+    useGetOwnAccountDetailsWorkaroundMutation,
 } = api;

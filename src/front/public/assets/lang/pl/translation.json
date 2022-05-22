@@ -7,6 +7,7 @@
   "satisfied_clients": "Tysiące zadowolonych klientów",
   "our_clinic": "NASZE KLINIKI",
   "good_location": "kliniki w trzech dogodnych lokalizacjach",
+
   "contact": "Kontakt",
   "social_media": "Media społecznościowe",
   "more_inf": "Dowiedz się więcej",
@@ -18,18 +19,27 @@
   "specialist": "SPECJALIŚCI",
   "appointment": "WIZYTY",
   "password": "Hasło",
+  "c_password": "Aktualne Hasło",
+  "n_password": "Nowe Hasło",
+  "change_password": "Zmień Hasło",
+
   "first_name": "Imie*",
   "last_name": "Nazwisko*",
   "phone_number": "Numer telefonu*",
   "password*": "Hasło*",
   "rpassword": "Powtórz hasło*",
+
+  "active": "Aktywuj konto",
+
   "error_page": "Przykro mi, strona nie istnieje",
   "invite_main_page": "Zapraszamy na stronę główną",
   "main_page": "STRONA GŁÓWNA",
+
   "insert_token": "Wprowadź token z maila",
   "active_account": "Aktywuj konto",
   "confirmed_account": "Konto potwierdzone",
   "nav_log": "Przejdz do logowania",
+
   "wrong_data": "Niepoprawne dane logowania",
   "server_error": "Błąd serwera, spróbuj za chwilę",
   "refill_data": "Uzupełnij dane logowania",
@@ -44,6 +54,43 @@
   "header_is_active": "Czy jest aktywny",
   "header_change_password": "Zmień hasło",
   "cell_active": "Aktywny",
-  "cell_inactive": "Nieaktywny"
+  "cell_inactive": "Nieaktywny",
 
+  "refill_data": "Uzupełnij dane logowania",
+
+  "CreateAccountForm": {
+    "form_title": "Utwórz konto",
+    "email": "Email*",
+    "first_name": "Imie*",
+    "last_name": "Nazwisko*",
+    "login": "Identyfikator*",
+    "password": "Hasło*",
+    "lenguage": "Język*",
+    "submit": "Stwórz konto"
+  },
+
+  "button": {
+    "addAccessLevel": {
+      "buttonText": "Dodaj poziom dostępu",
+      "dialog": {
+        "title": "Dodaj poziom dostępu",
+        "cancel": "Anuluj",
+        "add": "Dodaj",
+        "select": {
+          "client": "KLIENT",
+          "specialist": "SPECJALISTA",
+          "administrator": "ADMINISTRATOR"
+        },
+        "email": {
+          "placeholder": "E-mail"
+        },
+        "phone": {
+          "placeholder": "Numer telefonu"
+        },
+        "pesel": {
+          "placeholder": "Pesel"
+        }
+      }
+    }
+  }
 }

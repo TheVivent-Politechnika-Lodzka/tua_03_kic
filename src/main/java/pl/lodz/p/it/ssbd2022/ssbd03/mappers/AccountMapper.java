@@ -28,6 +28,11 @@ public class AccountMapper {
     @Inject
     AbstractEntityMapper abstractEntityMapper;
 
+    /**
+     * Metoda mapuje obiekt typu createAccountDto na obiekt typu Account.
+     * @param createAccountDto - dto z którego tworzymy konto
+     * @return - konto
+     */
     // TODO: Dodanie Javadoc
     public Account createAccountfromCreateAccountDto(CreateAccountDto createAccountDto) {
         Account account = new Account();

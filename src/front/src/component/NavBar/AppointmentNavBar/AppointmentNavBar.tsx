@@ -1,6 +1,6 @@
 import { Fragment } from "react";
 import { useNavigate } from "react-router";
-import styles from "./appointmentNavBar.module.scss";
+import styles from "./AppointmentNavBar.module.scss";
 
 import Button from "@mui/material/Button";
 import Menu from "@mui/material/Menu";

@@ -33,6 +33,12 @@ public class AccessLevelFacade extends AbstractFacade<AccessLevel> {
         super(AccessLevel.class);
     }
 
+    /**
+     * Tworzy nowy poziom dostępu
+     *
+     * @param entity - nowy poziom dostępu
+     * @throws AccessLevelExistsException - jeśli dany poziom dostępu dla danego użytkownika już istnieje
+     */
     @Override
     public void create(AccessLevel entity) {
         try {

@@ -70,6 +70,11 @@ public class MOKEndpoint implements MOKEndpointInterface {
         return Response.ok().build();
     }
 
+    /**
+     * @param createAccountDto dane konta do utworzenia
+     * @return odpowiedź zawierająca status http
+     * @throws TransactionException jeśli transakcja nie została zatwierdzona
+     */
     @Override
     public Response createAccount(CreateAccountDto createAccountDto) {
         Account account = accountMapper.createAccountfromCreateAccountDto(createAccountDto);
