@@ -1,4 +1,5 @@
 import { ChangeEvent, useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { useFindAllUsersMutation } from "../../api/api";
 import { AccountWithAccessLevelsDto } from "../../api/types/apiParams";
 import styles from "./clientPage.module.scss";
@@ -16,6 +17,8 @@ const ClientPage = () => {
   const [account, setAccounts] = useState<ViewAccount[]>([]);
   const [query, setQuery] = useState<string>("");
   const [findAll] = useFindAllUsersMutation();
+  const { t } = useTranslation();
+
 
   useEffect(() => {
     getAccounts();
@@ -64,24 +67,24 @@ const ClientPage = () => {
 
   return (
     <div className={styles.pageLayout}>
-      <h2>Users</h2>
+      <h2>{t("users_administration_page")}</h2>
       <input
         type="text"
         className={styles.searchInput}
         placeholder="Wyszukaj po frazie"
         onChange={handleQuery}
-        // value={query}
+        value={query}
       />
       <table className={styles.table}>
         <thead>
           <tr>
-            <th>Login</th>
-            <th>Imie</th>
-            <th>Nazwisko</th>
-            <th>Poziomy dostępu</th>
-            <th>Email</th>
-            <th>Czy aktywny</th>
-            <th>Zmień hasło</th>
+            <th>{t("header_login")}</th>
+            <th>{t("header_first_name")}</th>
+            <th>{t("header_last_name")}</th>
+            <th>{t("header_level_access_level")}</th>
+            <th>{t("header_email")}</th>
+            <th>{t("header_is_active")}</th>
+            <th>{t("header_change_password")}</th>
           </tr>
         </thead>
         <tbody>
@@ -95,7 +98,7 @@ const ClientPage = () => {
                   <td>{lastName}</td>
                   <td>{accessLevels}</td>
                   <td>{email}</td>
-                  <td>{active ? "Aktywny" : "Nieaktywny"}</td>
+                  <td>{active ? t("cell_active") : t("cell_inactive")}</td>
                   <td>
                     <button className={styles.button}>Zmień hasło</button>
                   </td>
