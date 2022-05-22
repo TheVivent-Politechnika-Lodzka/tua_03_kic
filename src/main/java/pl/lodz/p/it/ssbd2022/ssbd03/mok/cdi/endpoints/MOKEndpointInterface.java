@@ -11,6 +11,7 @@ import jakarta.ws.rs.core.Response;
 import pl.lodz.p.it.ssbd2022.ssbd03.common.Roles;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.Account;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.MethodNotImplementedException;
+import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.TransactionException;
 import pl.lodz.p.it.ssbd2022.ssbd03.mappers.json.AccessLevelDeserializer;
 import pl.lodz.p.it.ssbd2022.ssbd03.mok.dto.*;
 import pl.lodz.p.it.ssbd2022.ssbd03.mok.dto.access_levels.AccessLevelDto;
@@ -129,8 +130,15 @@ public interface MOKEndpointInterface {
         throw new MethodNotImplementedException();
     }
 
-    // MOK.10 Edytuj dane konta innego użytkownika
-    // TODO: Dodanie Javadoc
+    /**
+     * Metoda pozwalająca edytować dane konta innego użytkownika, wywołana z poziomu endpointa.
+     * Może ją tylko wykonać tylko konto z poziomem dostępu administratora.
+     * @param login Login użytkownika, którego dane konta zostaną edytowane
+     * @param accountWithAccessLevelsDto Dane, które mają zastąpić dane konta edytowanego
+     * @return odpowiedź HTTP
+     * @throws MethodNotImplementedException w momencie, gdy metoda jest niezaimplementowana
+     * @throws TransactionException w momencie, gdy transakcja nie została zatwierdzona
+     */
     @PUT
     @Path("/{login}")
     @RolesAllowed(Roles.ADMINISTRATOR)

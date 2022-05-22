@@ -6,6 +6,7 @@ import pl.lodz.p.it.ssbd2022.ssbd03.common.ManagerLocalInterface;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.Account;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.access_levels.AccessLevel;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.MethodNotImplementedException;
+import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.access_level.AccessLevelNotFoundException;
 import pl.lodz.p.it.ssbd2022.ssbd03.utils.PaginationData;
 
 import java.util.List;
@@ -33,7 +34,16 @@ public interface MOKServiceInterface extends ManagerLocalInterface {
         throw new MethodNotImplementedException();
     }
 
-    // TODO: Dodanie Javadoc
+    /**
+     * Metoda pozwalająca edytować dane konta innego użytkownika, wywołana z poziomu serwisu.
+     *
+     * @param login Login użytkownika, którego dane mają zostać edytowane
+     * @param account Konto z danymi, które mają zostać zmienione użytkownikowi
+     * @param etag Wartość ETag
+     * @return Konto użytkownika, którego dane zostały edytowane
+     * @throws MethodNotImplementedException w momencie, gdy metoda jest niezaimplementowana
+     * @throws AccessLevelNotFoundException w momencie, gdy nie znaleziono w koncie o danym loginie danego poziomu dostępu
+     */
     default Account editAccount(String login, Account account, String etag) {
         throw new MethodNotImplementedException();
     }

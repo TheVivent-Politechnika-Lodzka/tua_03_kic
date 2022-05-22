@@ -6,6 +6,8 @@ import jakarta.persistence.PersistenceException;
 import jakarta.persistence.TypedQuery;
 import jakarta.persistence.criteria.CriteriaQuery;
 import org.hibernate.exception.ConstraintViolationException;
+import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.MethodNotImplementedException;
+import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.access_level.AccessLevelNotFoundException;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.database.DatabaseException;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.InvalidParametersException;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.database.InAppOptimisticLockException;
@@ -48,14 +50,26 @@ public abstract class AbstractFacade<T> {
             throw new InAppOptimisticLockException();
     }
 
-    // TODO: Dodanie Javadoc
+    /**
+     * Pozwala edytować encję
+     *
+     * @param entity Encja, która ma podlegać edycji
+     * @param tagFromDto Wartość ETag encji
+     */
     public void edit(T entity, String tagFromDto){
         if (entity instanceof AbstractEntity abstractEntity)
             verifyTag(abstractEntity, tagFromDto);
         unsafeEdit(entity);
     }
 
-    // TODO: Dodanie Javadoc
+    /**
+     * Pozwala edytować encję
+     *
+     * @param entity Encja, która ma podlegać edycji
+     * @throws InAppOptimisticLockException gdy wystąpi błąd związany z blokadą optymistyczną
+     * @throws ConstraintViolationException gdy żądana operacja spowodowałaby naruszenie zdefiniowanego ograniczenia integralności danych
+     * @throws DatabaseException gdy wystąpi błąd związany z bazą danych
+     */
     public void unsafeEdit(T entity){
         try {
             getEntityManager().merge(entity);
