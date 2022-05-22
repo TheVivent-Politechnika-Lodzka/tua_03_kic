@@ -13,6 +13,7 @@ import { login as loginDispatch } from "./redux/userSlice";
 import ActivateAccountPage from "./pages/unprotected/activate/ActivateAccountPage";
 import HomeLayout from "./component/Layout/HomeLayout";
 import DetailsLayout from "./component/Layout/DetailsLayout";
+import CreateAccountPage from "./pages/admin/AdminPage/createAccountPage/CreateAccountPage";
 
 function App() {
   const user = useStoreSelector((state) => state.user);
@@ -38,7 +39,10 @@ function App() {
         <Routes>
           <Route element={<DetailsLayout />}>
             {user.cur === "ADMINISTRATOR" ? (
-              <Route path="/admin" element={<AdminPage />} />
+              <>
+                <Route path="/admin" element={<AdminPage />} />
+                <Route path="/createAccount" element={<CreateAccountPage />} />
+              </>
             ) : (
               <></>
             )}
@@ -52,11 +56,9 @@ function App() {
             ) : (
               <></>
             )}
-       
           </Route>
           <Route element={<HomeLayout />}>
             <Route path="/" element={<MainPage />} />
-            
           </Route>
           <Route path="/login" element={<LoginPage />} />
           <Route path="/active" element={<ActivateAccountPage />} />
