@@ -3,12 +3,12 @@ import { useTranslation } from "react-i18next";
 import { useActivateAccountMutation } from "../../../api/api";
 import { Button } from "react-bootstrap";
 
-interface LoginFormProps {
+interface ActivateProps {
     login: string;
     ETag : string;
 }
 
-const ActivateButton = ({ETag, login}: LoginFormProps) => {
+const ActivateButton = ({ETag, login}: ActivateProps) => {
     const [change, { isLoading }] = useActivateAccountMutation();
 
     const {t} = useTranslation();
