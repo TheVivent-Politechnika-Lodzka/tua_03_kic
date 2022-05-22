@@ -9,6 +9,7 @@ import pl.lodz.p.it.ssbd2022.ssbd03.common.Config;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.Account;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.access_levels.AccessLevel;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.TransactionException;
+import pl.lodz.p.it.ssbd2022.ssbd03.global_services.EmailService;
 import pl.lodz.p.it.ssbd2022.ssbd03.mappers.AccessLevelMapper;
 import pl.lodz.p.it.ssbd2022.ssbd03.mappers.AccountMapper;
 import pl.lodz.p.it.ssbd2022.ssbd03.mok.dto.*;
@@ -32,6 +33,8 @@ public class MOKEndpoint implements MOKEndpointInterface {
     private AccountMapper accountMapper;
     @Inject
     private AccessLevelMapper accessLevelMapper;
+    @Inject
+    private EmailService emailService;
 
     @Override
     public Response register(RegisterClientDto registerClientDto) {
@@ -100,7 +103,12 @@ public class MOKEndpoint implements MOKEndpointInterface {
         if (!commitedTX) {
             throw new TransactionException();
         }
-
+ //      todo I18n
+        emailService.sendEmail(
+                activatedAccount.getEmail(),
+                "KIC - Twoje konto zostalo odblokowane",
+                "Informujemy, \u017ce Twoje konto zosta\u0142o odblokowane. \n " +
+                        "Mo\u017cesz teraz zalogowa\u0107 si\u0119 na swoje konto.");
         return Response.ok(
                 accountMapper.createAccountWithAccessLevelsDtoFromAccount(activatedAccount)
         ).build();
@@ -119,7 +127,12 @@ public class MOKEndpoint implements MOKEndpointInterface {
         if (!commitedTX) {
             throw new TransactionException();
         }
-
+//      todo I18n
+        emailService.sendEmail(deactivatedAccount.getEmail(),
+                "KIC - Twoje konto zostalo zablokowane",
+                "Informujemy, \u017ce Twoje konto zosta\u0142o zablokowane\n " +
+                        "Po wi\u0119cej inormacji skontaktuj si\u0119 z pomoc\u0105 " +
+                        "techniczn\u0105: szuryssbd@gmail.com.");
         return Response.ok(
                 accountMapper.createAccountWithAccessLevelsDtoFromAccount(deactivatedAccount)
         ).build();
