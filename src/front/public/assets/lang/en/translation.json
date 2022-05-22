@@ -41,9 +41,7 @@
   "confirmed_account": "Account confirmed",
   "nav_log": "Go to Login Page",
 
-  "wrong_data": "Wrong data",
   "server_error": "Server Error, try again for a moment",
-  "refill_data": "Refill login data",
 
   "users_administration_page": "Users",
   "search_by_phrase_placeholder": "Search by phrase",
@@ -70,7 +68,6 @@
     "submit": "Create account"
   },
 
-
   "button": {
     "addAccessLevel": {
       "buttonText": "Add Access Level",
@@ -95,7 +92,6 @@
       }
     }
   },
-  "refill_data": "Refill login data",
 
   "email_send": "Check your email",
   "email_error": "Wrong login"

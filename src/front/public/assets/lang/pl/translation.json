@@ -21,7 +21,7 @@
   "password": "Hasło",
   "c_password": "Aktualne Hasło",
   "n_password": "Nowe Hasło",
-  "change_password" : "Zmień Hasło",
+  "change_password": "Zmień Hasło",
   "forget_password": "Zapomniałeś hasła?",
   "reset_password": "Zresetuj hasło",
   "password_changed": "Hasło zostało zmienione",
@@ -44,7 +44,6 @@
   "confirmed_account": "Konto potwierdzone",
   "nav_log": "Przejdz do logowania",
 
-  "wrong_data": "Niepoprawne dane logowania",
   "server_error": "Błąd serwera, spróbuj za chwilę",
   "refill_data": "Uzupełnij dane logowania",
 
@@ -62,8 +61,6 @@
   "header_change_password": "Zmień hasło",
   "cell_active": "Aktywny",
   "cell_inactive": "Nieaktywny",
-
-  "refill_data": "Uzupełnij dane logowania",
 
   "CreateAccountForm": {
     "form_title": "Utwórz konto",
