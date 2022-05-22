@@ -38,7 +38,10 @@ function App() {
         <Routes>
           <Route element={<DetailsLayout />}>
             {user.cur === "ADMINISTRATOR" ? (
-              <Route path="/admin" element={<AdminPage />} />
+              <>
+                <Route path="/admin" element={<AdminPage />} />
+                <Route path="/admin/users" element={<ClientPage />} />
+              </>
             ) : (
               <></>
             )}
@@ -52,11 +55,9 @@ function App() {
             ) : (
               <></>
             )}
-       
           </Route>
           <Route element={<HomeLayout />}>
             <Route path="/" element={<MainPage />} />
-            
           </Route>
           <Route path="/login" element={<LoginPage />} />
           <Route path="/active" element={<ActivateAccountPage />} />

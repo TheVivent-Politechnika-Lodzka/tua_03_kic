@@ -13,6 +13,7 @@
   "log_in": "ZALOGUJ",
   "log_out": "WYLOGUJ",
   "sign_in": "ZAREJESTRUJ",
+  "users": "UŻYTKOWNICY",
   "cyber": "CYBERWSZCZEP",
   "specialist": "SPECJALIŚCI",
   "appointment": "WIZYTY",
@@ -32,4 +33,5 @@
   "wrong_data": "Niepoprawne dane logowania",
   "server_error": "Błąd serwera, spróbuj za chwilę",
   "refill_data": "Uzupełnij dane logowania"
+
 }
