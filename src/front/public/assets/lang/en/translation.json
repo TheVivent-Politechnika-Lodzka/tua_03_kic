@@ -52,5 +52,31 @@
     "password": "Password*",
     "lenguage": "Lenguage*",
     "submit": "Create account"
+  },
+
+
+  "button": {
+    "addAccessLevel": {
+      "buttonText": "Add Access Level",
+      "dialog": {
+        "title": "Add Access Level",
+        "cancel": "Cancel",
+        "add": "Add",
+        "select": {
+          "client": "CLIENT",
+          "specialist": "SPECIALIST",
+          "administrator": "ADMINISTRATOR"
+        },
+        "email": {
+          "placeholder": "Email"
+        },
+        "phone": {
+          "placeholder": "Phone Number"
+        },
+        "pesel": {
+          "placeholder": "Pesel"
+        }
+      }
+    }
   }
 }

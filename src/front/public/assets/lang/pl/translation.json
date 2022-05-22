@@ -53,4 +53,29 @@
     "lenguage": "Język*",
     "submit": "Stwórz konto"
   }
+
+  "button": {
+    "addAccessLevel": {
+      "buttonText": "Dodaj poziom dostępu",
+      "dialog": {
+        "title": "Dodaj poziom dostępu",
+        "cancel": "Anuluj",
+        "add": "Dodaj",
+        "select": {
+          "client": "KLIENT",
+          "specialist": "SPECJALISTA",
+          "administrator": "ADMINISTRATOR"
+        },
+        "email": {
+          "placeholder": "E-mail"
+        },
+        "phone": {
+          "placeholder": "Numer telefonu"
+        },
+        "pesel": {
+          "placeholder": "Pesel"
+        }
+      }
+    }
+  }
 }
