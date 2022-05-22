@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 import { useFindAllUsersMutation } from "../../api/api";
 import { AccountWithAccessLevelsDto } from "../../api/types/apiParams";
 import styles from "./clientPage.module.scss";
@@ -14,14 +14,22 @@ interface ViewAccount {
 
 const ClientPage = () => {
   const [account, setAccounts] = useState<ViewAccount[]>([]);
+  const [query, setQuery] = useState<string>("");
   const [findAll] = useFindAllUsersMutation();
 
   useEffect(() => {
     getAccounts();
   }, []);
 
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      getAccounts();
+    }, 500);
+    return () => clearTimeout(timer);
+  }, [query]);
+
   const getAccounts = async () => {
-    const data = await findAll({ page: 1, limit: 3 });
+    const data = await findAll({ page: 1, limit: 3, phrase: query });
     let accounts;
     if ("data" in data) {
       // wygląda paskudnie, ale na razie zostawmy
@@ -50,6 +58,10 @@ const ClientPage = () => {
     }
   };
 
+  const handleQuery = (e: ChangeEvent<HTMLInputElement>) => {
+    setQuery(e.target.value);
+  };
+
   return (
     <div className={styles.pageLayout}>
       <h2>Users</h2>
@@ -57,6 +69,8 @@ const ClientPage = () => {
         type="text"
         className={styles.searchInput}
         placeholder="Wyszukaj po frazie"
+        onChange={handleQuery}
+        // value={query}
       />
       <table className={styles.table}>
         <thead>
