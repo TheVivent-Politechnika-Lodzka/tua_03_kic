@@ -22,6 +22,9 @@
   "c_password": "Aktualne Hasło",
   "n_password": "Nowe Hasło",
   "change_password": "Zmień Hasło",
+  "forget_password": "Zapomniałeś hasła?",
+  "reset_password": "Zresetuj hasło",
+  "password_changed": "Hasło zostało zmienione",
 
   "first_name": "Imie*",
   "last_name": "Nazwisko*",
@@ -35,14 +38,17 @@
   "invite_main_page": "Zapraszamy na stronę główną",
   "main_page": "STRONA GŁÓWNA",
 
+  "wrong_data": "Niepoprawne dane",
   "insert_token": "Wprowadź token z maila",
   "active_account": "Aktywuj konto",
   "confirmed_account": "Konto potwierdzone",
   "nav_log": "Przejdz do logowania",
 
-  "wrong_data": "Niepoprawne dane logowania",
   "server_error": "Błąd serwera, spróbuj za chwilę",
   "refill_data": "Uzupełnij dane logowania",
+
+  "email_send": "Sprawdź maila",
+  "email_error": "Niepoprawny login",
 
   "users_administration_page": "Użytkownicy",
   "search_by_phrase_placeholder": "Wyszukaj po frazie",
@@ -55,8 +61,6 @@
   "header_change_password": "Zmień hasło",
   "cell_active": "Aktywny",
   "cell_inactive": "Nieaktywny",
-
-  "refill_data": "Uzupełnij dane logowania",
 
   "CreateAccountForm": {
     "form_title": "Utwórz konto",

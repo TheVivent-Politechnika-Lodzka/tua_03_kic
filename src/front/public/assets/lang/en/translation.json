@@ -35,14 +35,13 @@
   "invite_main_page": "Go to Home Page",
   "main_page": "HOME",
 
+  "wrong_data": "Wrong data",
   "insert_token": "Insert token from e-mail",
   "active_account": "Active account",
   "confirmed_account": "Account confirmed",
   "nav_log": "Go to Login Page",
 
-  "wrong_data": "Wrong data",
   "server_error": "Server Error, try again for a moment",
-  "refill_data": "Refill login data",
 
   "users_administration_page": "Users",
   "search_by_phrase_placeholder": "Search by phrase",
@@ -69,7 +68,6 @@
     "submit": "Create account"
   },
 
-
   "button": {
     "addAccessLevel": {
       "buttonText": "Add Access Level",
@@ -93,5 +91,8 @@
         }
       }
     }
-  }
+  },
+
+  "email_send": "Check your email",
+  "email_error": "Wrong login"
 }

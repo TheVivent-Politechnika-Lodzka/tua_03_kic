@@ -3,6 +3,7 @@ package pl.lodz.p.it.ssbd2022.ssbd03.mok.ejb.services;
 import jakarta.ejb.Local;
 import pl.lodz.p.it.ssbd2022.ssbd03.common.ManagerLocalInterface;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.Account;
+import pl.lodz.p.it.ssbd2022.ssbd03.entities.ResetPasswordToken;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.access_levels.AccessLevel;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.MethodNotImplementedException;
 import pl.lodz.p.it.ssbd2022.ssbd03.utils.PaginationData;
@@ -109,12 +110,26 @@ public interface MOKServiceInterface extends ManagerLocalInterface {
         throw new MethodNotImplementedException();
     }
 
-    // TODO: Dodanie Javadoc
-    default Account resetPassword(String login) {
+    /**
+     * Metoda wywoływana w ramach chęci zresetowania hasła przez użytkownika o podanym loginie
+     *
+     * @param login Login użytkownika, dla którego zresetowanie hasła będzie możliwe
+     * @return Obiekt konta użytkownika, który będzie mógł zresetować hasło
+     * @throws MethodNotImplementedException w momencie, gdy metoda jest niezaimplementowana
+     */
+    default ResetPasswordToken resetPassword(String login) {
         throw new MethodNotImplementedException();
     }
 
-    // TODO: Dodanie Javadoc
+    /**
+     * Metoda pozwalająca potwierdzić chęć zmiany hasła oraz ustawiająca nowe hasło dla użytkownika
+     *
+     * @param login    Login użytkownika, którego hasło będzie zmieniane
+     * @param password Nowe hasło dla konta użytkownika
+     * @param token    Token będący metodą weryfikacji czy dany użytkownik może zmienić swoje hasło
+     * @return Obiekt konta użytkownika, którego hasło zostało zmienione
+     * @throws MethodNotImplementedException w momencie, gdy metoda jest niezaimplementowana
+     */
     default Account confirmResetPassword(String login, String password, String token) {
         throw new MethodNotImplementedException();
     }
