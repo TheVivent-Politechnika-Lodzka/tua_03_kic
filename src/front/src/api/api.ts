@@ -230,7 +230,7 @@ const api = createApi({
             query: ({login, tag}: AccountActivationDto) => ({
                 url: `/mok/deactivate/${login}`,
                 method: "PATCH",
-                body: {ETag: tag},
+                body: {ETag: tag.ETag},
                 responseHandler: async (response) => {
                     return await response.json();
                 },
@@ -243,7 +243,7 @@ const api = createApi({
             query: ({login, tag}: AccountActivationDto) => ({
                 url: `/mok/activate/${login}`,
                 method: "PATCH",
-                body: {ETag: tag},
+                body: {ETag: tag.ETag},
                 responseHandler: async (response) => {
                     return await response.json();
                 },

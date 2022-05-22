@@ -16,7 +16,7 @@ import DetailsLayout from "./component/Layout/DetailsLayout";
 import ResetPasswordForm from "./component/Form/resetPasswordForm/ResetPasswordForm";
 import ResetPasswordTokenForm from "./component/Form/resetPasswordTokenForm/ResetPasswordTokenForm";
 import UserManagment from "./pages/admin/UserManagment/UserManagment";
-import CreateAccountPage from "./pages/admin/AdminPage/createAccountPage/CreateAccountPage";
+import CreateAccountPage from "./pages/admin/AdminPage/createAccountPage/CreateAccountPage"
 
 function App() {
   const user = useStoreSelector((state) => state.user);

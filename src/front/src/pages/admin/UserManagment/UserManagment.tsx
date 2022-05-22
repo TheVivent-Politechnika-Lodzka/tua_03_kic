@@ -3,6 +3,8 @@ import { useTranslation } from "react-i18next";
 import { useFindAllUsersMutation } from "../../../api/api";
 import { AccountWithAccessLevelsDto } from "../../../api/types/apiParams";
 import { ShowAccountInfo } from "../../../api/types/common";
+import ActivateButton from "../../../component/Button/ActivateButton/ActivateButton";
+import { DeactivateButton } from "../../../component/Button/DeactivateButton/DeactivateButton";
 import styles from "./userManagment.module.scss";
 
 const UserManagment = () => {
@@ -10,7 +12,6 @@ const UserManagment = () => {
   const [query, setQuery] = useState<string>("");
   const [findAll] = useFindAllUsersMutation();
   const { t } = useTranslation();
-
 
   useEffect(() => {
     getAccounts();
@@ -36,6 +37,7 @@ const UserManagment = () => {
           active,
           firstName,
           lastName,
+          ETag,
         }: AccountWithAccessLevelsDto): ShowAccountInfo => {
           return {
             firstName: firstName,
@@ -46,6 +48,7 @@ const UserManagment = () => {
             }),
             email: email,
             active: active,
+            ETag: ETag,
           };
         }
       );
@@ -77,12 +80,20 @@ const UserManagment = () => {
             <th>{t("header_email")}</th>
             <th>{t("header_is_active")}</th>
             <th>{t("header_change_password")}</th>
+            <th>{t("header_manage_activity")}</th>
           </tr>
         </thead>
         <tbody>
           {account?.map(
-            ({ login, firstName, lastName, accessLevels, email, active }) => {
-              console.log(active);
+            ({
+              login,
+              firstName,
+              lastName,
+              accessLevels,
+              email,
+              active,
+              ETag,
+            }) => {
               return (
                 <tr key={email}>
                   <td>{login}</td>
@@ -93,6 +104,19 @@ const UserManagment = () => {
                   <td>{active ? t("cell_active") : t("cell_inactive")}</td>
                   <td>
                     <button className={styles.button}>Zmień hasło</button>
+                  </td>
+                  <td>
+                    {active ? (
+                      <DeactivateButton
+                        login={login}
+                        ETag={ETag}
+                      ></DeactivateButton>
+                    ) : (
+                      <ActivateButton
+                        login={login}
+                        ETag={ETag}
+                      ></ActivateButton>
+                    )}
                   </td>
                 </tr>
               );

@@ -58,7 +58,14 @@ public interface MOKEndpointInterface {
     }
 
     // MOK.3 Zablokuj konto
-    // TODO: Dodanie Javadoc
+    /**
+     * Metoda blokouje konto użytkownika.
+     *
+     * @param login   Login konta, które ma zostać zablokowane
+     * @param eTagDto Obiekt DTO, zawierający w sobie eTag
+     * @return Odpowiedź HTTP
+     * @throws MethodNotImplementedException w momencie, gdy metoda jest niezaimplementowana
+     */
     @PATCH
     @Path("/deactivate/{login}")
     @RolesAllowed(Roles.ADMINISTRATOR)
