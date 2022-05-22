@@ -50,7 +50,7 @@ const ClientPage = () => {
               return `${level}\n`;
             }),
             email: email,
-            active: true,
+            active: isActive,
           };
         }
       );
