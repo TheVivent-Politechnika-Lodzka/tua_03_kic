@@ -24,6 +24,8 @@
   "password*": "Password*",
   "rpassword": "Reapet password*",
 
+  "active": "Active account",
+
   "c_password": "Current Password",
   "n_password": "New Password",
   "change_password" : "Change Password",
