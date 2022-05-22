@@ -102,6 +102,7 @@ public class AccountMapper {
                 account.getLogin(),
                 account.getFirstName(),
                 account.getLastName(),
+                account.getEmail(),
                 account.isActive(),
                 account.isConfirmed(),
                 account.getLanguage(),

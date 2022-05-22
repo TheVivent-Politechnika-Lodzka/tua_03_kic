@@ -137,6 +137,17 @@ const api = createApi({
             }),
         }),
 
+        // PRZEGLĄDAJ SZCZEGÓŁY SWOJEGO KONTA - plasterek
+        getOwnAccountDetailsWorkaround: builder.mutation<AccountWithAccessLevelsDto, void>({
+            query: () => ({
+                url: "/mok",
+                method: "GET",
+                responseHandler: async (response) => {
+                    return await response.json();
+                },
+            }),
+        }),
+
         // ZMIEŃ WŁASNE HASŁO
         changeOwnPassword: builder.mutation<string, changeOwnPasswordDto>({
             query: (changeOwnPasswordDto: changeOwnPasswordDto) => ({
@@ -206,7 +217,7 @@ const api = createApi({
             query: ({login, tag}: AccountActivationDto) => ({
                 url: `/mok/deactivate/${login}`,
                 method: "PATCH",
-                body: {eTag: tag},
+                body: {ETag: tag},
                 responseHandler: async (response) => {
                     return await response.json();
                 },
@@ -219,7 +230,7 @@ const api = createApi({
             query: ({login, tag}: AccountActivationDto) => ({
                 url: `/mok/activate/${login}`,
                 method: "PATCH",
-                body: {eTag: tag},
+                body: {ETag: tag},
                 responseHandler: async (response) => {
                     return await response.json();
                 },
@@ -269,4 +280,5 @@ export const {
     useActivateAccountMutation,
     useDeactivateAccountMutation,
     useCreateAccountMutation,
+    useGetOwnAccountDetailsWorkaroundMutation,
 } = api;

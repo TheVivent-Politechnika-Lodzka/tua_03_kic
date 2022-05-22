@@ -5,7 +5,7 @@ import LangSelect from "../../Selector/LangBarSelect/LangSelect";
 import { useTranslation } from "react-i18next";
 import ImplantNavBar from "../../NavBar/ImplantNavBar/ImplantNavBar";
 import SpecialistNavBar from "../../NavBar/SpecialistNavBar/SpecialistNavBar";
-import AppointmentNavBar from "../../NavBar/AppointmentNavBar/appointmentNavBar";
+import AppointmentNavBar from "../../NavBar/AppointmentNavBar/AppointmentNavBar";
 import AccessLevelSelect from "../../Selector/AccessLevelSelect/AccessLevelSelect";
 import Logo from "../../Logo/Logo";
 
@@ -31,7 +31,7 @@ const ClientTopBar = () => {
         >
           CLIENTPAGE
         </div>
-        <div className={styles.item}>
+        <div className={styles.item_width}>
           <AccessLevelSelect />
         </div>
         <div className={styles.item}>

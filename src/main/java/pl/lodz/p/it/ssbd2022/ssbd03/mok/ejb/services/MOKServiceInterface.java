@@ -28,8 +28,15 @@ public interface MOKServiceInterface extends ManagerLocalInterface {
         throw new MethodNotImplementedException();
     }
 
-    // TODO: Dodanie Javadoc
-    default Account activateAccount(String login, String etag) {
+    /**
+     * Metoda odblokowująca konto użytkownika, które zostało uprzednio zablokowane przez administratora
+     *
+     * @param login Login konta, które ma zostać odblokowane
+     * @param eTag  Zmienna zawierająca eTag
+     * @return Odpowiedź HTTP
+     * @throws MethodNotImplementedException w momencie, gdy metoda jest niezaimplementowana
+     */
+    default Account activateAccount(String login, String eTag) {
         throw new MethodNotImplementedException();
     }
 
@@ -48,7 +55,16 @@ public interface MOKServiceInterface extends ManagerLocalInterface {
         throw new MethodNotImplementedException();
     }
 
-    // TODO: Dodanie Javadoc
+    /**
+     * Metoda zmieniająca hasło dowolnego użytkownika, wywoływana z poziomu servicu.
+     * Może ją wykonać tylko konto z poziomem dostępu administratora
+     * @param login Login użytkownika, którego hasło będzie zmieniane
+     * @param oldPassword Stare haslo użytkownika, które aktualnie znajduję sie w bazie
+     * @param newPassword Nowe hasło do logowania, dla użytkownika
+     * @param etag Wartość ETag
+     * @return Konto użytkownika, któremu zmieniono hasło
+     * @throws MethodNotImplementedException w momencie, gdy metoda jest niezaimplementowana
+     */
     default Account changeAccountPassword(String login, String oldPassword, String newPassword, String etag) {
         throw new MethodNotImplementedException();
     }
