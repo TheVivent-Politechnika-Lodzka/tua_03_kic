@@ -26,7 +26,7 @@ public interface MOKServiceInterface extends ManagerLocalInterface {
      * Metoda blokująca konto użytkownika.
      *
      * @param login Login konta, które ma zostać zablokowane
-     * @param eTag  Zmienna zawierająca eTag
+     * @param eTag  Zmienna zawierająca eTag blokowanego konta
      * @return Odpowiedź HTTP
      * @throws MethodNotImplementedException w momencie, gdy metoda jest niezaimplementowana
      */

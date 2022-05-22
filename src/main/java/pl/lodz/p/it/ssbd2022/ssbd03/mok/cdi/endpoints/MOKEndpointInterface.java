@@ -62,7 +62,7 @@ public interface MOKEndpointInterface {
      * Metoda blokouje konto użytkownika.
      *
      * @param login   Login konta, które ma zostać zablokowane
-     * @param eTagDto Obiekt DTO, zawierający w sobie eTag
+     * @param eTagDto Obiekt DTO, zawierający w sobie eTag blokowanego konta
      * @return Odpowiedź HTTP
      * @throws MethodNotImplementedException w momencie, gdy metoda jest niezaimplementowana
      */
