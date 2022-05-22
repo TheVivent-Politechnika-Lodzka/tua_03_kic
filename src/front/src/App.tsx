@@ -17,6 +17,8 @@ import ResetPasswordForm from "./component/Form/resetPasswordForm/ResetPasswordF
 import ResetPasswordTokenForm from "./component/Form/resetPasswordTokenForm/ResetPasswordTokenForm";
 import UserManagment from "./pages/admin/UserManagment/UserManagment";
 import CreateAccountPage from "./pages/admin/AdminPage/createAccountPage/CreateAccountPage";
+import AccountDetailsPage from "./pages/account/details/AccountDetails";
+import EditAccountDetailsPage from "./pages/account/details/EditAccountDetails";
 
 function App() {
   const user = useStoreSelector((state) => state.user);
@@ -60,16 +62,28 @@ function App() {
             ) : (
               <></>
             )}
-       
+            {user.cur !== undefined ? (
+              <>
+                <Route path="/account" element={<AccountDetailsPage />} />
+                <Route
+                  path="/account/edit"
+                  element={<EditAccountDetailsPage />}
+                />
+              </>
+            ) : (
+              <></>
+            )}
           </Route>
           <Route element={<HomeLayout />}>
             <Route path="/" element={<MainPage />} />
-            
           </Route>
           <Route path="/login" element={<LoginPage />} />
           <Route path="/active" element={<ActivateAccountPage />} />
           <Route path="/reset-password" element={<ResetPasswordForm />} />
-          <Route path="/reset-password-token" element={<ResetPasswordTokenForm />} />
+          <Route
+            path="/reset-password-token"
+            element={<ResetPasswordTokenForm />}
+          />
           <Route path="/*" element={<ErrorPage />} />
         </Routes>
       </Router>
