@@ -10,14 +10,14 @@ import jakarta.ws.rs.ext.Provider;
 import java.io.IOException;
 
 /**
- * Klasa służąca do dodawania do każdego żądania nagłówków, w celu ominięcia CORS
+ * Klasa służąca do dodawania do każdego nagłówka odpowiedzi, w celu ominięcia CORS
  */
 @Provider
 @Priority(Priorities.HEADER_DECORATOR)
 public class CORSFilter implements ContainerResponseFilter {
 
     /**
-     * Metoda służąca do dodawania nagłówków w żądaniach
+     * Metoda służąca do dodawania nagłówków w odpowiedziach
      * @param containerRequestContext Kontekst żądań kontenera
      * @param containerResponseContext Kontekst odpowiedzi kontenera
      * @throws IOException, gdy wystąpi błąd w metodzie
