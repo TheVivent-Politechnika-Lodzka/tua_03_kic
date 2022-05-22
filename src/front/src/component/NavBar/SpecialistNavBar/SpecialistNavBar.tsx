@@ -7,10 +7,12 @@ import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import PopupState, { bindTrigger, bindMenu } from "material-ui-popup-state";
 import { useTranslation } from "react-i18next";
+import { useStoreSelector } from "../../../redux/reduxHooks";
 
 const SpecialistNavBar = () => {
   const navigate = useNavigate();
   const { t } = useTranslation();
+  const user = useStoreSelector((state) => state.user.cur);
 
   return (
     <PopupState variant="popover" popupId="demo-popup-menu">
@@ -20,9 +22,11 @@ const SpecialistNavBar = () => {
             {t("specialist")}
           </Button>
           <Menu {...bindMenu(popupState)}>
-            <MenuItem onClick={() => navigate("/specialist")}>PAGE1</MenuItem>
-            <MenuItem onClick={popupState.close}>PAGE2</MenuItem>
-            <MenuItem onClick={popupState.close}>PAGE3</MenuItem>
+            {user === "ADMINISTRATOR" ? (
+              <MenuItem onClick={() => navigate("/specialist")}>PAGE1</MenuItem>
+            ) : (
+              <></>
+            )}
           </Menu>
         </Fragment>
       )}
