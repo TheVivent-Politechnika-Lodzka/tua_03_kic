@@ -28,8 +28,14 @@ public interface MOKServiceInterface extends ManagerLocalInterface {
         throw new MethodNotImplementedException();
     }
 
-    // TODO: Dodanie Javadoc
-    default Account activateAccount(String login, String etag) {
+    /**
+     * Metoda odblokowująca konto użytkownika, które zostało uprzednio zablokowane przez administratora
+     * @param login     Login konta, które ma zostać odblokowane
+     * @param eTag
+     * @return
+     * @throws MethodNotImplementedException w momencie, gdy metoda jest niezaimplementowana
+     */
+    default Account activateAccount(String login, String eTag) {
         throw new MethodNotImplementedException();
     }
 

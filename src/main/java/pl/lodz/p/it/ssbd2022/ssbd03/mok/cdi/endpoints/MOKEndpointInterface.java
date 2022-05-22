@@ -71,7 +71,13 @@ public interface MOKEndpointInterface {
     }
 
     // MOK.4 Odblokuj konto
-    // TODO: Dodanie Javadoc
+    /**
+     * Metoda odblokowująca konto użytkownika, które zostało uprzednio zablokowane przez administratora
+     * @param login     Login konta, które ma zostać odblokowane
+     * @param eTagDto
+     * @return
+     * @throws MethodNotImplementedException w momencie, gdy metoda jest niezaimplementowana
+     */
     @PATCH
     @Path("/activate/{login}")
     @RolesAllowed(Roles.ADMINISTRATOR)
