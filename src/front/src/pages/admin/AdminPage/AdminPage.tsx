@@ -1,41 +1,30 @@
-import { useEffect } from "react";
-import {
-  useFindAllUsersMutation,
-  useGetOwnAccountDetailsQuery,
-} from "../../../api/api";
+import { useGetOwnAccountDetailsWorkaroundMutation } from "../../../api/api";
 import styles from "./adminPage.module.scss";
+import {useEffect, useState} from "react";
+import {AccountWithAccessLevelsDto} from "../../../api/types/apiParams";
 
 const AdminPage = () => {
-  // TODO: nie działa. Wyrzuca 401, ale w postmanie podobne zapytanie działa. Do naprawy
-  const [findAllUsers] = useFindAllUsersMutation();
-
-  const test = async () => {
-    const result = await findAllUsers({ page: 1, limit: 2 });
-    return result;
-  };
+  const [accountDetails, setAccountDetails] = useState<AccountWithAccessLevelsDto>();
+  // TODO: zmienić, żeby nie korzystało z WorkaroundMutation (jest jakiś problem, że Query nie działa,
+  //  tzn, robi zapytanie, w zakładce network widać, że jest ok, ale funkcja zwraca undefined)
+  const [getAccountDetails, {isLoading}] = useGetOwnAccountDetailsWorkaroundMutation();
 
   useEffect(() => {
-    // wywołaanie dwóch metod w celu sprawdzenia, czy żądania omijają CORS
-    //TODO: po przetestowaniu usunąć!
-
-    test()
-      .then((data) => console.log(data))
-      .catch((err) => console.log(err.message));
-
-    fetch("https://localhost:8181/api/mok/ping")
-      .then((res) => {
-        return res.text();
-      })
-      .then((data) => console.log(data))
-      .catch((err) => console.log(err.message));
+    getAccountDetails().then((res) => {
+      if ("data" in res) {
+        setAccountDetails(res.data);
+      }
+    });
   }, []);
 
   return (
     <div className={styles.whiteText}>
-      <>
-        <h1>Admin Page</h1>
-        <p>imię: Marceliusz</p>
-      </>
+      <h1>Admin Page</h1>
+      <p>eTag: {accountDetails?.ETag}</p>
+      <p>imię: {accountDetails?.firstName}</p>
+      <p>nazwisko: {accountDetails?.lastName}</p>
+      {/*<p>email: {accountDetails?.email}</p>*/}
+      <p>accessLevels: {accountDetails?.accessLevels.map((accessLevel) => accessLevel.level).join(", ")}</p>
     </div>
   );
 };
