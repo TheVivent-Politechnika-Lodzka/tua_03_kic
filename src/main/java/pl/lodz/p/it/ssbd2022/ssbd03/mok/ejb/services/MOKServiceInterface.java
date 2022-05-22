@@ -6,6 +6,7 @@ import pl.lodz.p.it.ssbd2022.ssbd03.common.ManagerLocalInterface;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.Account;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.access_levels.AccessLevel;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.MethodNotImplementedException;
+import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.access_level.AccessLevelNotFoundException;
 import pl.lodz.p.it.ssbd2022.ssbd03.utils.PaginationData;
 
 import java.util.List;
@@ -73,7 +74,16 @@ public interface MOKServiceInterface extends ManagerLocalInterface {
         throw new MethodNotImplementedException();
     }
 
-    // TODO: Dodanie Javadoc
+    /**
+     * Metoda odłączająca poziom dostępu dla konta, wywołana z poziomu sewrisu.
+     *
+     * @param login Login użytkownika, którego poziom dostępu ma zostać odłączony
+     * @param accessLevelName Poziom dostępu, który ma zostać odłączony (klient, specjalista bądź administrator)
+     * @param accessLevelEtag Wartość ETag
+     * @return Konto użytkownika, którego poziom dostępu został odłączony
+     * @throws MethodNotImplementedException w momencie, gdy metoda jest niezaimplementowana
+     * @throws AccessLevelNotFoundException w momencie, gdy nie znaleziono w koncie o danym loginie danego poziomu dostępu
+     */
     default Account removeAccessLevelFromAccount(String login, String accessLevelName, String accessLevelEtag) {
         throw new MethodNotImplementedException();
     }

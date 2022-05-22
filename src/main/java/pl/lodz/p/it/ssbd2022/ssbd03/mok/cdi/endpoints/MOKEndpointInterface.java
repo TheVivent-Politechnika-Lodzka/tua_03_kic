@@ -11,6 +11,7 @@ import jakarta.ws.rs.core.Response;
 import pl.lodz.p.it.ssbd2022.ssbd03.common.Roles;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.Account;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.MethodNotImplementedException;
+import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.TransactionException;
 import pl.lodz.p.it.ssbd2022.ssbd03.mappers.json.AccessLevelDeserializer;
 import pl.lodz.p.it.ssbd2022.ssbd03.mok.dto.*;
 import pl.lodz.p.it.ssbd2022.ssbd03.mok.dto.access_levels.AccessLevelDto;
@@ -90,8 +91,16 @@ public interface MOKEndpointInterface {
         throw new MethodNotImplementedException();
     }
 
-    // MOK.6 Odłącz poziom dostępu z konta
-    // TODO: Dodanie Javadoc
+    /**
+     * Metoda odłączająca poziom dostępu dla konta, wywołana z poziomu endpointa.
+     * Może ją tylko wykonać tylko konto z poziomem dostępu administratora.
+     * @param login Login użytkownika, którego poziom dostępu ma zostać odłączony
+     * @param accessLevel Poziom dostępu, który ma zostać odłączony (klient, specjalista bądź administrator)
+     * @param eTag Wartość ETag
+     * @return odpowiedź HTTP
+     * @throws MethodNotImplementedException w momencie, gdy metoda jest niezaimplementowana
+     * @throws TransactionException w momencie, gdy transakcja nie została zatwierdzona
+     */
     @DELETE
     @Path("/access-level/{login}/{accessLevel}")
     @RolesAllowed(Roles.ADMINISTRATOR)

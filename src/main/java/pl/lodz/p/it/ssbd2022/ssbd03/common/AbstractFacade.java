@@ -6,6 +6,7 @@ import jakarta.persistence.PersistenceException;
 import jakarta.persistence.TypedQuery;
 import jakarta.persistence.criteria.CriteriaQuery;
 import org.hibernate.exception.ConstraintViolationException;
+import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.account.AccountNotFoundException;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.database.DatabaseException;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.InvalidParametersException;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.database.InAppOptimisticLockException;
@@ -69,18 +70,30 @@ public abstract class AbstractFacade<T> {
         }
     }
 
-    // TODO: Dodanie Javadoc
+    /**
+     * Usuwa encję z bazy danych
+     *
+     * @param entity Encja, która ma zostać usunięta
+     * @param tagFromDto Wartość ETag encji
+     */
     public void remove(T entity, String tagFromDto){
         if (entity instanceof AbstractEntity abstractEntity)
             verifyTag(abstractEntity, tagFromDto);
         unsafeRemove(entity);
     }
 
-    // TODO: Dodanie Javadoc
+    /**
+     * Usuwa encję z bazy danych
+     *
+     * @param entity Encja, która ma zostać usunięta
+     * @throws InAppOptimisticLockException gdy wystąpi błąd związany z blokadą optymistyczną
+     * @throws ConstraintViolationException gdy żądana operacja spowodowałaby naruszenie zdefiniowanego ograniczenia integralności danych
+     * @throws DatabaseException gdy wystąpi błąd związany z bazą danych
+     */
     public void unsafeRemove(T entity){
         try {
-        getEntityManager().remove(entity);
-        getEntityManager().flush();
+            getEntityManager().remove(entity);
+            getEntityManager().flush();
         } catch (OptimisticLockException e){
             throw new InAppOptimisticLockException(e);
         } catch (PersistenceException e){

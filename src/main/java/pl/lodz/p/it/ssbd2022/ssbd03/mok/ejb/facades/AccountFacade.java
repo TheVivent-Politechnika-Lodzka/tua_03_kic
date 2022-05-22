@@ -5,16 +5,14 @@ import jakarta.ejb.TransactionAttribute;
 import jakarta.ejb.TransactionAttributeType;
 import jakarta.inject.Inject;
 import jakarta.interceptor.Interceptors;
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.PersistenceContext;
-import jakarta.persistence.PersistenceException;
-import jakarta.persistence.TypedQuery;
+import jakarta.persistence.*;
 import jakarta.persistence.criteria.CriteriaQuery;
 import lombok.Getter;
 import org.hibernate.exception.ConstraintViolationException;
 import pl.lodz.p.it.ssbd2022.ssbd03.common.AbstractFacade;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.Account;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.account.AccountAlreadyExistsException;
+import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.account.AccountNotFoundException;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.database.DatabaseException;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.InvalidParametersException;
 import pl.lodz.p.it.ssbd2022.ssbd03.interceptors.TrackerInterceptor;
@@ -40,16 +38,25 @@ public class AccountFacade extends AbstractFacade<Account> {
         super(Account.class);
     }
 
-    // TODO: Dodanie Javadoc
+
+    /**
+     * Zwraca użytkownika z danym loginem z bazy danych.
+     *
+     * @param login Login szukanego użytkownika
+     * @return Odnaleziony użytkownik
+     * @throws AccountNotFoundException w przypadku nieznalezienia konta z danym loginem
+     */
     public Account findByLogin(String login) {
-        // TODO: dodać łapanie wyjątku kiedy nie znaleziono konta
-        TypedQuery<Account> typedQuery = entityManager.createNamedQuery("Account.findByLogin", Account.class);
-        typedQuery.setParameter("login", login);
-        return typedQuery.getSingleResult();
+        try {
+            TypedQuery<Account> typedQuery = entityManager.createNamedQuery("Account.findByLogin", Account.class);
+            typedQuery.setParameter("login", login);
+            return typedQuery.getSingleResult();
+        } catch (NoResultException e) {
+            throw AccountNotFoundException.notFoundByLogin();
+        }
     }
 
     /**
-     *
      * Zwraca listę stronicowanych użytkowników w bazie danych, w których imieniu i/lub nazwisku występuje dana fraza.
      *
      * @param pageNumber Numer strony (startuje od 1)
