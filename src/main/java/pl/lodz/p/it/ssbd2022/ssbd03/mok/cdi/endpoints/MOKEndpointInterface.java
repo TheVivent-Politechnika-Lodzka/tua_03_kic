@@ -136,7 +136,12 @@ public interface MOKEndpointInterface {
     }
 
     // MOK.9 Edytuj dane własnego konta
-    // TODO: Dodanie Javadoc
+    /**
+     * Metoda pozwalająca na modyfikację danych
+     * @param accountWithAccessLevelsDto Obiekt DTO, zawierający informacje o koncie użytkownika
+     * @return odpowiedź HTTP, powinna zawierać zmodyfikowane dane użytkownika
+     * @throws MethodNotImplementedException w momencie, gdy metoda jest niezaimplementowana
+     */
     @PUT
     @Path("/")
     @PermitAll
