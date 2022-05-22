@@ -16,6 +16,15 @@ export interface JWT {
   exp: number;
 }
 
+interface ShowAccountInfo {
+  login: string;
+  firstName: string;
+  lastName: string;
+  accessLevels: string[];
+  email: string;
+  active: boolean;
+}
+
 export interface PaginationData {
   totalCount: number;
   totalPages: number;
