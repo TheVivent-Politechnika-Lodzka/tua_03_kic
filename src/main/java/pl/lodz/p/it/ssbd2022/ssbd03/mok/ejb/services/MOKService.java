@@ -279,15 +279,6 @@ public class MOKService extends AbstractManager implements MOKServiceInterface, 
         ResetPasswordToken resetPasswordToken = new ResetPasswordToken();
         resetPasswordToken.setAccount(account);
         resetPasswordFacade.create(resetPasswordToken);
-        // TODO: przenieść wysyłanie maila do endpointu (z upewnienieniem się, że transakcja się powiedzie)
-        emailConfig.sendEmail(
-                account.getEmail(),
-                "Reset password",
-                "Your link to reset password: \n"
-                        + "localhost:8080/mok/reset-password-token \n"
-                        + "Your data to reset password: \nlogin: " + login + "\ntoken:"
-                        + hashAlgorithm.generate(resetPasswordToken.getId().toString().toCharArray())
-        );
         return resetPasswordToken;
     }
 
