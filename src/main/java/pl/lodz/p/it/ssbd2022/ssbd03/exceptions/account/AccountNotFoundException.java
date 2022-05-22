@@ -33,9 +33,9 @@ public class AccountNotFoundException extends AppBaseException {
     }
 
     /**
-     * Prywatny konstruktor potrzebny do budowania wyjątku przy statycznych metodach
+     * Konstruktor, o dostępie prywatnym, potrzebny do budowania wyjątku przy statycznych metodach
      * znajdujących się w klasie AccountNotFoundException
-     * @param string wiadomość zawarta w wyjątku
+     * @param string Wiadomość zawarta w wyjątku
      * @return wyjatek typu AccountNotFoundException
      */
     private AccountNotFoundException(String string) {

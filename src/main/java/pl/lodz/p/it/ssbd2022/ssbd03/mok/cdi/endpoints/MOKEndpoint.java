@@ -1,17 +1,13 @@
 package pl.lodz.p.it.ssbd2022.ssbd03.mok.cdi.endpoints;
 
 import jakarta.annotation.security.DenyAll;
-import jakarta.annotation.security.RolesAllowed;
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.inject.Inject;
-import jakarta.ws.rs.GET;
 import jakarta.ws.rs.Path;
-import jakarta.ws.rs.Produces;
-import jakarta.ws.rs.QueryParam;
-import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import pl.lodz.p.it.ssbd2022.ssbd03.common.Config;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.Account;
+import pl.lodz.p.it.ssbd2022.ssbd03.entities.ResetPasswordToken;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.access_levels.AccessLevel;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.TransactionException;
 import pl.lodz.p.it.ssbd2022.ssbd03.global_services.EmailService;
@@ -21,6 +17,7 @@ import pl.lodz.p.it.ssbd2022.ssbd03.mok.dto.*;
 import pl.lodz.p.it.ssbd2022.ssbd03.mok.dto.access_levels.AccessLevelDto;
 import pl.lodz.p.it.ssbd2022.ssbd03.mok.ejb.services.MOKServiceInterface;
 import pl.lodz.p.it.ssbd2022.ssbd03.security.AuthContext;
+import pl.lodz.p.it.ssbd2022.ssbd03.utils.HashAlgorithm;
 import pl.lodz.p.it.ssbd2022.ssbd03.utils.PaginationData;
 
 import java.util.List;
@@ -40,6 +37,8 @@ public class MOKEndpoint implements MOKEndpointInterface {
     private AccessLevelMapper accessLevelMapper;
     @Inject
     private EmailService emailService;
+    @Inject
+    private HashAlgorithm hashAlgorithm;
 
     @Override
     public Response register(RegisterClientDto registerClientDto) {
@@ -320,14 +319,25 @@ public class MOKEndpoint implements MOKEndpointInterface {
     public Response resetPassword(String login) {
         int TXCounter = Config.MAX_TX_RETRIES;
         boolean commitedTX;
+        ResetPasswordToken token;
         do {
-            mokServiceInterface.resetPassword(login);
+            token = mokServiceInterface.resetPassword(login);
             commitedTX = mokServiceInterface.isLastTransactionCommited();
         } while (!commitedTX && --TXCounter > 0);
 
         if (!commitedTX) {
             throw new TransactionException();
         }
+        Account account = token.getAccount();
+        //TODO I18n
+        emailService.sendEmail(
+                account.getEmail(),
+                "Reset password",
+                "Your link to reset password: \n"
+                        + "localhost:8080/mok/reset-password-token \n"
+                        + "Your data to reset password: \nlogin: " + login + "\ntoken:"
+                        + hashAlgorithm.generate(token.getId().toString().toCharArray())
+        );
 
         return Response.ok().build();
     }

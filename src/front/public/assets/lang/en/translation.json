@@ -15,6 +15,7 @@
   "log_out": "LOG OUT",
   "sign_in": "SIGN IN",
   "cyber": "CYBER IMPLANT",
+  "users": "USERS",
   "specialist": "SPECIALIST",
   "appointment": "APPOINTMENT",
   "password": "Password",
@@ -34,13 +35,26 @@
   "invite_main_page": "Go to Home Page",
   "main_page": "HOME",
 
+  "wrong_data": "Wrong data",
   "insert_token": "Insert token from e-mail",
   "active_account": "Active account",
   "confirmed_account": "Account confirmed",
   "nav_log": "Go to Login Page",
 
-  "wrong_data": "Wrong data",
   "server_error": "Server Error, try again for a moment",
+
+  "users_administration_page": "Users",
+  "search_by_phrase_placeholder": "Search by phrase",
+  "header_login": "Login",
+  "header_first_name": "First name",
+  "header_last_name": "Last name",
+  "header_level_access_level": "Access levels",
+  "header_email": "Email",
+  "header_is_active": "Is active",
+  "header_change_password": "Change password",
+  "cell_active": "Active",
+  "cell_inctive": "Inactive",
+
   "refill_data": "Refill login data",
 
   "CreateAccountForm": {
@@ -53,7 +67,6 @@
     "lenguage": "Lenguage*",
     "submit": "Create account"
   },
-
 
   "button": {
     "addAccessLevel": {
@@ -78,5 +91,8 @@
         }
       }
     }
-  }
+  },
+
+  "email_send": "Check your email",
+  "email_error": "Wrong login"
 }

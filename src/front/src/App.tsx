@@ -13,6 +13,9 @@ import { login as loginDispatch } from "./redux/userSlice";
 import ActivateAccountPage from "./pages/unprotected/activate/ActivateAccountPage";
 import HomeLayout from "./component/Layout/HomeLayout";
 import DetailsLayout from "./component/Layout/DetailsLayout";
+import ResetPasswordForm from "./component/Form/resetPasswordForm/ResetPasswordForm";
+import ResetPasswordTokenForm from "./component/Form/resetPasswordTokenForm/ResetPasswordTokenForm";
+import UserManagment from "./pages/admin/UserManagment/UserManagment";
 import CreateAccountPage from "./pages/admin/AdminPage/createAccountPage/CreateAccountPage";
 
 function App() {
@@ -41,6 +44,7 @@ function App() {
             {user.cur === "ADMINISTRATOR" ? (
               <>
                 <Route path="/admin" element={<AdminPage />} />
+                <Route path="/admin/users" element={<UserManagment />} />
                 <Route path="/createAccount" element={<CreateAccountPage />} />
               </>
             ) : (
@@ -56,12 +60,16 @@ function App() {
             ) : (
               <></>
             )}
+       
           </Route>
           <Route element={<HomeLayout />}>
             <Route path="/" element={<MainPage />} />
+            
           </Route>
           <Route path="/login" element={<LoginPage />} />
           <Route path="/active" element={<ActivateAccountPage />} />
+          <Route path="/reset-password" element={<ResetPasswordForm />} />
+          <Route path="/reset-password-token" element={<ResetPasswordTokenForm />} />
           <Route path="/*" element={<ErrorPage />} />
         </Routes>
       </Router>
