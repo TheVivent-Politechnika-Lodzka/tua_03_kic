@@ -43,6 +43,18 @@
   "server_error": "Server Error, try again for a moment",
   "refill_data": "Refill login data",
 
+  "CreateAccountForm": {
+    "form_title": "Create account",
+    "email": "Email*",
+    "first_name": "First name*",
+    "last_name": "Last name*",
+    "login": "Login*",
+    "password": "Password*",
+    "lenguage": "Lenguage*",
+    "submit": "Create account"
+  },
+
+
   "button": {
     "addAccessLevel": {
       "buttonText": "Add Access Level",

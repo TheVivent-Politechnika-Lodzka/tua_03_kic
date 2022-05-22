@@ -43,6 +43,17 @@
   "server_error": "Błąd serwera, spróbuj za chwilę",
   "refill_data": "Uzupełnij dane logowania",
 
+  "CreateAccountForm": {
+    "form_title": "Utwórz konto",
+    "email": "Email*",
+    "first_name": "Imie*",
+    "last_name": "Nazwisko*",
+    "login": "Identyfikator*",
+    "password": "Hasło*",
+    "lenguage": "Język*",
+    "submit": "Stwórz konto"
+  },
+
   "button": {
     "addAccessLevel": {
       "buttonText": "Dodaj poziom dostępu",

@@ -94,6 +94,11 @@ public class AccountFacade extends AbstractFacade<Account> {
         }
     }
 
+    /**
+     * Metoda dodaje nowe konto do bazy danych
+     * @param entity konto użytkownika
+     * @throws AccountAlreadyExistsException gdy użytkownik o podanym loginie lub emailu już istnieje
+     */
     @Override
     public void create(Account entity) {
         try {
