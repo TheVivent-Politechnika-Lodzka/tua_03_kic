@@ -10,7 +10,7 @@ import jakarta.ws.rs.ext.Provider;
 import java.io.IOException;
 
 /**
- * Klasa służąca do dodawania do każdego nagłówka odpowiedzi, w celu ominięcia CORS
+ * Klasa służąca, do dodawania, do każdego nagłówka odpowiedzi, w celu ominięcia CORS
  */
 @Provider
 @Priority(Priorities.HEADER_DECORATOR)
