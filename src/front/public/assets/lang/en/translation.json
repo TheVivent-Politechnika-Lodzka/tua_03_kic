@@ -16,7 +16,7 @@
   "sign_in": "SIGN IN",
   "cyber": "CYBER IMPLANT",
   "specialist": "SPECIALIST",
-  "appointment":"APPOINTMENT",
+  "appointment": "APPOINTMENT",
   "password": "Password",
   "first_name": "First name*",
   "last_name": "Last name*",
@@ -28,7 +28,7 @@
 
   "c_password": "Current Password",
   "n_password": "New Password",
-  "change_password" : "Change Password",
+  "change_password": "Change Password",
 
   "error_page": "Sorry, page doesn't exist",
   "invite_main_page": "Go to Home Page",
@@ -41,5 +41,16 @@
 
   "wrong_data": "Wrong data",
   "server_error": "Server Error, try again for a moment",
-  "refill_data": "Refill login data"
+  "refill_data": "Refill login data",
+
+  "CreateAccountForm": {
+    "form_title": "Create account",
+    "email": "Email*",
+    "first_name": "First name*",
+    "last_name": "Last name*",
+    "login": "Login*",
+    "password": "Password*",
+    "lenguage": "Lenguage*",
+    "submit": "Create account"
+  }
 }
