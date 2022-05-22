@@ -107,7 +107,12 @@ public interface MOKEndpointInterface {
     }
 
     // MOK.7 Zmień własne hasło
-    // TODO: Dodanie Javadoc
+    /**
+     * Metoda zmieniająca hasło aktualnego użytkownika, wywoływana z poziomu endpointa.
+     * Metoda dostepna dla kont z dowolnym poziomem dostepu.
+     * @param changeOwnPasswordDto Obiekt Dto zawierający etag, stare (aktualne) hasło oraz nowe hasło
+     * @return odpowiedź HHTP
+     */
     @PATCH
     @Path("/password")
     @PermitAll
