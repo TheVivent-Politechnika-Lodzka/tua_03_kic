@@ -71,7 +71,7 @@ export interface AccountWithAccessLevelsDto extends AbstractDto {
   login: string;
   firstName: string;
   lastName: string;
-  isActive: boolean;
+  active: boolean;
   isConfirmed: boolean;
   language: Language;
   accessLevels: AccessLevelDto[];

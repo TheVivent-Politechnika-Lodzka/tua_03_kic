@@ -41,7 +41,7 @@ const ClientPage = () => {
           login,
           accessLevels,
           email,
-          isActive,
+          active,
           firstName,
           lastName,
         }: AccountWithAccessLevelsDto): ViewAccount => {
@@ -53,7 +53,7 @@ const ClientPage = () => {
               return `${level}\n`;
             }),
             email: email,
-            active: isActive,
+            active: active,
           };
         }
       );
