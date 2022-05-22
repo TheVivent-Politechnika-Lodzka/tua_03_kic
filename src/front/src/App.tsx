@@ -13,6 +13,7 @@ import { login as loginDispatch } from "./redux/userSlice";
 import ActivateAccountPage from "./pages/unprotected/activate/ActivateAccountPage";
 import HomeLayout from "./component/Layout/HomeLayout";
 import DetailsLayout from "./component/Layout/DetailsLayout";
+import UserManagment from "./pages/admin/UserManagment/UserManagment";
 import CreateAccountPage from "./pages/admin/AdminPage/createAccountPage/CreateAccountPage";
 
 function App() {
@@ -41,6 +42,7 @@ function App() {
             {user.cur === "ADMINISTRATOR" ? (
               <>
                 <Route path="/admin" element={<AdminPage />} />
+                <Route path="/admin/users" element={<UserManagment />} />
                 <Route path="/createAccount" element={<CreateAccountPage />} />
               </>
             ) : (

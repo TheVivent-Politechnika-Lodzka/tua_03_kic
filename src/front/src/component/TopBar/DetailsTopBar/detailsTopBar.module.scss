@@ -1,21 +1,21 @@
 .topBar {
-  position: fixed;
-  z-index: 100;
+  position: sticky;
   top: 0px;
+  z-index: 1;
   display: flex;
-  justify-content: space-between;
+  align-items: center;
+  justify-content: space-evenly;
   background-color: #000;
-  min-width: 100vw;
+  color: white;
+  width: 100vw;
+
+  .account {
+    font-size: 2rem;
+  }
 }
 
 .logo {
   float: left;
   padding-left: 30px;
   color: aliceblue;
-}
-
-.right_side {
-  float: right;
-  color: aliceblue;
-  font-size: 22px;
 }

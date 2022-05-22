@@ -1,22 +1,15 @@
 package pl.lodz.p.it.ssbd2022.ssbd03.mok.cdi.endpoints;
 
-import jakarta.annotation.security.DenyAll;
 import jakarta.annotation.security.PermitAll;
 import jakarta.annotation.security.RolesAllowed;
-import jakarta.json.bind.annotation.JsonbTypeDeserializer;
 import jakarta.validation.Valid;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import pl.lodz.p.it.ssbd2022.ssbd03.common.Roles;
-import pl.lodz.p.it.ssbd2022.ssbd03.entities.Account;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.MethodNotImplementedException;
-import pl.lodz.p.it.ssbd2022.ssbd03.mappers.json.AccessLevelDeserializer;
 import pl.lodz.p.it.ssbd2022.ssbd03.mok.dto.*;
 import pl.lodz.p.it.ssbd2022.ssbd03.mok.dto.access_levels.AccessLevelDto;
-
-import java.util.ArrayList;
-import java.util.List;
 
 
 public interface MOKEndpointInterface {
@@ -176,7 +169,18 @@ public interface MOKEndpointInterface {
     }
 
     // MOK.13 przeglądaj listę wszystkich kont
-    // TODO: Dodanie Javadoc
+
+    /**
+     * Metoda zwracająca listę wszystkich kont, która jest stronicowana, od strony endopointa.
+     * Metoda umożliwia również wyszukiwanie kont po imieniu i/lub nazwisku
+     *
+     * @param page   Numery strony, która ma być zwrócona (pierwsza strona jest równa 1)
+     * @param limit  Maksymalna ilość zwróconych kont na stronę
+     * @param phrase Ciąg znaków, dla którego jest zwracana lista, która go spełnia
+     *               (w tym przypadku ciąg imienia i nazwiska)
+     * @return Lista wszystkich kont
+     * @throws MethodNotImplementedException w momencie, gdy metoda jest niezaimplementowana
+     */
     @GET
     @Path("/list")
     @RolesAllowed(Roles.ADMINISTRATOR)

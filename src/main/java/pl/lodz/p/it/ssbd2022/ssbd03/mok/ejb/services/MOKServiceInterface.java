@@ -1,6 +1,5 @@
 package pl.lodz.p.it.ssbd2022.ssbd03.mok.ejb.services;
 
-import jakarta.annotation.security.DenyAll;
 import jakarta.ejb.Local;
 import pl.lodz.p.it.ssbd2022.ssbd03.common.ManagerLocalInterface;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.Account;
@@ -8,7 +7,6 @@ import pl.lodz.p.it.ssbd2022.ssbd03.entities.access_levels.AccessLevel;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.MethodNotImplementedException;
 import pl.lodz.p.it.ssbd2022.ssbd03.utils.PaginationData;
 
-import java.util.List;
 
 @Local
 public interface MOKServiceInterface extends ManagerLocalInterface {
@@ -45,7 +43,17 @@ public interface MOKServiceInterface extends ManagerLocalInterface {
         throw new MethodNotImplementedException();
     }
 
-    // TODO: Dodanie Javadoc
+    /**
+     * Metoda zwracająca listę wszystkich kont, która jest stronicowana, od strony servicu.
+     * Metoda umożliwia również wyszukiwanie kont po imieniu i/lub nazwisku
+     *
+     * @param page   Numery strony, która ma być zwrócona (pierwsza strona jest równa 1)
+     * @param size   Maksymalna ilość zwróconych kont na stronę
+     * @param phrase Ciąg znaków, dla którego jest zwracana lista, która go spełnia
+     *               (w tym przypadku ciąg imienia i nazwiska)
+     * @return Lista wszystkich kont
+     * @throws MethodNotImplementedException w momencie, gdy metoda jest niezaimplementowana
+     */
     default PaginationData findAllAccounts(int page, int size, String phrase) {
         throw new MethodNotImplementedException();
     }
