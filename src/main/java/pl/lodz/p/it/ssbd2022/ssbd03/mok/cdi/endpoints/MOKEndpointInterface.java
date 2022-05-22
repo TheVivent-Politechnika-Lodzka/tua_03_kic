@@ -163,8 +163,15 @@ public interface MOKEndpointInterface {
         throw new MethodNotImplementedException();
     }
 
+
     // MOK.14 Zresetuj hasło
-    // TODO: Dodanie Javadoc
+    /**
+     * Metoda umożliwiająca zresetowanie hasła do konta przez użytkownika o zadanym loginie
+     *
+     * @param login Login użytkownika, który wyraził chęć zresetowania hasła
+     * @return Odpowiedź HTTP
+     * @throws MethodNotImplementedException w momencie, gdy metoda jest niezaimplementowana
+     */
     @POST
     @Path("/reset-password/{login}")
     @PermitAll
@@ -173,8 +180,16 @@ public interface MOKEndpointInterface {
         throw new MethodNotImplementedException();
     }
 
+
     // MOK.14 Zresetuj hasło
-    // TODO: Dodanie Javadoc
+    /**
+     * Metoda resetująca hasło użytkownika w przypadku zapomnienia
+     * Metoda zmienia hasło użytkownika na nowopodane dane
+     *
+     * @param resetPasswordDto Obiekt DTO zawierający login, hasło oraz token do zresetowania hasła dla danego konta
+     * @return Odpowiedź HTTP
+     * @throws MethodNotImplementedException w momencie, gdy metoda jest niezaimplementowana
+     */
     @POST
     @Path("/reset-password-token")
     @PermitAll
