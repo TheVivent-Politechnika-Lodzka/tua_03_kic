@@ -16,10 +16,10 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 @Constraint(validatedBy = {})
 @Retention(RUNTIME)
 @Size(min = 3, max = 30)
-@NotNull
-@Pattern(regexp = Patterns.LAST_NAME, message = "{server.error.validation.constraints.lastname}")
+@NotNull(message = "{server.error.validation.constraints.notNull.lastName}")
+@Pattern(regexp = Patterns.LAST_NAME, message = "{server.error.validation.constraints.lastName}")
 public @interface LastName {
-    String message() default "{server.error.validation.constraints.lastname}";
+    String message() default "{server.error.validation.constraints.lastName}";
 
     Class<?>[] groups() default {};
 

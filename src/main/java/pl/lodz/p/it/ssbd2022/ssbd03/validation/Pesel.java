@@ -16,7 +16,7 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 @Constraint(validatedBy = {})
 @Retention(RUNTIME)
 @Size(min = 11, max = 11)
-@NotNull
+@NotNull(message = "{server.error.validation.constraints.notNull.pesel}")
 @Pattern(regexp = Patterns.PESEL, message = "{server.error.validation.constraints.pesel}")
 public @interface Pesel {
     String message() default "{server.error.validation.constraints.pesel}";
