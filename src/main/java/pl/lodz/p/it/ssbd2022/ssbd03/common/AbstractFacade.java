@@ -60,7 +60,7 @@ public abstract class AbstractFacade<T> {
     }
 
     /**
-     * Metoda usuwa podaną encję z bazy danych. Uwzględnia sprawdzenie wersji.
+     * Metoda EDYTUJĄCA podaną encję z bazy danych. Uwzględnia sprawdzenie wersji.
      * @param entity Obiekt encji
      * @param tagFromDto ETag przekazany z Dto do sprawdzenia
      * @throws InAppOptimisticLockException
