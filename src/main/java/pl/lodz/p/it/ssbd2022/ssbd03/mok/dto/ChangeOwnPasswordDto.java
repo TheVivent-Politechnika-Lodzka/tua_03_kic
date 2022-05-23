@@ -22,6 +22,5 @@ public class ChangeOwnPasswordDto {
     @Password
     private String newPassword;
 
-    @NotNull
     private String captcha;
 }
