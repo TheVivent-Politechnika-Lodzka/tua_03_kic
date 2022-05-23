@@ -12,9 +12,14 @@ public class AbstractEntityMapper {
     @Inject
     private HashAlgorithm hashAlgorithm;
 
-    // TODO: Dodanie Javadoc
-    // TODO: zmiana nazwy metody?
-    public AbstractDto map(AbstractDto dto, AbstractEntity entity) {
+    /**
+     * Metoda konwertująca obiekt encji na obiekt typu DTO
+     *
+     * @param dto Obiekt DTO, który zostanie zmieniony oraz (finalnie) zwrócony
+     * @param entity Encja, na podstawie której utowrzony zostanie obiekt typu DTO
+     * @return Obiekt typu DTO
+     */
+    public AbstractDto dtoFromEntity(AbstractDto dto, AbstractEntity entity) {
         String eTag = hashAlgorithm.generateETag(
                 entity.getId(),
                 entity.getVersion()
