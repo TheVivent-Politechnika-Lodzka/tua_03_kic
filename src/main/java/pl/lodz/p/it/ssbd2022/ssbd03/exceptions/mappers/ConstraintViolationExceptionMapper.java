@@ -45,7 +45,12 @@ public class ConstraintViolationExceptionMapper implements ExceptionMapper<Const
         return Response.status(Response.Status.BAD_REQUEST).entity(message.toString()).build();
     }
 
-    // TODO: Dodanie Javadoc
+    /**
+     * Metoda wyciągające nazwę pola, potrzebnej do walidacji
+     *
+     * @param path Wskazuje ścieżkę pliku
+     * @return nazwa pola
+     */
     private String getFieldName(Path path) {
         Iterator<Path.Node> nodes = path.iterator();
         String fieldName = null;

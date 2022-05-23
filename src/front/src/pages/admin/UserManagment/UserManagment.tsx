@@ -16,7 +16,6 @@ const UserManagment = () => {
   const navigate = useNavigate();
   const { t } = useTranslation();
 
-
   useEffect(() => {
     getAccounts();
   }, []);
@@ -33,7 +32,7 @@ const UserManagment = () => {
     let accounts;
     if ("data" in data) {
       // wygląda paskudnie, ale na razie zostawmy
-      accounts = data.data?.data?.map(
+      accounts = data.data?.map(
         ({
           login,
           accessLevels,
@@ -108,7 +107,12 @@ const UserManagment = () => {
                   <td>{email}</td>
                   <td>{active ? t("cell_active") : t("cell_inactive")}</td>
                   <td>
-                    <button className={styles.button}>
+                    <button
+                      onClick={() => {
+                        navigate(`/admin/users/${login}/change-password`);
+                      }}
+                      className={styles.button}
+                    >
                       {t("header_change_password")}
                     </button>
                   </td>
@@ -121,7 +125,6 @@ const UserManagment = () => {
                     >
                       {t("header_account_details")}
                     </button>
-                    <button className={styles.button}>Zmień hasło</button>
                   </td>
                   <td>
                     {active ? (

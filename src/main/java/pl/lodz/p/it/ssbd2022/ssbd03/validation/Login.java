@@ -15,7 +15,7 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 @Target({ElementType.FIELD, ElementType.PARAMETER})
 @Constraint(validatedBy = {})
 @Retention(RUNTIME)
-@Size(min = 3, max = 20)
+@Size(min = 3, max = 20, message = "server.error.validation.constraints.size.login")
 @NotNull(message = "server.error.validation.constraints.notNull.login")
 @Pattern(regexp = Patterns.LOGIN, message = "server.error.validation.constraints.login")
 public @interface Login {

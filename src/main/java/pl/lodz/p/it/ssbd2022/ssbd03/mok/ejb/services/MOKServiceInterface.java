@@ -87,16 +87,23 @@ public interface MOKServiceInterface extends ServiceLocalInterface {
         throw new MethodNotImplementedException();
     }
 
-    // TODO: Dodanie Javadoc
+    /**
+     * Metoda zmieniająca hasło dowolnego wybranego użytkownika, wywoływana z poziomu serwisu.
+     * Może ją wykonać tylko konto z poziomem dostępu administratora
+     * @param login Login użytkownika, którego hasło będzie zmieniane
+     * @param newPassword Nowe hasło do logowania, dla użytkownika
+     * @param etag Wartość ETag
+     * @return Konto użytkownika, któremu zmieniono hasło
+     * @throws MethodNotImplementedException w momencie, gdy metoda jest niezaimplementowana
+     */
     default Account changeAccountPassword(String login, String newPassword, String etag) {
         throw new MethodNotImplementedException();
     }
 
     /**
-     * Metoda zmieniająca hasło dowolnego użytkownika, wywoływana z poziomu servicu.
-     * Może ją wykonać tylko konto z poziomem dostępu administratora
+     * Metoda zmieniająca hasło, wywoływana z poziomu serwisu.
      * @param login Login użytkownika, którego hasło będzie zmieniane
-     * @param oldPassword Stare haslo użytkownika, które aktualnie znajduję sie w bazie
+     * @param oldPassword Stare hasło użytkownika, które aktualnie znajduję się w bazie
      * @param newPassword Nowe hasło do logowania, dla użytkownika
      * @param etag Wartość ETag
      * @return Konto użytkownika, któremu zmieniono hasło

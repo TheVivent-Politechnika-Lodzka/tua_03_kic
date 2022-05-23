@@ -49,6 +49,12 @@
 
   "server_error": "Błąd serwera, spróbuj za chwilę",
   "refill_data": "Uzupełnij dane logowania",
+
+  "edit_details": "Edytuj szczegóły konta",
+  "first_name_edit": "Imię",
+  "last_name_edit": "Nazwisko",
+  "edit": "Edytuj",
+  "refill_data": "Uzupełnij dane logowania",
   "access_level": "Poziom dostępu",
   "remove_level": "Usuń poziom dostępu z konta",
   "REMOVE": "USUŃ",
@@ -120,5 +126,12 @@
   "listAccount": "Lista kont",
   "createAccount": "Stwórz konto",
   "detailsAccount": "Moje konto",
-  "editAccount": "Edytuj moje konto"
+  "editAccount": "Edytuj moje konto",
+  "ChangeAccountPassword": {
+    "title": "Zmiana hasła dla użytkownika",
+    "input_placeholder": "Wpisz nowe hasło",
+    "change_password_button": "Zmień",
+    "go_back_button": "Powrót do strony użytkowników",
+    "too_short_password_error": "Haslo jest za krótkie!"
+  }
 }

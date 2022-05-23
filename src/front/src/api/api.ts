@@ -7,7 +7,7 @@ import {
   AccountWithAccessLevelsDtoWithLogin,
   AddAccessLevel,
   changeOwnPasswordDto,
-  changePasswordDto,
+  ChangePasswordDto,
   CreateAccountDto,
   LoginCredentials,
   RegisterClientConfirmDto,
@@ -84,7 +84,7 @@ const api = createApi({
 
     // ZNAJDŹ WSZYSTKICH UŻYTKOWNIKÓW
     findAllUsers: builder.mutation<
-      AccountsPaginationData,
+      AccountWithAccessLevelsDto[],
       PaginationFilterParams
     >({
       query: (params: PaginationFilterParams) => ({
@@ -178,9 +178,9 @@ const api = createApi({
     // ZMIEŃ HASŁO INNEGO UŻYTKOWNIKA
     changeAccountPassword: builder.mutation<
       AccountWithAccessLevelsDto,
-      changePasswordDto
+      ChangePasswordDto
     >({
-      query: ({ login, data }: changePasswordDto) => ({
+      query: ({ login, data }: ChangePasswordDto) => ({
         url: `/mok/password/${login}`,
         method: "PATCH",
         body: data,

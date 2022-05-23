@@ -18,6 +18,7 @@ import UserDetails from "./pages/admin/UserDetails/UserDetails";
 import CreateAccountPage from "./pages/admin/AdminPage/createAccountPage/CreateAccountPage";
 import AccountDetailsPage from "./pages/account/details/AccountDetails";
 import EditAccountDetailsPage from "./pages/account/details/EditAccountDetails";
+import ChangeUserPassword from "./pages/admin/ChangeUserPassword/ChangeUserPassword";
 
 function App() {
   const user = useStoreSelector((state) => state.user);
@@ -47,6 +48,7 @@ function App() {
                 <Route path="/admin" element={<AdminPage />} />
                 <Route path="/admin/users" element={<UserManagment />} />
                 <Route path="/admin/users/:login" element={<UserDetails />} />
+                <Route path="/admin/users/:login/change-password" element={<ChangeUserPassword />} />
                 <Route path="/createAccount" element={<CreateAccountPage />} />
               </>
             ) : (
