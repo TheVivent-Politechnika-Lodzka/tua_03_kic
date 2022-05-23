@@ -290,7 +290,6 @@ public class MOKService extends AbstractService implements MOKServiceInterface, 
             throw new AccessLevelNotFoundException();
 
         account.removeAccessLevel(access);
-
         accessLevelFacade.remove(access, accessLevelEtag);
 
         return account;

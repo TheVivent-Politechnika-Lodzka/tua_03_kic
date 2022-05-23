@@ -45,6 +45,11 @@
   "nav_log": "Go to Login Page",
 
   "server_error": "Server Error, try again for a moment",
+  "refill_data": "Refill login data",
+
+  "access_level": "Access level",
+  "remove_level": "Remove access level from an account",
+  "REMOVE": "REMOVE"
 
   "users_administration_page": "Users",
   "search_by_phrase_placeholder": "Search by phrase",
