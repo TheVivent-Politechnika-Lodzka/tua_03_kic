@@ -31,5 +31,10 @@
   "nav_log": "Przejdz do logowania",
   "wrong_data": "Niepoprawne dane logowania",
   "server_error": "Błąd serwera, spróbuj za chwilę",
-  "refill_data": "Uzupełnij dane logowania"
+  "refill_data": "Uzupełnij dane logowania",
+
+  "edit_details": "Edytuj szczegóły konta",
+  "first_name_edit": "Imię",
+  "last_name_edit": "Nazwisko",
+  "edit": "Edytuj"
 }
