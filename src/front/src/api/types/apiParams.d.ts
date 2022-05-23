@@ -18,6 +18,7 @@ export interface RegisterClientDto {
   phoneNumber: string;
   pesel: string;
   language: Language;
+  captcha: string;
 }
 
 export interface RegisterClientConfirmDto {
@@ -61,6 +62,7 @@ export interface changeOwnPasswordDto {
   oldPassword: string;
   newPassword: string;
   ETag: string;
+  captcha: string;
 }
 
 export interface ChangePasswordDto {
@@ -79,6 +81,7 @@ export interface AccountWithAccessLevelsDto extends AbstractDto {
   active: boolean;
   confirmed: boolean;
   language: Language;
+  captcha: string;
   accessLevels: AccessLevelDto[];
 }
 export interface AccountsPaginationData extends PaginationData {
