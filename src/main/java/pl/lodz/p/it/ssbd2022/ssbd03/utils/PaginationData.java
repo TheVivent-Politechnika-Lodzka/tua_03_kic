@@ -18,5 +18,9 @@ public class PaginationData {
     @NotNull
     private int totalCount;
     @NotNull
+    private int totalPages;
+    @NotNull
+    private int currentPage;
+    @NotNull
     private List data;
 }

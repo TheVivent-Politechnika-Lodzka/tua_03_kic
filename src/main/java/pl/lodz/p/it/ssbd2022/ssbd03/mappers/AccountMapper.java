@@ -28,6 +28,11 @@ public class AccountMapper {
     @Inject
     AbstractEntityMapper abstractEntityMapper;
 
+    /**
+     * Metoda mapuje obiekt typu createAccountDto na obiekt typu Account.
+     * @param createAccountDto - dto z którego tworzymy konto
+     * @return - konto
+     */
     // TODO: Dodanie Javadoc
     public Account createAccountfromCreateAccountDto(CreateAccountDto createAccountDto) {
         Account account = new Account();
@@ -43,8 +48,13 @@ public class AccountMapper {
         return account;
     }
 
-    // TODO: Dodanie Javadoc
-    public Account createAccountfromCreateClientAccountDto(RegisterClientDto registerClientAccountDto) {
+
+    /**
+     * Metoda mapuje obiekt typu na obiekt typu Account
+     * @param registerClientAccountDto - dto z którego tworzone jest konto klienta
+     * @return - konto
+     */
+    public Account createAccountfromRegisterClientDto(RegisterClientDto registerClientAccountDto) {
         Account account = new Account();
         account.setLogin(registerClientAccountDto.getLogin());
         account.setFirstName(registerClientAccountDto.getFirstName());
@@ -97,6 +107,7 @@ public class AccountMapper {
                 account.getLogin(),
                 account.getFirstName(),
                 account.getLastName(),
+                account.getEmail(),
                 account.isActive(),
                 account.isConfirmed(),
                 account.getLanguage(),

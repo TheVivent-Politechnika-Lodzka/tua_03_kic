@@ -1,14 +1,13 @@
 import styles from "./loginForm.module.scss";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { useLoginMutation } from "../../../api/api";
+import { useFindAllUsersMutation, useLoginMutation } from "../../../api/api";
 import { login as loginDispatch } from "../../../redux/userSlice";
 import { useTranslation } from "react-i18next";
 
-
 const LoginForm = () => {
-  const [authenticate, { isLoading }] = useLoginMutation();
+  const [authenticate] = useLoginMutation();
   const [login, setLogin] = useState("");
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
@@ -17,6 +16,7 @@ const LoginForm = () => {
   const navigate = useNavigate();
   const { t } = useTranslation();
 
+  
   const handleSubmit = async (event: any) => {
     event.preventDefault();
 
@@ -32,10 +32,13 @@ const LoginForm = () => {
       } else if ("error" in res && "status" in res.error) {
         if (res.error.status === 401) setMessage(t("wrong_data"));
       } else setMessage(t("server_error"));
-
     } else {
       setMessage(t("refill_data"));
     }
+  };
+
+  const handlePassword = async (event: any) => {
+    navigate("/reset-password");
   };
 
   return (
@@ -50,7 +53,7 @@ const LoginForm = () => {
             name="login"
             id="login"
             value={login}
-            onChange={(e:any) => setLogin(e.target.value)}
+            onChange={(e: any) => setLogin(e.target.value)}
             required
           />
           <label className={styles.form_label}>Login</label>
@@ -72,6 +75,9 @@ const LoginForm = () => {
 
       <div className={styles.login_button} onClick={handleSubmit}>
         {t("log_in")}
+      </div>
+      <div className={styles.login_button} onClick={handlePassword}>
+        {t("forget_password")}
       </div>
       <div className={styles.message_text}>{message}</div>
     </div>

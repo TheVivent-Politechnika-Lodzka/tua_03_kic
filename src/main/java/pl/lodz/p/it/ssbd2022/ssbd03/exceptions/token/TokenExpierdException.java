@@ -1,15 +1,16 @@
-package pl.lodz.p.it.ssbd2022.ssbd03.exceptions.account;
+package pl.lodz.p.it.ssbd2022.ssbd03.exceptions.token;
 
 import jakarta.ejb.ApplicationException;
 import jakarta.ws.rs.core.Response;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.AppBaseException;
 
-// TODO: Dodanie Javadoc
+/**
+ * Wyjątek reprezentujący błąd związany z przedawnieniem tokenu
+ */
 @ApplicationException(rollback = true)
 public class TokenExpierdException extends AppBaseException {
 
-    // TODO: zmiana na kod do internationalizacji
-    private static final String TOKEN_EXPIERD_EXCEPTION = "Token expierd !";
+    private static final String TOKEN_EXPIERD_EXCEPTION = "server.error.appBase.tokenExpired";
 
     public TokenExpierdException() {
         super(TOKEN_EXPIERD_EXCEPTION, Response.Status.METHOD_NOT_ALLOWED);

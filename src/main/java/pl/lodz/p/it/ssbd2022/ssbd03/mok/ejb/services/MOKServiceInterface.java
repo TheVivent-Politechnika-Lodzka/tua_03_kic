@@ -1,45 +1,88 @@
 package pl.lodz.p.it.ssbd2022.ssbd03.mok.ejb.services;
 
-import jakarta.annotation.security.DenyAll;
 import jakarta.ejb.Local;
-import pl.lodz.p.it.ssbd2022.ssbd03.common.ManagerLocalInterface;
+import pl.lodz.p.it.ssbd2022.ssbd03.common.ServiceLocalInterface;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.Account;
+import pl.lodz.p.it.ssbd2022.ssbd03.entities.ResetPasswordToken;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.access_levels.AccessLevel;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.MethodNotImplementedException;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.access_level.AccessLevelNotFoundException;
 import pl.lodz.p.it.ssbd2022.ssbd03.utils.PaginationData;
 
-import java.util.List;
 
 @Local
-public interface MOKServiceInterface extends ManagerLocalInterface {
+public interface MOKServiceInterface extends ServiceLocalInterface {
 
-    // TODO: Dodanie Javadoc
+    /**
+     * Metoda uwierzytelnia użytkownika i zwraca token
+     * @param login Login konta, które ma zostać uwierzytelnione
+     * @param password Hasło konta, które ma zostać uwierzytelnione
+     * @return token użytkownika uwierzytelnionego
+     * @throws MethodNotImplementedException w momencie, gdy metoda jest niezaimplementowana
+     */
     default String authenticate(String login, String password) {
         throw new MethodNotImplementedException();
     }
 
-    // TODO: Dodanie Javadoc
+    /**
+     * Wyszukiwanie konta na podstawie loginu
+     *
+     * @param login Login konta, które ma zostać znalezione
+     * @return znalezione konto
+     * @throws MethodNotImplementedException w momencie, gdy metoda jest niezaimplementowana
+     */
     default Account findAccountByLogin(String login) {
         throw new MethodNotImplementedException();
     }
 
-    // TODO: Dodanie Javadoc
-    default Account deactivateAccount(String login, String etag) {
+    /**
+     * Metoda blokująca konto użytkownika.
+     *
+     * @param login Login konta, które ma zostać zablokowane
+     * @param eTag  Zmienna zawierająca eTag blokowanego konta
+     * @return Odpowiedź HTTP
+     * @throws MethodNotImplementedException w momencie, gdy metoda jest niezaimplementowana
+     */
+    default Account deactivateAccount(String login, String eTag) {
         throw new MethodNotImplementedException();
     }
 
-    // TODO: Dodanie Javadoc
-    default Account activateAccount(String login, String etag) {
+    /**
+     * Metoda odblokowująca konto użytkownika, które zostało uprzednio zablokowane przez administratora
+     *
+     * @param login Login konta, które ma zostać odblokowane
+     * @param eTag  Zmienna zawierająca eTag
+     * @return Zmodyfikowane konto
+     * @throws MethodNotImplementedException w momencie, gdy metoda jest niezaimplementowana
+     */
+    default Account activateAccount(String login, String eTag) {
         throw new MethodNotImplementedException();
     }
 
-    // TODO: Dodanie Javadoc
+    /**
+     * Metoda modyfikująca konto użytkownika
+     *
+     * @param login Login konta, które ma zostać zmodyfikowane
+     * @param account modyfikacje do konta
+     * @param etag  Zmienna zawierająca eTag
+     * @return Zmodyfikowane konto
+     * @throws MethodNotImplementedException w momencie, gdy metoda jest niezaimplementowana
+     */
     default Account editAccount(String login, Account account, String etag) {
         throw new MethodNotImplementedException();
     }
 
-    // TODO: Dodanie Javadoc
+    /**
+     * Metoda zwracająca listę wszystkich kont, która jest stronicowana, od strony servicu.
+     * Metoda umożliwia również wyszukiwanie kont po imieniu i/lub nazwisku
+     *
+     * @param page   Numery strony, która ma być zwrócona (pierwsza strona jest równa 1)
+     * @param size   Maksymalna ilość zwróconych kont na stronę
+     * @param phrase Ciąg znaków, dla którego jest zwracana lista, która go spełnia
+     *               (w tym przypadku ciąg imienia i nazwiska)
+     * @return Lista wszystkich kont
+     * @throws MethodNotImplementedException w momencie, gdy metoda jest niezaimplementowana
+     */
     default PaginationData findAllAccounts(int page, int size, String phrase) {
         throw new MethodNotImplementedException();
     }
@@ -49,17 +92,36 @@ public interface MOKServiceInterface extends ManagerLocalInterface {
         throw new MethodNotImplementedException();
     }
 
-    // TODO: Dodanie Javadoc
+    /**
+     * Metoda zmieniająca hasło dowolnego użytkownika, wywoływana z poziomu servicu.
+     * Może ją wykonać tylko konto z poziomem dostępu administratora
+     * @param login Login użytkownika, którego hasło będzie zmieniane
+     * @param oldPassword Stare haslo użytkownika, które aktualnie znajduję sie w bazie
+     * @param newPassword Nowe hasło do logowania, dla użytkownika
+     * @param etag Wartość ETag
+     * @return Konto użytkownika, któremu zmieniono hasło
+     * @throws MethodNotImplementedException w momencie, gdy metoda jest niezaimplementowana
+     */
     default Account changeAccountPassword(String login, String oldPassword, String newPassword, String etag) {
         throw new MethodNotImplementedException();
     }
 
-    // TODO: Dodanie Javadoc
-    default Account registerAccount(Account account) {
+    /**
+     * Metoda tworzy konto i zwraca token pozwalający aktywować konto
+     * @param account - dane konta
+     * @return token, pozwala na aktywacje konta
+     * @throws MethodNotImplementedException w momencie, gdy metoda jest niezaimplementowana
+     */
+    default String registerAccount(Account account) {
         throw new MethodNotImplementedException();
     }
 
-    // TODO: Dodanie Javadoc
+    /**
+     * Metoda wyszukuje użytkownika w bazie danych i potwierdza jego konto
+     * @param token - token konta, które ma zostać potwierdzone
+     * @return potwierdzone konto
+     * @throws MethodNotImplementedException w momencie, gdy metoda jest niezaimplementowana
+     */
     default Account confirmRegistration(String token) {
         throw new MethodNotImplementedException();
     }
@@ -69,7 +131,14 @@ public interface MOKServiceInterface extends ManagerLocalInterface {
         throw new MethodNotImplementedException();
     }
 
-    // TODO: Dodanie Javadoc
+
+    /**
+     * Dodaj poziom dostępu do konta użytkownika
+     *
+     * @param login       login użytkownika
+     * @param accessLevel dodawany poziom dostępu
+     * @return zaaktualizowane konto użytkownika
+     */
     default Account addAccessLevelToAccount(String login, AccessLevel accessLevel) {
         throw new MethodNotImplementedException();
     }
@@ -88,12 +157,26 @@ public interface MOKServiceInterface extends ManagerLocalInterface {
         throw new MethodNotImplementedException();
     }
 
-    // TODO: Dodanie Javadoc
-    default Account resetPassword(String login) {
+    /**
+     * Metoda wywoływana w ramach chęci zresetowania hasła przez użytkownika o podanym loginie
+     *
+     * @param login Login użytkownika, dla którego zresetowanie hasła będzie możliwe
+     * @return Obiekt konta użytkownika, który będzie mógł zresetować hasło
+     * @throws MethodNotImplementedException w momencie, gdy metoda jest niezaimplementowana
+     */
+    default ResetPasswordToken resetPassword(String login) {
         throw new MethodNotImplementedException();
     }
 
-    // TODO: Dodanie Javadoc
+    /**
+     * Metoda pozwalająca potwierdzić chęć zmiany hasła oraz ustawiająca nowe hasło dla użytkownika
+     *
+     * @param login    Login użytkownika, którego hasło będzie zmieniane
+     * @param password Nowe hasło dla konta użytkownika
+     * @param token    Token będący metodą weryfikacji czy dany użytkownik może zmienić swoje hasło
+     * @return Obiekt konta użytkownika, którego hasło zostało zmienione
+     * @throws MethodNotImplementedException w momencie, gdy metoda jest niezaimplementowana
+     */
     default Account confirmResetPassword(String login, String password, String token) {
         throw new MethodNotImplementedException();
     }

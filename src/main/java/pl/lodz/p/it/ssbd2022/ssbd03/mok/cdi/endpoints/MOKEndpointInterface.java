@@ -1,23 +1,17 @@
 package pl.lodz.p.it.ssbd2022.ssbd03.mok.cdi.endpoints;
 
-import jakarta.annotation.security.DenyAll;
 import jakarta.annotation.security.PermitAll;
 import jakarta.annotation.security.RolesAllowed;
-import jakarta.json.bind.annotation.JsonbTypeDeserializer;
 import jakarta.validation.Valid;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import pl.lodz.p.it.ssbd2022.ssbd03.common.Roles;
-import pl.lodz.p.it.ssbd2022.ssbd03.entities.Account;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.MethodNotImplementedException;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.TransactionException;
 import pl.lodz.p.it.ssbd2022.ssbd03.mappers.json.AccessLevelDeserializer;
 import pl.lodz.p.it.ssbd2022.ssbd03.mok.dto.*;
 import pl.lodz.p.it.ssbd2022.ssbd03.mok.dto.access_levels.AccessLevelDto;
-
-import java.util.ArrayList;
-import java.util.List;
 
 
 public interface MOKEndpointInterface {
@@ -30,9 +24,12 @@ public interface MOKEndpointInterface {
         return Response.ok("pong").build();
     }
 
-
-    // MOK.1 Zarejestruj
-    // TODO: Dodanie Javadoc
+    /**
+     * MOK.1 Zarejestruj
+     * @param registerClientDto - dane konta
+     * @return Response zawierający status HTTP
+     * @throws MethodNotImplementedException jeśli metoda nie została zaimplementowana
+     */
     @POST
     @Path("/register")
     @PermitAll
@@ -41,18 +38,26 @@ public interface MOKEndpointInterface {
         throw new MethodNotImplementedException();
     }
 
-    // MOK.1 Zarejestruj
-    // TODO: Dodanie Javadoc
+    /**
+     * MOK.1 Zarejestruj - potwierdzenie rejestracji konta
+     * @param registerConfirmDto token
+     * @return Response zawierający status HTTP
+     * @throws MethodNotImplementedException jeśli metoda nie została zaimplementowana
+     */
     @POST
     @Path("/register-confirm")
     @PermitAll
     @Consumes(MediaType.APPLICATION_JSON)
-    default Response registerConfirm(@Valid RegisterClientConfirmDto registerConfirmDto) {
+    default Response confirmRegistration(@Valid RegisterClientConfirmDto registerConfirmDto) {
         throw new MethodNotImplementedException();
     }
 
-    // MOK.2 Utwórz konto
-    // TODO: Dodanie Javadoc
+    /**\
+     * MOK.2 Utwórz konto
+     * @param createAccountDto dane konta
+     * @return Response zawierający status HTTP
+     * @throws MethodNotImplementedException jeśli metoda nie została zaimplementowana
+     */
     @PUT
     @Path("/create")
     @RolesAllowed(Roles.ADMINISTRATOR)
@@ -62,7 +67,14 @@ public interface MOKEndpointInterface {
     }
 
     // MOK.3 Zablokuj konto
-    // TODO: Dodanie Javadoc
+    /**
+     * Metoda blokouje konto użytkownika.
+     *
+     * @param login   Login konta, które ma zostać zablokowane
+     * @param eTagDto Obiekt DTO, zawierający w sobie eTag blokowanego konta
+     * @return Odpowiedź HTTP
+     * @throws MethodNotImplementedException w momencie, gdy metoda jest niezaimplementowana
+     */
     @PATCH
     @Path("/deactivate/{login}")
     @RolesAllowed(Roles.ADMINISTRATOR)
@@ -72,7 +84,14 @@ public interface MOKEndpointInterface {
     }
 
     // MOK.4 Odblokuj konto
-    // TODO: Dodanie Javadoc
+    /**
+     * Metoda odblokowująca konto użytkownika, które zostało uprzednio zablokowane przez administratora
+     *
+     * @param login   Login konta, które ma zostać odblokowane
+     * @param eTagDto Obiekt DTO, zawierający w sobie eTag
+     * @return Odpowiedź HTTP
+     * @throws MethodNotImplementedException w momencie, gdy metoda jest niezaimplementowana
+     */
     @PATCH
     @Path("/activate/{login}")
     @RolesAllowed(Roles.ADMINISTRATOR)
@@ -82,7 +101,14 @@ public interface MOKEndpointInterface {
     }
 
     // MOK.5 Dołącz poziom dostępu do konta
-    // TODO: Dodanie Javadoc
+    /**
+     * Metoda dodająca poziom dostępu do konta użytkownika
+     *
+     * @param login   Login konta, które ma zostać odblokowane
+     * @param accessLevelDto Obiekt DTO, zawierający informacje o dołączanym poziomie dostępu
+     * @return Odpowiedź HTTP
+     * @throws MethodNotImplementedException w momencie, gdy metoda jest niezaimplementowana
+     */
     @PUT
     @Path("/access-level/{login}")
     @RolesAllowed(Roles.ADMINISTRATOR)
@@ -109,7 +135,12 @@ public interface MOKEndpointInterface {
     }
 
     // MOK.7 Zmień własne hasło
-    // TODO: Dodanie Javadoc
+    /**
+     * Metoda zmieniająca hasło aktualnego użytkownika, wywoływana z poziomu endpointa.
+     * Metoda dostepna dla kont z dowolnym poziomem dostepu.
+     * @param changeOwnPasswordDto Obiekt Dto zawierający etag, stare (aktualne) hasło oraz nowe hasło
+     * @return odpowiedź HHTP
+     */
     @PATCH
     @Path("/password")
     @PermitAll
@@ -129,7 +160,12 @@ public interface MOKEndpointInterface {
     }
 
     // MOK.9 Edytuj dane własnego konta
-    // TODO: Dodanie Javadoc
+    /**
+     * Metoda pozwalająca na modyfikację danych
+     * @param accountWithAccessLevelsDto Obiekt DTO, zawierający informacje o koncie użytkownika
+     * @return odpowiedź HTTP, powinna zawierać zmodyfikowane dane użytkownika
+     * @throws MethodNotImplementedException w momencie, gdy metoda jest niezaimplementowana
+     */
     @PUT
     @Path("/")
     @PermitAll
@@ -151,8 +187,12 @@ public interface MOKEndpointInterface {
     // MOK.11 Wyloguj
     // nie dotyczy backendu
 
-    // MOK.12 Zaloguj
-    // TODO: Dodanie Javadoc
+    /**
+     * MOK.12 Zaloguj
+     * @param loginCredentialsDto - dane logowania
+     * @return Response zawierający status HTTP
+     * @throws MethodNotImplementedException jeśli metoda nie została zaimplementowana
+     */
     @POST
     @Path("/login")
     @PermitAll
@@ -162,7 +202,18 @@ public interface MOKEndpointInterface {
     }
 
     // MOK.13 przeglądaj listę wszystkich kont
-    // TODO: Dodanie Javadoc
+
+    /**
+     * Metoda zwracająca listę wszystkich kont, która jest stronicowana, od strony endopointa.
+     * Metoda umożliwia również wyszukiwanie kont po imieniu i/lub nazwisku
+     *
+     * @param page   Numery strony, która ma być zwrócona (pierwsza strona jest równa 1)
+     * @param limit  Maksymalna ilość zwróconych kont na stronę
+     * @param phrase Ciąg znaków, dla którego jest zwracana lista, która go spełnia
+     *               (w tym przypadku ciąg imienia i nazwiska)
+     * @return Lista wszystkich kont
+     * @throws MethodNotImplementedException w momencie, gdy metoda jest niezaimplementowana
+     */
     @GET
     @Path("/list")
     @RolesAllowed(Roles.ADMINISTRATOR)
@@ -173,7 +224,13 @@ public interface MOKEndpointInterface {
     }
 
     // MOK.14 Zresetuj hasło
-    // TODO: Dodanie Javadoc
+    /**
+     * Metoda umożliwiająca zresetowanie hasła do konta przez użytkownika o zadanym loginie
+     *
+     * @param login Login użytkownika, który wyraził chęć zresetowania hasła
+     * @return Odpowiedź HTTP
+     * @throws MethodNotImplementedException w momencie, gdy metoda jest niezaimplementowana
+     */
     @POST
     @Path("/reset-password/{login}")
     @PermitAll
@@ -183,7 +240,14 @@ public interface MOKEndpointInterface {
     }
 
     // MOK.14 Zresetuj hasło
-    // TODO: Dodanie Javadoc
+    /**
+     * Metoda resetująca hasło użytkownika w przypadku zapomnienia
+     * Metoda zmienia hasło użytkownika na nowopodane dane
+     *
+     * @param resetPasswordDto Obiekt DTO zawierający login, hasło oraz token do zresetowania hasła dla danego konta
+     * @return Odpowiedź HTTP
+     * @throws MethodNotImplementedException w momencie, gdy metoda jest niezaimplementowana
+     */
     @POST
     @Path("/reset-password-token")
     @PermitAll
@@ -193,7 +257,12 @@ public interface MOKEndpointInterface {
     }
 
     // MOK.15 Przeglądaj szczegóły własnego konta
-    // TODO: Dodanie Javadoc
+    /**
+     * Metoda zwracająca dane aktualnie zalogowanego użytkownika.
+     *
+     * @return Odpowiedź HTTP
+     * @throws MethodNotImplementedException w momencie, gdy metoda jest niezaimplementowana
+     */
     @GET
     @Path("/")
     @PermitAll
@@ -203,7 +272,13 @@ public interface MOKEndpointInterface {
     }
 
     // MOK.16 Przeglądaj szczegóły konta innego użytkownika
-    // TODO: Dodanie Javadoc
+    /**
+     * Metoda zwracająca szczegółowe informacje dotyczące wybranego konta
+     *
+     * @param login   Login konta, którego dane mają zostać wczytane
+     * @return Odpowiedź HTTP
+     * @throws MethodNotImplementedException w momencie, gdy metoda jest niezaimplementowana
+     */
     @GET
     @Path("/{login}")
     @RolesAllowed(Roles.ADMINISTRATOR)

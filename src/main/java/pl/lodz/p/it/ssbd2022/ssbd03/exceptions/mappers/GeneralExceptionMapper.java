@@ -4,15 +4,18 @@ import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.ext.ExceptionMapper;
 import jakarta.ws.rs.ext.Provider;
 
-
+/**
+ * Klasa mapująca wyrzucone generyczne wyjątki na odpowiedź HTTP
+ */
 @Provider
 public class GeneralExceptionMapper implements ExceptionMapper<Exception> {
 
     /**
-     * funkcja mapująca wyjątek na odpowiedź
+     * Metoda zwracająca odpowiedź w przypadku wyrzuconego wyjątku
+     * Zwraca kod 500 oraz wiadomość wyjątku
      *
-     * @param e - wyjątek
-     * @return odpowiedź
+     * @param e Wyrzucony wyjątek w aplikacji
+     * @return Odpowiedź HTTP serwera
      */
     @Override
     public Response toResponse(Exception e) {
