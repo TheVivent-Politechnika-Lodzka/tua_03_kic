@@ -1,5 +1,8 @@
 package pl.lodz.p.it.ssbd2022.ssbd03.mok.ejb.facades;
 
+import jakarta.annotation.security.PermitAll;
+import jakarta.annotation.security.RolesAllowed;
+import jakarta.annotation.security.RunAs;
 import jakarta.ejb.Stateless;
 import jakarta.ejb.TransactionAttribute;
 import jakarta.ejb.TransactionAttributeType;
@@ -11,6 +14,7 @@ import jakarta.persistence.PersistenceException;
 import jakarta.persistence.TypedQuery;
 import lombok.Getter;
 import pl.lodz.p.it.ssbd2022.ssbd03.common.AbstractFacade;
+import pl.lodz.p.it.ssbd2022.ssbd03.common.Roles;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.ConfirmationAccountToken;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.database.DatabaseException;
 import pl.lodz.p.it.ssbd2022.ssbd03.interceptors.TrackerInterceptor;
@@ -22,6 +26,7 @@ import java.util.List;
 @Interceptors(TrackerInterceptor.class)
 @Stateless
 @TransactionAttribute(TransactionAttributeType.MANDATORY)
+@RunAs(Roles.ADMINISTRATOR)
 public class ActiveAccountFacade extends AbstractFacade<ConfirmationAccountToken> {
 
     @PersistenceContext(unitName = "ssbd03mokPU")
@@ -40,9 +45,24 @@ public class ActiveAccountFacade extends AbstractFacade<ConfirmationAccountToken
         return em;
     }
 
+    /**
+     * Metoda tworzy token potwierdzający konto
+     * @param entity
+     */
     @Override
+    @PermitAll
     public void create(ConfirmationAccountToken entity) {
         super.create(entity);
+    }
+
+    /**
+     * Metoda usuwa token potwierdzający konto
+     * @param entity
+     */
+    @Override
+    @PermitAll
+    public void unsafeRemove(ConfirmationAccountToken entity) {
+        super.unsafeRemove(entity);
     }
 
     /**
@@ -51,6 +71,7 @@ public class ActiveAccountFacade extends AbstractFacade<ConfirmationAccountToken
      * @return ConfirmationAccountToken - obiekt zawierający token użytkownika o podanym loginie
      * @throws DatabaseException, gdy wystąpi błąd związany z bazą danych
      */
+    @PermitAll
     public ConfirmationAccountToken findToken(String login){
         try {
             TypedQuery<ConfirmationAccountToken> typedQuery = em.createNamedQuery("ConfirmationAccountToken.findByLogin", ConfirmationAccountToken.class);

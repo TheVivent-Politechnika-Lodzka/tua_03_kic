@@ -14,7 +14,7 @@ import jakarta.security.enterprise.credential.Password;
 import jakarta.security.enterprise.credential.UsernamePasswordCredential;
 import jakarta.security.enterprise.identitystore.CredentialValidationResult;
 import jakarta.security.enterprise.identitystore.IdentityStoreHandler;
-import pl.lodz.p.it.ssbd2022.ssbd03.common.AbstractManager;
+import pl.lodz.p.it.ssbd2022.ssbd03.common.AbstractService;
 import pl.lodz.p.it.ssbd2022.ssbd03.common.Config;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.token.TokenDecodeInvalidException;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.token.TokenExpierdException;
@@ -50,7 +50,7 @@ import java.util.Collection;
 @DenyAll
 @Interceptors(TrackerInterceptor.class)
 @TransactionAttribute(TransactionAttributeType.REQUIRED)
-public class MOKService extends AbstractManager implements MOKServiceInterface, SessionSynchronization {
+public class MOKService extends AbstractService implements MOKServiceInterface, SessionSynchronization {
 
     @Inject
     private IdentityStoreHandler identityStoreHandler;
