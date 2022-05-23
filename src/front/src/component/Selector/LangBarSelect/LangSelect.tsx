@@ -20,7 +20,7 @@ const LangSelect = () => {
         id="lang-select"
         value={value}
         defaultValue={Cookies.get("i18next")}
-        label="Język"
+        label={t("language")}
         onChange={(e) => {
           setValue(e.target.value);
           i18next.changeLanguage(e.target.value);
