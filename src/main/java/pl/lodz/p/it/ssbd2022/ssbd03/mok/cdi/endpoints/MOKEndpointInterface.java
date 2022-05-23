@@ -177,9 +177,6 @@ public interface MOKEndpointInterface {
     // MOK.11 Wyloguj
     // nie dotyczy backendu
 
-    //
-    // TODO: Dodanie Javadoc
-
     /**
      * MOK.12 Zaloguj
      * @param loginCredentialsDto - dane logowania
