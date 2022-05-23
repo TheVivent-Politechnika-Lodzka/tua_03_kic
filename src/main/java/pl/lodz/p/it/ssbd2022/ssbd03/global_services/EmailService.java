@@ -6,6 +6,7 @@ import jakarta.mail.*;
 import jakarta.mail.internet.InternetAddress;
 import jakarta.mail.internet.MimeMessage;
 import pl.lodz.p.it.ssbd2022.ssbd03.common.Config;
+import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.EmailNotSendException;
 
 import java.util.Properties;
 
@@ -48,7 +49,7 @@ public class EmailService {
             message.setText(content);
             Transport.send(message);
         } catch (MessagingException mex) {
-            mex.printStackTrace();
+            throw new EmailNotSendException();
         }
     }
 
