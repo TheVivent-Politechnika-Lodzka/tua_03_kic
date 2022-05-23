@@ -58,7 +58,7 @@ public class ActiveAccountFacade extends AbstractFacade<ConfirmationAccountToken
      * @param entity
      */
     @Override
-    @RolesAllowed(Roles.ADMINISTRATOR)
+    @PermitAll
     public void unsafeRemove(ConfirmationAccountToken entity) {
         super.unsafeRemove(entity);
     }

@@ -59,7 +59,7 @@ public class ResetPasswordFacade extends AbstractFacade<ResetPasswordToken> {
      * @param resetPasswordToken
      */
     @Override
-    @RolesAllowed(Roles.ADMINISTRATOR)
+    @PermitAll
     public void unsafeRemove(ResetPasswordToken resetPasswordToken) {
         super.unsafeRemove(resetPasswordToken);
     }

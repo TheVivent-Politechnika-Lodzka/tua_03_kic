@@ -49,7 +49,7 @@ public class AccountFacade extends AbstractFacade<Account> {
      * @param entity
      */
     @Override
-    @RolesAllowed(Roles.ADMINISTRATOR)
+    @PermitAll
     public void unsafeRemove(Account entity) {
         super.unsafeRemove(entity);
     }
