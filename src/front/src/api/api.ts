@@ -32,8 +32,10 @@ const api = createApi({
     // dodawaj token do wszystkich zapytan, jeżeli jest dostępny
     prepareHeaders: (headers) => {
       const token = localStorage.getItem(TOKEN_STORAGE_KEY);
-      if (token) {
+      const language = localStorage.getItem("i18nextLng");
+      if (token && language) {
         headers.set("authorization", `Bearer ${token}`);
+        headers.set("language", language);
       }
       return headers;
     },
