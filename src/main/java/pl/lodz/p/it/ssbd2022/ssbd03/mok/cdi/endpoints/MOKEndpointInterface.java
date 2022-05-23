@@ -199,7 +199,7 @@ public interface MOKEndpointInterface {
 
     /**
      * MOK.12 Zaloguj
-     *
+     * Metoda uwierzytelniająca użytkownika
      * @param loginCredentialsDto dane logowania
      * @return Response zawierający status HTTP
      * @throws MethodNotImplementedException jeśli metoda nie została zaimplementowana
