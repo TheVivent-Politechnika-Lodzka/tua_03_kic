@@ -8,6 +8,8 @@
   "our_clinic": "NASZE KLINIKI",
   "good_location": "kliniki w trzech dogodnych lokalizacjach",
 
+  "language": "Język",
+  "accessLevel": "Poziom dostępu",
   "contact": "Kontakt",
   "social_media": "Media społecznościowe",
   "more_inf": "Dowiedz się więcej",
@@ -50,6 +52,10 @@
 
   "email_send": "Sprawdź maila",
   "email_error": "Niepoprawny login",
+
+  "CLIENT":"Klient",
+  "SPECIALIST":"Specjalista",
+  "ADMINISTRATOR":"Administrator",
 
   "users_administration_page": "Użytkownicy",
   "search_by_phrase_placeholder": "Wyszukaj po frazie",

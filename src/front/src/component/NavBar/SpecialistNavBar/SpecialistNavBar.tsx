@@ -27,6 +27,11 @@ const SpecialistNavBar = () => {
             ) : (
               <></>
             )}
+            {user === "SPECIALIST" ? (
+              <MenuItem onClick={() => navigate("/specialist")}>PAGE1</MenuItem>
+            ) : (
+              <></>
+            )}
           </Menu>
         </Fragment>
       )}

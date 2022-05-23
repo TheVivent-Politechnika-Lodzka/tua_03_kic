@@ -1,12 +1,12 @@
 import { Outlet } from "react-router";
 import SideBar from "../SideBar/SideBar";
-import DetailsTopBar from "../TopBar/DetailsTopBar/DetailsTopBar";
+import SubpageTopBar from "../TopBar/SubpageTopBar/SubpageTopBar";
 import styles from "./detailsLayout.module.scss";
 
-const DetailsLayout = () => {
+const SubpageLayout: React.FC<{}> = () => {
   return (
     <div>
-      <DetailsTopBar />
+      <SubpageTopBar />
 
       <div className={styles.content}>
         <div className={styles.left_side}>
@@ -20,4 +20,4 @@ const DetailsLayout = () => {
   );
 };
 
-export default DetailsLayout;
+export default SubpageLayout;

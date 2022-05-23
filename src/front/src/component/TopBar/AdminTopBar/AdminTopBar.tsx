@@ -1,5 +1,5 @@
 import styles from "./adminTopBar.module.scss";
-import {Logout} from "../SelectorTopBar/SelectorTopBar";
+import { Logout } from "../SelectorTopBar/SelectorTopBar";
 import LangSelect from "../../Selector/LangBarSelect/LangSelect";
 import AppointmentNavBar from "../../NavBar/AppointmentNavBar/AppointmentNavBar";
 import ImplantNavBar from "../../NavBar/ImplantNavBar/ImplantNavBar";
@@ -8,12 +8,11 @@ import AccessLevelSelect from "../../Selector/AccessLevelSelect/AccessLevelSelec
 import Logo from "../../Logo/Logo";
 
 const AdminTopBar = () => {
-  
   return (
     <div className={styles.topBar}>
-     <Logo/>
+      <Logo />
       <div className={styles.links}>
-      <div className={styles.item}>
+        <div className={styles.item}>
           <AppointmentNavBar />
         </div>
         <div className={styles.item}>
@@ -25,10 +24,10 @@ const AdminTopBar = () => {
         <div className={styles.item}>
           <LangSelect />
         </div>
-        <div className={styles.item_width}>
+        <div className={styles.item}>
           <AccessLevelSelect />
         </div>
-          <Logout/>
+        <Logout />
       </div>
     </div>
   );

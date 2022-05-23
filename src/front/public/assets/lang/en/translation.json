@@ -8,6 +8,8 @@
   "our_clinic": "OUR CLINIC",
   "good_location": "three clinic in good locations",
 
+  "language":"Language",
+  "accessLevel":"Access level",
   "contact": "Contact",
   "social_media": "Social media",
   "more_inf": "Find out more",
@@ -103,5 +105,9 @@
   },
 
   "email_send": "Check your email",
-  "email_error": "Wrong login"
+  "email_error": "Wrong login",
+
+  "CLIENT":"Client",
+  "SPECIALIST":"Specialist",
+  "ADMINISTRATOR":"Administrator"
 }
