@@ -59,7 +59,7 @@ public interface MOKServiceInterface extends ServiceLocalInterface {
     }
 
     /**
-     * Metoda odblokowująca konto użytkownika, które zostało uprzednio zablokowane przez administratora
+     * Metoda modyfikująca konto użytkownika
      *
      * @param login Login konta, które ma zostać zmodyfikowane
      * @param account modyfikacje do konta
