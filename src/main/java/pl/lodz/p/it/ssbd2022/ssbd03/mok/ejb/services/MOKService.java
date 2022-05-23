@@ -14,10 +14,10 @@ import jakarta.security.enterprise.credential.Password;
 import jakarta.security.enterprise.credential.UsernamePasswordCredential;
 import jakarta.security.enterprise.identitystore.CredentialValidationResult;
 import jakarta.security.enterprise.identitystore.IdentityStoreHandler;
-import jakarta.ws.rs.ClientErrorException;
 import pl.lodz.p.it.ssbd2022.ssbd03.common.AbstractManager;
 import pl.lodz.p.it.ssbd2022.ssbd03.common.Config;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.token.TokenDecodeInvalidException;
+import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.token.TokenExpierdException;
 import pl.lodz.p.it.ssbd2022.ssbd03.global_services.EmailService;
 import pl.lodz.p.it.ssbd2022.ssbd03.common.Roles;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.Account;
@@ -33,7 +33,7 @@ import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.access_level.AccessLevelNotFoundE
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.access_level.AccessLevelViolationException;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.account.AccountPasswordIsTheSameException;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.account.AccountPasswordMatchException;
-import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.token.TokenExpierdException;
+import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.account.InvalidCredentialException;
 import pl.lodz.p.it.ssbd2022.ssbd03.interceptors.TrackerInterceptor;
 import pl.lodz.p.it.ssbd2022.ssbd03.mok.ejb.facades.AccessLevelFacade;
 import pl.lodz.p.it.ssbd2022.ssbd03.mok.ejb.facades.AccountFacade;
@@ -69,7 +69,12 @@ public class MOKService extends AbstractManager implements MOKServiceInterface, 
     @Inject
     private ResetPasswordFacade resetPasswordFacade;
 
-
+    /**
+     * Metoda uwierzytelnia użytkownika i zwraca token
+     * @param login Login konta, które ma zostać uwierzytelnione
+     * @param password Hasło konta, które ma zostać uwierzytelnione
+     * @return token użytkownika uwierzytelnionego
+     */
     @Override
     @PermitAll
     public String authenticate(String login, String password) {
@@ -78,8 +83,7 @@ public class MOKService extends AbstractManager implements MOKServiceInterface, 
         if (result.getStatus() == CredentialValidationResult.Status.VALID) {
             return jwtGenerator.createJWT(result);
         }
-        // TODO: zmienić na wyjątek dziedziczący po AppBaseException
-        throw new ClientErrorException("Invalid username or password", 401);
+        throw new InvalidCredentialException();
     }
 
     /**
