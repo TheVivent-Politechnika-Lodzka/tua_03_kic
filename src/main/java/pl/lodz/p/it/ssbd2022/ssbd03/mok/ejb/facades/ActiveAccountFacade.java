@@ -2,6 +2,7 @@ package pl.lodz.p.it.ssbd2022.ssbd03.mok.ejb.facades;
 
 import jakarta.annotation.security.PermitAll;
 import jakarta.annotation.security.RolesAllowed;
+import jakarta.annotation.security.RunAs;
 import jakarta.ejb.Stateless;
 import jakarta.ejb.TransactionAttribute;
 import jakarta.ejb.TransactionAttributeType;
@@ -25,6 +26,7 @@ import java.util.List;
 @Interceptors(TrackerInterceptor.class)
 @Stateless
 @TransactionAttribute(TransactionAttributeType.MANDATORY)
+@RunAs(Roles.ADMINISTRATOR)
 public class ActiveAccountFacade extends AbstractFacade<ConfirmationAccountToken> {
 
     @PersistenceContext(unitName = "ssbd03mokPU")
