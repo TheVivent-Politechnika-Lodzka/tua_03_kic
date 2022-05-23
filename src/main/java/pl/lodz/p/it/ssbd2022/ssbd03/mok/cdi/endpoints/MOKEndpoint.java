@@ -274,6 +274,12 @@ public class MOKEndpoint implements MOKEndpointInterface {
         ).build();
     }
 
+    /**
+     *
+     * @param loginCredentialsDto - dane logowania
+     * @return Response zawierający status HTTP
+     * @throws TransactionException jeśli transakcja nie zostanie zatwierdzona
+     */
     @Override
     public Response login(LoginCredentialsDto loginCredentialsDto) {
         String token;

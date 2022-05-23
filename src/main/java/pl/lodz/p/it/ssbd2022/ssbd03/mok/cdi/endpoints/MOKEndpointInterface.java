@@ -170,8 +170,15 @@ public interface MOKEndpointInterface {
     // MOK.11 Wyloguj
     // nie dotyczy backendu
 
-    // MOK.12 Zaloguj
+    //
     // TODO: Dodanie Javadoc
+
+    /**
+     * MOK.12 Zaloguj
+     * @param loginCredentialsDto - dane logowania
+     * @return Response zawierający status HTTP
+     * @throws MethodNotImplementedException jeśli metoda nie została zaimplementowana
+     */
     @POST
     @Path("/login")
     @PermitAll

@@ -12,7 +12,13 @@ import pl.lodz.p.it.ssbd2022.ssbd03.utils.PaginationData;
 @Local
 public interface MOKServiceInterface extends ManagerLocalInterface {
 
-    // TODO: Dodanie Javadoc
+    /**
+     * Metoda uwierzytelnia użytkownika i zwraca token
+     * @param login Login konta, które ma zostać uwierzytelnione
+     * @param password Hasło konta, które ma zostać uwierzytelnione
+     * @return token użytkownika uwierzytelnionego
+     * @throws MethodNotImplementedException w momencie, gdy metoda jest niezaimplementowana
+     */
     default String authenticate(String login, String password) {
         throw new MethodNotImplementedException();
     }

@@ -31,6 +31,7 @@ import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.access_level.AccessLevelNotFoundE
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.access_level.AccessLevelViolationException;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.account.AccountPasswordIsTheSameException;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.account.AccountPasswordMatchException;
+import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.account.InvalidCredentialException;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.account.TokenExpierdException;
 import pl.lodz.p.it.ssbd2022.ssbd03.global_services.EmailService;
 import pl.lodz.p.it.ssbd2022.ssbd03.interceptors.TrackerInterceptor;
@@ -68,7 +69,12 @@ public class MOKService extends AbstractManager implements MOKServiceInterface, 
     @Inject
     private ResetPasswordFacade resetPasswordFacade;
 
-
+    /**
+     * Metoda uwierzytelnia użytkownika i zwraca token
+     * @param login Login konta, które ma zostać uwierzytelnione
+     * @param password Hasło konta, które ma zostać uwierzytelnione
+     * @return token użytkownika uwierzytelnionego
+     */
     @Override
     @PermitAll
     public String authenticate(String login, String password) {
@@ -77,8 +83,7 @@ public class MOKService extends AbstractManager implements MOKServiceInterface, 
         if (result.getStatus() == CredentialValidationResult.Status.VALID) {
             return jwtGenerator.createJWT(result);
         }
-        // TODO: zmienić na wyjątek dziedziczący po AppBaseException
-        throw new ClientErrorException("Invalid username or password", 401);
+        throw new InvalidCredentialException();
     }
 
     /**
