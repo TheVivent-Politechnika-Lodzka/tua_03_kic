@@ -17,10 +17,10 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 @Constraint(validatedBy = {})
 @Retention(RUNTIME)
 @Size(min = 8, max = 128)
-@NotNull(message = "{server.error.validation.constraints.notNull.password}")
-@Pattern(regexp = Patterns.PASSWORD, message = "{server.error.validation.constraints.password}")
+@NotNull(message = "server.error.validation.constraints.notNull.password")
+@Pattern(regexp = Patterns.PASSWORD, message = "server.error.validation.constraints.password")
 public @interface Password {
-    String message() default "{server.error.validation.constraints.password}";
+    String message() default "server.error.validation.constraints.password";
 
     Class<?>[] groups() default {};
 
