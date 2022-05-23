@@ -238,7 +238,12 @@ public interface MOKEndpointInterface {
     }
 
     // MOK.15 Przeglądaj szczegóły własnego konta
-    // TODO: Dodanie Javadoc
+    /**
+     * Metoda zwracająca dane aktualnie zalogowanego użytkownika.
+     *
+     * @return Odpowiedź HTTP
+     * @throws MethodNotImplementedException w momencie, gdy metoda jest niezaimplementowana
+     */
     @GET
     @Path("/")
     @PermitAll
