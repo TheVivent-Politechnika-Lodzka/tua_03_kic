@@ -7,10 +7,12 @@ import jakarta.inject.Inject;
 import jakarta.interceptor.Interceptors;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
+import jakarta.persistence.PersistenceException;
 import jakarta.persistence.TypedQuery;
 import lombok.Getter;
 import pl.lodz.p.it.ssbd2022.ssbd03.common.AbstractFacade;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.ConfirmationAccountToken;
+import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.database.DatabaseException;
 import pl.lodz.p.it.ssbd2022.ssbd03.interceptors.TrackerInterceptor;
 import pl.lodz.p.it.ssbd2022.ssbd03.utils.HashAlgorithm;
 
@@ -43,12 +45,20 @@ public class ActiveAccountFacade extends AbstractFacade<ConfirmationAccountToken
         super.create(entity);
     }
 
-    // TODO: Dodanie Javadoc
+    /**
+     * Metoda szuka token użytkownika o podanym loginie
+     * @param login - login konta
+     * @return ConfirmationAccountToken - obiekt zawierający token użytkownika o podanym loginie
+     * @throws DatabaseException, gdy wystąpi błąd związany z bazą danych
+     */
     public ConfirmationAccountToken findToken(String login){
-        // TODO: Dodać obsługę wyjątku nie znalezionego tokenu
-        TypedQuery<ConfirmationAccountToken> typedQuery = em.createNamedQuery("ConfirmationAccountToken.findByLogin", ConfirmationAccountToken.class);
-        typedQuery.setParameter("login", login);
-        return typedQuery.getSingleResult();
+        try {
+            TypedQuery<ConfirmationAccountToken> typedQuery = em.createNamedQuery("ConfirmationAccountToken.findByLogin", ConfirmationAccountToken.class);
+            typedQuery.setParameter("login", login);
+            return typedQuery.getSingleResult();
+        } catch (PersistenceException pe) {
+            throw new DatabaseException(pe.getCause());
+        }
     }
 
 
