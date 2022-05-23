@@ -28,17 +28,9 @@ export const userSlice = createSlice({
       const data = action.payload;
 
       if (
-        localStorage.getItem(ACCESS_LEVEL) ||
-        localStorage.getItem(ACCESS_LEVEL) !== ""
+        !localStorage.getItem(ACCESS_LEVEL) ||
+        localStorage.getItem(ACCESS_LEVEL) === ""
       ) {
-        const res = {
-          sub: data.sub,
-          auth: data.auth.split(","),
-          cur: localStorage.getItem(ACCESS_LEVEL),
-          exp: data.exp,
-        };
-        return { ...state, ...res };
-      } else {
         const res = {
           sub: data.sub,
           auth: data.auth.split(","),
@@ -46,6 +38,14 @@ export const userSlice = createSlice({
           exp: data.exp,
         };
         localStorage.setItem(ACCESS_LEVEL, res.cur);
+        return { ...state, ...res };
+      } else {
+        const res = {
+          sub: data.sub,
+          auth: data.auth.split(","),
+          cur: localStorage.getItem(ACCESS_LEVEL),
+          exp: data.exp,
+        };
         return { ...state, ...res };
       }
     },
