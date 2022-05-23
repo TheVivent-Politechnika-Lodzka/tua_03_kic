@@ -1,6 +1,6 @@
 package pl.lodz.p.it.ssbd2022.ssbd03.mok.ejb.services;
 
-import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.*;
 import jakarta.annotation.security.DenyAll;
 import jakarta.annotation.security.PermitAll;
 import jakarta.annotation.security.RolesAllowed;
@@ -17,6 +17,8 @@ import jakarta.security.enterprise.identitystore.IdentityStoreHandler;
 import jakarta.ws.rs.ClientErrorException;
 import pl.lodz.p.it.ssbd2022.ssbd03.common.AbstractManager;
 import pl.lodz.p.it.ssbd2022.ssbd03.common.Config;
+import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.token.TokenDecodeInvalidException;
+import pl.lodz.p.it.ssbd2022.ssbd03.global_services.EmailService;
 import pl.lodz.p.it.ssbd2022.ssbd03.common.Roles;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.Account;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.ConfirmationAccountToken;
@@ -26,13 +28,12 @@ import pl.lodz.p.it.ssbd2022.ssbd03.entities.access_levels.DataAdministrator;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.access_levels.DataClient;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.access_levels.DataSpecialist;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.InvalidParametersException;
-import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.TokenInvalidException;
+import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.token.TokenInvalidException;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.access_level.AccessLevelNotFoundException;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.access_level.AccessLevelViolationException;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.account.AccountPasswordIsTheSameException;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.account.AccountPasswordMatchException;
-import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.account.TokenExpierdException;
-import pl.lodz.p.it.ssbd2022.ssbd03.global_services.EmailService;
+import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.token.TokenExpierdException;
 import pl.lodz.p.it.ssbd2022.ssbd03.interceptors.TrackerInterceptor;
 import pl.lodz.p.it.ssbd2022.ssbd03.mok.ejb.facades.AccessLevelFacade;
 import pl.lodz.p.it.ssbd2022.ssbd03.mok.ejb.facades.AccountFacade;
@@ -152,7 +153,6 @@ public class MOKService extends AbstractManager implements MOKServiceInterface, 
 
         return accountFromDb;
     }
-
     // NIE ROZŁĄCZAJ MNIE OD FUNKCJI WYŻEJ (ಥ_ಥ)
     private AccessLevel findAccessLevelByName(Collection<AccessLevel> list, Class<? extends AccessLevel> clazz) {
         for (AccessLevel accessLevel : list)
@@ -201,31 +201,41 @@ public class MOKService extends AbstractManager implements MOKServiceInterface, 
         return account;
     }
 
+
+    /**
+     * Metoda tworzy konto i zwraca token z bazy danych, pozwalający aktywować konto
+     * @param account - dane konta
+     * @return token z bazy danych, pozwalający aktywować konto
+     */
     @Override
     @PermitAll
-    public Account registerAccount(Account account) {
+    public String registerAccount(Account account) {
         accountFacade.create(account);
         Instant date = Instant.now().plusSeconds(Config.REGISTER_TOKEN_EXPIRATION_SECONDS);
         String token = jwtGenerator.createJWTForEmail(account.getLogin(), date);
         ConfirmationAccountToken activeAccountToken = new ConfirmationAccountToken(account, token, date);
         activeAccountFacade.create(activeAccountToken);
-        // TODO: przenieść wysyłanie maila do endpointu (z upewnienieniem się, że transakcja się powiedzie)
-        emailConfig.sendEmail(
-                account.getEmail(),
-                "Active account - KIC",
-                "Your link to active account: https://localhost:8181/active?token=" + token
-                        +"\n \n or \n \n" +
-                        "https://kic.agency:8403/active?token=" + token);
-        return account;
+        return activeAccountFacade.findToken(account.getLogin()).getActiveToken();
     }
 
+    /**
+     * Metoda wyszukuje użytkownika w bazie danych i potwierdza jego konto
+     * @param token - token konta, które ma zostać potwierdzone
+     * @return potwierdzone konto
+     * @throws TokenDecodeInvalidException - w momencie, gdy token został źle utworzony
+     * @throws TokenExpierdException - w momencie, gdy token wygasł
+     */
     @Override
     @PermitAll
     public Account confirmRegistration(String token) {
-        // TODO: obsługa wyjątków z .decodeJwt()
-        Claims claims = jwtGenerator.decodeJWT(token);
-        ConfirmationAccountToken activeAccountToken = activeAccountFacade.findToken(claims.getSubject());
-        if (activeAccountToken.getExpDate().isBefore(Instant.now())) throw new TokenExpierdException();
+        Claims claims;
+        try {
+            claims = jwtGenerator.decodeJWT(token);
+        } catch (SignatureException | UnsupportedJwtException | MalformedJwtException | IllegalArgumentException e) {
+            throw new TokenDecodeInvalidException();
+        } catch (ExpiredJwtException e) {
+            throw new TokenExpierdException();
+        }
         Account account = accountFacade.findByLogin(claims.getSubject());
         account.setConfirmed(true);
         accountFacade.unsafeEdit(account);

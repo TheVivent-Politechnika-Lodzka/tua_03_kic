@@ -40,26 +40,42 @@ public class MOKEndpoint implements MOKEndpointInterface {
     @Inject
     private HashAlgorithm hashAlgorithm;
 
+    /**
+     * @param registerClientDto - dane konta
+     * @return Response zawierający status HTTP
+     * @throws TransactionException jeśli transakcja nie zostanie zatwierdzona
+     */
     @Override
     public Response register(RegisterClientDto registerClientDto) {
-        // TODO: przenieść wysyłanie maila do endpointu
         int TXCounter = Config.MAX_TX_RETRIES;
         boolean commitedTX;
-        Account account = accountMapper.createAccountfromCreateClientAccountDto(registerClientDto);
+        Account account = accountMapper.createAccountfromRegisterClientDto(registerClientDto);
+        String token;
         do {
-            mokServiceInterface.registerAccount(account);
+            token = mokServiceInterface.registerAccount(account);
             commitedTX = mokServiceInterface.isLastTransactionCommited();
         } while (!commitedTX && --TXCounter > 0);
 
         if (!commitedTX) {
             throw new TransactionException();
         }
+        emailService.sendEmail(
+                account.getEmail(),
+                "Active account - KIC",
+                "Your link to active account: https://localhost:8181/active?token=" + token
+                        +"\n \n or \n \n" +
+                        "https://kic.agency:8403/active?token=" + token);
 
         return Response.ok().build();
     }
 
+    /**
+     * @param registerConfirmDto token
+     * @return Response zawierający status HTTP
+     * @throws TransactionException jeśli transakcja nie zostanie zatwierdzona
+     */
     @Override
-    public Response registerConfirm(RegisterClientConfirmDto registerConfirmDto) {
+    public Response confirmRegistration(RegisterClientConfirmDto registerConfirmDto) {
         int TXCounter = Config.MAX_TX_RETRIES;
         boolean commitedTX;
         do {
@@ -70,7 +86,6 @@ public class MOKEndpoint implements MOKEndpointInterface {
         if (!commitedTX) {
             throw new TransactionException();
         }
-
         return Response.ok().build();
     }
 
@@ -342,6 +357,11 @@ public class MOKEndpoint implements MOKEndpointInterface {
         return Response.ok().build();
     }
 
+    /**
+     * @param registerConfirmDto token
+     * @return odpowiedź zawierająca status http
+     * @throws TransactionException jeśli transakcja nie została zatwierdzona
+     */
     @Override
     public Response resetPasswordToken(ResetPasswordTokenDto resetPasswordDto) {
         int TXCounter = Config.MAX_TX_RETRIES;
