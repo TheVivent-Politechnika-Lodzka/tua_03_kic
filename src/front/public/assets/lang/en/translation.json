@@ -47,6 +47,12 @@
   "server_error": "Server Error, try again for a moment",
   "refill_data": "Refill login data",
 
+  "edit_details": "Edit account details",
+  "first_name_edit": "First name",
+  "last_name_edit": "Last name",
+  "edit": "Edit",
+  "refill_data": "Refill login data",
+
   "access_level": "Access level",
   "remove_level": "Remove access level from an account",
   "REMOVE": "REMOVE",
