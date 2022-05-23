@@ -15,7 +15,6 @@ import pl.lodz.p.it.ssbd2022.ssbd03.interceptors.TrackerInterceptor;
  * Klasa reprezentująca serwis udostępniający reCaptcha
  */
 @RequestScoped
-@Interceptors(TrackerInterceptor.class)
 public class ReCaptchaService {
 
     @Inject
