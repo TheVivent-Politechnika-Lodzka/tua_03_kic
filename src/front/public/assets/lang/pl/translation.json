@@ -53,8 +53,15 @@
   "header_email": "Email",
   "header_is_active": "Czy jest aktywny",
   "header_change_password": "Zmień hasło",
+  "header_account_details": "Szczegóły",
+  "header_language": "Język",
+  "header_is_confirmed": "Jest potwierdzone",
+  "header_created_at": "Data utworzenia",
+  "header_last_modified": "Ostatania modyfikacja",
   "cell_active": "Aktywny",
   "cell_inactive": "Nieaktywny",
+  "cell_confirmed": "Potwierdzone",
+  "cell_unconfirmed": "Niepotwierdzone",
 
   "refill_data": "Uzupełnij dane logowania",
 
