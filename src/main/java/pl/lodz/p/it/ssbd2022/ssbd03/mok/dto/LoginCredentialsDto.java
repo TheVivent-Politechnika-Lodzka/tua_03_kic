@@ -14,6 +14,7 @@ public class LoginCredentialsDto {
 
     @Login
     private String login;
+
     @Password
     private String password;
 

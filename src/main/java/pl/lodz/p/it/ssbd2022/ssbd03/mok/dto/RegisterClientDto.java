@@ -18,8 +18,7 @@ import java.util.Locale;
 @NoArgsConstructor
 @AllArgsConstructor
 public class RegisterClientDto {
-
-    @NotNull
+    
     @Password
     private String password;
 

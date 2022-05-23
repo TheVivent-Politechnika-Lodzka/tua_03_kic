@@ -24,15 +24,20 @@ public class AccountWithAccessLevelsDto extends AbstractDto {
 
     @Login
     private String login;
+
     @FirstName
     private String firstName;
+
     @LastName
     private String lastName;
+
     @Email
     @NotNull
     private String email;
+
     @NotNull
     private boolean isActive;
+
     @NotNull
     private boolean isConfirmed;
 
