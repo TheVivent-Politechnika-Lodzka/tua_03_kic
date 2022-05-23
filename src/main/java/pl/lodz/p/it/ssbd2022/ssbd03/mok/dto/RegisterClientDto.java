@@ -23,7 +23,6 @@ public class RegisterClientDto {
     @Password
     private String password;
 
-    @NotNull
     @Login
     private String login;
 
@@ -31,19 +30,15 @@ public class RegisterClientDto {
     @Email
     private String email;
 
-    @NotNull
     @FirstName
     private String firstName;
 
-    @NotNull
     @LastName
     private String lastName;
 
-    @NotNull
     @PhoneNumber
     private String phoneNumber;
 
-    @NotNull
     @Pesel
     private String pesel;
 
