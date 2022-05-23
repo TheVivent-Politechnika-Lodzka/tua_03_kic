@@ -221,7 +221,6 @@ public interface MOKEndpointInterface {
     }
 
     // MOK.16 Przeglądaj szczegóły konta innego użytkownika
-    // MOK.4 Odblokuj konto
     /**
      * Metoda zwracająca szczegółowe informacje dotyczące wybranego konta
      *
