@@ -26,6 +26,7 @@
   "rpassword": "Reapet password*",
 
   "active": "Active account",
+  "deactive": "Deactivate account",
 
   "c_password": "Current Password",
   "n_password": "New Password",
@@ -35,14 +36,13 @@
   "invite_main_page": "Go to Home Page",
   "main_page": "HOME",
 
+  "wrong_data": "Wrong data",
   "insert_token": "Insert token from e-mail",
   "active_account": "Active account",
   "confirmed_account": "Account confirmed",
   "nav_log": "Go to Login Page",
 
-  "wrong_data": "Wrong data",
   "server_error": "Server Error, try again for a moment",
-  "refill_data": "Refill login data",
 
   "users_administration_page": "Users",
   "search_by_phrase_placeholder": "Search by phrase",
@@ -53,6 +53,7 @@
   "header_email": "Email",
   "header_is_active": "Is active",
   "header_change_password": "Change password",
+  "header_manage_activity": "Block or unblock account",
   "header_account_details": "Details",
   "header_language": "Language",
   "header_created_at": "Created at",
@@ -75,7 +76,6 @@
     "lenguage": "Lenguage*",
     "submit": "Create account"
   },
-
 
   "button": {
     "addAccessLevel": {
@@ -100,5 +100,8 @@
         }
       }
     }
-  }
+  },
+
+  "email_send": "Check your email",
+  "email_error": "Wrong login"
 }

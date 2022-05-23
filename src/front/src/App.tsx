@@ -13,9 +13,13 @@ import { login as loginDispatch } from "./redux/userSlice";
 import ActivateAccountPage from "./pages/unprotected/activate/ActivateAccountPage";
 import HomeLayout from "./component/Layout/HomeLayout";
 import DetailsLayout from "./component/Layout/DetailsLayout";
+import ResetPasswordForm from "./component/Form/resetPasswordForm/ResetPasswordForm";
+import ResetPasswordTokenForm from "./component/Form/resetPasswordTokenForm/ResetPasswordTokenForm";
 import UserManagment from "./pages/admin/UserManagment/UserManagment";
 import UserDetails from "./pages/admin/UserDetails/UserDetails";
 import CreateAccountPage from "./pages/admin/AdminPage/createAccountPage/CreateAccountPage";
+import AccountDetailsPage from "./pages/account/details/AccountDetails";
+import EditAccountDetailsPage from "./pages/account/details/EditAccountDetails";
 
 function App() {
   const user = useStoreSelector((state) => state.user);
@@ -60,12 +64,29 @@ function App() {
             ) : (
               <></>
             )}
+            {user.cur !== undefined ? (
+              <>
+                <Route path="/account" element={<AccountDetailsPage />} />
+                <Route
+                  path="/account/edit"
+                  element={<EditAccountDetailsPage />}
+                />
+              </>
+            ) : (
+              <></>
+            )}
           </Route>
           <Route element={<HomeLayout />}>
             <Route path="/" element={<MainPage />} />
+            
           </Route>
           <Route path="/login" element={<LoginPage />} />
           <Route path="/active" element={<ActivateAccountPage />} />
+          <Route path="/reset-password" element={<ResetPasswordForm />} />
+          <Route
+            path="/reset-password-token"
+            element={<ResetPasswordTokenForm />}
+          />
           <Route path="/*" element={<ErrorPage />} />
         </Routes>
       </Router>

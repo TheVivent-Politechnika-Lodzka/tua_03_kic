@@ -23,6 +23,7 @@ interface ShowAccountInfo {
   accessLevels: string[];
   email: string;
   active: boolean;
+  ETag:string;
 }
 
 export interface PaginationData {

@@ -94,10 +94,10 @@ public class MOKService extends AbstractManager implements MOKServiceInterface, 
 
     @Override
     @RolesAllowed(Roles.ADMINISTRATOR)
-    public Account deactivateAccount(String login, String etag) {
+    public Account deactivateAccount(String login, String eTag) {
         Account account = accountFacade.findByLogin(login);
         account.setActive(false);
-        accountFacade.edit(account, etag);
+        accountFacade.edit(account, eTag);
         return account;
     }
 
@@ -285,21 +285,12 @@ public class MOKService extends AbstractManager implements MOKServiceInterface, 
 
     @Override
     @PermitAll
-    public Account resetPassword(String login) {
+    public ResetPasswordToken resetPassword(String login) {
         Account account = accountFacade.findByLogin(login);
         ResetPasswordToken resetPasswordToken = new ResetPasswordToken();
         resetPasswordToken.setAccount(account);
         resetPasswordFacade.create(resetPasswordToken);
-        // TODO: przenieść wysyłanie maila do endpointu (z upewnienieniem się, że transakcja się powiedzie)
-        emailConfig.sendEmail(
-                account.getEmail(),
-                "Reset password",
-                "Your link to reset password: \n"
-                        + "localhost:8080/mok/resetPassword/"
-                        + login + "/"
-                        + hashAlgorithm.generate(resetPasswordToken.getId().toString().toCharArray())
-        );
-        return account;
+        return resetPasswordToken;
     }
 
     @Override
