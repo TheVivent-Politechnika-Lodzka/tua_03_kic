@@ -41,6 +41,8 @@ public class AccountWithAccessLevelsDto extends AbstractDto {
     @JsonbTypeDeserializer(LocaleSerializerDeserializer.class)
     private Locale language;
 
+    private String captcha;
+
     private List<AccessLevelDto> accessLevels = new ArrayList<>();
 
 }

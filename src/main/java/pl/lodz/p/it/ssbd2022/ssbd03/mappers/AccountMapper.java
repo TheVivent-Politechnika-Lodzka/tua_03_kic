@@ -111,6 +111,7 @@ public class AccountMapper {
                 account.isActive(),
                 account.isConfirmed(),
                 account.getLanguage(),
+                null,
                 accessLevelMapper.createListOfAccessLevelDTO(account.getAccessLevelCollection())
         );
 

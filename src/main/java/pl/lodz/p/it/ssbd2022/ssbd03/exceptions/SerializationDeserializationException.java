@@ -38,7 +38,6 @@ public class SerializationDeserializationException extends AppBaseException {
      * Konstruktor, o dostępie prywatnym, potrzebny do budowania wyjątku przy statycznych metodach
      * znajdujących się w klasie SerializationDeserializationException
      * @param message Wiadomość zawarta w wyjątku
-     * @return wyjatek typu AccountNotFoundException
      */
     private SerializationDeserializationException(String message, Throwable cause) {
         super(message, cause, Response.Status.BAD_REQUEST);
