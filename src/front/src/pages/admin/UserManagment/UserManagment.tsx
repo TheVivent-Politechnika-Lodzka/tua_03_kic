@@ -1,5 +1,7 @@
 import { ChangeEvent, useEffect, useState } from "react";
+import { Modal } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
+import { Navigate, useNavigate } from "react-router";
 import { useFindAllUsersMutation } from "../../../api/api";
 import { AccountWithAccessLevelsDto } from "../../../api/types/apiParams";
 import { ShowAccountInfo } from "../../../api/types/common";
@@ -9,8 +11,8 @@ const UserManagment = () => {
   const [account, setAccounts] = useState<ShowAccountInfo[]>([]);
   const [query, setQuery] = useState<string>("");
   const [findAll] = useFindAllUsersMutation();
+  const navigate = useNavigate();
   const { t } = useTranslation();
-
 
   useEffect(() => {
     getAccounts();
@@ -63,7 +65,7 @@ const UserManagment = () => {
       <input
         type="text"
         className={styles.searchInput}
-        placeholder="Wyszukaj po frazie"
+        placeholder={t("search_by_phrase_placeholder")}
         onChange={handleQuery}
         value={query}
       />
@@ -77,12 +79,12 @@ const UserManagment = () => {
             <th>{t("header_email")}</th>
             <th>{t("header_is_active")}</th>
             <th>{t("header_change_password")}</th>
+            <th>{t("header_account_details")}</th>
           </tr>
         </thead>
         <tbody>
           {account?.map(
             ({ login, firstName, lastName, accessLevels, email, active }) => {
-              console.log(active);
               return (
                 <tr key={email}>
                   <td>{login}</td>
@@ -92,7 +94,19 @@ const UserManagment = () => {
                   <td>{email}</td>
                   <td>{active ? t("cell_active") : t("cell_inactive")}</td>
                   <td>
-                    <button className={styles.button}>Zmień hasło</button>
+                    <button className={styles.button}>
+                      {t("header_change_password")}
+                    </button>
+                  </td>
+                  <td>
+                    <button
+                      onClick={() => {
+                        navigate(`/admin/users/${login}`);
+                      }}
+                      className={styles.button}
+                    >
+                      {t("header_account_details")}
+                    </button>
                   </td>
                 </tr>
               );

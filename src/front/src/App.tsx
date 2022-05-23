@@ -14,6 +14,7 @@ import ActivateAccountPage from "./pages/unprotected/activate/ActivateAccountPag
 import HomeLayout from "./component/Layout/HomeLayout";
 import DetailsLayout from "./component/Layout/DetailsLayout";
 import UserManagment from "./pages/admin/UserManagment/UserManagment";
+import UserDetails from "./pages/admin/UserDetails/UserDetails";
 import CreateAccountPage from "./pages/admin/AdminPage/createAccountPage/CreateAccountPage";
 
 function App() {
@@ -43,6 +44,7 @@ function App() {
               <>
                 <Route path="/admin" element={<AdminPage />} />
                 <Route path="/admin/users" element={<UserManagment />} />
+                <Route path="/admin/users/:login" element={<UserDetails/>}/>
                 <Route path="/createAccount" element={<CreateAccountPage />} />
               </>
             ) : (
