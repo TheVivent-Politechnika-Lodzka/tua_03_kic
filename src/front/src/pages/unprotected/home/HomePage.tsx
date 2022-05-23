@@ -4,7 +4,7 @@ import SelectorBar from "../../../component/TopBar/SelectorTopBar/SelectorTopBar
 import styles from "./homepage.module.scss";
 import { useTranslation } from "react-i18next";
 
-const MainPage = () => {
+const HomePage = () => {
   const { t } = useTranslation();
 
   return (
@@ -103,4 +103,4 @@ const MainPage = () => {
   );
 };
 
-export default MainPage;
+export default HomePage;

@@ -2,9 +2,7 @@ package pl.lodz.p.it.ssbd2022.ssbd03.common;
 
 import jakarta.persistence.*;
 import lombok.Getter;
-import lombok.Setter;
 
-import java.awt.*;
 import java.time.Instant;
 import java.util.UUID;
 
@@ -47,6 +45,7 @@ public abstract class AbstractEntity {
     public void preUpdate() {
         lastModified = Instant.now();
     }
+
     // implementacja equals i hashCode,
     // dzięki temu nie trzeba implementować w każdej encji
     @Override

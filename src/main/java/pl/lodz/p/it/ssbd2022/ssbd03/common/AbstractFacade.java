@@ -3,13 +3,14 @@ package pl.lodz.p.it.ssbd2022.ssbd03.common;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.OptimisticLockException;
 import jakarta.persistence.PersistenceException;
-import jakarta.persistence.TypedQuery;
 import jakarta.persistence.criteria.CriteriaQuery;
 import org.hibernate.exception.ConstraintViolationException;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.MethodNotImplementedException;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.access_level.AccessLevelNotFoundException;
+import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.account.AccountNotFoundException;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.database.DatabaseException;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.InvalidParametersException;
+import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.database.DatabaseException;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.database.InAppOptimisticLockException;
 import pl.lodz.p.it.ssbd2022.ssbd03.utils.HashAlgorithm;
 import pl.lodz.p.it.ssbd2022.ssbd03.utils.PaginationData;
@@ -25,10 +26,15 @@ public abstract class AbstractFacade<T> {
     }
 
     protected abstract EntityManager getEntityManager();
+
     protected abstract HashAlgorithm getHashAlgorithm();
 
-    // TODO: Dodanie Javadoc
-    public void create(T entity) {
+    /**
+     * Metoda tworzy nową encję w bazie danych.
+     * @param entity
+     * @throws ConstraintViolationException
+     */
+    protected void create(T entity) {
         try {
             getEntityManager().persist(entity);
             getEntityManager().flush();
@@ -40,8 +46,13 @@ public abstract class AbstractFacade<T> {
 
     }
 
-    // TODO: Dodanie Javadoc
-    private void verifyTag(AbstractEntity entity, String tagFromDto){
+    /**
+     * Metoda weryfikuje czy podany tag jest poprawny.
+     * @param entity
+     * @param tagFromDto
+     * @throws InAppOptimisticLockException
+     */
+    private void verifyTag(AbstractEntity entity, String tagFromDto) {
         String entityTag = getHashAlgorithm().generateETag(
                 entity.getId(),
                 entity.getVersion()
@@ -51,70 +62,79 @@ public abstract class AbstractFacade<T> {
     }
 
     /**
-     * Pozwala edytować encję
-     *
-     * @param entity Encja, która ma podlegać edycji
-     * @param tagFromDto Wartość ETag encji
+     * Metoda EDYTUJĄCA podaną encję z bazy danych. Uwzględnia sprawdzenie wersji.
+     * @param entity Obiekt encji
+     * @param tagFromDto ETag przekazany z Dto do sprawdzenia
+     * @throws InAppOptimisticLockException
+     * @throws DatabaseException
+     * @throws ConstraintViolationException
      */
-    public void edit(T entity, String tagFromDto){
+    protected void edit(T entity, String tagFromDto) {
         if (entity instanceof AbstractEntity abstractEntity)
             verifyTag(abstractEntity, tagFromDto);
         unsafeEdit(entity);
     }
 
     /**
-     * Pozwala edytować encję
-     *
-     * @param entity Encja, która ma podlegać edycji
-     * @throws InAppOptimisticLockException gdy wystąpi błąd związany z blokadą optymistyczną
-     * @throws ConstraintViolationException gdy żądana operacja spowodowałaby naruszenie zdefiniowanego ograniczenia integralności danych
-     * @throws DatabaseException gdy wystąpi błąd związany z bazą danych
+     * Metoda modyfikuje encję w bazie danych. NIE uwzględnia sprawdzenia wersji.
+     * @param entity Obiekt encji
+     * @throws InAppOptimisticLockException
+     * @throws ConstraintViolationException
      */
-    public void unsafeEdit(T entity){
+    protected void unsafeEdit(T entity) {
         try {
             getEntityManager().merge(entity);
             getEntityManager().flush();
-        } catch (OptimisticLockException e){
+        } catch (OptimisticLockException e) {
             throw new InAppOptimisticLockException(e);
-        } catch (PersistenceException e){
+        } catch (PersistenceException e) {
             if (e.getCause() instanceof ConstraintViolationException)
                 throw (ConstraintViolationException) e.getCause();
-            throw new DatabaseException(e);
+            throw e;
         }
     }
 
-    // TODO: Dodanie Javadoc
-    public void remove(T entity, String tagFromDto){
+    /**
+     * Metoda usuwa podaną encję z bazy danych. Uwzlgędnia sprawdzenie wersji
+     * @param entity
+     * @param tagFromDto
+     * @throws InAppOptimisticLockException
+     * @throws DatabaseException
+     * @throws ConstraintViolationException
+     */
+    protected void remove(T entity, String tagFromDto) {
         if (entity instanceof AbstractEntity abstractEntity)
             verifyTag(abstractEntity, tagFromDto);
         unsafeRemove(entity);
     }
 
-    // TODO: Dodanie Javadoc
-    public void unsafeRemove(T entity){
+    /**
+     * Metoda usuwa podaną encję z bazy danych. NIE uwzlgędnia sprawdzenia wersji
+     * @param entity
+     * @throws InAppOptimisticLockException
+     * @throws ConstraintViolationException
+     */
+    protected void unsafeRemove(T entity) {
         try {
-        getEntityManager().remove(entity);
-        getEntityManager().flush();
-        } catch (OptimisticLockException e){
+            getEntityManager().remove(entity);
+            getEntityManager().flush();
+        } catch (OptimisticLockException e) {
             throw new InAppOptimisticLockException(e);
-        } catch (PersistenceException e){
+        } catch (PersistenceException e) {
             if (e.getCause() instanceof ConstraintViolationException)
                 throw (ConstraintViolationException) e.getCause();
-            throw new DatabaseException(e);
+            throw e;
         }
 
     }
 
-    // TODO: Dodanie Javadoc
-    public T find(Object id) {
+    /**
+     * Metoda zwraca obiekt encji o podanym id.
+     * @param id
+     * @return encja o podanym id
+     */
+    protected T find(Object id) {
         return getEntityManager().find(entityClass, id);
-    }
-
-    // TODO: Dodanie Javadoc / wyeliminować metodę
-    public List findAll() {
-        CriteriaQuery criteriaQuery = getEntityManager().getCriteriaBuilder().createQuery();
-        criteriaQuery.select(criteriaQuery.from(entityClass));
-        return getEntityManager().createQuery(criteriaQuery).getResultList();
     }
 
     /***
@@ -127,13 +147,12 @@ public abstract class AbstractFacade<T> {
      * @throws InvalidParametersException, gdy podano niepoprawną wartość parametru
      * @throws DatabaseException, gdy wystąpi błąd związany z bazą danych
      */
-    public PaginationData findInRange(int pageNumber, int perPage) {
-        // TODO: dodać łapanie wyjątku kiedy nie znaleziono konta
+    protected PaginationData findInRange(int pageNumber, int perPage) {
         try {
             CriteriaQuery criteriaQuery = getEntityManager().getCriteriaBuilder().createQuery();
             criteriaQuery.select(criteriaQuery.from(entityClass));
 
-            pageNumber -= 1;
+            pageNumber--;
 
             List data = getEntityManager()
                     .createQuery(criteriaQuery)
@@ -141,8 +160,11 @@ public abstract class AbstractFacade<T> {
                     .setFirstResult(pageNumber * perPage)
                     .getResultList();
 
+            pageNumber++;
             int totalCount = count();
-            return new PaginationData(totalCount, data);
+            int totalPages = (int) Math.ceil((double) totalCount /  perPage);
+
+            return new PaginationData(totalCount, totalPages, pageNumber, data);
         } catch (IllegalArgumentException e) {
             throw new InvalidParametersException(e.getCause());
         } catch (PersistenceException e) {
@@ -151,14 +173,13 @@ public abstract class AbstractFacade<T> {
 
     }
 
-
     /**
      * Pobiera liczbę wszystkich encji danego typu.
      *
      * @return liczbę wszystkich encji danego typu
      * @throws DatabaseException, gdy wystąpi błąd związany z bazą danych
      */
-    public int count() {
+    protected int count() {
         try {
             CriteriaQuery criteriaQuery = getEntityManager().getCriteriaBuilder().createQuery();
             criteriaQuery.select(criteriaQuery.from(entityClass));

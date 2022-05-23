@@ -1,8 +1,8 @@
+export type AccessLevelName = "ADMINISTRATOR" | "CLIENT" | "SPECIALIST";
+
 export interface Language {
   language: string;
 }
-
-export type AccessLevelName = "ADMINISTRATOR" | "CLIENT" | "SPECIALIST";
 
 export interface AbstractDto {
   ETag: string;
@@ -14,4 +14,20 @@ export interface JWT {
   auth: string;
   sub: string;
   exp: number;
+}
+
+interface ShowAccountInfo {
+  login: string;
+  firstName: string;
+  lastName: string;
+  accessLevels: string[];
+  email: string;
+  active: boolean;
+  ETag:string;
+}
+
+export interface PaginationData {
+  totalCount: number;
+  totalPages: number;
+  currentPage: number;
 }

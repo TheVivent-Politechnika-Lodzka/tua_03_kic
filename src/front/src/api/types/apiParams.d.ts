@@ -1,4 +1,9 @@
-import { AbstractDto, AccessLevelName, Language } from "./common";
+import {
+  AbstractDto,
+  AccessLevelName,
+  Language,
+  PaginationData,
+} from "./common";
 
 interface ETag {
   ETag: string;
@@ -49,31 +54,35 @@ export interface AddAccessLevel {
 export interface RemoveAccessLevel {
   login: string;
   accessLevel: AccessLevelName;
-  tag: ETag;
+  eTag: string;
 }
 
 export interface changeOwnPasswordDto {
   oldPassword: string;
   newPassword: string;
-  eTag: string;
+  ETag: string;
 }
 
-export interface changePasswordDto {
+export interface ChangePasswordDto {
   login: string;
   data: {
     newPassword: string;
-    eTag: string;
+    ETag: string;
   };
 }
 
 export interface AccountWithAccessLevelsDto extends AbstractDto {
+  email: string;
   login: string;
   firstName: string;
   lastName: string;
-  isActive: boolean;
-  isConfirmed: boolean;
+  active: boolean;
+  confirmed: boolean;
   language: Language;
   accessLevels: AccessLevelDto[];
+}
+export interface AccountsPaginationData extends PaginationData {
+  data: AccountWithAccessLevelsDto[];
 }
 
 export interface AccountWithAccessLevelsDtoWithLogin {

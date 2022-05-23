@@ -1,5 +1,8 @@
 package pl.lodz.p.it.ssbd2022.ssbd03.validation;
 
+/**
+ * Klasa zawierająca wyrażenia regularne potrzebne do walidacji pól
+ */
 public class Patterns {
     public static final String PASSWORD = "^(?=.*[\\p{Lu}])(?=.*[\\p{Ll}])(?=.*\\d).+$";
     public static final String LOGIN = "^[a-zA-Z]+[a-zA-Z0-9]*$";

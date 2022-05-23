@@ -7,5 +7,5 @@ export interface RemoveAccessLevelParams {
 export interface PaginationFilterParams {
   page: number;
   limit: number;
-  phrase: string;
+  phrase?: string;
 }

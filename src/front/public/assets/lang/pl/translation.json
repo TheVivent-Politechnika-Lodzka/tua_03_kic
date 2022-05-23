@@ -7,29 +7,125 @@
   "satisfied_clients": "Tysiące zadowolonych klientów",
   "our_clinic": "NASZE KLINIKI",
   "good_location": "kliniki w trzech dogodnych lokalizacjach",
+
+  "language": "Język",
+  "accessLevel": "Poziom dostępu",
   "contact": "Kontakt",
   "social_media": "Media społecznościowe",
   "more_inf": "Dowiedz się więcej",
   "log_in": "ZALOGUJ",
   "log_out": "WYLOGUJ",
   "sign_in": "ZAREJESTRUJ",
+  "account_service": "OBSŁUGA KONT",
   "cyber": "CYBERWSZCZEP",
   "specialist": "SPECJALIŚCI",
   "appointment": "WIZYTY",
   "password": "Hasło",
+  "c_password": "Aktualne Hasło",
+  "n_password": "Nowe Hasło",
+  "change_password": "Zmień Hasło",
+  "forget_password": "Zapomniałeś hasła?",
+  "reset_password": "Zresetuj hasło",
+  "password_changed": "Hasło zostało zmienione",
+
   "first_name": "Imie*",
   "last_name": "Nazwisko*",
   "phone_number": "Numer telefonu*",
   "password*": "Hasło*",
   "rpassword": "Powtórz hasło*",
+
+  "active": "Aktywuj konto",
+  "deactive": "Dezaktywuj konto",
+
   "error_page": "Przykro mi, strona nie istnieje",
   "invite_main_page": "Zapraszamy na stronę główną",
   "main_page": "STRONA GŁÓWNA",
+
+  "wrong_data": "Niepoprawne dane",
   "insert_token": "Wprowadź token z maila",
   "active_account": "Aktywuj konto",
   "confirmed_account": "Konto potwierdzone",
   "nav_log": "Przejdz do logowania",
-  "wrong_data": "Niepoprawne dane logowania",
+
   "server_error": "Błąd serwera, spróbuj za chwilę",
-  "refill_data": "Uzupełnij dane logowania"
+  "refill_data": "Uzupełnij dane logowania",
+  "access_level": "Poziom dostępu",
+  "remove_level": "Usuń poziom dostępu z konta",
+  "REMOVE": "USUŃ",
+  "refill_data": "Uzupełnij dane logowania",
+
+  "email_send": "Sprawdź maila",
+  "email_error": "Niepoprawny login",
+
+  "CLIENT": "Klient",
+  "SPECIALIST": "Specjalista",
+  "ADMINISTRATOR": "Administrator",
+
+  "users_administration_page": "Użytkownicy",
+  "search_by_phrase_placeholder": "Wyszukaj po frazie",
+  "header_login": "Login",
+  "header_first_name": "Imię",
+  "header_last_name": "Nazwisko",
+  "header_level_access_level": "Poziomy dostępu",
+  "header_email": "Email",
+  "header_is_active": "Czy jest aktywny",
+  "header_change_password": "Zmień hasło",
+  "header_account_details": "Szczegóły",
+  "header_language": "Język",
+  "header_is_confirmed": "Jest potwierdzone",
+  "header_created_at": "Data utworzenia",
+  "header_last_modified": "Ostatania modyfikacja",
+  "header_manage_activity": "Zablokuj lub odblokuj konto",
+  "cell_active": "Aktywny",
+  "cell_inactive": "Nieaktywny",
+  "cell_confirmed": "Potwierdzone",
+  "cell_unconfirmed": "Niepotwierdzone",
+
+  "CreateAccountForm": {
+    "form_title": "Utwórz konto",
+    "email": "Email*",
+    "first_name": "Imie*",
+    "last_name": "Nazwisko*",
+    "login": "Identyfikator*",
+    "password": "Hasło*",
+    "lenguage": "Język*",
+    "submit": "Stwórz konto"
+  },
+
+  "button": {
+    "addAccessLevel": {
+      "buttonText": "Dodaj poziom dostępu",
+      "dialog": {
+        "title": "Dodaj poziom dostępu",
+        "cancel": "Anuluj",
+        "add": "Dodaj",
+        "select": {
+          "client": "KLIENT",
+          "specialist": "SPECJALISTA",
+          "administrator": "ADMINISTRATOR"
+        },
+        "email": {
+          "placeholder": "E-mail"
+        },
+        "phone": {
+          "placeholder": "Numer telefonu"
+        },
+        "pesel": {
+          "placeholder": "Pesel"
+        }
+      }
+    }
+  },
+
+  "listAccount": "Lista kont",
+  "createAccount": "Stwórz konto",
+  "detailsAccount": "Moje konto",
+  "editAccount": "Edytuj moje konto",
+  "ChangeAccountPassword": {
+    "title": "Zmiana hasła dla użytkownika",
+    "input_placeholder": "Wpisz nowe hasło",
+    "change_password_button": "Zmień",
+    "go_back_button": "Powrót do strony użytkowników",
+    "too_short_password_error": "Haslo jest za krótkie!"
+  }
 }

@@ -8,6 +8,8 @@
   "our_clinic": "OUR CLINIC",
   "good_location": "three clinic in good locations",
 
+  "language": "Language",
+  "accessLevel": "Access level",
   "contact": "Contact",
   "social_media": "Social media",
   "more_inf": "Find out more",
@@ -15,8 +17,9 @@
   "log_out": "LOG OUT",
   "sign_in": "SIGN IN",
   "cyber": "CYBER IMPLANT",
+  "account_service": "ACCOUNTS",
   "specialist": "SPECIALIST",
-  "appointment":"APPOINTMENT",
+  "appointment": "APPOINTMENT",
   "password": "Password",
   "first_name": "First name*",
   "last_name": "Last name*",
@@ -24,16 +27,108 @@
   "password*": "Password*",
   "rpassword": "Reapet password*",
 
+  "active": "Active account",
+  "deactive": "Deactivate account",
+
+  "c_password": "Current Password",
+  "n_password": "New Password",
+  "change_password": "Change Password",
+
   "error_page": "Sorry, page doesn't exist",
   "invite_main_page": "Go to Home Page",
   "main_page": "HOME",
 
+  "wrong_data": "Wrong data",
   "insert_token": "Insert token from e-mail",
   "active_account": "Active account",
   "confirmed_account": "Account confirmed",
   "nav_log": "Go to Login Page",
 
-  "wrong_data": "Wrong data",
   "server_error": "Server Error, try again for a moment",
-  "refill_data": "Refill login data"
+  "refill_data": "Refill login data",
+
+  "access_level": "Access level",
+  "remove_level": "Remove access level from an account",
+  "REMOVE": "REMOVE",
+
+  "users_administration_page": "Users",
+  "search_by_phrase_placeholder": "Search by phrase",
+  "header_login": "Login",
+  "header_first_name": "First name",
+  "header_last_name": "Last name",
+  "header_level_access_level": "Access levels",
+  "header_email": "Email",
+  "header_is_active": "Is active",
+  "header_change_password": "Change password",
+  "header_manage_activity": "Block or unblock account",
+  "header_account_details": "Details",
+  "header_language": "Language",
+  "header_created_at": "Created at",
+  "header_last_modified": "Last modified",
+  "header_is_confirmed": "Is confirmed",
+  "cell_active": "Active",
+  "cell_inctive": "Inactive",
+  "cell_confirmed": "Confirmed",
+  "cell_unconfirmed": "Unconfirmed",
+
+  "refill_data": "Refill login data",
+
+  "CreateAccountForm": {
+    "form_title": "Create account",
+    "email": "Email*",
+    "first_name": "First name*",
+    "last_name": "Last name*",
+    "login": "Login*",
+    "password": "Password*",
+    "lenguage": "Lenguage*",
+    "submit": "Create account"
+  },
+
+  "button": {
+    "addAccessLevel": {
+      "buttonText": "Add Access Level",
+      "dialog": {
+        "title": "Add Access Level",
+        "cancel": "Cancel",
+        "add": "Add",
+        "select": {
+          "client": "CLIENT",
+          "specialist": "SPECIALIST",
+          "administrator": "ADMINISTRATOR"
+        },
+        "email": {
+          "placeholder": "Email"
+        },
+        "phone": {
+          "placeholder": "Phone Number"
+        },
+        "pesel": {
+          "placeholder": "Pesel"
+        }
+      }
+    }
+  },
+
+  "ChangeAccountPassword": {
+    "title": "Change password for user",
+    "input_placeholder": "Type new password",
+    "change_password_button": "Change",
+    "go_back_button": "Return to user page",
+    "too_short_password_error": "Password is too short!"
+  },
+
+  "email_send": "Check your email",
+  "email_error": "Wrong login",
+
+  "CLIENT": "Client",
+  "SPECIALIST": "Specialist",
+  "ADMINISTRATOR": "Administrator",
+  "CLIENT":"Client",
+  "SPECIALIST":"Specialist",
+  "ADMINISTRATOR":"Administrator",
+
+  "listAccount":"Accounts list",
+  "createAccount": "Create account",
+  "detailsAccount": "My account",
+  "editAccount":"Edit my account"
 }
