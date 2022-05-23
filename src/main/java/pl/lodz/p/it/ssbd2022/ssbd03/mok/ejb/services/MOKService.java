@@ -40,6 +40,7 @@ import pl.lodz.p.it.ssbd2022.ssbd03.mok.ejb.facades.ActiveAccountFacade;
 import pl.lodz.p.it.ssbd2022.ssbd03.mok.ejb.facades.ResetPasswordFacade;
 import pl.lodz.p.it.ssbd2022.ssbd03.security.JWTGenerator;
 import pl.lodz.p.it.ssbd2022.ssbd03.utils.HashAlgorithm;
+import pl.lodz.p.it.ssbd2022.ssbd03.utils.InternationalizationProvider;
 import pl.lodz.p.it.ssbd2022.ssbd03.utils.PaginationData;
 
 import java.time.Instant;
@@ -67,6 +68,8 @@ public class MOKService extends AbstractManager implements MOKServiceInterface, 
     private AccessLevelFacade accessLevelFacade;
     @Inject
     private ResetPasswordFacade resetPasswordFacade;
+    @Inject
+    private InternationalizationProvider provider;
 
 
     @Override
@@ -83,6 +86,7 @@ public class MOKService extends AbstractManager implements MOKServiceInterface, 
 
     /**
      * Metoda zwracająca konto o podanym loginie
+     *
      * @param login login
      * @return konto o podanym loginie
      */
@@ -210,12 +214,19 @@ public class MOKService extends AbstractManager implements MOKServiceInterface, 
         ConfirmationAccountToken activeAccountToken = new ConfirmationAccountToken(account, token, date);
         activeAccountFacade.create(activeAccountToken);
         // TODO: przenieść wysyłanie maila do endpointu (z upewnienieniem się, że transakcja się powiedzie)
+        StringBuilder title = new StringBuilder();
+        StringBuilder content = new StringBuilder();
+
+        title.append(provider.getMessage("account.register.email.title"));
+        content.append(provider.getMessage("account.register.email.content.localAddress"))
+                .append("https://localhost:8181/active?token=").append(token)
+                .append(provider.getMessage("account.register.email.content.remoteAddress"))
+                .append("https://kic.agency:8403/active?token=").append(token);
+
         emailConfig.sendEmail(
                 account.getEmail(),
-                "Active account - KIC",
-                "Your link to active account: https://localhost:8181/active?token=" + token
-                        +"\n \n or \n \n" +
-                        "https://kic.agency:8403/active?token=" + token);
+                title.toString(),
+                content.toString());
         return account;
     }
 
@@ -234,6 +245,7 @@ public class MOKService extends AbstractManager implements MOKServiceInterface, 
 
     /**
      * Metoda tworząca nowe konto i zwtracająca nowo utworzone konto z bazy danych
+     *
      * @param account konto do utworzenia
      * @return utworzone konto wyszukane z bazy danych po loginie
      */
