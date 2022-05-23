@@ -1,7 +1,7 @@
 package pl.lodz.p.it.ssbd2022.ssbd03.mok.ejb.services;
 
 import jakarta.ejb.Local;
-import pl.lodz.p.it.ssbd2022.ssbd03.common.ManagerLocalInterface;
+import pl.lodz.p.it.ssbd2022.ssbd03.common.ServiceLocalInterface;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.Account;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.ResetPasswordToken;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.access_levels.AccessLevel;
@@ -10,7 +10,7 @@ import pl.lodz.p.it.ssbd2022.ssbd03.utils.PaginationData;
 
 
 @Local
-public interface MOKServiceInterface extends ManagerLocalInterface {
+public interface MOKServiceInterface extends ServiceLocalInterface {
 
     /**
      * Metoda uwierzytelnia użytkownika i zwraca token
