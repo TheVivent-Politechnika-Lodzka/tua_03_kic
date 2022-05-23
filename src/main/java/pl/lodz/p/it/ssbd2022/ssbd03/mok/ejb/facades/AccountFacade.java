@@ -108,7 +108,7 @@ public class AccountFacade extends AbstractFacade<Account> {
      * @param phrase     Fraza, która występuje w imieniu i/lub nazwisku szukanych użytkowników
      * @return Znalezieni użytkownicy wraz z ich całkowitą ilością (jako liczba)
      * @throws InvalidParametersException, gdy podano niepoprawną wartość parametru
-     * @throws DatabaseException,          gdy wystąpi błąd związany z bazą danych
+     * @throws DatabaseException, gdy wystąpi błąd związany z bazą danych
      */
     @RolesAllowed(Roles.ADMINISTRATOR)
     public PaginationData findInRangeWithPhrase(int pageNumber, int perPage, String phrase) {
