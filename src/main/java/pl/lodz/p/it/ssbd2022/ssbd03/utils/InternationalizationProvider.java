@@ -10,6 +10,9 @@ import pl.lodz.p.it.ssbd2022.ssbd03.mok.ejb.facades.AccountFacade;
 
 import java.util.ResourceBundle;
 
+/**
+ * Klasa odpowiadająca za internacjonalizację komunikatów od strony serwera
+ */
 @RequestScoped
 public class InternationalizationProvider {
 
@@ -24,6 +27,13 @@ public class InternationalizationProvider {
     @Inject
     AccountFacade accountFacade;
 
+    /**
+     * Metoda tłumacząca komunikaty na wybrany język
+     * Jeśli użytkownik jest niezalogowany pobiera język z żądania
+     * Jeśli nie pobiera go z bazy danych
+     * @param message Komunikat, który ma zostać przetłumaczony
+     * @return przetłumaczony komunikat
+     */
     public String getMessage(String message) {
         String login = sessionContext.getCallerPrincipal().getName();
         if(login.equals("ANONYMOUS")) {
