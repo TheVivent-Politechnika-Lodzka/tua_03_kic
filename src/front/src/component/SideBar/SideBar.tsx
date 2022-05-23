@@ -14,13 +14,6 @@ const SideBar = () => {
         <div className={styles.item}>
           <UserNavBar />
         </div>
-        {user === "SPECIALIST" ? (
-          <div className={styles.item}>
-            <SpecialistNavBar />
-          </div>
-        ) : (
-          <></>
-        )}
       </div>
     </div>
   );

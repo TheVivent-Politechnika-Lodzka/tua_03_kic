@@ -14,15 +14,8 @@ const GuestTopBar = () => {
       <Logo/>
       <div className={styles.links}>
         <div className={styles.item}>
-          <ImplantNavBar />
-        </div>
-        <div className={styles.item}>
-          <SpecialistNavBar />
-        </div>
-        <div className={styles.item}>
           <LangSelect />
         </div>
-
         <div
           className={styles.itembutton}
           onClick={() => navigate("/login", { replace: false })}
