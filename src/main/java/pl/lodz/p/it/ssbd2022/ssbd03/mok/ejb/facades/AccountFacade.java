@@ -1,5 +1,7 @@
 package pl.lodz.p.it.ssbd2022.ssbd03.mok.ejb.facades;
 
+import jakarta.annotation.security.PermitAll;
+import jakarta.annotation.security.RolesAllowed;
 import jakarta.ejb.Stateless;
 import jakarta.ejb.TransactionAttribute;
 import jakarta.ejb.TransactionAttributeType;
@@ -12,6 +14,7 @@ import jakarta.persistence.TypedQuery;
 import lombok.Getter;
 import org.hibernate.exception.ConstraintViolationException;
 import pl.lodz.p.it.ssbd2022.ssbd03.common.AbstractFacade;
+import pl.lodz.p.it.ssbd2022.ssbd03.common.Roles;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.Account;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.InvalidParametersException;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.account.AccountAlreadyExistsException;
@@ -39,8 +42,43 @@ public class AccountFacade extends AbstractFacade<Account> {
         super(Account.class);
     }
 
+
     /**
+     * Metoda usuwająca konto z bazy danych
      *
+     * @param entity
+     */
+    @Override
+    @RolesAllowed(Roles.ADMINISTRATOR)
+    public void unsafeRemove(Account entity) {
+        super.unsafeRemove(entity);
+    }
+
+
+    /**
+     * Metoda edytująca konto w bazie danych. Uwzględnia wersję
+     *
+     * @param entity
+     * @param eTag
+     */
+    @Override
+    @PermitAll
+    public void edit(Account entity, String eTag) {
+        super.edit(entity, eTag);
+    }
+
+    /**
+     * Metoda edytująca konto w bazie danych. NIE Uwzględnia wersji
+     *
+     * @param entity
+     */
+    @Override
+    @PermitAll
+    public void unsafeEdit(Account entity) {
+        super.unsafeEdit(entity);
+    }
+
+    /**
      * Metoda wyszukująca konkretne konto względem wprowadzonego loginu
      *
      * @param login Login użytkownika, którego szukamy
@@ -48,6 +86,7 @@ public class AccountFacade extends AbstractFacade<Account> {
      * @throws InvalidParametersException, gdy podano niepoprawną wartość parametru
      * @throws DatabaseException, gdy wystąpi błąd związany z bazą danych
      */
+    @PermitAll
     public Account findByLogin(String login) {
         try {
             TypedQuery<Account> typedQuery = entityManager.createNamedQuery("Account.findByLogin", Account.class);
@@ -70,6 +109,7 @@ public class AccountFacade extends AbstractFacade<Account> {
      * @throws InvalidParametersException, gdy podano niepoprawną wartość parametru
      * @throws DatabaseException,          gdy wystąpi błąd związany z bazą danych
      */
+    @RolesAllowed(Roles.ADMINISTRATOR)
     public PaginationData findInRangeWithPhrase(int pageNumber, int perPage, String phrase) {
         try {
             TypedQuery<Account> typedQuery = entityManager.createNamedQuery("Account.searchByPhrase", Account.class);
@@ -97,9 +137,11 @@ public class AccountFacade extends AbstractFacade<Account> {
 
     /**
      * Metoda dodaje nowe konto do bazy danych
+     *
      * @param entity konto użytkownika
      * @throws AccountAlreadyExistsException gdy użytkownik o podanym loginie lub emailu już istnieje
      */
+    @PermitAll
     @Override
     public void create(Account entity) {
         try {
