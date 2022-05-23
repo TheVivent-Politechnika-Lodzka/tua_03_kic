@@ -184,8 +184,15 @@ public interface MOKEndpointInterface {
         throw new MethodNotImplementedException();
     }
 
-    // MOK.10 Edytuj dane konta innego użytkownika
-    // TODO: Dodanie Javadoc
+    /**
+     * Metoda pozwalająca edytować dane konta innego użytkownika, wywołana z poziomu endpointa.
+     * Może ją tylko wykonać tylko konto z poziomem dostępu administratora.
+     * @param login Login użytkownika, którego dane konta zostaną edytowane
+     * @param accountWithAccessLevelsDto Dane, które mają zastąpić dane konta edytowanego
+     * @return odpowiedź HTTP
+     * @throws MethodNotImplementedException w momencie, gdy metoda jest niezaimplementowana
+     * @throws TransactionException w momencie, gdy transakcja nie została zatwierdzona
+     */
     @PUT
     @Path("/{login}")
     @RolesAllowed(Roles.ADMINISTRATOR)

@@ -84,7 +84,7 @@ const api = createApi({
 
     // ZNAJDŹ WSZYSTKICH UŻYTKOWNIKÓW
     findAllUsers: builder.mutation<
-      AccountsPaginationData,
+      AccountWithAccessLevelsDto[],
       PaginationFilterParams
     >({
       query: (params: PaginationFilterParams) => ({
