@@ -47,4 +47,6 @@ public class RegisterClientDto {
     @JsonbTypeDeserializer(LocaleSerializerDeserializer.class)
     private Locale language;
 
+    private String captcha;
+
 }

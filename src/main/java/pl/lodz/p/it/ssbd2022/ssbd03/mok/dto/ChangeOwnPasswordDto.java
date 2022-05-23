@@ -16,9 +16,11 @@ public class ChangeOwnPasswordDto {
     @NotNull
     private String eTag;
 
-    @NotNull
+    @Password
     private String oldPassword;
 
     @Password
     private String newPassword;
+
+    private String captcha;
 }
