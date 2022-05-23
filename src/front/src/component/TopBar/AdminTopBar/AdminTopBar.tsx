@@ -1,11 +1,9 @@
 import styles from "./adminTopBar.module.scss";
 import { Logout } from "../SelectorTopBar/SelectorTopBar";
 import LangSelect from "../../Selector/LangBarSelect/LangSelect";
-import AppointmentNavBar from "../../NavBar/AppointmentNavBar/AppointmentNavBar";
-import ImplantNavBar from "../../NavBar/ImplantNavBar/ImplantNavBar";
-import SpecialistNavBar from "../../NavBar/SpecialistNavBar/SpecialistNavBar";
 import AccessLevelSelect from "../../Selector/AccessLevelSelect/AccessLevelSelect";
 import Logo from "../../Logo/Logo";
+import UserNavBar from "../../NavBar/UserNavBar/UserNavBar";
 
 const AdminTopBar = () => {
   return (
@@ -13,13 +11,7 @@ const AdminTopBar = () => {
       <Logo />
       <div className={styles.links}>
         <div className={styles.item}>
-          <AppointmentNavBar />
-        </div>
-        <div className={styles.item}>
-          <ImplantNavBar />
-        </div>
-        <div className={styles.item}>
-          <SpecialistNavBar />
+          <UserNavBar />
         </div>
         <div className={styles.item}>
           <LangSelect />

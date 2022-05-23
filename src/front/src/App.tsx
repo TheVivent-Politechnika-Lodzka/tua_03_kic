@@ -66,7 +66,7 @@ function App() {
             ) : (
               <></>
             )}
-            {user.cur !== undefined ? (
+            {user.cur !== "" ? (
               <>
                 <Route path="/account" element={<AccountDetailsPage />} />
                 <Route
