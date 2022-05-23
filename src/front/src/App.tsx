@@ -6,8 +6,6 @@ import ErrorPage from "./pages/unprotected/error/ErrorPage";
 import LoginPage from "./pages/unprotected/loginPage/LoginPage";
 import { useStoreSelector, useStoreDispatch } from "./redux/reduxHooks";
 import AdminPage from "./pages/admin/AdminPage/AdminPage";
-import ClientPage from "./pages/client/ClientPage";
-import SpecialistPage from "./pages/specialist/SpecialistPage";
 import jwtDecode from "jwt-decode";
 import { login as loginDispatch } from "./redux/userSlice";
 import ActivateAccountPage from "./pages/unprotected/activate/ActivateAccountPage";
@@ -56,16 +54,7 @@ function App() {
             ) : (
               <></>
             )}
-            {user.cur === "CLIENT" ? (
-              <Route path="/client" element={<ClientPage />} />
-            ) : (
-              <></>
-            )}
-            {user.cur === "SPECIALIST" ? (
-              <Route path="/specialist" element={<SpecialistPage />} />
-            ) : (
-              <></>
-            )}
+
             {user.cur !== "" ? (
               <>
                 <Route path="/account" element={<AccountDetailsPage />} />
