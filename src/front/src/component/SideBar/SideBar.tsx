@@ -3,7 +3,7 @@ import SpecialistNavBar from "../NavBar/SpecialistNavBar/SpecialistNavBar";
 import Logo from "../Logo/Logo";
 import AppointmentNavBar from "../NavBar/AppointmentNavBar/AppointmentNavBar";
 import ImplantNavBar from "../NavBar/ImplantNavBar/ImplantNavBar";
-import UserNavBar from "../NavBar/UsersNavBar/SpecialistNavBar";
+import UserNavBar from "../NavBar/UserNavBar/UserNavBar";
 
 const SideBar = () => {
   return (

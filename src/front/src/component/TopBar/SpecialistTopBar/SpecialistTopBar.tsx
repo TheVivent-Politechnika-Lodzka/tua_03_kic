@@ -21,11 +21,12 @@ const SpecialistTopBar = () => {
         <div className={styles.item}>
           <SpecialistNavBar />
         </div>
-        <div className={styles.item_width}>
-          <AccessLevelSelect />
-        </div>
+
         <div className={styles.item}>
           <LangSelect />
+        </div>
+        <div className={styles.item}>
+          <AccessLevelSelect />
         </div>
         <Logout />
       </div>

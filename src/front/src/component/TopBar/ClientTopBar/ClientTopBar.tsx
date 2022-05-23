@@ -14,7 +14,7 @@ const ClientTopBar = () => {
   const { t } = useTranslation();
   return (
     <div className={styles.topBar}>
-      <Logo/>
+      <Logo />
       <div className={styles.links}>
         <div className={styles.item}>
           <AppointmentNavBar />
@@ -31,11 +31,11 @@ const ClientTopBar = () => {
         >
           CLIENTPAGE
         </div>
-        <div className={styles.item_width}>
-          <AccessLevelSelect />
-        </div>
         <div className={styles.item}>
           <LangSelect />
+        </div>
+        <div className={styles.item}>
+          <AccessLevelSelect />
         </div>
         <Logout />
       </div>
