@@ -177,15 +177,16 @@ const api = createApi({
 
         // ODŁĄCZ POZIOM DOSTĘPU OD KONTA
         removeAccessLevel: builder.mutation<string, RemoveAccessLevel>({
-            query: ({login, tag, accessLevel}: RemoveAccessLevel) => ({
+            query: ({ login, eTag, accessLevel }: RemoveAccessLevel) => ({
                 url: `/mok/access-level/${login}/${accessLevel}`,
                 method: "DELETE",
-                params: {eTag: tag},
+                params: { eTag: eTag },
                 responseHandler: async (response) => {
                     return await response.json();
                 },
             }),
         }),
+
 
         // UTWÓRZ KONTO
         createAccount: builder.mutation<AccountWithAccessLevelsDto,

@@ -31,5 +31,8 @@
   "nav_log": "Przejdz do logowania",
   "wrong_data": "Niepoprawne dane logowania",
   "server_error": "Błąd serwera, spróbuj za chwilę",
-  "refill_data": "Uzupełnij dane logowania"
+  "refill_data": "Uzupełnij dane logowania",
+  "access_level": "Poziom dostępu",
+  "remove_level": "Usuń poziom dostępu z konta",
+  "REMOVE": "USUŃ"
 }

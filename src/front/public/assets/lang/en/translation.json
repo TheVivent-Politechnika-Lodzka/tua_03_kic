@@ -35,5 +35,9 @@
 
   "wrong_data": "Wrong data",
   "server_error": "Server Error, try again for a moment",
-  "refill_data": "Refill login data"
+  "refill_data": "Refill login data",
+
+  "access_level": "Access level",
+  "remove_level": "Remove access level from an account",
+  "REMOVE": "REMOVE"
 }

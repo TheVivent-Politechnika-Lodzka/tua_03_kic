@@ -49,7 +49,7 @@ export interface AddAccessLevel {
 export interface RemoveAccessLevel {
   login: string;
   accessLevel: AccessLevelName;
-  tag: ETag;
+  eTag: string;
 }
 
 export interface changeOwnPasswordDto {
