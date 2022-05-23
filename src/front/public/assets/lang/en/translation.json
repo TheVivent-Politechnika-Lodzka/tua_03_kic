@@ -54,8 +54,15 @@
   "header_is_active": "Is active",
   "header_change_password": "Change password",
   "header_manage_activity": "Block or unblock account",
+  "header_account_details": "Details",
+  "header_language": "Language",
+  "header_created_at": "Created at",
+  "header_last_modified": "Last modified",
+  "header_is_confirmed": "Is confirmed",
   "cell_active": "Active",
   "cell_inctive": "Inactive",
+  "cell_confirmed": "Confirmed",
+  "cell_unconfirmed": "Unconfirmed",
 
   "refill_data": "Refill login data",
 

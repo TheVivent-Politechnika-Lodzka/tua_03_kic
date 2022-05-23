@@ -24,13 +24,12 @@ public interface MOKServiceInterface extends ManagerLocalInterface {
     }
 
     /**
-     * Metoda znajdująca uzytkownika za pomocą loginu.
+     * Wyszukiwanie konta na podstawie loginu
      *
-     * @param login Login konta, które ma zostać znalezione.
-     * @return Odpowiedź HTTP
+     * @param login Login konta, które ma zostać znalezione
+     * @return znalezione konto
      * @throws MethodNotImplementedException w momencie, gdy metoda jest niezaimplementowana
      */
-
     default Account findAccountByLogin(String login) {
         throw new MethodNotImplementedException();
     }
@@ -106,12 +105,22 @@ public interface MOKServiceInterface extends ManagerLocalInterface {
         throw new MethodNotImplementedException();
     }
 
-    // TODO: Dodanie Javadoc
-    default Account registerAccount(Account account) {
+    /**
+     * Metoda tworzy konto i zwraca token pozwalający aktywować konto
+     * @param account - dane konta
+     * @return token, pozwala na aktywacje konta
+     * @throws MethodNotImplementedException w momencie, gdy metoda jest niezaimplementowana
+     */
+    default String registerAccount(Account account) {
         throw new MethodNotImplementedException();
     }
 
-    // TODO: Dodanie Javadoc
+    /**
+     * Metoda wyszukuje użytkownika w bazie danych i potwierdza jego konto
+     * @param token - token konta, które ma zostać potwierdzone
+     * @return potwierdzone konto
+     * @throws MethodNotImplementedException w momencie, gdy metoda jest niezaimplementowana
+     */
     default Account confirmRegistration(String token) {
         throw new MethodNotImplementedException();
     }

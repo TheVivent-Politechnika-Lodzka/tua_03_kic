@@ -48,8 +48,13 @@ public class AccountMapper {
         return account;
     }
 
-    // TODO: Dodanie Javadoc
-    public Account createAccountfromCreateClientAccountDto(RegisterClientDto registerClientAccountDto) {
+
+    /**
+     * Metoda mapuje obiekt typu na obiekt typu Account
+     * @param registerClientAccountDto - dto z którego tworzone jest konto klienta
+     * @return - konto
+     */
+    public Account createAccountfromRegisterClientDto(RegisterClientDto registerClientAccountDto) {
         Account account = new Account();
         account.setLogin(registerClientAccountDto.getLogin());
         account.setFirstName(registerClientAccountDto.getFirstName());

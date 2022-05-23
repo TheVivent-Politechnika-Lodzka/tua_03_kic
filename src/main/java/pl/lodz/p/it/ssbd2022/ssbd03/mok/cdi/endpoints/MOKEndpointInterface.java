@@ -22,9 +22,12 @@ public interface MOKEndpointInterface {
         return Response.ok("pong").build();
     }
 
-
-    // MOK.1 Zarejestruj
-    // TODO: Dodanie Javadoc
+    /**
+     * MOK.1 Zarejestruj
+     * @param registerClientDto - dane konta
+     * @return Response zawierający status HTTP
+     * @throws MethodNotImplementedException jeśli metoda nie została zaimplementowana
+     */
     @POST
     @Path("/register")
     @PermitAll
@@ -33,13 +36,17 @@ public interface MOKEndpointInterface {
         throw new MethodNotImplementedException();
     }
 
-    // MOK.1 Zarejestruj
-    // TODO: Dodanie Javadoc
+    /**
+     * MOK.1 Zarejestruj - potwierdzenie rejestracji konta
+     * @param registerConfirmDto token
+     * @return Response zawierający status HTTP
+     * @throws MethodNotImplementedException jeśli metoda nie została zaimplementowana
+     */
     @POST
     @Path("/register-confirm")
     @PermitAll
     @Consumes(MediaType.APPLICATION_JSON)
-    default Response registerConfirm(@Valid RegisterClientConfirmDto registerConfirmDto) {
+    default Response confirmRegistration(@Valid RegisterClientConfirmDto registerConfirmDto) {
         throw new MethodNotImplementedException();
     }
 
@@ -260,7 +267,13 @@ public interface MOKEndpointInterface {
     }
 
     // MOK.16 Przeglądaj szczegóły konta innego użytkownika
-    // TODO: Dodanie Javadoc
+    /**
+     * Metoda zwracająca szczegółowe informacje dotyczące wybranego konta
+     *
+     * @param login   Login konta, którego dane mają zostać wczytane
+     * @return Odpowiedź HTTP
+     * @throws MethodNotImplementedException w momencie, gdy metoda jest niezaimplementowana
+     */
     @GET
     @Path("/{login}")
     @RolesAllowed(Roles.ADMINISTRATOR)

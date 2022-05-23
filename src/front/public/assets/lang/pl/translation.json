@@ -34,7 +34,7 @@
 
   "active": "Aktywuj konto",
   "deactive": "Dezaktywuj konto",
-  
+
   "error_page": "Przykro mi, strona nie istnieje",
   "invite_main_page": "Zapraszamy na stronę główną",
   "main_page": "STRONA GŁÓWNA",
@@ -60,9 +60,16 @@
   "header_email": "Email",
   "header_is_active": "Czy jest aktywny",
   "header_change_password": "Zmień hasło",
+  "header_account_details": "Szczegóły",
+  "header_language": "Język",
+  "header_is_confirmed": "Jest potwierdzone",
+  "header_created_at": "Data utworzenia",
+  "header_last_modified": "Ostatania modyfikacja",
   "header_manage_activity": "Zablokuj lub odblokuj konto",
   "cell_active": "Aktywny",
   "cell_inactive": "Nieaktywny",
+  "cell_confirmed": "Potwierdzone",
+  "cell_unconfirmed": "Niepotwierdzone",
 
   "CreateAccountForm": {
     "form_title": "Utwórz konto",
