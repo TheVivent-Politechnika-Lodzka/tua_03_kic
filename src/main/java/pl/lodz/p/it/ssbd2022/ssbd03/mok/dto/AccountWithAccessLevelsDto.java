@@ -24,15 +24,20 @@ public class AccountWithAccessLevelsDto extends AbstractDto {
 
     @Login
     private String login;
+
     @FirstName
     private String firstName;
+
     @LastName
     private String lastName;
+
     @Email
     @NotNull
     private String email;
+
     @NotNull
     private boolean isActive;
+
     @NotNull
     private boolean isConfirmed;
 
@@ -40,6 +45,8 @@ public class AccountWithAccessLevelsDto extends AbstractDto {
     @JsonbTypeSerializer(LocaleSerializerDeserializer.class)
     @JsonbTypeDeserializer(LocaleSerializerDeserializer.class)
     private Locale language;
+
+    private String captcha;
 
     private List<AccessLevelDto> accessLevels = new ArrayList<>();
 

@@ -4,7 +4,9 @@ import jakarta.ejb.ApplicationException;
 import jakarta.ws.rs.core.Response;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.AppBaseException;
 
-// TODO: Dodanie Javadoc
+/**
+ * Wyjątek reprezentujący błąd związany ze źle utworzonym z tokenem
+ */
 @ApplicationException(rollback = true)
 public class TokenDecodeInvalidException extends AppBaseException {
 

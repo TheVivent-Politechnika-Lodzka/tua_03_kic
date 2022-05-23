@@ -1,5 +1,4 @@
 import styles from "./sidebar.module.scss";
-import SpecialistNavBar from "../NavBar/SpecialistNavBar/SpecialistNavBar";
 import Logo from "../Logo/Logo";
 import UserNavBar from "../NavBar/UserNavBar/UserNavBar";
 import { useStoreSelector } from "../../redux/reduxHooks";
@@ -14,13 +13,6 @@ const SideBar = () => {
         <div className={styles.item}>
           <UserNavBar />
         </div>
-        {user === "SPECIALIST" ? (
-          <div className={styles.item}>
-            <SpecialistNavBar />
-          </div>
-        ) : (
-          <></>
-        )}
       </div>
     </div>
   );

@@ -12,8 +12,10 @@ public class ResetPasswordTokenDto {
 
     @NotNull
     private String token;
+
     @Login
     private String login;
+
     @Password
     private String password;
 

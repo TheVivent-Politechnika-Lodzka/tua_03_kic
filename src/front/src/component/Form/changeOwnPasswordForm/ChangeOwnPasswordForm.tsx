@@ -2,15 +2,16 @@ import styles from "./changeOwnPasswordForm.module.scss";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import {useChangeOwnPasswordMutation} from "../../../api/api";
-import {login, login as loginDispatch} from "../../../redux/userSlice";
+import { useChangeOwnPasswordMutation } from "../../../api/api";
+import { login, login as loginDispatch } from "../../../redux/userSlice";
 import { useTranslation } from "react-i18next";
+import { useGoogleReCaptcha } from "react-google-recaptcha-v3";
 
 interface LoginFormProps {
-  ETag : string;
+  ETag: string;
 }
 
-const ChangeOwnPasswordForm = ({ETag}: LoginFormProps) => {
+const ChangeOwnPasswordForm = ({ ETag }: LoginFormProps) => {
   const [change, { isLoading }] = useChangeOwnPasswordMutation();
   const [oldPassword, setOldPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
@@ -20,21 +21,30 @@ const ChangeOwnPasswordForm = ({ETag}: LoginFormProps) => {
   const navigate = useNavigate();
   const { t } = useTranslation();
 
+  const { executeRecaptcha } = useGoogleReCaptcha();
+
   const handleSubmit = async (event: any) => {
     event.preventDefault();
+
+    if (executeRecaptcha === undefined) {
+      return;
+    }
+
+    const captcha = await executeRecaptcha("register");
 
     if (oldPassword && newPassword) {
       const res = await change({
         oldPassword,
         newPassword,
-        ETag
+        ETag,
+        captcha,
       });
 
       if ("data" in res) {
       } else if ("error" in res && "status" in res.error) {
-        if (res.error.status === 'PARSING_ERROR') setMessage(res.error.data as string);
+        if (res.error.status === "PARSING_ERROR")
+          setMessage(res.error.data as string);
       } else setMessage(t("server_error"));
-
     } else {
       setMessage(t("refill_data"));
     }
@@ -51,7 +61,7 @@ const ChangeOwnPasswordForm = ({ETag}: LoginFormProps) => {
             placeholder={t("c_password")}
             name="oldPassword"
             value={oldPassword}
-            onChange={(e:any) => setOldPassword(e.target.value)}
+            onChange={(e: any) => setOldPassword(e.target.value)}
             required
           />
           <label className={styles.form_label}>{t("c_password")}</label>
@@ -59,7 +69,7 @@ const ChangeOwnPasswordForm = ({ETag}: LoginFormProps) => {
         <div className={`${styles.form_group} ${styles.field}`}>
           <input
             type="password"
-            pattern={"^(?=.*[\p{Lu}])(?=.*[\p{Ll}])(?=.*\d).+$"}
+            pattern={"^(?=.*[p{Lu}])(?=.*[p{Ll}])(?=.*d).+$"}
             minLength={8}
             className={styles.form_field}
             placeholder={t("n_password")}

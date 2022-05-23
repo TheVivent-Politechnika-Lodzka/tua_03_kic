@@ -10,14 +10,15 @@ interface ETag {
 }
 
 export interface RegisterClientDto {
-    password: string;
-    login: string;
-    email: string;
-    firstName: string;
-    lastName: string;
-    phoneNumber: string;
-    pesel: string;
-    language: Language;
+  password: string;
+  login: string;
+  email: string;
+  firstName: string;
+  lastName: string;
+  phoneNumber: string;
+  pesel: string;
+  language: Language;
+  captcha: string;
 }
 
 export interface RegisterClientConfirmDto {
@@ -59,9 +60,10 @@ export interface RemoveAccessLevel {
 }
 
 export interface changeOwnPasswordDto {
-    oldPassword: string;
-    newPassword: string;
-    ETag: string;
+  oldPassword: string;
+  newPassword: string;
+  ETag: string;
+  captcha: string;
 }
 
 export interface ChangePasswordDto {
@@ -73,17 +75,18 @@ export interface ChangePasswordDto {
 }
 
 export interface AccountWithAccessLevelsDto extends AbstractDto {
-    email: string;
-    login: string;
-    firstName: string;
-    lastName: string;
-    active: boolean;
-    confirmed: boolean;
-    language: Language;
-    accessLevels: AccessLevelDto[];
+  email: string;
+  login: string;
+  firstName: string;
+  lastName: string;
+  active: boolean;
+  confirmed: boolean;
+  language: Language;
+  captcha: string;
+  accessLevels: AccessLevelDto[];
 }
 export interface AccountsPaginationData extends PaginationData {
-    data: AccountWithAccessLevelsDto[];
+  data: AccountWithAccessLevelsDto[];
 }
 
 export interface AccountWithAccessLevelsDtoWithLogin {
