@@ -1,7 +1,6 @@
-import "./langselect.module.scss";
+import styles from "./langselect.module.scss";
 import i18next from "i18next";
 import { useState } from "react";
-
 
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
@@ -13,11 +12,12 @@ const LangSelect = () => {
   const [value, setValue] = useState<string>();
   const { t } = useTranslation();
   return (
-    <FormControl focused={true} color="primary">
+    <FormControl focused={true} color="primary" variant="filled">
       <InputLabel id="lang_select">{t("language")}</InputLabel>
       <Select
         labelId="lang-select"
         id="lang-select"
+        className={styles.textcolor}
         value={value}
         defaultValue={localStorage.getItem("i18nextLng")}
         label={t("language")}

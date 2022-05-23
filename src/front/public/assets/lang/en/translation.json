@@ -17,7 +17,7 @@
   "log_out": "LOG OUT",
   "sign_in": "SIGN IN",
   "cyber": "CYBER IMPLANT",
-  "users": "USERS",
+  "account_service": "ACCOUNTS",
   "specialist": "SPECIALIST",
   "appointment": "APPOINTMENT",
   "password": "Password",
@@ -114,5 +114,10 @@
 
   "CLIENT":"Client",
   "SPECIALIST":"Specialist",
-  "ADMINISTRATOR":"Administrator"
+  "ADMINISTRATOR":"Administrator",
+
+  "listAccount":"Accounts list",
+  "createAccount": "Create account",
+  "detailsAccount": "My account",
+  "editAccount":"Edit my account"
 }

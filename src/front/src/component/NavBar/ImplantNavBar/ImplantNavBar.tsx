@@ -23,7 +23,7 @@ const ImplantNavBar = () => {
           </Button>
           <Menu {...bindMenu(popupState)}>
             {user === "ADMINISTRATOR" ? (
-              <MenuItem onClick={() => navigate("/specialist")}>PAGE1</MenuItem>
+              <MenuItem onClick={() => navigate("/specialist")}>EXAMPLE</MenuItem>
             ) : (
               <></>
             )}

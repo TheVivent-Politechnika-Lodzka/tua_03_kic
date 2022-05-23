@@ -21,12 +21,16 @@ export const userSlice = createSlice({
   initialState,
   reducers: {
     logout: () => {
+      localStorage.setItem(ACCESS_LEVEL, "");
       return initialState;
     },
     login: (state, action) => {
       const data = action.payload;
 
-      if (localStorage.getItem(ACCESS_LEVEL)) {
+      if (
+        localStorage.getItem(ACCESS_LEVEL) ||
+        localStorage.getItem(ACCESS_LEVEL) !== ""
+      ) {
         const res = {
           sub: data.sub,
           auth: data.auth.split(","),

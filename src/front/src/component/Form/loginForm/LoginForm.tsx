@@ -49,27 +49,27 @@ const LoginForm = () => {
           <input
             type="input"
             className={styles.form_field}
-            placeholder="Login"
+            placeholder="Login*"
             name="login"
             id="login"
             value={login}
             onChange={(e: any) => setLogin(e.target.value)}
             required
           />
-          <label className={styles.form_label}>Login</label>
+          <label className={styles.form_label}>Login*</label>
         </div>
         <div className={`${styles.form_group} ${styles.field}`}>
           <input
             type="password"
             className={styles.form_field}
-            placeholder={t("password")}
+            placeholder={t("password*")}
             name="password"
             id="password_login"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
           />
-          <label className={styles.form_label}>{t("password")}</label>
+          <label className={styles.form_label}>{t("password*")}</label>
         </div>
       </div>
 

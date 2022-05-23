@@ -1,17 +1,19 @@
 import styles from "./selectorTopBar.module.scss";
-import { useStoreSelector } from "../../../redux/reduxHooks";
+import { useStoreDispatch, useStoreSelector } from "../../../redux/reduxHooks";
 import AdminTopBar from "../AdminTopBar/AdminTopBar";
 import SpecialistTopBar from "../SpecialistTopBar/SpecialistTopBar";
 import ClientTopBar from "../ClientTopBar/ClientTopBar";
 import GuestTopBar from "../GuestTopBar/GuestTopBar";
-import { logout } from "../../../redux/userSlice";
+import { logout as logoutDispatch } from "../../../redux/userSlice";
 import { useTranslation } from "react-i18next";
 
+
 export const Logout = () => {
-  const user = useStoreSelector((state) => state.user);
   const { t } = useTranslation();
+  const dispatch = useStoreDispatch();
   const logout = () => {
     localStorage.setItem("AUTH_TOKEN", "");
+    dispatch(logoutDispatch());
     window.location.reload();
   };
   return (
@@ -22,16 +24,16 @@ export const Logout = () => {
 };
 
 const SelectorBar = () => {
-  const user = useStoreSelector((state) => state.user);
+  const user = useStoreSelector((state) => state.user.cur);
 
   
-  if (user.cur === "ADMINISTRATOR") {
+  if (user === "ADMINISTRATOR") {
     return <AdminTopBar />;
   }
-  if (user.cur === "SPECIALIST") {
+  if (user === "SPECIALIST") {
     return <SpecialistTopBar />;
   }
-  if (user.cur === "CLIENT") {
+  if (user === "CLIENT") {
     return <ClientTopBar />;
   } else {
     return <GuestTopBar />;
