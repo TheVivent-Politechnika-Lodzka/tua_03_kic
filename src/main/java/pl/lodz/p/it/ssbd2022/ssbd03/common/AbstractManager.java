@@ -4,6 +4,8 @@ import jakarta.annotation.Resource;
 import jakarta.annotation.security.PermitAll;
 import jakarta.ejb.SessionContext;
 import jakarta.ejb.TransactionAttribute;
+import jakarta.inject.Inject;
+import pl.lodz.p.it.ssbd2022.ssbd03.utils.InternationalizationProvider;
 
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.logging.Level;
@@ -15,6 +17,9 @@ public abstract class AbstractManager {
 
     @Resource
     SessionContext sessionContext;
+
+    @Inject
+    InternationalizationProvider provider;
 
     protected static final Logger LOGGER = Logger.getGlobal();
 
@@ -33,7 +38,7 @@ public abstract class AbstractManager {
                 + ThreadLocalRandom.current().nextLong(Long.MAX_VALUE);
         LOGGER.log(
                 Level.INFO,
-                "Transakcja o id={0}, rozpoczęta w: {1}; tożsamość: {2}",
+                provider.getMessage("logger.info.abstractManager.afterBegin"),
                 new Object[]{
                         transactionId,
                         this.getClass().getName(),
@@ -45,7 +50,7 @@ public abstract class AbstractManager {
     public void beforeCompletion() {
         LOGGER.log(
                 Level.INFO,
-                "Transakcja o id={0}, przed zatwierdzeniem w {1}; tożsamość: {2}",
+                provider.getMessage("logger.info.abstractManager.beforeCompletion"),
                 new Object[]{
                         transactionId,
                         this.getClass().getName(),
@@ -58,7 +63,7 @@ public abstract class AbstractManager {
         lastTransactionCommited = committed;
         LOGGER.log(
                 Level.INFO,
-                "Transakcja o id={0}, zakończona w {1} (status: {2}); tożsamość {3}",
+                provider.getMessage("logger.info.abstractManager.beforeCompletion"),
                 new Object[]{
                         transactionId,
                         this.getClass().getName(),

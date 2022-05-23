@@ -112,7 +112,7 @@ public class MOKEndpoint implements MOKEndpointInterface {
         if (!commitedTX) {
             throw new TransactionException();
         }
- //      todo I18n
+        //      todo I18n
         emailService.sendEmail(
                 activatedAccount.getEmail(),
                 "KIC - Twoje konto zostalo odblokowane",
