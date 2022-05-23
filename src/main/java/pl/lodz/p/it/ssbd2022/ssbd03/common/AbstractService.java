@@ -62,7 +62,7 @@ public abstract class AbstractService {
                 new Object[]{
                         transactionId,
                         this.getClass().getName(),
-                        committed ? "ZATWIERDZONA" : "ODWOŁANA",
+                        committed ? "ZATWIERDZONO" : "ODWOŁANO",
                         sessionContext.getCallerPrincipal().getName()
                 }
         );

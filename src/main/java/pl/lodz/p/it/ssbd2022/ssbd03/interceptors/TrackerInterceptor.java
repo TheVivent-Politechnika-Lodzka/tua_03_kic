@@ -17,6 +17,7 @@ public class TrackerInterceptor {
     @Resource
     private SessionContext sessionContext;
 
+
     /**
      *
      * @param invocationContext Interfejs reprezentujący kontekst wywołania

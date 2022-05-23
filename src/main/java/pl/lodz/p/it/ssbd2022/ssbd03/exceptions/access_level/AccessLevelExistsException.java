@@ -4,12 +4,13 @@ import jakarta.ejb.ApplicationException;
 import jakarta.ws.rs.core.Response;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.AppBaseException;
 
-// TODO: Dodanie Javadoc
+/**
+ * Wyjątek reprezentujący błąd związany z istnieniem poziomu dostępu
+ */
 @ApplicationException(rollback = true)
 public class AccessLevelExistsException extends AppBaseException {
 
-    private static final String MESSAGE = "server.error.access_level.exists";
-
+    private static final String MESSAGE = "server.error.accessLevelExists";
 
     public AccessLevelExistsException() {
         super(MESSAGE, Response.Status.CONFLICT);

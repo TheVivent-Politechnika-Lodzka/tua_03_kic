@@ -31,6 +31,7 @@ import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.InvalidParametersException;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.token.TokenInvalidException;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.access_level.AccessLevelNotFoundException;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.access_level.AccessLevelViolationException;
+import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.access_level.AccessLevelViolationException;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.account.AccountPasswordIsTheSameException;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.account.AccountPasswordMatchException;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.account.InvalidCredentialException;
@@ -230,9 +231,9 @@ public class MOKService extends AbstractService implements MOKServiceInterface, 
 
         title.append(provider.getMessage("account.register.email.title"));
         content.append(provider.getMessage("account.register.email.content.localAddress"))
-                .append("https://localhost:8181/active?token=").append(token)
+                .append(" ").append("https://localhost:8181/active?token=").append(token)
                 .append(provider.getMessage("account.register.email.content.remoteAddress"))
-                .append("https://kic.agency:8403/active?token=").append(token);
+                .append(" ").append("https://kic.agency:8403/active?token=").append(token);
 
         emailConfig.sendEmail(
                 account.getEmail(),
