@@ -11,7 +11,7 @@ import java.util.logging.Logger;
 
 import static jakarta.ejb.TransactionAttributeType.NOT_SUPPORTED;
 
-public abstract class AbstractManager {
+public abstract class AbstractService {
 
     @Resource
     SessionContext sessionContext;

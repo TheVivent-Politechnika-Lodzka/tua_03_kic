@@ -14,9 +14,11 @@ import jakarta.security.enterprise.credential.Password;
 import jakarta.security.enterprise.credential.UsernamePasswordCredential;
 import jakarta.security.enterprise.identitystore.CredentialValidationResult;
 import jakarta.security.enterprise.identitystore.IdentityStoreHandler;
-import jakarta.ws.rs.ClientErrorException;
-import pl.lodz.p.it.ssbd2022.ssbd03.common.AbstractManager;
+import pl.lodz.p.it.ssbd2022.ssbd03.common.AbstractService;
 import pl.lodz.p.it.ssbd2022.ssbd03.common.Config;
+import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.token.TokenDecodeInvalidException;
+import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.token.TokenExpierdException;
+import pl.lodz.p.it.ssbd2022.ssbd03.global_services.EmailService;
 import pl.lodz.p.it.ssbd2022.ssbd03.common.Roles;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.Account;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.ConfirmationAccountToken;
@@ -26,13 +28,12 @@ import pl.lodz.p.it.ssbd2022.ssbd03.entities.access_levels.DataAdministrator;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.access_levels.DataClient;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.access_levels.DataSpecialist;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.InvalidParametersException;
-import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.TokenInvalidException;
+import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.token.TokenInvalidException;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.access_level.AccessLevelNotFoundException;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.access_level.AccessLevelViolationException;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.account.AccountPasswordIsTheSameException;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.account.AccountPasswordMatchException;
-import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.account.TokenExpierdException;
-import pl.lodz.p.it.ssbd2022.ssbd03.global_services.EmailService;
+import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.account.InvalidCredentialException;
 import pl.lodz.p.it.ssbd2022.ssbd03.interceptors.TrackerInterceptor;
 import pl.lodz.p.it.ssbd2022.ssbd03.mok.ejb.facades.AccessLevelFacade;
 import pl.lodz.p.it.ssbd2022.ssbd03.mok.ejb.facades.AccountFacade;
@@ -50,7 +51,7 @@ import java.util.Collection;
 @DenyAll
 @Interceptors(TrackerInterceptor.class)
 @TransactionAttribute(TransactionAttributeType.REQUIRED)
-public class MOKService extends AbstractManager implements MOKServiceInterface, SessionSynchronization {
+public class MOKService extends AbstractService implements MOKServiceInterface, SessionSynchronization {
 
     @Inject
     private IdentityStoreHandler identityStoreHandler;
@@ -71,7 +72,12 @@ public class MOKService extends AbstractManager implements MOKServiceInterface, 
     @Inject
     private InternationalizationProvider provider;
 
-
+    /**
+     * Metoda uwierzytelnia użytkownika i zwraca token
+     * @param login Login konta, które ma zostać uwierzytelnione
+     * @param password Hasło konta, które ma zostać uwierzytelnione
+     * @return token użytkownika uwierzytelnionego
+     */
     @Override
     @PermitAll
     public String authenticate(String login, String password) {
@@ -80,8 +86,7 @@ public class MOKService extends AbstractManager implements MOKServiceInterface, 
         if (result.getStatus() == CredentialValidationResult.Status.VALID) {
             return jwtGenerator.createJWT(result);
         }
-        // TODO: zmienić na wyjątek dziedziczący po AppBaseException
-        throw new ClientErrorException("Invalid username or password", 401);
+        throw new InvalidCredentialException();
     }
 
     /**
@@ -156,7 +161,6 @@ public class MOKService extends AbstractManager implements MOKServiceInterface, 
 
         return accountFromDb;
     }
-
     // NIE ROZŁĄCZAJ MNIE OD FUNKCJI WYŻEJ (ಥ_ಥ)
     private AccessLevel findAccessLevelByName(Collection<AccessLevel> list, Class<? extends AccessLevel> clazz) {
         for (AccessLevel accessLevel : list)
@@ -205,14 +209,21 @@ public class MOKService extends AbstractManager implements MOKServiceInterface, 
         return account;
     }
 
+
+    /**
+     * Metoda tworzy konto i zwraca token z bazy danych, pozwalający aktywować konto
+     * @param account - dane konta
+     * @return token z bazy danych, pozwalający aktywować konto
+     */
     @Override
     @PermitAll
-    public Account registerAccount(Account account) {
+    public String registerAccount(Account account) {
         accountFacade.create(account);
         Instant date = Instant.now().plusSeconds(Config.REGISTER_TOKEN_EXPIRATION_SECONDS);
         String token = jwtGenerator.createJWTForEmail(account.getLogin(), date);
         ConfirmationAccountToken activeAccountToken = new ConfirmationAccountToken(account, token, date);
         activeAccountFacade.create(activeAccountToken);
+        return activeAccountFacade.findToken(account.getLogin()).getActiveToken();
         // TODO: przenieść wysyłanie maila do endpointu (z upewnienieniem się, że transakcja się powiedzie)
         StringBuilder title = new StringBuilder();
         StringBuilder content = new StringBuilder();
@@ -230,13 +241,24 @@ public class MOKService extends AbstractManager implements MOKServiceInterface, 
         return account;
     }
 
+    /**
+     * Metoda wyszukuje użytkownika w bazie danych i potwierdza jego konto
+     * @param token - token konta, które ma zostać potwierdzone
+     * @return potwierdzone konto
+     * @throws TokenDecodeInvalidException - w momencie, gdy token został źle utworzony
+     * @throws TokenExpierdException - w momencie, gdy token wygasł
+     */
     @Override
     @PermitAll
     public Account confirmRegistration(String token) {
-        // TODO: obsługa wyjątków z .decodeJwt()
-        Claims claims = jwtGenerator.decodeJWT(token);
-        ConfirmationAccountToken activeAccountToken = activeAccountFacade.findToken(claims.getSubject());
-        if (activeAccountToken.getExpDate().isBefore(Instant.now())) throw new TokenExpierdException();
+        Claims claims;
+        try {
+            claims = jwtGenerator.decodeJWT(token);
+        } catch (SignatureException | UnsupportedJwtException | MalformedJwtException | IllegalArgumentException e) {
+            throw new TokenDecodeInvalidException();
+        } catch (ExpiredJwtException e) {
+            throw new TokenExpierdException();
+        }
         Account account = accountFacade.findByLogin(claims.getSubject());
         account.setConfirmed(true);
         accountFacade.unsafeEdit(account);

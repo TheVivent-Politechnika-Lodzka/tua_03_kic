@@ -29,6 +29,8 @@ public class StartupConfig {
         createAdmin();
         createSpecialistAdmin();
         createClientAdmin();
+        createClient();
+        createSpecialist();
         em.flush();
     }
 
@@ -97,6 +99,44 @@ public class StartupConfig {
         admin.addAccessLevel(dataAdministrator);
         admin.addAccessLevel(dataClient);
         em.persist(admin);
+    }
+
+    public void createClient() {
+        Account client = new Account();
+        client.setLogin("client");
+        client.setPassword(hashAlgorithm.generate("Password123!".toCharArray()));
+        client.setActive(true);
+        client.setConfirmed(true);
+        client.setFirstName("client");
+        client.setLastName("klient");
+        client.setEmail("szurySSBDclient@gmail.com");
+        client.setLanguage(new Locale("pl"));
+
+        DataClient dataClient = new DataClient();
+        dataClient.setPesel("11111111111");
+        dataClient.setPhoneNumber("111111111");
+
+        client.addAccessLevel(dataClient);
+        em.persist(client);
+    }
+
+    public void createSpecialist() {
+        Account specialist = new Account();
+        specialist.setLogin("spec");
+        specialist.setPassword(hashAlgorithm.generate("Password123!".toCharArray()));
+        specialist.setActive(true);
+        specialist.setConfirmed(true);
+        specialist.setFirstName("spec");
+        specialist.setLastName("specjalista");
+        specialist.setEmail("szurySSBDspec@gmail.com");
+        specialist.setLanguage(new Locale("pl"));
+
+        DataSpecialist dataSpecialist = new DataSpecialist();
+        dataSpecialist.setPhoneNumber("222222222");
+        dataSpecialist.setContactEmail("email@email.com");
+
+        specialist.addAccessLevel(dataSpecialist);
+        em.persist(specialist);
     }
 
 }

@@ -16,6 +16,7 @@ import DetailsLayout from "./component/Layout/DetailsLayout";
 import ResetPasswordForm from "./component/Form/resetPasswordForm/ResetPasswordForm";
 import ResetPasswordTokenForm from "./component/Form/resetPasswordTokenForm/ResetPasswordTokenForm";
 import UserManagment from "./pages/admin/UserManagment/UserManagment";
+import UserDetails from "./pages/admin/UserDetails/UserDetails";
 import CreateAccountPage from "./pages/admin/AdminPage/createAccountPage/CreateAccountPage";
 import AccountDetailsPage from "./pages/account/details/AccountDetails";
 import EditAccountDetailsPage from "./pages/account/details/EditAccountDetails";
@@ -47,6 +48,7 @@ function App() {
               <>
                 <Route path="/admin" element={<AdminPage />} />
                 <Route path="/admin/users" element={<UserManagment />} />
+                <Route path="/admin/users/:login" element={<UserDetails/>}/>
                 <Route path="/createAccount" element={<CreateAccountPage />} />
               </>
             ) : (

@@ -1,7 +1,7 @@
 package pl.lodz.p.it.ssbd2022.ssbd03.mok.ejb.services;
 
 import jakarta.ejb.Local;
-import pl.lodz.p.it.ssbd2022.ssbd03.common.ManagerLocalInterface;
+import pl.lodz.p.it.ssbd2022.ssbd03.common.ServiceLocalInterface;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.Account;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.ResetPasswordToken;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.access_levels.AccessLevel;
@@ -10,21 +10,26 @@ import pl.lodz.p.it.ssbd2022.ssbd03.utils.PaginationData;
 
 
 @Local
-public interface MOKServiceInterface extends ManagerLocalInterface {
+public interface MOKServiceInterface extends ServiceLocalInterface {
 
-    // TODO: Dodanie Javadoc
+    /**
+     * Metoda uwierzytelnia użytkownika i zwraca token
+     * @param login Login konta, które ma zostać uwierzytelnione
+     * @param password Hasło konta, które ma zostać uwierzytelnione
+     * @return token użytkownika uwierzytelnionego
+     * @throws MethodNotImplementedException w momencie, gdy metoda jest niezaimplementowana
+     */
     default String authenticate(String login, String password) {
         throw new MethodNotImplementedException();
     }
 
     /**
-     * Metoda znajdująca uzytkownika za pomocą loginu.
+     * Wyszukiwanie konta na podstawie loginu
      *
-     * @param login Login konta, które ma zostać znalezione.
-     * @return Odpowiedź HTTP
+     * @param login Login konta, które ma zostać znalezione
+     * @return znalezione konto
      * @throws MethodNotImplementedException w momencie, gdy metoda jest niezaimplementowana
      */
-
     default Account findAccountByLogin(String login) {
         throw new MethodNotImplementedException();
     }
@@ -54,7 +59,7 @@ public interface MOKServiceInterface extends ManagerLocalInterface {
     }
 
     /**
-     * Metoda odblokowująca konto użytkownika, które zostało uprzednio zablokowane przez administratora
+     * Metoda modyfikująca konto użytkownika
      *
      * @param login Login konta, które ma zostać zmodyfikowane
      * @param account modyfikacje do konta
@@ -100,12 +105,22 @@ public interface MOKServiceInterface extends ManagerLocalInterface {
         throw new MethodNotImplementedException();
     }
 
-    // TODO: Dodanie Javadoc
-    default Account registerAccount(Account account) {
+    /**
+     * Metoda tworzy konto i zwraca token pozwalający aktywować konto
+     * @param account - dane konta
+     * @return token, pozwala na aktywacje konta
+     * @throws MethodNotImplementedException w momencie, gdy metoda jest niezaimplementowana
+     */
+    default String registerAccount(Account account) {
         throw new MethodNotImplementedException();
     }
 
-    // TODO: Dodanie Javadoc
+    /**
+     * Metoda wyszukuje użytkownika w bazie danych i potwierdza jego konto
+     * @param token - token konta, które ma zostać potwierdzone
+     * @return potwierdzone konto
+     * @throws MethodNotImplementedException w momencie, gdy metoda jest niezaimplementowana
+     */
     default Account confirmRegistration(String token) {
         throw new MethodNotImplementedException();
     }

@@ -28,6 +28,8 @@ const ResetPasswordTokenForm = () => {
             } else {
                 setMessage(t("wrong_data"));
             }
+        } else {
+            setMessage(t("wrong_data"));
         }
 
     };
