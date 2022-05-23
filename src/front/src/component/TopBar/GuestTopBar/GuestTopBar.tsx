@@ -1,8 +1,6 @@
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
-import ImplantNavBar from "../../NavBar/ImplantNavBar/ImplantNavBar";
 import LangSelect from "../../Selector/LangBarSelect/LangSelect";
-import SpecialistNavBar from "../../NavBar/SpecialistNavBar/SpecialistNavBar";
 import styles from "./guestTopBar.module.scss";
 import Logo from "../../Logo/Logo";
 
