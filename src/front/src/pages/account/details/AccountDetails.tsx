@@ -25,6 +25,7 @@ const AccountDetailsPage = () => {
       language: {
         language: "",
       },
+      captcha: "",
     });
   // TODO: zmienić, żeby nie korzystało z WorkaroundMutation (jest jakiś problem, że Query nie działa,
   //  tzn, robi zapytanie, w zakładce network widać, że jest ok, ale funkcja zwraca undefined)

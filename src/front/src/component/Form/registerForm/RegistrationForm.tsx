@@ -2,6 +2,7 @@ import styles from "./registrationForm.module.scss";
 import { useState } from "react";
 import { useRegisterAccountMutation } from "../../../api/api";
 import { useTranslation } from "react-i18next";
+import { useGoogleReCaptcha } from "react-google-recaptcha-v3";
 
 const RegistrationForm = () => {
   const [register] = useRegisterAccountMutation();
@@ -14,8 +15,15 @@ const RegistrationForm = () => {
   const [password, setPassword] = useState("");
   const [repeatPassword, setRepeatPassword] = useState("");
 
+  const { executeRecaptcha } = useGoogleReCaptcha();
+
   const handleSubmit = async (event: any) => {
     event.preventDefault();
+
+    if (executeRecaptcha === undefined) {
+      return;
+    }
+    const captcha = await executeRecaptcha("register");
 
     const registration = await register({
       email,
@@ -28,6 +36,7 @@ const RegistrationForm = () => {
       language: {
         language: "pl",
       },
+      captcha,
     });
 
     if ("data" in registration) {
@@ -151,7 +160,6 @@ const RegistrationForm = () => {
           <label className={styles.form_label}>{t("rpassword")}</label>
         </div>
       </div>
-
       <div className={styles.register_button} onClick={handleSubmit}>
         {t("sign_in")}
       </div>
