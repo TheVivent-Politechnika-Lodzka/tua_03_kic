@@ -35,7 +35,7 @@ const AccessLevelSelect = () => {
   };
 
   return (
-    <FormControl focused={true} color="primary">
+    <FormControl focused={true} color="primary" variant="filled">
       <InputLabel id="accesslevel_select">{t("accessLevel")}</InputLabel>
       <Select
         labelId="accesslevel_select-label"
