@@ -10,6 +10,12 @@ import pl.lodz.p.it.ssbd2022.ssbd03.mok.dto.CreateAccountDto;
 import pl.lodz.p.it.ssbd2022.ssbd03.mok.dto.RegisterClientDto;
 import pl.lodz.p.it.ssbd2022.ssbd03.mok.dto.access_levels.AccessLevelDto;
 import pl.lodz.p.it.ssbd2022.ssbd03.utils.HashAlgorithm;
+
+import java.util.Collection;
+import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
+
 @Stateless
 public class AccountMapper {
 
@@ -22,6 +28,11 @@ public class AccountMapper {
     @Inject
     AbstractEntityMapper abstractEntityMapper;
 
+    /**
+     * Metoda mapuje obiekt typu createAccountDto na obiekt typu Account.
+     * @param createAccountDto - dto z którego tworzymy konto
+     * @return - konto
+     */
     // TODO: Dodanie Javadoc
     public Account createAccountfromCreateAccountDto(CreateAccountDto createAccountDto) {
         Account account = new Account();
@@ -37,8 +48,13 @@ public class AccountMapper {
         return account;
     }
 
-    // TODO: Dodanie Javadoc
-    public Account createAccountfromCreateClientAccountDto(RegisterClientDto registerClientAccountDto) {
+
+    /**
+     * Metoda mapuje obiekt typu na obiekt typu Account
+     * @param registerClientAccountDto - dto z którego tworzone jest konto klienta
+     * @return - konto
+     */
+    public Account createAccountfromRegisterClientDto(RegisterClientDto registerClientAccountDto) {
         Account account = new Account();
         account.setLogin(registerClientAccountDto.getLogin());
         account.setFirstName(registerClientAccountDto.getFirstName());
@@ -91,6 +107,7 @@ public class AccountMapper {
                 account.getLogin(),
                 account.getFirstName(),
                 account.getLastName(),
+                account.getEmail(),
                 account.isActive(),
                 account.isConfirmed(),
                 account.getLanguage(),
@@ -100,6 +117,11 @@ public class AccountMapper {
         return (AccountWithAccessLevelsDto) abstractEntityMapper.map(accountDto, account);
     }
 
-
+    public List<AccountWithAccessLevelsDto> createListOfAccountWithAccessLevelDTO(Collection<Account> accounts){
+        return null == accounts ? null : accounts.stream()
+                .filter(Objects::nonNull)
+                .map(this::createAccountWithAccessLevelsDtoFromAccount)
+                .collect(Collectors.toList());
+    }
 
 }

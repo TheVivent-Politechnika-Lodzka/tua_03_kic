@@ -21,6 +21,7 @@ import java.time.Instant;
 )
 @NamedQueries({
         @NamedQuery(name = "ConfirmationAccountToken.findByLogin", query = "select a from ConfirmationAccountToken a where a.account.login = :login"),
+        @NamedQuery(name = "ConfirmationAccountToken.findExpired", query = "select a from ConfirmationAccountToken a where a.expDate < :now"),
 })
 
 @AllArgsConstructor
@@ -38,7 +39,7 @@ public class ConfirmationAccountToken extends AbstractEntity implements Serializ
     private String activeToken;
 
     @Basic(optional = false)
-    @Column(name="expdate", nullable = false)
+    @Column(name="expdate", nullable = false )
     @Getter
     private Instant expDate;
 

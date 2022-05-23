@@ -8,6 +8,9 @@ public class Config {
     public static final String serverName = "127.0.0.1";
 //    public static final String serverName = "studdev.it.p.lodz.pl";
 
+    // Do SPA
+    public static final String WEBSITE_URL = "http://localhost:3000";
+//    public static final String WEBSITE_URL = "https://kic.agency:8403/";
 
     // Dla EmailConfig
     public static final String MAIL_LOGIN = "szury@kic.agency";
@@ -23,5 +26,8 @@ public class Config {
 
     // Ogólne
     public static final int MAX_TX_RETRIES = 3;
-    public static final int REGISTER_TOKEN_EXPIRATION_SECONDS = 60 * 30; // 30min
+    public static final int REGISTER_TOKEN_EXPIRATION_SECONDS = 10;//60 * 30; // 30min
+    public static final int RESET_PASSWORD_TOKEN_EXPIRATION_SECONDS = 60 * 15; // 15min
+
+
 }

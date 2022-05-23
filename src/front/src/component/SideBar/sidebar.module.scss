@@ -1,0 +1,24 @@
+.sideBar {
+  height: 80vh;
+  width: 200px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  .myProfile {
+    color: aliceblue;
+
+  }
+  .itemsWrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+
+    .item {
+      margin: 1rem 0;
+      color: aliceblue;
+    }
+  }
+}

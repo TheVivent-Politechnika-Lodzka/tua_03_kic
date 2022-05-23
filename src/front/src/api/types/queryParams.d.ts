@@ -4,7 +4,8 @@ export interface RemoveAccessLevelParams {
   tag: string;
 }
 
-export interface PaginationParams {
+export interface PaginationFilterParams {
   page: number;
   limit: number;
+  phrase?: string;
 }

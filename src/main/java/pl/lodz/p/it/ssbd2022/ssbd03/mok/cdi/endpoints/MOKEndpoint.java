@@ -3,29 +3,28 @@ package pl.lodz.p.it.ssbd2022.ssbd03.mok.cdi.endpoints;
 import jakarta.annotation.security.DenyAll;
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.inject.Inject;
-import jakarta.interceptor.Interceptors;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.core.Response;
 import pl.lodz.p.it.ssbd2022.ssbd03.common.Config;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.Account;
+import pl.lodz.p.it.ssbd2022.ssbd03.entities.ResetPasswordToken;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.access_levels.AccessLevel;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.TransactionException;
-import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.database.InAppOptimisticLockException;
-import pl.lodz.p.it.ssbd2022.ssbd03.interceptors.TrackerInterceptor;
+import pl.lodz.p.it.ssbd2022.ssbd03.global_services.EmailService;
 import pl.lodz.p.it.ssbd2022.ssbd03.mappers.AccessLevelMapper;
 import pl.lodz.p.it.ssbd2022.ssbd03.mappers.AccountMapper;
 import pl.lodz.p.it.ssbd2022.ssbd03.mok.dto.*;
 import pl.lodz.p.it.ssbd2022.ssbd03.mok.dto.access_levels.AccessLevelDto;
 import pl.lodz.p.it.ssbd2022.ssbd03.mok.ejb.services.MOKServiceInterface;
 import pl.lodz.p.it.ssbd2022.ssbd03.security.AuthContext;
+import pl.lodz.p.it.ssbd2022.ssbd03.utils.HashAlgorithm;
+import pl.lodz.p.it.ssbd2022.ssbd03.utils.InternationalizationProvider;
 import pl.lodz.p.it.ssbd2022.ssbd03.utils.PaginationData;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @RequestScoped
 @DenyAll
-@Interceptors(TrackerInterceptor.class)
 @Path("/mok")
 public class MOKEndpoint implements MOKEndpointInterface {
 
@@ -37,43 +36,75 @@ public class MOKEndpoint implements MOKEndpointInterface {
     private AccountMapper accountMapper;
     @Inject
     private AccessLevelMapper accessLevelMapper;
+    @Inject
+    private EmailService emailService;
+    @Inject
+    private HashAlgorithm hashAlgorithm;
+    @Inject
+    private InternationalizationProvider provider;
 
+    /**
+     * @param registerClientDto - dane konta
+     * @return Response zawierający status HTTP
+     * @throws TransactionException jeśli transakcja nie zostanie zatwierdzona
+     */
     @Override
     public Response register(RegisterClientDto registerClientDto) {
-        // TODO: przenieść wysyłanie maila do endpointu
         int TXCounter = Config.MAX_TX_RETRIES;
         boolean commitedTX;
-        Account account = accountMapper.createAccountfromCreateClientAccountDto(registerClientDto);
+        Account account = accountMapper.createAccountfromRegisterClientDto(registerClientDto);
+        String token;
         do {
-            mokServiceInterface.registerAccount(account);
+            token = mokServiceInterface.registerAccount(account);
             commitedTX = mokServiceInterface.isLastTransactionCommited();
-            TXCounter--;
-        } while (commitedTX && TXCounter > 0);
+        } while (!commitedTX && --TXCounter > 0);
 
         if (!commitedTX) {
             throw new TransactionException();
         }
 
+        StringBuilder title = new StringBuilder();
+        StringBuilder content = new StringBuilder();
+
+        title.append(provider.getMessage("account.register.email.title"));
+        content.append(provider.getMessage("account.register.email.content.localAddress"))
+                .append("https://localhost:8181/active?token=").append(token)
+                .append(provider.getMessage("account.register.email.content.remoteAddress"))
+                .append("https://kic.agency:8403/active?token=").append(token);
+
+        emailService.sendEmail(
+                account.getEmail(),
+                title.toString(),
+                content.toString());
+
         return Response.ok().build();
     }
 
+    /**
+     * @param registerConfirmDto token
+     * @return Response zawierający status HTTP
+     * @throws TransactionException jeśli transakcja nie zostanie zatwierdzona
+     */
     @Override
-    public Response registerConfirm(RegisterClientConfirmDto registerConfirmDto) {
+    public Response confirmRegistration(RegisterClientConfirmDto registerConfirmDto) {
         int TXCounter = Config.MAX_TX_RETRIES;
         boolean commitedTX;
         do {
             mokServiceInterface.confirmRegistration(registerConfirmDto.getToken());
             commitedTX = mokServiceInterface.isLastTransactionCommited();
-            TXCounter--;
-        } while (commitedTX && TXCounter > 0);
+        } while (!commitedTX && --TXCounter > 0);
 
         if (!commitedTX) {
             throw new TransactionException();
         }
-
         return Response.ok().build();
     }
 
+    /**
+     * @param createAccountDto dane konta do utworzenia
+     * @return odpowiedź zawierająca status http
+     * @throws TransactionException jeśli transakcja nie została zatwierdzona
+     */
     @Override
     public Response createAccount(CreateAccountDto createAccountDto) {
         Account account = accountMapper.createAccountfromCreateAccountDto(createAccountDto);
@@ -83,8 +114,7 @@ public class MOKEndpoint implements MOKEndpointInterface {
         do {
             registeredAccount = mokServiceInterface.createAccount(account);
             commitedTX = mokServiceInterface.isLastTransactionCommited();
-            TXCounter--;
-        } while (commitedTX && TXCounter > 0);
+        } while (!commitedTX && --TXCounter > 0);
 
         if (!commitedTX) {
             throw new TransactionException();
@@ -103,13 +133,15 @@ public class MOKEndpoint implements MOKEndpointInterface {
         do {
             activatedAccount = mokServiceInterface.activateAccount(login, eTagDto.getETag());
             commitedTX = mokServiceInterface.isLastTransactionCommited();
-            TXCounter--;
-        } while (commitedTX && TXCounter > 0);
+        } while (!commitedTX && --TXCounter > 0);
 
         if (!commitedTX) {
             throw new TransactionException();
         }
-
+        emailService.sendEmail(
+                activatedAccount.getEmail(),
+                provider.getMessage("account.unblock.email.title"),
+                provider.getMessage("account.unblock.email.content"));
         return Response.ok(
                 accountMapper.createAccountWithAccessLevelsDtoFromAccount(activatedAccount)
         ).build();
@@ -123,13 +155,14 @@ public class MOKEndpoint implements MOKEndpointInterface {
         do {
             deactivatedAccount = mokServiceInterface.deactivateAccount(login, eTagDto.getETag());
             commitedTX = mokServiceInterface.isLastTransactionCommited();
-            TXCounter--;
-        } while (commitedTX && TXCounter > 0);
+        } while (!commitedTX && --TXCounter > 0);
 
         if (!commitedTX) {
             throw new TransactionException();
         }
-
+        emailService.sendEmail(deactivatedAccount.getEmail(),
+                provider.getMessage("account.block.email.title"),
+                provider.getMessage("account.block.email.content"));
         return Response.ok(
                 accountMapper.createAccountWithAccessLevelsDtoFromAccount(deactivatedAccount)
         ).build();
@@ -144,8 +177,7 @@ public class MOKEndpoint implements MOKEndpointInterface {
         do {
             account = mokServiceInterface.addAccessLevelToAccount(login, accessLevel);
             commitedTX = mokServiceInterface.isLastTransactionCommited();
-            TXCounter--;
-        } while (commitedTX && TXCounter > 0);
+        } while (!commitedTX && --TXCounter > 0);
 
         if (!commitedTX) {
             throw new TransactionException();
@@ -164,8 +196,7 @@ public class MOKEndpoint implements MOKEndpointInterface {
         do {
             newAccessLevelAccount = mokServiceInterface.removeAccessLevelFromAccount(login, accessLevelName, eTag);
             commitedTX = mokServiceInterface.isLastTransactionCommited();
-            TXCounter--;
-        } while (commitedTX && TXCounter > 0);
+        } while (!commitedTX && --TXCounter > 0);
 
         if (!commitedTX) {
             throw new TransactionException();
@@ -190,8 +221,7 @@ public class MOKEndpoint implements MOKEndpointInterface {
                     changeOwnPasswordDto.getETag()
             );
             commitedTX = mokServiceInterface.isLastTransactionCommited();
-            TXCounter--;
-        } while (commitedTX && TXCounter > 0);
+        } while (!commitedTX && --TXCounter > 0);
 
         if (!commitedTX) {
             throw new TransactionException();
@@ -214,8 +244,7 @@ public class MOKEndpoint implements MOKEndpointInterface {
                     changePasswordDto.getETag()
             );
             commitedTX = mokServiceInterface.isLastTransactionCommited();
-            TXCounter--;
-        } while (commitedTX && TXCounter > 0);
+        } while (!commitedTX && --TXCounter > 0);
 
         if (!commitedTX) {
             throw new TransactionException();
@@ -235,8 +264,7 @@ public class MOKEndpoint implements MOKEndpointInterface {
         do {
             editedAccount = mokServiceInterface.editAccount(login, update, accountWithAccessLevelsDto.getETag());
             commitedTX = mokServiceInterface.isLastTransactionCommited();
-            TXCounter--;
-        } while (commitedTX && TXCounter > 0);
+        } while (!commitedTX && --TXCounter > 0);
 
         if (!commitedTX) {
             throw new TransactionException();
@@ -256,8 +284,7 @@ public class MOKEndpoint implements MOKEndpointInterface {
         do {
             editedAccount = mokServiceInterface.editAccount(login, update, accountWithAccessLevelsDto.getETag());
             commitedTX = mokServiceInterface.isLastTransactionCommited();
-            TXCounter--;
-        } while (commitedTX && TXCounter > 0);
+        } while (!commitedTX && --TXCounter > 0);
 
         if (!commitedTX) {
             throw new TransactionException();
@@ -268,6 +295,12 @@ public class MOKEndpoint implements MOKEndpointInterface {
         ).build();
     }
 
+    /**
+     *
+     * @param loginCredentialsDto - dane logowania
+     * @return Response zawierający status HTTP
+     * @throws TransactionException jeśli transakcja nie zostanie zatwierdzona
+     */
     @Override
     public Response login(LoginCredentialsDto loginCredentialsDto) {
         String token;
@@ -279,8 +312,7 @@ public class MOKEndpoint implements MOKEndpointInterface {
                     loginCredentialsDto.getPassword()
             );
             commitedTX = mokServiceInterface.isLastTransactionCommited();
-            TXCounter--;
-        } while (commitedTX && TXCounter > 0);
+        } while (!commitedTX && --TXCounter > 0);
 
         if (!commitedTX) {
             throw new TransactionException();
@@ -290,26 +322,22 @@ public class MOKEndpoint implements MOKEndpointInterface {
     }
 
     @Override
-    public Response getAllAccounts(int page, int limit) {
+    public Response getAllAccounts(int page, int limit, String phrase) {
         // TODO: zmniejszyć ilość danych o kontach na liście
         PaginationData paginationData;
         int TXCounter = Config.MAX_TX_RETRIES;
         boolean commitedTX;
         do {
-            paginationData = mokServiceInterface.findAllAccounts(page, limit);
+            paginationData = mokServiceInterface.findAllAccounts(page, limit, phrase);
             commitedTX = mokServiceInterface.isLastTransactionCommited();
-            TXCounter--;
-        } while (commitedTX && TXCounter > 0);
+        } while (!commitedTX && --TXCounter > 0);
 
         if (!commitedTX) {
             throw new TransactionException();
         }
 
         List<Account> accounts = paginationData.getData();
-        List<AccountWithAccessLevelsDto> accountsDTO = new ArrayList<>();
-        for (Account account : accounts) {
-            accountsDTO.add(accountMapper.createAccountWithAccessLevelsDtoFromAccount(account));
-        }
+        List<AccountWithAccessLevelsDto> accountsDTO = accountMapper.createListOfAccountWithAccessLevelDTO(accounts);
         paginationData.setData(accountsDTO);
         return Response.ok().entity(paginationData).build();
     }
@@ -318,19 +346,38 @@ public class MOKEndpoint implements MOKEndpointInterface {
     public Response resetPassword(String login) {
         int TXCounter = Config.MAX_TX_RETRIES;
         boolean commitedTX;
+        ResetPasswordToken token;
         do {
-            mokServiceInterface.resetPassword(login);
+            token = mokServiceInterface.resetPassword(login);
             commitedTX = mokServiceInterface.isLastTransactionCommited();
-            TXCounter--;
-        } while (commitedTX && TXCounter > 0);
+        } while (!commitedTX && --TXCounter > 0);
 
         if (!commitedTX) {
             throw new TransactionException();
         }
+        Account account = token.getAccount();
+        StringBuilder message = new StringBuilder();
+
+        message.append(provider.getMessage("account.resetPassword.email.content.link"))
+                .append(provider.getMessage("account.resetPassword.email.content.login"))
+                .append(" ").append(login)
+                .append(provider.getMessage("account.resetPassword.email.content.token"))
+                .append(" ").append(hashAlgorithm.generate(token.getId().toString().toCharArray()));
+
+        emailService.sendEmail(
+                account.getEmail(),
+                provider.getMessage("account.resetPassword.email.title"),
+                message.toString()
+        );
 
         return Response.ok().build();
     }
 
+    /**
+     * @param resetPasswordDto token
+     * @return odpowiedź zawierająca status http
+     * @throws TransactionException jeśli transakcja nie została zatwierdzona
+     */
     @Override
     public Response resetPasswordToken(ResetPasswordTokenDto resetPasswordDto) {
         int TXCounter = Config.MAX_TX_RETRIES;
@@ -342,8 +389,7 @@ public class MOKEndpoint implements MOKEndpointInterface {
                     resetPasswordDto.getToken()
             );
             commitedTX = mokServiceInterface.isLastTransactionCommited();
-            TXCounter--;
-        } while (commitedTX && TXCounter > 0);
+        } while (!commitedTX && --TXCounter > 0);
 
         if (!commitedTX) {
             throw new TransactionException();
@@ -361,8 +407,7 @@ public class MOKEndpoint implements MOKEndpointInterface {
         do {
             account = mokServiceInterface.findAccountByLogin(user);
             commitedTX = mokServiceInterface.isLastTransactionCommited();
-            TXCounter--;
-        } while (commitedTX && TXCounter > 0);
+        } while (!commitedTX && --TXCounter > 0);
 
         if (!commitedTX) {
             throw new TransactionException();
@@ -379,8 +424,7 @@ public class MOKEndpoint implements MOKEndpointInterface {
         do {
             account = mokServiceInterface.findAccountByLogin(login);
             commitedTX = mokServiceInterface.isLastTransactionCommited();
-            TXCounter--;
-        } while (commitedTX && TXCounter > 0);
+        } while (!commitedTX && --TXCounter > 0);
 
         if (!commitedTX) {
             throw new TransactionException();
@@ -388,4 +432,6 @@ public class MOKEndpoint implements MOKEndpointInterface {
 
         return Response.ok(accountMapper.createAccountWithAccessLevelsDtoFromAccount(account)).build();
     }
+
+
 }
