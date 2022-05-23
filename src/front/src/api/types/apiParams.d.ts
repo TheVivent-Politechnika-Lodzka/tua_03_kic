@@ -1,4 +1,9 @@
-import { AbstractDto, AccessLevelName, Language, PaginationData } from "./common";
+import {
+  AbstractDto,
+  AccessLevelName,
+  Language,
+  PaginationData,
+} from "./common";
 
 interface ETag {
   ETag: string;
@@ -72,7 +77,7 @@ export interface AccountWithAccessLevelsDto extends AbstractDto {
   firstName: string;
   lastName: string;
   active: boolean;
-  isConfirmed: boolean;
+  confirmed: boolean;
   language: Language;
   accessLevels: AccessLevelDto[];
 }
