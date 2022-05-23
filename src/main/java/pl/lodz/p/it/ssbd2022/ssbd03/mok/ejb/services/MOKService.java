@@ -1,6 +1,6 @@
 package pl.lodz.p.it.ssbd2022.ssbd03.mok.ejb.services;
 
-import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.*;
 import jakarta.annotation.security.DenyAll;
 import jakarta.annotation.security.PermitAll;
 import jakarta.annotation.security.RolesAllowed;
@@ -18,7 +18,6 @@ import pl.lodz.p.it.ssbd2022.ssbd03.common.AbstractService;
 import pl.lodz.p.it.ssbd2022.ssbd03.common.Config;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.token.TokenDecodeInvalidException;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.token.TokenExpierdException;
-import pl.lodz.p.it.ssbd2022.ssbd03.global_services.EmailService;
 import pl.lodz.p.it.ssbd2022.ssbd03.common.Roles;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.Account;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.ConfirmationAccountToken;
@@ -31,7 +30,6 @@ import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.InvalidParametersException;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.token.TokenInvalidException;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.access_level.AccessLevelNotFoundException;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.access_level.AccessLevelViolationException;
-import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.access_level.AccessLevelViolationException;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.account.AccountPasswordIsTheSameException;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.account.AccountPasswordMatchException;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.account.InvalidCredentialException;
@@ -42,7 +40,6 @@ import pl.lodz.p.it.ssbd2022.ssbd03.mok.ejb.facades.ActiveAccountFacade;
 import pl.lodz.p.it.ssbd2022.ssbd03.mok.ejb.facades.ResetPasswordFacade;
 import pl.lodz.p.it.ssbd2022.ssbd03.security.JWTGenerator;
 import pl.lodz.p.it.ssbd2022.ssbd03.utils.HashAlgorithm;
-import pl.lodz.p.it.ssbd2022.ssbd03.utils.InternationalizationProvider;
 import pl.lodz.p.it.ssbd2022.ssbd03.utils.PaginationData;
 
 import java.time.Instant;
@@ -63,15 +60,11 @@ public class MOKService extends AbstractService implements MOKServiceInterface, 
     @Inject
     private HashAlgorithm hashAlgorithm;
     @Inject
-    private EmailService emailConfig;
-    @Inject
     private ActiveAccountFacade activeAccountFacade;
     @Inject
     private AccessLevelFacade accessLevelFacade;
     @Inject
     private ResetPasswordFacade resetPasswordFacade;
-    @Inject
-    private InternationalizationProvider provider;
 
     /**
      * Metoda uwierzytelnia użytkownika i zwraca token
@@ -225,21 +218,6 @@ public class MOKService extends AbstractService implements MOKServiceInterface, 
         ConfirmationAccountToken activeAccountToken = new ConfirmationAccountToken(account, token, date);
         activeAccountFacade.create(activeAccountToken);
         return activeAccountFacade.findToken(account.getLogin()).getActiveToken();
-        // TODO: przenieść wysyłanie maila do endpointu (z upewnienieniem się, że transakcja się powiedzie)
-        StringBuilder title = new StringBuilder();
-        StringBuilder content = new StringBuilder();
-
-        title.append(provider.getMessage("account.register.email.title"));
-        content.append(provider.getMessage("account.register.email.content.localAddress"))
-                .append(" ").append("https://localhost:8181/active?token=").append(token)
-                .append(provider.getMessage("account.register.email.content.remoteAddress"))
-                .append(" ").append("https://kic.agency:8403/active?token=").append(token);
-
-        emailConfig.sendEmail(
-                account.getEmail(),
-                title.toString(),
-                content.toString());
-        return account;
     }
 
     /**

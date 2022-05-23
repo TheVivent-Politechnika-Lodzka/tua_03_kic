@@ -62,12 +62,20 @@ public class MOKEndpoint implements MOKEndpointInterface {
         if (!commitedTX) {
             throw new TransactionException();
         }
+
+        StringBuilder title = new StringBuilder();
+        StringBuilder content = new StringBuilder();
+
+        title.append(provider.getMessage("account.register.email.title"));
+        content.append(provider.getMessage("account.register.email.content.localAddress"))
+                .append("https://localhost:8181/active?token=").append(token)
+                .append(provider.getMessage("account.register.email.content.remoteAddress"))
+                .append("https://kic.agency:8403/active?token=").append(token);
+
         emailService.sendEmail(
                 account.getEmail(),
-                "Active account - KIC",
-                "Your link to active account: https://localhost:8181/active?token=" + token
-                        +"\n \n or \n \n" +
-                        "https://kic.agency:8403/active?token=" + token);
+                title.toString(),
+                content.toString());
 
         return Response.ok().build();
     }
@@ -366,7 +374,7 @@ public class MOKEndpoint implements MOKEndpointInterface {
     }
 
     /**
-     * @param registerConfirmDto token
+     * @param resetPasswordDto token
      * @return odpowiedź zawierająca status http
      * @throws TransactionException jeśli transakcja nie została zatwierdzona
      */
