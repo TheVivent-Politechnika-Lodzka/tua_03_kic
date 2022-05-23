@@ -1,11 +1,11 @@
 import styles from "./sidebar.module.scss";
 import SpecialistNavBar from "../NavBar/SpecialistNavBar/SpecialistNavBar";
 import Logo from "../Logo/Logo";
-import AppointmentNavBar from "../NavBar/AppointmentNavBar/AppointmentNavBar";
-import ImplantNavBar from "../NavBar/ImplantNavBar/ImplantNavBar";
 import UserNavBar from "../NavBar/UserNavBar/UserNavBar";
+import { useStoreSelector } from "../../redux/reduxHooks";
 
 const SideBar = () => {
+  const user = useStoreSelector((state) => state.user.cur);
   return (
     <div className={styles.sideBar}>
       <Logo />
@@ -14,15 +14,13 @@ const SideBar = () => {
         <div className={styles.item}>
           <UserNavBar />
         </div>
-        <div className={styles.item}>
-          <SpecialistNavBar />
-        </div>
-        <div className={styles.item}>
-          <AppointmentNavBar />
-        </div>
-        <div className={styles.item}>
-          <ImplantNavBar />
-        </div>
+        {user === "SPECIALIST" ? (
+          <div className={styles.item}>
+            <SpecialistNavBar />
+          </div>
+        ) : (
+          <></>
+        )}
       </div>
     </div>
   );

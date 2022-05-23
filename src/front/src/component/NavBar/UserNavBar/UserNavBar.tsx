@@ -19,11 +19,30 @@ const UserNavBar = () => {
       {(popupState) => (
         <Fragment>
           <Button variant="contained" {...bindTrigger(popupState)}>
-            {t("users")}
+            {t("account_service")}
           </Button>
           <Menu {...bindMenu(popupState)}>
             {user === "ADMINISTRATOR" ? (
-              <MenuItem onClick={() => navigate("/admin/users")}>Lista użytkownikow</MenuItem>
+              <>
+                <MenuItem onClick={() => navigate("/admin/users")}>
+                  {t("listAccount")}
+                </MenuItem>
+                <MenuItem onClick={() => navigate("/createAccount")}>
+                  {t("createAccount")}
+                </MenuItem>
+              </>
+            ) : (
+              <></>
+            )}
+             {user !== "" ? (
+              <>
+              <MenuItem onClick={() => navigate("/account")}>
+                  {t("detailsAccount")}
+                </MenuItem>
+              <MenuItem onClick={() => navigate("/account/edit")}>
+                  {t("editAccount")}
+                </MenuItem>
+              </>
             ) : (
               <></>
             )}

@@ -16,7 +16,7 @@
   "log_in": "ZALOGUJ",
   "log_out": "WYLOGUJ",
   "sign_in": "ZAREJESTRUJ",
-  "users": "UŻYTKOWNICY",
+  "account_service": "OBSŁUGA KONT",
   "cyber": "CYBERWSZCZEP",
   "specialist": "SPECJALIŚCI",
   "appointment": "WIZYTY",
@@ -57,9 +57,9 @@
   "email_send": "Sprawdź maila",
   "email_error": "Niepoprawny login",
 
-  "CLIENT":"Klient",
-  "SPECIALIST":"Specjalista",
-  "ADMINISTRATOR":"Administrator",
+  "CLIENT": "Klient",
+  "SPECIALIST": "Specjalista",
+  "ADMINISTRATOR": "Administrator",
 
   "users_administration_page": "Użytkownicy",
   "search_by_phrase_placeholder": "Wyszukaj po frazie",
@@ -115,5 +115,10 @@
         }
       }
     }
-  }
+  },
+
+  "listAccount": "Lista kont",
+  "createAccount": "Stwórz konto",
+  "detailsAccount": "Moje konto",
+  "editAccount": "Edytuj moje konto"
 }
