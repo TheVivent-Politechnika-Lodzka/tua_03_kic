@@ -15,7 +15,8 @@ public interface MOKServiceInterface extends ServiceLocalInterface {
 
     /**
      * Metoda uwierzytelnia użytkownika i zwraca token
-     * @param login Login konta, które ma zostać uwierzytelnione
+     *
+     * @param login    Login konta, które ma zostać uwierzytelnione
      * @param password Hasło konta, które ma zostać uwierzytelnione
      * @return token użytkownika uwierzytelnionego
      * @throws MethodNotImplementedException w momencie, gdy metoda jest niezaimplementowana
@@ -62,9 +63,9 @@ public interface MOKServiceInterface extends ServiceLocalInterface {
     /**
      * Metoda modyfikująca konto użytkownika
      *
-     * @param login Login konta, które ma zostać zmodyfikowane
+     * @param login   Login konta, które ma zostać zmodyfikowane
      * @param account modyfikacje do konta
-     * @param etag  Zmienna zawierająca eTag
+     * @param etag    Zmienna zawierająca eTag
      * @return Zmodyfikowane konto
      * @throws MethodNotImplementedException w momencie, gdy metoda jest niezaimplementowana
      */
@@ -90,9 +91,10 @@ public interface MOKServiceInterface extends ServiceLocalInterface {
     /**
      * Metoda zmieniająca hasło dowolnego wybranego użytkownika, wywoływana z poziomu serwisu.
      * Może ją wykonać tylko konto z poziomem dostępu administratora
-     * @param login Login użytkownika, którego hasło będzie zmieniane
+     *
+     * @param login       Login użytkownika, którego hasło będzie zmieniane
      * @param newPassword Nowe hasło do logowania, dla użytkownika
-     * @param etag Wartość ETag
+     * @param etag        Wartość ETag
      * @return Konto użytkownika, któremu zmieniono hasło
      * @throws MethodNotImplementedException w momencie, gdy metoda jest niezaimplementowana
      */
@@ -102,10 +104,11 @@ public interface MOKServiceInterface extends ServiceLocalInterface {
 
     /**
      * Metoda zmieniająca hasło, wywoływana z poziomu serwisu.
-     * @param login Login użytkownika, którego hasło będzie zmieniane
+     *
+     * @param login       Login użytkownika, którego hasło będzie zmieniane
      * @param oldPassword Stare hasło użytkownika, które aktualnie znajduję się w bazie
      * @param newPassword Nowe hasło do logowania, dla użytkownika
-     * @param etag Wartość ETag
+     * @param etag        Wartość ETag
      * @return Konto użytkownika, któremu zmieniono hasło
      * @throws MethodNotImplementedException w momencie, gdy metoda jest niezaimplementowana
      */
@@ -115,8 +118,9 @@ public interface MOKServiceInterface extends ServiceLocalInterface {
 
     /**
      * Metoda tworzy konto i zwraca token pozwalający aktywować konto
-     * @param account - dane konta
-     * @return token, pozwala na aktywacje konta
+     *
+     * @param account Dane konta
+     * @return Token, pozwala na aktywacje konta
      * @throws MethodNotImplementedException w momencie, gdy metoda jest niezaimplementowana
      */
     default String registerAccount(Account account) {
@@ -125,15 +129,22 @@ public interface MOKServiceInterface extends ServiceLocalInterface {
 
     /**
      * Metoda wyszukuje użytkownika w bazie danych i potwierdza jego konto
-     * @param token - token konta, które ma zostać potwierdzone
-     * @return potwierdzone konto
+     *
+     * @param token Token konta, które ma zostać potwierdzone
+     * @return Potwierdzone konto
      * @throws MethodNotImplementedException w momencie, gdy metoda jest niezaimplementowana
      */
     default Account confirmRegistration(String token) {
         throw new MethodNotImplementedException();
     }
 
-    // TODO: Dodanie Javadoc
+    /**
+     * Metoda tworząca konto
+     *
+     * @param account Konto użytkownika, które będzie tworzone
+     * @return Utworzone konto
+     * @throws MethodNotImplementedException w momencie, gdy metoda jest niezaimplementowana
+     */
     default Account createAccount(Account account) {
         throw new MethodNotImplementedException();
     }
@@ -142,9 +153,9 @@ public interface MOKServiceInterface extends ServiceLocalInterface {
     /**
      * Dodaj poziom dostępu do konta użytkownika
      *
-     * @param login       login użytkownika
-     * @param accessLevel dodawany poziom dostępu
-     * @return zaaktualizowane konto użytkownika
+     * @param login       Login użytkownika
+     * @param accessLevel Dodawany poziom dostępu
+     * @return Zaaktualizowane konto użytkownika
      */
     default Account addAccessLevelToAccount(String login, AccessLevel accessLevel) {
         throw new MethodNotImplementedException();
@@ -153,12 +164,12 @@ public interface MOKServiceInterface extends ServiceLocalInterface {
     /**
      * Metoda odłączająca poziom dostępu dla konta, wywołana z poziomu sewrisu.
      *
-     * @param login Login użytkownika, którego poziom dostępu ma zostać odłączony
+     * @param login           Login użytkownika, którego poziom dostępu ma zostać odłączony
      * @param accessLevelName Poziom dostępu, który ma zostać odłączony (klient, specjalista bądź administrator)
      * @param accessLevelEtag Wartość ETag
      * @return Konto użytkownika, którego poziom dostępu został odłączony
      * @throws MethodNotImplementedException w momencie, gdy metoda jest niezaimplementowana
-     * @throws AccessLevelNotFoundException w momencie, gdy nie znaleziono w koncie o danym loginie danego poziomu dostępu
+     * @throws AccessLevelNotFoundException  w momencie, gdy nie znaleziono w koncie o danym loginie danego poziomu dostępu
      */
     default Account removeAccessLevelFromAccount(String login, String accessLevelName, String accessLevelEtag) {
         throw new MethodNotImplementedException();

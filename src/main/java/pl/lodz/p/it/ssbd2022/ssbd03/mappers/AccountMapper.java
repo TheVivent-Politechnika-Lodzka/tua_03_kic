@@ -29,11 +29,11 @@ public class AccountMapper {
     AbstractEntityMapper abstractEntityMapper;
 
     /**
-     * Metoda mapuje obiekt typu createAccountDto na obiekt typu Account.
-     * @param createAccountDto - dto z którego tworzymy konto
-     * @return - konto
+     * Metoda konwertuje obiekt typu createAccountDto na obiekt typu Account.
+     *
+     * @param createAccountDto Dto, z którego tworzymy konto
+     * @return Skonwertowane konto
      */
-    // TODO: Dodanie Javadoc
     public Account createAccountfromCreateAccountDto(CreateAccountDto createAccountDto) {
         Account account = new Account();
         account.setLogin(createAccountDto.getLogin());
@@ -50,9 +50,10 @@ public class AccountMapper {
 
 
     /**
-     * Metoda mapuje obiekt typu na obiekt typu Account
-     * @param registerClientAccountDto - dto z którego tworzone jest konto klienta
-     * @return - konto
+     * Metoda konwertuje obiekt typu na obiekt typu Account
+     *
+     * @param registerClientAccountDto Dto, z którego tworzone jest konto klienta
+     * @return Konto skonwertowanego obiektu
      */
     public Account createAccountfromRegisterClientDto(RegisterClientDto registerClientAccountDto) {
         Account account = new Account();
@@ -71,7 +72,12 @@ public class AccountMapper {
         return account;
     }
 
-    // TODO: Dodanie Javadoc
+    /**
+     * Metoda konwertująca DTO zawierające AccessLevel na jego encję
+     *
+     * @param accountDto DTO, które będzie konwertowane
+     * @return Encja skonwertowanego DTO
+     */
     public Account createAccountFromDto(AccountWithAccessLevelsDto accountDto) {
         Account account = new Account();
         account.setLogin(accountDto.getLogin());
@@ -86,7 +92,12 @@ public class AccountMapper {
         return account;
     }
 
-    // TODO: Dodanie Javadoc
+    /**
+     * Metoda konwertująca encję konta na jego DTO
+     *
+     * @param account Konto, które będzie konwertowane
+     * @return DTO skonwertowanego konta
+     */
     public AccountDto createAccountDtoFromAccount(Account account) {
         AccountDto accountDto = new AccountDto(
                 account.getLogin(),
@@ -98,10 +109,15 @@ public class AccountMapper {
                 account.getLanguage()
         );
 
-        return (AccountDto) abstractEntityMapper.map(accountDto, account);
+        return (AccountDto) abstractEntityMapper.dtoFromEntity(accountDto, account);
     }
 
-    // TODO: Dodanie Javadoc
+    /**
+     * Metoda konwertująca encję konta na jego DTO (zawierające AccessLevel)
+     *
+     * @param account Konto, które będzie konwertowane
+     * @return DTO skonwertowanego konta
+     */
     public AccountWithAccessLevelsDto createAccountWithAccessLevelsDtoFromAccount(Account account) {
         AccountWithAccessLevelsDto accountDto = new AccountWithAccessLevelsDto(
                 account.getLogin(),
@@ -114,9 +130,15 @@ public class AccountMapper {
                 accessLevelMapper.createListOfAccessLevelDTO(account.getAccessLevelCollection())
         );
 
-        return (AccountWithAccessLevelsDto) abstractEntityMapper.map(accountDto, account);
+        return (AccountWithAccessLevelsDto) abstractEntityMapper.dtoFromEntity(accountDto, account);
     }
 
+    /**
+     * Metoda pozwalająca skonwertować listę kont (zawierających AccessLevel)
+     *
+     * @param accounts Lista kont, które będą konwertowane
+     * @return Lista zawierająca DTO skonwertowanych kont
+     */
     public List<AccountWithAccessLevelsDto> createListOfAccountWithAccessLevelDTO(Collection<Account> accounts){
         return null == accounts ? null : accounts.stream()
                 .filter(Objects::nonNull)
