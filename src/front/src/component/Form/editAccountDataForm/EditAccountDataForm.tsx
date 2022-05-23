@@ -63,7 +63,6 @@ const EditAccountDataForm = () => {
             placeholder="Login"
             name="login"
             id="login"
-            // value={userData.login}
             onChange={(e) => setLogin(e.target.value)}
             required
           />
@@ -76,7 +75,6 @@ const EditAccountDataForm = () => {
             placeholder={t("first_name_edit")}
             name="firstName"
             id="firstName"
-            // value={userData.data.firstName}
             onChange={(e) => setFirstName(e.target.value)}
           />
           <label className={styles.form_label}>{t("first_name_edit")}</label>
@@ -88,7 +86,6 @@ const EditAccountDataForm = () => {
             placeholder={t("last_name_edit")}
             name="firstName"
             id="firstName"
-            // value={userData.data.lastName}
             onChange={(e) => setLastName(e.target.value)}
           />
           <label className={styles.form_label}>{t("last_name_edit")}</label>
