@@ -17,7 +17,14 @@ public interface MOKServiceInterface extends ManagerLocalInterface {
         throw new MethodNotImplementedException();
     }
 
-    // TODO: Dodanie Javadoc
+    /**
+     * Metoda znajdująca uzytkownika za pomocą loginu.
+     *
+     * @param login Login konta, które ma zostać znalezione.
+     * @return Odpowiedź HTTP
+     * @throws MethodNotImplementedException w momencie, gdy metoda jest niezaimplementowana
+     */
+
     default Account findAccountByLogin(String login) {
         throw new MethodNotImplementedException();
     }
