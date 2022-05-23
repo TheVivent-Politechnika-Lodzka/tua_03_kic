@@ -3,6 +3,9 @@ package pl.lodz.p.it.ssbd2022.ssbd03.exceptions;
 import jakarta.ejb.ApplicationException;
 import jakarta.ws.rs.core.Response;
 
+/**
+ * Wyjątek reprezentujący błąd związany z przerwaniem transakcji
+ */
 @ApplicationException(rollback = true)
 public class TransactionException extends AppBaseException {
 

@@ -10,11 +10,19 @@ import jakarta.ws.rs.ext.Provider;
 import java.util.Iterator;
 
 
-// TODO: Dodanie Javadoc
+/**
+ * Klasa mapująca wyrzucone wyjątki typu ConstraintViolationException na odpowiedź HTTP
+ */
 @Provider
 public class ConstraintViolationExceptionMapper implements ExceptionMapper<ConstraintViolationException> {
 
-    // TODO: Dodanie Javadoc
+    /**
+     * Metoda zwracająca odpowiedź w przypadku wyrzuconego wyjątku typu ConstraintViolationException
+     * Zwraca kod 400 oraz wiadomość wyjątku
+     *
+     * @param e Wyrzucony wyjątek w aplikacji
+     * @return Odpowiedź HTTP serwera
+     */
     @Override
     public Response toResponse(ConstraintViolationException e) {
         StringBuilder message = new StringBuilder();

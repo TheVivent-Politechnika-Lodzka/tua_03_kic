@@ -8,7 +8,7 @@ import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.AppBaseException;
 import pl.lodz.p.it.ssbd2022.ssbd03.utils.InternationalizationProvider;
 
 /**
- * Klasa mapująca wyrzucone wyjątki na odpowiedź HTTP
+ * Klasa mapująca wyrzucone wyjątki aplikacyjne na odpowiedź HTTP
  */
 @Provider
 public class AppBaseExceptionMapper implements ExceptionMapper<AppBaseException> {
@@ -17,8 +17,9 @@ public class AppBaseExceptionMapper implements ExceptionMapper<AppBaseException>
     InternationalizationProvider provider;
 
     /**
-     * Metoda zwracająca odpowiedź w przypadku wyrzuconego wyjątki
+     * Metoda zwracająca odpowiedź w przypadku wyrzuconego wyjątku aplikacyjnego
      * Zwraca status kodu HTTP, wiadomość wyjątku oraz przyczynę (o ile nie jest ona wartością pustą)
+     *
      * @param e Wyrzucony wyjątek w aplikacji
      * @return Odpowiedź HTTP serwera
      */
