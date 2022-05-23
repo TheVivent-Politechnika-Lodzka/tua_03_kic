@@ -18,6 +18,7 @@ import pl.lodz.p.it.ssbd2022.ssbd03.mok.dto.access_levels.AccessLevelDto;
 import pl.lodz.p.it.ssbd2022.ssbd03.mok.ejb.services.MOKServiceInterface;
 import pl.lodz.p.it.ssbd2022.ssbd03.security.AuthContext;
 import pl.lodz.p.it.ssbd2022.ssbd03.utils.HashAlgorithm;
+import pl.lodz.p.it.ssbd2022.ssbd03.utils.InternationalizationProvider;
 import pl.lodz.p.it.ssbd2022.ssbd03.utils.PaginationData;
 
 import java.util.List;
@@ -39,6 +40,8 @@ public class MOKEndpoint implements MOKEndpointInterface {
     private EmailService emailService;
     @Inject
     private HashAlgorithm hashAlgorithm;
+    @Inject
+    private InternationalizationProvider provider;
 
     /**
      * @param registerClientDto - dane konta
@@ -59,12 +62,20 @@ public class MOKEndpoint implements MOKEndpointInterface {
         if (!commitedTX) {
             throw new TransactionException();
         }
+
+        StringBuilder title = new StringBuilder();
+        StringBuilder content = new StringBuilder();
+
+        title.append(provider.getMessage("account.register.email.title"));
+        content.append(provider.getMessage("account.register.email.content.localAddress"))
+                .append("https://localhost:8181/active?token=").append(token)
+                .append(provider.getMessage("account.register.email.content.remoteAddress"))
+                .append("https://kic.agency:8403/active?token=").append(token);
+
         emailService.sendEmail(
                 account.getEmail(),
-                "Active account - KIC",
-                "Your link to active account: https://localhost:8181/active?token=" + token
-                        +"\n \n or \n \n" +
-                        "https://kic.agency:8403/active?token=" + token);
+                title.toString(),
+                content.toString());
 
         return Response.ok().build();
     }
@@ -127,12 +138,10 @@ public class MOKEndpoint implements MOKEndpointInterface {
         if (!commitedTX) {
             throw new TransactionException();
         }
- //      todo I18n
         emailService.sendEmail(
                 activatedAccount.getEmail(),
-                "KIC - Twoje konto zostalo odblokowane",
-                "Informujemy, \u017ce Twoje konto zosta\u0142o odblokowane. \n " +
-                        "Mo\u017cesz teraz zalogowa\u0107 si\u0119 na swoje konto.");
+                provider.getMessage("account.unblock.email.title"),
+                provider.getMessage("account.unblock.email.content"));
         return Response.ok(
                 accountMapper.createAccountWithAccessLevelsDtoFromAccount(activatedAccount)
         ).build();
@@ -151,12 +160,9 @@ public class MOKEndpoint implements MOKEndpointInterface {
         if (!commitedTX) {
             throw new TransactionException();
         }
-//      todo I18n
         emailService.sendEmail(deactivatedAccount.getEmail(),
-                "KIC - Twoje konto zostalo zablokowane",
-                "Informujemy, \u017ce Twoje konto zosta\u0142o zablokowane\n " +
-                        "Po wi\u0119cej inormacji skontaktuj si\u0119 z pomoc\u0105 " +
-                        "techniczn\u0105: szuryssbd@gmail.com.");
+                provider.getMessage("account.block.email.title"),
+                provider.getMessage("account.block.email.content"));
         return Response.ok(
                 accountMapper.createAccountWithAccessLevelsDtoFromAccount(deactivatedAccount)
         ).build();
@@ -350,21 +356,25 @@ public class MOKEndpoint implements MOKEndpointInterface {
             throw new TransactionException();
         }
         Account account = token.getAccount();
-        //TODO I18n
+        StringBuilder message = new StringBuilder();
+
+        message.append(provider.getMessage("account.resetPassword.email.content.link"))
+                .append(provider.getMessage("account.resetPassword.email.content.login"))
+                .append(" ").append(login)
+                .append(provider.getMessage("account.resetPassword.email.content.token"))
+                .append(" ").append(hashAlgorithm.generate(token.getId().toString().toCharArray()));
+
         emailService.sendEmail(
                 account.getEmail(),
-                "Reset password",
-                "Your link to reset password: \n"
-                        + "localhost:8080/mok/reset-password-token \n"
-                        + "Your data to reset password: \nlogin: " + login + "\ntoken:"
-                        + hashAlgorithm.generate(token.getId().toString().toCharArray())
+                provider.getMessage("account.resetPassword.email.title"),
+                message.toString()
         );
 
         return Response.ok().build();
     }
 
     /**
-     * @param registerConfirmDto token
+     * @param resetPasswordDto token
      * @return odpowiedź zawierająca status http
      * @throws TransactionException jeśli transakcja nie została zatwierdzona
      */

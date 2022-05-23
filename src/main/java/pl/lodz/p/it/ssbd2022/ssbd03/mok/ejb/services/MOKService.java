@@ -18,7 +18,6 @@ import pl.lodz.p.it.ssbd2022.ssbd03.common.AbstractService;
 import pl.lodz.p.it.ssbd2022.ssbd03.common.Config;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.token.TokenDecodeInvalidException;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.token.TokenExpierdException;
-import pl.lodz.p.it.ssbd2022.ssbd03.global_services.EmailService;
 import pl.lodz.p.it.ssbd2022.ssbd03.common.Roles;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.Account;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.ConfirmationAccountToken;
@@ -61,8 +60,6 @@ public class MOKService extends AbstractService implements MOKServiceInterface, 
     @Inject
     private HashAlgorithm hashAlgorithm;
     @Inject
-    private EmailService emailConfig;
-    @Inject
     private ActiveAccountFacade activeAccountFacade;
     @Inject
     private AccessLevelFacade accessLevelFacade;
@@ -88,6 +85,7 @@ public class MOKService extends AbstractService implements MOKServiceInterface, 
 
     /**
      * Metoda zwracająca konto o podanym loginie
+     *
      * @param login login
      * @return konto o podanym loginie
      */
@@ -248,6 +246,7 @@ public class MOKService extends AbstractService implements MOKServiceInterface, 
 
     /**
      * Metoda tworząca nowe konto i zwtracająca nowo utworzone konto z bazy danych
+     *
      * @param account konto do utworzenia
      * @return utworzone konto wyszukane z bazy danych po loginie
      */
