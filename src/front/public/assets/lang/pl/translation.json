@@ -57,9 +57,9 @@
   "email_send": "Sprawdź maila",
   "email_error": "Niepoprawny login",
 
-  "CLIENT":"Klient",
-  "SPECIALIST":"Specjalista",
-  "ADMINISTRATOR":"Administrator",
+  "CLIENT": "Klient",
+  "SPECIALIST": "Specjalista",
+  "ADMINISTRATOR": "Administrator",
 
   "users_administration_page": "Użytkownicy",
   "search_by_phrase_placeholder": "Wyszukaj po frazie",
@@ -115,5 +115,12 @@
         }
       }
     }
+  },
+  "ChangeAccountPassword": {
+    "title": "Zmiana hasła dla użytkownika",
+    "input_placeholder": "Wpisz nowe hasło",
+    "change_password_button": "Zmień",
+    "go_back_button": "Powrót do strony użytkowników",
+    "too_short_password_error": "Haslo jest za krótkie!"
   }
 }

@@ -8,8 +8,8 @@
   "our_clinic": "OUR CLINIC",
   "good_location": "three clinic in good locations",
 
-  "language":"Language",
-  "accessLevel":"Access level",
+  "language": "Language",
+  "accessLevel": "Access level",
   "contact": "Contact",
   "social_media": "Social media",
   "more_inf": "Find out more",
@@ -109,10 +109,18 @@
     }
   },
 
+  "ChangeAccountPassword": {
+    "title": "Change password for user",
+    "input_placeholder": "Type new password",
+    "change_password_button": "Change",
+    "go_back_button": "Return to user page",
+    "too_short_password_error": "Password is too short!"
+  },
+
   "email_send": "Check your email",
   "email_error": "Wrong login",
 
-  "CLIENT":"Client",
-  "SPECIALIST":"Specialist",
-  "ADMINISTRATOR":"Administrator"
+  "CLIENT": "Client",
+  "SPECIALIST": "Specialist",
+  "ADMINISTRATOR": "Administrator"
 }
