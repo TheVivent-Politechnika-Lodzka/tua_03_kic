@@ -33,7 +33,7 @@ public class ConstraintViolationExceptionMapper implements ExceptionMapper<Const
         StringBuilder message = new StringBuilder();
         for (ConstraintViolation<?> cv : e.getConstraintViolations()) {
             //TODO w przyszlosci dodac wlasna adnotacje email
-            if(getFieldName(cv.getPropertyPath()).equals("email")) {
+            if (getFieldName(cv.getPropertyPath()).equals("email")) {
                 message.append(getFieldName(cv.getPropertyPath()))
                         .append(" - ").append(cv.getMessage())
                         .append("\n");

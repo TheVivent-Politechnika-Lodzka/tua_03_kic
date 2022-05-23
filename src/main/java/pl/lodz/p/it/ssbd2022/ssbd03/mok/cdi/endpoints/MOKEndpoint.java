@@ -18,6 +18,7 @@ import pl.lodz.p.it.ssbd2022.ssbd03.mok.dto.access_levels.AccessLevelDto;
 import pl.lodz.p.it.ssbd2022.ssbd03.mok.ejb.services.MOKServiceInterface;
 import pl.lodz.p.it.ssbd2022.ssbd03.security.AuthContext;
 import pl.lodz.p.it.ssbd2022.ssbd03.utils.HashAlgorithm;
+import pl.lodz.p.it.ssbd2022.ssbd03.utils.InternationalizationProvider;
 import pl.lodz.p.it.ssbd2022.ssbd03.utils.PaginationData;
 
 import java.util.List;
@@ -39,6 +40,8 @@ public class MOKEndpoint implements MOKEndpointInterface {
     private EmailService emailService;
     @Inject
     private HashAlgorithm hashAlgorithm;
+    @Inject
+    private InternationalizationProvider provider;
 
     @Override
     public Response register(RegisterClientDto registerClientDto) {
@@ -329,14 +332,18 @@ public class MOKEndpoint implements MOKEndpointInterface {
             throw new TransactionException();
         }
         Account account = token.getAccount();
-        //TODO I18n
+        StringBuilder message = new StringBuilder();
+
+        message.append(provider.getMessage("account.resetPassword.email.content.link"))
+                .append(provider.getMessage("account.resetPassword.email.content.login"))
+                .append(" ").append(login)
+                .append(provider.getMessage("account.resetPassword.email.content.token"))
+                .append(" ").append(hashAlgorithm.generate(token.getId().toString().toCharArray()));
+
         emailService.sendEmail(
                 account.getEmail(),
-                "Reset password",
-                "Your link to reset password: \n"
-                        + "localhost:8080/mok/reset-password-token \n"
-                        + "Your data to reset password: \nlogin: " + login + "\ntoken:"
-                        + hashAlgorithm.generate(token.getId().toString().toCharArray())
+                provider.getMessage("account.resetPassword.email.title"),
+                message.toString()
         );
 
         return Response.ok().build();

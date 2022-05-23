@@ -220,9 +220,9 @@ public class MOKService extends AbstractManager implements MOKServiceInterface, 
 
         title.append(provider.getMessage("account.register.email.title"));
         content.append(provider.getMessage("account.register.email.content.localAddress"))
-                .append("https://localhost:8181/active?token=").append(token)
+                .append(" ").append("https://localhost:8181/active?token=").append(token)
                 .append(provider.getMessage("account.register.email.content.remoteAddress"))
-                .append("https://kic.agency:8403/active?token=").append(token);
+                .append(" ").append("https://kic.agency:8403/active?token=").append(token);
 
         emailConfig.sendEmail(
                 account.getEmail(),
