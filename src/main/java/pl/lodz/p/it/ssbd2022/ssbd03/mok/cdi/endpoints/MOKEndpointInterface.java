@@ -253,7 +253,13 @@ public interface MOKEndpointInterface {
     }
 
     // MOK.16 Przeglądaj szczegóły konta innego użytkownika
-    // TODO: Dodanie Javadoc
+    /**
+     * Metoda zwracająca szczegółowe informacje dotyczące wybranego konta
+     *
+     * @param login   Login konta, którego dane mają zostać wczytane
+     * @return Odpowiedź HTTP
+     * @throws MethodNotImplementedException w momencie, gdy metoda jest niezaimplementowana
+     */
     @GET
     @Path("/{login}")
     @RolesAllowed(Roles.ADMINISTRATOR)

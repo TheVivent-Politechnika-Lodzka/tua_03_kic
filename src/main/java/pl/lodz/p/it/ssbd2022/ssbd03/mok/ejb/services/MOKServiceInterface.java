@@ -18,13 +18,12 @@ public interface MOKServiceInterface extends ManagerLocalInterface {
     }
 
     /**
-     * Metoda znajdująca uzytkownika za pomocą loginu.
+     * Wyszukiwanie konta na podstawie loginu
      *
-     * @param login Login konta, które ma zostać znalezione.
-     * @return Odpowiedź HTTP
+     * @param login Login konta, które ma zostać znalezione
+     * @return znalezione konto
      * @throws MethodNotImplementedException w momencie, gdy metoda jest niezaimplementowana
      */
-
     default Account findAccountByLogin(String login) {
         throw new MethodNotImplementedException();
     }
