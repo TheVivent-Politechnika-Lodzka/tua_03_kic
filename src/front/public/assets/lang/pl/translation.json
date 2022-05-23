@@ -120,5 +120,12 @@
   "listAccount": "Lista kont",
   "createAccount": "Stwórz konto",
   "detailsAccount": "Moje konto",
-  "editAccount": "Edytuj moje konto"
+  "editAccount": "Edytuj moje konto",
+  "ChangeAccountPassword": {
+    "title": "Zmiana hasła dla użytkownika",
+    "input_placeholder": "Wpisz nowe hasło",
+    "change_password_button": "Zmień",
+    "go_back_button": "Powrót do strony użytkowników",
+    "too_short_password_error": "Haslo jest za krótkie!"
+  }
 }

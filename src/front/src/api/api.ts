@@ -7,7 +7,7 @@ import {
   AccountWithAccessLevelsDtoWithLogin,
   AddAccessLevel,
   changeOwnPasswordDto,
-  changePasswordDto,
+  ChangePasswordDto,
   CreateAccountDto,
   LoginCredentials,
   RegisterClientConfirmDto,
@@ -178,9 +178,9 @@ const api = createApi({
     // ZMIEŃ HASŁO INNEGO UŻYTKOWNIKA
     changeAccountPassword: builder.mutation<
       AccountWithAccessLevelsDto,
-      changePasswordDto
+      ChangePasswordDto
     >({
-      query: ({ login, data }: changePasswordDto) => ({
+      query: ({ login, data }: ChangePasswordDto) => ({
         url: `/mok/password/${login}`,
         method: "PATCH",
         body: data,

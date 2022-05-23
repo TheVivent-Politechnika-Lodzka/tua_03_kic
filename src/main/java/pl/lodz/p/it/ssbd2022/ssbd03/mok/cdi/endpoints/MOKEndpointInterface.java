@@ -42,7 +42,7 @@ public interface MOKEndpointInterface {
      * MOK.1 Zarejestruj - potwierdzenie rejestracji konta
      * @param registerConfirmDto token
      * @return Response zawierający status HTTP
-     * @throws MethodNotImplementedException jeśli metoda nie została zaimplementowana
+     * @throws MethodNotImplementedException w momencie, gdy metoda jest niezaimplementowana
      */
     @POST
     @Path("/register-confirm")
@@ -52,11 +52,11 @@ public interface MOKEndpointInterface {
         throw new MethodNotImplementedException();
     }
 
-    /**\
+    /**
      * MOK.2 Utwórz konto
      * @param createAccountDto dane konta
      * @return Response zawierający status HTTP
-     * @throws MethodNotImplementedException jeśli metoda nie została zaimplementowana
+     * @throws MethodNotImplementedException w momencie, gdy metoda jest niezaimplementowana
      */
     @PUT
     @Path("/create")
@@ -66,9 +66,9 @@ public interface MOKEndpointInterface {
         throw new MethodNotImplementedException();
     }
 
-    // MOK.3 Zablokuj konto
     /**
-     * Metoda blokouje konto użytkownika.
+     * MOK.3 Zablokuj konto
+     * Metoda blokująca konto użytkownika.
      *
      * @param login   Login konta, które ma zostać zablokowane
      * @param eTagDto Obiekt DTO, zawierający w sobie eTag blokowanego konta
@@ -83,8 +83,8 @@ public interface MOKEndpointInterface {
         throw new MethodNotImplementedException();
     }
 
-    // MOK.4 Odblokuj konto
     /**
+     * MOK.4 Odblokuj konto
      * Metoda odblokowująca konto użytkownika, które zostało uprzednio zablokowane przez administratora
      *
      * @param login   Login konta, które ma zostać odblokowane
@@ -100,8 +100,8 @@ public interface MOKEndpointInterface {
         throw new MethodNotImplementedException();
     }
 
-    // MOK.5 Dołącz poziom dostępu do konta
     /**
+     * MOK.5 Dołącz poziom dostępu do konta
      * Metoda dodająca poziom dostępu do konta użytkownika
      *
      * @param login   Login konta, które ma zostać odblokowane
@@ -118,6 +118,7 @@ public interface MOKEndpointInterface {
     }
 
     /**
+     * MOK.6 Odłącz poziom dostępu od konta
      * Metoda odłączająca poziom dostępu dla konta, wywołana z poziomu endpointa.
      * Może ją tylko wykonać tylko konto z poziomem dostępu administratora.
      * @param login Login użytkownika, którego poziom dostępu ma zostać odłączony
@@ -126,6 +127,7 @@ public interface MOKEndpointInterface {
      * @return odpowiedź HTTP
      * @throws MethodNotImplementedException w momencie, gdy metoda jest niezaimplementowana
      * @throws TransactionException w momencie, gdy transakcja nie została zatwierdzona
+     * @throws MethodNotImplementedException w momencie, gdy metoda jest niezaimplementowana
      */
     @DELETE
     @Path("/access-level/{login}/{accessLevel}")
@@ -134,12 +136,13 @@ public interface MOKEndpointInterface {
         throw new MethodNotImplementedException();
     }
 
-    // MOK.7 Zmień własne hasło
     /**
+     * MOK.7 Zmień własne hasło
      * Metoda zmieniająca hasło aktualnego użytkownika, wywoływana z poziomu endpointa.
      * Metoda dostepna dla kont z dowolnym poziomem dostepu.
      * @param changeOwnPasswordDto Obiekt Dto zawierający etag, stare (aktualne) hasło oraz nowe hasło
      * @return odpowiedź HHTP
+     * @throws MethodNotImplementedException w momencie, gdy metoda jest niezaimplementowana
      */
     @PATCH
     @Path("/password")
@@ -149,8 +152,15 @@ public interface MOKEndpointInterface {
         throw new MethodNotImplementedException();
     }
 
-    // MOK.8 Zmień hasło innego użytkownika
-    // TODO: Dodanie Javadoc
+    /**
+     * MOK.8 Zmień hasło innego użytkownika
+     * Metoda zmieniająca hasło dowolnego użytkownika, wywoływana z poziomu endpointa.
+     * Może ją tylko wykonać konto z poziomem dostępu administratora.
+     * @param login Login użytkownika, któremu chcemy zmienić hasło
+     * @param changePasswordDto Nowe hasło wraz z ETagiem
+     * @return odpowiedź HTTP
+     * @throws MethodNotImplementedException w momencie, gdy metoda jest niezaimplementowana
+     */
     @PATCH
     @Path("/password/{login}")
     @RolesAllowed(Roles.ADMINISTRATOR)
@@ -159,8 +169,8 @@ public interface MOKEndpointInterface {
         throw new MethodNotImplementedException();
     }
 
-    // MOK.9 Edytuj dane własnego konta
     /**
+     * MOK.9 Edytuj dane własnego konta
      * Metoda pozwalająca na modyfikację danych
      * @param accountWithAccessLevelsDto Obiekt DTO, zawierający informacje o koncie użytkownika
      * @return odpowiedź HTTP, powinna zawierać zmodyfikowane dane użytkownika
@@ -189,7 +199,8 @@ public interface MOKEndpointInterface {
 
     /**
      * MOK.12 Zaloguj
-     * @param loginCredentialsDto - dane logowania
+     * Metoda uwierzytelniająca użytkownika
+     * @param loginCredentialsDto dane logowania
      * @return Response zawierający status HTTP
      * @throws MethodNotImplementedException jeśli metoda nie została zaimplementowana
      */
@@ -201,12 +212,10 @@ public interface MOKEndpointInterface {
         throw new MethodNotImplementedException();
     }
 
-    // MOK.13 przeglądaj listę wszystkich kont
-
     /**
+     * MOK.13 przeglądaj listę wszystkich kont
      * Metoda zwracająca listę wszystkich kont, która jest stronicowana, od strony endopointa.
      * Metoda umożliwia również wyszukiwanie kont po imieniu i/lub nazwisku
-     *
      * @param page   Numery strony, która ma być zwrócona (pierwsza strona jest równa 1)
      * @param limit  Maksymalna ilość zwróconych kont na stronę
      * @param phrase Ciąg znaków, dla którego jest zwracana lista, która go spełnia

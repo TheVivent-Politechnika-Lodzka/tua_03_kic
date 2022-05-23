@@ -11,7 +11,6 @@ const UserDetails = () => {
   const navigate = useNavigate();
   const { login } = useParams();
   const { t } = useTranslation();
-  let account;
 
   const handleGetUser = async () => {
     const user = await getUser(login as string);

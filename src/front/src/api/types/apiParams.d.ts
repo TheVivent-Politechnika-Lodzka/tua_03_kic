@@ -63,11 +63,11 @@ export interface changeOwnPasswordDto {
   ETag: string;
 }
 
-export interface changePasswordDto {
+export interface ChangePasswordDto {
   login: string;
   data: {
     newPassword: string;
-    eTag: string;
+    ETag: string;
   };
 }
 

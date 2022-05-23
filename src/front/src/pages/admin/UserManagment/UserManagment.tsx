@@ -108,7 +108,9 @@ const UserManagment = () => {
                   <td>{email}</td>
                   <td>{active ? t("cell_active") : t("cell_inactive")}</td>
                   <td>
-                    <button className={styles.button}>
+                    <button onClick={() => {
+                      navigate(`/admin/users/${login}/change-password`);
+                    }} className={styles.button}>
                       {t("header_change_password")}
                     </button>
                   </td>
@@ -121,7 +123,6 @@ const UserManagment = () => {
                     >
                       {t("header_account_details")}
                     </button>
-                    <button className={styles.button}>Zmień hasło</button>
                   </td>
                   <td>
                     {active ? (
