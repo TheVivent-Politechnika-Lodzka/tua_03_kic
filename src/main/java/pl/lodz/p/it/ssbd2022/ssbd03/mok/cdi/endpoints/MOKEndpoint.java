@@ -9,6 +9,7 @@ import pl.lodz.p.it.ssbd2022.ssbd03.common.Config;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.Account;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.ResetPasswordToken;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.access_levels.AccessLevel;
+import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.ReCaptchaException;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.TransactionException;
 import pl.lodz.p.it.ssbd2022.ssbd03.global_services.EmailService;
 import pl.lodz.p.it.ssbd2022.ssbd03.mappers.AccessLevelMapper;
@@ -17,6 +18,7 @@ import pl.lodz.p.it.ssbd2022.ssbd03.mok.dto.*;
 import pl.lodz.p.it.ssbd2022.ssbd03.mok.dto.access_levels.AccessLevelDto;
 import pl.lodz.p.it.ssbd2022.ssbd03.mok.ejb.services.MOKServiceInterface;
 import pl.lodz.p.it.ssbd2022.ssbd03.security.AuthContext;
+import pl.lodz.p.it.ssbd2022.ssbd03.security.ReCaptchaService;
 import pl.lodz.p.it.ssbd2022.ssbd03.utils.HashAlgorithm;
 import pl.lodz.p.it.ssbd2022.ssbd03.utils.InternationalizationProvider;
 import pl.lodz.p.it.ssbd2022.ssbd03.utils.PaginationData;
@@ -42,6 +44,8 @@ public class MOKEndpoint implements MOKEndpointInterface {
     private HashAlgorithm hashAlgorithm;
     @Inject
     private InternationalizationProvider provider;
+    @Inject
+    private ReCaptchaService reCaptchaService;
 
     /**
      * @param registerClientDto - dane konta
@@ -50,6 +54,9 @@ public class MOKEndpoint implements MOKEndpointInterface {
      */
     @Override
     public Response register(RegisterClientDto registerClientDto) {
+
+        reCaptchaService.checkCaptchaValidation(registerClientDto.getCaptcha());
+
         int TXCounter = Config.MAX_TX_RETRIES;
         boolean commitedTX;
         Account account = accountMapper.createAccountfromRegisterClientDto(registerClientDto);
@@ -68,9 +75,9 @@ public class MOKEndpoint implements MOKEndpointInterface {
 
         title.append(provider.getMessage("account.register.email.title"));
         content.append(provider.getMessage("account.register.email.content.localAddress"))
-                .append("https://localhost:8181/active?token=").append(token)
+                .append(" https://localhost:8181/active?token=").append(token).append(" ")
                 .append(provider.getMessage("account.register.email.content.remoteAddress"))
-                .append("https://kic.agency:8403/active?token=").append(token);
+                .append(" https://kic.agency:8403/active?token=").append(token).append(" ");
 
         emailService.sendEmail(
                 account.getEmail(),
@@ -209,6 +216,9 @@ public class MOKEndpoint implements MOKEndpointInterface {
 
     @Override
     public Response changeOwnPassword(ChangeOwnPasswordDto changeOwnPasswordDto) {
+
+        reCaptchaService.checkCaptchaValidation(changeOwnPasswordDto.getCaptcha());
+
         String login = authContext.getCurrentUserLogin();
         Account account;
         int TXCounter = Config.MAX_TX_RETRIES;
@@ -256,6 +266,9 @@ public class MOKEndpoint implements MOKEndpointInterface {
 
     @Override
     public Response editOwnAccount(AccountWithAccessLevelsDto accountWithAccessLevelsDto) {
+
+        reCaptchaService.checkCaptchaValidation(accountWithAccessLevelsDto.getCaptcha());
+
         String login = authContext.getCurrentUserLogin();
         Account update = accountMapper.createAccountFromDto(accountWithAccessLevelsDto);
         Account editedAccount;

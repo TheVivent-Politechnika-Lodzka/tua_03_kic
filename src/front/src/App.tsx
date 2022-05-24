@@ -6,8 +6,6 @@ import ErrorPage from "./pages/unprotected/error/ErrorPage";
 import LoginPage from "./pages/unprotected/loginPage/LoginPage";
 import { useStoreSelector, useStoreDispatch } from "./redux/reduxHooks";
 import AdminPage from "./pages/admin/AdminPage/AdminPage";
-import ClientPage from "./pages/client/ClientPage";
-import SpecialistPage from "./pages/specialist/SpecialistPage";
 import jwtDecode from "jwt-decode";
 import { login as loginDispatch } from "./redux/userSlice";
 import ActivateAccountPage from "./pages/unprotected/activate/ActivateAccountPage";
@@ -20,6 +18,7 @@ import UserDetails from "./pages/admin/UserDetails/UserDetails";
 import CreateAccountPage from "./pages/admin/AdminPage/createAccountPage/CreateAccountPage";
 import AccountDetailsPage from "./pages/account/details/AccountDetails";
 import EditAccountDetailsPage from "./pages/account/details/EditAccountDetails";
+import ChangeUserPassword from "./pages/admin/ChangeUserPassword/ChangeUserPassword";
 
 function App() {
   const user = useStoreSelector((state) => state.user);
@@ -49,21 +48,13 @@ function App() {
                 <Route path="/admin" element={<AdminPage />} />
                 <Route path="/admin/users" element={<UserManagment />} />
                 <Route path="/admin/users/:login" element={<UserDetails />} />
+                <Route path="/admin/users/:login/change-password" element={<ChangeUserPassword />} />
                 <Route path="/createAccount" element={<CreateAccountPage />} />
               </>
             ) : (
               <></>
             )}
-            {user.cur === "CLIENT" ? (
-              <Route path="/client" element={<ClientPage />} />
-            ) : (
-              <></>
-            )}
-            {user.cur === "SPECIALIST" ? (
-              <Route path="/specialist" element={<SpecialistPage />} />
-            ) : (
-              <></>
-            )}
+
             {user.cur !== "" ? (
               <>
                 <Route path="/account" element={<AccountDetailsPage />} />

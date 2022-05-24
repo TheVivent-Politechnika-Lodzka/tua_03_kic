@@ -14,6 +14,7 @@ import jakarta.security.enterprise.credential.Password;
 import jakarta.security.enterprise.credential.UsernamePasswordCredential;
 import jakarta.security.enterprise.identitystore.CredentialValidationResult;
 import jakarta.security.enterprise.identitystore.IdentityStoreHandler;
+import jakarta.servlet.http.HttpServletRequest;
 import pl.lodz.p.it.ssbd2022.ssbd03.common.AbstractService;
 import pl.lodz.p.it.ssbd2022.ssbd03.common.Config;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.token.TokenDecodeInvalidException;
@@ -44,6 +45,8 @@ import pl.lodz.p.it.ssbd2022.ssbd03.utils.PaginationData;
 
 import java.time.Instant;
 import java.util.Collection;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 @Stateful
 @DenyAll
@@ -65,6 +68,10 @@ public class MOKService extends AbstractService implements MOKServiceInterface, 
     private AccessLevelFacade accessLevelFacade;
     @Inject
     private ResetPasswordFacade resetPasswordFacade;
+    @Inject
+    private HttpServletRequest httpServletRequest;
+
+    protected static final Logger LOGGER = Logger.getGlobal();
 
     /**
      * Metoda uwierzytelnia użytkownika i zwraca token
@@ -78,6 +85,7 @@ public class MOKService extends AbstractService implements MOKServiceInterface, 
         UsernamePasswordCredential credential = new UsernamePasswordCredential(login, new Password(password));
         CredentialValidationResult result = identityStoreHandler.validate(credential);
         if (result.getStatus() == CredentialValidationResult.Status.VALID) {
+            LOGGER.log(Level.INFO, "Ip address: " + httpServletRequest.getRemoteAddr());
             return jwtGenerator.createJWT(result);
         }
         throw new InvalidCredentialException();

@@ -29,5 +29,7 @@ public class Config {
     public static final int REGISTER_TOKEN_EXPIRATION_SECONDS = 60 * 30; // 30min
     public static final int RESET_PASSWORD_TOKEN_EXPIRATION_SECONDS = 60 * 15; // 15min
 
+    // reCaptcha
+    public static final String GOOGLE_SESCRET = "6Lf85hEgAAAAADQOoPdm05cZcDl8aDp46kGGOORl";
 
 }

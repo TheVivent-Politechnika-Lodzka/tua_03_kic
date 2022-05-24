@@ -18,8 +18,7 @@ import java.util.Locale;
 @NoArgsConstructor
 @AllArgsConstructor
 public class RegisterClientDto {
-
-    @NotNull
+    
     @Password
     private String password;
 
@@ -46,5 +45,7 @@ public class RegisterClientDto {
     @JsonbTypeSerializer(LocaleSerializerDeserializer.class)
     @JsonbTypeDeserializer(LocaleSerializerDeserializer.class)
     private Locale language;
+
+    private String captcha;
 
 }
