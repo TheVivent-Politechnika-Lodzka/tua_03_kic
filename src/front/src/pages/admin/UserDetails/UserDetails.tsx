@@ -6,6 +6,7 @@ import { useGetAccountByLoginMutation } from "../../../api/api";
 import { useTranslation } from "react-i18next";
 import AddAccessLevelButton from "../../../component/Button/AddAccessLevelButton/AddAccessLevelButton";
 import RemoveAccessLevelForm from "../../../component/Form/removeAccessLevelForm/RemoveAccessLevelForm";
+import EditAccountDataForm from "../../../component/Form/editAccountDataForm/EditAccountDataForm";
 
 const UserDetails = () => {
     const [user, setUser] = useState<AccountWithAccessLevelsDto>();
@@ -53,7 +54,7 @@ const UserDetails = () => {
                             : t("cell_unconfirmed")}
                     </p>
                     <p>
-                        {t("header_language")}: {user.language.language}
+                        {t("header_language")}: {user.language?.language}
                     </p>
                     <p>
                         {t("header_created_at")}: {user.createdAt}
@@ -99,6 +100,10 @@ const UserDetails = () => {
                 powrót
             </button>
             <AddAccessLevelButton login={login || ""} callback={setUser} />
+            <div></div>
+            <div>
+                <EditAccountDataForm login={login || ""} callback={setUser} />
+            </div>
         </div>
     );
 };
