@@ -1,9 +1,6 @@
 import styles from "./changeOwnPasswordForm.module.scss";
 import { useState } from "react";
-import { useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
 import { useChangeOwnPasswordMutation } from "../../../api/api";
-import { login, login as loginDispatch } from "../../../redux/userSlice";
 import { useTranslation } from "react-i18next";
 import { useGoogleReCaptcha } from "react-google-recaptcha-v3";
 
@@ -16,9 +13,6 @@ const ChangeOwnPasswordForm = ({ ETag }: LoginFormProps) => {
   const [oldPassword, setOldPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [message, setMessage] = useState("");
-
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
   const { t } = useTranslation();
 
   const { executeRecaptcha } = useGoogleReCaptcha();

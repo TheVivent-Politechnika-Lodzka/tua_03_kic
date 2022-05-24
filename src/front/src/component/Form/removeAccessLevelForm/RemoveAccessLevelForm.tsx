@@ -1,11 +1,7 @@
 import styles from "./removeAccessLevelForm.module.scss";
-import { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { useState } from "react";
 import { useRemoveAccessLevelMutation } from "../../../api/api";
-import { login as loginDispatch } from "../../../redux/userSlice";
 import { useTranslation } from "react-i18next";
-import { formGroupClasses } from "@mui/material";
 import { AccessLevelName } from "../../../api/types/common";
 import { AccountWithAccessLevelsDto } from "../../../api/types/apiParams";
 

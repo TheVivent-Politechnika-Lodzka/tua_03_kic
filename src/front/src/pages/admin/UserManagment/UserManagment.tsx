@@ -1,7 +1,6 @@
 import { ChangeEvent, useEffect, useState } from "react";
-import { Modal } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
-import { Navigate, useNavigate } from "react-router";
+import { useNavigate } from "react-router";
 import { useFindAllUsersMutation } from "../../../api/api";
 import { AccountWithAccessLevelsDto } from "../../../api/types/apiParams";
 import { ShowAccountInfo } from "../../../api/types/common";
