@@ -13,10 +13,10 @@ import pl.lodz.p.it.ssbd2022.ssbd03.validation.Password;
 @AllArgsConstructor
 public class LoginCredentialsDto {
 
-    @NotNull(message = "server.error.validation.constraints.notNull.login")
+    @Login
     private String login;
 
-    @NotNull(message = "server.error.validation.constraints.notNull.password")
+    @Password
     private String password;
 
 }
