@@ -15,10 +15,12 @@ const UserManagment = () => {
     const [findAll] = useFindAllUsersMutation();
     const navigate = useNavigate();
     const { t } = useTranslation();
+    const [page, setPage] = useState<number>(1);
+    const limit = 3;
 
     useEffect(() => {
         getAccounts();
-    }, []);
+    }, [page]);
 
     useEffect(() => {
         const timer = setTimeout(() => {
@@ -28,7 +30,7 @@ const UserManagment = () => {
     }, [query]);
 
     const getAccounts = async () => {
-        const data = await findAll({ page: 1, limit: 3, phrase: query });
+        const data = await findAll({ page: page, limit: limit, phrase: query });
         let accounts;
         if ("data" in data) {
             // wygląda paskudnie, ale na razie zostawmy
@@ -153,6 +155,25 @@ const UserManagment = () => {
                     )}
                 </tbody>
             </table>
+            <div>
+                <button
+                    className={styles.button}
+                    onClick={() =>
+                        setPage((old) => {
+                            return old === 1 ? 1 : old - 1;
+                        })
+                    }
+                >
+                    {"<"}
+                </button>
+                <span>{page}</span>
+                <button
+                    className={styles.button}
+                    onClick={() => setPage((old) => old + 1)}
+                >
+                    {">"}
+                </button>
+            </div>
         </div>
     );
 };
