@@ -38,7 +38,7 @@ public class CreateAccountDto {
     @LastName
     private String lastName;
 
-    @NotNull
+    @NotNull(message = "server.error.validation.constraints.notNull.language")
     @JsonbTypeDeserializer(LocaleSerializerDeserializer.class)
     @JsonbTypeSerializer(LocaleSerializerDeserializer.class)
     private Locale language;

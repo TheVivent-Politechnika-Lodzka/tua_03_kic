@@ -13,7 +13,7 @@ import pl.lodz.p.it.ssbd2022.ssbd03.validation.Password;
 @AllArgsConstructor
 public class ChangePasswordDto {
 
-    @NotNull
+    @NotNull(message = "server.error.validation.constraints.notNull.etag")
     private String eTag;
 
     @Password

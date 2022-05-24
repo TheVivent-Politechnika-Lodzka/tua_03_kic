@@ -31,17 +31,13 @@ public class AccountWithAccessLevelsDto extends AbstractDto {
     @LastName
     private String lastName;
 
-    @Email
-    @NotNull
     private String email;
 
-    @NotNull
     private boolean isActive;
 
-    @NotNull
     private boolean isConfirmed;
 
-    @NotNull
+    @NotNull(message = "server.error.validation.constraints.notNull.language")
     @JsonbTypeSerializer(LocaleSerializerDeserializer.class)
     @JsonbTypeDeserializer(LocaleSerializerDeserializer.class)
     private Locale language;

@@ -12,7 +12,7 @@ import lombok.Setter;
 @NoArgsConstructor
 public class ETagDto {
 
-    @NotNull
+    @NotNull(message = "server.error.validation.constraints.notNull.etag")
     private String eTag;
 
 }

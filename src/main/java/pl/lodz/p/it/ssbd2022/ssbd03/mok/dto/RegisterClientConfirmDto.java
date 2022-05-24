@@ -13,7 +13,7 @@ import pl.lodz.p.it.ssbd2022.ssbd03.validation.Login;
 @NoArgsConstructor
 public class RegisterClientConfirmDto {
 
-    @NotNull
+    @NotNull(message = "server.error.validation.constraints.notNull.token")
     private String token;
 
 //    @Login
