@@ -27,17 +27,15 @@ public class AccountDto extends AbstractDto {
     @LastName
     private String lastName;
 
-    @NotNull
     private boolean isActive;
 
-    @NotNull
     private boolean isConfirmed;
 
     @NotNull
     @Email
     private String email;
 
-    @NotNull
+    @NotNull(message = "server.error.validation.constraints.notNull.language")
     @JsonbTypeSerializer(LocaleSerializerDeserializer.class)
     @JsonbTypeDeserializer(LocaleSerializerDeserializer.class)
 

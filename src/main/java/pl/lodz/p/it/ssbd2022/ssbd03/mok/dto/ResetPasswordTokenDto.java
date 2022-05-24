@@ -10,7 +10,7 @@ import pl.lodz.p.it.ssbd2022.ssbd03.validation.Password;
 @NoArgsConstructor
 public class ResetPasswordTokenDto {
 
-    @NotNull
+    @NotNull(message = "server.error.validation.constraints.notNull.token")
     private String token;
 
     @Login
