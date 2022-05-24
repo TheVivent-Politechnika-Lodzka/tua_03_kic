@@ -17,6 +17,7 @@ import jakarta.security.enterprise.identitystore.IdentityStoreHandler;
 import jakarta.servlet.http.HttpServletRequest;
 import pl.lodz.p.it.ssbd2022.ssbd03.common.AbstractService;
 import pl.lodz.p.it.ssbd2022.ssbd03.common.Config;
+import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.account.AccountStatusException;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.token.TokenDecodeInvalidException;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.token.TokenExpierdException;
 import pl.lodz.p.it.ssbd2022.ssbd03.common.Roles;
@@ -75,7 +76,8 @@ public class MOKService extends AbstractService implements MOKServiceInterface, 
 
     /**
      * Metoda uwierzytelnia użytkownika i zwraca token
-     * @param login Login konta, które ma zostać uwierzytelnione
+     *
+     * @param login    Login konta, które ma zostać uwierzytelnione
      * @param password Hasło konta, które ma zostać uwierzytelnione
      * @return token użytkownika uwierzytelnionego
      */
@@ -107,6 +109,7 @@ public class MOKService extends AbstractService implements MOKServiceInterface, 
     @RolesAllowed(Roles.ADMINISTRATOR)
     public Account deactivateAccount(String login, String eTag) {
         Account account = accountFacade.findByLogin(login);
+        if (!account.isActive()) throw AccountStatusException.accountAlreadyInactive();
         account.setActive(false);
         accountFacade.edit(account, eTag);
         return account;
@@ -116,6 +119,7 @@ public class MOKService extends AbstractService implements MOKServiceInterface, 
     @RolesAllowed(Roles.ADMINISTRATOR)
     public Account activateAccount(String login, String eTag) {
         Account account = accountFacade.findByLogin(login);
+        if (account.isActive()) throw AccountStatusException.accountArleadyActive();
         account.setActive(true);
         accountFacade.edit(account, eTag);
         return account;
@@ -163,6 +167,7 @@ public class MOKService extends AbstractService implements MOKServiceInterface, 
 
         return accountFromDb;
     }
+
     // NIE ROZŁĄCZAJ MNIE OD FUNKCJI WYŻEJ (ಥ_ಥ)
     private AccessLevel findAccessLevelByName(Collection<AccessLevel> list, Class<? extends AccessLevel> clazz) {
         for (AccessLevel accessLevel : list)
@@ -214,6 +219,7 @@ public class MOKService extends AbstractService implements MOKServiceInterface, 
 
     /**
      * Metoda tworzy konto i zwraca token z bazy danych, pozwalający aktywować konto
+     *
      * @param account - dane konta
      * @return token z bazy danych, pozwalający aktywować konto
      */
@@ -230,10 +236,11 @@ public class MOKService extends AbstractService implements MOKServiceInterface, 
 
     /**
      * Metoda wyszukuje użytkownika w bazie danych i potwierdza jego konto
+     *
      * @param token - token konta, które ma zostać potwierdzone
      * @return potwierdzone konto
      * @throws TokenDecodeInvalidException - w momencie, gdy token został źle utworzony
-     * @throws TokenExpierdException - w momencie, gdy token wygasł
+     * @throws TokenExpierdException       - w momencie, gdy token wygasł
      */
     @Override
     @PermitAll
