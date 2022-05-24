@@ -10,6 +10,7 @@ const Logo = () => {
             onClick={() => navigate("/", { replace: false })}
         >
             <img
+                // src="https://kic.agency:8403/logo.svg"
                 src="https://localhost:8181/logo.svg"
                 alt="Logo"
                 height="70px"
