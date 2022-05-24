@@ -33,6 +33,9 @@
   "c_password": "Current Password",
   "n_password": "New Password",
   "change_password": "Change Password",
+  "forget_password": "Forget password?",
+  "reset_password": "Reset password",
+  "password_changed": "Password changed",
 
   "error_page": "Sorry, page doesn't exist",
   "invite_main_page": "Go to Home Page",
@@ -51,7 +54,6 @@
   "first_name_edit": "First name",
   "last_name_edit": "Last name",
   "edit": "Edit",
-  "refill_data": "Refill login data",
 
   "access_level": "Access level",
   "remove_level": "Remove access level from an account",
@@ -76,8 +78,6 @@
   "cell_inctive": "Inactive",
   "cell_confirmed": "Confirmed",
   "cell_unconfirmed": "Unconfirmed",
-
-  "refill_data": "Refill login data",
 
   "CreateAccountForm": {
     "form_title": "Create account",
@@ -129,9 +129,6 @@
   "CLIENT": "Client",
   "SPECIALIST": "Specialist",
   "ADMINISTRATOR": "Administrator",
-  "CLIENT":"Client",
-  "SPECIALIST":"Specialist",
-  "ADMINISTRATOR":"Administrator",
 
   "listAccount":"Accounts list",
   "createAccount": "Create account",
