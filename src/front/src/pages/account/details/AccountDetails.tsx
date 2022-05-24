@@ -1,6 +1,4 @@
-import { TextField } from "@mui/material";
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router";
 import {
   useEditOwnAccountMutation,
   useGetOwnAccountDetailsWorkaroundMutation,
@@ -9,7 +7,6 @@ import { AccountWithAccessLevelsDto } from "../../../api/types/apiParams";
 import style from "./accountDetails.module.scss";
 
 const AccountDetailsPage = () => {
-  const navigate = useNavigate();
   const [accountDetails, setAccountDetails] =
     useState<AccountWithAccessLevelsDto>({
       firstName: "",
