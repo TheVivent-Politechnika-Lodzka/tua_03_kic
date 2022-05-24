@@ -116,7 +116,7 @@ const api = createApi({
 
         // EDYTUJ DANE KONTA INNEGO UŻYTKOWNIKA
         editOtherAccountData: builder.mutation<
-            string,
+            AccountWithAccessLevelsDto,
             AccountWithAccessLevelsDtoWithLogin
         >({
             query: (data: AccountWithAccessLevelsDtoWithLogin) => ({
