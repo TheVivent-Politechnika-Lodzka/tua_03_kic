@@ -89,6 +89,7 @@ public class ResetPasswordFacade extends AbstractFacade<ResetPasswordToken> {
      * @param date
      * @return
      */
+    @PermitAll
     public List<ResetPasswordToken> findResetPasswordToken(Instant date) {
         TypedQuery<ResetPasswordToken> typedQuery = em.createNamedQuery("ResetPassword.findBeforeDate", ResetPasswordToken.class);
         typedQuery.setParameter("date", date);

@@ -23,7 +23,6 @@ import pl.lodz.p.it.ssbd2022.ssbd03.utils.HashAlgorithm;
 @Interceptors(TrackerInterceptor.class)
 @Stateless
 @TransactionAttribute(TransactionAttributeType.MANDATORY)
-@RunAs(Roles.ADMINISTRATOR)
 public class AccessLevelFacade extends AbstractFacade<AccessLevel> {
 
     @PersistenceContext(unitName = "ssbd03mokPU")

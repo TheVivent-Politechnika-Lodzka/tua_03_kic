@@ -146,7 +146,7 @@ public interface MOKEndpointInterface {
      */
     @PATCH
     @Path("/password")
-    @PermitAll
+    @RolesAllowed(Roles.AUTHENTICATED)
     @Consumes(MediaType.APPLICATION_JSON)
     default Response changeOwnPassword(@Valid ChangeOwnPasswordDto changeOwnPasswordDto) {
         throw new MethodNotImplementedException();
@@ -178,7 +178,7 @@ public interface MOKEndpointInterface {
      */
     @PUT
     @Path("/")
-    @PermitAll
+    @RolesAllowed(Roles.AUTHENTICATED)
     @Consumes(MediaType.APPLICATION_JSON)
     default Response editOwnAccount(@Valid AccountWithAccessLevelsDto accountWithAccessLevelsDto) {
         throw new MethodNotImplementedException();
@@ -281,7 +281,7 @@ public interface MOKEndpointInterface {
      */
     @GET
     @Path("/")
-    @PermitAll
+    @RolesAllowed(Roles.AUTHENTICATED)
     @Produces(MediaType.APPLICATION_JSON)
     default Response getOwnAccount() {
         throw new MethodNotImplementedException();

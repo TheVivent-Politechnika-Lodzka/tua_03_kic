@@ -1,8 +1,10 @@
 package pl.lodz.p.it.ssbd2022.ssbd03.global_services;
 
+import jakarta.annotation.security.RunAs;
 import jakarta.ejb.*;
 import jakarta.inject.Inject;
 import pl.lodz.p.it.ssbd2022.ssbd03.common.Config;
+import pl.lodz.p.it.ssbd2022.ssbd03.common.Roles;
 import pl.lodz.p.it.ssbd2022.ssbd03.mok.ejb.facades.ResetPasswordFacade;
 
 import java.time.Instant;
@@ -12,6 +14,7 @@ import java.time.Instant;
  */
 @Startup
 @Singleton
+@RunAs(Roles.ADMINISTRATOR)
 public class ResetPasswordSchedulerService {
 
     @Inject
@@ -24,6 +27,7 @@ public class ResetPasswordSchedulerService {
     @Schedule(hour = "*", minute = "*/1", persistent = false)
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
     private void searchForTokens() {
+        System.out.println("ReseetPasswordSchedulerService: searchForTokens");
         resetPasswordFacade.findResetPasswordToken(Instant.now().minusSeconds(Config.RESET_PASSWORD_TOKEN_EXPIRATION_SECONDS))
                 .forEach(token -> resetPasswordFacade.unsafeRemove(token));
     }

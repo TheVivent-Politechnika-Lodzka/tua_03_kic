@@ -8,6 +8,8 @@ import jakarta.security.enterprise.authentication.mechanism.http.HttpAuthenticat
 import jakarta.security.enterprise.authentication.mechanism.http.HttpMessageContext;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import pl.lodz.p.it.ssbd2022.ssbd03.common.Config;
+import pl.lodz.p.it.ssbd2022.ssbd03.common.Roles;
 
 import java.text.ParseException;
 import java.util.Arrays;
@@ -33,19 +35,19 @@ public class AuthenticationMechanism implements HttpAuthenticationMechanism {
 
         // zezwolenie na logowanie, rejestrację oraz pingowanie
         // zezwolenie na zmianę hasła
-        if (httpServletRequest.getPathInfo().endsWith("login")
-                || httpServletRequest.getPathInfo().endsWith("register")
-                || httpServletRequest.getPathInfo().endsWith("register-confirm")
-                || httpServletRequest.getPathInfo().endsWith("ping")
-                || httpServletRequest.getPathInfo().contains("reset-password")
-        ) {
-            return httpMessageContext.doNothing();
-        }
+//        if (httpServletRequest.getPathInfo().endsWith("login")
+//                || httpServletRequest.getPathInfo().endsWith("register")
+//                || httpServletRequest.getPathInfo().endsWith("register-confirm")
+//                || httpServletRequest.getPathInfo().endsWith("ping")
+//                || httpServletRequest.getPathInfo().contains("reset-password")
+//        ) {
+//            return httpMessageContext.doNothing();
+//        }
 
         String headerAuth = httpServletRequest.getHeader("Authorization");
 
         if (headerAuth == null || !headerAuth.startsWith("Bearer")) {
-            return httpMessageContext.responseUnauthorized();
+            return httpMessageContext.notifyContainerAboutLogin("Unauthorized", new HashSet<>(Arrays.asList(Roles.ANONYMOUS)));
         }
 
         String jwtToken = headerAuth.substring("Bearer ".length()).trim();
@@ -55,6 +57,7 @@ public class AuthenticationMechanism implements HttpAuthenticationMechanism {
 
             String login = claims.getSubject();
             String groups = claims.get("auth").toString();
+            groups += "," + Roles.AUTHENTICATED;
 
             return httpMessageContext.notifyContainerAboutLogin(login, new HashSet<>(Arrays.asList(groups.split(","))));
 

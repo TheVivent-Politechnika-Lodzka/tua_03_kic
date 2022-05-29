@@ -28,7 +28,6 @@ import java.util.List;
 @Interceptors(TrackerInterceptor.class)
 @Stateless
 @TransactionAttribute(TransactionAttributeType.MANDATORY)
-@RunAs(Roles.ADMINISTRATOR)
 public class AccountFacade extends AbstractFacade<Account> {
 
     @PersistenceContext(unitName = "ssbd03mokPU")
@@ -63,7 +62,7 @@ public class AccountFacade extends AbstractFacade<Account> {
      * @param eTag
      */
     @Override
-    @PermitAll
+    @RolesAllowed(Roles.AUTHENTICATED)
     public void edit(Account entity, String eTag) {
         super.edit(entity, eTag);
     }

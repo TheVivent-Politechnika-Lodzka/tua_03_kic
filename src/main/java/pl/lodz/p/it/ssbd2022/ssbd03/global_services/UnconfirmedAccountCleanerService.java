@@ -1,7 +1,9 @@
 package pl.lodz.p.it.ssbd2022.ssbd03.global_services;
 
+import jakarta.annotation.security.RunAs;
 import jakarta.ejb.*;
 import jakarta.inject.Inject;
+import pl.lodz.p.it.ssbd2022.ssbd03.common.Roles;
 import pl.lodz.p.it.ssbd2022.ssbd03.mok.ejb.facades.AccountFacade;
 import pl.lodz.p.it.ssbd2022.ssbd03.mok.ejb.facades.ActiveAccountFacade;
 
@@ -10,6 +12,7 @@ import pl.lodz.p.it.ssbd2022.ssbd03.mok.ejb.facades.ActiveAccountFacade;
  */
 @Startup
 @Singleton
+@RunAs(Roles.ADMINISTRATOR)
 public class UnconfirmedAccountCleanerService {
 
     @Inject
@@ -26,6 +29,7 @@ public class UnconfirmedAccountCleanerService {
     @Schedule(hour = "*", minute = "*/1", persistent = false)
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
     private void searchForTokens() {
+        System.out.println("UnconfirmedAccountCleanerService.searchForTokens()");
         activeAccountFacade.findExpiredTokens().forEach((token) -> {
             activeAccountFacade.unsafeRemove(token);
             accountFacade.unsafeRemove(token.getAccount());

@@ -100,7 +100,7 @@ public class MOKService extends AbstractService implements MOKServiceInterface, 
      * @return konto o podanym loginie
      */
     @Override
-    @PermitAll
+    @RolesAllowed(Roles.AUTHENTICATED)
     public Account findAccountByLogin(String login) {
         return accountFacade.findByLogin(login);
     }
@@ -126,12 +126,11 @@ public class MOKService extends AbstractService implements MOKServiceInterface, 
     }
 
     @Override
-    @PermitAll
+    @RolesAllowed(Roles.AUTHENTICATED)
     public Account editAccount(String login, Account account, String etag) {
         Account accountFromDb = accountFacade.findByLogin(login);
         accountFromDb.setFirstName(account.getFirstName());
         accountFromDb.setLastName(account.getLastName());
-        accountFromDb.setLanguage(account.getLanguage());
 
         for (AccessLevel accessLevel : accountFromDb.getAccessLevelCollection()) {
             // ------------ DataAdministrator ------------
@@ -200,7 +199,7 @@ public class MOKService extends AbstractService implements MOKServiceInterface, 
     }
 
     @Override
-    @PermitAll
+    @RolesAllowed(Roles.AUTHENTICATED)
     public Account changeAccountPassword(String login, String oldPassword, String newPassword, String etag) {
         Account account = accountFacade.findByLogin(login);
 

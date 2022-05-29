@@ -10,4 +10,8 @@ public class Roles {
     public static final String CLIENT = DataClient.LEVEL_NAME;
     public static final String SPECIALIST = DataSpecialist.LEVEL_NAME;
 
+    public static final String AUTHENTICATED = "AUTHENTICATED";
+    public static final String ANONYMOUS = "ANONYMOUS";
+
+
 }

@@ -26,7 +26,6 @@ import java.util.List;
 @Interceptors(TrackerInterceptor.class)
 @Stateless
 @TransactionAttribute(TransactionAttributeType.MANDATORY)
-@RunAs(Roles.ADMINISTRATOR)
 public class ActiveAccountFacade extends AbstractFacade<ConfirmationAccountToken> {
 
     @PersistenceContext(unitName = "ssbd03mokPU")
@@ -88,6 +87,7 @@ public class ActiveAccountFacade extends AbstractFacade<ConfirmationAccountToken
      *
      * @return Lista wygasłych tokenów
      */
+    @PermitAll
     public List<ConfirmationAccountToken> findExpiredTokens(){
         TypedQuery<ConfirmationAccountToken> typedQuery = em.createNamedQuery("ConfirmationAccountToken.findExpired", ConfirmationAccountToken.class);
         typedQuery.setParameter("now", Instant.now());

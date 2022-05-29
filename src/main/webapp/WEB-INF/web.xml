@@ -25,6 +25,12 @@
         <security-role>
                 <role-name>SPECIALIST</role-name>
         </security-role>
+        <security-role>
+                <role-name>AUTHENTICATED</role-name>
+        </security-role>
+        <security-role>
+                <role-name>ANONYMOUS</role-name>
+        </security-role>
         
         <error-page>
                 <error-code>404</error-code>
