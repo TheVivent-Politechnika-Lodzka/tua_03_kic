@@ -9,6 +9,7 @@ import pl.lodz.p.it.ssbd2022.ssbd03.common.Config;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.Account;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.access_levels.AccessLevel;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.tokens.AccountConfirmationToken;
+import pl.lodz.p.it.ssbd2022.ssbd03.entities.tokens.RefreshToken;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.tokens.ResetPasswordToken;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.TransactionException;
 import pl.lodz.p.it.ssbd2022.ssbd03.global_services.EmailService;
@@ -18,6 +19,7 @@ import pl.lodz.p.it.ssbd2022.ssbd03.mok.dto.*;
 import pl.lodz.p.it.ssbd2022.ssbd03.mok.dto.access_levels.AccessLevelDto;
 import pl.lodz.p.it.ssbd2022.ssbd03.mok.ejb.services.MOKServiceInterface;
 import pl.lodz.p.it.ssbd2022.ssbd03.security.AuthContext;
+import pl.lodz.p.it.ssbd2022.ssbd03.security.JWTStruct;
 import pl.lodz.p.it.ssbd2022.ssbd03.security.ReCaptchaService;
 import pl.lodz.p.it.ssbd2022.ssbd03.utils.HashAlgorithm;
 import pl.lodz.p.it.ssbd2022.ssbd03.utils.InternationalizationProvider;
@@ -311,16 +313,17 @@ public class MOKEndpoint implements MOKEndpointInterface {
 
     /**
      * @param loginCredentialsDto - dane logowania
-     * @return Response zawierający status HTTP
+     * @return Response zawierający status HTTP, accessToken oraz refreshToken
      * @throws TransactionException jeśli transakcja nie zostanie zatwierdzona
      */
     @Override
     public Response login(LoginCredentialsDto loginCredentialsDto) {
-        String token;
+        String accessToken; // zawiera accessToken i refreshToken
         int TXCounter = Config.MAX_TX_RETRIES;
         boolean commitedTX;
+        // pobranie accessToken
         do {
-            token = mokServiceInterface.authenticate(
+            accessToken = mokServiceInterface.authenticate(
                     loginCredentialsDto.getLogin(),
                     loginCredentialsDto.getPassword()
             );
@@ -331,7 +334,45 @@ public class MOKEndpoint implements MOKEndpointInterface {
             throw new TransactionException();
         }
 
-        return Response.ok(token).build();
+        TXCounter = Config.MAX_TX_RETRIES;
+        // pobranie refreshToken
+        String refreshToken;
+        do {
+            refreshToken = mokServiceInterface.createRefreshToken(loginCredentialsDto.getLogin());
+            commitedTX = mokServiceInterface.isLastTransactionCommited();
+        } while (!commitedTX && --TXCounter > 0);
+
+        if (!commitedTX) {
+            throw new TransactionException();
+        }
+
+        JWTStruct jwtStruct = new JWTStruct();
+        jwtStruct.setAccessToken(accessToken);
+        jwtStruct.setRefreshToken(refreshToken);
+
+        return Response.ok(jwtStruct).build();
+    }
+
+    /**
+     * Endpoint umożliwiający odświeżanie tokenu
+     *
+     * @param refreshTokenDto
+     * @return
+     */
+    @Override
+    public Response refreshToken(RefreshTokenDto refreshTokenDto) {
+        JWTStruct tokens; // zawiera accessToken i refreshToken
+        int TXCounter = Config.MAX_TX_RETRIES;
+        boolean commitedTX;
+        do {
+            tokens = mokServiceInterface.refreshToken(refreshTokenDto.getRefreshToken());
+            commitedTX = mokServiceInterface.isLastTransactionCommited();
+        } while (!commitedTX && --TXCounter > 0);
+
+        if (!commitedTX) {
+            throw new TransactionException();
+        }
+        return Response.ok(tokens).build();
     }
 
     @Override

@@ -4,10 +4,12 @@ import jakarta.ejb.Local;
 import pl.lodz.p.it.ssbd2022.ssbd03.common.ServiceLocalInterface;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.Account;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.tokens.AccountConfirmationToken;
+import pl.lodz.p.it.ssbd2022.ssbd03.entities.tokens.RefreshToken;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.tokens.ResetPasswordToken;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.access_levels.AccessLevel;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.MethodNotImplementedException;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.access_level.AccessLevelNotFoundException;
+import pl.lodz.p.it.ssbd2022.ssbd03.security.JWTStruct;
 import pl.lodz.p.it.ssbd2022.ssbd03.utils.PaginationData;
 
 
@@ -23,6 +25,20 @@ public interface MOKServiceInterface extends ServiceLocalInterface {
      * @throws MethodNotImplementedException w momencie, gdy metoda jest niezaimplementowana
      */
     default String authenticate(String login, String password) {
+        throw new MethodNotImplementedException();
+    }
+
+    default String createRefreshToken(String login)  {
+        throw new MethodNotImplementedException();
+    }
+
+
+    /**
+     * Metoda odświeża accessToken użytkownika
+     * @param refreshToken
+     * @return JWTStruct z odświeżonym accessToken
+     */
+    default JWTStruct refreshToken(String refreshToken) {
         throw new MethodNotImplementedException();
     }
 
@@ -190,7 +206,6 @@ public interface MOKServiceInterface extends ServiceLocalInterface {
     /**
      * Metoda pozwalająca potwierdzić chęć zmiany hasła oraz ustawiająca nowe hasło dla użytkownika
      *
-     * @param login    Login użytkownika, którego hasło będzie zmieniane
      * @param password Nowe hasło dla konta użytkownika
      * @param token    Token będący metodą weryfikacji czy dany użytkownik może zmienić swoje hasło
      * @return Obiekt konta użytkownika, którego hasło zostało zmienione

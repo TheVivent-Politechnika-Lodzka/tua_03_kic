@@ -1,7 +1,6 @@
 package pl.lodz.p.it.ssbd2022.ssbd03.mok.ejb.facades;
 
 import jakarta.annotation.security.PermitAll;
-import jakarta.annotation.security.RunAs;
 import jakarta.ejb.Stateless;
 import jakarta.ejb.TransactionAttribute;
 import jakarta.ejb.TransactionAttributeType;
@@ -13,8 +12,7 @@ import jakarta.persistence.PersistenceException;
 import jakarta.persistence.TypedQuery;
 import lombok.Getter;
 import pl.lodz.p.it.ssbd2022.ssbd03.common.AbstractFacade;
-import pl.lodz.p.it.ssbd2022.ssbd03.common.Roles;
-import pl.lodz.p.it.ssbd2022.ssbd03.entities.tokens.ResetPasswordToken;
+import pl.lodz.p.it.ssbd2022.ssbd03.entities.tokens.RefreshToken;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.database.DatabaseException;
 import pl.lodz.p.it.ssbd2022.ssbd03.interceptors.TrackerInterceptor;
 import pl.lodz.p.it.ssbd2022.ssbd03.utils.HashAlgorithm;
@@ -22,28 +20,23 @@ import pl.lodz.p.it.ssbd2022.ssbd03.utils.HashAlgorithm;
 import java.time.Instant;
 import java.util.List;
 
-
 @Interceptors(TrackerInterceptor.class)
 @Stateless
 @TransactionAttribute(TransactionAttributeType.MANDATORY)
-@RunAs(Roles.ADMINISTRATOR)
-public class ResetPasswordFacade extends AbstractFacade<ResetPasswordToken> {
+public class RefreshTokenFacade extends AbstractFacade<RefreshToken> {
 
     @PersistenceContext(unitName = "ssbd03mokPU")
-    private EntityManager em;
+    @Getter
+    private EntityManager entityManager;
 
     @Inject
     @Getter
     private HashAlgorithm hashAlgorithm;
 
-    public ResetPasswordFacade() {
-        super(ResetPasswordToken.class);
+    public RefreshTokenFacade() {
+        super(RefreshToken.class);
     }
 
-    @Override
-    protected EntityManager getEntityManager() {
-        return em;
-    }
 
     /**
      * metoda tworzy token do resetu hasła
@@ -52,33 +45,52 @@ public class ResetPasswordFacade extends AbstractFacade<ResetPasswordToken> {
      */
     @Override
     @PermitAll
-    public void create(ResetPasswordToken entity) {
+    public void create(RefreshToken entity) {
         super.create(entity);
     }
 
     /**
      * metoda usuwa token z bazy danych
      *
-     * @param resetPasswordToken
+     * @param refreshToken
      */
     @Override
     @PermitAll
-    public void unsafeRemove(ResetPasswordToken resetPasswordToken) {
-        super.unsafeRemove(resetPasswordToken);
+    public void unsafeRemove(RefreshToken refreshToken) {
+        super.unsafeRemove(refreshToken);
     }
 
     /**
-     * metoda zwraca token do resetu hasła podanego użytkownika
+     * metoda zwraca refreshToken do odświeżenia accessToken
      *
      * @param login
+     * @return refreshToken
+     */
+    @PermitAll
+    public RefreshToken findToken(String login) {
+        // TODO: Poprawić obsługę wyjątku nie znalezionego tokenu
+        try {
+            TypedQuery<RefreshToken> typedQuery = entityManager.createNamedQuery("RefreshToken.findByLogin", RefreshToken.class);
+            typedQuery.setParameter("login", login);
+            return typedQuery.getSingleResult();
+        } catch (PersistenceException e) {
+            throw new DatabaseException(e);
+        }
+
+    }
+
+    /**
+     * metoda zwraca refreshToken do odświeżenia accessToken
+     *
+     * @param token
      * @return resetPasswordToken
      */
     @PermitAll
-    public ResetPasswordToken findToken(String login) {
+    public RefreshToken findByToken(String token) {
         // TODO: Poprawić obsługę wyjątku nie znalezionego tokenu
         try {
-            TypedQuery<ResetPasswordToken> typedQuery = em.createNamedQuery("ResetPassword.findByLogin", ResetPasswordToken.class);
-            typedQuery.setParameter("login", login);
+            TypedQuery<RefreshToken> typedQuery = entityManager.createNamedQuery("RefreshToken.findByToken", RefreshToken.class);
+            typedQuery.setParameter("token", token);
             return typedQuery.getSingleResult();
         } catch (PersistenceException e) {
             throw new DatabaseException(e);
@@ -92,8 +104,8 @@ public class ResetPasswordFacade extends AbstractFacade<ResetPasswordToken> {
      * @return
      */
     @PermitAll
-    public List<ResetPasswordToken> findExpiredTokens() {
-        TypedQuery<ResetPasswordToken> typedQuery = em.createNamedQuery("ResetPassword.findBeforeDate", ResetPasswordToken.class);
+    public List<RefreshToken> findExpiredTokens() {
+        TypedQuery<RefreshToken> typedQuery = entityManager.createNamedQuery("RefreshToken.findExpired", RefreshToken.class);
         typedQuery.setParameter("now", Instant.now());
         return typedQuery.getResultList();
     }

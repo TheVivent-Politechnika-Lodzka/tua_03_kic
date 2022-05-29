@@ -28,6 +28,7 @@
         <class>pl.lodz.p.it.ssbd2022.ssbd03.entities.access_levels.DataClient</class>
         <class>pl.lodz.p.it.ssbd2022.ssbd03.entities.access_levels.DataSpecialist</class>
         <class>pl.lodz.p.it.ssbd2022.ssbd03.entities.tokens.ResetPasswordToken</class>
+        <class>pl.lodz.p.it.ssbd2022.ssbd03.entities.tokens.RefreshToken</class>
         <class>pl.lodz.p.it.ssbd2022.ssbd03.entities.tokens.AccountConfirmationToken</class>
 
         <class>pl.lodz.p.it.ssbd2022.ssbd03.entities.Appointment</class>

@@ -16,34 +16,35 @@ import jakarta.security.enterprise.identitystore.CredentialValidationResult;
 import jakarta.security.enterprise.identitystore.IdentityStoreHandler;
 import jakarta.servlet.http.HttpServletRequest;
 import pl.lodz.p.it.ssbd2022.ssbd03.common.AbstractService;
-import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.account.AccountStatusException;
-import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.token.TokenDecodeInvalidException;
-import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.token.TokenExpiredException;
 import pl.lodz.p.it.ssbd2022.ssbd03.common.Roles;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.Account;
-import pl.lodz.p.it.ssbd2022.ssbd03.entities.tokens.AccountConfirmationToken;
-import pl.lodz.p.it.ssbd2022.ssbd03.entities.tokens.ResetPasswordToken;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.access_levels.AccessLevel;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.access_levels.DataAdministrator;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.access_levels.DataClient;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.access_levels.DataSpecialist;
+import pl.lodz.p.it.ssbd2022.ssbd03.entities.tokens.AccountConfirmationToken;
+import pl.lodz.p.it.ssbd2022.ssbd03.entities.tokens.RefreshToken;
+import pl.lodz.p.it.ssbd2022.ssbd03.entities.tokens.ResetPasswordToken;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.InvalidParametersException;
-import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.token.TokenInvalidException;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.access_level.AccessLevelNotFoundException;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.access_level.AccessLevelViolationException;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.account.AccountPasswordIsTheSameException;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.account.AccountPasswordMatchException;
+import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.account.AccountStatusException;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.account.InvalidCredentialException;
+import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.token.TokenDecodeInvalidException;
+import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.token.TokenExpiredException;
+import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.token.TokenInvalidException;
 import pl.lodz.p.it.ssbd2022.ssbd03.interceptors.TrackerInterceptor;
-import pl.lodz.p.it.ssbd2022.ssbd03.mok.ejb.facades.AccessLevelFacade;
-import pl.lodz.p.it.ssbd2022.ssbd03.mok.ejb.facades.AccountFacade;
-import pl.lodz.p.it.ssbd2022.ssbd03.mok.ejb.facades.AccountConfirmationFacade;
-import pl.lodz.p.it.ssbd2022.ssbd03.mok.ejb.facades.ResetPasswordFacade;
+import pl.lodz.p.it.ssbd2022.ssbd03.mok.ejb.facades.*;
 import pl.lodz.p.it.ssbd2022.ssbd03.security.JWTGenerator;
+import pl.lodz.p.it.ssbd2022.ssbd03.security.JWTStruct;
 import pl.lodz.p.it.ssbd2022.ssbd03.utils.HashAlgorithm;
 import pl.lodz.p.it.ssbd2022.ssbd03.utils.PaginationData;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -53,12 +54,15 @@ import java.util.logging.Logger;
 @TransactionAttribute(TransactionAttributeType.REQUIRED)
 public class MOKService extends AbstractService implements MOKServiceInterface, SessionSynchronization {
 
+    protected static final Logger LOGGER = Logger.getGlobal();
     @Inject
     private IdentityStoreHandler identityStoreHandler;
     @Inject
     private JWTGenerator jwtGenerator;
     @Inject
     private AccountFacade accountFacade;
+    @Inject
+    private RefreshTokenFacade refreshTokenFacade;
     @Inject
     private HashAlgorithm hashAlgorithm;
     @Inject
@@ -69,8 +73,6 @@ public class MOKService extends AbstractService implements MOKServiceInterface, 
     private ResetPasswordFacade resetPasswordFacade;
     @Inject
     private HttpServletRequest httpServletRequest;
-
-    protected static final Logger LOGGER = Logger.getGlobal();
 
     /**
      * Metoda uwierzytelnia użytkownika i zwraca token
@@ -85,10 +87,49 @@ public class MOKService extends AbstractService implements MOKServiceInterface, 
         UsernamePasswordCredential credential = new UsernamePasswordCredential(login, new Password(password));
         CredentialValidationResult result = identityStoreHandler.validate(credential);
         if (result.getStatus() == CredentialValidationResult.Status.VALID) {
-            LOGGER.log(Level.INFO, "Ip address: " + httpServletRequest.getRemoteAddr());
+            LOGGER.log(Level.INFO, "User {0} has been authenticated from ip {1}", new Object[]{
+                    login, httpServletRequest.getRemoteAddr()
+            });
             return jwtGenerator.createJWT(result);
         }
         throw new InvalidCredentialException();
+
+    }
+
+    @PermitAll
+    @Override
+    public String createRefreshToken(String login) {
+        RefreshToken refreshToken = new RefreshToken();
+        Account account = accountFacade.findByLogin(login);
+        refreshToken.setAccount(account);
+        refreshToken.setToken(jwtGenerator.createRefreshJWT(login));
+        refreshTokenFacade.create(refreshToken);
+        return refreshToken.getToken();
+    }
+
+
+    /**
+     * Metoda uwierzytelnia użytkownika i zwraca token
+     *
+     * @param refreshToken
+     * @return JWTStruct z odświeżonym tokenem
+     */
+    @Override
+    @PermitAll
+    public JWTStruct refreshToken(String refreshToken) {
+        RefreshToken refreshTokenObject = refreshTokenFacade.findByToken(refreshToken);
+
+        List<String> accessLevels = new ArrayList<>();
+        refreshTokenObject.getAccount()
+                .getAccessLevelCollection().forEach(
+                        accessLevel -> accessLevels.add(accessLevel.getLevel()
+                        ));
+        String accessToken = jwtGenerator.createJWT(refreshTokenObject.getAccount().getLogin(), accessLevels);
+
+        JWTStruct jwtStruct = new JWTStruct();
+        jwtStruct.setAccessToken(accessToken);
+        jwtStruct.setRefreshToken(refreshTokenObject.getToken());
+        return jwtStruct;
     }
 
     /**

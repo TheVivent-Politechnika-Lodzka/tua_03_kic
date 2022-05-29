@@ -8,15 +8,24 @@ import pl.lodz.p.it.ssbd2022.ssbd03.common.Config;
 
 import java.time.Instant;
 import java.util.Date;
+import java.util.List;
 
 @ApplicationScoped
 public class JWTGenerator {
 
-    public  String createJWT(CredentialValidationResult cred) {
-
+    public String createJWT(CredentialValidationResult cred) {
         String token = Jwts.builder().
                 setSubject(cred.getCallerPrincipal().getName())
                 .claim("auth", String.join(",", cred.getCallerGroups()))
+                .signWith(SignatureAlgorithm.HS256, Config.JWT_SECRET)
+                .setExpiration(new Date(new Date().getTime() + Config.JWT_EXPIRATION_SECONDS * 1000)).compact();
+        return token;
+    }
+
+    public  String createJWT(String login, List<String> accessLevels) {
+        String token = Jwts.builder().
+                setSubject(login)
+                .claim("auth", String.join(",", accessLevels))
                 .signWith(SignatureAlgorithm.HS256, Config.JWT_SECRET)
                 .setExpiration(new Date(new Date().getTime() + Config.JWT_EXPIRATION_SECONDS * 1000)).compact();
         return token;
@@ -34,6 +43,13 @@ public class JWTGenerator {
                 .setSubject(login)
                 .signWith(SignatureAlgorithm.HS256, Config.JWT_SECRET)
                 .setExpiration(Date.from(Instant.now().plusSeconds(Config.RESET_PASSWORD_TOKEN_EXPIRATION_SECONDS))).compact();
+    }
+
+    public String createRefreshJWT(String login) {
+        return Jwts.builder()
+                .setSubject(login)
+                .signWith(SignatureAlgorithm.HS256, Config.JWT_SECRET)
+                .setExpiration(Date.from(Instant.now().plusSeconds(Config.REFRESH_TOKEN_EXPIRATION_SECONDS))).compact();
     }
 
     public  Claims decodeJWT(String jwt) {

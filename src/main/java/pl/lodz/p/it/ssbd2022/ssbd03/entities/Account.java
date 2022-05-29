@@ -122,6 +122,7 @@ public class Account extends AbstractEntity implements Serializable {
     @NotNull
     private Locale language;
 
+
     public void addAccessLevel(AccessLevel accessLevel) {
         accessLevelCollection.add(accessLevel);
         accessLevel.setAccount(this);
