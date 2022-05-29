@@ -16,14 +16,13 @@ import jakarta.security.enterprise.identitystore.CredentialValidationResult;
 import jakarta.security.enterprise.identitystore.IdentityStoreHandler;
 import jakarta.servlet.http.HttpServletRequest;
 import pl.lodz.p.it.ssbd2022.ssbd03.common.AbstractService;
-import pl.lodz.p.it.ssbd2022.ssbd03.common.Config;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.account.AccountStatusException;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.token.TokenDecodeInvalidException;
-import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.token.TokenExpierdException;
+import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.token.TokenExpiredException;
 import pl.lodz.p.it.ssbd2022.ssbd03.common.Roles;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.Account;
-import pl.lodz.p.it.ssbd2022.ssbd03.entities.ConfirmationAccountToken;
-import pl.lodz.p.it.ssbd2022.ssbd03.entities.ResetPasswordToken;
+import pl.lodz.p.it.ssbd2022.ssbd03.entities.tokens.AccountConfirmationToken;
+import pl.lodz.p.it.ssbd2022.ssbd03.entities.tokens.ResetPasswordToken;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.access_levels.AccessLevel;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.access_levels.DataAdministrator;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.access_levels.DataClient;
@@ -38,13 +37,12 @@ import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.account.InvalidCredentialExceptio
 import pl.lodz.p.it.ssbd2022.ssbd03.interceptors.TrackerInterceptor;
 import pl.lodz.p.it.ssbd2022.ssbd03.mok.ejb.facades.AccessLevelFacade;
 import pl.lodz.p.it.ssbd2022.ssbd03.mok.ejb.facades.AccountFacade;
-import pl.lodz.p.it.ssbd2022.ssbd03.mok.ejb.facades.ActiveAccountFacade;
+import pl.lodz.p.it.ssbd2022.ssbd03.mok.ejb.facades.AccountConfirmationFacade;
 import pl.lodz.p.it.ssbd2022.ssbd03.mok.ejb.facades.ResetPasswordFacade;
 import pl.lodz.p.it.ssbd2022.ssbd03.security.JWTGenerator;
 import pl.lodz.p.it.ssbd2022.ssbd03.utils.HashAlgorithm;
 import pl.lodz.p.it.ssbd2022.ssbd03.utils.PaginationData;
 
-import java.time.Instant;
 import java.util.Collection;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -64,7 +62,7 @@ public class MOKService extends AbstractService implements MOKServiceInterface, 
     @Inject
     private HashAlgorithm hashAlgorithm;
     @Inject
-    private ActiveAccountFacade activeAccountFacade;
+    private AccountConfirmationFacade activeAccountFacade;
     @Inject
     private AccessLevelFacade accessLevelFacade;
     @Inject
@@ -224,13 +222,14 @@ public class MOKService extends AbstractService implements MOKServiceInterface, 
      */
     @Override
     @PermitAll
-    public String registerAccount(Account account) {
+    public AccountConfirmationToken registerAccount(Account account) {
         accountFacade.create(account);
-        Instant date = Instant.now().plusSeconds(Config.REGISTER_TOKEN_EXPIRATION_SECONDS);
-        String token = jwtGenerator.createJWTForEmail(account.getLogin(), date);
-        ConfirmationAccountToken activeAccountToken = new ConfirmationAccountToken(account, token, date);
-        activeAccountFacade.create(activeAccountToken);
-        return activeAccountFacade.findToken(account.getLogin()).getActiveToken();
+        String token = jwtGenerator.createRegistrationJWT(account.getLogin());
+        AccountConfirmationToken accountConfirmationToken = new AccountConfirmationToken();
+        accountConfirmationToken.setToken(token);
+        accountConfirmationToken.setAccount(account);
+        activeAccountFacade.create(accountConfirmationToken);
+        return accountConfirmationToken;
     }
 
     /**
@@ -239,7 +238,7 @@ public class MOKService extends AbstractService implements MOKServiceInterface, 
      * @param token - token konta, które ma zostać potwierdzone
      * @return potwierdzone konto
      * @throws TokenDecodeInvalidException - w momencie, gdy token został źle utworzony
-     * @throws TokenExpierdException       - w momencie, gdy token wygasł
+     * @throws TokenExpiredException       - w momencie, gdy token wygasł
      */
     @Override
     @PermitAll
@@ -250,11 +249,18 @@ public class MOKService extends AbstractService implements MOKServiceInterface, 
         } catch (SignatureException | UnsupportedJwtException | MalformedJwtException | IllegalArgumentException e) {
             throw new TokenDecodeInvalidException();
         } catch (ExpiredJwtException e) {
-            throw new TokenExpierdException();
+            throw new TokenExpiredException();
         }
-        Account account = accountFacade.findByLogin(claims.getSubject());
+        String login = claims.getSubject();
+        AccountConfirmationToken accountConfirmationToken = activeAccountFacade.findToken(login);
+        if (!accountConfirmationToken.getToken().equals(token)) {
+            throw new TokenInvalidException();
+        }
+
+        Account account = accountFacade.findByLogin(login);
         account.setConfirmed(true);
         accountFacade.unsafeEdit(account);
+        activeAccountFacade.unsafeRemove(accountConfirmationToken);
         return account;
     }
 
@@ -313,21 +319,30 @@ public class MOKService extends AbstractService implements MOKServiceInterface, 
     @PermitAll
     public ResetPasswordToken resetPassword(String login) {
         Account account = accountFacade.findByLogin(login);
+        String token = jwtGenerator.createResetPasswordJWT(login);
         ResetPasswordToken resetPasswordToken = new ResetPasswordToken();
         resetPasswordToken.setAccount(account);
+        resetPasswordToken.setToken(token);
         resetPasswordFacade.create(resetPasswordToken);
         return resetPasswordToken;
     }
 
     @Override
     @PermitAll
-    public Account confirmResetPassword(String login, String password, String token) {
-
-        ResetPasswordToken resetPasswordToken =
-                resetPasswordFacade.findResetPasswordToken(login);
-
-        if (!hashAlgorithm.verify(resetPasswordToken.getId().toString().toCharArray(), token))
+    public Account confirmResetPassword(String password, String token) {
+        Claims claims;
+        try {
+            claims = jwtGenerator.decodeJWT(token);
+        } catch (SignatureException | UnsupportedJwtException | MalformedJwtException | IllegalArgumentException e) {
+            throw new TokenDecodeInvalidException();
+        } catch (ExpiredJwtException e) {
+            throw new TokenExpiredException();
+        }
+        String login = claims.getSubject();
+        ResetPasswordToken resetPasswordToken = resetPasswordFacade.findToken(login);
+        if (!resetPasswordToken.getToken().equals(token)) {
             throw new TokenInvalidException();
+        }
 
 
         Account account = accountFacade.findByLogin(login);

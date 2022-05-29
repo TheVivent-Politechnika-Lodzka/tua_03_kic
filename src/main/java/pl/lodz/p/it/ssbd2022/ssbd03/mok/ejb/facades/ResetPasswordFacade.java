@@ -1,9 +1,7 @@
 package pl.lodz.p.it.ssbd2022.ssbd03.mok.ejb.facades;
 
 import jakarta.annotation.security.PermitAll;
-import jakarta.annotation.security.RolesAllowed;
 import jakarta.annotation.security.RunAs;
-import jakarta.ejb.Stateful;
 import jakarta.ejb.Stateless;
 import jakarta.ejb.TransactionAttribute;
 import jakarta.ejb.TransactionAttributeType;
@@ -16,7 +14,7 @@ import jakarta.persistence.TypedQuery;
 import lombok.Getter;
 import pl.lodz.p.it.ssbd2022.ssbd03.common.AbstractFacade;
 import pl.lodz.p.it.ssbd2022.ssbd03.common.Roles;
-import pl.lodz.p.it.ssbd2022.ssbd03.entities.ResetPasswordToken;
+import pl.lodz.p.it.ssbd2022.ssbd03.entities.tokens.ResetPasswordToken;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.database.DatabaseException;
 import pl.lodz.p.it.ssbd2022.ssbd03.interceptors.TrackerInterceptor;
 import pl.lodz.p.it.ssbd2022.ssbd03.utils.HashAlgorithm;
@@ -72,7 +70,7 @@ public class ResetPasswordFacade extends AbstractFacade<ResetPasswordToken> {
      * @return resetPasswordToken
      */
     @PermitAll
-    public ResetPasswordToken findResetPasswordToken(String login) {
+    public ResetPasswordToken findToken(String login) {
         // TODO: Poprawić obsługę wyjątku nie znalezionego tokenu
         try {
             TypedQuery<ResetPasswordToken> typedQuery = em.createNamedQuery("ResetPassword.findByLogin", ResetPasswordToken.class);
@@ -86,13 +84,12 @@ public class ResetPasswordFacade extends AbstractFacade<ResetPasswordToken> {
 
     /**
      * metoda zwraca tokeny przed podaną datą
-     * @param date
      * @return
      */
     @PermitAll
-    public List<ResetPasswordToken> findResetPasswordToken(Instant date) {
+    public List<ResetPasswordToken> findExpiredTokens() {
         TypedQuery<ResetPasswordToken> typedQuery = em.createNamedQuery("ResetPassword.findBeforeDate", ResetPasswordToken.class);
-        typedQuery.setParameter("date", date);
+        typedQuery.setParameter("date", Instant.now());
         return typedQuery.getResultList();
     }
 }

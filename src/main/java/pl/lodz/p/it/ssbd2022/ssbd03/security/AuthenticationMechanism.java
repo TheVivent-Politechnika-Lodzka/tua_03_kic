@@ -8,12 +8,10 @@ import jakarta.security.enterprise.authentication.mechanism.http.HttpAuthenticat
 import jakarta.security.enterprise.authentication.mechanism.http.HttpMessageContext;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import pl.lodz.p.it.ssbd2022.ssbd03.common.Config;
 import pl.lodz.p.it.ssbd2022.ssbd03.common.Roles;
+import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.token.TokenExpiredException;
 
-import java.text.ParseException;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.HashSet;
 
 public class AuthenticationMechanism implements HttpAuthenticationMechanism {
@@ -61,7 +59,11 @@ public class AuthenticationMechanism implements HttpAuthenticationMechanism {
 
             return httpMessageContext.notifyContainerAboutLogin(login, new HashSet<>(Arrays.asList(groups.split(","))));
 
-        } catch (ExpiredJwtException | UnsupportedJwtException | MalformedJwtException | SignatureException | IllegalArgumentException e) {
+        }
+        catch (ExpiredJwtException e) {
+            throw new TokenExpiredException();
+        }
+        catch (UnsupportedJwtException | MalformedJwtException | SignatureException | IllegalArgumentException e) {
             return httpMessageContext.responseUnauthorized();
         }
     }

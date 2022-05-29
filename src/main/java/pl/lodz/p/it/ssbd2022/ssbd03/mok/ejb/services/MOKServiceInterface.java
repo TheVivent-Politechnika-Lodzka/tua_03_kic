@@ -3,7 +3,8 @@ package pl.lodz.p.it.ssbd2022.ssbd03.mok.ejb.services;
 import jakarta.ejb.Local;
 import pl.lodz.p.it.ssbd2022.ssbd03.common.ServiceLocalInterface;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.Account;
-import pl.lodz.p.it.ssbd2022.ssbd03.entities.ResetPasswordToken;
+import pl.lodz.p.it.ssbd2022.ssbd03.entities.tokens.AccountConfirmationToken;
+import pl.lodz.p.it.ssbd2022.ssbd03.entities.tokens.ResetPasswordToken;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.access_levels.AccessLevel;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.MethodNotImplementedException;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.access_level.AccessLevelNotFoundException;
@@ -123,7 +124,7 @@ public interface MOKServiceInterface extends ServiceLocalInterface {
      * @return Token, pozwala na aktywacje konta
      * @throws MethodNotImplementedException w momencie, gdy metoda jest niezaimplementowana
      */
-    default String registerAccount(Account account) {
+    default AccountConfirmationToken registerAccount(Account account) {
         throw new MethodNotImplementedException();
     }
 
@@ -195,7 +196,7 @@ public interface MOKServiceInterface extends ServiceLocalInterface {
      * @return Obiekt konta użytkownika, którego hasło zostało zmienione
      * @throws MethodNotImplementedException w momencie, gdy metoda jest niezaimplementowana
      */
-    default Account confirmResetPassword(String login, String password, String token) {
+    default Account confirmResetPassword(String password, String token) {
         throw new MethodNotImplementedException();
     }
 

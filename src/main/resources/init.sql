@@ -8,12 +8,11 @@ grant select,insert,delete,update on TABLE account to ssbd03mok;
 grant select,insert,delete,update on TABLE account_details to ssbd03mok;
 grant select,insert,delete,update on TABLE access_level to ssbd03mok;
 grant select,insert,delete,update on TABLE reset_password_token to ssbd03mok;
-grant select,insert,delete,update on TABLE active_account_token to ssbd03mok;
+grant select,insert,delete,update on TABLE account_confirmation_token to ssbd03mok;
 
 grant select on TABLE appointment to ssbd03mok;
 grant select on TABLE implant to ssbd03mok;
 grant select on TABLE implant_review to ssbd03mok;
-grant select,insert on TABLE active_account_token to ssbd03mok;
 
 -- uprawnienia dla konta MOP
 grant select on TABLE data_client to ssbd03mop;

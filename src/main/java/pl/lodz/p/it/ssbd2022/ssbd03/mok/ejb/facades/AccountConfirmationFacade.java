@@ -1,8 +1,6 @@
 package pl.lodz.p.it.ssbd2022.ssbd03.mok.ejb.facades;
 
 import jakarta.annotation.security.PermitAll;
-import jakarta.annotation.security.RolesAllowed;
-import jakarta.annotation.security.RunAs;
 import jakarta.ejb.Stateless;
 import jakarta.ejb.TransactionAttribute;
 import jakarta.ejb.TransactionAttributeType;
@@ -14,8 +12,7 @@ import jakarta.persistence.PersistenceException;
 import jakarta.persistence.TypedQuery;
 import lombok.Getter;
 import pl.lodz.p.it.ssbd2022.ssbd03.common.AbstractFacade;
-import pl.lodz.p.it.ssbd2022.ssbd03.common.Roles;
-import pl.lodz.p.it.ssbd2022.ssbd03.entities.ConfirmationAccountToken;
+import pl.lodz.p.it.ssbd2022.ssbd03.entities.tokens.AccountConfirmationToken;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.database.DatabaseException;
 import pl.lodz.p.it.ssbd2022.ssbd03.interceptors.TrackerInterceptor;
 import pl.lodz.p.it.ssbd2022.ssbd03.utils.HashAlgorithm;
@@ -26,7 +23,7 @@ import java.util.List;
 @Interceptors(TrackerInterceptor.class)
 @Stateless
 @TransactionAttribute(TransactionAttributeType.MANDATORY)
-public class ActiveAccountFacade extends AbstractFacade<ConfirmationAccountToken> {
+public class AccountConfirmationFacade extends AbstractFacade<AccountConfirmationToken> {
 
     @PersistenceContext(unitName = "ssbd03mokPU")
     private EntityManager em;
@@ -35,8 +32,8 @@ public class ActiveAccountFacade extends AbstractFacade<ConfirmationAccountToken
     @Getter
     private HashAlgorithm hashAlgorithm;
 
-    public ActiveAccountFacade() {
-        super(ConfirmationAccountToken.class);
+    public AccountConfirmationFacade() {
+        super(AccountConfirmationToken.class);
     }
 
     @Override
@@ -50,7 +47,7 @@ public class ActiveAccountFacade extends AbstractFacade<ConfirmationAccountToken
      */
     @Override
     @PermitAll
-    public void create(ConfirmationAccountToken entity) {
+    public void create(AccountConfirmationToken entity) {
         super.create(entity);
     }
 
@@ -60,7 +57,7 @@ public class ActiveAccountFacade extends AbstractFacade<ConfirmationAccountToken
      */
     @Override
     @PermitAll
-    public void unsafeRemove(ConfirmationAccountToken entity) {
+    public void unsafeRemove(AccountConfirmationToken entity) {
         super.unsafeRemove(entity);
     }
 
@@ -71,9 +68,9 @@ public class ActiveAccountFacade extends AbstractFacade<ConfirmationAccountToken
      * @throws DatabaseException, gdy wystąpi błąd związany z bazą danych
      */
     @PermitAll
-    public ConfirmationAccountToken findToken(String login){
+    public AccountConfirmationToken findToken(String login){
         try {
-            TypedQuery<ConfirmationAccountToken> typedQuery = em.createNamedQuery("ConfirmationAccountToken.findByLogin", ConfirmationAccountToken.class);
+            TypedQuery<AccountConfirmationToken> typedQuery = em.createNamedQuery("AccountConfirmationToken.findByLogin", AccountConfirmationToken.class);
             typedQuery.setParameter("login", login);
             return typedQuery.getSingleResult();
         } catch (PersistenceException pe) {
@@ -88,8 +85,8 @@ public class ActiveAccountFacade extends AbstractFacade<ConfirmationAccountToken
      * @return Lista wygasłych tokenów
      */
     @PermitAll
-    public List<ConfirmationAccountToken> findExpiredTokens(){
-        TypedQuery<ConfirmationAccountToken> typedQuery = em.createNamedQuery("ConfirmationAccountToken.findExpired", ConfirmationAccountToken.class);
+    public List<AccountConfirmationToken> findExpiredTokens(){
+        TypedQuery<AccountConfirmationToken> typedQuery = em.createNamedQuery("AccountConfirmationToken.findExpired", AccountConfirmationToken.class);
         typedQuery.setParameter("now", Instant.now());
         return typedQuery.getResultList();
     }

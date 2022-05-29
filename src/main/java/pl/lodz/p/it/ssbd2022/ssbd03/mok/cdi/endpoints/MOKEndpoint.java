@@ -7,9 +7,9 @@ import jakarta.ws.rs.Path;
 import jakarta.ws.rs.core.Response;
 import pl.lodz.p.it.ssbd2022.ssbd03.common.Config;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.Account;
-import pl.lodz.p.it.ssbd2022.ssbd03.entities.ResetPasswordToken;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.access_levels.AccessLevel;
-import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.ReCaptchaException;
+import pl.lodz.p.it.ssbd2022.ssbd03.entities.tokens.AccountConfirmationToken;
+import pl.lodz.p.it.ssbd2022.ssbd03.entities.tokens.ResetPasswordToken;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.TransactionException;
 import pl.lodz.p.it.ssbd2022.ssbd03.global_services.EmailService;
 import pl.lodz.p.it.ssbd2022.ssbd03.mappers.AccessLevelMapper;
@@ -60,7 +60,7 @@ public class MOKEndpoint implements MOKEndpointInterface {
         int TXCounter = Config.MAX_TX_RETRIES;
         boolean commitedTX;
         Account account = accountMapper.createAccountfromRegisterClientDto(registerClientDto);
-        String token;
+        AccountConfirmationToken token;
         do {
             token = mokServiceInterface.registerAccount(account);
             commitedTX = mokServiceInterface.isLastTransactionCommited();
@@ -74,13 +74,14 @@ public class MOKEndpoint implements MOKEndpointInterface {
         StringBuilder content = new StringBuilder();
 
         title.append(provider.getMessage("account.register.email.title"));
+
         content.append(provider.getMessage("account.register.email.content.localAddress"))
-                .append(" https://localhost:8181/active?token=").append(token).append(" ")
+                .append(" https://localhost:8181/active?token=").append(token.getToken()).append(" ")
                 .append(provider.getMessage("account.register.email.content.remoteAddress"))
-                .append(" https://kic.agency:8403/active?token=").append(token).append(" ");
+                .append(" https://kic.agency:8403/active?token=").append(token.getToken()).append(" ");
 
         emailService.sendEmail(
-                account.getEmail(),
+                token.getAccount().getEmail(),
                 title.toString(),
                 content.toString());
 
@@ -309,7 +310,6 @@ public class MOKEndpoint implements MOKEndpointInterface {
     }
 
     /**
-     *
      * @param loginCredentialsDto - dane logowania
      * @return Response zawierający status HTTP
      * @throws TransactionException jeśli transakcja nie zostanie zatwierdzona
@@ -375,7 +375,7 @@ public class MOKEndpoint implements MOKEndpointInterface {
                 .append(provider.getMessage("account.resetPassword.email.content.login"))
                 .append(" ").append(login)
                 .append(provider.getMessage("account.resetPassword.email.content.token"))
-                .append(" ").append(hashAlgorithm.generate(token.getId().toString().toCharArray()));
+                .append(" ").append(token.getToken());
 
         emailService.sendEmail(
                 account.getEmail(),
@@ -397,7 +397,6 @@ public class MOKEndpoint implements MOKEndpointInterface {
         boolean commitedTX;
         do {
             mokServiceInterface.confirmResetPassword(
-                    resetPasswordDto.getLogin(),
                     resetPasswordDto.getPassword(),
                     resetPasswordDto.getToken()
             );

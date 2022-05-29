@@ -28,7 +28,7 @@ public class ResetPasswordSchedulerService {
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
     private void searchForTokens() {
         System.out.println("ReseetPasswordSchedulerService: searchForTokens");
-        resetPasswordFacade.findResetPasswordToken(Instant.now().minusSeconds(Config.RESET_PASSWORD_TOKEN_EXPIRATION_SECONDS))
+        resetPasswordFacade.findExpiredTokens()
                 .forEach(token -> resetPasswordFacade.unsafeRemove(token));
     }
 

@@ -13,9 +13,6 @@ public class ResetPasswordTokenDto {
     @NotNull(message = "server.error.validation.constraints.notNull.token")
     private String token;
 
-    @Login
-    private String login;
-
     @Password
     private String password;
 

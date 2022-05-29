@@ -5,7 +5,7 @@ import jakarta.ejb.*;
 import jakarta.inject.Inject;
 import pl.lodz.p.it.ssbd2022.ssbd03.common.Roles;
 import pl.lodz.p.it.ssbd2022.ssbd03.mok.ejb.facades.AccountFacade;
-import pl.lodz.p.it.ssbd2022.ssbd03.mok.ejb.facades.ActiveAccountFacade;
+import pl.lodz.p.it.ssbd2022.ssbd03.mok.ejb.facades.AccountConfirmationFacade;
 
 /**
  * Klasa odpowiedzialna za usuwanie niepotwierdzonych kont
@@ -16,7 +16,7 @@ import pl.lodz.p.it.ssbd2022.ssbd03.mok.ejb.facades.ActiveAccountFacade;
 public class UnconfirmedAccountCleanerService {
 
     @Inject
-    private ActiveAccountFacade activeAccountFacade;
+    private AccountConfirmationFacade activeAccountFacade;
 
     @Inject
     private AccountFacade accountFacade;
