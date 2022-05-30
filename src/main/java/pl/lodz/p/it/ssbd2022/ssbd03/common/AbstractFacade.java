@@ -3,6 +3,7 @@ package pl.lodz.p.it.ssbd2022.ssbd03.common;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.OptimisticLockException;
 import jakarta.persistence.PersistenceException;
+import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
 import org.hibernate.exception.ConstraintViolationException;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.MethodNotImplementedException;
@@ -181,9 +182,10 @@ public abstract class AbstractFacade<T> {
      */
     protected int count() {
         try {
-            CriteriaQuery criteriaQuery = getEntityManager().getCriteriaBuilder().createQuery();
-            criteriaQuery.select(criteriaQuery.from(entityClass));
-            return getEntityManager().createQuery(criteriaQuery).getResultList().size();
+            CriteriaBuilder qb = getEntityManager().getCriteriaBuilder();
+            CriteriaQuery<Long> cq = qb.createQuery(Long.class);
+            cq.select(qb.count(cq.from(entityClass)));
+            return getEntityManager().createQuery(cq).getSingleResult().intValue();
         } catch (PersistenceException e) {
             throw new DatabaseException(e.getCause());
         }

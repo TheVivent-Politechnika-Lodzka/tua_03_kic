@@ -52,7 +52,7 @@ public class RefreshToken implements Serializable {
         private Long version;
 
         @JoinColumn(name = "account_id", referencedColumnName = "id", updatable = false)
-        @OneToOne(optional = false)
+        @ManyToOne(optional = false)
         @Getter @Setter
         private Account account;
 

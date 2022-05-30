@@ -122,9 +122,7 @@ public class AccountFacade extends AbstractFacade<Account> {
                     .getResultList();
 
             pageNumber++;
-            int totalCount = entityManager.createNamedQuery("Account.searchByPhrase", Account.class)
-                    .setParameter("phrase", "%" + phrase + "%")
-                    .getResultList().size();
+            int totalCount = this.count();
             int totalPages = (int) Math.ceil((double) totalCount / perPage);
 
             return new PaginationData(totalCount, totalPages, pageNumber, data);
