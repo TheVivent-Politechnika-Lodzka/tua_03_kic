@@ -100,6 +100,8 @@ public class AccountMapper {
      */
     public AccountDto createAccountDtoFromAccount(Account account) {
         AccountDto accountDto = new AccountDto(
+                account.getId(),
+                account.getVersion(),
                 account.getLogin(),
                 account.getFirstName(),
                 account.getLastName(),
@@ -108,8 +110,9 @@ public class AccountMapper {
                 account.getEmail(),
                 account.getLanguage()
         );
+        return accountDto;
 
-        return (AccountDto) abstractEntityMapper.dtoFromEntity(accountDto, account);
+//        return (AccountDto) abstractEntityMapper.dtoFromEntity(accountDto, account);
     }
 
     /**
@@ -120,6 +123,8 @@ public class AccountMapper {
      */
     public AccountWithAccessLevelsDto createAccountWithAccessLevelsDtoFromAccount(Account account) {
         AccountWithAccessLevelsDto accountDto = new AccountWithAccessLevelsDto(
+                account.getId(),
+                account.getVersion(),
                 account.getLogin(),
                 account.getFirstName(),
                 account.getLastName(),
@@ -130,8 +135,9 @@ public class AccountMapper {
                 null,
                 accessLevelMapper.createListOfAccessLevelDTO(account.getAccessLevelCollection())
         );
+        return accountDto;
 
-        return (AccountWithAccessLevelsDto) abstractEntityMapper.dtoFromEntity(accountDto, account);
+//        return (AccountWithAccessLevelsDto) abstractEntityMapper.dtoFromEntity(accountDto, account);
     }
 
     /**

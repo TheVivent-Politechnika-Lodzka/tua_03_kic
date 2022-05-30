@@ -6,17 +6,22 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import pl.lodz.p.it.ssbd2022.ssbd03.common.AbstractDto;
+import pl.lodz.p.it.ssbd2022.ssbd03.security.Taggable;
 import pl.lodz.p.it.ssbd2022.ssbd03.validation.FirstName;
 import pl.lodz.p.it.ssbd2022.ssbd03.validation.LastName;
 import pl.lodz.p.it.ssbd2022.ssbd03.validation.Login;
 import pl.lodz.p.it.ssbd2022.ssbd03.mappers.json.LocaleSerializerDeserializer;
 
 import java.util.Locale;
+import java.util.UUID;
 
 @Getter @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class AccountDto extends AbstractDto {
+public class AccountDto implements Taggable {
+
+    private UUID id;
+    private Long version;
 
     @Login
     private String login;

@@ -9,6 +9,7 @@ import pl.lodz.p.it.ssbd2022.ssbd03.common.AbstractDto;
 import lombok.*;
 import pl.lodz.p.it.ssbd2022.ssbd03.mappers.json.LocaleSerializerDeserializer;
 import pl.lodz.p.it.ssbd2022.ssbd03.mok.dto.access_levels.AccessLevelDto;
+import pl.lodz.p.it.ssbd2022.ssbd03.security.Taggable;
 import pl.lodz.p.it.ssbd2022.ssbd03.validation.FirstName;
 import pl.lodz.p.it.ssbd2022.ssbd03.validation.LastName;
 import pl.lodz.p.it.ssbd2022.ssbd03.validation.Login;
@@ -16,11 +17,15 @@ import pl.lodz.p.it.ssbd2022.ssbd03.validation.Login;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.UUID;
 
 @Getter @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class AccountWithAccessLevelsDto extends AbstractDto {
+public class AccountWithAccessLevelsDto implements Taggable {
+
+    private UUID id;
+    private Long version;
 
     @Login
     private String login;

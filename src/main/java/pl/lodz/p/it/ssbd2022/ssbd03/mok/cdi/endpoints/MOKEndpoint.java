@@ -21,6 +21,7 @@ import pl.lodz.p.it.ssbd2022.ssbd03.mok.ejb.services.MOKServiceInterface;
 import pl.lodz.p.it.ssbd2022.ssbd03.security.AuthContext;
 import pl.lodz.p.it.ssbd2022.ssbd03.security.JWTStruct;
 import pl.lodz.p.it.ssbd2022.ssbd03.security.ReCaptchaService;
+import pl.lodz.p.it.ssbd2022.ssbd03.security.Tagger;
 import pl.lodz.p.it.ssbd2022.ssbd03.utils.HashAlgorithm;
 import pl.lodz.p.it.ssbd2022.ssbd03.utils.InternationalizationProvider;
 import pl.lodz.p.it.ssbd2022.ssbd03.utils.PaginationData;
@@ -48,6 +49,8 @@ public class MOKEndpoint implements MOKEndpointInterface {
     private InternationalizationProvider provider;
     @Inject
     private ReCaptchaService reCaptchaService;
+    @Inject
+    private Tagger tagger;
 
     /**
      * @param registerClientDto - dane konta
@@ -278,7 +281,7 @@ public class MOKEndpoint implements MOKEndpointInterface {
         int TXCounter = Config.MAX_TX_RETRIES;
         boolean commitedTX;
         do {
-            editedAccount = mokServiceInterface.editAccount(login, update, accountWithAccessLevelsDto.getETag());
+            editedAccount = mokServiceInterface.editAccount(login, update, "accountWithAccessLevelsDto.getETag()");
             commitedTX = mokServiceInterface.isLastTransactionCommited();
         } while (!commitedTX && --TXCounter > 0);
 
@@ -293,12 +296,17 @@ public class MOKEndpoint implements MOKEndpointInterface {
 
     @Override
     public Response editAccount(String login, AccountWithAccessLevelsDto accountWithAccessLevelsDto) {
+        boolean isTagOk = tagger.verifyTag(accountWithAccessLevelsDto);
+        System.out.println("#############################################");
+        System.out.println("Hurray: " + isTagOk);
+        System.out.println("#############################################");
+
         Account update = accountMapper.createAccountFromDto(accountWithAccessLevelsDto);
         Account editedAccount;
         int TXCounter = Config.MAX_TX_RETRIES;
         boolean commitedTX;
         do {
-            editedAccount = mokServiceInterface.editAccount(login, update, accountWithAccessLevelsDto.getETag());
+            editedAccount = mokServiceInterface.editAccount(login, update, "accountWithAccessLevelsDto.getETag()");
             commitedTX = mokServiceInterface.isLastTransactionCommited();
         } while (!commitedTX && --TXCounter > 0);
 
@@ -483,7 +491,9 @@ public class MOKEndpoint implements MOKEndpointInterface {
             throw new TransactionException();
         }
 
-        return Response.ok(accountMapper.createAccountWithAccessLevelsDtoFromAccount(account)).build();
+        AccountWithAccessLevelsDto accountDto = accountMapper.createAccountWithAccessLevelsDtoFromAccount(account);
+
+        return Response.ok(accountDto).tag(tagger.tag(accountDto)).build();
     }
 
 

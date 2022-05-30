@@ -29,6 +29,7 @@ public class Config {
     // JWT
     public static final int JWT_EXPIRATION_SECONDS = 60 * 60; // 1h
     public static final String JWT_SECRET = "zjZi6JWZ99IT0Trx49MNitLpwPjQc81BOUZytttWprg=";
+    public static final String E_TAG_SECRET = "zjZi6JWZ99IT0Trx49MNitLpwPjQc81BOUZytttWprg=";
 
     // Ogólne
     public static final int MAX_TX_RETRIES = 3;
