@@ -14,6 +14,7 @@ import pl.lodz.p.it.ssbd2022.ssbd03.common.AbstractFacade;
 import pl.lodz.p.it.ssbd2022.ssbd03.common.Roles;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.Account;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.InvalidParametersException;
+import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.ResourceNotFoundException;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.account.AccountAlreadyExistsException;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.database.DatabaseException;
 import pl.lodz.p.it.ssbd2022.ssbd03.interceptors.TrackerInterceptor;
@@ -99,6 +100,8 @@ public class AccountFacade extends AbstractFacade<Account> {
             TypedQuery<Account> typedQuery = entityManager.createNamedQuery("Account.findByLogin", Account.class);
             typedQuery.setParameter("login", login);
             return typedQuery.getSingleResult();
+        } catch (NoResultException e) {
+            throw new ResourceNotFoundException();
         } catch (IllegalArgumentException iae) {
             throw new InvalidParametersException(iae.getCause());
         } catch (PersistenceException pe) {

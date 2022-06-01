@@ -6,13 +6,11 @@ import jakarta.ejb.TransactionAttribute;
 import jakarta.ejb.TransactionAttributeType;
 import jakarta.inject.Inject;
 import jakarta.interceptor.Interceptors;
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.PersistenceContext;
-import jakarta.persistence.PersistenceException;
-import jakarta.persistence.TypedQuery;
+import jakarta.persistence.*;
 import lombok.Getter;
 import pl.lodz.p.it.ssbd2022.ssbd03.common.AbstractFacade;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.tokens.RefreshToken;
+import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.ResourceNotFoundException;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.database.DatabaseException;
 import pl.lodz.p.it.ssbd2022.ssbd03.interceptors.TrackerInterceptor;
 import pl.lodz.p.it.ssbd2022.ssbd03.security.Tagger;
@@ -69,11 +67,12 @@ public class RefreshTokenFacade extends AbstractFacade<RefreshToken> {
      */
     @PermitAll
     public RefreshToken findToken(String login) {
-        // TODO: Poprawić obsługę wyjątku nie znalezionego tokenu
         try {
             TypedQuery<RefreshToken> typedQuery = entityManager.createNamedQuery("RefreshToken.findByLogin", RefreshToken.class);
             typedQuery.setParameter("login", login);
             return typedQuery.getSingleResult();
+        } catch (NoResultException e) {
+            throw new ResourceNotFoundException();
         } catch (PersistenceException e) {
             throw new DatabaseException(e);
         }
@@ -88,11 +87,12 @@ public class RefreshTokenFacade extends AbstractFacade<RefreshToken> {
      */
     @PermitAll
     public RefreshToken findByToken(String token) {
-        // TODO: Poprawić obsługę wyjątku nie znalezionego tokenu
         try {
             TypedQuery<RefreshToken> typedQuery = entityManager.createNamedQuery("RefreshToken.findByToken", RefreshToken.class);
             typedQuery.setParameter("token", token);
             return typedQuery.getSingleResult();
+        } catch (NoResultException e) {
+            throw new ResourceNotFoundException();
         } catch (PersistenceException e) {
             throw new DatabaseException(e);
         }
