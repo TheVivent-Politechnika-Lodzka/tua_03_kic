@@ -85,6 +85,7 @@ public class Tagger {
     public void verifyTag(Taggable taggable) {
         String tagFromDto = tag(taggable);
         String tagFromHeader = headers.getHeaderString("If-Match");
+        verifyTag(tagFromHeader);
         if (!tagFromDto.equals(tagFromHeader)) // equals uwzględnia null
             throw InAppOptimisticLockException.signatureNotCorrect();
     }
