@@ -15,6 +15,7 @@ import pl.lodz.p.it.ssbd2022.ssbd03.common.AbstractFacade;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.tokens.RefreshToken;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.database.DatabaseException;
 import pl.lodz.p.it.ssbd2022.ssbd03.interceptors.TrackerInterceptor;
+import pl.lodz.p.it.ssbd2022.ssbd03.security.Tagger;
 import pl.lodz.p.it.ssbd2022.ssbd03.utils.HashAlgorithm;
 
 import java.time.Instant;
@@ -31,7 +32,7 @@ public class RefreshTokenFacade extends AbstractFacade<RefreshToken> {
 
     @Inject
     @Getter
-    private HashAlgorithm hashAlgorithm;
+    private Tagger tagger;
 
     public RefreshTokenFacade() {
         super(RefreshToken.class);

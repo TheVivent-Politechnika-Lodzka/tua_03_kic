@@ -8,6 +8,9 @@ public class Config {
     private static final int DAY = 24 * HOUR;
     private static final int WEEK = 7 * DAY;
 
+    // DEBUG
+    public static final boolean DEBUG = true;
+
     // Dla JDBCConfig
     public static final String password = "cyberpunk2077";
     public static final String databaseName = "ssbd03";

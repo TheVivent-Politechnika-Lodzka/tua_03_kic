@@ -1,4 +1,4 @@
-package pl.lodz.p.it.ssbd2022.ssbd03.mok.dto;
+package pl.lodz.p.it.ssbd2022.ssbd03.mok.dto.no_etag;
 
 import jakarta.json.bind.annotation.JsonbTypeDeserializer;
 import jakarta.json.bind.annotation.JsonbTypeSerializer;

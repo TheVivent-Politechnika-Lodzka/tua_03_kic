@@ -11,6 +11,7 @@ import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.MethodNotImplementedException;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.TransactionException;
 import pl.lodz.p.it.ssbd2022.ssbd03.mok.dto.*;
 import pl.lodz.p.it.ssbd2022.ssbd03.mok.dto.access_levels.AccessLevelDto;
+import pl.lodz.p.it.ssbd2022.ssbd03.mok.dto.no_etag.*;
 
 
 public interface MOKEndpointInterface {
@@ -71,9 +72,9 @@ public interface MOKEndpointInterface {
     /**
      * MOK.3 Zablokuj konto
      * Metoda blokująca konto użytkownika.
+     * Wymaga nagłówka If-Match zawierającego etag blokowanego konta.
      *
      * @param login   Login konta, które ma zostać zablokowane
-     * @param eTagDto Obiekt DTO, zawierający w sobie eTag blokowanego konta
      * @return Odpowiedź HTTP
      * @throws MethodNotImplementedException w momencie, gdy metoda jest niezaimplementowana
      */
@@ -81,16 +82,16 @@ public interface MOKEndpointInterface {
     @Path("/deactivate/{login}")
     @RolesAllowed(Roles.ADMINISTRATOR)
     @Consumes(MediaType.APPLICATION_JSON)
-    default Response deactivateAccount(@PathParam("login") String login, @Valid ETagDto eTagDto) {
+    default Response deactivateAccount(@PathParam("login") String login) {
         throw new MethodNotImplementedException();
     }
 
     /**
      * MOK.4 Odblokuj konto
      * Metoda odblokowująca konto użytkownika, które zostało uprzednio zablokowane przez administratora
+     * Wymaga nagłówka If-Match zawierającego eTag odblokowywanego konta
      *
      * @param login   Login konta, które ma zostać odblokowane
-     * @param eTagDto Obiekt DTO, zawierający w sobie eTag
      * @return Odpowiedź HTTP
      * @throws MethodNotImplementedException w momencie, gdy metoda jest niezaimplementowana
      */
@@ -98,7 +99,7 @@ public interface MOKEndpointInterface {
     @Path("/activate/{login}")
     @RolesAllowed(Roles.ADMINISTRATOR)
     @Consumes(MediaType.APPLICATION_JSON)
-    default Response activateAccount(@PathParam("login") String login, @Valid ETagDto eTagDto) {
+    default Response activateAccount(@PathParam("login") String login) {
         throw new MethodNotImplementedException();
     }
 
@@ -135,7 +136,7 @@ public interface MOKEndpointInterface {
     @DELETE
     @Path("/access-level/{login}/{accessLevel}")
     @RolesAllowed(Roles.ADMINISTRATOR)
-    default Response removeAccessLevel(@PathParam("login") String login, @PathParam("accessLevel") String accessLevel, @QueryParam("eTag") String eTag) {
+    default Response removeAccessLevel(@PathParam("login") String login, @PathParam("accessLevel") String accessLevel) {
         throw new MethodNotImplementedException();
     }
 

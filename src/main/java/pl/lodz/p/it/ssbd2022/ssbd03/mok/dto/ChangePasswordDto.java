@@ -1,20 +1,22 @@
 package pl.lodz.p.it.ssbd2022.ssbd03.mok.dto;
 
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import pl.lodz.p.it.ssbd2022.ssbd03.security.Taggable;
 import pl.lodz.p.it.ssbd2022.ssbd03.validation.Password;
 
-@Getter @Setter
+import java.util.UUID;
+
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class ChangePasswordDto {
+public class ChangePasswordDto implements Taggable {
 
-    @NotNull(message = "server.error.validation.constraints.notNull.etag")
-    private String eTag;
+    private UUID id;
+    private Long version;
 
     @Password
     private String newPassword;

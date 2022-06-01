@@ -32,19 +32,22 @@ import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.account.AccountPasswordIsTheSameE
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.account.AccountPasswordMatchException;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.account.AccountStatusException;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.account.InvalidCredentialException;
+import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.database.InAppOptimisticLockException;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.token.TokenDecodeInvalidException;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.token.TokenExpiredException;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.token.TokenInvalidException;
 import pl.lodz.p.it.ssbd2022.ssbd03.interceptors.TrackerInterceptor;
 import pl.lodz.p.it.ssbd2022.ssbd03.mok.ejb.facades.*;
 import pl.lodz.p.it.ssbd2022.ssbd03.security.JWTGenerator;
-import pl.lodz.p.it.ssbd2022.ssbd03.security.JWTStruct;
+import pl.lodz.p.it.ssbd2022.ssbd03.mok.dto.no_etag.LoginResponseDto;
+import pl.lodz.p.it.ssbd2022.ssbd03.security.Taggable;
 import pl.lodz.p.it.ssbd2022.ssbd03.utils.HashAlgorithm;
 import pl.lodz.p.it.ssbd2022.ssbd03.utils.PaginationData;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Objects;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -116,7 +119,7 @@ public class MOKService extends AbstractService implements MOKServiceInterface, 
      */
     @Override
     @PermitAll
-    public JWTStruct refreshToken(String refreshToken) {
+    public LoginResponseDto refreshToken(String refreshToken) {
         RefreshToken refreshTokenObject = refreshTokenFacade.findByToken(refreshToken);
 
         List<String> accessLevels = new ArrayList<>();
@@ -126,7 +129,7 @@ public class MOKService extends AbstractService implements MOKServiceInterface, 
                         ));
         String accessToken = jwtGenerator.createJWT(refreshTokenObject.getAccount().getLogin(), accessLevels);
 
-        JWTStruct jwtStruct = new JWTStruct();
+        LoginResponseDto jwtStruct = new LoginResponseDto();
         jwtStruct.setAccessToken(accessToken);
         jwtStruct.setRefreshToken(refreshTokenObject.getToken());
         return jwtStruct;
@@ -146,27 +149,27 @@ public class MOKService extends AbstractService implements MOKServiceInterface, 
 
     @Override
     @RolesAllowed(Roles.ADMINISTRATOR)
-    public Account deactivateAccount(String login, String eTag) {
+    public Account deactivateAccount(String login) {
         Account account = accountFacade.findByLogin(login);
         if (!account.isActive()) throw AccountStatusException.accountAlreadyInactive();
         account.setActive(false);
-        accountFacade.edit(account, eTag);
+        accountFacade.edit(account);
         return account;
     }
 
     @Override
     @RolesAllowed(Roles.ADMINISTRATOR)
-    public Account activateAccount(String login, String eTag) {
+    public Account activateAccount(String login) {
         Account account = accountFacade.findByLogin(login);
         if (account.isActive()) throw AccountStatusException.accountArleadyActive();
         account.setActive(true);
-        accountFacade.edit(account, eTag);
+        accountFacade.edit(account);
         return account;
     }
 
     @Override
     @RolesAllowed(Roles.AUTHENTICATED)
-    public Account editAccount(String login, Account account, String etag) {
+    public Account editAccount(String login, Account account) {
         Account accountFromDb = accountFacade.findByLogin(login);
         accountFromDb.setFirstName(account.getFirstName());
         accountFromDb.setLastName(account.getLastName());
@@ -201,7 +204,7 @@ public class MOKService extends AbstractService implements MOKServiceInterface, 
             }
         }
 
-        accountFacade.edit(accountFromDb, etag);
+        accountFacade.edit(accountFromDb);
 
         return accountFromDb;
     }
@@ -225,7 +228,7 @@ public class MOKService extends AbstractService implements MOKServiceInterface, 
 
     @Override
     @RolesAllowed(Roles.ADMINISTRATOR)
-    public Account changeAccountPassword(String login, String newPassword, String etag) {
+    public Account changeAccountPassword(String login, String newPassword) {
         Account account = accountFacade.findByLogin(login);
 
         if (hashAlgorithm.verify(newPassword.toCharArray(), account.getPassword())) {
@@ -233,13 +236,13 @@ public class MOKService extends AbstractService implements MOKServiceInterface, 
         }
 
         account.setPassword(hashAlgorithm.generate(newPassword.toCharArray()));
-        accountFacade.edit(account, etag);
+        accountFacade.edit(account);
         return account;
     }
 
     @Override
     @RolesAllowed(Roles.AUTHENTICATED)
-    public Account changeAccountPassword(String login, String oldPassword, String newPassword, String etag) {
+    public Account changeAccountPassword(String login, String oldPassword, String newPassword) {
         Account account = accountFacade.findByLogin(login);
 
         if (!hashAlgorithm.verify(oldPassword.toCharArray(), account.getPassword())) {
@@ -250,7 +253,7 @@ public class MOKService extends AbstractService implements MOKServiceInterface, 
         }
 
         account.setPassword(hashAlgorithm.generate(newPassword.toCharArray()));
-        accountFacade.edit(account, etag);
+        accountFacade.edit(account);
         return account;
     }
 
@@ -334,12 +337,13 @@ public class MOKService extends AbstractService implements MOKServiceInterface, 
         });
         account.addAccessLevel(accessLevel);
         accessLevelFacade.create(accessLevel);
+        accountFacade.forceVersionIncrement(account);
         return account;
     }
 
     @Override
     @RolesAllowed(Roles.ADMINISTRATOR)
-    public Account removeAccessLevelFromAccount(String login, String accessLevelName, String accessLevelEtag) {
+    public Account removeAccessLevelFromAccount(String login, String accessLevelName) {
         Account account = accountFacade.findByLogin(login);
 
         AccessLevel access = account.getAccessLevelCollection().stream()
@@ -351,7 +355,8 @@ public class MOKService extends AbstractService implements MOKServiceInterface, 
             throw new AccessLevelNotFoundException();
 
         account.removeAccessLevel(access);
-        accessLevelFacade.remove(access, accessLevelEtag);
+        accountFacade.edit(account);
+        accountFacade.forceVersionIncrement(account);
 
         return account;
     }

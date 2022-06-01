@@ -7,10 +7,7 @@ import jakarta.ejb.TransactionAttribute;
 import jakarta.ejb.TransactionAttributeType;
 import jakarta.inject.Inject;
 import jakarta.interceptor.Interceptors;
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.PersistenceContext;
-import jakarta.persistence.PersistenceException;
-import jakarta.persistence.TypedQuery;
+import jakarta.persistence.*;
 import lombok.Getter;
 import org.hibernate.exception.ConstraintViolationException;
 import pl.lodz.p.it.ssbd2022.ssbd03.common.AbstractFacade;
@@ -20,6 +17,7 @@ import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.InvalidParametersException;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.account.AccountAlreadyExistsException;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.database.DatabaseException;
 import pl.lodz.p.it.ssbd2022.ssbd03.interceptors.TrackerInterceptor;
+import pl.lodz.p.it.ssbd2022.ssbd03.security.Tagger;
 import pl.lodz.p.it.ssbd2022.ssbd03.utils.HashAlgorithm;
 import pl.lodz.p.it.ssbd2022.ssbd03.utils.PaginationData;
 
@@ -36,7 +34,7 @@ public class AccountFacade extends AbstractFacade<Account> {
 
     @Inject
     @Getter
-    private HashAlgorithm hashAlgorithm;
+    private Tagger tagger;
 
     public AccountFacade() {
         super(Account.class);
@@ -59,12 +57,11 @@ public class AccountFacade extends AbstractFacade<Account> {
      * Metoda edytująca konto w bazie danych. Uwzględnia wersję
      *
      * @param entity
-     * @param eTag
      */
     @Override
     @RolesAllowed(Roles.AUTHENTICATED)
-    public void edit(Account entity, String eTag) {
-        super.edit(entity, eTag);
+    public void edit(Account entity) {
+        super.edit(entity);
     }
 
     /**
@@ -76,6 +73,16 @@ public class AccountFacade extends AbstractFacade<Account> {
     @PermitAll
     public void unsafeEdit(Account entity) {
         super.unsafeEdit(entity);
+    }
+
+    /**
+     * Metoda zwiększająca wersję konta.
+     * Wymaga podania encji w stanie zarządzalnym
+     * @param account
+     */
+    @RolesAllowed(Roles.ADMINISTRATOR)
+    public void forceVersionIncrement(Account account) {
+        entityManager.lock(account, LockModeType.OPTIMISTIC_FORCE_INCREMENT);
     }
 
     /**

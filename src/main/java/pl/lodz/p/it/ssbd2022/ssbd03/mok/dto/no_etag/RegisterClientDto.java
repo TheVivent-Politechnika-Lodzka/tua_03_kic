@@ -1,30 +1,33 @@
-package pl.lodz.p.it.ssbd2022.ssbd03.mok.dto;
+package pl.lodz.p.it.ssbd2022.ssbd03.mok.dto.no_etag;
 
 import jakarta.json.bind.annotation.JsonbTypeDeserializer;
 import jakarta.json.bind.annotation.JsonbTypeSerializer;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
-import lombok.*;
-import pl.lodz.p.it.ssbd2022.ssbd03.common.AbstractDto;
-import pl.lodz.p.it.ssbd2022.ssbd03.security.Taggable;
-import pl.lodz.p.it.ssbd2022.ssbd03.validation.FirstName;
-import pl.lodz.p.it.ssbd2022.ssbd03.validation.LastName;
-import pl.lodz.p.it.ssbd2022.ssbd03.validation.Login;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import pl.lodz.p.it.ssbd2022.ssbd03.mappers.json.LocaleSerializerDeserializer;
+import pl.lodz.p.it.ssbd2022.ssbd03.validation.*;
 
 import java.util.Locale;
-import java.util.UUID;
 
-@Getter @Setter
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class AccountDto implements Taggable {
-
-    private UUID id;
-    private Long version;
+public class RegisterClientDto {
+    
+    @Password
+    private String password;
 
     @Login
     private String login;
+
+    @NotNull
+    @Email
+    private String email;
 
     @FirstName
     private String firstName;
@@ -32,17 +35,17 @@ public class AccountDto implements Taggable {
     @LastName
     private String lastName;
 
-    private boolean isActive;
+    @PhoneNumber
+    private String phoneNumber;
 
-    private boolean isConfirmed;
-
-    @NotNull
-    @Email
-    private String email;
+    @Pesel
+    private String pesel;
 
     @NotNull(message = "server.error.validation.constraints.notNull.language")
     @JsonbTypeSerializer(LocaleSerializerDeserializer.class)
     @JsonbTypeDeserializer(LocaleSerializerDeserializer.class)
-
     private Locale language;
+
+    private String captcha;
+
 }

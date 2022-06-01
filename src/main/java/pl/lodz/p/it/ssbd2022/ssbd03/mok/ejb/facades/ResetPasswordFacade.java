@@ -17,6 +17,7 @@ import pl.lodz.p.it.ssbd2022.ssbd03.common.Roles;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.tokens.ResetPasswordToken;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.database.DatabaseException;
 import pl.lodz.p.it.ssbd2022.ssbd03.interceptors.TrackerInterceptor;
+import pl.lodz.p.it.ssbd2022.ssbd03.security.Tagger;
 import pl.lodz.p.it.ssbd2022.ssbd03.utils.HashAlgorithm;
 
 import java.time.Instant;
@@ -30,19 +31,15 @@ import java.util.List;
 public class ResetPasswordFacade extends AbstractFacade<ResetPasswordToken> {
 
     @PersistenceContext(unitName = "ssbd03mokPU")
-    private EntityManager em;
+    @Getter
+    private EntityManager entityManager;
 
     @Inject
     @Getter
-    private HashAlgorithm hashAlgorithm;
+    private Tagger tagger;
 
     public ResetPasswordFacade() {
         super(ResetPasswordToken.class);
-    }
-
-    @Override
-    protected EntityManager getEntityManager() {
-        return em;
     }
 
     /**
@@ -77,7 +74,8 @@ public class ResetPasswordFacade extends AbstractFacade<ResetPasswordToken> {
     public ResetPasswordToken findToken(String login) {
         // TODO: Poprawić obsługę wyjątku nie znalezionego tokenu
         try {
-            TypedQuery<ResetPasswordToken> typedQuery = em.createNamedQuery("ResetPassword.findByLogin", ResetPasswordToken.class);
+            TypedQuery<ResetPasswordToken> typedQuery = entityManager
+                    .createNamedQuery("ResetPassword.findByLogin", ResetPasswordToken.class);
             typedQuery.setParameter("login", login);
             return typedQuery.getSingleResult();
         } catch (PersistenceException e) {
@@ -93,7 +91,8 @@ public class ResetPasswordFacade extends AbstractFacade<ResetPasswordToken> {
      */
     @PermitAll
     public List<ResetPasswordToken> findExpiredTokens() {
-        TypedQuery<ResetPasswordToken> typedQuery = em.createNamedQuery("ResetPassword.findBeforeDate", ResetPasswordToken.class);
+        TypedQuery<ResetPasswordToken> typedQuery = entityManager
+                .createNamedQuery("ResetPassword.findBeforeDate", ResetPasswordToken.class);
         typedQuery.setParameter("now", Instant.now());
         return typedQuery.getResultList();
     }

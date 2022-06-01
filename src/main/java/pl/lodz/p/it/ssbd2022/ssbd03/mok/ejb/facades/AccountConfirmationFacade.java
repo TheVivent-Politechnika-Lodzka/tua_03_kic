@@ -15,6 +15,7 @@ import pl.lodz.p.it.ssbd2022.ssbd03.common.AbstractFacade;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.tokens.AccountConfirmationToken;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.database.DatabaseException;
 import pl.lodz.p.it.ssbd2022.ssbd03.interceptors.TrackerInterceptor;
+import pl.lodz.p.it.ssbd2022.ssbd03.security.Tagger;
 import pl.lodz.p.it.ssbd2022.ssbd03.utils.HashAlgorithm;
 
 import java.time.Instant;
@@ -26,19 +27,15 @@ import java.util.List;
 public class AccountConfirmationFacade extends AbstractFacade<AccountConfirmationToken> {
 
     @PersistenceContext(unitName = "ssbd03mokPU")
-    private EntityManager em;
+    @Getter
+    private EntityManager entityManager;
 
     @Inject
     @Getter
-    private HashAlgorithm hashAlgorithm;
+    private Tagger tagger;
 
     public AccountConfirmationFacade() {
         super(AccountConfirmationToken.class);
-    }
-
-    @Override
-    protected EntityManager getEntityManager() {
-        return em;
     }
 
     /**
@@ -70,7 +67,8 @@ public class AccountConfirmationFacade extends AbstractFacade<AccountConfirmatio
     @PermitAll
     public AccountConfirmationToken findToken(String login){
         try {
-            TypedQuery<AccountConfirmationToken> typedQuery = em.createNamedQuery("AccountConfirmationToken.findByLogin", AccountConfirmationToken.class);
+            TypedQuery<AccountConfirmationToken> typedQuery = entityManager
+                    .createNamedQuery("AccountConfirmationToken.findByLogin", AccountConfirmationToken.class);
             typedQuery.setParameter("login", login);
             return typedQuery.getSingleResult();
         } catch (PersistenceException pe) {
@@ -86,7 +84,8 @@ public class AccountConfirmationFacade extends AbstractFacade<AccountConfirmatio
      */
     @PermitAll
     public List<AccountConfirmationToken> findExpiredTokens(){
-        TypedQuery<AccountConfirmationToken> typedQuery = em.createNamedQuery("AccountConfirmationToken.findExpired", AccountConfirmationToken.class);
+        TypedQuery<AccountConfirmationToken> typedQuery = entityManager
+                .createNamedQuery("AccountConfirmationToken.findExpired", AccountConfirmationToken.class);
         typedQuery.setParameter("now", Instant.now());
         return typedQuery.getResultList();
     }

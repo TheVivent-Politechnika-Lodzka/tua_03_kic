@@ -1,8 +1,7 @@
-package pl.lodz.p.it.ssbd2022.ssbd03.mok.dto;
+package pl.lodz.p.it.ssbd2022.ssbd03.mok.dto.no_etag;
 
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
-import pl.lodz.p.it.ssbd2022.ssbd03.validation.Login;
 import pl.lodz.p.it.ssbd2022.ssbd03.validation.Password;
 
 @Getter @Setter

@@ -4,10 +4,9 @@ import jakarta.ejb.Stateless;
 import jakarta.inject.Inject;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.Account;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.access_levels.DataClient;
-import pl.lodz.p.it.ssbd2022.ssbd03.mok.dto.AccountDto;
 import pl.lodz.p.it.ssbd2022.ssbd03.mok.dto.AccountWithAccessLevelsDto;
-import pl.lodz.p.it.ssbd2022.ssbd03.mok.dto.CreateAccountDto;
-import pl.lodz.p.it.ssbd2022.ssbd03.mok.dto.RegisterClientDto;
+import pl.lodz.p.it.ssbd2022.ssbd03.mok.dto.no_etag.CreateAccountDto;
+import pl.lodz.p.it.ssbd2022.ssbd03.mok.dto.no_etag.RegisterClientDto;
 import pl.lodz.p.it.ssbd2022.ssbd03.mok.dto.access_levels.AccessLevelDto;
 import pl.lodz.p.it.ssbd2022.ssbd03.utils.HashAlgorithm;
 
@@ -24,9 +23,6 @@ public class AccountMapper {
 
     @Inject
     private AccessLevelMapper accessLevelMapper;
-
-    @Inject
-    AbstractEntityMapper abstractEntityMapper;
 
     /**
      * Metoda konwertuje obiekt typu createAccountDto na obiekt typu Account.
@@ -90,29 +86,6 @@ public class AccountMapper {
         }
 
         return account;
-    }
-
-    /**
-     * Metoda konwertująca encję konta na jego DTO
-     *
-     * @param account Konto, które będzie konwertowane
-     * @return DTO skonwertowanego konta
-     */
-    public AccountDto createAccountDtoFromAccount(Account account) {
-        AccountDto accountDto = new AccountDto(
-                account.getId(),
-                account.getVersion(),
-                account.getLogin(),
-                account.getFirstName(),
-                account.getLastName(),
-                account.isActive(),
-                account.isConfirmed(),
-                account.getEmail(),
-                account.getLanguage()
-        );
-        return accountDto;
-
-//        return (AccountDto) abstractEntityMapper.dtoFromEntity(accountDto, account);
     }
 
     /**
