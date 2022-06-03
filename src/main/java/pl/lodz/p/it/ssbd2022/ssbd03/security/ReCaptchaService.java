@@ -29,7 +29,7 @@ public class ReCaptchaService {
      * @param response Odpowiedź z komponentu reCaptchy
      */
     public void checkCaptchaValidation(String response) {
-        if (response.isEmpty()) {
+        if (response != null && response.isEmpty()) {
             throw ReCaptchaException.formatError();
         }
 

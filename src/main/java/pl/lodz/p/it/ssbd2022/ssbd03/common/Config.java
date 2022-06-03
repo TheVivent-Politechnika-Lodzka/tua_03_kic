@@ -2,6 +2,15 @@ package pl.lodz.p.it.ssbd2022.ssbd03.common;
 
 public class Config {
 
+    private static final int SECOND = 1;
+    private static final int MINUTE = 60 * SECOND;
+    private static final int HOUR = 60 * MINUTE;
+    private static final int DAY = 24 * HOUR;
+    private static final int WEEK = 7 * DAY;
+
+    // DEBUG
+    public static final boolean DEBUG = true;
+
     // Dla JDBCConfig
     public static final String password = "cyberpunk2077";
     public static final String databaseName = "ssbd03";
@@ -23,11 +32,13 @@ public class Config {
     // JWT
     public static final int JWT_EXPIRATION_SECONDS = 60 * 60; // 1h
     public static final String JWT_SECRET = "zjZi6JWZ99IT0Trx49MNitLpwPjQc81BOUZytttWprg=";
+    public static final String E_TAG_SECRET = "zjZi6JWZ99IT0Trx49MNitLpwPjQc81BOUZytttWprg=";
 
     // Ogólne
     public static final int MAX_TX_RETRIES = 3;
-    public static final int REGISTER_TOKEN_EXPIRATION_SECONDS = 60 * 30; // 30min
-    public static final int RESET_PASSWORD_TOKEN_EXPIRATION_SECONDS = 60 * 15; // 15min
+    public static final int REGISTER_TOKEN_EXPIRATION_SECONDS = 30 * MINUTE;
+    public static final int RESET_PASSWORD_TOKEN_EXPIRATION_SECONDS = 15 * MINUTE;
+    public static final int REFRESH_TOKEN_EXPIRATION_SECONDS = WEEK;
 
     // reCaptcha
     public static final String GOOGLE_SESCRET = "6Lf85hEgAAAAADQOoPdm05cZcDl8aDp46kGGOORl";

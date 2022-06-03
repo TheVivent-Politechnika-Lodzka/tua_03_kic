@@ -16,36 +16,38 @@ import jakarta.security.enterprise.identitystore.CredentialValidationResult;
 import jakarta.security.enterprise.identitystore.IdentityStoreHandler;
 import jakarta.servlet.http.HttpServletRequest;
 import pl.lodz.p.it.ssbd2022.ssbd03.common.AbstractService;
-import pl.lodz.p.it.ssbd2022.ssbd03.common.Config;
-import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.account.AccountStatusException;
-import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.token.TokenDecodeInvalidException;
-import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.token.TokenExpierdException;
 import pl.lodz.p.it.ssbd2022.ssbd03.common.Roles;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.Account;
-import pl.lodz.p.it.ssbd2022.ssbd03.entities.ConfirmationAccountToken;
-import pl.lodz.p.it.ssbd2022.ssbd03.entities.ResetPasswordToken;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.access_levels.AccessLevel;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.access_levels.DataAdministrator;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.access_levels.DataClient;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.access_levels.DataSpecialist;
+import pl.lodz.p.it.ssbd2022.ssbd03.entities.tokens.AccountConfirmationToken;
+import pl.lodz.p.it.ssbd2022.ssbd03.entities.tokens.RefreshToken;
+import pl.lodz.p.it.ssbd2022.ssbd03.entities.tokens.ResetPasswordToken;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.InvalidParametersException;
-import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.token.TokenInvalidException;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.access_level.AccessLevelNotFoundException;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.access_level.AccessLevelViolationException;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.account.AccountPasswordIsTheSameException;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.account.AccountPasswordMatchException;
+import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.account.AccountStatusException;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.account.InvalidCredentialException;
+import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.database.InAppOptimisticLockException;
+import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.token.TokenDecodeInvalidException;
+import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.token.TokenExpiredException;
+import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.token.TokenInvalidException;
 import pl.lodz.p.it.ssbd2022.ssbd03.interceptors.TrackerInterceptor;
-import pl.lodz.p.it.ssbd2022.ssbd03.mok.ejb.facades.AccessLevelFacade;
-import pl.lodz.p.it.ssbd2022.ssbd03.mok.ejb.facades.AccountFacade;
-import pl.lodz.p.it.ssbd2022.ssbd03.mok.ejb.facades.ActiveAccountFacade;
-import pl.lodz.p.it.ssbd2022.ssbd03.mok.ejb.facades.ResetPasswordFacade;
+import pl.lodz.p.it.ssbd2022.ssbd03.mok.ejb.facades.*;
 import pl.lodz.p.it.ssbd2022.ssbd03.security.JWTGenerator;
+import pl.lodz.p.it.ssbd2022.ssbd03.mok.dto.no_etag.LoginResponseDto;
+import pl.lodz.p.it.ssbd2022.ssbd03.security.Taggable;
 import pl.lodz.p.it.ssbd2022.ssbd03.utils.HashAlgorithm;
 import pl.lodz.p.it.ssbd2022.ssbd03.utils.PaginationData;
 
-import java.time.Instant;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
+import java.util.Objects;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -55,6 +57,7 @@ import java.util.logging.Logger;
 @TransactionAttribute(TransactionAttributeType.REQUIRED)
 public class MOKService extends AbstractService implements MOKServiceInterface, SessionSynchronization {
 
+    protected static final Logger LOGGER = Logger.getGlobal();
     @Inject
     private IdentityStoreHandler identityStoreHandler;
     @Inject
@@ -62,17 +65,17 @@ public class MOKService extends AbstractService implements MOKServiceInterface, 
     @Inject
     private AccountFacade accountFacade;
     @Inject
+    private RefreshTokenFacade refreshTokenFacade;
+    @Inject
     private HashAlgorithm hashAlgorithm;
     @Inject
-    private ActiveAccountFacade activeAccountFacade;
+    private AccountConfirmationFacade activeAccountFacade;
     @Inject
     private AccessLevelFacade accessLevelFacade;
     @Inject
     private ResetPasswordFacade resetPasswordFacade;
     @Inject
     private HttpServletRequest httpServletRequest;
-
-    protected static final Logger LOGGER = Logger.getGlobal();
 
     /**
      * Metoda uwierzytelnia użytkownika i zwraca token
@@ -87,10 +90,49 @@ public class MOKService extends AbstractService implements MOKServiceInterface, 
         UsernamePasswordCredential credential = new UsernamePasswordCredential(login, new Password(password));
         CredentialValidationResult result = identityStoreHandler.validate(credential);
         if (result.getStatus() == CredentialValidationResult.Status.VALID) {
-            LOGGER.log(Level.INFO, "Ip address: " + httpServletRequest.getRemoteAddr());
+            LOGGER.log(Level.INFO, "User {0} has been authenticated from ip {1}", new Object[]{
+                    login, httpServletRequest.getRemoteAddr()
+            });
             return jwtGenerator.createJWT(result);
         }
         throw new InvalidCredentialException();
+
+    }
+
+    @PermitAll
+    @Override
+    public String createRefreshToken(String login) {
+        RefreshToken refreshToken = new RefreshToken();
+        Account account = accountFacade.findByLogin(login);
+        refreshToken.setAccount(account);
+        refreshToken.setToken(jwtGenerator.createRefreshJWT(login));
+        refreshTokenFacade.create(refreshToken);
+        return refreshToken.getToken();
+    }
+
+
+    /**
+     * Metoda uwierzytelnia użytkownika i zwraca token
+     *
+     * @param refreshToken
+     * @return JWTStruct z odświeżonym tokenem
+     */
+    @Override
+    @PermitAll
+    public LoginResponseDto refreshToken(String refreshToken) {
+        RefreshToken refreshTokenObject = refreshTokenFacade.findByToken(refreshToken);
+
+        List<String> accessLevels = new ArrayList<>();
+        refreshTokenObject.getAccount()
+                .getAccessLevelCollection().forEach(
+                        accessLevel -> accessLevels.add(accessLevel.getLevel()
+                        ));
+        String accessToken = jwtGenerator.createJWT(refreshTokenObject.getAccount().getLogin(), accessLevels);
+
+        LoginResponseDto jwtStruct = new LoginResponseDto();
+        jwtStruct.setAccessToken(accessToken);
+        jwtStruct.setRefreshToken(refreshTokenObject.getToken());
+        return jwtStruct;
     }
 
     /**
@@ -100,38 +142,37 @@ public class MOKService extends AbstractService implements MOKServiceInterface, 
      * @return konto o podanym loginie
      */
     @Override
-    @PermitAll
+    @RolesAllowed(Roles.AUTHENTICATED)
     public Account findAccountByLogin(String login) {
         return accountFacade.findByLogin(login);
     }
 
     @Override
     @RolesAllowed(Roles.ADMINISTRATOR)
-    public Account deactivateAccount(String login, String eTag) {
+    public Account deactivateAccount(String login) {
         Account account = accountFacade.findByLogin(login);
         if (!account.isActive()) throw AccountStatusException.accountAlreadyInactive();
         account.setActive(false);
-        accountFacade.edit(account, eTag);
+        accountFacade.edit(account);
         return account;
     }
 
     @Override
     @RolesAllowed(Roles.ADMINISTRATOR)
-    public Account activateAccount(String login, String eTag) {
+    public Account activateAccount(String login) {
         Account account = accountFacade.findByLogin(login);
         if (account.isActive()) throw AccountStatusException.accountArleadyActive();
         account.setActive(true);
-        accountFacade.edit(account, eTag);
+        accountFacade.edit(account);
         return account;
     }
 
     @Override
-    @PermitAll
-    public Account editAccount(String login, Account account, String etag) {
+    @RolesAllowed(Roles.AUTHENTICATED)
+    public Account editAccount(String login, Account account) {
         Account accountFromDb = accountFacade.findByLogin(login);
         accountFromDb.setFirstName(account.getFirstName());
         accountFromDb.setLastName(account.getLastName());
-        accountFromDb.setLanguage(account.getLanguage());
 
         for (AccessLevel accessLevel : accountFromDb.getAccessLevelCollection()) {
             // ------------ DataAdministrator ------------
@@ -163,7 +204,7 @@ public class MOKService extends AbstractService implements MOKServiceInterface, 
             }
         }
 
-        accountFacade.edit(accountFromDb, etag);
+        accountFacade.edit(accountFromDb);
 
         return accountFromDb;
     }
@@ -187,7 +228,7 @@ public class MOKService extends AbstractService implements MOKServiceInterface, 
 
     @Override
     @RolesAllowed(Roles.ADMINISTRATOR)
-    public Account changeAccountPassword(String login, String newPassword, String etag) {
+    public Account changeAccountPassword(String login, String newPassword) {
         Account account = accountFacade.findByLogin(login);
 
         if (hashAlgorithm.verify(newPassword.toCharArray(), account.getPassword())) {
@@ -195,13 +236,13 @@ public class MOKService extends AbstractService implements MOKServiceInterface, 
         }
 
         account.setPassword(hashAlgorithm.generate(newPassword.toCharArray()));
-        accountFacade.edit(account, etag);
+        accountFacade.edit(account);
         return account;
     }
 
     @Override
-    @PermitAll
-    public Account changeAccountPassword(String login, String oldPassword, String newPassword, String etag) {
+    @RolesAllowed(Roles.AUTHENTICATED)
+    public Account changeAccountPassword(String login, String oldPassword, String newPassword) {
         Account account = accountFacade.findByLogin(login);
 
         if (!hashAlgorithm.verify(oldPassword.toCharArray(), account.getPassword())) {
@@ -212,7 +253,7 @@ public class MOKService extends AbstractService implements MOKServiceInterface, 
         }
 
         account.setPassword(hashAlgorithm.generate(newPassword.toCharArray()));
-        accountFacade.edit(account, etag);
+        accountFacade.edit(account);
         return account;
     }
 
@@ -225,13 +266,14 @@ public class MOKService extends AbstractService implements MOKServiceInterface, 
      */
     @Override
     @PermitAll
-    public String registerAccount(Account account) {
+    public AccountConfirmationToken registerAccount(Account account) {
         accountFacade.create(account);
-        Instant date = Instant.now().plusSeconds(Config.REGISTER_TOKEN_EXPIRATION_SECONDS);
-        String token = jwtGenerator.createJWTForEmail(account.getLogin(), date);
-        ConfirmationAccountToken activeAccountToken = new ConfirmationAccountToken(account, token, date);
-        activeAccountFacade.create(activeAccountToken);
-        return activeAccountFacade.findToken(account.getLogin()).getActiveToken();
+        String token = jwtGenerator.createRegistrationJWT(account.getLogin());
+        AccountConfirmationToken accountConfirmationToken = new AccountConfirmationToken();
+        accountConfirmationToken.setToken(token);
+        accountConfirmationToken.setAccount(account);
+        activeAccountFacade.create(accountConfirmationToken);
+        return accountConfirmationToken;
     }
 
     /**
@@ -240,7 +282,7 @@ public class MOKService extends AbstractService implements MOKServiceInterface, 
      * @param token - token konta, które ma zostać potwierdzone
      * @return potwierdzone konto
      * @throws TokenDecodeInvalidException - w momencie, gdy token został źle utworzony
-     * @throws TokenExpierdException       - w momencie, gdy token wygasł
+     * @throws TokenExpiredException       - w momencie, gdy token wygasł
      */
     @Override
     @PermitAll
@@ -251,11 +293,18 @@ public class MOKService extends AbstractService implements MOKServiceInterface, 
         } catch (SignatureException | UnsupportedJwtException | MalformedJwtException | IllegalArgumentException e) {
             throw new TokenDecodeInvalidException();
         } catch (ExpiredJwtException e) {
-            throw new TokenExpierdException();
+            throw new TokenExpiredException();
         }
-        Account account = accountFacade.findByLogin(claims.getSubject());
+        String login = claims.getSubject();
+        AccountConfirmationToken accountConfirmationToken = activeAccountFacade.findToken(login);
+        if (!accountConfirmationToken.getToken().equals(token)) {
+            throw new TokenInvalidException();
+        }
+
+        Account account = accountFacade.findByLogin(login);
         account.setConfirmed(true);
         accountFacade.unsafeEdit(account);
+        activeAccountFacade.unsafeRemove(accountConfirmationToken);
         return account;
     }
 
@@ -288,12 +337,13 @@ public class MOKService extends AbstractService implements MOKServiceInterface, 
         });
         account.addAccessLevel(accessLevel);
         accessLevelFacade.create(accessLevel);
+        accountFacade.forceVersionIncrement(account);
         return account;
     }
 
     @Override
     @RolesAllowed(Roles.ADMINISTRATOR)
-    public Account removeAccessLevelFromAccount(String login, String accessLevelName, String accessLevelEtag) {
+    public Account removeAccessLevelFromAccount(String login, String accessLevelName) {
         Account account = accountFacade.findByLogin(login);
 
         AccessLevel access = account.getAccessLevelCollection().stream()
@@ -305,7 +355,8 @@ public class MOKService extends AbstractService implements MOKServiceInterface, 
             throw new AccessLevelNotFoundException();
 
         account.removeAccessLevel(access);
-        accessLevelFacade.remove(access, accessLevelEtag);
+        accountFacade.edit(account);
+        accountFacade.forceVersionIncrement(account);
 
         return account;
     }
@@ -314,21 +365,30 @@ public class MOKService extends AbstractService implements MOKServiceInterface, 
     @PermitAll
     public ResetPasswordToken resetPassword(String login) {
         Account account = accountFacade.findByLogin(login);
+        String token = jwtGenerator.createResetPasswordJWT(login);
         ResetPasswordToken resetPasswordToken = new ResetPasswordToken();
         resetPasswordToken.setAccount(account);
+        resetPasswordToken.setToken(token);
         resetPasswordFacade.create(resetPasswordToken);
         return resetPasswordToken;
     }
 
     @Override
     @PermitAll
-    public Account confirmResetPassword(String login, String password, String token) {
-
-        ResetPasswordToken resetPasswordToken =
-                resetPasswordFacade.findResetPasswordToken(login);
-
-        if (!hashAlgorithm.verify(resetPasswordToken.getId().toString().toCharArray(), token))
+    public Account confirmResetPassword(String password, String token) {
+        Claims claims;
+        try {
+            claims = jwtGenerator.decodeJWT(token);
+        } catch (SignatureException | UnsupportedJwtException | MalformedJwtException | IllegalArgumentException e) {
+            throw new TokenDecodeInvalidException();
+        } catch (ExpiredJwtException e) {
+            throw new TokenExpiredException();
+        }
+        String login = claims.getSubject();
+        ResetPasswordToken resetPasswordToken = resetPasswordFacade.findToken(login);
+        if (!resetPasswordToken.getToken().equals(token)) {
             throw new TokenInvalidException();
+        }
 
 
         Account account = accountFacade.findByLogin(login);

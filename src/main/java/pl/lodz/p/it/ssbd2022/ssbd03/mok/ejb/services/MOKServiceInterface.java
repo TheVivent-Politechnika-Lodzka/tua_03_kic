@@ -3,11 +3,16 @@ package pl.lodz.p.it.ssbd2022.ssbd03.mok.ejb.services;
 import jakarta.ejb.Local;
 import pl.lodz.p.it.ssbd2022.ssbd03.common.ServiceLocalInterface;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.Account;
-import pl.lodz.p.it.ssbd2022.ssbd03.entities.ResetPasswordToken;
+import pl.lodz.p.it.ssbd2022.ssbd03.entities.tokens.AccountConfirmationToken;
+import pl.lodz.p.it.ssbd2022.ssbd03.entities.tokens.ResetPasswordToken;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.access_levels.AccessLevel;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.MethodNotImplementedException;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.access_level.AccessLevelNotFoundException;
+import pl.lodz.p.it.ssbd2022.ssbd03.mok.dto.no_etag.LoginResponseDto;
+import pl.lodz.p.it.ssbd2022.ssbd03.security.Taggable;
 import pl.lodz.p.it.ssbd2022.ssbd03.utils.PaginationData;
+
+import java.util.UUID;
 
 
 @Local
@@ -26,6 +31,25 @@ public interface MOKServiceInterface extends ServiceLocalInterface {
     }
 
     /**
+     * Metoda tworząca refreshToken dla konta
+     * @param login Login konta, dla którego ma zostać utworzony refreshToken
+     * @return RefreshToken
+     */
+    default String createRefreshToken(String login)  {
+        throw new MethodNotImplementedException();
+    }
+
+
+    /**
+     * Metoda odświeża accessToken użytkownika
+     * @param refreshToken
+     * @return JWTStruct z odświeżonym accessToken
+     */
+    default LoginResponseDto refreshToken(String refreshToken) {
+        throw new MethodNotImplementedException();
+    }
+
+    /**
      * Wyszukiwanie konta na podstawie loginu
      *
      * @param login Login konta, które ma zostać znalezione
@@ -40,11 +64,10 @@ public interface MOKServiceInterface extends ServiceLocalInterface {
      * Metoda blokująca konto użytkownika.
      *
      * @param login Login konta, które ma zostać zablokowane
-     * @param eTag  Zmienna zawierająca eTag blokowanego konta
      * @return Odpowiedź HTTP
      * @throws MethodNotImplementedException w momencie, gdy metoda jest niezaimplementowana
      */
-    default Account deactivateAccount(String login, String eTag) {
+    default Account deactivateAccount(String login) {
         throw new MethodNotImplementedException();
     }
 
@@ -52,11 +75,10 @@ public interface MOKServiceInterface extends ServiceLocalInterface {
      * Metoda odblokowująca konto użytkownika, które zostało uprzednio zablokowane przez administratora
      *
      * @param login Login konta, które ma zostać odblokowane
-     * @param eTag  Zmienna zawierająca eTag
      * @return Zmodyfikowane konto
      * @throws MethodNotImplementedException w momencie, gdy metoda jest niezaimplementowana
      */
-    default Account activateAccount(String login, String eTag) {
+    default Account activateAccount(String login) {
         throw new MethodNotImplementedException();
     }
 
@@ -69,7 +91,7 @@ public interface MOKServiceInterface extends ServiceLocalInterface {
      * @return Zmodyfikowane konto
      * @throws MethodNotImplementedException w momencie, gdy metoda jest niezaimplementowana
      */
-    default Account editAccount(String login, Account account, String etag) {
+    default Account editAccount(String login, Account account) {
         throw new MethodNotImplementedException();
     }
 
@@ -98,7 +120,7 @@ public interface MOKServiceInterface extends ServiceLocalInterface {
      * @return Konto użytkownika, któremu zmieniono hasło
      * @throws MethodNotImplementedException w momencie, gdy metoda jest niezaimplementowana
      */
-    default Account changeAccountPassword(String login, String newPassword, String etag) {
+    default Account changeAccountPassword(String login, String newPassword) {
         throw new MethodNotImplementedException();
     }
 
@@ -112,7 +134,7 @@ public interface MOKServiceInterface extends ServiceLocalInterface {
      * @return Konto użytkownika, któremu zmieniono hasło
      * @throws MethodNotImplementedException w momencie, gdy metoda jest niezaimplementowana
      */
-    default Account changeAccountPassword(String login, String oldPassword, String newPassword, String etag) {
+    default Account changeAccountPassword(String login, String oldPassword, String newPassword) {
         throw new MethodNotImplementedException();
     }
 
@@ -123,7 +145,7 @@ public interface MOKServiceInterface extends ServiceLocalInterface {
      * @return Token, pozwala na aktywacje konta
      * @throws MethodNotImplementedException w momencie, gdy metoda jest niezaimplementowana
      */
-    default String registerAccount(Account account) {
+    default AccountConfirmationToken registerAccount(Account account) {
         throw new MethodNotImplementedException();
     }
 
@@ -171,7 +193,7 @@ public interface MOKServiceInterface extends ServiceLocalInterface {
      * @throws MethodNotImplementedException w momencie, gdy metoda jest niezaimplementowana
      * @throws AccessLevelNotFoundException  w momencie, gdy nie znaleziono w koncie o danym loginie danego poziomu dostępu
      */
-    default Account removeAccessLevelFromAccount(String login, String accessLevelName, String accessLevelEtag) {
+    default Account removeAccessLevelFromAccount(String login, String accessLevelName) {
         throw new MethodNotImplementedException();
     }
 
@@ -189,13 +211,12 @@ public interface MOKServiceInterface extends ServiceLocalInterface {
     /**
      * Metoda pozwalająca potwierdzić chęć zmiany hasła oraz ustawiająca nowe hasło dla użytkownika
      *
-     * @param login    Login użytkownika, którego hasło będzie zmieniane
      * @param password Nowe hasło dla konta użytkownika
      * @param token    Token będący metodą weryfikacji czy dany użytkownik może zmienić swoje hasło
      * @return Obiekt konta użytkownika, którego hasło zostało zmienione
      * @throws MethodNotImplementedException w momencie, gdy metoda jest niezaimplementowana
      */
-    default Account confirmResetPassword(String login, String password, String token) {
+    default Account confirmResetPassword(String password, String token) {
         throw new MethodNotImplementedException();
     }
 

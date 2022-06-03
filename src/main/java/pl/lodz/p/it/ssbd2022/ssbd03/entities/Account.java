@@ -82,7 +82,7 @@ public class Account extends AbstractEntity implements Serializable {
     @NotNull
     private boolean active;
 
-    @OneToMany(fetch = FetchType.EAGER, cascade = {CascadeType.REMOVE, CascadeType.PERSIST}, mappedBy = "account")
+    @OneToMany(fetch = FetchType.EAGER, cascade = {CascadeType.REMOVE, CascadeType.PERSIST}, mappedBy = "account", orphanRemoval = true)
     @Getter
     private Collection<AccessLevel> accessLevelCollection = new ArrayList<>();
 
@@ -107,10 +107,13 @@ public class Account extends AbstractEntity implements Serializable {
     @Basic(optional = false)
     @Column(name = "email", table = "account_details", nullable = false, length = 128)
     @Getter
-    @Setter
     @Email
     @NotNull
     private String email;
+
+    public void setEmail(String email) {
+        this.email = email.toLowerCase();
+    }
 
     @Basic(optional = false)
     @Column(name = "language", table = "account_details", nullable = false, length = 16)
@@ -118,6 +121,7 @@ public class Account extends AbstractEntity implements Serializable {
     @Setter
     @NotNull
     private Locale language;
+
 
     public void addAccessLevel(AccessLevel accessLevel) {
         accessLevelCollection.add(accessLevel);

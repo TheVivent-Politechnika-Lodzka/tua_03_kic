@@ -2,24 +2,23 @@ package pl.lodz.p.it.ssbd2022.ssbd03.mok.ejb.facades;
 
 import jakarta.annotation.security.PermitAll;
 import jakarta.annotation.security.RolesAllowed;
-import jakarta.annotation.security.RunAs;
 import jakarta.ejb.Stateless;
 import jakarta.ejb.TransactionAttribute;
 import jakarta.ejb.TransactionAttributeType;
 import jakarta.inject.Inject;
 import jakarta.interceptor.Interceptors;
 import jakarta.persistence.*;
-import jakarta.persistence.criteria.CriteriaQuery;
 import lombok.Getter;
 import org.hibernate.exception.ConstraintViolationException;
 import pl.lodz.p.it.ssbd2022.ssbd03.common.AbstractFacade;
 import pl.lodz.p.it.ssbd2022.ssbd03.common.Roles;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.Account;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.InvalidParametersException;
+import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.ResourceNotFoundException;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.account.AccountAlreadyExistsException;
-import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.account.AccountNotFoundException;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.database.DatabaseException;
 import pl.lodz.p.it.ssbd2022.ssbd03.interceptors.TrackerInterceptor;
+import pl.lodz.p.it.ssbd2022.ssbd03.security.Tagger;
 import pl.lodz.p.it.ssbd2022.ssbd03.utils.HashAlgorithm;
 import pl.lodz.p.it.ssbd2022.ssbd03.utils.PaginationData;
 
@@ -28,7 +27,6 @@ import java.util.List;
 @Interceptors(TrackerInterceptor.class)
 @Stateless
 @TransactionAttribute(TransactionAttributeType.MANDATORY)
-@RunAs(Roles.ADMINISTRATOR)
 public class AccountFacade extends AbstractFacade<Account> {
 
     @PersistenceContext(unitName = "ssbd03mokPU")
@@ -37,7 +35,7 @@ public class AccountFacade extends AbstractFacade<Account> {
 
     @Inject
     @Getter
-    private HashAlgorithm hashAlgorithm;
+    private Tagger tagger;
 
     public AccountFacade() {
         super(Account.class);
@@ -60,12 +58,11 @@ public class AccountFacade extends AbstractFacade<Account> {
      * Metoda edytująca konto w bazie danych. Uwzględnia wersję
      *
      * @param entity
-     * @param eTag
      */
     @Override
-    @PermitAll
-    public void edit(Account entity, String eTag) {
-        super.edit(entity, eTag);
+    @RolesAllowed(Roles.AUTHENTICATED)
+    public void edit(Account entity) {
+        super.edit(entity);
     }
 
     /**
@@ -80,12 +77,22 @@ public class AccountFacade extends AbstractFacade<Account> {
     }
 
     /**
+     * Metoda zwiększająca wersję konta.
+     * Wymaga podania encji w stanie zarządzalnym
+     * @param account
+     */
+    @RolesAllowed(Roles.ADMINISTRATOR)
+    public void forceVersionIncrement(Account account) {
+        entityManager.lock(account, LockModeType.OPTIMISTIC_FORCE_INCREMENT);
+    }
+
+    /**
      * Metoda wyszukująca konkretne konto względem wprowadzonego loginu
      *
      * @param login Login użytkownika, którego szukamy
      * @return Obiekt znalezionego konta
      * @throws InvalidParametersException, gdy podano niepoprawną wartość parametru
-     * @throws DatabaseException, gdy wystąpi błąd związany z bazą danych
+     * @throws DatabaseException,          gdy wystąpi błąd związany z bazą danych
      */
     @PermitAll
     public Account findByLogin(String login) {
@@ -93,6 +100,8 @@ public class AccountFacade extends AbstractFacade<Account> {
             TypedQuery<Account> typedQuery = entityManager.createNamedQuery("Account.findByLogin", Account.class);
             typedQuery.setParameter("login", login);
             return typedQuery.getSingleResult();
+        } catch (NoResultException e) {
+            throw new ResourceNotFoundException();
         } catch (IllegalArgumentException iae) {
             throw new InvalidParametersException(iae.getCause());
         } catch (PersistenceException pe) {
@@ -108,7 +117,7 @@ public class AccountFacade extends AbstractFacade<Account> {
      * @param phrase     Fraza, która występuje w imieniu i/lub nazwisku szukanych użytkowników
      * @return Znalezieni użytkownicy wraz z ich całkowitą ilością (jako liczba)
      * @throws InvalidParametersException, gdy podano niepoprawną wartość parametru
-     * @throws DatabaseException, gdy wystąpi błąd związany z bazą danych
+     * @throws DatabaseException,          gdy wystąpi błąd związany z bazą danych
      */
     @RolesAllowed(Roles.ADMINISTRATOR)
     public PaginationData findInRangeWithPhrase(int pageNumber, int perPage, String phrase) {
@@ -123,9 +132,7 @@ public class AccountFacade extends AbstractFacade<Account> {
                     .getResultList();
 
             pageNumber++;
-            int totalCount = entityManager.createNamedQuery("Account.searchByPhrase", Account.class)
-                    .setParameter("phrase", "%" + phrase + "%")
-                    .getResultList().size();
+            int totalCount = this.count();
             int totalPages = (int) Math.ceil((double) totalCount / perPage);
 
             return new PaginationData(totalCount, totalPages, pageNumber, data);

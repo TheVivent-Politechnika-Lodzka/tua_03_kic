@@ -10,14 +10,18 @@ import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.AppBaseException;
 @ApplicationException(rollback = true)
 public class InAppOptimisticLockException extends AppBaseException {
 
-    private static final String MESSAGE = "server.error.optimistic.lock";
+    private static final String USER_HAS_OLD_ENTITY = "server.error.optimistic.lock";
+    private static final String SIGNATURE_NOT_CORRECT = "server.error.optimistic.lock";
 
-    public InAppOptimisticLockException() {
-        super(InAppOptimisticLockException.MESSAGE, Response.Status.CONFLICT);
+    private InAppOptimisticLockException(String message, Response.Status status) {
+        super(message, status);
     }
 
-    public InAppOptimisticLockException(Throwable cause) {
-        super(InAppOptimisticLockException.MESSAGE, cause, Response.Status.CONFLICT);
+    public static InAppOptimisticLockException userHasOldEntity() {
+        return new InAppOptimisticLockException(USER_HAS_OLD_ENTITY, Response.Status.CONFLICT);
     }
 
+    public static InAppOptimisticLockException signatureNotCorrect() {
+        return new InAppOptimisticLockException(SIGNATURE_NOT_CORRECT, Response.Status.BAD_REQUEST);
+    }
 }

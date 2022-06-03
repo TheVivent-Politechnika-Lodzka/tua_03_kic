@@ -18,12 +18,12 @@ import pl.lodz.p.it.ssbd2022.ssbd03.entities.access_levels.AccessLevel;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.access_level.AccessLevelExistsException;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.database.DatabaseException;
 import pl.lodz.p.it.ssbd2022.ssbd03.interceptors.TrackerInterceptor;
+import pl.lodz.p.it.ssbd2022.ssbd03.security.Tagger;
 import pl.lodz.p.it.ssbd2022.ssbd03.utils.HashAlgorithm;
 
 @Interceptors(TrackerInterceptor.class)
 @Stateless
 @TransactionAttribute(TransactionAttributeType.MANDATORY)
-@RunAs(Roles.ADMINISTRATOR)
 public class AccessLevelFacade extends AbstractFacade<AccessLevel> {
 
     @PersistenceContext(unitName = "ssbd03mokPU")
@@ -32,21 +32,22 @@ public class AccessLevelFacade extends AbstractFacade<AccessLevel> {
 
     @Inject
     @Getter
-    private HashAlgorithm hashAlgorithm;
+    private Tagger tagger;
 
     public AccessLevelFacade() {
         super(AccessLevel.class);
     }
 
     /**
+     * Weryfikuje podany eTag
+     *
      * @param entity - poziom dostępu do usunięcia
-     * @param eTag   - eTag poziomu dostępu
      * @throws DatabaseException
      */
     @Override
     @RolesAllowed(Roles.ADMINISTRATOR)
-    public void remove(AccessLevel entity, String eTag) {
-        super.remove(entity, eTag);
+    public void remove(AccessLevel entity) {
+        super.remove(entity);
     }
 
     /**

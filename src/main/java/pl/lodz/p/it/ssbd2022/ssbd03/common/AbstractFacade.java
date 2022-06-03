@@ -3,6 +3,7 @@ package pl.lodz.p.it.ssbd2022.ssbd03.common;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.OptimisticLockException;
 import jakarta.persistence.PersistenceException;
+import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
 import org.hibernate.exception.ConstraintViolationException;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.MethodNotImplementedException;
@@ -12,6 +13,8 @@ import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.database.DatabaseException;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.InvalidParametersException;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.database.DatabaseException;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.database.InAppOptimisticLockException;
+import pl.lodz.p.it.ssbd2022.ssbd03.security.Taggable;
+import pl.lodz.p.it.ssbd2022.ssbd03.security.Tagger;
 import pl.lodz.p.it.ssbd2022.ssbd03.utils.HashAlgorithm;
 import pl.lodz.p.it.ssbd2022.ssbd03.utils.PaginationData;
 
@@ -27,7 +30,7 @@ public abstract class AbstractFacade<T> {
 
     protected abstract EntityManager getEntityManager();
 
-    protected abstract HashAlgorithm getHashAlgorithm();
+    protected abstract Tagger getTagger();
 
     /**
      * Metoda tworzy nową encję w bazie danych.
@@ -49,16 +52,13 @@ public abstract class AbstractFacade<T> {
     /**
      * Metoda weryfikuje czy podany tag jest poprawny.
      * @param entity
-     * @param tagFromDto
      * @throws InAppOptimisticLockException
      */
-    private void verifyTag(AbstractEntity entity, String tagFromDto) {
-        String entityTag = getHashAlgorithm().generateETag(
-                entity.getId(),
-                entity.getVersion()
-        );
-        if (!entityTag.equals(tagFromDto))
-            throw new InAppOptimisticLockException();
+    private void verifyTag(AbstractEntity entity) {
+        getTagger().verifyTag();
+        Taggable tag = getTagger().getTagFromHeader();
+        if (!entity.getId().equals(tag.getId()) || !entity.getVersion().equals(tag.getVersion()))
+            throw InAppOptimisticLockException.userHasOldEntity();
     }
 
     /**
@@ -69,9 +69,9 @@ public abstract class AbstractFacade<T> {
      * @throws DatabaseException
      * @throws ConstraintViolationException
      */
-    protected void edit(T entity, String tagFromDto) {
+    protected void edit(T entity) {
         if (entity instanceof AbstractEntity abstractEntity)
-            verifyTag(abstractEntity, tagFromDto);
+            verifyTag(abstractEntity);
         unsafeEdit(entity);
     }
 
@@ -86,7 +86,7 @@ public abstract class AbstractFacade<T> {
             getEntityManager().merge(entity);
             getEntityManager().flush();
         } catch (OptimisticLockException e) {
-            throw new InAppOptimisticLockException(e);
+            throw InAppOptimisticLockException.userHasOldEntity();
         } catch (PersistenceException e) {
             if (e.getCause() instanceof ConstraintViolationException)
                 throw (ConstraintViolationException) e.getCause();
@@ -102,9 +102,9 @@ public abstract class AbstractFacade<T> {
      * @throws DatabaseException
      * @throws ConstraintViolationException
      */
-    protected void remove(T entity, String tagFromDto) {
+    protected void remove(T entity) {
         if (entity instanceof AbstractEntity abstractEntity)
-            verifyTag(abstractEntity, tagFromDto);
+            verifyTag(abstractEntity);
         unsafeRemove(entity);
     }
 
@@ -119,7 +119,7 @@ public abstract class AbstractFacade<T> {
             getEntityManager().remove(entity);
             getEntityManager().flush();
         } catch (OptimisticLockException e) {
-            throw new InAppOptimisticLockException(e);
+            throw InAppOptimisticLockException.userHasOldEntity();
         } catch (PersistenceException e) {
             if (e.getCause() instanceof ConstraintViolationException)
                 throw (ConstraintViolationException) e.getCause();
@@ -137,41 +137,6 @@ public abstract class AbstractFacade<T> {
         return getEntityManager().find(entityClass, id);
     }
 
-    /***
-     *
-     * Zwraca listę encji danego typu z bazy danych, które zostały wcześniej stronicowane.
-     *
-     * @param pageNumber Numer strony (startuje od 1)
-     * @param perPage Ilość encji, które mają zostać zwrócone
-     * @return Encje, wraz z ich całkowitą ilością (jako liczba)
-     * @throws InvalidParametersException, gdy podano niepoprawną wartość parametru
-     * @throws DatabaseException, gdy wystąpi błąd związany z bazą danych
-     */
-    protected PaginationData findInRange(int pageNumber, int perPage) {
-        try {
-            CriteriaQuery criteriaQuery = getEntityManager().getCriteriaBuilder().createQuery();
-            criteriaQuery.select(criteriaQuery.from(entityClass));
-
-            pageNumber--;
-
-            List data = getEntityManager()
-                    .createQuery(criteriaQuery)
-                    .setMaxResults(perPage)
-                    .setFirstResult(pageNumber * perPage)
-                    .getResultList();
-
-            pageNumber++;
-            int totalCount = count();
-            int totalPages = (int) Math.ceil((double) totalCount /  perPage);
-
-            return new PaginationData(totalCount, totalPages, pageNumber, data);
-        } catch (IllegalArgumentException e) {
-            throw new InvalidParametersException(e.getCause());
-        } catch (PersistenceException e) {
-            throw new DatabaseException(e.getCause());
-        }
-
-    }
 
     /**
      * Pobiera liczbę wszystkich encji danego typu.
@@ -181,9 +146,10 @@ public abstract class AbstractFacade<T> {
      */
     protected int count() {
         try {
-            CriteriaQuery criteriaQuery = getEntityManager().getCriteriaBuilder().createQuery();
-            criteriaQuery.select(criteriaQuery.from(entityClass));
-            return getEntityManager().createQuery(criteriaQuery).getResultList().size();
+            CriteriaBuilder qb = getEntityManager().getCriteriaBuilder();
+            CriteriaQuery<Long> cq = qb.createQuery(Long.class);
+            cq.select(qb.count(cq.from(entityClass)));
+            return getEntityManager().createQuery(cq).getSingleResult().intValue();
         } catch (PersistenceException e) {
             throw new DatabaseException(e.getCause());
         }

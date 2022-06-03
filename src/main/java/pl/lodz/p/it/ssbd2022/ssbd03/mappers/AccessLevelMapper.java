@@ -19,9 +19,6 @@ import java.util.stream.Collectors;
 @Stateless
 public class AccessLevelMapper {
 
-    @Inject
-    private AbstractEntityMapper abstractEntityMapper;
-
 
     /**
      * Metoda tworząca obiekt typu DataClientDto na podstawie encji klienta
@@ -31,7 +28,7 @@ public class AccessLevelMapper {
      */
     public DataClientDto createDataClientDtoFromEntity(DataClient dataClient) {
         DataClientDto dto = new DataClientDto(dataClient.getPhoneNumber(), dataClient.getPesel());
-        return (DataClientDto) abstractEntityMapper.dtoFromEntity(dto, dataClient);
+        return dto;
     }
 
     /**
@@ -42,7 +39,7 @@ public class AccessLevelMapper {
      */
     public DataAdministratorDto createDataAdministratorDtoFromEntity(DataAdministrator dataAdministratort) {
         DataAdministratorDto dto = new DataAdministratorDto(dataAdministratort.getContactEmail(), dataAdministratort.getPhoneNumber());
-        return (DataAdministratorDto) abstractEntityMapper.dtoFromEntity(dto, dataAdministratort);
+        return dto;
     }
 
     /**
@@ -53,7 +50,7 @@ public class AccessLevelMapper {
      */
     public DataSpecialistDto createDataSpecialistDtoFromEntity(DataSpecialist dataSpecialist) {
         DataSpecialistDto dto = new DataSpecialistDto(dataSpecialist.getContactEmail(), dataSpecialist.getPhoneNumber());
-        return (DataSpecialistDto) abstractEntityMapper.dtoFromEntity(dto, dataSpecialist);
+        return dto;
     }
 
     /**
