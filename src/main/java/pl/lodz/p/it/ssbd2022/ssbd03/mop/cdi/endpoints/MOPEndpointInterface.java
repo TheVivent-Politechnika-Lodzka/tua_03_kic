@@ -48,12 +48,18 @@ public interface MOPEndpointInterface {
         throw new MethodNotImplementedException();
     }
 
-    // MOP.5 - przeglądaj listę wszczepów
+    /**
+     * MOP.5 - Przeglądaj listę wszczepów
+     * @param page numer strony
+     * @param size ilość pozycji na stronie na stronie
+     * @param phrase szukana fraza
+     * @return lista wszczepów
+     */
     @GET
     @RolesAllowed(Roles.ADMINISTRATOR)
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/list/implants")
-    default Response list(@QueryParam("page") int page, @QueryParam("size") int size, @QueryParam("phrase") @DefaultValue("") String phrase) {
+    default Response listImplants(@QueryParam("page") int page, @QueryParam("size") int size, @QueryParam("phrase") @DefaultValue("") String phrase) {
         throw new MethodNotImplementedException();
     }
 

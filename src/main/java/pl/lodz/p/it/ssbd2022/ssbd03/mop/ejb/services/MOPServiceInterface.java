@@ -6,6 +6,7 @@ import pl.lodz.p.it.ssbd2022.ssbd03.entities.Appointment;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.Implant;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.ImplantReview;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.MethodNotImplementedException;
+import pl.lodz.p.it.ssbd2022.ssbd03.utils.PaginationData;
 
 import java.util.List;
 
@@ -27,7 +28,15 @@ public interface MOPServiceInterface extends ServiceLocalInterface {
         throw new MethodNotImplementedException();
     }
 
-    default List<Implant> findImplants(int page, int pageSize, String phrase) {
+    /**
+     * MOK.5 - Przeglądaj listę wszczepów
+     * @param page numer strony
+     * @param pageSize  ilość pozycji na stronie na stronie
+     * @param phrase szukana fraza
+     * @return lista wszczepów
+     * @throws MethodNotImplementedException metoda nie jest zaimplementowana
+     */
+    default PaginationData findImplants(int page, int pageSize, String phrase) {
         throw new MethodNotImplementedException();
     }
 

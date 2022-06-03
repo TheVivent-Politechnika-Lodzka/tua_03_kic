@@ -17,7 +17,9 @@ import java.util.Collection;
 @Table(name = "implant")
 @NamedQueries({
         @NamedQuery(name = "Implant.findAll", query = "select a from Implant a"),
-        @NamedQuery(name = "Implant.findById", query = "select a from Implant a where a.id = :id")
+        @NamedQuery(name = "Implant.findById", query = "select a from Implant a where a.id = :id"),
+        @NamedQuery(name = "Implant.searchByPhrase", query = "select a from Implant a where lower(a.name) like lower(:phrase)"),
+
 })
 @ToString
 @NoArgsConstructor

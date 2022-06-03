@@ -4,7 +4,14 @@ import jakarta.annotation.security.DenyAll;
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.Path;
+import jakarta.ws.rs.core.Response;
+import pl.lodz.p.it.ssbd2022.ssbd03.common.Config;
+import pl.lodz.p.it.ssbd2022.ssbd03.entities.Implant;
+import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.TransactionException;
 import pl.lodz.p.it.ssbd2022.ssbd03.mop.ejb.services.MOPServiceInterface;
+import pl.lodz.p.it.ssbd2022.ssbd03.utils.PaginationData;
+
+import java.util.List;
 
 @RequestScoped
 @DenyAll
@@ -14,4 +21,27 @@ public class MOPEndpoint implements MOPEndpointInterface{
     @Inject
     MOPServiceInterface mopService;
 
+    /**
+     * MOK.5 - Przeglądaj listę wszczepów
+     * @param page numer strony
+     * @param size ilość pozycji na stronie na stronie
+     * @param phrase szukana fraza
+     * @return lista wszczepów
+     */
+    @Override
+    public Response listImplants(int page, int size, String phrase) {
+        PaginationData paginationData;
+        int TXCounter = Config.MAX_TX_RETRIES;
+        boolean commitedTX;
+        do {
+            paginationData = mopService.findImplants(page, size, phrase);
+            commitedTX = mopService.isLastTransactionCommited();
+        } while (!commitedTX && TXCounter-- > 0);
+
+        if (!commitedTX) {
+            throw new TransactionException();
+        }
+        List<Implant> implants = paginationData.getData();
+        return Response.ok().build();
+    }
 }
