@@ -10,8 +10,6 @@ import pl.lodz.p.it.ssbd2022.ssbd03.common.AbstractEntity;
 
 import java.io.Serializable;
 import java.time.Duration;
-import java.util.ArrayList;
-import java.util.Collection;
 
 @Entity
 @Table(name = "implant")
@@ -60,6 +58,11 @@ public class Implant extends AbstractEntity implements Serializable {
     @Column(name = "duration", nullable = false)
     @Getter @Setter
     private Duration duration;
+
+    @Column(name = "image")
+    @Getter @Setter
+    private String image;
+
 
 //    @OneToMany(cascade = {CascadeType.REMOVE, CascadeType.PERSIST}, mappedBy = "implant", fetch = FetchType.LAZY)
 //    @Getter

@@ -11,6 +11,11 @@ import java.util.List;
 
 public interface MOPServiceInterface extends ServiceLocalInterface {
 
+    /**
+     * Metoda tworzy nowy wszczep
+     * @param implant - nowy wszczep
+     * @return - nowy wszczep
+     */
     default Implant createImplant(Implant implant) {
         throw new MethodNotImplementedException();
     }
