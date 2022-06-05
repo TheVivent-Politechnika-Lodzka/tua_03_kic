@@ -26,7 +26,7 @@ public class MOPService extends AbstractService implements MOPServiceInterface, 
 
 
     /**
-     * MOK.5 - Przeglądaj listę wszczepów
+     * Metoda zwracająca liste wszczepów
      * @param page numer strony
      * @param pageSize  ilość pozycji na stronie na stronie
      * @param phrase szukana fraza

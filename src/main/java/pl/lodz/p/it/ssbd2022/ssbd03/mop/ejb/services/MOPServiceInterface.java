@@ -29,7 +29,7 @@ public interface MOPServiceInterface extends ServiceLocalInterface {
     }
 
     /**
-     * MOK.5 - Przeglądaj listę wszczepów
+     * Metoda zwracająca liste wszczepów
      * @param page numer strony
      * @param pageSize  ilość pozycji na stronie na stronie
      * @param phrase szukana fraza

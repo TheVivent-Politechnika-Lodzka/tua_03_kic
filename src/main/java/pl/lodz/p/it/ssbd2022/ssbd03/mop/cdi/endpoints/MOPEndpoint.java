@@ -1,6 +1,7 @@
 package pl.lodz.p.it.ssbd2022.ssbd03.mop.cdi.endpoints;
 
 import jakarta.annotation.security.DenyAll;
+import jakarta.annotation.security.PermitAll;
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.Path;
@@ -28,6 +29,7 @@ public class MOPEndpoint implements MOPEndpointInterface{
      * @param phrase szukana fraza
      * @return lista wszczepów
      */
+    @PermitAll
     @Override
     public Response listImplants(int page, int size, String phrase) {
         PaginationData paginationData;
@@ -42,6 +44,6 @@ public class MOPEndpoint implements MOPEndpointInterface{
             throw new TransactionException();
         }
         List<Implant> implants = paginationData.getData();
-        return Response.ok().build();
+        return Response.ok().entity(implants).build();
     }
 }
