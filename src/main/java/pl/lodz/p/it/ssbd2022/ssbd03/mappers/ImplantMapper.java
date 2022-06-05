@@ -3,6 +3,8 @@ package pl.lodz.p.it.ssbd2022.ssbd03.mappers;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.Implant;
 import pl.lodz.p.it.ssbd2022.ssbd03.mop.dto.CreateImplantDto;
 
+import java.time.Duration;
+
 public class ImplantMapper {
 
 
@@ -19,7 +21,7 @@ public class ImplantMapper {
         implant.setPrice(implantDto.getPrice());
         implant.setArchived(false);
         implant.setPopularity(0);
-        implant.setDuration(implantDto.getDuration());
+        implant.setDuration(Duration.ofMillis(implantDto.getDuration()));
         implant.setImage(implantDto.getUrl());
         return implant;
     }

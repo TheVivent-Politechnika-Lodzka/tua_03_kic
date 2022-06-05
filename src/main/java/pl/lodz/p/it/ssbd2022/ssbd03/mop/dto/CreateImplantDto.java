@@ -23,7 +23,7 @@ public class CreateImplantDto {
 
     private int price;
 
-    private Duration duration;
+    private long duration;
 
     @Url
     private String url;
