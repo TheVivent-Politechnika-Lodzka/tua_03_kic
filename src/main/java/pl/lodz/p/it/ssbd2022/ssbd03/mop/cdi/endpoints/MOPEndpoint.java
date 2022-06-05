@@ -11,7 +11,7 @@ import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.TransactionException;
 import pl.lodz.p.it.ssbd2022.ssbd03.mappers.ImplantMapper;
 import pl.lodz.p.it.ssbd2022.ssbd03.mop.dto.CreateImplantDto;
 import pl.lodz.p.it.ssbd2022.ssbd03.mop.ejb.services.MOPServiceInterface;
-import pl.lodz.p.it.ssbd2022.ssbd03.security.Tagger;
+
 
 @RequestScoped
 @DenyAll
