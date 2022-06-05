@@ -11,8 +11,18 @@ import pl.lodz.p.it.ssbd2022.ssbd03.common.AbstractEntity;
 import java.io.Serializable;
 import java.time.Duration;
 
+import static pl.lodz.p.it.ssbd2022.ssbd03.entities.Implant.CONSTRAINT_NAME_UNIQUE;
+
 @Entity
-@Table(name = "implant")
+@Table(name = "implant",
+        indexes = {
+                @Index(name = "implant_id", columnList = "id"),
+                @Index(name = "implant_name", columnList = "name")
+        },
+        uniqueConstraints = {
+                @UniqueConstraint(columnNames = "name", name = CONSTRAINT_NAME_UNIQUE),
+        }
+)
 @NamedQueries({
         @NamedQuery(name = "Implant.findAll", query = "select a from Implant a"),
         @NamedQuery(name = "Implant.findById", query = "select a from Implant a where a.id = :id")
@@ -21,6 +31,7 @@ import java.time.Duration;
 @NoArgsConstructor
 public class Implant extends AbstractEntity implements Serializable {
 
+    public static final String CONSTRAINT_NAME_UNIQUE = "implant_name_unique";
     private static final long serialVersionUID = 1L;
 
     @Basic(optional = false)

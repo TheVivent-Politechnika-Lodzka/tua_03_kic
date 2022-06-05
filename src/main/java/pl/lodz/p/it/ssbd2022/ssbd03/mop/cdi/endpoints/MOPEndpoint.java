@@ -37,17 +37,17 @@ public class MOPEndpoint implements MOPEndpointInterface{
         int TXCounter = Config.MAX_TX_RETRIES;
         boolean commitedTX;
         Implant implant = implantMapper.createImplantFromDto(createImplantDto);
-        Implant createdImplant = null;
+        Implant createdImplant;
         do {
             createdImplant = mopService.createImplant(implant);
             commitedTX = mopService.isLastTransactionCommited();
-            TXCounter--;
-        } while (!commitedTX && TXCounter > 0);
+        } while (!commitedTX && --TXCounter > 0);
 
         if (!commitedTX) {
             throw new TransactionException();
         }
-        return Response.ok().build();
+
+        return Response.ok(createdImplant).build();
     }
     
 }

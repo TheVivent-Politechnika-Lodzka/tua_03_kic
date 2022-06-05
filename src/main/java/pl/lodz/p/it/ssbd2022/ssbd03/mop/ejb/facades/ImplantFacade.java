@@ -1,8 +1,7 @@
 package pl.lodz.p.it.ssbd2022.ssbd03.mop.ejb.facades;
 
 import jakarta.annotation.security.PermitAll;
-import jakarta.annotation.security.RunAs;
-import jakarta.ejb.Stateful;
+import jakarta.annotation.security.RolesAllowed;
 import jakarta.ejb.Stateless;
 import jakarta.ejb.TransactionAttribute;
 import jakarta.ejb.TransactionAttributeType;
@@ -10,22 +9,23 @@ import jakarta.inject.Inject;
 import jakarta.interceptor.Interceptors;
 import jakarta.persistence.*;
 import lombok.Getter;
+import org.hibernate.exception.ConstraintViolationException;
 import pl.lodz.p.it.ssbd2022.ssbd03.common.AbstractFacade;
 import pl.lodz.p.it.ssbd2022.ssbd03.common.Roles;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.Implant;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.InvalidParametersException;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.ResourceNotFoundException;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.database.DatabaseException;
+import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.implant.ImplantAlreadyExistExceptions;
 import pl.lodz.p.it.ssbd2022.ssbd03.interceptors.TrackerInterceptor;
 import pl.lodz.p.it.ssbd2022.ssbd03.security.Tagger;
-import pl.lodz.p.it.ssbd2022.ssbd03.utils.HashAlgorithm;
+
 
 import java.util.UUID;
 
 @Interceptors(TrackerInterceptor.class)
 @Stateless
 @TransactionAttribute(TransactionAttributeType.MANDATORY)
-@RunAs(Roles.ADMINISTRATOR)
 public class ImplantFacade extends AbstractFacade<Implant> {
 
     @PersistenceContext(unitName = "ssbd03mopPU")
@@ -43,11 +43,19 @@ public class ImplantFacade extends AbstractFacade<Implant> {
     /**
      * Metoda dodająca implant do bazy danych
      * @param entity - implant
+     * @throws ImplantAlreadyExistExceptions - wyjątek rzucany w przypadku, gdy implant o podanej nazwie już istnieje w bazie danych
      */
-    @PermitAll
+    @RolesAllowed(Roles.ADMINISTRATOR)
     @Override
     public void create(Implant entity) {
-        super.create(entity);
+        try {
+            super.create(entity);
+        } catch ( ConstraintViolationException e) {
+            if(e.getConstraintName().contains(Implant.CONSTRAINT_NAME_UNIQUE)) {
+                throw ImplantAlreadyExistExceptions.nameExists();
+            }
+            throw new DatabaseException(e);
+        }
     }
 
 
