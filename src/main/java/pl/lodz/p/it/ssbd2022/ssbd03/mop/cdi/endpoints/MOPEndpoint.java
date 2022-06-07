@@ -25,7 +25,7 @@ public class MOPEndpoint implements MOPEndpointInterface{
     /**
      * MOK.5 - Przeglądaj listę wszczepów
      * @param page numer strony
-     * @param size ilość pozycji na stronie na stronie
+     * @param size ilość pozycji na stronie
      * @param phrase szukana fraza
      * @return lista wszczepów
      */

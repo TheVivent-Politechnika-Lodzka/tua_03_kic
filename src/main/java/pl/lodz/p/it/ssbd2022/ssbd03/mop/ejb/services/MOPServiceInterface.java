@@ -31,7 +31,7 @@ public interface MOPServiceInterface extends ServiceLocalInterface {
     /**
      * Metoda zwracająca liste wszczepów
      * @param page numer strony
-     * @param pageSize  ilość pozycji na stronie na stronie
+     * @param pageSize  ilość pozycji na stronie
      * @param phrase szukana fraza
      * @return lista wszczepów
      * @throws MethodNotImplementedException metoda nie jest zaimplementowana
