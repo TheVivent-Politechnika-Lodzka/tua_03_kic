@@ -1,12 +1,12 @@
 package pl.lodz.p.it.ssbd2022.ssbd03.entities;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 import pl.lodz.p.it.ssbd2022.ssbd03.common.AbstractEntity;
+import pl.lodz.p.it.ssbd2022.ssbd03.validation.*;
 
 import java.io.Serializable;
 import java.time.Duration;
@@ -35,24 +35,27 @@ public class Implant extends AbstractEntity implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Basic(optional = false)
-    @Size(min = 1, max = 20 )
-    @Column(name = "name", unique = true, nullable = false, length = 20)
+    @Column(name = "name", unique = true, nullable = false, length = 50)
     @Getter @Setter
+    @Name
     private String name;
 
     @Basic(optional = false)
     @Column(name = "description", nullable = false, length = 1000)
     @Getter @Setter
+    @Description
     private String description;
 
     @Basic(optional = false)
-    @Column(name = "manufacturer", nullable = false, length = 30)
+    @Column(name = "manufacturer", nullable = false, length = 50)
     @Getter @Setter
+    @Manufacturer
     private String manufacturer;
 
     @Basic(optional = false)
     @Column(name = "price", nullable = false)
     @Getter @Setter
+    @Price
     private int price;
 
     @Basic(optional = false)
@@ -72,6 +75,7 @@ public class Implant extends AbstractEntity implements Serializable {
 
     @Column(name = "image")
     @Getter @Setter
+    @Url
     private String image;
 
 

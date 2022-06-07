@@ -13,7 +13,13 @@ public class ImplantAlreadyExistExceptions extends AppBaseException {
 
     private static final String NAME_ALREADY_EXISTS = "server.error.appBase.implantWithGivenNameExists";
 
-    public ImplantAlreadyExistExceptions(String message) {
+    /**
+     * Konstruktor, o dostępie prywatnym, potrzebny do budowania wyjątku przy statycznych metodach
+     * znajdujących się w klasie ImplantAlreadyExistExceptions
+     * @param message Wiadomość zawarta w wyjątku
+     * @return wyjatek typu ImplantAlreadyExistExceptions
+     */
+    private ImplantAlreadyExistExceptions(String message) {
         super(message, Response.Status.CONFLICT);
     }
 

@@ -2,8 +2,7 @@ package pl.lodz.p.it.ssbd2022.ssbd03.validation;
 
 import jakarta.validation.Constraint;
 import jakarta.validation.Payload;
-import jakarta.validation.constraints.Pattern;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.*;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -14,12 +13,13 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 @Target({ElementType.FIELD, ElementType.PARAMETER})
 @Constraint(validatedBy = {})
 @Retention(RUNTIME)
-@Size(min = 8, max = 2000, message = "server.error.validation.constraints.size.url")
-@Pattern(regexp = Patterns.URL, message = "server.error.validation.constraints.url")
-public @interface Url {
-    String message() default "server.error.validation.constraints.url";
+@Positive(message = "server.error.validation.constraints.positive.price")
+@NotNull(message = "server.error.validation.constraints.notNull.price")
+public @interface Price {
+    String message() default "server.error.validation.constraints.price";
 
     Class<?>[] groups() default {};
 
     Class<? extends Payload>[] payload() default {};
 }
+
