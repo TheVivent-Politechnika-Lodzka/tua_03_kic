@@ -36,7 +36,7 @@ public class MOPService extends AbstractService implements MOPServiceInterface, 
     @RolesAllowed(Roles.ADMINISTRATOR)
     public Appointment cancelAppointment(String id) {
         Appointment appointment = appointmentFacade.findById(UUID.fromString(id));
-        if (appointment.getStatus().equals(REJECTED)) throw AppointmentStatusException.appointmentAlreadyCancelled();
+        if (appointment.getStatus().equals(REJECTED)) throw new AppointmentStatusException();
 
         appointment.setStatus(REJECTED);
         appointmentFacade.edit(appointment);

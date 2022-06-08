@@ -124,7 +124,14 @@ public interface MOPEndpointInterface {
         throw new MethodNotImplementedException();
     }
 
-    // MOP.13 - Odwołaj dowolną wizytę
+    /**
+     * MOP.13 Odwołaj dowolną wizytę
+     * Metodę może wykonać tylko konto z poziomem dostępu administratora.
+     *
+     * @param id Identyfikator wizyty, która ma zostać odwołana
+     * @return odpowiedź HTTP
+     * @throws MethodNotImplementedException w momencie, gdy metoda jest niezaimplementowana
+     */
     @DELETE
     @RolesAllowed(Roles.ADMINISTRATOR)
     @Consumes(MediaType.APPLICATION_JSON)
