@@ -53,7 +53,7 @@ public interface MOPServiceInterface extends ServiceLocalInterface {
         throw new MethodNotImplementedException();
     }
 
-    default Appointment cancelAppointment(Appointment appointment) {
+    default Appointment cancelAppointment(String id) {
         throw new MethodNotImplementedException();
     }
 
