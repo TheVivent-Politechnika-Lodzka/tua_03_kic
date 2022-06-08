@@ -8,16 +8,23 @@ import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import pl.lodz.p.it.ssbd2022.ssbd03.common.Roles;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.MethodNotImplementedException;
+import pl.lodz.p.it.ssbd2022.ssbd03.mop.dto.CreateImplantDto;
 
 @DenyAll
 public interface MOPEndpointInterface {
 
-    // MOP.1 - Dodaj wszczep
+    /**
+     * MOP.1 - Dodaj nowy wszczep
+     *
+     * @param createImplantDto - dane nowego wszczepu
+     * @return Response - zawierająca status HTTP
+     * @throws MethodNotImplementedException - w przypadku braku implementacji metody
+     */
     @PUT
     @RolesAllowed(Roles.ADMINISTRATOR)
     @Consumes(MediaType.APPLICATION_JSON)
     @Path("/create")
-    default Response create(String json) {
+    default Response createImplant(CreateImplantDto createImplantDto) {
         throw new MethodNotImplementedException();
     }
 
