@@ -42,6 +42,7 @@ public class ImplantFacade extends AbstractFacade<Implant> {
 
     /**
      * Metoda dodająca implant do bazy danych
+     *
      * @param entity - implant
      * @throws ImplantAlreadyExistExceptions - wyjątek rzucany w przypadku, gdy implant o podanej nazwie już istnieje w bazie danych
      */
@@ -50,8 +51,8 @@ public class ImplantFacade extends AbstractFacade<Implant> {
     public void create(Implant entity) {
         try {
             super.create(entity);
-        } catch ( ConstraintViolationException e) {
-            if(e.getConstraintName().contains(Implant.CONSTRAINT_NAME_UNIQUE)) {
+        } catch (ConstraintViolationException e) {
+            if (e.getConstraintName().contains(Implant.CONSTRAINT_NAME_UNIQUE)) {
                 throw ImplantAlreadyExistExceptions.nameExists();
             }
             throw new DatabaseException(e);
@@ -65,7 +66,7 @@ public class ImplantFacade extends AbstractFacade<Implant> {
      * @param uuid - uuid implantu
      * @return implant
      * @throws InvalidParametersException, gdy podano niepoprawną wartość parametru
-     * @throws DatabaseException, gdy wystąpi błąd związany z bazą danych
+     * @throws DatabaseException,          gdy wystąpi błąd związany z bazą danych
      */
     @PermitAll
     public Implant findByUUID(UUID uuid) {
@@ -80,6 +81,17 @@ public class ImplantFacade extends AbstractFacade<Implant> {
         } catch (PersistenceException pe) {
             throw new DatabaseException(pe.getCause());
         }
+    }
+
+    /**
+     * Metoda edytująca wszczep w bazie danych. Uwzględnia wersję
+     *
+     * @param entity Obiekt encji
+     */
+    @Override
+    @RolesAllowed(Roles.ADMINISTRATOR)
+    public void edit(Implant entity) {
+        super.edit(entity);
     }
 
 
