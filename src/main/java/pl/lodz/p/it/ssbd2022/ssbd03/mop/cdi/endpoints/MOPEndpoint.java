@@ -37,7 +37,6 @@ public class MOPEndpoint implements MOPEndpointInterface{
      *
      * @param id Identyfikator wizyty, która ma zostać odwołana
      * @return odpowiedź HTTP
-     * @throws MethodNotImplementedException w momencie, gdy metoda jest niezaimplementowana
      */
     @Override
     public Response cancelAnyVisit(String id) {

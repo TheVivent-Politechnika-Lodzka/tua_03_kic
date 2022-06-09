@@ -39,7 +39,6 @@ public class MOPService extends AbstractService implements MOPServiceInterface, 
      *
      * @param id identyfikator wizyty, która ma zostać odwołana
      * @return Wizyta, która została odwołana
-     * @throws MethodNotImplementedException w momencie, gdy metoda jest niezaimplementowana
      */
     @Override
     @RolesAllowed(Roles.ADMINISTRATOR)
