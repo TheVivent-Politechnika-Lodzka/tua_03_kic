@@ -43,7 +43,6 @@ public class MOPEndpoint implements MOPEndpointInterface{
         if (!commitedTX) {
             throw new TransactionException();
         }
-        List<Implant> implants = paginationData.getData();
-        return Response.ok().entity(implants).build();
+        return Response.ok().entity(paginationData.getData()).build();
     }
 }
