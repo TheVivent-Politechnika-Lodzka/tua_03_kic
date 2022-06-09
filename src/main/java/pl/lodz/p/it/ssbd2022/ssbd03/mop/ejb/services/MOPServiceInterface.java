@@ -8,15 +8,29 @@ import pl.lodz.p.it.ssbd2022.ssbd03.entities.ImplantReview;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.MethodNotImplementedException;
 
 import java.util.List;
+import java.util.UUID;
 
 public interface MOPServiceInterface extends ServiceLocalInterface {
 
     /**
      * Metoda tworzy nowy wszczep
+     *
      * @param implant - nowy wszczep
      * @return - nowy wszczep
+     * @throws MethodNotImplementedException jeśli serwis nie jest zaimplementowany
      */
     default Implant createImplant(Implant implant) {
+        throw new MethodNotImplementedException();
+    }
+
+    /**
+     * Serwis powiązany z MOP 2 - archiwizacja wszczepu
+     *
+     * @param implant - uuid archiwizowanego wszczepu
+     * @return obiekt Implant
+     * @throws MethodNotImplementedException jeśli serwis nie jest zaimplementowany
+     */
+    default Implant archiveImplant(UUID implant) {
         throw new MethodNotImplementedException();
     }
 
@@ -28,7 +42,7 @@ public interface MOPServiceInterface extends ServiceLocalInterface {
         throw new MethodNotImplementedException();
     }
 
-    default Implant getImplantByName(String name){
+    default Implant getImplantByName(String name) {
         throw new MethodNotImplementedException();
     }
 
