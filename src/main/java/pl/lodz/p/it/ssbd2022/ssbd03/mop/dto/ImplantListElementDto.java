@@ -10,7 +10,7 @@ import pl.lodz.p.it.ssbd2022.ssbd03.validation.*;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class ListImplantDto {
+public class ImplantListElementDto {
     @Name
     private String name;
 

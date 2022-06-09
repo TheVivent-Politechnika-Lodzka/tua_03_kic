@@ -11,7 +11,7 @@ import pl.lodz.p.it.ssbd2022.ssbd03.entities.Implant;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.TransactionException;
 import pl.lodz.p.it.ssbd2022.ssbd03.mappers.ImplantMapper;
 import pl.lodz.p.it.ssbd2022.ssbd03.mop.dto.CreateImplantDto;
-import pl.lodz.p.it.ssbd2022.ssbd03.mop.dto.ListImplantDto;
+import pl.lodz.p.it.ssbd2022.ssbd03.mop.dto.ImplantListElementDto;
 import pl.lodz.p.it.ssbd2022.ssbd03.mop.ejb.services.MOPServiceInterface;
 import pl.lodz.p.it.ssbd2022.ssbd03.utils.PaginationData;
 
@@ -77,7 +77,7 @@ public class MOPEndpoint implements MOPEndpointInterface{
         }
 
         List<Implant> implants = paginationData.getData();
-        List<ListImplantDto> implantsDto = implantMapper.getListFromListImplantDtoFromImplant(implants);
+        List<ImplantListElementDto> implantsDto = implantMapper.getListFromImplantListElementDtoFromImplant(implants);
         paginationData.setData(implantsDto);
         return Response.ok().entity(paginationData).build();
     }
