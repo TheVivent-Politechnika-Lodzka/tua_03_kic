@@ -11,6 +11,8 @@ import jakarta.inject.Inject;
 import jakarta.interceptor.Interceptors;
 import pl.lodz.p.it.ssbd2022.ssbd03.common.AbstractService;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.InvalidParametersException;
+import pl.lodz.p.it.ssbd2022.ssbd03.common.Roles;
+import pl.lodz.p.it.ssbd2022.ssbd03.entities.Implant;
 import pl.lodz.p.it.ssbd2022.ssbd03.interceptors.TrackerInterceptor;
 import pl.lodz.p.it.ssbd2022.ssbd03.mop.ejb.facades.ImplantFacade;
 import pl.lodz.p.it.ssbd2022.ssbd03.utils.PaginationData;
@@ -24,6 +26,17 @@ public class MOPService extends AbstractService implements MOPServiceInterface, 
     @Inject
     ImplantFacade implantFacade;
 
+    /**
+     * Metoda tworząca nowy wszczep
+     * @param implant - nowy wszczep
+     * @return Implant
+     */
+    @RolesAllowed(Roles.ADMINISTRATOR)
+    @Override
+    public Implant createImplant(Implant implant) {
+        implantFacade.create(implant);
+        return implantFacade.findByUUID(implant.getId());
+    }
 
     /**
      * Metoda zwracająca liste wszczepów
@@ -41,4 +54,7 @@ public class MOPService extends AbstractService implements MOPServiceInterface, 
         }
         return implantFacade.findInRangeWithPhrase(page, pageSize, phrase);
     }
+
+
+
 }
