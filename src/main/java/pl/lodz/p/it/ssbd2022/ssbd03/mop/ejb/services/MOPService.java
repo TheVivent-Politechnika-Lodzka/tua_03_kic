@@ -24,7 +24,7 @@ import pl.lodz.p.it.ssbd2022.ssbd03.utils.PaginationData;
 public class MOPService extends AbstractService implements MOPServiceInterface, SessionSynchronization {
 
     @Inject
-    ImplantFacade implantFacade;
+    private ImplantFacade implantFacade;
 
     /**
      * Metoda tworząca nowy wszczep
