@@ -38,10 +38,11 @@ public interface MOPServiceInterface extends ServiceLocalInterface {
      * @param page numer strony
      * @param pageSize  ilość pozycji na stronie
      * @param phrase szukana fraza
+     * @param archived określa czy zwracac archiwalne czy niearchiwalne wszczepy
      * @return lista wszczepów
      * @throws MethodNotImplementedException metoda nie jest zaimplementowana
      */
-    default PaginationData findImplants(int page, int pageSize, String phrase) {
+    default PaginationData findImplants(int page, int pageSize, String phrase, boolean archived) {
         throw new MethodNotImplementedException();
     }
 

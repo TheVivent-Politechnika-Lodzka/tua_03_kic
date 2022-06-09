@@ -43,16 +43,17 @@ public class MOPService extends AbstractService implements MOPServiceInterface, 
      * @param page numer strony
      * @param pageSize  ilość pozycji na stronie na stronie
      * @param phrase szukana fraza
+     * @param archived określa czy zwracac archiwalne czy niearchiwalne wszczepy
      * @return lista wszczepów
      * @throws InvalidParametersException jeśli podano nieprawidłowe parametry
      */
     @Override
     @PermitAll
-    public PaginationData findImplants(int page, int pageSize, String phrase) {
+    public PaginationData findImplants(int page, int pageSize, String phrase, boolean archived) {
         if(page == 0 || pageSize == 0) {
             throw new InvalidParametersException();
         }
-        return implantFacade.findInRangeWithPhrase(page, pageSize, phrase);
+        return implantFacade.findInRangeWithPhrase(page, pageSize, phrase, archived);
     }
 
 

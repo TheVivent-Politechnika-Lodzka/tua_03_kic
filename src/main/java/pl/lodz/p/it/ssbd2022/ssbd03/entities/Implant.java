@@ -26,7 +26,7 @@ import static pl.lodz.p.it.ssbd2022.ssbd03.entities.Implant.CONSTRAINT_NAME_UNIQ
 @NamedQueries({
         @NamedQuery(name = "Implant.findAll", query = "select a from Implant a"),
         @NamedQuery(name = "Implant.findById", query = "select a from Implant a where a.id = :id"),
-        @NamedQuery(name = "Implant.searchByPhrase", query = "select a from Implant a where lower(a.name) like lower(:phrase)"),
+        @NamedQuery(name = "Implant.searchByPhrase", query = "select a from Implant a where lower(a.name) like lower(:phrase) and a.archived = :archived"),
 
 })
 @ToString

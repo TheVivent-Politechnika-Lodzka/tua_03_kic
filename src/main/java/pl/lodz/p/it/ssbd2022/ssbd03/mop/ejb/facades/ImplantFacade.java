@@ -87,18 +87,20 @@ public class ImplantFacade extends AbstractFacade<Implant> {
      * @param pageNumber - numer strony
      * @param perPage - ilość pozycji na stronie
      * @param phrase - szukana fraza
+     * @param archived określa czy zwracac archiwalne czy niearchiwalne wszczepy
      * @return lista wszczepów
      * @throws InvalidParametersException jeśli podano nieprawidłowe parametry
      * @throws DatabaseException jeśli wystąpił błąd z bazą danych
      */
     @PermitAll
-    public PaginationData findInRangeWithPhrase(int pageNumber, int perPage, String phrase) {
+    public PaginationData findInRangeWithPhrase(int pageNumber, int perPage, String phrase, boolean archived) {
         try {
             TypedQuery<Implant> typedQuery = entityManager.createNamedQuery("Implant.searchByPhrase", Implant.class);
 
             pageNumber--;
 
             List<Implant> data = typedQuery.setParameter("phrase", "%" + phrase + "%")
+                    .setParameter("archived", archived)
                     .setMaxResults(perPage)
                     .setFirstResult(pageNumber * perPage)
                     .getResultList();

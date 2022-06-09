@@ -10,27 +10,17 @@ import pl.lodz.p.it.ssbd2022.ssbd03.validation.*;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class CreateImplantDto {
-
+public class ListImplantDto {
     @Name
     private String name;
 
     @Description
     private String description;
 
-    @Manufacturer
-    private String manufacturer;
-
     @Price
     private int price;
 
-    @DurationValue
-    private long duration;
-
     @Url
     private String url;
-
-
-
 
 }
