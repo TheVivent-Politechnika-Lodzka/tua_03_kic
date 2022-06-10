@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { useGetOwnAccountDetailsWorkaroundMutation } from "../../../../api/api";
 import { AccountWithAccessLevelsDto } from "../../../../api/types/apiParams";
 
-const AdminPage = () => {
+const AdminMainPage = () => {
     const [accountDetails, setAccountDetails] =
         useState<AccountWithAccessLevelsDto>();
     // TODO: zmienić, żeby nie korzystało z WorkaroundMutation (jest jakiś problem, że Query nie działa,
@@ -36,4 +36,4 @@ const AdminPage = () => {
     );
 };
 
-export default AdminPage;
+export default AdminMainPage;
