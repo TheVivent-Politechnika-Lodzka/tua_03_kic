@@ -1,11 +1,15 @@
 package pl.lodz.p.it.ssbd2022.ssbd03.entities;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 import pl.lodz.p.it.ssbd2022.ssbd03.common.AbstractEntity;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.access_levels.DataClient;
+import pl.lodz.p.it.ssbd2022.ssbd03.validation.Description;
+import pl.lodz.p.it.ssbd2022.ssbd03.validation.Rating;
+import pl.lodz.p.it.ssbd2022.ssbd03.validation.Review;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -35,26 +39,36 @@ public class ImplantReview extends AbstractEntity implements Serializable {
 
     @JoinColumn(name = "implant_id", referencedColumnName = "id", updatable = false)
     @ManyToOne(optional = false)
-    @Getter @Setter
+    @Getter
+    @Setter
+    @NotNull
     private Implant implant;
 
     @JoinColumn(name = "client_id", referencedColumnName = "id", updatable = false)
     @ManyToOne(optional = false)
-    @Getter @Setter
+    @Getter
+    @Setter
+    @NotNull
     private DataClient client;
 
     @Basic(optional = false)
-    @Column(name = "text", nullable = false, length = 512)
-    @Getter @Setter
-    private String text;
+    @Column(name = "text", nullable = false, length = 1024)
+    @Getter
+    @Setter
+    @Review
+    private String review;
 
     @Basic(optional = false)
     @Column(name = "date", nullable = false)
-    @Getter @Setter
+    @Getter
+    @Setter
+    @NotNull
     private Date date;
 
     @Basic(optional = false)
     @Column(name = "rating", nullable = false)
-    @Getter @Setter
+    @Getter
+    @Setter
+    @Rating
     private double rating;
 }
