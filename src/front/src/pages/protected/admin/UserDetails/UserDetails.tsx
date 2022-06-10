@@ -1,12 +1,13 @@
 import { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router";
 import styles from "./userDetails.module.scss";
-import { AccountWithAccessLevelsDto } from "../../../api/types/apiParams";
-import { useGetAccountByLoginMutation } from "../../../api/api";
 import { useTranslation } from "react-i18next";
-import AddAccessLevelButton from "../../../component/Button/AddAccessLevelButton/AddAccessLevelButton";
-import RemoveAccessLevelForm from "../../../component/Form/removeAccessLevelForm/RemoveAccessLevelForm";
-import EditAccountDataForm from "../../../component/Form/editAccountDataForm/EditAccountDataForm";
+import { AccountWithAccessLevelsDto } from "../../../../api/types/apiParams";
+import { useGetAccountByLoginMutation } from "../../../../api/api";
+import RemoveAccessLevelForm from "../../../../component/Form/removeAccessLevelForm/RemoveAccessLevelForm";
+import EditAccountDataForm from "../../../../component/Form/editAccountDataForm/EditAccountDataForm";
+import AddAccessLevelButton from "../../../../component/Button/AddAccessLevelButton/AddAccessLevelButton";
+
 
 const UserDetails = () => {
     const [user, setUser] = useState<AccountWithAccessLevelsDto>();
@@ -93,7 +94,7 @@ const UserDetails = () => {
             )}
             <button
                 onClick={() => {
-                    navigate("/admin/users");
+                    navigate("/accounts");
                 }}
                 className={styles.button}
             >

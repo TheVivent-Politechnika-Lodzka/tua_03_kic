@@ -1,16 +1,16 @@
 import style from "./accountDetails.module.scss";
 import { useState, useEffect } from "react";
-import {
-    useEditOwnAccountMutation,
-    useGetOwnAccountDetailsWorkaroundMutation,
-} from "../../../api/api";
-import { AccountWithAccessLevelsDto } from "../../../api/types/apiParams";
-import ChangeOwnPasswordForm from "../../../component/Form/changeOwnPasswordForm/ChangeOwnPasswordForm";
 import { Button } from "@mui/material";
 import {
     GoogleReCaptchaProvider,
     useGoogleReCaptcha,
 } from "react-google-recaptcha-v3";
+import ChangeOwnPasswordForm from "../../../../component/Form/changeOwnPasswordForm/ChangeOwnPasswordForm";
+import {
+    useEditOwnAccountMutation,
+    useGetOwnAccountDetailsWorkaroundMutation,
+} from "../../../../api/api";
+import { AccountWithAccessLevelsDto } from "../../../../api/types/apiParams";
 
 const EditAccountDetails = () => {
     const [getCurrentUser] = useGetOwnAccountDetailsWorkaroundMutation();

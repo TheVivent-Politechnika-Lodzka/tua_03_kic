@@ -9,7 +9,7 @@ export const Logout = () => {
     const { t } = useTranslation();
     const dispatch = useStoreDispatch();
     const logout = () => {
-        localStorage.setItem("AUTH_TOKEN", "");
+        localStorage.removeItem("ACCESS_TOKEN");
         dispatch(logoutDispatch());
         window.location.reload();
     };

@@ -1,6 +1,11 @@
 .pageLayout {
     color: aliceblue;
     font-weight: bold;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    margin-top: 2rem;
   
     .searchInput {
       padding: 0.75rem;

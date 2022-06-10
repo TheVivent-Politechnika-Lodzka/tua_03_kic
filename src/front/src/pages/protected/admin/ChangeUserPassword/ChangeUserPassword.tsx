@@ -3,11 +3,8 @@ import { FetchBaseQueryError } from "@reduxjs/toolkit/dist/query";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate, useParams } from "react-router";
-import {
-  useChangeAccountPasswordMutation,
-  useGetAccountByLoginMutation,
-} from "../../../api/api";
-import { ChangePasswordDto } from "../../../api/types/apiParams";
+import { useChangeAccountPasswordMutation, useGetAccountByLoginMutation } from "../../../../api/api";
+import { ChangePasswordDto } from "../../../../api/types/apiParams";
 import styles from "./changeUserPassword.module.scss";
 
 const ChangeUserPassword = () => {
@@ -80,7 +77,7 @@ const ChangeUserPassword = () => {
       )}
       <button
         onClick={() => {
-          navigate("/admin/users");
+          navigate("/accounts");
         }}
         className={styles.submitButton}
       >

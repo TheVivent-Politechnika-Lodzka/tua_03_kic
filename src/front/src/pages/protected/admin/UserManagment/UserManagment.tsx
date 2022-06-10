@@ -1,15 +1,18 @@
 import { ChangeEvent, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router";
-import { useFindAllUsersMutation } from "../../../api/api";
-import { AccountWithAccessLevelsDto } from "../../../api/types/apiParams";
-import { ShowAccountInfo } from "../../../api/types/common";
-import ActivateButton from "../../../component/Button/ActivateButton/ActivateButton";
-import { DeactivateButton } from "../../../component/Button/DeactivateButton/DeactivateButton";
+import { useFindAllUsersMutation } from "../../../../api/api";
+import { AccountWithAccessLevelsDto } from "../../../../api/types/apiParams";
+import { ShowAccountInfo } from "../../../../api/types/common";
+import AccountDetails from "../../../../component/AccountDetails/AccountDetails";
+import ActivateButton from "../../../../component/Button/ActivateButton/ActivateButton";
+import { DeactivateButton } from "../../../../component/Button/DeactivateButton/DeactivateButton";
 import styles from "./userManagment.module.scss";
 
 const UserManagment = () => {
     const [account, setAccounts] = useState<ShowAccountInfo[]>([]);
+    const [modal, setModal] = useState<boolean>(false);
+    const [userLogin, setUserLogin] = useState<string>("");
     const [query, setQuery] = useState<string>("");
     const [findAll] = useFindAllUsersMutation();
     const navigate = useNavigate();
@@ -83,7 +86,7 @@ const UserManagment = () => {
                         <th>{t("header_level_access_level")}</th>
                         <th>{t("header_email")}</th>
                         <th>{t("header_is_active")}</th>
-                        <th>{t("header_change_password")}</th>
+                        <th>{t("header_account_details")}</th>
                         <th>{t("header_account_details")}</th>
                         <th>{t("header_manage_activity")}</th>
                     </tr>
@@ -114,21 +117,18 @@ const UserManagment = () => {
                                     <td>
                                         <button
                                             onClick={() => {
-                                                navigate(
-                                                    `/admin/users/${login}/change-password`
-                                                );
+                                                setUserLogin(login);
+                                                setModal(true);
                                             }}
                                             className={styles.button}
                                         >
-                                            {t("header_change_password")}
+                                            Details (ale te nowe)
                                         </button>
                                     </td>
                                     <td>
                                         <button
                                             onClick={() => {
-                                                navigate(
-                                                    `/admin/users/${login}`
-                                                );
+                                                navigate(`/accounts/${login}`);
                                             }}
                                             className={styles.button}
                                         >
@@ -173,6 +173,11 @@ const UserManagment = () => {
                     {">"}
                 </button>
             </div>
+            <AccountDetails
+                onClose={() => setModal(false)}
+                login={userLogin}
+                isOpened={modal}
+            />
         </div>
     );
 };
