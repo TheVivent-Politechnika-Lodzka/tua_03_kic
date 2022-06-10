@@ -24,6 +24,8 @@ import java.util.Date;
 @NamedQueries({
         @NamedQuery(name = "Review.findAll", query = "select a from ImplantReview a"),
         @NamedQuery(name = "Review.findById", query = "select a from ImplantReview a where a.id = :id"),
+        @NamedQuery(name = "Review.findByClientId", query = "select a from ImplantReview a where a.client.id = :clientId"),
+        @NamedQuery(name = "Review.findByImplantId", query = "select a from ImplantReview a where a.implant.id = :implantId")
 })
 @ToString
 @NoArgsConstructor
@@ -50,4 +52,9 @@ public class ImplantReview extends AbstractEntity implements Serializable {
     @Column(name = "date", nullable = false)
     @Getter @Setter
     private Date date;
+
+    @Basic(optional = false)
+    @Column(name = "rating", nullable = false)
+    @Getter @Setter
+    private double rating;
 }
