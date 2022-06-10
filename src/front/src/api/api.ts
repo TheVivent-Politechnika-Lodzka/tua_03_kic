@@ -24,7 +24,7 @@ import {
 // TODO przenieść do .env / package.json
 // const BASE_URL = "https://kic.agency:8403/api"
 const BASE_URL = "https://localhost:8181/api";
-const TOKEN_STORAGE_KEY = "AUTH_TOKEN";
+const TOKEN_STORAGE_KEY = "ACCESS_TOKEN";
 
 const api = createApi({
     baseQuery: fetchBaseQuery({
@@ -50,7 +50,7 @@ const api = createApi({
                 body: credentials,
                 responseHandler: async (response) => {
                     if (response.ok) {
-                        const {accessToken} = await response.json();
+                        const { accessToken } = await response.json();
                         localStorage.setItem(TOKEN_STORAGE_KEY, accessToken);
                         return jwtDecode(accessToken);
                     }
