@@ -1,7 +1,7 @@
 @import "../../variables.scss";
 
 .navbar {
-    background-color: $primary-color;
+    transition: 0.2s background ease-in-out;
     padding-block: 0.4rem;
     display: flex;
     justify-content: flex-end;
@@ -11,6 +11,7 @@
     top: 0;
     z-index: 90;
     box-shadow: 0 1rem 1.5rem rgba(34, 33, 33, 0.7);
+    transition: 0.2s background-color ease-in-out;
 
     .language-select {
         color: #121218;
@@ -68,6 +69,7 @@
 
 .administrator {
     background: $administrator-gradient;
+    
 }
 
 .specialist {

@@ -99,7 +99,7 @@ const EditOwnAccountPage = () => {
                                     />
                                     <ValidationMessage
                                         isValid={isFirstNameValid}
-                                        message="Imię musi składać się z conajmniej 3 liter."
+                                        message="Imię musi składać się z co najmniej 3 liter."
                                     />
                                 </div>
                                 <div className="edit-field">
@@ -111,7 +111,7 @@ const EditOwnAccountPage = () => {
                                     />
                                     <ValidationMessage
                                         isValid={isLastNameValid}
-                                        message="Nazwisko musi składać się z conajmniej 3 liter."
+                                        message="Nazwisko musi składać się z co najmniej 3 liter."
                                     />
                                 </div>
 
