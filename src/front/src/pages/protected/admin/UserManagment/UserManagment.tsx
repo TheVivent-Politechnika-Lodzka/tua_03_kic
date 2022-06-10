@@ -4,9 +4,9 @@ import { useNavigate } from "react-router";
 import { useFindAllUsersMutation } from "../../../../api/api";
 import { AccountWithAccessLevelsDto } from "../../../../api/types/apiParams";
 import { ShowAccountInfo } from "../../../../api/types/common";
-import AccountDetails from "../../../../component/AccountDetails/AccountDetails";
-import ActivateButton from "../../../../component/Button/ActivateButton/ActivateButton";
-import { DeactivateButton } from "../../../../component/Button/DeactivateButton/DeactivateButton";
+import AccountDetails from "../../../../components/AccountDetails/AccountDetails";
+import ActivateButton from "../../../../components/Button/ActivateButton/ActivateButton";
+import { DeactivateButton } from "../../../../components/Button/DeactivateButton/DeactivateButton";
 import styles from "./userManagment.module.scss";
 
 const UserManagment = () => {

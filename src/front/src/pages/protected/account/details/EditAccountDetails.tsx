@@ -5,7 +5,7 @@ import {
     GoogleReCaptchaProvider,
     useGoogleReCaptcha,
 } from "react-google-recaptcha-v3";
-import ChangeOwnPasswordForm from "../../../../component/Form/changeOwnPasswordForm/ChangeOwnPasswordForm";
+import ChangeOwnPasswordForm from "../../../../components/Form/changeOwnPasswordForm/ChangeOwnPasswordForm";
 import {
     useEditOwnAccountMutation,
     useGetOwnAccountDetailsWorkaroundMutation,

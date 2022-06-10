@@ -4,9 +4,9 @@ import styles from "./userDetails.module.scss";
 import { useTranslation } from "react-i18next";
 import { AccountWithAccessLevelsDto } from "../../../../api/types/apiParams";
 import { useGetAccountByLoginMutation } from "../../../../api/api";
-import RemoveAccessLevelForm from "../../../../component/Form/removeAccessLevelForm/RemoveAccessLevelForm";
-import EditAccountDataForm from "../../../../component/Form/editAccountDataForm/EditAccountDataForm";
-import AddAccessLevelButton from "../../../../component/Button/AddAccessLevelButton/AddAccessLevelButton";
+import RemoveAccessLevelForm from "../../../../components/Form/removeAccessLevelForm/RemoveAccessLevelForm";
+import EditAccountDataForm from "../../../../components/Form/editAccountDataForm/EditAccountDataForm";
+import AddAccessLevelButton from "../../../../components/Button/AddAccessLevelButton/AddAccessLevelButton";
 
 
 const UserDetails = () => {

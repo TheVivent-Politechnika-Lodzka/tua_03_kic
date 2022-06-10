@@ -1,6 +1,6 @@
-import ContactBar from "../../../component/ContactBar/ContactBar";
-import Slider from "../../../component/Slider/Slider";
-import SelectorBar from "../../../component/TopBar/SelectorTopBar/SelectorTopBar";
+import ContactBar from "../../../components/ContactBar/ContactBar";
+import Slider from "../../../components/Slider/Slider";
+import SelectorBar from "../../../components/TopBar/SelectorTopBar/SelectorTopBar";
 import styles from "./homepage.module.scss";
 import { useTranslation } from "react-i18next";
 

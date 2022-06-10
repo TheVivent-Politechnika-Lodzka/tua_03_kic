@@ -1,7 +1,7 @@
 import { faEdit, faKey } from "@fortawesome/free-solid-svg-icons";
 import { useNavigate } from "react-router-dom";
-import AccessLevel from "../../../../component/shared/AccessLevel/AccessLevel";
-import ActionButton from "../../../../component/shared/ActionButton/ActionButton";
+import AccessLevel from "../../../../components/shared/AccessLevel/AccessLevel";
+import ActionButton from "../../../../components/shared/ActionButton/ActionButton";
 import avatar from "../../../../assets/images/avatar.jpg";
 import flagPL from "../../../../assets/images/PL.png";
 import flagEN from "../../../../assets/images/EN.png";
