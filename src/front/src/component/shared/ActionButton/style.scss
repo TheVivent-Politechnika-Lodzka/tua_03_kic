@@ -1,0 +1,50 @@
+@import "../../../variables.scss";
+
+.action-button {
+  width: 19rem;
+  padding: 0.75rem 2.75rem;
+  height: 3.25rem;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  font-size: 1.35rem;
+  color: white;
+  user-select: none;
+  border-radius: 0.75rem;
+  text-align: center;
+  cursor: pointer;
+  transition: 0.2s color ease-in-out, 0.2s background-color ease-in-out;
+  transition: 0.2s filter ease-in-out;
+
+  &:hover {
+    filter: brightness(140%);
+  }
+
+  .action-button-title {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: white;
+  }
+}
+
+.green {
+  background-color: $green;
+}
+
+.purple {
+  background-color: $purple;
+}
+
+.orange {
+  background-color: $dark-orange;
+}
+
+.red {
+  background-color: $red;
+}
+
+.disabled {
+  background-color: #e6e6e6;
+  color: #b3b3b3;
+  pointer-events: none;
+}
