@@ -1,31 +1,46 @@
+@import url("https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,400;0,700;1,400&display=swap");
+@import "variables.scss";
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Open Sans", sans-serif;
+}
+
+html {
+    @include sm {
+        font-size: 12px;
+    }
+
+    @include md {
+        font-size: 16px;
+    }
+}
+
 body {
-  background-color: black;
-  
-  margin: 0;
+    background-color: black;
 }
 
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
-    monospace;
+    font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
+        monospace;
 }
 
 ::-webkit-scrollbar {
-  width: 15px;
+    width: 15px;
 }
-
 
 ::-webkit-scrollbar-track {
-  background: transparent;
+    background: transparent;
 }
-
 
 ::-webkit-scrollbar-thumb {
-  background: #57ebed;
-  border-radius: 4px;
-  height: 40px;
+    background: #57ebed;
+    border-radius: 4px;
+    height: 40px;
 }
 
-
 ::-webkit-scrollbar-thumb:hover {
-  background: #d12013;
+    background: #d12013;
 }
