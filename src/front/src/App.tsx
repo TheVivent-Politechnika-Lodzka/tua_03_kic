@@ -1,5 +1,3 @@
-import React from "react";
-import "./App.css";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import HomePage from "./pages/unprotected/home/HomePage";
 import ErrorPage from "./pages/unprotected/error/ErrorPage";
@@ -15,11 +13,7 @@ import AuthorizedLayoutPage from "./pages/protected/AuthoirzedLayout/AuthorizedL
 import { ValidationProvider } from "./context/validationContext";
 import AccountDetailsPage from "./pages/protected/shared/AccountDetailsPage/AccountDetailsPage";
 import EditOwnAccountPage from "./pages/protected/shared/EditOwnAccountPage/EditOwnAccountPage";
-import UserDetails from "./pages/protected/admin/UserDetails/UserDetails";
-import UserManagment from "./pages/protected/admin/UserManagment/UserManagment";
-import ChangeUserPassword from "./pages/protected/admin/ChangeUserPassword/ChangeUserPassword";
-import CreateAccountPage from "./pages/protected/admin/AdminPage/createAccountPage/CreateAccountPage";
-import AdminPage from "./pages/protected/admin/AdminPage/AdminPage";
+import authorizedRoutes from "./security/authorizedRoutes";
 
 function App() {
     const user = useStoreSelector((state) => state.user);
@@ -35,14 +29,15 @@ function App() {
             }
         }
     } catch (error) {
-        console.log(error);
+        console.error(error);
     }
 
     return (
         <Router>
             <ValidationProvider>
                 <Routes>
-                    {user.cur && (
+                    <Route path="/*" element={<ErrorPage />} />
+                    {user.cur ? (
                         <Route element={<AuthorizedLayoutPage />}>
                             <Route
                                 path="/account"
@@ -52,43 +47,28 @@ function App() {
                                 path="/account/edit"
                                 element={<EditOwnAccountPage />}
                             />
-                            {user.cur === "ADMINISTRATOR" && (
-                                <>
-                                    <Route path="/" element={<AdminPage />} />
-                                    <Route
-                                        path="/accounts"
-                                        element={<UserManagment />}
-                                    />
-                                    <Route
-                                        path="/accounts/:login"
-                                        element={<UserDetails />}
-                                    />
-                                    <Route
-                                        path="/accounts/:login/change-password"
-                                        element={<ChangeUserPassword />}
-                                    />
-                                    <Route
-                                        path="/accounts/create-account"
-                                        element={<CreateAccountPage />}
-                                    />
-                                </>
-                            )}
+                            {authorizedRoutes(user.cur as AccessLevelType)}
                         </Route>
+                    ) : (
+                        <>
+                            <Route element={<HomeLayout />}>
+                                <Route path="/" element={<HomePage />} />
+                            </Route>
+                            <Route path="/login" element={<LoginPage />} />
+                            <Route
+                                path="/active"
+                                element={<ActivateAccountPage />}
+                            />
+                            <Route
+                                path="/reset-password"
+                                element={<ResetPasswordForm />}
+                            />
+                            <Route
+                                path="/reset-password-token"
+                                element={<ResetPasswordTokenForm />}
+                            />
+                        </>
                     )}
-                    <Route element={<HomeLayout />}>
-                        <Route path="/" element={<HomePage />} />
-                    </Route>
-                    <Route path="/login" element={<LoginPage />} />
-                    <Route path="/active" element={<ActivateAccountPage />} />
-                    <Route
-                        path="/reset-password"
-                        element={<ResetPasswordForm />}
-                    />
-                    <Route
-                        path="/reset-password-token"
-                        element={<ResetPasswordTokenForm />}
-                    />
-                    <Route path="/*" element={<ErrorPage />} />
                 </Routes>
             </ValidationProvider>
         </Router>
