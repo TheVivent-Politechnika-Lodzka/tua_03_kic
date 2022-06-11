@@ -10,15 +10,19 @@ import jakarta.ejb.TransactionAttributeType;
 import jakarta.inject.Inject;
 import jakarta.interceptor.Interceptors;
 import pl.lodz.p.it.ssbd2022.ssbd03.common.AbstractService;
+import pl.lodz.p.it.ssbd2022.ssbd03.entities.Appointment;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.ImplantReview;
+import pl.lodz.p.it.ssbd2022.ssbd03.entities.Status;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.InvalidParametersException;
 import pl.lodz.p.it.ssbd2022.ssbd03.common.Roles;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.Implant;
+import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.appointment.AppointmentNotFinishedException;
+import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.appointment.AppointmentNotFoundException;
 import pl.lodz.p.it.ssbd2022.ssbd03.interceptors.TrackerInterceptor;
+import pl.lodz.p.it.ssbd2022.ssbd03.mop.ejb.facades.AppointmentFacade;
 import pl.lodz.p.it.ssbd2022.ssbd03.mop.ejb.facades.ImplantFacade;
 import pl.lodz.p.it.ssbd2022.ssbd03.mop.ejb.facades.ImplantReviewFacade;
 import pl.lodz.p.it.ssbd2022.ssbd03.utils.PaginationData;
-import java.util.Date;
 
 @Stateful
 @DenyAll
@@ -31,6 +35,9 @@ public class MOPService extends AbstractService implements MOPServiceInterface, 
 
     @Inject
     private ImplantReviewFacade implantReviewFacade;
+
+    @Inject
+    private AppointmentFacade appointmentFacade;
 
     /**
      * Metoda tworząca nowy wszczep
@@ -70,6 +77,16 @@ public class MOPService extends AbstractService implements MOPServiceInterface, 
     @Override
     @RolesAllowed(Roles.CLIENT)
     public ImplantReview createReview(ImplantReview review) {
+        Appointment clientAppointment = appointmentFacade.findByClientLogin(review.getClient().getLogin())
+                .stream()
+                .filter(appointment -> appointment.getImplant().getId().equals(review.getImplant().getId()))
+                .findFirst()
+                .orElseThrow(AppointmentNotFoundException::new);
+
+        if(!clientAppointment.getStatus().equals(Status.FINISHED)) {
+            throw new AppointmentNotFinishedException();
+        }
+
         implantReviewFacade.create(review);
         return implantReviewFacade.findByUUID(review.getId());
     }

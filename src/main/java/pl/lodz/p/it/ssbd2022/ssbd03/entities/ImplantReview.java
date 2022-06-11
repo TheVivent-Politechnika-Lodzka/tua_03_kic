@@ -46,7 +46,7 @@ public class ImplantReview extends AbstractEntity implements Serializable {
     @Getter
     @Setter
     @NotNull
-    private DataClient client;
+    private Account client;
 
     @Basic(optional = false)
     @Column(name = "review", nullable = false, length = 1000)

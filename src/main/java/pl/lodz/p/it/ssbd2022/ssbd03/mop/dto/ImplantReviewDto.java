@@ -25,7 +25,7 @@ public class ImplantReviewDto {
     private UUID implantId;
 
     @Login
-    private String login;
+    private String clientLogin;
 
     @Review
     private String review;
