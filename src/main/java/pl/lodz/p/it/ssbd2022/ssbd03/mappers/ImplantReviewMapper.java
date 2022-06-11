@@ -51,6 +51,7 @@ public class ImplantReviewMapper {
 
         String login = dataClientFacade.getLoginFromId(review.getClient().getId());
 
+        implantReviewDto.setId(review.getId());
         implantReviewDto.setImplantId(review.getImplant().getId());
         implantReviewDto.setLogin(login);
         implantReviewDto.setReview(review.getReview());

@@ -19,6 +19,9 @@ import java.util.UUID;
 public class ImplantReviewDto {
 
     @NotNull
+    private UUID id;
+
+    @NotNull
     private UUID implantId;
 
     @Login
