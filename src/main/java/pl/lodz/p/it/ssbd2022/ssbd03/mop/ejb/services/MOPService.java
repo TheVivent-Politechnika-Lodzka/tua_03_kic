@@ -70,7 +70,8 @@ public class MOPService extends AbstractService implements MOPServiceInterface, 
     }
 
     /**
-     * Metoda tworząca recenzję wszczepu oraz zwracająca nowo utworzoną recenzję
+     * Metoda tworząca recenzję wszczepu oraz zwracająca nowo utworzoną recenzję.
+     * Recenzja nie może być utworzona, gdy wszczep nie został jeszcze wmontowany.
      * @param review - Recenzja wszczepu
      * @return Nowo utworzona recenzja wszczepu
      */

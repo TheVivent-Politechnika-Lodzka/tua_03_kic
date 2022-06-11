@@ -154,10 +154,10 @@ public interface MOPEndpointInterface {
     }
 
     // MOP.15 - Dodaj recenzję wszczepu
-    @POST
+    @PUT
     @RolesAllowed(Roles.CLIENT)
     @Consumes(MediaType.APPLICATION_JSON)
-    @Path("/add/implants/review")
+    @Path("/implants/reviews")
     default Response addImplantsReview(CreateImplantReviewDto createImplantReviewDto) {
         throw new MethodNotImplementedException();
     }
@@ -166,7 +166,7 @@ public interface MOPEndpointInterface {
     @DELETE
     @RolesAllowed({Roles.CLIENT, Roles.ADMINISTRATOR})
     @Consumes(MediaType.APPLICATION_JSON)
-    @Path("/delete/implants/review")
+    @Path("/implants/reviews")
     default Response deleteImplantsReview(String json) {
         throw new MethodNotImplementedException();
     }
