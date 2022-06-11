@@ -48,6 +48,13 @@ public interface MOPEndpointInterface {
         throw new MethodNotImplementedException();
     }
 
+    /**
+     * MOP.4 - Przeglądaj szczegoły wszczepu
+     *
+     * @param id uuid wybranego wszczepu
+     * @return wszczep
+     * @throws MethodNotImplementedException w momencie, gdy metoda jest niezaimplementowana
+     */
     @GET
     @PermitAll
     @Produces(MediaType.APPLICATION_JSON)

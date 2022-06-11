@@ -47,6 +47,13 @@ public interface MOPServiceInterface extends ServiceLocalInterface {
         throw new MethodNotImplementedException();
     }
 
+    /**
+     * Metoda zwracająca wybrany wszczep
+     *
+     * @param uuid indentyfikator wybranego wszczepu
+     * @return wszczep
+     * @throws MethodNotImplementedException metoda nie jest zaimplementowana
+     */
     default public Implant findImplantByUuid(UUID uuid){
         throw new MethodNotImplementedException();
     }
