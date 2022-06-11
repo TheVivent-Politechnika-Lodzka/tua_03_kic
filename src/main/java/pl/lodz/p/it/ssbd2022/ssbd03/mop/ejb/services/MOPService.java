@@ -17,6 +17,8 @@ import pl.lodz.p.it.ssbd2022.ssbd03.interceptors.TrackerInterceptor;
 import pl.lodz.p.it.ssbd2022.ssbd03.mop.ejb.facades.ImplantFacade;
 import pl.lodz.p.it.ssbd2022.ssbd03.utils.PaginationData;
 
+import java.util.UUID;
+
 @Stateful
 @DenyAll
 @Interceptors(TrackerInterceptor.class)
@@ -54,6 +56,12 @@ public class MOPService extends AbstractService implements MOPServiceInterface, 
             throw new InvalidParametersException();
         }
         return implantFacade.findInRangeWithPhrase(page, pageSize, phrase, archived);
+    }
+
+    @Override
+    @PermitAll
+    public Implant findImplantByUuid(UUID uuid){
+        return implantFacade.findByUUID(uuid);
     }
 
 
