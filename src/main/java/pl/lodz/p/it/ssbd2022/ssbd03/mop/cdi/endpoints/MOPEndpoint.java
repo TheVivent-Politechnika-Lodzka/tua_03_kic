@@ -8,9 +8,12 @@ import jakarta.ws.rs.Path;
 import jakarta.ws.rs.core.Response;
 import pl.lodz.p.it.ssbd2022.ssbd03.common.Config;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.Implant;
+import pl.lodz.p.it.ssbd2022.ssbd03.entities.ImplantReview;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.TransactionException;
 import pl.lodz.p.it.ssbd2022.ssbd03.mappers.ImplantMapper;
+import pl.lodz.p.it.ssbd2022.ssbd03.mappers.ImplantReviewMapper;
 import pl.lodz.p.it.ssbd2022.ssbd03.mop.dto.CreateImplantDto;
+import pl.lodz.p.it.ssbd2022.ssbd03.mop.dto.CreateReviewDto;
 import pl.lodz.p.it.ssbd2022.ssbd03.mop.dto.ImplantListElementDto;
 import pl.lodz.p.it.ssbd2022.ssbd03.mop.ejb.services.MOPServiceInterface;
 import pl.lodz.p.it.ssbd2022.ssbd03.utils.PaginationData;
@@ -27,6 +30,9 @@ public class MOPEndpoint implements MOPEndpointInterface{
 
     @Inject
     private ImplantMapper implantMapper;
+
+    @Inject
+    private ImplantReviewMapper implantReviewMapper;
 
     /**
      * MOP.1 - Dodaj nowy wszczep
@@ -80,6 +86,27 @@ public class MOPEndpoint implements MOPEndpointInterface{
         List<ImplantListElementDto> implantsDto = implantMapper.getListFromImplantListElementDtoFromImplant(implants);
         paginationData.setData(implantsDto);
         return Response.ok().entity(paginationData).build();
+    }
+
+    /**
+     * MOK.15 - Dodaj recenzję wszczepu
+     *
+     */
+    @Override
+    public Response addImplantsReview(CreateReviewDto createReviewDto) {
+        int TXCounter = Config.MAX_TX_RETRIES;
+        boolean commitedTX;
+        ImplantReview implantReview = implantReviewMapper.createImplantReviewFromDto(createReviewDto);
+        ImplantReview createdReview;
+        do {
+            createdReview = mopService.createReview(implantReview);
+            commitedTX = mopService.isLastTransactionCommited();
+        } while (!commitedTX && --TXCounter > 0);
+
+        if (!commitedTX) {
+            throw new TransactionException();
+        }
+        return Response.ok().entity(createdReview).build();
     }
 
 
