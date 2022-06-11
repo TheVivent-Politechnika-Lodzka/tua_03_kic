@@ -14,6 +14,8 @@ import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.database.DatabaseException;
 import pl.lodz.p.it.ssbd2022.ssbd03.interceptors.TrackerInterceptor;
 import pl.lodz.p.it.ssbd2022.ssbd03.security.Tagger;
 
+import java.util.UUID;
+
 @Interceptors(TrackerInterceptor.class)
 @Stateless
 @TransactionAttribute(TransactionAttributeType.MANDATORY)
@@ -28,6 +30,20 @@ public class DataClientFacade extends AbstractFacade<DataClient> {
 
     public DataClientFacade() {
         super(DataClient.class);
+    }
+
+    public String getLoginFromId(UUID id) throws AccountNotFoundException {
+        try {
+            TypedQuery<String> typedQuery = entityManager.createNamedQuery("DataClient.getLoginFromId", String.class);
+            typedQuery.setParameter("id", id);
+            return typedQuery.getSingleResult();
+        } catch (NoResultException e) {
+            throw AccountNotFoundException.notFoundById();
+        } catch (IllegalArgumentException e) {
+            throw new InvalidParametersException(e.getCause());
+        } catch (PersistenceException e) {
+            throw new DatabaseException(e.getCause());
+        }
     }
 
     public DataClient findByLogin(String login) {

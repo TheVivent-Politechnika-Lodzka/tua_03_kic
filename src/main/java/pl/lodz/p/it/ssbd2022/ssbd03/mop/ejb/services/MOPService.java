@@ -70,7 +70,6 @@ public class MOPService extends AbstractService implements MOPServiceInterface, 
     @Override
     @RolesAllowed(Roles.CLIENT)
     public ImplantReview createReview(ImplantReview review) {
-        review.setDate(new Date());
         implantReviewFacade.create(review);
         return implantReviewFacade.findByUUID(review.getId());
     }

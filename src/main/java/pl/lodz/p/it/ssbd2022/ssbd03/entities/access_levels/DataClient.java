@@ -20,6 +20,7 @@ import java.util.Collection;
         @NamedQuery(name = "DataClient.findAll", query = "SELECT d FROM DataClient d"),
         @NamedQuery(name = "DataClient.findById", query = "select d from DataClient d where d.id = :id"),
         @NamedQuery(name = "DataClient.findByLogin", query = "select d from Account a join a.accessLevelCollection d where a.login = :login"),
+        @NamedQuery(name = "DataClient.getLoginFromId", query = "select a.login from Account a join a.accessLevelCollection d where d.id = :id"),
     })
 @ToString(callSuper = true)
 @NoArgsConstructor

@@ -9,7 +9,7 @@ import jakarta.ws.rs.core.Response;
 import pl.lodz.p.it.ssbd2022.ssbd03.common.Roles;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.MethodNotImplementedException;
 import pl.lodz.p.it.ssbd2022.ssbd03.mop.dto.CreateImplantDto;
-import pl.lodz.p.it.ssbd2022.ssbd03.mop.dto.CreateReviewDto;
+import pl.lodz.p.it.ssbd2022.ssbd03.mop.dto.CreateImplantReviewDto;
 
 @DenyAll
 public interface MOPEndpointInterface {
@@ -158,7 +158,7 @@ public interface MOPEndpointInterface {
     @RolesAllowed(Roles.CLIENT)
     @Consumes(MediaType.APPLICATION_JSON)
     @Path("/add/implants/review")
-    default Response addImplantsReview(CreateReviewDto createReviewDto) {
+    default Response addImplantsReview(CreateImplantReviewDto createImplantReviewDto) {
         throw new MethodNotImplementedException();
     }
 

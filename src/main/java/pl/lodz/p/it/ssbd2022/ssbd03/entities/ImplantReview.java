@@ -56,13 +56,6 @@ public class ImplantReview extends AbstractEntity implements Serializable {
     private String review;
 
     @Basic(optional = false)
-    @Column(name = "date", nullable = false)
-    @Getter
-    @Setter
-    @NotNull
-    private Date date;
-
-    @Basic(optional = false)
     @Column(name = "rating", nullable = false)
     @Getter
     @Setter

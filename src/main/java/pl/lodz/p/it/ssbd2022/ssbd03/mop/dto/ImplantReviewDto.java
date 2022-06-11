@@ -9,13 +9,14 @@ import pl.lodz.p.it.ssbd2022.ssbd03.validation.Login;
 import pl.lodz.p.it.ssbd2022.ssbd03.validation.Rating;
 import pl.lodz.p.it.ssbd2022.ssbd03.validation.Review;
 
+import java.time.Instant;
 import java.util.UUID;
 
 @Getter
 @Setter
-@NoArgsConstructor
 @AllArgsConstructor
-public class CreateReviewDto {
+@NoArgsConstructor
+public class ImplantReviewDto {
 
     @NotNull
     private UUID implantId;
@@ -26,6 +27,10 @@ public class CreateReviewDto {
     @Review
     private String review;
 
+    @NotNull
+    private Instant createdAt;
+
     @Rating
     private double rating;
+
 }

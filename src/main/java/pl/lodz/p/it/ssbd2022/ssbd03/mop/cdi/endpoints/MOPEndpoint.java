@@ -13,8 +13,9 @@ import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.TransactionException;
 import pl.lodz.p.it.ssbd2022.ssbd03.mappers.ImplantMapper;
 import pl.lodz.p.it.ssbd2022.ssbd03.mappers.ImplantReviewMapper;
 import pl.lodz.p.it.ssbd2022.ssbd03.mop.dto.CreateImplantDto;
-import pl.lodz.p.it.ssbd2022.ssbd03.mop.dto.CreateReviewDto;
+import pl.lodz.p.it.ssbd2022.ssbd03.mop.dto.CreateImplantReviewDto;
 import pl.lodz.p.it.ssbd2022.ssbd03.mop.dto.ImplantListElementDto;
+import pl.lodz.p.it.ssbd2022.ssbd03.mop.dto.ImplantReviewDto;
 import pl.lodz.p.it.ssbd2022.ssbd03.mop.ejb.services.MOPServiceInterface;
 import pl.lodz.p.it.ssbd2022.ssbd03.utils.PaginationData;
 
@@ -93,10 +94,10 @@ public class MOPEndpoint implements MOPEndpointInterface{
      *
      */
     @Override
-    public Response addImplantsReview(CreateReviewDto createReviewDto) {
+    public Response addImplantsReview(CreateImplantReviewDto createImplantReviewDto) {
         int TXCounter = Config.MAX_TX_RETRIES;
         boolean commitedTX;
-        ImplantReview implantReview = implantReviewMapper.createImplantReviewFromDto(createReviewDto);
+        ImplantReview implantReview = implantReviewMapper.createImplantReviewFromDto(createImplantReviewDto);
         ImplantReview createdReview;
         do {
             createdReview = mopService.createReview(implantReview);
@@ -106,7 +107,9 @@ public class MOPEndpoint implements MOPEndpointInterface{
         if (!commitedTX) {
             throw new TransactionException();
         }
-        return Response.ok().entity(createdReview).build();
+
+        ImplantReviewDto createdReviewDto = implantReviewMapper.implantReviewDtofromImplantReview(createdReview);
+        return Response.ok().entity(createdReviewDto).build();
     }
 
 
