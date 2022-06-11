@@ -10,12 +10,15 @@ import jakarta.ejb.TransactionAttributeType;
 import jakarta.inject.Inject;
 import jakarta.interceptor.Interceptors;
 import pl.lodz.p.it.ssbd2022.ssbd03.common.AbstractService;
+import pl.lodz.p.it.ssbd2022.ssbd03.entities.ImplantReview;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.InvalidParametersException;
 import pl.lodz.p.it.ssbd2022.ssbd03.common.Roles;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.Implant;
 import pl.lodz.p.it.ssbd2022.ssbd03.interceptors.TrackerInterceptor;
 import pl.lodz.p.it.ssbd2022.ssbd03.mop.ejb.facades.ImplantFacade;
+import pl.lodz.p.it.ssbd2022.ssbd03.mop.ejb.facades.ImplantReviewFacade;
 import pl.lodz.p.it.ssbd2022.ssbd03.utils.PaginationData;
+import java.util.Date;
 
 @Stateful
 @DenyAll
@@ -26,13 +29,16 @@ public class MOPService extends AbstractService implements MOPServiceInterface, 
     @Inject
     private ImplantFacade implantFacade;
 
+    @Inject
+    private ImplantReviewFacade implantReviewFacade;
+
     /**
      * Metoda tworząca nowy wszczep
      * @param implant - nowy wszczep
      * @return Implant
      */
-    @RolesAllowed(Roles.ADMINISTRATOR)
     @Override
+    @RolesAllowed(Roles.ADMINISTRATOR)
     public Implant createImplant(Implant implant) {
         implantFacade.create(implant);
         return implantFacade.findByUUID(implant.getId());
@@ -56,6 +62,16 @@ public class MOPService extends AbstractService implements MOPServiceInterface, 
         return implantFacade.findInRangeWithPhrase(page, pageSize, phrase, archived);
     }
 
-
-
+    /**
+     * Metoda tworząca recenzję wszczepu oraz zwracająca nowo utworzoną recenzję
+     * @param review - Recenzja wszczepu
+     * @return Nowo utworzona recenzja wszczepu
+     */
+    @Override
+    @RolesAllowed(Roles.CLIENT)
+    public ImplantReview createReview(ImplantReview review) {
+        review.setDate(new Date());
+        implantReviewFacade.create(review);
+        return implantReviewFacade.findByUUID(review.getId());
+    }
 }

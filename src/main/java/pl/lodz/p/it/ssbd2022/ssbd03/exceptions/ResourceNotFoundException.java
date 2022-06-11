@@ -5,7 +5,7 @@ import jakarta.ejb.ApplicationException;
 import jakarta.ws.rs.core.Response;
 
 @ApplicationException(rollback = true)
-public class ResourceNotFoundException extends AppBaseException{
+public class ResourceNotFoundException extends AppBaseException {
 
     private static final String MESSAGE = "server.error.appBase.resourceNotFound";
 
