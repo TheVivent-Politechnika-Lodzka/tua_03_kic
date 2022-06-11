@@ -179,8 +179,15 @@ public class StartupConfig {
         } catch (ParseException e) {
             e.printStackTrace();
         }
+        Date dateEnd = null;
+        try {
+            dateEnd = new SimpleDateFormat("dd/MM/yyyy").parse("31/12/2021");
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
 
         appointment.setStartDate(dateStart);
+        appointment.setEndDate(dateEnd);
         appointment.setPrice(100);
         appointment.setStatus(Status.PENDING);
         appointment.setDescription("Przykladowa wizyta");
