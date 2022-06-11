@@ -32,6 +32,14 @@ public class DataClientFacade extends AbstractFacade<DataClient> {
         super(DataClient.class);
     }
 
+    /**
+     * Metoda zwracająca login użytkownika o podanym identyfikatorze
+     * @param id Identyfikator użytkownika
+     * @return Login użytkownika o podanym identyfikatorze
+     * @throws AccountNotFoundException jeśli nie znaleziono użytkownika o podanym identyfikatorze
+     * @throws InvalidParametersException jeśli podano niepoprawny identyfikator
+     * @throws DatabaseException jeśli wystąpił błąd w bazie danych
+     */
     public String getLoginFromId(UUID id) throws AccountNotFoundException {
         try {
             TypedQuery<String> typedQuery = entityManager.createNamedQuery("DataClient.getLoginFromId", String.class);
@@ -46,6 +54,14 @@ public class DataClientFacade extends AbstractFacade<DataClient> {
         }
     }
 
+    /**
+     * Metoda zwracająca obiekt DataClient o podanym loginie
+     * @param login Login użytkownika
+     * @return Obiekt DataClient o podanym loginie
+     * @throws AccountNotFoundException jeśli nie znaleziono użytkownika o podanym loginie
+     * @throws InvalidParametersException jeśli podany login jest niepoprawny
+     * @throws DatabaseException jeśli wystąpił błąd z bazą danych
+     */
     public DataClient findByLogin(String login) {
         try {
             TypedQuery<DataClient> typedQuery = entityManager.createNamedQuery("DataClient.findByLogin", DataClient.class);

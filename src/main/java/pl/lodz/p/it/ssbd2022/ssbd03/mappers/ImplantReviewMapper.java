@@ -22,6 +22,11 @@ public class ImplantReviewMapper {
     @Inject
     private ImplantMapper implantMapper;
 
+    /**
+     * Metoda mapuje obiekt typu {@link CreateImplantReviewDto} na obiekt typu {@link ImplantReview}.
+     * @param dto Obiekt typu {@link CreateImplantReviewDto}
+     * @return Obiekt typu {@link ImplantReview}
+     */
     public ImplantReview createImplantReviewFromDto(CreateImplantReviewDto dto) {
         ImplantReview review = new ImplantReview();
 
@@ -35,6 +40,12 @@ public class ImplantReviewMapper {
         return review;
     }
 
+
+    /**
+     * Metoda mapuje obiekt typu {@link ImplantReview} na obiekt typu {@link ImplantReviewDto}.
+     * @param review Obiekt typu {@link ImplantReview}
+     * @return Obiekt typu {@link ImplantReviewDto}
+     */
     public ImplantReviewDto implantReviewDtofromImplantReview(ImplantReview review) {
         ImplantReviewDto implantReviewDto = new ImplantReviewDto();
 

@@ -42,6 +42,9 @@ public class ImplantReviewFacade extends AbstractFacade<ImplantReview> {
      * Metoda zwracająca receznję implantu o podanym identyfikatorze
      * @param uuid Identyfikator recenzji implantu
      * @return Recenzja implantu o podanym identyfikatorze
+     * @throws ResourceNotFoundException - wyjątek rzucany w przypadku, gdy nie znaleziono recenzji implantu o podanym identyfikatorze
+     * @throws InvalidParametersException - wyjątek rzucany w przypadku, gdy podano nieprawidłowy identyfikator recenzji implantu
+     * @throws DatabaseException - wyjątek rzucany w przypadku błędu związanego z bazą danych
      */
     public ImplantReview findByUUID(UUID uuid) {
         try {
@@ -63,6 +66,9 @@ public class ImplantReviewFacade extends AbstractFacade<ImplantReview> {
      * @param entity Recenzja implantu
      * @throws ImplantReviewAlreadyExistsException - wyjątek rzucany w przypadku, gdy recenzja dla danego implantu,
      *                                             napisana przez tego samego użytkownika istnieje
+     *                                             w bazie danych
+     *                                            (nie można dodawać dwóch recenzji dla tego samego implantu przez tego samego użytkownika)
+     * @throws DatabaseException - wyjątek rzucany w przypadku błędu związanego z bazą danych
      */
     @Override
     @RolesAllowed(Roles.CLIENT)

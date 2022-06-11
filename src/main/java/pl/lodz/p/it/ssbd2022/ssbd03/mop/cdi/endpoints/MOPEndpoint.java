@@ -67,6 +67,7 @@ public class MOPEndpoint implements MOPEndpointInterface{
      * @param phrase szukana fraza
      * @param archived określa czy zwracac archiwalne czy niearchiwalne wszczepy
      * @return lista wszczepów
+     * @throws TransactionException jeśli transakcja nie została zatwierdzona
      */
     @PermitAll
     @Override
@@ -91,6 +92,9 @@ public class MOPEndpoint implements MOPEndpointInterface{
 
     /**
      * MOK.15 - Dodaj recenzję wszczepu
+     * @param createImplantReviewDto - Nowo napisana recenzja
+     * @return nowo utworzona recenzja
+     * @throws TransactionException jeśli transakcja nie została zatwierdzona
      *
      */
     @Override
