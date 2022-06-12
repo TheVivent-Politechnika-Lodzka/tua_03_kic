@@ -171,9 +171,9 @@ public class StartupConfig {
         appointment.setImplant(implant);
         appointment.setStartDate(new Date());
         appointment.setEndDate(new Date());
-        appointment.setStatus(Status.FINISHED);
+        appointment.setStatus(Status.PENDING); // TUTAJ ZMIENIAĆ DO TESTÓW
         appointment.setPrice(100);
-        appointment.setDescription("Appointment description"); // TUTAJ ZMIENIAĆ DO TESTÓW
+        appointment.setDescription("Appointment description");
 
         em.persist(appointment);
     }

@@ -10,7 +10,6 @@ import pl.lodz.p.it.ssbd2022.ssbd03.entities.Appointment;
 import pl.lodz.p.it.ssbd2022.ssbd03.security.Tagger;
 
 import java.util.List;
-import java.util.UUID;
 
 public class AppointmentFacade extends AbstractFacade<Appointment> {
 
@@ -28,6 +27,7 @@ public class AppointmentFacade extends AbstractFacade<Appointment> {
 
     /**
      * Metoda zwracająca wszystkie wizyty użytkownika o podanym loginie
+     *
      * @param login Login użytkownika
      * @return Lista wizyt użytkownika o podanym loginie
      */
