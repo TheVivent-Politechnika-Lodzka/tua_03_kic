@@ -66,8 +66,9 @@ public class MOPEndpoint implements MOPEndpointInterface {
         if (!commitedTX) {
             throw new TransactionException();
         }
+        ImplantDto implantDto = implantMapper.createImplantDtoFromImplant(createdImplant);
 
-        return Response.ok(createdImplant).build();
+        return Response.ok(implantDto).build();
     }
 
     //MOP.4 - Przegladaj szczegoły wszczepu
