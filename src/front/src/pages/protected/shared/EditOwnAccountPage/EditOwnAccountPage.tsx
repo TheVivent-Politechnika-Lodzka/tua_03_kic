@@ -1,6 +1,6 @@
 import { useContext, useEffect, useState } from "react";
 import avatar from "../../../../assets/images/avatar.jpg";
-import "./style.scss";
+import style from "./style.module.scss";
 import { faCancel, faCheck, faEdit } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useNavigate } from "react-router-dom";
@@ -77,6 +77,7 @@ const EditOwnAccountPageInternal = () => {
             return;
         }
         setAccount(response);
+        navigate("/account");
         setLoading({ ...loading, actionLoading: false });
     };
 
@@ -94,7 +95,7 @@ const EditOwnAccountPageInternal = () => {
         isEmailValid;
 
     return (
-        <section className="edit-own-account-page">
+        <section className={style.edit_own_account_page}>
             {loading.pageLoading ? (
                 <ReactLoading
                     type="cylon"
@@ -104,26 +105,26 @@ const EditOwnAccountPageInternal = () => {
                 />
             ) : (
                 <>
-                    <div className="edit-own-account-header">
+                    <div className={style.edit_own_account_header}>
                         <h2>Edytuj dane własnego konta:</h2>
                     </div>
-                    <div className="edit-own-account-content">
-                        <div className="edit-data-account-wrapper">
-                            <div className="avatar-wrapper">
+                    <div className={style.edit_own_account_content}>
+                        <div className={style.edit_data_account_wrapper}>
+                            <div className={style.avatar_wrapper}>
                                 <img
                                     src={avatar}
                                     alt="User avatar"
-                                    className="change-avatar"
+                                    className={style.change_avatar}
                                 />
-                                <div className="edit-avatar-icon-wrapper">
+                                <div className={style.edit_avatar_icon_wrapper}>
                                     <FontAwesomeIcon
                                         icon={faEdit}
-                                        className="edit-avatar-icon"
+                                        className={style.edit_avatar_icon}
                                     />
                                 </div>
                             </div>
-                            <div className="edit-fields-wrapper">
-                                <div className="edit-field">
+                            <div className={style.edit_fields_wrapper}>
+                                <div className={style.edit_field}>
                                     <InputWithValidation
                                         title="Imię: "
                                         value={account?.firstName}
@@ -142,7 +143,7 @@ const EditOwnAccountPageInternal = () => {
                                         message="Imię musi składać się z co najmniej 3 liter."
                                     />
                                 </div>
-                                <div className="edit-field">
+                                <div className={style.edit_field}>
                                     <InputWithValidation
                                         title="Nazwisko: "
                                         value={account?.lastName}
@@ -164,7 +165,7 @@ const EditOwnAccountPageInternal = () => {
 
                                 {accessLevel === "CLIENT" ? (
                                     <>
-                                        <div className="edit-field">
+                                        <div className={style.edit_field}>
                                             <InputWithValidation
                                                 title="Numer PESEL: "
                                                 value={
@@ -208,7 +209,7 @@ const EditOwnAccountPageInternal = () => {
                                                 message="Numer pesel musi składać się z 11 cyfr."
                                             />
                                         </div>
-                                        <div className="edit-field">
+                                        <div className={style.edit_field}>
                                             <InputWithValidation
                                                 title="Numer telefonu: "
                                                 value={
@@ -258,7 +259,7 @@ const EditOwnAccountPageInternal = () => {
                                     accessLevel
                                 ) ? (
                                     <>
-                                        <div className="edit-field">
+                                        <div className={style.edit_field}>
                                             <InputWithValidation
                                                 title="Numer telefonu: "
                                                 value={
@@ -301,7 +302,7 @@ const EditOwnAccountPageInternal = () => {
                                                 message="Numer telefonu musi składać się z 9 cyfr."
                                             />
                                         </div>
-                                        <div className="edit-field">
+                                        <div className={style.edit_field}>
                                             <InputWithValidation
                                                 title="Email kontaktowy: "
                                                 value={
@@ -347,7 +348,7 @@ const EditOwnAccountPageInternal = () => {
                                     </>
                                 ) : null}
                             </div>
-                            <div className="edit-data-buttons-wrapper">
+                            <div className={style.edit_data_buttons_wrapper}>
                                 <ActionButton
                                     onClick={handleSubmit}
                                     isDisabled={!isEveryFieldValid}

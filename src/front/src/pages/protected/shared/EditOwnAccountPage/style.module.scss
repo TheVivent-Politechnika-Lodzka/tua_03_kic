@@ -1,6 +1,6 @@
 @import "/src/variables.scss";
 
-.edit-own-account-page {
+.edit_own_account_page {
   width: 100%;
   height: 200rem;
   display: flex;
@@ -11,7 +11,7 @@
   background-color: $primary-color;
   overflow-x: hidden;
 
-  .edit-own-account-header {
+  .edit_own_account_header {
     width: 100%;
     display: flex;
     justify-content: center;
@@ -22,14 +22,14 @@
     color: white;
   }
 
-  .edit-own-account-content {
+  .edit_own_account_content {
     display: flex;
     flex-direction: row;
     justify-content: space-evenly;
     width: 85%;
     margin-block: 3rem;
     
-    .edit-data-account-wrapper {
+    .edit_data_account_wrapper {
       display: flex;
       justify-content: center;
       align-items: center;
@@ -38,7 +38,7 @@
       width: 80%;
       border-radius: 2.4rem;
 
-      .avatar-wrapper {
+      .avatar_wrapper {
         display: flex;
         justify-content: center;
         align-items: center;
@@ -51,13 +51,13 @@
         border: 10px solid $secondary-color;
         border-radius: 100%;
 
-        .change-avatar {
+        .change_avatar {
           width: 15rem;
           height: 15rem;
           border-radius: 100%;
         }
 
-        .edit-avatar-icon-wrapper {
+        .edit_avatar_icon_wrapper {
           position: absolute;
           top: 11rem;
           left: 11rem;
@@ -65,19 +65,19 @@
           border-radius: 100%;
           background-color: $light-gray;
 
-          .edit-avatar-icon {
+          .edit_avatar_icon {
             font-size: 1.5rem;
           }
         }
       }
 
-      .edit-fields-wrapper {
+      .edit_fields_wrapper {
         display: flex;
         flex-direction: column;
         align-items: center;
         width: 90%;
 
-        .edit-field {
+        .edit_field {
           display: flex;
           justify-content: space-between;
           align-items: center;
@@ -86,7 +86,7 @@
           margin-bottom: 2.5rem;
         }
 
-        .edit-data-validation-wrapper {
+        .edit_data_validation_wrapper {
           display: flex;
           justify-content: center;
           align-items: flex-start;
@@ -96,7 +96,7 @@
         }
       }
 
-      .edit-data-buttons-wrapper {
+      .edit_data_buttons_wrapper {
         display: flex;
         justify-content: flex-start;
         flex-direction: row;
