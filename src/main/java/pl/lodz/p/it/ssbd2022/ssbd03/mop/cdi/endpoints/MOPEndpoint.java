@@ -78,7 +78,6 @@ public class MOPEndpoint implements MOPEndpointInterface {
         if (!commitedTX) {
             throw new TransactionException();
         }
-        System.out.println(implant.getName());
 
         ImplantDto dto = implantMapper.createImplantDtoFromImplant(implant);
         return Response.ok(dto).tag(tagger.tag(dto)).build();
