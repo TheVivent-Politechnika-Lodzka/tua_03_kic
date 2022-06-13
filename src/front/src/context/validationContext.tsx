@@ -84,6 +84,15 @@ const validationReducer = (state: ContextState, action: ValidationAction) => {
                 isPESELValid: validate(action.payload.input, /^\d{11}$/),
             };
         }
+        case "VALIDATE_EMAIL": {
+            return {
+                ...state,
+                isEmailValid: validate(
+                    action.payload.input,
+                    /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+                ),
+            };
+        }
         case "RESET_VALIDATION": {
             return {
                 ...initialState,
