@@ -60,6 +60,7 @@ public class ImplantMapper {
      */
     public ImplantListElementDto implantListElementDtoFromImplant(Implant implant) {
         ImplantListElementDto implantListElementDto = new ImplantListElementDto();
+        implantListElementDto.setId(implant.getId());
         implantListElementDto.setName(implant.getName());
         implantListElementDto.setDescription(implant.getDescription());
         implantListElementDto.setPrice(implant.getPrice());
