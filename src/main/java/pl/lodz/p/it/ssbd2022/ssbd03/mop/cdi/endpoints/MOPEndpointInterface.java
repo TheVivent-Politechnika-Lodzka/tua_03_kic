@@ -63,6 +63,7 @@ public interface MOPEndpointInterface {
      * @param phrase szukana fraza
      * @param archived określa czy zwracac archiwalne czy niearchiwalne wszczepy
      * @return lista wszczepów
+     * @throws MethodNotImplementedException - w przypadku braku implementacji metody
      */
     @GET
     @RolesAllowed(Roles.ADMINISTRATOR)
@@ -153,7 +154,12 @@ public interface MOPEndpointInterface {
         throw new MethodNotImplementedException();
     }
 
-    // MOP.15 - Dodaj recenzję wszczepu
+    /**
+     * MOP.15 - Dodaj recenzję wszczepu
+     * @param createImplantReviewDto Recenzja wszczepu napisana przez użytkownika
+     * @return recenzja wszczepu
+     * @throws MethodNotImplementedException - w przypadku braku implementacji metody
+     */
     @PUT
     @RolesAllowed(Roles.CLIENT)
     @Consumes(MediaType.APPLICATION_JSON)
