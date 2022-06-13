@@ -9,11 +9,15 @@ import ValidationMessage from "../../../../components/shared/ValidationMessage/V
 import ActionButton from "../../../../components/shared/ActionButton/ActionButton";
 import { validationContext } from "../../../../context/validationContext";
 import { useStoreSelector } from "../../../../redux/reduxHooks";
-import { getOwnAccount } from "../../../../api";
+import {
+    editOwnAccount,
+    GetAccountResponse,
+    getOwnAccount,
+} from "../../../../api";
 import ReactLoading from "react-loading";
 
 const EditOwnAccountPage = () => {
-    const [account, setAccount] = useState<AccountDetails>();
+    const [account, setAccount] = useState<GetAccountResponse>();
     const [loading, setLoading] = useState<Loading>({
         pageLoading: true,
         actionLoading: false,
@@ -29,6 +33,7 @@ const EditOwnAccountPage = () => {
             isLastNameValid,
             isPhoneNumberValid,
             isPESELValid,
+            isEmailValid,
         },
         dispatch,
     } = useContext(validationContext);
@@ -38,14 +43,33 @@ const EditOwnAccountPage = () => {
     const handleGetOwnAccount = async () => {
         try {
             const data = await getOwnAccount();
-            console.log(data);
-            setAccount(data as AccountDetails);
+            if ("errorMessage" in data) return;
+            setAccount(data);
             setLoading({ ...loading, pageLoading: false });
         } catch (error: ApiError | any) {
             setLoading({ ...loading, pageLoading: false });
             setError(error);
             console.error(`${error?.status} ${error?.errorMessage}`);
         }
+    };
+
+    const handleSubmit = async () => {
+        if (!account) return;
+        setLoading({ ...loading, actionLoading: true });
+        const request = {
+            ...account,
+            captcha: "xd",
+        };
+        const response = await editOwnAccount(request);
+        if ("errorMessage" in response) {
+            setError(response);
+            console.error(`${response.status} ${response.errorMessage}`);
+            alert(response.errorMessage);
+            setLoading({ ...loading, actionLoading: false });
+            return;
+        }
+        setAccount(response);
+        setLoading({ ...loading, actionLoading: false });
     };
 
     useEffect(() => {
@@ -58,7 +82,8 @@ const EditOwnAccountPage = () => {
         isFirstNameValid &&
         isLastNameValid &&
         isPhoneNumberValid &&
-        isPESELValid;
+        isPESELValid &&
+        isEmailValid;
 
     return (
         <section className="edit-own-account-page">
@@ -96,6 +121,13 @@ const EditOwnAccountPage = () => {
                                         value={account?.firstName}
                                         validationType="VALIDATE_FIRSTNAME"
                                         isValid={isFirstNameValid}
+                                        onChange={(e) => {
+                                            if (e.target.value && account)
+                                                setAccount({
+                                                    ...account,
+                                                    firstName: e.target.value,
+                                                });
+                                        }}
                                     />
                                     <ValidationMessage
                                         isValid={isFirstNameValid}
@@ -108,6 +140,13 @@ const EditOwnAccountPage = () => {
                                         value={account?.lastName}
                                         validationType="VALIDATE_LASTNAME"
                                         isValid={isLastNameValid}
+                                        onChange={(e) => {
+                                            if (e.target.value && account)
+                                                setAccount({
+                                                    ...account,
+                                                    lastName: e.target.value,
+                                                });
+                                        }}
                                     />
                                     <ValidationMessage
                                         isValid={isLastNameValid}
@@ -115,9 +154,9 @@ const EditOwnAccountPage = () => {
                                     />
                                 </div>
 
-                                <div className="edit-field">
-                                    {accessLevel === "CLIENT" ? (
-                                        <>
+                                {accessLevel === "CLIENT" ? (
+                                    <>
+                                        <div className="edit-field">
                                             <InputWithValidation
                                                 title="Numer PESEL: "
                                                 value={
@@ -134,14 +173,34 @@ const EditOwnAccountPage = () => {
                                                 }
                                                 validationType="VALIDATE_PESEL"
                                                 isValid={isPESELValid}
+                                                onChange={(e) => {
+                                                    if (
+                                                        e.target.value &&
+                                                        account
+                                                    )
+                                                        setAccount((old) => {
+                                                            if (!old) return;
+                                                            old.accessLevels.forEach(
+                                                                (level) => {
+                                                                    if (
+                                                                        level.level ===
+                                                                        "CLIENT"
+                                                                    ) {
+                                                                        level.pesel =
+                                                                            e.target.value;
+                                                                    }
+                                                                }
+                                                            );
+                                                            return old;
+                                                        });
+                                                }}
                                             />
                                             <ValidationMessage
                                                 isValid={isPESELValid}
                                                 message="Numer pesel musi składać się z 11 cyfr."
                                             />
-                                        </>
-                                    ) : (
-                                        <>
+                                        </div>
+                                        <div className="edit-field">
                                             <InputWithValidation
                                                 title="Numer telefonu: "
                                                 value={
@@ -158,17 +217,131 @@ const EditOwnAccountPage = () => {
                                                 }
                                                 validationType="VALIDATE_PHONENUMBER"
                                                 isValid={isPhoneNumberValid}
+                                                onChange={(e) => {
+                                                    if (
+                                                        e.target.value &&
+                                                        account
+                                                    )
+                                                        setAccount((old) => {
+                                                            if (!old) return;
+                                                            old.accessLevels.forEach(
+                                                                (level) => {
+                                                                    if (
+                                                                        level.level ===
+                                                                        accessLevel
+                                                                    )
+                                                                        level.phoneNumber =
+                                                                            e.target.value;
+                                                                }
+                                                            );
+                                                            return old;
+                                                        });
+                                                }}
                                             />
                                             <ValidationMessage
                                                 isValid={isPhoneNumberValid}
                                                 message="Numer telefonu musi składać się z 9 cyfr."
                                             />
-                                        </>
-                                    )}
-                                </div>
+                                        </div>
+                                    </>
+                                ) : null}
+
+                                {["ADMINISTRATOR", "SPECIALIST"].includes(
+                                    accessLevel
+                                ) ? (
+                                    <>
+                                        <div className="edit-field">
+                                            <InputWithValidation
+                                                title="Numer telefonu: "
+                                                value={
+                                                    account?.accessLevels
+                                                        .filter(
+                                                            (level) =>
+                                                                level.level ===
+                                                                accessLevel
+                                                        )
+                                                        .map(
+                                                            (level) =>
+                                                                level.phoneNumber
+                                                        )[0]
+                                                }
+                                                validationType="VALIDATE_PHONENUMBER"
+                                                isValid={isPhoneNumberValid}
+                                                onChange={(e) => {
+                                                    if (
+                                                        e.target.value &&
+                                                        account
+                                                    )
+                                                        setAccount((old) => {
+                                                            if (!old) return;
+                                                            old.accessLevels.forEach(
+                                                                (level) => {
+                                                                    if (
+                                                                        level.level ===
+                                                                        accessLevel
+                                                                    )
+                                                                        level.phoneNumber =
+                                                                            e.target.value;
+                                                                }
+                                                            );
+                                                            return old;
+                                                        });
+                                                }}
+                                            />
+                                            <ValidationMessage
+                                                isValid={isPhoneNumberValid}
+                                                message="Numer telefonu musi składać się z 9 cyfr."
+                                            />
+                                        </div>
+                                        <div className="edit-field">
+                                            <InputWithValidation
+                                                title="Email kontaktowy: "
+                                                value={
+                                                    account?.accessLevels
+                                                        .filter(
+                                                            (level) =>
+                                                                level.level ===
+                                                                accessLevel
+                                                        )
+                                                        .map(
+                                                            (level) =>
+                                                                level.contactEmail
+                                                        )[0]
+                                                }
+                                                validationType="VALIDATE_EMAIL"
+                                                isValid={isEmailValid}
+                                                onChange={(e) => {
+                                                    if (
+                                                        e.target.value &&
+                                                        account
+                                                    )
+                                                        setAccount((old) => {
+                                                            if (!old) return;
+                                                            old.accessLevels.forEach(
+                                                                (level) => {
+                                                                    if (
+                                                                        level.level ===
+                                                                        accessLevel
+                                                                    )
+                                                                        level.contactEmail =
+                                                                            e.target.value;
+                                                                }
+                                                            );
+                                                            return old;
+                                                        });
+                                                }}
+                                            />
+                                            <ValidationMessage
+                                                isValid={isEmailValid}
+                                                message="Email musi być poprawny."
+                                            />
+                                        </div>
+                                    </>
+                                ) : null}
                             </div>
                             <div className="edit-data-buttons-wrapper">
                                 <ActionButton
+                                    onClick={handleSubmit}
                                     isDisabled={!isEveryFieldValid}
                                     icon={faCheck}
                                     color="green"
