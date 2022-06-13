@@ -15,14 +15,19 @@ import {
     getOwnAccount,
 } from "../../../../api";
 import ReactLoading from "react-loading";
+import {
+    GoogleReCaptchaProvider,
+    useGoogleReCaptcha,
+} from "react-google-recaptcha-v3";
 
-const EditOwnAccountPage = () => {
+const EditOwnAccountPageInternal = () => {
     const [account, setAccount] = useState<GetAccountResponse>();
     const [loading, setLoading] = useState<Loading>({
         pageLoading: true,
         actionLoading: false,
     });
     const [error, setError] = useState<ApiError>();
+    const { executeRecaptcha } = useGoogleReCaptcha();
 
     const accessLevel = useStoreSelector((state) => state.user.cur);
 
@@ -54,11 +59,14 @@ const EditOwnAccountPage = () => {
     };
 
     const handleSubmit = async () => {
-        if (!account) return;
+        if (!account || !executeRecaptcha) return;
         setLoading({ ...loading, actionLoading: true });
+
+        const captcha = await executeRecaptcha("edit_account");
+
         const request = {
             ...account,
-            captcha: "xd",
+            captcha,
         };
         const response = await editOwnAccount(request);
         if ("errorMessage" in response) {
@@ -361,6 +369,14 @@ const EditOwnAccountPage = () => {
                 </>
             )}
         </section>
+    );
+};
+
+const EditOwnAccountPage = () => {
+    return (
+        <GoogleReCaptchaProvider reCaptchaKey="6Lf85hEgAAAAAONrGfo8SoQSb9GmfzHXTTgjKJzT">
+            <EditOwnAccountPageInternal />
+        </GoogleReCaptchaProvider>
     );
 };
 
