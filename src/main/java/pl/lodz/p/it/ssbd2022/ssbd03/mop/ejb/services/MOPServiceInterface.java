@@ -88,6 +88,12 @@ public interface MOPServiceInterface extends ServiceLocalInterface {
         throw new MethodNotImplementedException();
     }
 
+    /**
+     * Metoda dodająca recenzję dla danego wszczepu, po zakończeniu wizyty
+     * @param review Recenzja wszczepu, napisana przez klienta
+     * @return Recenzja wszczepu
+     * @throws MethodNotImplementedException metoda nie jest zaimplementowana
+     */
     default ImplantReview createReview(ImplantReview review) {
         throw new MethodNotImplementedException();
     }

@@ -9,6 +9,7 @@ import jakarta.ws.rs.core.Response;
 import pl.lodz.p.it.ssbd2022.ssbd03.common.Roles;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.MethodNotImplementedException;
 import pl.lodz.p.it.ssbd2022.ssbd03.mop.dto.CreateImplantDto;
+import pl.lodz.p.it.ssbd2022.ssbd03.mop.dto.CreateImplantReviewDto;
 
 import java.util.UUID;
 
@@ -70,6 +71,7 @@ public interface MOPEndpointInterface {
      * @param phrase szukana fraza
      * @param archived określa czy zwracac archiwalne czy niearchiwalne wszczepy
      * @return lista wszczepów
+     * @throws MethodNotImplementedException - w przypadku braku implementacji metody
      */
     @GET
     @RolesAllowed(Roles.ADMINISTRATOR)
@@ -160,12 +162,17 @@ public interface MOPEndpointInterface {
         throw new MethodNotImplementedException();
     }
 
-    // MOP.15 - Dodaj recenzję wszczepu
-    @POST
+    /**
+     * MOP.15 - Dodaj recenzję wszczepu
+     * @param createImplantReviewDto Recenzja wszczepu napisana przez użytkownika
+     * @return recenzja wszczepu
+     * @throws MethodNotImplementedException - w przypadku braku implementacji metody
+     */
+    @PUT
     @RolesAllowed(Roles.CLIENT)
     @Consumes(MediaType.APPLICATION_JSON)
-    @Path("/add/implants/review")
-    default Response addImplantsReview(String json) {
+    @Path("/implants/reviews")
+    default Response addImplantsReview(CreateImplantReviewDto createImplantReviewDto) {
         throw new MethodNotImplementedException();
     }
 
@@ -173,7 +180,7 @@ public interface MOPEndpointInterface {
     @DELETE
     @RolesAllowed({Roles.CLIENT, Roles.ADMINISTRATOR})
     @Consumes(MediaType.APPLICATION_JSON)
-    @Path("/delete/implants/review")
+    @Path("/implants/reviews")
     default Response deleteImplantsReview(String json) {
         throw new MethodNotImplementedException();
     }

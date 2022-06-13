@@ -11,11 +11,15 @@ import jakarta.ws.rs.core.Response;
 import pl.lodz.p.it.ssbd2022.ssbd03.common.Config;
 import pl.lodz.p.it.ssbd2022.ssbd03.common.Roles;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.Implant;
+import pl.lodz.p.it.ssbd2022.ssbd03.entities.ImplantReview;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.TransactionException;
 import pl.lodz.p.it.ssbd2022.ssbd03.mappers.ImplantMapper;
+import pl.lodz.p.it.ssbd2022.ssbd03.mappers.ImplantReviewMapper;
 import pl.lodz.p.it.ssbd2022.ssbd03.mop.dto.CreateImplantDto;
+import pl.lodz.p.it.ssbd2022.ssbd03.mop.dto.CreateImplantReviewDto;
 import pl.lodz.p.it.ssbd2022.ssbd03.mop.dto.ImplantDto;
 import pl.lodz.p.it.ssbd2022.ssbd03.mop.dto.ImplantListElementDto;
+import pl.lodz.p.it.ssbd2022.ssbd03.mop.dto.ImplantReviewDto;
 import pl.lodz.p.it.ssbd2022.ssbd03.mop.ejb.services.MOPServiceInterface;
 import pl.lodz.p.it.ssbd2022.ssbd03.security.Tagger;
 import pl.lodz.p.it.ssbd2022.ssbd03.utils.PaginationData;
@@ -33,6 +37,9 @@ public class MOPEndpoint implements MOPEndpointInterface {
 
     @Inject
     private ImplantMapper implantMapper;
+
+    @Inject
+    private ImplantReviewMapper implantReviewMapper;
 
     @Inject
     private Tagger tagger;
@@ -91,6 +98,7 @@ public class MOPEndpoint implements MOPEndpointInterface {
      * @param phrase   szukana fraza
      * @param archived określa czy zwracac archiwalne czy niearchiwalne wszczepy
      * @return lista wszczepów
+     * @throws TransactionException jeśli transakcja nie została zatwierdzona
      */
     @PermitAll
     @Override
@@ -111,6 +119,32 @@ public class MOPEndpoint implements MOPEndpointInterface {
         List<ImplantListElementDto> implantsDto = implantMapper.getListFromImplantListElementDtoFromImplant(implants);
         paginationData.setData(implantsDto);
         return Response.ok().entity(paginationData).build();
+    }
+
+    /**
+     * MOK.15 - Dodaj recenzję wszczepu
+     * @param createImplantReviewDto - Nowo napisana recenzja
+     * @return nowo utworzona recenzja
+     * @throws TransactionException jeśli transakcja nie została zatwierdzona
+     *
+     */
+    @Override
+    public Response addImplantsReview(CreateImplantReviewDto createImplantReviewDto) {
+        int TXCounter = Config.MAX_TX_RETRIES;
+        boolean commitedTX;
+        ImplantReview implantReview = implantReviewMapper.createImplantReviewFromDto(createImplantReviewDto);
+        ImplantReview createdReview;
+        do {
+            createdReview = mopService.createReview(implantReview);
+            commitedTX = mopService.isLastTransactionCommited();
+        } while (!commitedTX && --TXCounter > 0);
+
+        if (!commitedTX) {
+            throw new TransactionException();
+        }
+
+        ImplantReviewDto createdReviewDto = implantReviewMapper.implantReviewDtofromImplantReview(createdReview);
+        return Response.ok().entity(createdReviewDto).build();
     }
 
 

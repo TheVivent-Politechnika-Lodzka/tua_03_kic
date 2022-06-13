@@ -10,11 +10,18 @@ import jakarta.ejb.TransactionAttributeType;
 import jakarta.inject.Inject;
 import jakarta.interceptor.Interceptors;
 import pl.lodz.p.it.ssbd2022.ssbd03.common.AbstractService;
+import pl.lodz.p.it.ssbd2022.ssbd03.entities.Appointment;
+import pl.lodz.p.it.ssbd2022.ssbd03.entities.ImplantReview;
+import pl.lodz.p.it.ssbd2022.ssbd03.entities.Status;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.InvalidParametersException;
 import pl.lodz.p.it.ssbd2022.ssbd03.common.Roles;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.Implant;
+import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.appointment.AppointmentNotFinishedException;
+import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.appointment.AppointmentNotFoundException;
 import pl.lodz.p.it.ssbd2022.ssbd03.interceptors.TrackerInterceptor;
+import pl.lodz.p.it.ssbd2022.ssbd03.mop.ejb.facades.AppointmentFacade;
 import pl.lodz.p.it.ssbd2022.ssbd03.mop.ejb.facades.ImplantFacade;
+import pl.lodz.p.it.ssbd2022.ssbd03.mop.ejb.facades.ImplantReviewFacade;
 import pl.lodz.p.it.ssbd2022.ssbd03.utils.PaginationData;
 
 import java.util.UUID;
@@ -28,13 +35,19 @@ public class MOPService extends AbstractService implements MOPServiceInterface, 
     @Inject
     private ImplantFacade implantFacade;
 
+    @Inject
+    private ImplantReviewFacade implantReviewFacade;
+
+    @Inject
+    private AppointmentFacade appointmentFacade;
+
     /**
      * Metoda tworząca nowy wszczep
      * @param implant - nowy wszczep
      * @return Implant
      */
-    @RolesAllowed(Roles.ADMINISTRATOR)
     @Override
+    @RolesAllowed(Roles.ADMINISTRATOR)
     public Implant createImplant(Implant implant) {
         implantFacade.create(implant);
         return implantFacade.findByUUID(implant.getId());
@@ -64,6 +77,26 @@ public class MOPService extends AbstractService implements MOPServiceInterface, 
         return implantFacade.findByUUID(uuid);
     }
 
+    /**
+     * Metoda tworząca recenzję wszczepu oraz zwracająca nowo utworzoną recenzję.
+     * Recenzja nie może być utworzona, gdy wszczep nie został jeszcze wmontowany.
+     * @param review - Recenzja wszczepu
+     * @return Nowo utworzona recenzja wszczepu
+     */
+    @Override
+    @RolesAllowed(Roles.CLIENT)
+    public ImplantReview createReview(ImplantReview review) {
+        Appointment clientAppointment = appointmentFacade.findByClientLogin(review.getClient().getLogin())
+                .stream()
+                .filter(appointment -> appointment.getImplant().getId().equals(review.getImplant().getId()))
+                .findFirst()
+                .orElseThrow(AppointmentNotFoundException::new);
 
+        if(!clientAppointment.getStatus().equals(Status.FINISHED)) {
+            throw new AppointmentNotFinishedException();
+        }
 
+        implantReviewFacade.create(review);
+        return implantReviewFacade.findByUUID(review.getId());
+    }
 }

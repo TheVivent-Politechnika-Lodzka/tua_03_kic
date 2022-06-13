@@ -7,11 +7,15 @@ import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.Account;
+import pl.lodz.p.it.ssbd2022.ssbd03.entities.Appointment;
+import pl.lodz.p.it.ssbd2022.ssbd03.entities.Implant;
+import pl.lodz.p.it.ssbd2022.ssbd03.entities.Status;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.access_levels.DataAdministrator;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.access_levels.DataClient;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.access_levels.DataSpecialist;
 import pl.lodz.p.it.ssbd2022.ssbd03.utils.HashAlgorithm;
-
+import java.time.Duration;
+import java.util.Date;
 import java.util.Locale;
 
 @Startup
@@ -31,6 +35,7 @@ public class StartupConfig {
         createClientAdmin();
         createClient();
         createSpecialist();
+        createAppointment();
         em.flush();
     }
 
@@ -139,4 +144,37 @@ public class StartupConfig {
         em.persist(specialist);
     }
 
+    public void createAppointment() {
+
+        Account client = em.createNamedQuery("Account.findByLogin", Account.class).setParameter("login", "client").getSingleResult();
+        Account specialist = em.createNamedQuery("Account.findByLogin", Account.class).setParameter("login", "spec").getSingleResult();
+
+        Implant implant = new Implant();
+        implant.setName("Implant tak fajny ze wszystkich stron");
+        implant.setDescription("Na pierwszym planie obrazu widać wzgórze, " +
+                "na którym oracz orze ziemie.Ten fragment płótna przyciąga uwagę, " +
+                "gdyż wzgórze przedstawione jest w jasnych kolorach. " +
+                "Chłop ma na sobie czerwony kubrak przykuwający wzrok na tle " +
+                "brązów i zieleni.Na dalszym planie widać pasterza i psa pilnującego " +
+                "stado owiec.Oraz rybaka zarzucającego sieć, statek, miasto i " +
+                "zachodzące słońce");
+        implant.setPrice(100);
+        implant.setManufacturer("Manufacturer kox");
+        implant.setPopularity(0);
+        implant.setDuration(Duration.ofDays(1));
+
+        em.persist(implant);
+
+        Appointment appointment = new Appointment();
+        appointment.setClient(client);
+        appointment.setSpecialist(specialist);
+        appointment.setImplant(implant);
+        appointment.setStartDate(new Date());
+        appointment.setEndDate(new Date());
+        appointment.setStatus(Status.FINISHED); // TUTAJ ZMIENIAĆ DO TESTÓW
+        appointment.setPrice(100);
+        appointment.setDescription("Appointment description");
+
+        em.persist(appointment);
+    }
 }
