@@ -1,7 +1,6 @@
 import ContactBar from "../../../components/ContactBar/ContactBar";
 import Slider from "../../../components/Slider/Slider";
-import SelectorBar from "../../../components/TopBar/SelectorTopBar/SelectorTopBar";
-import styles from "./homepage.module.scss";
+import styles from "./style.module.scss";
 import { useTranslation } from "react-i18next";
 
 const HomePage = () => {

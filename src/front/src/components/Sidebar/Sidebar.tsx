@@ -36,7 +36,7 @@ const Sidebar = () => {
     const location = useLocation();
 
     useEffect(() => {
-        items(isAdmin).forEach((item, index) => {
+        items(accessLevel as AccessLevelType).forEach((item, index) => {
             if (item.path === location.pathname) {
                 setCurrentRoute(index);
                 return;
@@ -57,21 +57,23 @@ const Sidebar = () => {
                 {expanded && <p className="logo-name">KIC</p>}
             </div>
             <div className="routes-wrapper">
-                {items(isAdmin).map(({ title, icon, path }, index) => {
-                    return (
-                        <SideBarRoute
-                            active={index === currentRoute}
-                            key={title}
-                            expanded={expanded}
-                            title={title}
-                            icon={icon}
-                            onClick={() => {
-                                handleChange(index);
-                                navigate(path);
-                            }}
-                        />
-                    );
-                })}
+                {items(accessLevel as AccessLevelType).map(
+                    ({ title, icon, path }, index) => {
+                        return (
+                            <SideBarRoute
+                                active={index === currentRoute}
+                                key={title}
+                                expanded={expanded}
+                                title={title}
+                                icon={icon}
+                                onClick={() => {
+                                    handleChange(index);
+                                    navigate(path);
+                                }}
+                            />
+                        );
+                    }
+                )}
             </div>
             <div className="logout-wrapper">
                 <SideBarRoute

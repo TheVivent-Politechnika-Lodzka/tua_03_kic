@@ -1,4 +1,4 @@
-export type AccessLevelName = "ADMINISTRATOR" | "CLIENT" | "SPECIALIST";
+export type AccessLevelName = "ADMINISTRATOR" | "CLIENT" | "SPECIALIST" | "UNAUTHORIZED";
 
 export interface Language {
     language: string;
