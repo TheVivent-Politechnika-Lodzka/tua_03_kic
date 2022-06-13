@@ -1,0 +1,45 @@
+$primary-color: #121218;
+$secondary-color: #262633;
+$light-gray: #737882;
+$light-green: #32ff84;
+$green: #00b046;
+$red: #f74242;
+$dark-orange: #ff6f1c;
+$purple: #9231f2;
+
+$administrator-main-color: #690e0e;
+$specialist-main-color: #2929a6;
+$client-main-color: #d0891e;
+
+$administrator-gradient: linear-gradient(96.28deg, #690e0e 0.99%, #cd1a1a 100%);
+$specialist-gradient: linear-gradient(97.49deg, #2929a6 0.83%, #0f85c8 100%);
+$client-gradient: linear-gradient(102.6deg, #d0891e 0%, #dca925 100%);
+
+$sm-min: 320px;
+$md-min: 768px;
+$lg-min: 1024px;
+$xl-min: 1200px;
+
+@mixin sm {
+  @media (min-width: #{$sm-min}) {
+    @content;
+  }
+}
+
+@mixin md {
+  @media (min-width: #{$md-min}) {
+    @content;
+  }
+}
+
+@mixin lg {
+  @media (min-width: #{$lg-min}) {
+    @content;
+  }
+}
+
+@mixin xl {
+  @media (min-width: #{$xl-min}) {
+    @content;
+  }
+}
