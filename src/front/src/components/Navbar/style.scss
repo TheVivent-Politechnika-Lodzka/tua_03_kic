@@ -2,6 +2,7 @@
 
 .navbar {
     transition: 0.2s background ease-in-out;
+    background-color: $primary-color;
     padding-block: 0.4rem;
     display: flex;
     justify-content: flex-end;
@@ -65,11 +66,47 @@
             box-shadow: 0px 6px 24px -12px rgba(255, 255, 255, 1);
         }
     }
+
+    .navbar-button-wrapper {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-evenly;
+        align-items: flex-end;
+        font-weight: bold;
+        margin-right: 3rem;
+        padding-block: 1rem;
+
+        .navbar-button-login,
+        .navbar-button-register {
+            font-size: 1.5rem;
+            padding: 0.5rem 1.5rem;
+            cursor: pointer;
+        }
+
+        .navbar-button-login {
+            color: $white;
+            border-radius: 2rem;
+            background-color: $primary-color;
+            border: 2px $white solid;
+            margin-right: 2rem;
+            transition: 0.15s background-color ease-in-out, 0.2s color ease-in-out;
+
+            &:hover {
+                background-color: $white;
+                color: $primary-color;
+            }
+        }
+
+        .navbar-button-register {
+            color: $primary-color;
+            border-radius: 2rem;
+            background-color: $white;
+        }
+    }
 }
 
 .administrator {
     background: $administrator-gradient;
-    
 }
 
 .specialist {
