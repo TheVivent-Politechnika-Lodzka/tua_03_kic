@@ -11,7 +11,6 @@ import jakarta.interceptor.Interceptors;
 import pl.lodz.p.it.ssbd2022.ssbd03.common.AbstractService;
 import pl.lodz.p.it.ssbd2022.ssbd03.common.Roles;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.Appointment;
-import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.MethodNotImplementedException;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.appointment.AppointmentStatusException;
 import pl.lodz.p.it.ssbd2022.ssbd03.interceptors.TrackerInterceptor;
 import pl.lodz.p.it.ssbd2022.ssbd03.mop.ejb.facades.AppointmentFacade;
@@ -20,6 +19,7 @@ import java.util.List;
 import java.util.UUID;
 import java.util.logging.Logger;
 
+import static pl.lodz.p.it.ssbd2022.ssbd03.entities.Status.FINISHED;
 import static pl.lodz.p.it.ssbd2022.ssbd03.entities.Status.REJECTED;
 
 @Stateful
@@ -42,9 +42,10 @@ public class MOPService extends AbstractService implements MOPServiceInterface, 
      */
     @Override
     @RolesAllowed(Roles.ADMINISTRATOR)
-    public Appointment cancelAppointment(String id) {
-        Appointment appointment = appointmentFacade.findById(UUID.fromString(id));
-        if (appointment.getStatus().equals(REJECTED)) throw new AppointmentStatusException();
+    public Appointment cancelAppointment(UUID id) {
+        Appointment appointment = appointmentFacade.findById(id);
+        if (appointment.getStatus().equals(REJECTED)) throw AppointmentStatusException.appointmentStatusAlreadyCancelled();
+        if (appointment.getStatus().equals(FINISHED)) throw AppointmentStatusException.appointmentStatusAlreadyFinished();
 
         appointment.setStatus(REJECTED);
         appointmentFacade.edit(appointment);

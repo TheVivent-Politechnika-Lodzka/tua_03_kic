@@ -8,6 +8,7 @@ import pl.lodz.p.it.ssbd2022.ssbd03.entities.ImplantReview;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.MethodNotImplementedException;
 
 import java.util.List;
+import java.util.UUID;
 
 public interface MOPServiceInterface extends ServiceLocalInterface {
 
@@ -61,7 +62,7 @@ public interface MOPServiceInterface extends ServiceLocalInterface {
      * @return Wizyta, która została odwołana
      * @throws MethodNotImplementedException w momencie, gdy metoda jest niezaimplementowana
      */
-    default Appointment cancelAppointment(String id) {
+    default Appointment cancelAppointment(UUID id) {
         throw new MethodNotImplementedException();
     }
 

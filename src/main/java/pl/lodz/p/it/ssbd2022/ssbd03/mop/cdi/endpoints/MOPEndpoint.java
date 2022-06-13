@@ -7,15 +7,13 @@ import jakarta.ws.rs.Path;
 import jakarta.ws.rs.core.Response;
 import pl.lodz.p.it.ssbd2022.ssbd03.common.Config;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.Appointment;
-import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.MethodNotImplementedException;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.TransactionException;
 import pl.lodz.p.it.ssbd2022.ssbd03.mappers.AppointmentMapper;
 import pl.lodz.p.it.ssbd2022.ssbd03.mop.dto.AppointmentDto;
-import pl.lodz.p.it.ssbd2022.ssbd03.mop.ejb.services.MOPService;
 import pl.lodz.p.it.ssbd2022.ssbd03.mop.ejb.services.MOPServiceInterface;
 import pl.lodz.p.it.ssbd2022.ssbd03.security.Tagger;
 
-import java.util.List;
+import java.util.UUID;
 
 @RequestScoped
 @DenyAll
@@ -39,7 +37,7 @@ public class MOPEndpoint implements MOPEndpointInterface{
      * @return odpowiedź HTTP
      */
     @Override
-    public Response cancelAnyVisit(String id) {
+    public Response cancelAnyVisit(UUID id) {
         tagger.verifyTag();
         Appointment cancelledAppointment;
 
@@ -58,6 +56,5 @@ public class MOPEndpoint implements MOPEndpointInterface{
 
         return Response.ok(appointmentDto).tag(tagger.tag(appointmentDto)).build();
     }
-
 
 }

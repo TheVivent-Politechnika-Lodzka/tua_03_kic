@@ -12,6 +12,7 @@ import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.MethodNotImplementedException;
 import pl.lodz.p.it.ssbd2022.ssbd03.mop.dto.AppointmentDto;
 
 import java.util.List;
+import java.util.UUID;
 
 @DenyAll
 public interface MOPEndpointInterface {
@@ -136,7 +137,7 @@ public interface MOPEndpointInterface {
     @RolesAllowed(Roles.ADMINISTRATOR)
     @Consumes(MediaType.APPLICATION_JSON)
     @Path("/cancel/visit/{id}")
-    default Response cancelAnyVisit(@PathParam("id") String id) {
+    default Response cancelAnyVisit(@PathParam("id") UUID id) {
         throw new MethodNotImplementedException();
     }
 
@@ -166,6 +167,5 @@ public interface MOPEndpointInterface {
     default Response deleteImplantsReview(String json) {
         throw new MethodNotImplementedException();
     }
-
 
 }
