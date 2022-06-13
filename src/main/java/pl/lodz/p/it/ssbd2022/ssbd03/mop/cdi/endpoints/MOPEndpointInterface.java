@@ -25,7 +25,7 @@ public interface MOPEndpointInterface {
     @PUT
     @RolesAllowed(Roles.ADMINISTRATOR)
     @Consumes(MediaType.APPLICATION_JSON)
-    @Path("/implants/create")
+    @Path("/implant/create")
     default Response createImplant(CreateImplantDto createImplantDto) {
         throw new MethodNotImplementedException();
     }
@@ -74,7 +74,7 @@ public interface MOPEndpointInterface {
     @GET
     @RolesAllowed(Roles.ADMINISTRATOR)
     @Produces(MediaType.APPLICATION_JSON)
-    @Path("/implants/list")
+    @Path("/implant/list")
     default Response listImplants(@QueryParam("page") int page, @QueryParam("size") int size, @QueryParam("phrase") @DefaultValue("") String phrase, @QueryParam("archived") @DefaultValue("false") boolean archived) {
         throw new MethodNotImplementedException();
     }
