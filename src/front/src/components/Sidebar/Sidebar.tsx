@@ -31,8 +31,6 @@ const Sidebar = () => {
         navigate("/");
         window.location.reload();
     };
-
-    const isAdmin = accessLevel === "ADMINISTRATOR";
     const location = useLocation();
 
     useEffect(() => {
@@ -75,14 +73,16 @@ const Sidebar = () => {
                     }
                 )}
             </div>
-            <div className="logout-wrapper">
-                <SideBarRoute
-                    expanded={expanded}
-                    title={"Wyloguj się"}
-                    icon={faSignOut}
-                    onClick={handleLogout}
-                />
-            </div>
+            {accessLevel && (
+                <div className="logout-wrapper">
+                    <SideBarRoute
+                        expanded={expanded}
+                        title={"Wyloguj się"}
+                        icon={faSignOut}
+                        onClick={handleLogout}
+                    />
+                </div>
+            )}
         </div>
     );
 };
