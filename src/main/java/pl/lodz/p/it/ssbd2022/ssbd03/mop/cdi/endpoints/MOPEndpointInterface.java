@@ -11,6 +11,8 @@ import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.MethodNotImplementedException;
 import pl.lodz.p.it.ssbd2022.ssbd03.mop.dto.CreateImplantDto;
 import pl.lodz.p.it.ssbd2022.ssbd03.mop.dto.CreateImplantReviewDto;
 
+import java.util.UUID;
+
 @DenyAll
 public interface MOPEndpointInterface {
 
@@ -47,12 +49,18 @@ public interface MOPEndpointInterface {
         throw new MethodNotImplementedException();
     }
 
-    // MOP.4 - Pobierz szczegóły wszczepu
+    /**
+     * MOP.4 - Przeglądaj szczegoły wszczepu
+     *
+     * @param id uuid wybranego wszczepu
+     * @return wszczep
+     * @throws MethodNotImplementedException w momencie, gdy metoda jest niezaimplementowana
+     */
     @GET
-    @RolesAllowed(Roles.ADMINISTRATOR)
+    @PermitAll
     @Produces(MediaType.APPLICATION_JSON)
-    @Path("/details/{id}")
-    default Response details(@PathParam("id") String id) {
+    @Path("/implants/details/{id}")
+    default Response getImplant(@PathParam("id") UUID id) {
         throw new MethodNotImplementedException();
     }
 

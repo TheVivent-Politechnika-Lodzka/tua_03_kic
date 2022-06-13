@@ -16,6 +16,11 @@ export interface JWT {
     exp: number;
 }
 
+export interface JWTTokens {
+    accessToken: JWT;
+    refreshToken: JWT;
+}
+
 interface ShowAccountInfo {
     login: string;
     firstName: string;

@@ -1,0 +1,29 @@
+@import "../../../variables.scss";
+
+.accessLevelWrapper {
+    cursor: pointer;
+
+    .accessLevelText {
+        padding: 0.4rem 0.8rem;
+        font-size: 1.25rem;
+        font-weight: bold;
+        color: white;
+        border-radius: 0.4rem;
+    }
+
+    &.administrator {
+        background: $administrator-gradient;
+    }
+
+    &.specialist {
+        background: $specialist-gradient;
+    }
+
+    &.client {
+        background: $client-gradient;
+    }
+}
+
+.selected {
+    border: 2px solid white;
+}

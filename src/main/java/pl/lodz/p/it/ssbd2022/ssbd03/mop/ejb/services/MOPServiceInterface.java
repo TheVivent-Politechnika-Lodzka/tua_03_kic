@@ -9,6 +9,7 @@ import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.MethodNotImplementedException;
 import pl.lodz.p.it.ssbd2022.ssbd03.utils.PaginationData;
 
 import java.util.List;
+import java.util.UUID;
 
 public interface MOPServiceInterface extends ServiceLocalInterface {
 
@@ -43,6 +44,17 @@ public interface MOPServiceInterface extends ServiceLocalInterface {
      * @throws MethodNotImplementedException metoda nie jest zaimplementowana
      */
     default PaginationData findImplants(int page, int pageSize, String phrase, boolean archived) {
+        throw new MethodNotImplementedException();
+    }
+
+    /**
+     * Metoda zwracająca wybrany wszczep
+     *
+     * @param uuid indentyfikator wybranego wszczepu
+     * @return wszczep
+     * @throws MethodNotImplementedException metoda nie jest zaimplementowana
+     */
+    default public Implant findImplantByUuid(UUID uuid){
         throw new MethodNotImplementedException();
     }
 

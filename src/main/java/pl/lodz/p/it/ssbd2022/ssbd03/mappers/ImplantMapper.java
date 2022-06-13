@@ -2,6 +2,7 @@ package pl.lodz.p.it.ssbd2022.ssbd03.mappers;
 
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.Implant;
 import pl.lodz.p.it.ssbd2022.ssbd03.mop.dto.CreateImplantDto;
+import pl.lodz.p.it.ssbd2022.ssbd03.mop.dto.ImplantDto;
 import pl.lodz.p.it.ssbd2022.ssbd03.mop.dto.ImplantListElementDto;
 
 import java.time.Duration;
@@ -12,9 +13,29 @@ import java.util.stream.Collectors;
 
 public class ImplantMapper {
 
+    /**
+     * Metoda konwertująca encję Implantu na DTO
+     *
+     * @param implant Obiekt Implantu
+     * @return ImplantDto
+     */
+    public ImplantDto createImplantDtoFromImplant(Implant implant) {
+        return new ImplantDto(
+                implant.getId(),
+                implant.getVersion(),
+                implant.getName(),
+                implant.getDescription(),
+                implant.getManufacturer(),
+                implant.getPrice(),
+                implant.isArchived(),
+                implant.getPopularity(),
+                implant.getDuration(),
+                implant.getImage());
+    }
 
     /**
      * Mapuje dane z obiektu CreateImplantDto na obiekt Implant
+     *
      * @param implantDto Obiekt CreateImplantDto
      * @return Implant - obiekt wszczepu
      */
@@ -33,6 +54,7 @@ public class ImplantMapper {
 
     /**
      * Mapuje dane z obiektu Implant na obiekt ImplantListElementDto
+     *
      * @param implant Obiekt Implant
      * @return ImplantListElement - obiekt wszczepu
      */
@@ -46,11 +68,12 @@ public class ImplantMapper {
     }
 
     /**
-     * Mapuje dane z obiektu Implant na obiekt AccountWithAccessLevelsDto
+     * Mapuje dane z listy Implantów na liste obiektów ImplantListElementDto
+     *
      * @param implants Lista obiektów Implant
      * @return List<ImplantListElementDto> - Lista obiektów ImplantListElementDto
      */
-    public List<ImplantListElementDto> getListFromImplantListElementDtoFromImplant(Collection<Implant> implants){
+    public List<ImplantListElementDto> getListFromImplantListElementDtoFromImplant(Collection<Implant> implants) {
         return null == implants ? null : implants.stream()
                 .filter(Objects::nonNull)
                 .map(this::implantListElementDtoFromImplant)

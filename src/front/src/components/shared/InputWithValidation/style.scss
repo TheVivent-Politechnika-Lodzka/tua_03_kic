@@ -1,0 +1,46 @@
+@import "../../../variables.scss";
+
+.edit-field-wrapper {
+  display: flex;
+  flex-direction: column;
+
+  .edit-field-title {
+    font-weight: bold;
+    font-size: 1.25rem;
+  }
+
+  .input-wrapper {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+
+    .edit-field-input {
+      outline: none;
+      border: none;
+      font-size: 1.25rem;
+      padding-block: 1rem;
+      background: none;
+      color: white;
+      transition: 0.15s border-bottom ease-in;
+
+      &.valid {
+        border-bottom: 2px solid $light-green;
+      }
+      &.invalid {
+        border-bottom: 2px solid $red;
+      }
+    }
+
+    .edit-field-icon {
+      font-size: 2rem;
+
+      &.valid {
+        color: $light-green;
+      }
+
+      &.invalid {
+        color: $red;
+      }
+    }
+  }
+}
