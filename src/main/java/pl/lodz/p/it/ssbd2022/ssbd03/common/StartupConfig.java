@@ -160,7 +160,7 @@ public class StartupConfig {
                 "zachodzące słońce");
         implant.setPrice(100);
         implant.setManufacturer("Manufacturer kox");
-        implant.setPopularity(4);
+        implant.setPopularity(0);
         implant.setDuration(Duration.ofDays(1));
 
         em.persist(implant);
