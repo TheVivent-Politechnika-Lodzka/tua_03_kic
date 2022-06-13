@@ -158,7 +158,7 @@ public class StartupConfig {
         implant.setDescription("testowy implant");
         implant.setManufacturer("Janusz Nowak");
         implant.setPrice(1000);
-        implant.setPopularity(10);
+        implant.setPopularity(0);
         implant.setDuration(Duration.between(LocalTime.NOON, LocalTime.MAX));
 
         em.persist(implant);

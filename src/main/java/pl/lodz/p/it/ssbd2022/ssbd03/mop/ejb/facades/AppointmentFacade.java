@@ -39,16 +39,6 @@ public class AppointmentFacade extends AbstractFacade<Appointment> {
         super(Appointment.class);
     }
 
-    /**
-     * Metoda zwiększająca wersję wizyty.
-     * Wymaga podania encji w stanie zarządzalnym
-     * @param appointment
-     */
-    @RolesAllowed(Roles.ADMINISTRATOR)
-    public void forceVersionIncrement(Appointment appointment) {
-        entityManager.lock(appointment, LockModeType.OPTIMISTIC_FORCE_INCREMENT);
-    }
-
 
     /**
      * Metoda edytująca wizytę w bazie danych. Uwzględnia wersję

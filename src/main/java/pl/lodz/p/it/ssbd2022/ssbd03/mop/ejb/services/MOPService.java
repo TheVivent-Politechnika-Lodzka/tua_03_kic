@@ -48,7 +48,6 @@ public class MOPService extends AbstractService implements MOPServiceInterface, 
 
         appointment.setStatus(REJECTED);
         appointmentFacade.edit(appointment);
-        appointmentFacade.forceVersionIncrement(appointment);
 
         return appointment;
     }
