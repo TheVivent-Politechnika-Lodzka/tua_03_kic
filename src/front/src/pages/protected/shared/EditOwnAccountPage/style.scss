@@ -36,7 +36,6 @@
       flex-direction: column;
       background-color: $secondary-color;
       width: 80%;
-      height: 53rem;
       border-radius: 2.4rem;
 
       .avatar-wrapper {
@@ -47,8 +46,10 @@
         cursor: pointer;
         align-self: flex-start;
         left: 4rem;
+        top: -3rem;
         margin-bottom: 2rem;
         border: 10px solid $secondary-color;
+        border-radius: 100%;
 
         .change-avatar {
           width: 15rem;
