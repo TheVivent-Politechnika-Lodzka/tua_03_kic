@@ -1,11 +1,11 @@
 import { useContext, useState } from "react";
 import { faCheck, faClose } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import "./style.scss";
 import {
     ActionType,
     validationContext,
 } from "../../../context/validationContext";
+import styles from "./style.module.scss";
 
 interface InputWithValidationProps {
     title: string;
@@ -22,8 +22,8 @@ const InputWithValidation = ({
     isValid,
     onChange,
 }: InputWithValidationProps) => {
-    const [input, setInput] = useState<string | undefined>(value);
-    const { state, dispatch } = useContext(validationContext);
+  const [input, setInput] = useState<string | undefined>(value);
+  const { state, dispatch } = useContext(validationContext);
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setInput(e.target.value);
@@ -37,20 +37,20 @@ const InputWithValidation = ({
     };
 
     return (
-        <div className="edit-field-wrapper">
-            <p className="edit-field-title">{title}</p>
-            <div className="input-wrapper">
+        <div className={styles.edit_field_wrapper}>
+            <p className={styles.title}>{title}</p>
+            <div className={styles.input_wrapper}>
                 <input
                     type="text"
                     value={input}
                     onChange={handleChange}
-                    className={`edit-field-input ${
-                        isValid ? "valid" : "invalid"
+                    className={`${styles.input} ${
+                        isValid ? styles.valid : styles.invalid
                     }`}
                 />
                 <FontAwesomeIcon
-                    className={`edit-field-icon ${
-                        isValid ? "valid" : "invalid"
+                    className={`${styles.icon} ${
+                        isValid ? styles.valid : styles.invalid
                     }`}
                     icon={isValid ? faCheck : faClose}
                     color="#00FF66"

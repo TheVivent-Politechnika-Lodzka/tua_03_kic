@@ -26,7 +26,7 @@ public interface MOPEndpointInterface {
     @PUT
     @RolesAllowed(Roles.ADMINISTRATOR)
     @Consumes(MediaType.APPLICATION_JSON)
-    @Path("/create")
+    @Path("/implant/create")
     default Response createImplant(CreateImplantDto createImplantDto) {
         throw new MethodNotImplementedException();
     }
@@ -76,7 +76,7 @@ public interface MOPEndpointInterface {
     @GET
     @RolesAllowed(Roles.ADMINISTRATOR)
     @Produces(MediaType.APPLICATION_JSON)
-    @Path("/list/implants")
+    @Path("/implant/list")
     default Response listImplants(@QueryParam("page") int page, @QueryParam("size") int size, @QueryParam("phrase") @DefaultValue("") String phrase, @QueryParam("archived") @DefaultValue("false") boolean archived) {
         throw new MethodNotImplementedException();
     }
@@ -90,7 +90,15 @@ public interface MOPEndpointInterface {
         throw new MethodNotImplementedException();
     }
 
-    // MOP.7 - przeglądaj wszystkie wizyty
+    /**
+     * MOP.7 - Przeglądaj listę wizyt
+     *
+     * @param page numer aktualnie przeglądanej strony
+     * @param size ilość rekordów na danej stronie
+     * @param phrase wyszukiwana fraza
+     * @return lista wizyt
+     * @throws MethodNotImplementedException w przypadku braku implementacji metody
+     */
     @GET
     @RolesAllowed(Roles.ADMINISTRATOR)
     @Produces(MediaType.APPLICATION_JSON)

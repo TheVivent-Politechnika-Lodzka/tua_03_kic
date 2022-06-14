@@ -37,7 +37,7 @@ public class Implant extends AbstractEntity implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Basic(optional = false)
-    @Column(name = "name", unique = true, nullable = false, length = 50)
+    @Column(name = "name", nullable = false, length = 50)
     @Getter @Setter
     @Name
     private String name;

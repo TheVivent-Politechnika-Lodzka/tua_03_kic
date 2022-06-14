@@ -1,4 +1,4 @@
-import {  useEffect } from "react";
+import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { AccessLevelDto } from "../../../api/types/apiParams";
 import { useStoreSelector } from "../../../redux/reduxHooks";
@@ -52,11 +52,11 @@ const AccessLevel = ({ accessLevel, clickable = false }: AccessLevelProps) => {
     useEffect(() => {}, []);
 
     return (
-        <div onClick={handleClick} className={styles.accessLevelWrapper}>
+        <div onClick={handleClick} className={styles.access_level_wrapper}>
             <p
-                className={`${
-                    styles.accessLevelText
-                }  ${accessLevel?.level.toLowerCase()} ${
+                className={`${styles.text}  ${
+                    styles[accessLevel?.level.toLowerCase()]
+                } ${
                     accessLevel?.level === level && styles.selected && clickable
                         ? styles.selected
                         : null

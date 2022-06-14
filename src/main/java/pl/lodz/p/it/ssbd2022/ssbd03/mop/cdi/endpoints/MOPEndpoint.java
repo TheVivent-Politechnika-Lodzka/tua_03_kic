@@ -10,16 +10,14 @@ import jakarta.ws.rs.PathParam;
 import jakarta.ws.rs.core.Response;
 import pl.lodz.p.it.ssbd2022.ssbd03.common.Config;
 import pl.lodz.p.it.ssbd2022.ssbd03.common.Roles;
+import pl.lodz.p.it.ssbd2022.ssbd03.entities.Appointment;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.Implant;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.ImplantReview;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.TransactionException;
+import pl.lodz.p.it.ssbd2022.ssbd03.mappers.AppointmentMapper;
 import pl.lodz.p.it.ssbd2022.ssbd03.mappers.ImplantMapper;
 import pl.lodz.p.it.ssbd2022.ssbd03.mappers.ImplantReviewMapper;
-import pl.lodz.p.it.ssbd2022.ssbd03.mop.dto.CreateImplantDto;
-import pl.lodz.p.it.ssbd2022.ssbd03.mop.dto.CreateImplantReviewDto;
-import pl.lodz.p.it.ssbd2022.ssbd03.mop.dto.ImplantDto;
-import pl.lodz.p.it.ssbd2022.ssbd03.mop.dto.ImplantListElementDto;
-import pl.lodz.p.it.ssbd2022.ssbd03.mop.dto.ImplantReviewDto;
+import pl.lodz.p.it.ssbd2022.ssbd03.mop.dto.*;
 import pl.lodz.p.it.ssbd2022.ssbd03.mop.ejb.services.MOPServiceInterface;
 import pl.lodz.p.it.ssbd2022.ssbd03.security.Tagger;
 import pl.lodz.p.it.ssbd2022.ssbd03.utils.PaginationData;
@@ -37,6 +35,9 @@ public class MOPEndpoint implements MOPEndpointInterface {
 
     @Inject
     private ImplantMapper implantMapper;
+
+    @Inject
+    private AppointmentMapper appointmentMapper;
 
     @Inject
     private ImplantReviewMapper implantReviewMapper;
@@ -66,8 +67,9 @@ public class MOPEndpoint implements MOPEndpointInterface {
         if (!commitedTX) {
             throw new TransactionException();
         }
+        ImplantDto implantDto = implantMapper.createImplantDtoFromImplant(createdImplant);
 
-        return Response.ok(createdImplant).build();
+        return Response.ok(implantDto).build();
     }
 
     //MOP.4 - Przegladaj szczegoły wszczepu
@@ -118,6 +120,36 @@ public class MOPEndpoint implements MOPEndpointInterface {
         List<Implant> implants = paginationData.getData();
         List<ImplantListElementDto> implantsDto = implantMapper.getListFromImplantListElementDtoFromImplant(implants);
         paginationData.setData(implantsDto);
+        return Response.ok().entity(paginationData).build();
+    }
+
+    /**
+     * MOP.7 - Przeglądaj listę wizyt
+     *
+     * @param page numer aktualnie przeglądanej strony
+     * @param size ilość rekordów na danej stronie
+     * @param phrase wyszukiwana fraza
+     * @return lista wizyt
+     * @throws TransactionException w przypadku braku zatwierdzenia transakcji
+     */
+    @PermitAll
+    @Override
+    public Response listVisits(int page, int size, String phrase) {
+        PaginationData paginationData;
+        int TXCounter = Config.MAX_TX_RETRIES;
+        boolean commitedTX;
+        do {
+            paginationData = mopService.findVisits(page, size, phrase);
+            commitedTX = mopService.isLastTransactionCommited();
+        } while (!commitedTX && TXCounter-- > 0);
+
+        if (!commitedTX) {
+            throw new TransactionException();
+        }
+
+        List<Appointment> appointments = paginationData.getData();
+        List<AppointmentListElementDto> appointmentDtos = appointmentMapper.appointmentListElementDtoList(appointments);
+        paginationData.setData(appointmentDtos);
         return Response.ok().entity(paginationData).build();
     }
 

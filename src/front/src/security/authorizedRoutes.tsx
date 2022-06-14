@@ -12,7 +12,6 @@ const authorizedRoutes = (accessLevel: AccessLevelType) => {
         case "ADMINISTRATOR": {
             return (
                 <>
-                    <Route path="/" element={<AdminMainPage />} />
                     <Route path="/accounts" element={<UserManagment />} />
                     <Route path="/accounts/:login" element={<UserDetails />} />
                     <Route
@@ -29,14 +28,12 @@ const authorizedRoutes = (accessLevel: AccessLevelType) => {
         case "SPECIALIST": {
             return (
                 <>
-                    <Route path="/" element={<SpecialistMainPage />} />
                 </>
             );
         }
         case "CLIENT": {
             return (
                 <>
-                    <Route path="/" element={<ClientMainPage />} />
                 </>
             );
         }
