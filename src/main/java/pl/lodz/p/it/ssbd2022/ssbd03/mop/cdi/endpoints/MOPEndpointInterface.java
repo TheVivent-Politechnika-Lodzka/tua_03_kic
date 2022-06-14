@@ -8,6 +8,7 @@ import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import pl.lodz.p.it.ssbd2022.ssbd03.common.Roles;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.MethodNotImplementedException;
+import pl.lodz.p.it.ssbd2022.ssbd03.mop.dto.AppointmentEditDto;
 import pl.lodz.p.it.ssbd2022.ssbd03.mop.dto.CreateImplantDto;
 import pl.lodz.p.it.ssbd2022.ssbd03.mop.dto.CreateImplantReviewDto;
 
@@ -138,7 +139,7 @@ public interface MOPEndpointInterface {
      * MOP.11 - Edytuj dowolną wizytę
      *
      * @param id id konkretnej wizyty
-     * @param json parametry, które w ramach wizyty będą zmieniane
+     * @param appointmentEditDto obiekt dto edytowanej wizyty
      * @return odpowiedź serwera (wizyta)
      * @throws MethodNotImplementedException w przypadku braku implementacji metody
      */
@@ -146,7 +147,7 @@ public interface MOPEndpointInterface {
     @RolesAllowed(Roles.ADMINISTRATOR)
     @Consumes(MediaType.APPLICATION_JSON)
     @Path("/edit/visit/{id}")
-    default Response editVisit(@PathParam("id") String id, String json) {
+    default Response editVisit(@PathParam("id") String id, AppointmentEditDto appointmentEditDto) {
         throw new MethodNotImplementedException();
     }
 

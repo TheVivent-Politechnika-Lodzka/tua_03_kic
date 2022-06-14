@@ -119,11 +119,13 @@ public class MOPService extends AbstractService implements MOPServiceInterface, 
     }
 
     @Override
-    @RolesAllowed(Roles.AUTHENTICATED)
-    public Appointment editAppointment(UUID uuid, Appointment appointment) {
+    @RolesAllowed(Roles.ADMINISTRATOR)
+    public Appointment editAppointmentByAdministrator(UUID uuid, Appointment appointment) {
         Appointment appointmentFromDb = appointmentFacade.findById(uuid);
-
-        //TODO setery
+        appointmentFromDb.setDescription(appointment.getDescription());
+        if(appointmentFromDb.getStatus() == Status.ACCEPTED) {
+            appointmentFromDb.setStatus(appointment.getStatus());
+        }
         appointmentFacade.edit(appointmentFromDb);
         return appointmentFromDb;
     }
