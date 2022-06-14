@@ -99,4 +99,22 @@ public class MOPService extends AbstractService implements MOPServiceInterface, 
         implantReviewFacade.create(review);
         return implantReviewFacade.findByUUID(review.getId());
     }
+
+    /**
+     * Metoda zwracająca liste wizyt
+     *
+     * @param page numer aktualnie przeglądanej strony
+     * @param pageSize  ilość rekordów na danej stronie
+     * @param phrase wyszukiwana fraza
+     * @return  Lista wizyt zgodnych z parametrami wyszukiwania
+     * @throws InvalidParametersException w przypadku podania nieprawidłowych parametrów
+     */
+    @Override
+    @PermitAll
+    public PaginationData findVisits(int page, int pageSize, String phrase) {
+        if(page == 0 || pageSize == 0) {
+            throw new InvalidParametersException();
+        }
+        return appointmentFacade.findInRangeWithPhrase(page, pageSize, phrase);
+    }
 }
