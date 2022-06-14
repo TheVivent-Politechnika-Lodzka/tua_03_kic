@@ -51,6 +51,15 @@ public class AppointmentFacade extends AbstractFacade<Appointment> {
         return typedQuery.getResultList();
     }
 
+    /**
+     * Metoda tworząca wizytę
+     * @param entity - wizyta
+     */
+    @Override
+    @RolesAllowed(Roles.CLIENT)
+    public void create(Appointment entity) {
+        super.create(entity);
+    }
 
     /**
      * Metoda edytująca wizytę w bazie danych. Uwzględnia wersję
