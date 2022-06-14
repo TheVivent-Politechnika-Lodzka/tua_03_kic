@@ -111,29 +111,6 @@ public class MOPService extends AbstractService implements MOPServiceInterface, 
     }
 
     /**
-     * Metoda tworząca recenzję wszczepu oraz zwracająca nowo utworzoną recenzję.
-     * Recenzja nie może być utworzona, gdy wszczep nie został jeszcze wmontowany.
-     * @param review - Recenzja wszczepu
-     * @return Nowo utworzona recenzja wszczepu
-     */
-    @Override
-    @RolesAllowed(Roles.CLIENT)
-    public ImplantReview createReview(ImplantReview review) {
-        Appointment clientAppointment = appointmentFacade.findByClientLogin(review.getClient().getLogin())
-                .stream()
-                .filter(appointment -> appointment.getImplant().getId().equals(review.getImplant().getId()))
-                .findFirst()
-                .orElseThrow(AppointmentNotFoundException::new);
-
-        if(!clientAppointment.getStatus().equals(Status.FINISHED)) {
-            throw new AppointmentNotFinishedException();
-        }
-
-        implantReviewFacade.create(review);
-        return implantReviewFacade.findByUUID(review.getId());
-    }
-
-    /**
      * Metoda zwracająca liste wizyt
      *
      * @param page numer aktualnie przeglądanej strony
@@ -161,5 +138,35 @@ public class MOPService extends AbstractService implements MOPServiceInterface, 
         }
         appointmentFacade.edit(appointmentFromDb);
         return appointmentFromDb;
+    }
+
+    /**
+     * Metoda tworząca recenzję wszczepu oraz zwracająca nowo utworzoną recenzję.
+     * Recenzja nie może być utworzona, gdy wszczep nie został jeszcze wmontowany.
+     * @param review - Recenzja wszczepu
+     * @return Nowo utworzona recenzja wszczepu
+     */
+    @Override
+    @RolesAllowed(Roles.CLIENT)
+    public ImplantReview createReview(ImplantReview review) {
+        Appointment clientAppointment = appointmentFacade.findByClientLogin(review.getClient().getLogin())
+                .stream()
+                .filter(appointment -> appointment.getImplant().getId().equals(review.getImplant().getId()))
+                .findFirst()
+                .orElseThrow(AppointmentNotFoundException::new);
+
+        if(!clientAppointment.getStatus().equals(Status.FINISHED)) {
+            throw new AppointmentNotFinishedException();
+        }
+
+        implantReviewFacade.create(review);
+        return implantReviewFacade.findByUUID(review.getId());
+    }
+
+    @Override
+    @RolesAllowed({Roles.ADMINISTRATOR, Roles.CLIENT})
+    public void deleteReview(UUID id) {
+        ImplantReview review = implantReviewFacade.findByUUID(id);
+        implantReviewFacade.remove(review);
     }
 }

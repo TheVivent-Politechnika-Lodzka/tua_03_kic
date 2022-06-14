@@ -210,7 +210,7 @@ public interface MOPEndpointInterface {
      * @throws MethodNotImplementedException - w przypadku braku implementacji metody
      */
     @DELETE
-    @RolesAllowed({Roles.CLIENT, Roles.ADMINISTRATOR})
+    @RolesAllowed({Roles.ADMINISTRATOR, Roles.CLIENT})
     @Consumes(MediaType.APPLICATION_JSON)
     @Path("/implant/review/{id}")
     default Response deleteImplantsReview(@PathParam("id") UUID id) {

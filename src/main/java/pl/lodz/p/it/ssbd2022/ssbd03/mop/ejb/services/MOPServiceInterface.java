@@ -120,13 +120,18 @@ public interface MOPServiceInterface extends ServiceLocalInterface {
      * Metoda dodająca recenzję dla danego wszczepu, po zakończeniu wizyty
      * @param review Recenzja wszczepu, napisana przez klienta
      * @return Recenzja wszczepu
-     * @throws MethodNotImplementedException metoda nie jest zaimplementowana
+     * @throws MethodNotImplementedException w momencie, gdy metoda jest niezaimplementowana
      */
     default ImplantReview createReview(ImplantReview review) {
         throw new MethodNotImplementedException();
     }
 
-    default void deleteReview(ImplantReview review) {
+    /**
+     * Metoda usuwająca recenzję dla danego wszczepu
+     * @param id Identyfikator recenzji wszczepu, która ma zostać usunięta
+     * @throws MethodNotImplementedException w momencie, gdy metoda jest niezaimplementowana
+     */
+    default void deleteReview(UUID id) {
         throw new MethodNotImplementedException();
     }
 

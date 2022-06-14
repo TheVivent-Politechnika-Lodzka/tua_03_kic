@@ -46,7 +46,7 @@ public class AccountFacade extends AbstractFacade<Account> {
      * @param login Login użytkownika, którego szukamy
      * @return Obiekt znalezionego konta
      * @throws InvalidParametersException, gdy podano niepoprawną wartość parametru
-     * @throws DatabaseException,          gdy wystąpi błąd związany z bazą danych
+     * @throws DatabaseException, gdy wystąpi błąd związany z bazą danych
      */
     @PermitAll
     public Account findByLogin(String login) {
