@@ -14,12 +14,12 @@
     box-shadow: 0 1rem 1.5rem rgba(34, 33, 33, 0.7);
     transition: 0.2s background-color ease-in-out;
 
-    .language-select {
+    .language_select {
         color: #121218;
         outline: none;
     }
 
-    .user-info-wrapper {
+    .user_info_wrapper {
         display: flex;
         flex-direction: row;
         align-items: center;
@@ -28,36 +28,36 @@
         width: 18.5rem;
         height: 100%;
 
-        .user-text-wrapper {
+        .user_text_wrapper {
             display: flex;
             flex-direction: column;
             align-items: center;
             margin-right: 2rem;
 
-            .user-login {
+            .login {
                 font-size: 1.75rem;
             }
 
-            .user-access-level-wrapper {
+            .user_access_level_wrapper {
                 display: flex;
                 flex-direction: row;
                 justify-content: flex-end;
                 align-items: center;
                 width: 100%;
 
-                .access-level-icon {
+                .icon {
                     font-size: 1.1rem;
                     margin-right: 1rem;
                 }
 
-                .access-level-text {
+                .text {
                     font-weight: bold;
                     font-size: 1rem;
                 }
             }
         }
 
-        .user-avatar {
+        .avatar {
             width: 5rem;
             height: 5rem;
             border-radius: 100%;
@@ -67,7 +67,7 @@
         }
     }
 
-    .navbar-button-wrapper {
+    .navbar_button_wrapper {
         display: flex;
         flex-direction: row;
         justify-content: space-evenly;
@@ -76,14 +76,14 @@
         margin-right: 3rem;
         padding-block: 1rem;
 
-        .navbar-button-login,
-        .navbar-button-register {
+        .login,
+        .register {
             font-size: 1.5rem;
             padding: 0.5rem 1.5rem;
             cursor: pointer;
         }
 
-        .navbar-button-login {
+        .login {
             color: $white;
             border-radius: 2rem;
             background-color: $primary-color;
@@ -97,7 +97,7 @@
             }
         }
 
-        .navbar-button-register {
+        .register {
             color: $primary-color;
             border-radius: 2rem;
             background-color: $white;

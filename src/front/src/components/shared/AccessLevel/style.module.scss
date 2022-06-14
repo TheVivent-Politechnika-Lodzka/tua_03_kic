@@ -1,9 +1,9 @@
 @import "../../../variables.scss";
 
-.accessLevelWrapper {
+.access_level_wrapper {
     cursor: pointer;
 
-    .accessLevelText {
+    .text {
         padding: 0.4rem 0.8rem;
         font-size: 1.25rem;
         font-weight: bold;
@@ -11,19 +11,19 @@
         border-radius: 0.4rem;
     }
 
-    &.administrator {
+    .selected {
+        border: 2px solid white;
+    }
+
+    .administrator {
         background: $administrator-gradient;
     }
 
-    &.specialist {
+    .specialist {
         background: $specialist-gradient;
     }
 
-    &.client {
+    .client {
         background: $client-gradient;
     }
-}
-
-.selected {
-    border: 2px solid white;
 }

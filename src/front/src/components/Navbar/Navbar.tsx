@@ -1,8 +1,8 @@
 import avatar from "../../assets/images/avatar.jpg";
 import { useStoreSelector } from "../../redux/reduxHooks";
 import UserAccessLevel from "./UserAccessLevel";
-import "./style.scss";
 import { useNavigate } from "react-router";
+import styles from "./style.module.scss";
 
 const Navbar = () => {
     const login = useStoreSelector((state) => state.user.sub);
@@ -10,26 +10,28 @@ const Navbar = () => {
     const navigate = useNavigate();
 
     return (
-        <nav className={`navbar ${accessLevel.toLowerCase()}`}>
+        <nav
+            className={`${styles.navbar} ${styles[accessLevel.toLowerCase()]}`}
+        >
             {accessLevel ? (
-                <div className="user-info-wrapper">
-                    <div className="user-text-wrapper">
-                        <p className="user-login">{login}</p>
+                <div className={styles.user_info_wrapper}>
+                    <div className={styles.user_text_wrapper}>
+                        <p className={styles.login}>{login}</p>
                         <UserAccessLevel accessLevel={accessLevel} />
                     </div>
                     <img
                         src={avatar}
                         alt="Avatar użytkownika"
-                        className="user-avatar"
+                        className={styles.avatar}
                     />
                 </div>
             ) : (
-                <div className="navbar-button-wrapper">
+                <div className={styles.navbar_button_wrapper}>
                     <div
                         onClick={() => {
                             navigate("/login");
                         }}
-                        className="navbar-button-login"
+                        className={styles.login}
                     >
                         Zaloguj
                     </div>
@@ -37,7 +39,7 @@ const Navbar = () => {
                         onClick={() => {
                             navigate("/login");
                         }}
-                        className="navbar-button-register"
+                        className={styles.register}
                     >
                         Zarejestruj się
                     </div>
