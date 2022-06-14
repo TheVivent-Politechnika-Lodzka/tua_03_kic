@@ -26,9 +26,8 @@ import java.util.Date;
         @NamedQuery(name = "Appointment.findBySpecialistId", query = "select a from Appointment a where a.specialist.id = :specialistId"),
         @NamedQuery(name = "Appointment.findByClientLogin", query = "select a from Appointment a where a.client.login = :login"),
         @NamedQuery(name = "Appointment.findBetweenDates", query = "select a from Appointment a where a.startDate >= :startDate and a.startDate <= :endDate"),
-        @NamedQuery(name = "Appointment.searchByPhrase", query = "select a from Appointment a where lower(a.description) like lower(:phrase)"),
+        @NamedQuery(name = "Appointment.searchByPhrase", query = "select a from Appointment a where a.client.login like %:phrase% or a.specialist.login like %:phrase%"),
 })
-//TODO Zastanowic sie czy wyszukiwac po opisie (jako fraza), czy moze czyms innym
 @ToString
 @NoArgsConstructor
 public class Appointment extends AbstractEntity implements Serializable {
