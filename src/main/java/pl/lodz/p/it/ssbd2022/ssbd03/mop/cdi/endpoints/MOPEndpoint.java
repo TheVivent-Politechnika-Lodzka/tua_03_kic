@@ -27,6 +27,7 @@ import pl.lodz.p.it.ssbd2022.ssbd03.mop.dto.AppointmentDto;
 import pl.lodz.p.it.ssbd2022.ssbd03.mop.ejb.services.MOPServiceInterface;
 import pl.lodz.p.it.ssbd2022.ssbd03.security.Tagger;
 
+import java.time.Instant;
 import java.util.UUID;
 import pl.lodz.p.it.ssbd2022.ssbd03.security.Tagger;
 import pl.lodz.p.it.ssbd2022.ssbd03.utils.PaginationData;
@@ -188,6 +189,40 @@ public class MOPEndpoint implements MOPEndpointInterface {
         List<AppointmentListElementDto> appointmentDtos = appointmentMapper.appointmentListElementDtoList(appointments);
         paginationData.setData(appointmentDtos);
         return Response.ok().entity(paginationData).build();
+    }
+
+    /**
+     * MOP.9 - Zarezerwuj wizytę
+     * @param createAppointmentDto - dane nowej wizyty
+     * @return Response - zawierająca status HTTP i utworzoną wizytę
+     */
+    @Override
+    public Response createAppointment(CreateAppointmentDto createAppointmentDto) {
+
+        String clientLogin = createAppointmentDto.getClientLogin();
+        String specialistLogin = createAppointmentDto.getSpecialistLogin();
+        UUID implantId = createAppointmentDto.getImplantId();
+        Instant startDate = createAppointmentDto.getStartDate();
+
+        Appointment createdAppointment;
+        int TXCounter = Config.MAX_TX_RETRIES;
+        boolean commitedTX;
+        do {
+            createdAppointment = mopService.createAppointment(
+                    clientLogin,
+                    specialistLogin,
+                    implantId,
+                    startDate
+            );
+            commitedTX = mopService.isLastTransactionCommited();
+        } while (!commitedTX && TXCounter-- > 0);
+
+        if (!commitedTX) {
+            throw new TransactionException();
+        }
+        AppointmentDto appointmentDto = appointmentMapper.createAppointmentDtoFromAppointment(createdAppointment);
+
+        return Response.ok(appointmentDto).tag(tagger.tag(appointmentDto)).build();
     }
 
     /**

@@ -3,16 +3,14 @@ package pl.lodz.p.it.ssbd2022.ssbd03.mop.cdi.endpoints;
 import jakarta.annotation.security.DenyAll;
 import jakarta.annotation.security.PermitAll;
 import jakarta.annotation.security.RolesAllowed;
+import jakarta.validation.Valid;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import pl.lodz.p.it.ssbd2022.ssbd03.common.Roles;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.Appointment;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.MethodNotImplementedException;
-import pl.lodz.p.it.ssbd2022.ssbd03.mop.dto.AppointmentDto;
-import pl.lodz.p.it.ssbd2022.ssbd03.mop.dto.AppointmentEditDto;
-import pl.lodz.p.it.ssbd2022.ssbd03.mop.dto.CreateImplantDto;
-import pl.lodz.p.it.ssbd2022.ssbd03.mop.dto.CreateImplantReviewDto;
+import pl.lodz.p.it.ssbd2022.ssbd03.mop.dto.*;
 
 import java.util.List;
 import java.util.UUID;
@@ -121,11 +119,17 @@ public interface MOPEndpointInterface {
     }
 
     // MOP.9 - Zarezerwuj wizytę
-    @POST
+
+    /**
+     * MOP.9 - Zarezerwuj wizytę
+     * @param dto - dane nowej wizyty
+     * @return Response - zawierająca status HTTP i utworzoną wizytę
+     */
+    @POST // ze względu na dodatkowe akcje zawierające się na utworzenie wizyty (obliczenie ceny, daty końcowej, itp.)
     @RolesAllowed(Roles.CLIENT)
     @Consumes(MediaType.APPLICATION_JSON)
-    @Path("/reserve")
-    default Response reserve(String json) {
+    @Path("/visit/create")
+    default Response createAppointment(@Valid CreateAppointmentDto dto) {
         throw new MethodNotImplementedException();
     }
 

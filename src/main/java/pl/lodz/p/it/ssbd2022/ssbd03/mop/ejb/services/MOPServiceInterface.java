@@ -8,6 +8,7 @@ import pl.lodz.p.it.ssbd2022.ssbd03.entities.ImplantReview;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.MethodNotImplementedException;
 import pl.lodz.p.it.ssbd2022.ssbd03.utils.PaginationData;
 
+import java.time.Instant;
 import java.util.List;
 import java.util.UUID;
 
@@ -80,7 +81,15 @@ public interface MOPServiceInterface extends ServiceLocalInterface {
         throw new MethodNotImplementedException();
     }
 
-    default Appointment createAppointment(Appointment appointment) {
+    /**
+     * Metoda tworząca nową wizytę
+     * @param clientLogin       - login klienta
+     * @param specialistLogin   - login specjalisty
+     * @param implantId         - identyfikator wszczepu
+     * @param startDate         - data rozpoczęcia wizyty
+     * @return Appointment - nowa wizyta
+     */
+    default Appointment createAppointment(String clientLogin, String specialistLogin, UUID implantId, Instant startDate) {
         throw new MethodNotImplementedException();
     }
 
