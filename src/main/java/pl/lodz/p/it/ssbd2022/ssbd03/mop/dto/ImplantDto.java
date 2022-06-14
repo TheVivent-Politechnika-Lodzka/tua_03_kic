@@ -1,5 +1,6 @@
 package pl.lodz.p.it.ssbd2022.ssbd03.mop.dto;
 
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -7,7 +8,6 @@ import lombok.Setter;
 import pl.lodz.p.it.ssbd2022.ssbd03.security.Taggable;
 import pl.lodz.p.it.ssbd2022.ssbd03.validation.*;
 
-import java.time.Duration;
 import java.util.UUID;
 
 @Getter
@@ -16,7 +16,9 @@ import java.util.UUID;
 @AllArgsConstructor
 public class ImplantDto implements Taggable {
 
+    @NotNull(message = "server.error.validation.constraints.notNull.id")
     private UUID id;
+    @NotNull(message = "server.error.validation.constraints.notNull.version")
     private Long version;
 
     @Name
@@ -31,11 +33,12 @@ public class ImplantDto implements Taggable {
     @Price
     private int price;
 
-    private boolean archived = false;
+    private boolean archived;
 
     private int popularity;
 
-    private Duration duration;
+    @DurationValue
+    private long duration;
 
     @Url
     private String image;

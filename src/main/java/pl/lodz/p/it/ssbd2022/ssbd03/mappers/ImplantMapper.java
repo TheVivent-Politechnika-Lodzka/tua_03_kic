@@ -29,7 +29,7 @@ public class ImplantMapper {
                 implant.getPrice(),
                 implant.isArchived(),
                 implant.getPopularity(),
-                implant.getDuration(),
+                implant.getDuration().toSeconds(),
                 implant.getImage());
     }
 
@@ -47,8 +47,21 @@ public class ImplantMapper {
         implant.setPrice(implantDto.getPrice());
         implant.setArchived(false);
         implant.setPopularity(0);
-        implant.setDuration(Duration.ofMillis(implantDto.getDuration()));
+        implant.setDuration(Duration.ofSeconds(implantDto.getDuration()));
         implant.setImage(implantDto.getUrl());
+        return implant;
+    }
+
+    public Implant createImplantFromImplantDto(ImplantDto implantDto) {
+        Implant implant = new Implant();
+        implant.setName(implantDto.getName());
+        implant.setDescription(implantDto.getDescription());
+        implant.setManufacturer(implantDto.getManufacturer());
+        implant.setPrice(implantDto.getPrice());
+        implant.setArchived(implantDto.isArchived());
+        implant.setPopularity(implantDto.getPopularity());
+        implant.setDuration(Duration.ofSeconds(implantDto.getDuration()));
+        implant.setImage(implantDto.getImage());
         return implant;
     }
 
