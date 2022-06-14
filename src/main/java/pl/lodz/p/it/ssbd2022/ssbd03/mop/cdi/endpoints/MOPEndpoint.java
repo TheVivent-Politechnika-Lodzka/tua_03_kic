@@ -153,6 +153,12 @@ public class MOPEndpoint implements MOPEndpointInterface {
         return Response.ok().entity(paginationData).build();
     }
 
+    @Override
+    @RolesAllowed(Roles.ADMINISTRATOR)
+    public Response editVisit(String id, String json) {
+        return Response.ok().build();
+    }
+
     /**
      * MOK.15 - Dodaj recenzję wszczepu
      * @param createImplantReviewDto - Nowo napisana recenzja

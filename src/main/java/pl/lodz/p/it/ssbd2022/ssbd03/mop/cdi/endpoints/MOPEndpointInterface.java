@@ -134,7 +134,14 @@ public interface MOPEndpointInterface {
         throw new MethodNotImplementedException();
     }
 
-    // MOP.11 - Edytuj dowolną wizytę
+    /**
+     * MOP.11 - Edytuj dowolną wizytę
+     *
+     * @param id id konkretnej wizyty
+     * @param json parametry, które w ramach wizyty będą zmieniane
+     * @return odpowiedź serwera (wizyta)
+     * @throws MethodNotImplementedException w przypadku braku implementacji metody
+     */
     @PUT
     @RolesAllowed(Roles.ADMINISTRATOR)
     @Consumes(MediaType.APPLICATION_JSON)

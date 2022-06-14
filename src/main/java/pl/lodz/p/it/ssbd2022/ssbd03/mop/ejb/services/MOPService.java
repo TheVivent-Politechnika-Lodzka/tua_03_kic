@@ -123,6 +123,7 @@ public class MOPService extends AbstractService implements MOPServiceInterface, 
     public Appointment editAppointment(UUID uuid, Appointment appointment) {
         Appointment appointmentFromDb = appointmentFacade.findById(uuid);
 
+        //TODO setery
         appointmentFacade.edit(appointmentFromDb);
         return appointmentFromDb;
     }
