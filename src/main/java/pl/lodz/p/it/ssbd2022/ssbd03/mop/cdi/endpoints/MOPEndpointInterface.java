@@ -152,7 +152,7 @@ public interface MOPEndpointInterface {
      * @return Response - odpowiedź zawierająca status HTTP
      * @throws MethodNotImplementedException w przypadku braku implementacji metody
      */
-    @POST
+    @PATCH
     @RolesAllowed(Roles.SPECIALIST)
     @Consumes(MediaType.APPLICATION_JSON)
     @Path("/finish/visit/{id}")
