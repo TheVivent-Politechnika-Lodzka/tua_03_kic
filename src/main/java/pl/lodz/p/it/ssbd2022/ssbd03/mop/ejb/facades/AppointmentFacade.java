@@ -1,20 +1,21 @@
 package pl.lodz.p.it.ssbd2022.ssbd03.mop.ejb.facades;
 
 import jakarta.annotation.security.PermitAll;
+import jakarta.annotation.security.RolesAllowed;
 import jakarta.inject.Inject;
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.PersistenceContext;
-import jakarta.persistence.PersistenceException;
-import jakarta.persistence.TypedQuery;
+import jakarta.persistence.*;
 import lombok.Getter;
 import pl.lodz.p.it.ssbd2022.ssbd03.common.AbstractFacade;
+import pl.lodz.p.it.ssbd2022.ssbd03.common.Roles;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.Appointment;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.InvalidParametersException;
+import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.ResourceNotFoundException;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.database.DatabaseException;
 import pl.lodz.p.it.ssbd2022.ssbd03.security.Tagger;
 import pl.lodz.p.it.ssbd2022.ssbd03.utils.PaginationData;
 
 import java.util.List;
+import java.util.UUID;
 
 public class AppointmentFacade extends AbstractFacade<Appointment> {
 
@@ -40,6 +41,29 @@ public class AppointmentFacade extends AbstractFacade<Appointment> {
         TypedQuery<Appointment> typedQuery = entityManager.createNamedQuery("Appointment.findByClientLogin", Appointment.class);
         typedQuery.setParameter("login", login);
         return typedQuery.getResultList();
+    }
+
+    /**
+     * Metoda wyszukująca konkretną wizytę względem wprowadzonego identyfikatora
+     *
+     * @param id Identyfikator poszukiwanej wizyty
+     * @return Obiekt znalezionej wizyty
+     * @throws InvalidParametersException, gdy podano niepoprawną wartość parametru
+     * @throws DatabaseException,          gdy wystąpi błąd związany z bazą danych
+     */
+    @PermitAll
+    public Appointment findById(UUID id) {
+        try {
+            TypedQuery<Appointment> typedQuery = entityManager.createNamedQuery("Appointment.findById", Appointment.class);
+            typedQuery.setParameter("id", id);
+            return typedQuery.getSingleResult();
+        } catch (NoResultException e) {
+            throw new ResourceNotFoundException();
+        } catch (IllegalArgumentException iae) {
+            throw new InvalidParametersException(iae.getCause());
+        } catch (PersistenceException pe) {
+            throw new DatabaseException(pe.getCause());
+        }
     }
 
     /**
@@ -74,5 +98,11 @@ public class AppointmentFacade extends AbstractFacade<Appointment> {
         } catch (PersistenceException e) {
             throw new DatabaseException(e.getCause());
         }
+    }
+
+    @Override
+    @RolesAllowed(Roles.AUTHENTICATED)
+    public void edit (Appointment appointment){
+        super.edit(appointment);
     }
 }

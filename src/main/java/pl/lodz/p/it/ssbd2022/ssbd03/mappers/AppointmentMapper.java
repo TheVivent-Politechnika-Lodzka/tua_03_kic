@@ -2,6 +2,7 @@ package pl.lodz.p.it.ssbd2022.ssbd03.mappers;
 
 import jakarta.inject.Inject;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.Appointment;
+import pl.lodz.p.it.ssbd2022.ssbd03.mop.dto.AppointmentEditDto;
 import pl.lodz.p.it.ssbd2022.ssbd03.mop.dto.AppointmentListElementDto;
 
 import java.util.Collection;
@@ -16,6 +17,26 @@ public class AppointmentMapper {
 
     @Inject
     private ImplantMapper implantMapper;
+
+    /**
+     * Metoda mapująca obiekt dto wizyty do edycji administratora na encję wizyty
+     *
+     * @param appointmentEditDto obiekt dto
+     * @return encja wizyty
+     */
+    public Appointment createAppointmentFromEditDto(AppointmentEditDto appointmentEditDto) {
+        Appointment appointment = new Appointment();
+        appointment.setDescription(appointmentEditDto.getDescription());
+        appointment.setStatus(appointmentEditDto.getStatus());
+        return appointment;
+    }
+
+    public AppointmentEditDto createEditDtoFromAppointment(Appointment appointment) {
+        AppointmentEditDto appointmentEditDto = new AppointmentEditDto();
+        appointmentEditDto.setDescription(appointment.getDescription());
+        appointmentEditDto.setStatus(appointment.getStatus());
+        return appointmentEditDto;
+    }
 
     /**
      * Metoda mapująca dane z encji Appointment na obiekt typu AppointmentListElementDto

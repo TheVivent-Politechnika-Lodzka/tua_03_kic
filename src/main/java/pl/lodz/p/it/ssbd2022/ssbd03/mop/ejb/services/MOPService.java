@@ -117,4 +117,16 @@ public class MOPService extends AbstractService implements MOPServiceInterface, 
         }
         return appointmentFacade.findInRangeWithPhrase(page, pageSize, phrase);
     }
+
+    @Override
+    @RolesAllowed(Roles.ADMINISTRATOR)
+    public Appointment editAppointmentByAdministrator(UUID uuid, Appointment appointment) {
+        Appointment appointmentFromDb = appointmentFacade.findById(uuid);
+        appointmentFromDb.setDescription(appointment.getDescription());
+        if(appointmentFromDb.getStatus() == Status.ACCEPTED) {
+            appointmentFromDb.setStatus(appointment.getStatus());
+        }
+        appointmentFacade.edit(appointmentFromDb);
+        return appointmentFromDb;
+    }
 }
