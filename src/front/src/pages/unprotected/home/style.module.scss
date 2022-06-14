@@ -9,7 +9,7 @@
 
     .title {
         color: aliceblue;
-        font-size: 5rem;
+        font-size: 4.5rem;
         text-align: center;
     }
     .second_title {
@@ -21,11 +21,11 @@
     .items_list {
         display: flex;
         justify-content: space-evenly;
-        margin-top: 5rem;
+        margin-top: 4.5rem;
         width: 85%;
 
         .single_item_circle {
-            width: 30rem;
+            width: 27rem;
             display: block;
             justify-content: center;
             align-items: center;
@@ -41,8 +41,8 @@
             }
 
             .item_image {
-                width: 15rem;
-                height: 15rem;
+                width: 13.5rem;
+                height: 13.5rem;
                 display: flex;
                 flex-direction: column;
                 border-radius: 100%;
@@ -61,21 +61,21 @@
                 .text_square_title {
                     color: rgb(255, 255, 255);
                     font-size: 1.75rem;
-                    padding-bottom: 10px;
+                    padding-bottom: 0.25rem;
                 }
 
                 .text_square {
                     color: rgb(151, 185, 215);
                     font-family: "Courier New", Courier, monospace;
-                    font-size: 1.25rem;
-                    padding-bottom: 10px;
+                    font-size: 1.15rem;
+                    padding-bottom: 0.25rem;
                 }
             }
         }
 
         .card {
-            height: 32rem;
-            width: 40rem;
+            height: 29rem;
+            width: 36rem;
             justify-content: center;
             align-items: center;
             padding: 1rem;
