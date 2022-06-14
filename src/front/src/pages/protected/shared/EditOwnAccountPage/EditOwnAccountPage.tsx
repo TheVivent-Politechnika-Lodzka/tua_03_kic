@@ -106,7 +106,7 @@ const EditOwnAccountPageInternal = () => {
             ) : (
                 <>
                     <div className={style.edit_own_account_header}>
-                        <h2>Edytuj dane własnego konta:</h2>
+                        <h2>Edytuj dane własnego konta</h2>
                     </div>
                     <div className={style.edit_own_account_content}>
                         <div className={style.edit_data_account_wrapper}>
