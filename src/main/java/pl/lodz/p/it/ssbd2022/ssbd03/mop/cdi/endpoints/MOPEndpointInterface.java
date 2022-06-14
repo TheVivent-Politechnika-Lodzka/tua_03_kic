@@ -145,7 +145,13 @@ public interface MOPEndpointInterface {
         throw new MethodNotImplementedException();
     }
 
-    // MOP.14 - Oznacz wizytę jako zakończoną
+    /**
+     * MOP.14 - Oznacz wizytę jako zakończoną
+     *
+     * @param id identyfikator wizyty, która ma zostać oznaczona jako zakończona
+     * @return Response - odpowiedź zawierająca status HTTP
+     * @throws MethodNotImplementedException w przypadku braku implementacji metody
+     */
     @POST
     @RolesAllowed(Roles.SPECIALIST)
     @Consumes(MediaType.APPLICATION_JSON)

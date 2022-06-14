@@ -14,6 +14,7 @@ import pl.lodz.p.it.ssbd2022.ssbd03.common.AbstractService;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.InvalidParametersException;
 import pl.lodz.p.it.ssbd2022.ssbd03.common.Roles;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.Implant;
+import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.MethodNotImplementedException;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.appointment.AppointmentFinishAttemptByInvalidSpecialistException;
 import pl.lodz.p.it.ssbd2022.ssbd03.interceptors.TrackerInterceptor;
 import pl.lodz.p.it.ssbd2022.ssbd03.mop.ejb.facades.AppointmentFacade;
@@ -67,6 +68,13 @@ public class MOPService extends AbstractService implements MOPServiceInterface, 
         return implantFacade.findInRangeWithPhrase(page, pageSize, phrase, archived);
     }
 
+    /**
+     * Metoda zapewniająca możliwość oznaczenia wizyty jako zakończonej
+     * @param id identyfikator wizyty
+     * @param login login specjalisty oznaczającego wizytę jako zakończoną
+     * @return wizyta oznaczona jako zakończona
+     * @throws AppointmentFinishAttemptByInvalidSpecialistException gdy specjalista próbuje zakończyć wizytę inną niż własna
+     */
     @RolesAllowed(Roles.SPECIALIST)
     @Override
     public Appointment finishAppointment(UUID id, String login) {

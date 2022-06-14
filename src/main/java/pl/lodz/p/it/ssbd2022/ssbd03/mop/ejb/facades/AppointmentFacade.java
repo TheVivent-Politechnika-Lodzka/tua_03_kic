@@ -57,6 +57,7 @@ public class AppointmentFacade extends AbstractFacade<Appointment> {
      * @param id Identyfikator poszukiwanej wizyty
      * @return Obiekt znalezionej wizyty
      * @throws InvalidParametersException, gdy podano niepoprawną wartość parametru
+     * @throws ResourceNotFoundException,  gdy nie znaleziono wizyty
      * @throws DatabaseException,          gdy wystąpi błąd związany z bazą danych
      */
     @PermitAll
