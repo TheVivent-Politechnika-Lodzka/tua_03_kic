@@ -83,7 +83,15 @@ public interface MOPServiceInterface extends ServiceLocalInterface {
         throw new MethodNotImplementedException();
     }
 
-    default Appointment editAppointment(Appointment appointment) {
+    /**
+     * Metoda pozwalająca na edycję wizyty
+     *
+     * @param id UUID edytowanej wizyty
+     * @param appointment parametry wizyty do edycji
+     * @return Zedytowana wizyta
+     * @throws MethodNotImplementedException w przypadku braku zaimplementowania metody
+     */
+    default Appointment editAppointment(UUID id, Appointment appointment) {
         throw new MethodNotImplementedException();
     }
 
