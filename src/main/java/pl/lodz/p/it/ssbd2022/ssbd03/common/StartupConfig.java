@@ -21,6 +21,8 @@ import java.time.Duration;
 import java.time.LocalTime;
 import java.util.Date;
 import java.util.List;
+import java.time.Duration;
+import java.util.Date;
 import java.util.Locale;
 
 @Startup
@@ -198,4 +200,37 @@ public class StartupConfig {
         em.persist(appointment);
     }
 
+    public void createAppointment() {
+
+        Account client = em.createNamedQuery("Account.findByLogin", Account.class).setParameter("login", "client").getSingleResult();
+        Account specialist = em.createNamedQuery("Account.findByLogin", Account.class).setParameter("login", "spec").getSingleResult();
+
+        Implant implant = new Implant();
+        implant.setName("Implant tak fajny ze wszystkich stron");
+        implant.setDescription("Na pierwszym planie obrazu widać wzgórze, " +
+                "na którym oracz orze ziemie.Ten fragment płótna przyciąga uwagę, " +
+                "gdyż wzgórze przedstawione jest w jasnych kolorach. " +
+                "Chłop ma na sobie czerwony kubrak przykuwający wzrok na tle " +
+                "brązów i zieleni.Na dalszym planie widać pasterza i psa pilnującego " +
+                "stado owiec.Oraz rybaka zarzucającego sieć, statek, miasto i " +
+                "zachodzące słońce");
+        implant.setPrice(100);
+        implant.setManufacturer("Manufacturer kox");
+        implant.setPopularity(0);
+        implant.setDuration(Duration.ofDays(1));
+
+        em.persist(implant);
+
+        Appointment appointment = new Appointment();
+        appointment.setClient(client);
+        appointment.setSpecialist(specialist);
+        appointment.setImplant(implant);
+        appointment.setStartDate(new Date());
+        appointment.setEndDate(new Date());
+        appointment.setStatus(Status.FINISHED); // TUTAJ ZMIENIAĆ DO TESTÓW
+        appointment.setPrice(100);
+        appointment.setDescription("Appointment description");
+
+        em.persist(appointment);
+    }
 }
