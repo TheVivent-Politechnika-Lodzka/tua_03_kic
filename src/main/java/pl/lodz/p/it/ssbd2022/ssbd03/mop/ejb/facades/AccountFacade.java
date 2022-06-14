@@ -22,6 +22,7 @@ import pl.lodz.p.it.ssbd2022.ssbd03.security.Tagger;
 import pl.lodz.p.it.ssbd2022.ssbd03.utils.PaginationData;
 
 import java.util.List;
+import java.util.UUID;
 
 @Interceptors(TrackerInterceptor.class)
 @Stateless
@@ -53,6 +54,29 @@ public class AccountFacade extends AbstractFacade<Account> {
         try {
             TypedQuery<Account> typedQuery = entityManager.createNamedQuery("Account.findByLogin", Account.class);
             typedQuery.setParameter("login", login);
+            return typedQuery.getSingleResult();
+        } catch (NoResultException e) {
+            throw new ResourceNotFoundException();
+        } catch (IllegalArgumentException e) {
+            throw new InvalidParametersException(e.getCause());
+        } catch (PersistenceException e) {
+            throw new DatabaseException(e.getCause());
+        }
+    }
+
+    /**
+     * Metoda wyszukująca konkretne konto względem wprowadzonego id
+     *
+     * @param id - id użytkownika, którego szukamy
+     * @return Obiekt znalezionego konta
+     * @throws InvalidParametersException, gdy podano niepoprawną wartość parametru
+     * @throws DatabaseException,          gdy wystąpi błąd związany z bazą danych
+     */
+    @PermitAll
+    public Account findByUUID(UUID id) {
+        try {
+            TypedQuery<Account> typedQuery = entityManager.createNamedQuery("Account.findById", Account.class);
+            typedQuery.setParameter("id", id);
             return typedQuery.getSingleResult();
         } catch (NoResultException e) {
             throw new ResourceNotFoundException();
