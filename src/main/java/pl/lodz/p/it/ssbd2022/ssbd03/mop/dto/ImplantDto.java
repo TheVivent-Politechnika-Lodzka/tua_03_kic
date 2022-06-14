@@ -31,7 +31,7 @@ public class ImplantDto implements Taggable {
     @Price
     private int price;
 
-    private boolean archived = false;
+    private boolean archived;
 
     private int popularity;
 

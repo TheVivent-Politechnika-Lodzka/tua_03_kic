@@ -18,7 +18,16 @@ import pl.lodz.p.it.ssbd2022.ssbd03.mappers.AppointmentMapper;
 import pl.lodz.p.it.ssbd2022.ssbd03.mappers.ImplantMapper;
 import pl.lodz.p.it.ssbd2022.ssbd03.mappers.ImplantReviewMapper;
 import pl.lodz.p.it.ssbd2022.ssbd03.mop.dto.*;
+import jakarta.ws.rs.core.Response;
+import pl.lodz.p.it.ssbd2022.ssbd03.common.Config;
+import pl.lodz.p.it.ssbd2022.ssbd03.entities.Appointment;
+import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.TransactionException;
+import pl.lodz.p.it.ssbd2022.ssbd03.mappers.AppointmentMapper;
+import pl.lodz.p.it.ssbd2022.ssbd03.mop.dto.AppointmentDto;
 import pl.lodz.p.it.ssbd2022.ssbd03.mop.ejb.services.MOPServiceInterface;
+import pl.lodz.p.it.ssbd2022.ssbd03.security.Tagger;
+
+import java.util.UUID;
 import pl.lodz.p.it.ssbd2022.ssbd03.security.Tagger;
 import pl.lodz.p.it.ssbd2022.ssbd03.utils.PaginationData;
 
@@ -34,16 +43,44 @@ public class MOPEndpoint implements MOPEndpointInterface {
     MOPServiceInterface mopService;
 
     @Inject
-    private ImplantMapper implantMapper;
+    AppointmentMapper appointmentMapper;
 
     @Inject
-    private AppointmentMapper appointmentMapper;
+    private ImplantMapper implantMapper;
 
     @Inject
     private ImplantReviewMapper implantReviewMapper;
 
     @Inject
     private Tagger tagger;
+
+    /**
+     * MOP.13 Odwołaj dowolną wizytę
+     * Metodę może wykonać tylko konto z poziomem dostępu administratora.
+     *
+     * @param id Identyfikator wizyty, która ma zostać odwołana
+     * @return odpowiedź HTTP
+     */
+    @Override
+    public Response cancelAnyVisit(UUID id) {
+        tagger.verifyTag();
+        Appointment cancelledAppointment;
+
+        int TXCounter = Config.MAX_TX_RETRIES;
+        boolean commitedTX;
+        do {
+            cancelledAppointment = mopService.cancelAppointment(id);
+            commitedTX = mopService.isLastTransactionCommited();
+        } while (!commitedTX && --TXCounter > 0);
+
+        if (!commitedTX) {
+            throw new TransactionException();
+        }
+
+        AppointmentDto appointmentDto = appointmentMapper.createAppointmentDtoFromAppointment(cancelledAppointment);
+
+        return Response.ok(appointmentDto).tag(tagger.tag(appointmentDto)).build();
+    }
 
     /**
      * MOP.1 - Dodaj nowy wszczep

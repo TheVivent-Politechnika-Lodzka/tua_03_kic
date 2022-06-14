@@ -2,7 +2,11 @@ package pl.lodz.p.it.ssbd2022.ssbd03.mop.ejb.facades;
 
 import jakarta.annotation.security.PermitAll;
 import jakarta.annotation.security.RolesAllowed;
+import jakarta.ejb.Stateless;
+import jakarta.ejb.TransactionAttribute;
+import jakarta.ejb.TransactionAttributeType;
 import jakarta.inject.Inject;
+import jakarta.interceptor.Interceptors;
 import jakarta.persistence.*;
 import lombok.Getter;
 import pl.lodz.p.it.ssbd2022.ssbd03.common.AbstractFacade;
@@ -11,12 +15,16 @@ import pl.lodz.p.it.ssbd2022.ssbd03.entities.Appointment;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.InvalidParametersException;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.ResourceNotFoundException;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.database.DatabaseException;
+import pl.lodz.p.it.ssbd2022.ssbd03.interceptors.TrackerInterceptor;
 import pl.lodz.p.it.ssbd2022.ssbd03.security.Tagger;
 import pl.lodz.p.it.ssbd2022.ssbd03.utils.PaginationData;
 
 import java.util.List;
 import java.util.UUID;
 
+@Interceptors(TrackerInterceptor.class)
+@Stateless
+@TransactionAttribute(TransactionAttributeType.MANDATORY)
 public class AppointmentFacade extends AbstractFacade<Appointment> {
 
     @PersistenceContext(unitName = "ssbd03mopPU")
@@ -42,6 +50,19 @@ public class AppointmentFacade extends AbstractFacade<Appointment> {
         typedQuery.setParameter("login", login);
         return typedQuery.getResultList();
     }
+
+
+    /**
+     * Metoda edytująca wizytę w bazie danych. Uwzględnia wersję
+     *
+     * @param entity
+     */
+    @Override
+    @RolesAllowed(Roles.AUTHENTICATED)
+    public void edit(Appointment entity) {
+        super.edit(entity);
+    }
+
 
     /**
      * Metoda wyszukująca konkretną wizytę względem wprowadzonego identyfikatora
@@ -70,11 +91,11 @@ public class AppointmentFacade extends AbstractFacade<Appointment> {
      * Metoda zwracająca listę wizyt
      *
      * @param pageNumber numer aktualnie przeglądanej strony
-     * @param perPage ilość rekordów na danej stronie
-     * @param phrase wyszukiwana fraza
-     * @return  Lista wizyt zgodnych z parametrami wyszukiwania
+     * @param perPage    ilość rekordów na danej stronie
+     * @param phrase     wyszukiwana fraza
+     * @return Lista wizyt zgodnych z parametrami wyszukiwania
      * @throws InvalidParametersException w przypadku podania nieprawidłowych parametrów
-     * @throws DatabaseException w przypadku wystąpienia błędu bazy danych
+     * @throws DatabaseException          w przypadku wystąpienia błędu bazy danych
      */
     @PermitAll
     public PaginationData findInRangeWithPhrase(int pageNumber, int perPage, String phrase) {
@@ -98,11 +119,5 @@ public class AppointmentFacade extends AbstractFacade<Appointment> {
         } catch (PersistenceException e) {
             throw new DatabaseException(e.getCause());
         }
-    }
-
-    @Override
-    @RolesAllowed(Roles.AUTHENTICATED)
-    public void edit (Appointment appointment){
-        super.edit(appointment);
     }
 }

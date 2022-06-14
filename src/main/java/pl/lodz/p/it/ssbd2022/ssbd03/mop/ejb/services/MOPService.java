@@ -1,6 +1,7 @@
 package pl.lodz.p.it.ssbd2022.ssbd03.mop.ejb.services;
 
 import jakarta.annotation.security.DenyAll;
+import jakarta.annotation.security.RolesAllowed;
 import jakarta.annotation.security.PermitAll;
 import jakarta.annotation.security.RolesAllowed;
 import jakarta.ejb.SessionSynchronization;
@@ -18,6 +19,9 @@ import pl.lodz.p.it.ssbd2022.ssbd03.common.Roles;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.Implant;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.appointment.AppointmentNotFinishedException;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.appointment.AppointmentNotFoundException;
+import pl.lodz.p.it.ssbd2022.ssbd03.common.Roles;
+import pl.lodz.p.it.ssbd2022.ssbd03.entities.Appointment;
+import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.appointment.AppointmentStatusException;
 import pl.lodz.p.it.ssbd2022.ssbd03.interceptors.TrackerInterceptor;
 import pl.lodz.p.it.ssbd2022.ssbd03.mop.ejb.facades.AppointmentFacade;
 import pl.lodz.p.it.ssbd2022.ssbd03.mop.ejb.facades.ImplantFacade;
@@ -25,6 +29,14 @@ import pl.lodz.p.it.ssbd2022.ssbd03.mop.ejb.facades.ImplantReviewFacade;
 import pl.lodz.p.it.ssbd2022.ssbd03.utils.PaginationData;
 
 import java.util.UUID;
+import pl.lodz.p.it.ssbd2022.ssbd03.mop.ejb.facades.AppointmentFacade;
+
+import java.util.List;
+import java.util.UUID;
+import java.util.logging.Logger;
+
+import static pl.lodz.p.it.ssbd2022.ssbd03.entities.Status.FINISHED;
+import static pl.lodz.p.it.ssbd2022.ssbd03.entities.Status.REJECTED;
 
 @Stateful
 @DenyAll
@@ -32,14 +44,35 @@ import java.util.UUID;
 @TransactionAttribute(TransactionAttributeType.REQUIRED)
 public class MOPService extends AbstractService implements MOPServiceInterface, SessionSynchronization {
 
+    protected static final Logger LOGGER = Logger.getGlobal();
+
+    @Inject
+    AppointmentFacade appointmentFacade;
     @Inject
     private ImplantFacade implantFacade;
-
     @Inject
     private ImplantReviewFacade implantReviewFacade;
 
-    @Inject
-    private AppointmentFacade appointmentFacade;
+
+    /**
+     * Metoda pozwalająca na odwołanie dowolnej wizyty, wywoływana z poziomu serwisu.
+     * Może ją wykonać tylko konto z poziomem dostępu administratora
+     *
+     * @param id identyfikator wizyty, która ma zostać odwołana
+     * @return Wizyta, która została odwołana
+     */
+    @Override
+    @RolesAllowed(Roles.ADMINISTRATOR)
+    public Appointment cancelAppointment(UUID id) {
+        Appointment appointment = appointmentFacade.findById(id);
+        if (appointment.getStatus().equals(REJECTED)) throw AppointmentStatusException.appointmentStatusAlreadyCancelled();
+        if (appointment.getStatus().equals(FINISHED)) throw AppointmentStatusException.appointmentStatusAlreadyFinished();
+
+        appointment.setStatus(REJECTED);
+        appointmentFacade.edit(appointment);
+
+        return appointment;
+    }
 
     /**
      * Metoda tworząca nowy wszczep

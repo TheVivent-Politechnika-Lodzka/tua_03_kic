@@ -100,7 +100,15 @@ public interface MOPServiceInterface extends ServiceLocalInterface {
         throw new MethodNotImplementedException();
     }
 
-    default Appointment cancelAppointment(Appointment appointment) {
+    /**
+     * Metoda pozwalająca na odwołanie dowolnej wizyty, wywoływana z poziomu serwisu.
+     * Może ją wykonać tylko konto z poziomem dostępu administratora
+     *
+     * @param id identyfikator wizyty, która ma zostać odwołana
+     * @return Wizyta, która została odwołana
+     * @throws MethodNotImplementedException w momencie, gdy metoda jest niezaimplementowana
+     */
+    default Appointment cancelAppointment(UUID id) {
         throw new MethodNotImplementedException();
     }
 
