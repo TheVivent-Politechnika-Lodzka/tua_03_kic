@@ -9,30 +9,30 @@
 
     .title {
         color: aliceblue;
-        font-size: 4.5rem;
+        font-size: 4.1rem;
         text-align: center;
     }
     .second_title {
         color: rgb(151, 185, 215);
         font-family: "Courier New", Courier, monospace;
-        font-size: 2rem;
+        font-size: 1.8rem;
         text-align: center;
     }
     .items_list {
         display: flex;
         justify-content: space-evenly;
-        margin-top: 4.5rem;
+        margin-top: 4.1rem;
         width: 85%;
 
         .single_item_circle {
-            width: 27rem;
+            width: 24rem;
             display: block;
             justify-content: center;
             align-items: center;
-            padding: 2rem;
+            padding: 1.8rem;
             flex-wrap: wrap;
             background-color: $secondary-color;
-            border-radius: 2rem;
+            border-radius: 1.8rem;
             transition: all 0.3s ease-in-out;
             cursor: pointer;
 
@@ -41,8 +41,8 @@
             }
 
             .item_image {
-                width: 13.5rem;
-                height: 13.5rem;
+                width: 12rem;
+                height: 12rem;
                 display: flex;
                 flex-direction: column;
                 border-radius: 100%;
@@ -55,12 +55,12 @@
             }
 
             .text_box {
-                padding-top: 20px;
+                padding-top: 18px;
                 text-align: center;
 
                 .text_square_title {
                     color: rgb(255, 255, 255);
-                    font-size: 1.75rem;
+                    font-size: 1.57rem;
                     padding-bottom: 0.25rem;
                 }
 
