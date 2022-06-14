@@ -26,6 +26,14 @@ public interface MOPServiceInterface extends ServiceLocalInterface {
         throw new MethodNotImplementedException();
     }
 
+    /**
+     * Metoda zwracająca liste wszczepów
+     *
+     * @param uuid  uuid implantu do edycji
+     * @param implant dane do modyfikacji implantu
+     * @return zmodyfikowany implant
+     * @throws MethodNotImplementedException metoda nie jest zaimplementowana
+     */
     default Implant editImplant(UUID uuid, Implant implant) {
         throw new MethodNotImplementedException();
     }

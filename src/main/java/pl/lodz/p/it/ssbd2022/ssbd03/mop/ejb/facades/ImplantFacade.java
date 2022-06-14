@@ -63,6 +63,11 @@ public class ImplantFacade extends AbstractFacade<Implant> {
         }
     }
 
+    /**
+     * Metoda edytująca implant w bazie danych.
+     *
+     * @param entity
+     */
     @Override
     @RolesAllowed(Roles.ADMINISTRATOR)
     public void edit(Implant entity) {

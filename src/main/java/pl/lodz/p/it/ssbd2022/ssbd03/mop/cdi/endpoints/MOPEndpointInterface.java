@@ -42,7 +42,14 @@ public interface MOPEndpointInterface {
         throw new MethodNotImplementedException();
     }
 
-    // MOP.3 - Edytuj wszczep
+    /**
+     * MOP.3 - Edytuj wszczep
+     *
+     * @param id uuid wszczepu do edycji
+     * @param implantDto dane do modyfikacji implantu
+     * @return Response - zawierająca status HTTP
+     * @throws MethodNotImplementedException - w przypadku braku implementacji metody
+     */
     @PUT
     @RolesAllowed(Roles.ADMINISTRATOR)
     @Consumes(MediaType.APPLICATION_JSON)
