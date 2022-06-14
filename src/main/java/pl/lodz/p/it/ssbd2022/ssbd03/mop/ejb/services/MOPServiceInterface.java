@@ -75,7 +75,7 @@ public interface MOPServiceInterface extends ServiceLocalInterface {
      * @param phrase wyszukiwana fraza
      * @return Lista wizyt zgodnych z parametrami wyszukiwania
      */
-    default List<Appointment> findVisits(int page, int pageSize, String phrase) {
+    default PaginationData findVisits(int page, int pageSize, String phrase) {
         throw new MethodNotImplementedException();
     }
 
