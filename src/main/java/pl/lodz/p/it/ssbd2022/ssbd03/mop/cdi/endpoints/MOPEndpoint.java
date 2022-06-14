@@ -162,7 +162,7 @@ public class MOPEndpoint implements MOPEndpointInterface {
      */
     @Override
     @RolesAllowed(Roles.ADMINISTRATOR)
-    public Response editVisit(String id, AppointmentEditDto appointmentEditDto) {
+    public Response editVisit(UUID id, AppointmentEditDto appointmentEditDto) {
         tagger.verifyTag(appointmentEditDto);
 
         Appointment update = appointmentMapper.createAppointmentFromEditDto(appointmentEditDto);
@@ -171,7 +171,7 @@ public class MOPEndpoint implements MOPEndpointInterface {
         int TXCounter = Config.MAX_TX_RETRIES;
         boolean commitedTX;
         do {
-            editedAppointment = mopService.editAppointment(UUID.fromString(id), update);
+            editedAppointment = mopService.editAppointment(id, update);
             commitedTX = mopService.isLastTransactionCommited();
         } while (!commitedTX && --TXCounter > 0);
 
