@@ -86,7 +86,6 @@ public class ImplantReviewFacade extends AbstractFacade<ImplantReview> {
     /**
      * Metoda usuwająca recenzję implantu z bazy danych
      * @param entity Recenzja implantu
-     * @throws ResourceNotFoundException - wyjątek rzucany w przypadku, gdy nie znaleziono recenzji implantu o podanym identyfikatorze
      * @throws InvalidParametersException - wyjątek rzucany w przypadku, gdy podano nieprawidłowy identyfikator recenzji implantu
      * @throws DatabaseException - wyjątek rzucany w przypadku błędu związanego z bazą danych
      */
@@ -95,9 +94,7 @@ public class ImplantReviewFacade extends AbstractFacade<ImplantReview> {
     public void remove(ImplantReview entity) {
         try {
             super.unsafeRemove(entity);
-        }  catch (ConstraintViolationException e) {
-            throw new InvalidParametersException(e.getCause());
-        } catch (PersistenceException e) {
+        }  catch (PersistenceException e) {
             throw new DatabaseException(e.getCause());
         }
     }
