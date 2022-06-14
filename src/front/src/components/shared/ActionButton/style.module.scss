@@ -1,16 +1,16 @@
 @import "../../../variables.scss";
 
-.action-button {
-  width: 19rem;
-  padding: 0.75rem 2.75rem;
-  height: 3.25rem;
+.action_button {
+  width: 17rem;
+  padding: 0.67rem 2.48rem;
+  height: 2.93rem;
   display: flex;
   justify-content: space-around;
   align-items: center;
-  font-size: 1.35rem;
+  font-size: 1.22rem;
   color: white;
   user-select: none;
-  border-radius: 0.75rem;
+  border-radius: 0.67rem;
   text-align: center;
   cursor: pointer;
   transition: 0.2s color ease-in-out, 0.2s background-color ease-in-out;
@@ -20,8 +20,8 @@
     filter: brightness(140%);
   }
 
-  .action-button-title {
-    font-size: 1.5rem;
+  .title {
+    font-size: 1.35rem;
     font-weight: bold;
     color: white;
   }
