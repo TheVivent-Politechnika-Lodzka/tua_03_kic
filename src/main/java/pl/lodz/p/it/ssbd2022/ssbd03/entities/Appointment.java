@@ -28,6 +28,7 @@ import java.util.Date;
         @NamedQuery(name = "Appointment.findBetweenDates", query = "select a from Appointment a where a.startDate >= :startDate and a.startDate <= :endDate"),
         @NamedQuery(name = "Appointment.searchByPhrase", query = "select a from Appointment a where lower(a.description) like lower(:phrase)"),
 })
+//TODO Zastanowic sie czy wyszukiwac po opisie (jako fraza), czy moze czyms innym
 @ToString
 @NoArgsConstructor
 public class Appointment extends AbstractEntity implements Serializable {
