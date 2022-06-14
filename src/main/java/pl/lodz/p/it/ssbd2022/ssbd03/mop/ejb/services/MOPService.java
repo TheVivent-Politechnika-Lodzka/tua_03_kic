@@ -163,6 +163,11 @@ public class MOPService extends AbstractService implements MOPServiceInterface, 
         return implantReviewFacade.findByUUID(review.getId());
     }
 
+    /**
+     * Metoda usuwająca recenzję wszczepu
+     * @param id Identyfikator recenzji wszczepu, która ma zostać usunięta
+     *
+     */
     @Override
     @RolesAllowed({Roles.ADMINISTRATOR, Roles.CLIENT})
     public void deleteReview(UUID id) {

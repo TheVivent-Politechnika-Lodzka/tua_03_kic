@@ -247,5 +247,26 @@ public class MOPEndpoint implements MOPEndpointInterface {
         return Response.ok().entity(createdReviewDto).build();
     }
 
+    /**
+     * MOK.16 - Usuń recenzję wszczepu
+     * @param id Id recenzji wszczepu
+     * @return Odpowiedź HTTP
+     * @throws TransactionException jeśli transakcja nie została zatwierdzona
+     */
+    @Override
+    public Response deleteImplantsReview(UUID id) {
+        int TXCounter = Config.MAX_TX_RETRIES;
+        boolean commitedTX;
 
+        do {
+            mopService.deleteReview(id);
+            commitedTX = mopService.isLastTransactionCommited();
+        } while (!commitedTX && --TXCounter > 0);
+
+        if(!commitedTX){
+            throw new TransactionException();
+        }
+
+        return Response.ok().build();
+    }
 }
