@@ -13,8 +13,7 @@ import java.util.UUID;
 @AllArgsConstructor
 public class CreateAppointmentDto {
 
-    private String clientLogin;
-    private String specialistLogin;
+    private UUID specialistId;
     private UUID implantId;
     private Instant startDate;
 

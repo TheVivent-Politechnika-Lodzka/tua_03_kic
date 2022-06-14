@@ -17,6 +17,7 @@ import pl.lodz.p.it.ssbd2022.ssbd03.entities.Status;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.InvalidParametersException;
 import pl.lodz.p.it.ssbd2022.ssbd03.common.Roles;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.Implant;
+import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.MethodNotImplementedException;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.appointment.AppointmentNotFinishedException;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.appointment.AppointmentNotFoundException;
 import pl.lodz.p.it.ssbd2022.ssbd03.common.Roles;
@@ -28,6 +29,7 @@ import pl.lodz.p.it.ssbd2022.ssbd03.mop.ejb.facades.ImplantFacade;
 import pl.lodz.p.it.ssbd2022.ssbd03.mop.ejb.facades.ImplantReviewFacade;
 import pl.lodz.p.it.ssbd2022.ssbd03.utils.PaginationData;
 
+import java.time.Instant;
 import java.util.UUID;
 import pl.lodz.p.it.ssbd2022.ssbd03.mop.ejb.facades.AppointmentFacade;
 
@@ -161,5 +163,19 @@ public class MOPService extends AbstractService implements MOPServiceInterface, 
         }
         appointmentFacade.edit(appointmentFromDb);
         return appointmentFromDb;
+    }
+
+    /**
+     * Metoda tworząca nową wizytę
+     *
+     * @param clientLogin       - login klienta
+     * @param specialistId      - identyfikator specjalisty
+     * @param implantId         - identyfikator wszczepu
+     * @param startDate         - data rozpoczęcia wizyty
+     * @return Appointment - nowa wizyta
+     */
+    @Override
+    public Appointment createAppointment(String clientLogin, UUID specialistId, UUID implantId, Instant startDate) {
+        throw new MethodNotImplementedException();
     }
 }

@@ -25,6 +25,7 @@ import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.TransactionException;
 import pl.lodz.p.it.ssbd2022.ssbd03.mappers.AppointmentMapper;
 import pl.lodz.p.it.ssbd2022.ssbd03.mop.dto.AppointmentDto;
 import pl.lodz.p.it.ssbd2022.ssbd03.mop.ejb.services.MOPServiceInterface;
+import pl.lodz.p.it.ssbd2022.ssbd03.security.AuthContext;
 import pl.lodz.p.it.ssbd2022.ssbd03.security.Tagger;
 
 import java.time.Instant;
@@ -41,10 +42,10 @@ import java.util.UUID;
 public class MOPEndpoint implements MOPEndpointInterface {
 
     @Inject
-    MOPServiceInterface mopService;
+    private MOPServiceInterface mopService;
 
     @Inject
-    AppointmentMapper appointmentMapper;
+    private AppointmentMapper appointmentMapper;
 
     @Inject
     private ImplantMapper implantMapper;
@@ -54,6 +55,9 @@ public class MOPEndpoint implements MOPEndpointInterface {
 
     @Inject
     private Tagger tagger;
+
+    @Inject
+    private AuthContext authContext;
 
     /**
      * MOP.13 Odwołaj dowolną wizytę
@@ -199,8 +203,8 @@ public class MOPEndpoint implements MOPEndpointInterface {
     @Override
     public Response createAppointment(CreateAppointmentDto createAppointmentDto) {
 
-        String clientLogin = createAppointmentDto.getClientLogin();
-        String specialistLogin = createAppointmentDto.getSpecialistLogin();
+        String clientLogin = authContext.getCurrentUserLogin();
+        UUID specialistId = createAppointmentDto.getSpecialistId();
         UUID implantId = createAppointmentDto.getImplantId();
         Instant startDate = createAppointmentDto.getStartDate();
 
@@ -210,7 +214,7 @@ public class MOPEndpoint implements MOPEndpointInterface {
         do {
             createdAppointment = mopService.createAppointment(
                     clientLogin,
-                    specialistLogin,
+                    specialistId,
                     implantId,
                     startDate
             );
