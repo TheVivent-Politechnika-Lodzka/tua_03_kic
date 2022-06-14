@@ -1,6 +1,6 @@
 @import "../../../variables.scss";
 
-.action-button {
+.action_button {
   width: 19rem;
   padding: 0.75rem 2.75rem;
   height: 3.25rem;
@@ -20,7 +20,7 @@
     filter: brightness(140%);
   }
 
-  .action-button-title {
+  .title {
     font-size: 1.5rem;
     font-weight: bold;
     color: white;

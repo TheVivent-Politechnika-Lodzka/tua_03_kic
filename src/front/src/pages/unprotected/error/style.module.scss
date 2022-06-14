@@ -32,12 +32,12 @@
 
             .errortext {
                 color: white;
-                font-size: 45px;
+                font-size: 3.75rem;
             }
             .linkerror {
-                padding-top: 50px;
+                padding-top: 1.25rem;
                 color: white;
-                font-size: 35px;
+                font-size: 2rem;
             }
             .button {
                 display: flex;
@@ -45,10 +45,10 @@
                 align-items: center;
                 color: black;
                 background-color: $white;
-                margin-top: 5rem;
+                margin-top: 2rem;
                 width: 400px;
                 font-weight: bold;
-                font-size: 1.5rem;
+                font-size: 1.75rem;
                 height: 80px;
                 border-radius: 3rem;
                 cursor: pointer;

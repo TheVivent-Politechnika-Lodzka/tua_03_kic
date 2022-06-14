@@ -1,4 +1,4 @@
-import "./style.scss";
+import styles from "./style.module.scss";
 
 interface ValidationMessageProps {
   message: string;
@@ -7,8 +7,8 @@ interface ValidationMessageProps {
 
 const ValidationMessage = ({ message, isValid }: ValidationMessageProps) => {
   return (
-    <div className="validation-message">
-      <p className={`validation-message-text ${isValid ? "valid" : "invalid"}`}>
+    <div className={styles.validation_message}>
+      <p className={`${styles.text} ${isValid ? styles.valid : styles.invalid}`}>
         ⇦ {message}
       </p>
     </div>
