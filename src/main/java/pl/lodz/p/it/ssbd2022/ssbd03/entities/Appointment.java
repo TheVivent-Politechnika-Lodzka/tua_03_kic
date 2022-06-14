@@ -9,7 +9,6 @@ import pl.lodz.p.it.ssbd2022.ssbd03.common.AbstractEntity;
 
 import java.io.Serializable;
 import java.time.Instant;
-import java.util.Date;
 
 @Entity
 @Table(
@@ -26,7 +25,13 @@ import java.util.Date;
         @NamedQuery(name = "Appointment.findByClientId", query = "select a from Appointment a where a.client.id = :clientId"),
         @NamedQuery(name = "Appointment.findBySpecialistId", query = "select a from Appointment a where a.specialist.id = :specialistId"),
         @NamedQuery(name = "Appointment.findByClientLogin", query = "select a from Appointment a where a.client.login = :login"),
-        @NamedQuery(name = "Appointment.findBetweenDates", query = "select a from Appointment a where a.startDate >= :startDate and a.startDate <= :endDate"),
+        @NamedQuery(name = "Appointment.findSpecialistAppointmentsInGivenPeriod", query = """
+                select a from Appointment a where
+                a.specialist.id = :specialistId and (
+                    (a.startDate >= :startDate and a.startDate <= :endDate) or
+                    (a.endDate >= :startDate and a.endDate <= :endDate)
+                )
+                """), // nie mogę użyć BETWEEN, ponieważ JPA nie wspiera BETWEEN na Instant
         @NamedQuery(name = "Appointment.searchByPhrase", query = "select a from Appointment a where a.client.login like concat('%', :phrase, '%') or a.specialist.login like concat('%', :phrase, '%')"),
 })
 @ToString

@@ -19,6 +19,7 @@ import pl.lodz.p.it.ssbd2022.ssbd03.interceptors.TrackerInterceptor;
 import pl.lodz.p.it.ssbd2022.ssbd03.security.Tagger;
 import pl.lodz.p.it.ssbd2022.ssbd03.utils.PaginationData;
 
+import java.time.Instant;
 import java.util.List;
 import java.util.UUID;
 
@@ -59,6 +60,26 @@ public class AppointmentFacade extends AbstractFacade<Appointment> {
     @RolesAllowed(Roles.CLIENT)
     public void create(Appointment entity) {
         super.create(entity);
+    }
+
+    public PaginationData findSpecialistAppointmentsInGivenPeriod(UUID specialistId, Instant startDate, Instant endDate, int pageNumber, int perPage) {
+        TypedQuery<Appointment> typedQuery = entityManager.createNamedQuery("Appointment.findSpecialistAppointmentsInGivenPeriod", Appointment.class);
+        typedQuery.setParameter("specialistId", specialistId);
+        typedQuery.setParameter("startDate", startDate);
+        typedQuery.setParameter("endDate", endDate);
+        typedQuery.setFirstResult((pageNumber-1) * perPage);
+        typedQuery.setMaxResults(perPage);
+
+        List<Appointment> data = typedQuery.getResultList();
+        int totalCount = this.count();
+        int totalPages = (int) Math.ceil(totalCount / (double) perPage);
+        PaginationData paginationData = new PaginationData(
+                totalCount,
+                totalPages,
+                perPage,
+                data
+        );
+        return paginationData;
     }
 
     /**
