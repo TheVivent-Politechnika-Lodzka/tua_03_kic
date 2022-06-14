@@ -190,6 +190,7 @@ public interface MOPEndpointInterface {
 
     /**
      * MOP.15 - Dodaj recenzję wszczepu
+     * Metodę można wykonać tylko konto z poziomem dostępu klienta.
      * @param createImplantReviewDto Recenzja wszczepu napisana przez użytkownika
      * @return recenzja wszczepu
      * @throws MethodNotImplementedException - w przypadku braku implementacji metody
@@ -197,17 +198,22 @@ public interface MOPEndpointInterface {
     @PUT
     @RolesAllowed(Roles.CLIENT)
     @Consumes(MediaType.APPLICATION_JSON)
-    @Path("/implants/reviews")
+    @Path("/implant/review")
     default Response addImplantsReview(CreateImplantReviewDto createImplantReviewDto) {
         throw new MethodNotImplementedException();
     }
 
-    // MOP.16 - Usuń recenzję wszczepu
+    /**
+     * MOP.16 - Usuń recenzję wszczepu
+     * @param id Id recenzji wszczepu
+     * @return Komunikat o usuniętej recenzji
+     * @throws MethodNotImplementedException - w przypadku braku implementacji metody
+     */
     @DELETE
     @RolesAllowed({Roles.CLIENT, Roles.ADMINISTRATOR})
     @Consumes(MediaType.APPLICATION_JSON)
-    @Path("/implants/reviews")
-    default Response deleteImplantsReview(String json) {
+    @Path("/implant/review/{id}")
+    default Response deleteImplantsReview(@PathParam("id") UUID id) {
         throw new MethodNotImplementedException();
     }
 
