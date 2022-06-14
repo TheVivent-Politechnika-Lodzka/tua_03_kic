@@ -26,7 +26,7 @@ public interface MOPServiceInterface extends ServiceLocalInterface {
         throw new MethodNotImplementedException();
     }
 
-    default Implant updateImplant(Implant implant) {
+    default Implant editImplant(UUID uuid, Implant implant) {
         throw new MethodNotImplementedException();
     }
 
