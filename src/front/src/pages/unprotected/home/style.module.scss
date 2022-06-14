@@ -1,0 +1,120 @@
+@import "../../../variables.scss";
+
+.section_content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 90vh;
+
+    .title {
+        color: aliceblue;
+        font-size: 5rem;
+        text-align: center;
+    }
+    .second_title {
+        color: rgb(151, 185, 215);
+        font-family: "Courier New", Courier, monospace;
+        font-size: 2rem;
+        text-align: center;
+    }
+    .items_list {
+        display: flex;
+        justify-content: space-evenly;
+        margin-top: 5rem;
+        width: 85%;
+
+        .single_item_circle {
+            width: 30rem;
+            display: block;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem;
+            flex-wrap: wrap;
+            background-color: $secondary-color;
+            border-radius: 2rem;
+            transition: all 0.3s ease-in-out;
+            cursor: pointer;
+
+            &:hover {
+                transform: scale(1.1);
+            }
+
+            .item_image {
+                width: 15rem;
+                height: 15rem;
+                display: flex;
+                flex-direction: column;
+                border-radius: 100%;
+                margin-left: auto;
+                margin-right: auto;
+                img {
+                    border-radius: 100%;
+                    border: 4px $white solid;
+                }
+            }
+
+            .text_box {
+                padding-top: 20px;
+                text-align: center;
+
+                .text_square_title {
+                    color: rgb(255, 255, 255);
+                    font-size: 1.75rem;
+                    padding-bottom: 10px;
+                }
+
+                .text_square {
+                    color: rgb(151, 185, 215);
+                    font-family: "Courier New", Courier, monospace;
+                    font-size: 1.25rem;
+                    padding-bottom: 10px;
+                }
+            }
+        }
+
+        .card {
+            height: 32rem;
+            width: 40rem;
+            justify-content: center;
+            align-items: center;
+            padding: 1rem;
+            transition: all 0.3s ease-in-out;
+            cursor: pointer;
+
+            &:hover {
+                transform: scale(1.1);
+            }
+
+            .item_wrapper {
+                background-color: $white;
+                width: 90%;
+                height: 90%;
+                display: flex;
+                flex-direction: column;
+                border-radius: 1.5rem;
+
+                img {
+                    height: 70%;
+                    width: auto;
+                    border-top-left-radius: 1.5rem;
+                    border-top-right-radius: 1.5rem;
+                }
+
+                .city_name {
+                    padding-left: 20px;
+                    padding-top: 10px;
+                    font-size: 3.5rem;
+                    font-family: Impact, Haettenschweiler, "Arial Narrow Bold",
+                        sans-serif;
+                    color: #143d80;
+                }
+
+                .street_name {
+                    padding-left: 20px;
+                    font-size: 1.5rem;
+                }
+            }
+        }
+    }
+}

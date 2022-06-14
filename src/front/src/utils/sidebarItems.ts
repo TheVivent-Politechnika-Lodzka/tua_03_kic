@@ -15,7 +15,7 @@ interface SideBarRoute {
 }
 
 const unauthenticatedSidebarItems: SideBarRoute[] = [
-    { title: "Home", icon: faHome, path: "/" },
+    { title: "Strona główna", icon: faHome, path: "/" },
     { title: "Specjaliści", icon: faStethoscope, path: "/specialists" },
     { title: "Cyberwszczepy", icon: faMicrochip, path: "/chips" },
 ];

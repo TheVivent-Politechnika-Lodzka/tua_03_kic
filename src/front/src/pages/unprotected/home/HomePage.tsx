@@ -9,71 +9,69 @@ const HomePage = () => {
     return (
         <div>
             <Slider />
-            <div className={styles.content_section}>
-                <div className={styles.box_info}>
-                    <div className={styles.title}>{t("why_us")}</div>
-                    <div className={styles.second_title}>
-                        {t("many_reason")}"
+
+            <section className={styles.section_content}>
+                <div className={styles.title}>{t("why_us")}</div>
+                <div className={styles.second_title}>{t("many_reason")}"</div>
+                <div className={styles.items_list}>
+                    <div className={styles.single_item_circle}>
+                        <div className={styles.item_image}>
+                            <img src="brain.jpg" alt="brain.jpg" />
+                        </div>
+                        <div className={styles.text_box}>
+                            <div className={styles.text_square_title}>
+                                {t("own_lab")}
+                            </div>
+                            <div className={styles.text_square}>
+                                Lorem Ipsum is simply dummy text of the printing
+                                and typesetting industry. Lorem Ipsum has been
+                                the industry's standard dummy text ever since
+                                the 1500s, when an unknown printer took a galley
+                                of type and scrambled it to make a type specimen
+                                book
+                            </div>
+                        </div>
                     </div>
-                    <div className={styles.items_list}>
-                        <div className={styles.single_item_circle}>
-                            <div className={styles.item_image}>
-                                <img src="brain.jpg" alt="brain.jpg" />
+                    <div className={styles.single_item_circle}>
+                        <div className={styles.item_image}>
+                            <img src="doctor.jpg" alt="doctor" />
+                        </div>
+                        <div className={styles.text_box}>
+                            <div className={styles.text_square_title}>
+                                {t("best_specialist")}
                             </div>
-                            <div className={styles.text_box}>
-                                <div className={styles.text_square_title}>
-                                    {t("own_lab")}
-                                </div>
-                                <div className={styles.text_square}>
-                                    Lorem Ipsum is simply dummy text of the
-                                    printing and typesetting industry. Lorem
-                                    Ipsum has been the industry's standard dummy
-                                    text ever since the 1500s, when an unknown
-                                    printer took a galley of type and scrambled
-                                    it to make a type specimen book
-                                </div>
+                            <div className={styles.text_square}>
+                                Lorem Ipsum is simply dummy text of the printing
+                                and typesetting industry. Lorem Ipsum has been
+                                the industry's standard dummy text ever since
+                                the 1500s, when an unknown printer took a galley
+                                of type and scrambled it to make a type specimen
+                                book
                             </div>
                         </div>
-                        <div className={styles.single_item_circle}>
-                            <div className={styles.item_image}>
-                                <img src="doctor.jpg" alt="doctor" />
-                            </div>
-                            <div className={styles.text_box}>
-                                <div className={styles.text_square_title}>
-                                    {t("best_specialist")}
-                                </div>
-                                <div className={styles.text_square}>
-                                    Lorem Ipsum is simply dummy text of the
-                                    printing and typesetting industry. Lorem
-                                    Ipsum has been the industry's standard dummy
-                                    text ever since the 1500s, when an unknown
-                                    printer took a galley of type and scrambled
-                                    it to make a type specimen book
-                                </div>
-                            </div>
+                    </div>
+                    <div className={styles.single_item_circle}>
+                        <div className={styles.item_image}>
+                            <img src="klient.jpg" alt="klient" />
                         </div>
-                        <div className={styles.single_item_circle}>
-                            <div className={styles.item_image}>
-                                <img src="klient.jpg" alt="klient" />
+                        <div className={styles.text_box}>
+                            <div className={styles.text_square_title}>
+                                {t("satisfied_clients")}
                             </div>
-                            <div className={styles.text_box}>
-                                <div className={styles.text_square_title}>
-                                    {t("satisfied_clients")}
-                                </div>
-                                <div className={styles.text_square}>
-                                    Lorem Ipsum is simply dummy text of the
-                                    printing and typesetting industry. Lorem
-                                    Ipsum has been the industry's standard dummy
-                                    text ever since the 1500s, when an unknown
-                                    printer took a galley of type and scrambled
-                                    it to make a type specimen book
-                                </div>
+                            <div className={styles.text_square}>
+                                Lorem Ipsum is simply dummy text of the printing
+                                and typesetting industry. Lorem Ipsum has been
+                                the industry's standard dummy text ever since
+                                the 1500s, when an unknown printer took a galley
+                                of type and scrambled it to make a type specimen
+                                book
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            <div className={styles.box_info}>
+            </section>
+
+            <section className={styles.section_content}>
                 <div className={styles.title}> {t("our_clinic")}</div>
                 <div className={styles.second_title}>{t("good_location")}</div>
                 <div className={styles.items_list}>
@@ -107,8 +105,7 @@ const HomePage = () => {
                         </div>
                     </div>
                 </div>
-            </div>
-
+            </section>
             <ContactBar />
         </div>
     );
