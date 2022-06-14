@@ -10,6 +10,8 @@ import pl.lodz.p.it.ssbd2022.ssbd03.common.Roles;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.MethodNotImplementedException;
 import pl.lodz.p.it.ssbd2022.ssbd03.mop.dto.CreateImplantDto;
 
+import java.util.UUID;
+
 @DenyAll
 public interface MOPEndpointInterface {
 
@@ -147,8 +149,8 @@ public interface MOPEndpointInterface {
     @POST
     @RolesAllowed(Roles.SPECIALIST)
     @Consumes(MediaType.APPLICATION_JSON)
-    @Path("/finish/visit")
-    default Response finishVisit(String json) {
+    @Path("/finish/visit/{id}")
+    default Response finishVisit(@PathParam("id") UUID id) {
         throw new MethodNotImplementedException();
     }
 

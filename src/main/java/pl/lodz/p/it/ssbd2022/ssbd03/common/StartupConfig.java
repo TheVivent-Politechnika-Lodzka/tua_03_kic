@@ -7,11 +7,20 @@ import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.Account;
+import pl.lodz.p.it.ssbd2022.ssbd03.entities.Appointment;
+import pl.lodz.p.it.ssbd2022.ssbd03.entities.Implant;
+import pl.lodz.p.it.ssbd2022.ssbd03.entities.Status;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.access_levels.DataAdministrator;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.access_levels.DataClient;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.access_levels.DataSpecialist;
 import pl.lodz.p.it.ssbd2022.ssbd03.utils.HashAlgorithm;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.Duration;
+import java.time.LocalTime;
+import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
 @Startup
@@ -31,6 +40,12 @@ public class StartupConfig {
         createClientAdmin();
         createClient();
         createSpecialist();
+        em.flush();
+
+        createImplant();
+        em.flush();
+
+        createAppointment();
         em.flush();
     }
 
@@ -139,4 +154,53 @@ public class StartupConfig {
         em.persist(specialist);
     }
 
+    public void createImplant() {
+        Implant implant = new Implant();
+        implant.setName("implant");
+        implant.setDescription("Lorem ipsum dolor sit amet, consectetuer adipiscing elit. " +
+                "Aenean commodo ligula eget dolor. Aenean m");
+        implant.setManufacturer("Janusz Nowak");
+        implant.setPrice(1000);
+        implant.setPopularity(0);
+        implant.setDuration(Duration.between(LocalTime.NOON, LocalTime.MAX));
+
+        em.persist(implant);
+    }
+
+    public void createAppointment() {
+
+        Account accountClient = em.createNamedQuery("Account.findByLogin", Account.class)
+                .setParameter("login", "client").getSingleResult();
+        Account accountSpecialist = em.createNamedQuery("Account.findByLogin", Account.class)
+                .setParameter("login", "spec").getSingleResult();
+        List<Implant> implants = em.createNamedQuery("Implant.findAll", Implant.class).getResultList();
+
+        Appointment appointment = new Appointment();
+        Date dateStart = null;
+        try {
+            dateStart = new SimpleDateFormat("dd/MM/yyyy").parse("31/12/2021");
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        Date dateEnd = null;
+        try {
+            dateEnd = new SimpleDateFormat("dd/MM/yyyy").parse("31/12/2021");
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+
+        appointment.setStartDate(dateStart);
+        appointment.setPrice(100);
+        appointment.setEndDate(dateEnd);
+        appointment.setStatus(Status.PENDING);
+        appointment.setDescription("Przykladowa wizyta, implant: implant, klient: client. " +
+                "Przykladowa wizyta, implant: implant, klient: client");
+        appointment.setSpecialist(accountSpecialist);
+        appointment.setClient(accountClient);
+        appointment.setImplant(implants.get(0));
+
+        em.persist(appointment);
+
+    }
 }

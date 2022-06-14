@@ -9,6 +9,7 @@ import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.MethodNotImplementedException;
 import pl.lodz.p.it.ssbd2022.ssbd03.utils.PaginationData;
 
 import java.util.List;
+import java.util.UUID;
 
 public interface MOPServiceInterface extends ServiceLocalInterface {
 
@@ -72,7 +73,7 @@ public interface MOPServiceInterface extends ServiceLocalInterface {
         throw new MethodNotImplementedException();
     }
 
-    default Appointment finishAppointment(Appointment appointment) {
+    default Appointment finishAppointment(UUID id, String login) {
         throw new MethodNotImplementedException();
     }
 
@@ -83,5 +84,4 @@ public interface MOPServiceInterface extends ServiceLocalInterface {
     default void deleteReview(ImplantReview review) {
         throw new MethodNotImplementedException();
     }
-
 }
