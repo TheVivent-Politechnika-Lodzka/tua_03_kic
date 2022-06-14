@@ -76,4 +76,23 @@ public class AppointmentMapper {
                 .map(this::appointmentListElementDtoFromAppointment)
                 .collect(Collectors.toList());
     }
+
+    public AppointmentDto createAppointmentDtoFromAppointment(Appointment appointment) {
+        AppointmentDto appointmentDto = new AppointmentDto();
+        appointmentDto.setId(appointment.getId());
+        appointmentDto.setDescription(appointment.getDescription());
+        appointmentDto.setStatus(appointment.getStatus());
+        appointmentDto.setStartDate(appointment.getStartDate());
+        appointmentDto.setEndDate(appointment.getEndDate());
+        appointmentDto.setClient(
+                accountMapper.createAccountWithAccessLevelsDtoFromAccount(appointment.getClient())
+        );
+        appointmentDto.setSpecialist(
+                accountMapper.createAccountWithAccessLevelsDtoFromAccount(appointment.getSpecialist())
+        );
+        appointmentDto.setImplant(
+                implantMapper.createImplantDtoFromImplant(appointment.getImplant())
+        );
+        return appointmentDto;
+    }
 }

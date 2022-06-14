@@ -46,6 +46,12 @@ public class MOPEndpoint implements MOPEndpointInterface {
     AppointmentMapper appointmentMapper;
 
     @Inject
+    private ImplantMapper implantMapper;
+
+    @Inject
+    private ImplantReviewMapper implantReviewMapper;
+
+    @Inject
     private Tagger tagger;
 
     /**
@@ -75,18 +81,6 @@ public class MOPEndpoint implements MOPEndpointInterface {
 
         return Response.ok(appointmentDto).tag(tagger.tag(appointmentDto)).build();
     }
-
-    @Inject
-    private ImplantMapper implantMapper;
-
-    @Inject
-    private AppointmentMapper appointmentMapper;
-
-    @Inject
-    private ImplantReviewMapper implantReviewMapper;
-
-    @Inject
-    private Tagger tagger;
 
     /**
      * MOP.1 - Dodaj nowy wszczep

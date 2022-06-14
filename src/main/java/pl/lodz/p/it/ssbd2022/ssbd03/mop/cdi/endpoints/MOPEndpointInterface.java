@@ -10,6 +10,9 @@ import pl.lodz.p.it.ssbd2022.ssbd03.common.Roles;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.Appointment;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.MethodNotImplementedException;
 import pl.lodz.p.it.ssbd2022.ssbd03.mop.dto.AppointmentDto;
+import pl.lodz.p.it.ssbd2022.ssbd03.mop.dto.AppointmentEditDto;
+import pl.lodz.p.it.ssbd2022.ssbd03.mop.dto.CreateImplantDto;
+import pl.lodz.p.it.ssbd2022.ssbd03.mop.dto.CreateImplantReviewDto;
 
 import java.util.List;
 import java.util.UUID;

@@ -157,7 +157,7 @@ public class StartupConfig {
     public void createImplant() {
         Implant implant = new Implant();
         implant.setName("implant");
-        implant.setDescription("testowy implant");
+        implant.setDescription("testowy implant zwiększający siłę przebicia przez ściany amerykańskie (z kartonu) o 10% maksymalnego zdrowia");
         implant.setManufacturer("Janusz Nowak");
         implant.setPrice(1000);
         implant.setPopularity(0);
@@ -166,39 +166,39 @@ public class StartupConfig {
         em.persist(implant);
     }
 
-    public void createAppointment() {
-
-        Account accountClient = em.createNamedQuery("Account.findByLogin", Account.class)
-                .setParameter("login", "client").getSingleResult();
-        Account accountSpecialist = em.createNamedQuery("Account.findByLogin", Account.class)
-                .setParameter("login", "spec").getSingleResult();
-        List<Implant> implants = em.createNamedQuery("Implant.findAll", Implant.class).getResultList();
-
-        Appointment appointment = new Appointment();
-        Date dateStart = null;
-        try {
-            dateStart = new SimpleDateFormat("dd/MM/yyyy").parse("31/12/2021");
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        Date dateEnd = null;
-        try {
-            dateEnd = new SimpleDateFormat("dd/MM/yyyy").parse("31/12/2021");
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-
-        appointment.setStartDate(dateStart);
-        appointment.setEndDate(dateEnd);
-        appointment.setPrice(100);
-        appointment.setStatus(Status.PENDING);
-        appointment.setDescription("Przykladowa wizyta");
-        appointment.setSpecialist(accountSpecialist);
-        appointment.setClient(accountClient);
-        appointment.setImplant(implants.get(0));
-
-        em.persist(appointment);
-    }
+//    public void createAppointment() {
+//
+//        Account accountClient = em.createNamedQuery("Account.findByLogin", Account.class)
+//                .setParameter("login", "client").getSingleResult();
+//        Account accountSpecialist = em.createNamedQuery("Account.findByLogin", Account.class)
+//                .setParameter("login", "spec").getSingleResult();
+//        List<Implant> implants = em.createNamedQuery("Implant.findAll", Implant.class).getResultList();
+//
+//        Appointment appointment = new Appointment();
+//        Date dateStart = null;
+//        try {
+//            dateStart = new SimpleDateFormat("dd/MM/yyyy").parse("31/12/2021");
+//        } catch (ParseException e) {
+//            e.printStackTrace();
+//        }
+//        Date dateEnd = null;
+//        try {
+//            dateEnd = new SimpleDateFormat("dd/MM/yyyy").parse("31/12/2021");
+//        } catch (ParseException e) {
+//            e.printStackTrace();
+//        }
+//
+//        appointment.setStartDate(dateStart);
+//        appointment.setEndDate(dateEnd);
+//        appointment.setPrice(100);
+//        appointment.setStatus(Status.PENDING);
+//        appointment.setDescription("Przykladowa wizyta");
+//        appointment.setSpecialist(accountSpecialist);
+//        appointment.setClient(accountClient);
+//        appointment.setImplant(implants.get(0));
+//
+//        em.persist(appointment);
+//    }
 
     public void createAppointment() {
 
@@ -207,13 +207,15 @@ public class StartupConfig {
 
         Implant implant = new Implant();
         implant.setName("Implant tak fajny ze wszystkich stron");
-        implant.setDescription("Na pierwszym planie obrazu widać wzgórze, " +
-                "na którym oracz orze ziemie.Ten fragment płótna przyciąga uwagę, " +
-                "gdyż wzgórze przedstawione jest w jasnych kolorach. " +
-                "Chłop ma na sobie czerwony kubrak przykuwający wzrok na tle " +
-                "brązów i zieleni.Na dalszym planie widać pasterza i psa pilnującego " +
-                "stado owiec.Oraz rybaka zarzucającego sieć, statek, miasto i " +
-                "zachodzące słońce");
+        implant.setDescription("""
+                Na pierwszym planie obrazu widać wzgórze,
+                na którym oracz orze ziemie.Ten fragment płótna przyciąga uwagę,
+                gdyż wzgórze przedstawione jest w jasnych kolorach.
+                Chłop ma na sobie czerwony kubrak przykuwający wzrok na tle
+                brązów i zieleni.Na dalszym planie widać pasterza i psa pilnującego
+                stado owiec.Oraz rybaka zarzucającego sieć, statek, miasto i
+                zachodzące słońce
+                """);
         implant.setPrice(100);
         implant.setManufacturer("Manufacturer kox");
         implant.setPopularity(0);

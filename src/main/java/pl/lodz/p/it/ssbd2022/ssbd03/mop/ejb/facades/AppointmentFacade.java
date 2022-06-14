@@ -2,7 +2,6 @@ package pl.lodz.p.it.ssbd2022.ssbd03.mop.ejb.facades;
 
 import jakarta.annotation.security.PermitAll;
 import jakarta.annotation.security.RolesAllowed;
-import jakarta.annotation.security.RunAs;
 import jakarta.ejb.Stateless;
 import jakarta.ejb.TransactionAttribute;
 import jakarta.ejb.TransactionAttributeType;
@@ -92,11 +91,11 @@ public class AppointmentFacade extends AbstractFacade<Appointment> {
      * Metoda zwracająca listę wizyt
      *
      * @param pageNumber numer aktualnie przeglądanej strony
-     * @param perPage ilość rekordów na danej stronie
-     * @param phrase wyszukiwana fraza
-     * @return  Lista wizyt zgodnych z parametrami wyszukiwania
+     * @param perPage    ilość rekordów na danej stronie
+     * @param phrase     wyszukiwana fraza
+     * @return Lista wizyt zgodnych z parametrami wyszukiwania
      * @throws InvalidParametersException w przypadku podania nieprawidłowych parametrów
-     * @throws DatabaseException w przypadku wystąpienia błędu bazy danych
+     * @throws DatabaseException          w przypadku wystąpienia błędu bazy danych
      */
     @PermitAll
     public PaginationData findInRangeWithPhrase(int pageNumber, int perPage, String phrase) {
@@ -120,11 +119,5 @@ public class AppointmentFacade extends AbstractFacade<Appointment> {
         } catch (PersistenceException e) {
             throw new DatabaseException(e.getCause());
         }
-    }
-
-    @Override
-    @RolesAllowed(Roles.AUTHENTICATED)
-    public void edit (Appointment appointment){
-        super.edit(appointment);
     }
 }

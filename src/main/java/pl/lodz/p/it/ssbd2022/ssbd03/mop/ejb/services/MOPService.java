@@ -48,6 +48,11 @@ public class MOPService extends AbstractService implements MOPServiceInterface, 
 
     @Inject
     AppointmentFacade appointmentFacade;
+    @Inject
+    private ImplantFacade implantFacade;
+    @Inject
+    private ImplantReviewFacade implantReviewFacade;
+
 
     /**
      * Metoda pozwalająca na odwołanie dowolnej wizyty, wywoływana z poziomu serwisu.
@@ -68,16 +73,6 @@ public class MOPService extends AbstractService implements MOPServiceInterface, 
 
         return appointment;
     }
-
-
-    @Inject
-    private ImplantFacade implantFacade;
-
-    @Inject
-    private ImplantReviewFacade implantReviewFacade;
-
-    @Inject
-    private AppointmentFacade appointmentFacade;
 
     /**
      * Metoda tworząca nowy wszczep
