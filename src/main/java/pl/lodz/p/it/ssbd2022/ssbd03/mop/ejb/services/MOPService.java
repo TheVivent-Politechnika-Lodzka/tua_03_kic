@@ -16,6 +16,7 @@ import pl.lodz.p.it.ssbd2022.ssbd03.common.Roles;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.Implant;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.MethodNotImplementedException;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.appointment.AppointmentFinishAttemptByInvalidSpecialistException;
+import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.appointment.AppointmentStatusException;
 import pl.lodz.p.it.ssbd2022.ssbd03.interceptors.TrackerInterceptor;
 import pl.lodz.p.it.ssbd2022.ssbd03.mop.ejb.facades.AppointmentFacade;
 import pl.lodz.p.it.ssbd2022.ssbd03.mop.ejb.facades.ImplantFacade;
@@ -25,6 +26,7 @@ import java.util.List;
 import java.util.UUID;
 
 import static pl.lodz.p.it.ssbd2022.ssbd03.entities.Status.FINISHED;
+import static pl.lodz.p.it.ssbd2022.ssbd03.entities.Status.REJECTED;
 
 @Stateful
 @DenyAll
@@ -74,12 +76,15 @@ public class MOPService extends AbstractService implements MOPServiceInterface, 
      * @param login login specjalisty oznaczającego wizytę jako zakończoną
      * @return wizyta oznaczona jako zakończona
      * @throws AppointmentFinishAttemptByInvalidSpecialistException gdy specjalista próbuje zakończyć wizytę inną niż własna
+     * @throws AppointmentStatusException gdy wizyta jest już odwołana bądź oznaczona jako zakończona
      */
     @RolesAllowed(Roles.SPECIALIST)
     @Override
     public Appointment finishAppointment(UUID id, String login) {
         Appointment appointment = appointmentFacade.findById(id);
         if (!appointment.getSpecialist().getLogin().equals(login)) throw new AppointmentFinishAttemptByInvalidSpecialistException();
+        if (appointment.getStatus().equals(REJECTED)) throw AppointmentStatusException.appointmentStatusAlreadyCancelled();
+        if (appointment.getStatus().equals(FINISHED)) throw AppointmentStatusException.appointmentStatusAlreadyFinished();
 
         appointment.setStatus(FINISHED);
         appointmentFacade.edit(appointment);
