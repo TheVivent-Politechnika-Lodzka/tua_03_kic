@@ -173,6 +173,7 @@ public class MOKService extends AbstractService implements MOKServiceInterface, 
         Account accountFromDb = accountFacade.findByLogin(login);
         accountFromDb.setFirstName(account.getFirstName());
         accountFromDb.setLastName(account.getLastName());
+        boolean anyAccessLevelHasChanged = false;
 
         for (AccessLevel accessLevel : accountFromDb.getAccessLevelCollection()) {
             // ------------ DataAdministrator ------------
@@ -182,6 +183,7 @@ public class MOKService extends AbstractService implements MOKServiceInterface, 
                 if (dataAdministrator != null) {
                     dataAdministratorDB.setContactEmail(dataAdministrator.getContactEmail());
                     dataAdministratorDB.setPhoneNumber(dataAdministrator.getPhoneNumber());
+                    anyAccessLevelHasChanged = true;
                 }
             }
             // ------------ DataSpecialist ------------
@@ -191,6 +193,7 @@ public class MOKService extends AbstractService implements MOKServiceInterface, 
                 if (dataSpecialist != null) {
                     dataSpecialistDB.setContactEmail(dataSpecialist.getContactEmail());
                     dataSpecialistDB.setPhoneNumber(dataSpecialist.getPhoneNumber());
+                    anyAccessLevelHasChanged = true;
                 }
             }
             // ------------ DataClient ------------
@@ -200,11 +203,15 @@ public class MOKService extends AbstractService implements MOKServiceInterface, 
                 if (dataClient != null) {
                     dataClientDB.setPesel(dataClient.getPesel());
                     dataClientDB.setPhoneNumber(dataClient.getPhoneNumber());
+                    anyAccessLevelHasChanged = true;
                 }
             }
         }
 
         accountFacade.edit(accountFromDb);
+        if (anyAccessLevelHasChanged) {
+            accountFacade.forceVersionIncrement(accountFromDb);
+        }
 
         return accountFromDb;
     }
