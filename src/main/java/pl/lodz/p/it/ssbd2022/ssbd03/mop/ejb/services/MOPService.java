@@ -11,12 +11,9 @@ import jakarta.ejb.TransactionAttributeType;
 import jakarta.inject.Inject;
 import jakarta.interceptor.Interceptors;
 import pl.lodz.p.it.ssbd2022.ssbd03.common.AbstractService;
-import pl.lodz.p.it.ssbd2022.ssbd03.entities.Appointment;
-import pl.lodz.p.it.ssbd2022.ssbd03.entities.ImplantReview;
-import pl.lodz.p.it.ssbd2022.ssbd03.entities.Status;
+import pl.lodz.p.it.ssbd2022.ssbd03.entities.*;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.InvalidParametersException;
 import pl.lodz.p.it.ssbd2022.ssbd03.common.Roles;
-import pl.lodz.p.it.ssbd2022.ssbd03.entities.Implant;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.MethodNotImplementedException;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.appointment.AppointmentNotFinishedException;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.appointment.AppointmentNotFoundException;
@@ -24,9 +21,7 @@ import pl.lodz.p.it.ssbd2022.ssbd03.common.Roles;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.Appointment;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.appointment.AppointmentStatusException;
 import pl.lodz.p.it.ssbd2022.ssbd03.interceptors.TrackerInterceptor;
-import pl.lodz.p.it.ssbd2022.ssbd03.mop.ejb.facades.AppointmentFacade;
-import pl.lodz.p.it.ssbd2022.ssbd03.mop.ejb.facades.ImplantFacade;
-import pl.lodz.p.it.ssbd2022.ssbd03.mop.ejb.facades.ImplantReviewFacade;
+import pl.lodz.p.it.ssbd2022.ssbd03.mop.ejb.facades.*;
 import pl.lodz.p.it.ssbd2022.ssbd03.utils.PaginationData;
 
 import java.time.Instant;
@@ -54,6 +49,8 @@ public class MOPService extends AbstractService implements MOPServiceInterface, 
     private ImplantFacade implantFacade;
     @Inject
     private ImplantReviewFacade implantReviewFacade;
+    @Inject
+    private AccountFacade accountFacade;
 
 
     /**
@@ -172,10 +169,25 @@ public class MOPService extends AbstractService implements MOPServiceInterface, 
      * @param specialistId      - identyfikator specjalisty
      * @param implantId         - identyfikator wszczepu
      * @param startDate         - data rozpoczęcia wizyty
-     * @return Appointment - nowa wizyta
+     * @return Appointment -- nowa wizyta
      */
     @Override
+    @RolesAllowed(Roles.CLIENT)
     public Appointment createAppointment(String clientLogin, UUID specialistId, UUID implantId, Instant startDate) {
-        throw new MethodNotImplementedException();
+        Appointment appointment = new Appointment();
+        appointment.setClient(accountFacade.findByLogin(clientLogin));
+        appointment.setSpecialist(accountFacade.findByUUID(specialistId));
+        appointment.setImplant(implantFacade.findByUUID(implantId));
+        appointment.setStartDate(startDate);
+        Instant endDate = startDate.plus(appointment.getImplant().getDuration());
+        appointment.setEndDate(endDate);
+        appointment.setDescription("");
+        appointment.setPrice(appointment.getImplant().getPrice());
+
+        appointmentFacade.create(appointment);
+        System.out.println("###############################");
+        System.out.println("appointment" + appointment);
+        System.out.println("###############################");
+        return appointment;
     }
 }
