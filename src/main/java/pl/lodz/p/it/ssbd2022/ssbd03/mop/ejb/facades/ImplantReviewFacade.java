@@ -90,7 +90,7 @@ public class ImplantReviewFacade extends AbstractFacade<ImplantReview> {
      * @throws DatabaseException - wyjątek rzucany w przypadku błędu związanego z bazą danych
      */
     @Override
-    @RolesAllowed({Roles.CLIENT, Roles.ADMINISTRATOR})
+    @RolesAllowed({Roles.ADMINISTRATOR, Roles.CLIENT})
     public void remove(ImplantReview entity) {
         try {
             super.unsafeRemove(entity);
