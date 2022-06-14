@@ -74,6 +74,7 @@ public interface MOPServiceInterface extends ServiceLocalInterface {
      * @param pageSize ilość rekordów na danej stronie
      * @param phrase wyszukiwana fraza
      * @return Lista wizyt zgodnych z parametrami wyszukiwania
+     * @throws MethodNotImplementedException w przypadku niezaimplementowanej metody
      */
     default PaginationData findVisits(int page, int pageSize, String phrase) {
         throw new MethodNotImplementedException();

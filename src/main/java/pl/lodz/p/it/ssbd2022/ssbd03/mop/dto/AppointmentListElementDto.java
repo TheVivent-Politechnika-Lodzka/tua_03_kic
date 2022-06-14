@@ -8,6 +8,7 @@ import lombok.Setter;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.Account;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.Implant;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.Status;
+import pl.lodz.p.it.ssbd2022.ssbd03.mok.dto.AccountWithAccessLevelsDto;
 import pl.lodz.p.it.ssbd2022.ssbd03.validation.Description;
 
 import java.util.Date;
@@ -21,12 +22,11 @@ public class AppointmentListElementDto {
 
     private UUID id;
 
-    //TODO wyznaczyć jakie informacje z konta i implantu
-    private Account client;
+    private AccountWithAccessLevelsDto client;
 
-    private Account specialist;
+    private AccountWithAccessLevelsDto specialist;
 
-    private Implant implant;
+    private ImplantDto implant;
 
     private Status status;
 

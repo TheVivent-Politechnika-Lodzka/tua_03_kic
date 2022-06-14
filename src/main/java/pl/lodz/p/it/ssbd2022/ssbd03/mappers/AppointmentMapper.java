@@ -1,5 +1,6 @@
 package pl.lodz.p.it.ssbd2022.ssbd03.mappers;
 
+import jakarta.inject.Inject;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.Appointment;
 import pl.lodz.p.it.ssbd2022.ssbd03.mop.dto.AppointmentListElementDto;
 
@@ -10,6 +11,11 @@ import java.util.stream.Collectors;
 
 public class AppointmentMapper {
 
+    @Inject
+    private AccountMapper accountMapper;
+
+    @Inject
+    private ImplantMapper implantMapper;
 
     /**
      * Metoda mapująca dane z encji Appointment na obiekt typu AppointmentListElementDto
@@ -20,9 +26,15 @@ public class AppointmentMapper {
     public AppointmentListElementDto appointmentListElementDtoFromAppointment(Appointment appointment) {
         AppointmentListElementDto appointmentListElementDto = new AppointmentListElementDto();
         appointmentListElementDto.setId(appointment.getId());
-        appointmentListElementDto.setClient(appointment.getClient());
-        appointmentListElementDto.setSpecialist(appointment.getSpecialist());
-        appointmentListElementDto.setImplant(appointment.getImplant());
+        appointmentListElementDto.setClient(
+                accountMapper.createAccountWithAccessLevelsDtoFromAccount(appointment.getClient())
+        );
+        appointmentListElementDto.setSpecialist(
+                accountMapper.createAccountWithAccessLevelsDtoFromAccount(appointment.getSpecialist())
+        );
+        appointmentListElementDto.setImplant(
+                implantMapper.createImplantDtoFromImplant(appointment.getImplant())
+        );
         appointmentListElementDto.setStartDate(appointment.getStartDate());
         appointmentListElementDto.setDescription(appointment.getDescription());
         appointmentListElementDto.setStatus(appointment.getStatus());
