@@ -18,6 +18,7 @@ import pl.lodz.p.it.ssbd2022.ssbd03.utils.HashAlgorithm;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.Duration;
+import java.time.Instant;
 import java.time.LocalTime;
 import java.util.Date;
 import java.util.List;
@@ -227,8 +228,8 @@ public class StartupConfig {
         appointment.setClient(client);
         appointment.setSpecialist(specialist);
         appointment.setImplant(implant);
-        appointment.setStartDate(new Date());
-        appointment.setEndDate(new Date());
+        appointment.setStartDate(Instant.now());
+        appointment.setEndDate(Instant.now().plusSeconds(60*60));
         appointment.setStatus(Status.FINISHED); // TUTAJ ZMIENIAĆ DO TESTÓW
         appointment.setPrice(100);
         appointment.setDescription("Appointment description");
