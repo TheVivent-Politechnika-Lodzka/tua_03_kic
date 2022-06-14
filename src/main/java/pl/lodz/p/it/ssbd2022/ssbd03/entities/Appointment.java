@@ -8,6 +8,7 @@ import lombok.ToString;
 import pl.lodz.p.it.ssbd2022.ssbd03.common.AbstractEntity;
 
 import java.io.Serializable;
+import java.time.Instant;
 import java.util.Date;
 
 @Entity
@@ -56,13 +57,13 @@ public class Appointment extends AbstractEntity implements Serializable {
     @Column(name = "startDate", nullable = false)
     @Getter
     @Setter
-    private Date startDate;
+    private Instant startDate;
 
     @Basic(optional = false)
     @Column(name = "endDate", nullable = false)
     @Getter
     @Setter
-    private Date endDate;
+    private Instant endDate;
 
     @Basic(optional = false)
     @Column(name = "price", nullable = false)
@@ -71,7 +72,7 @@ public class Appointment extends AbstractEntity implements Serializable {
     private int price;
 
     @Basic(optional = false)
-    @Column(name = "description", nullable = false)
+    @Column(name = "description", nullable = true)
     @Getter
     @Setter
     private String description;
@@ -81,6 +82,6 @@ public class Appointment extends AbstractEntity implements Serializable {
     @Enumerated(EnumType.STRING)
     @Getter
     @Setter
-    private Status status;
+    private Status status = Status.PENDING; // wartość domyślna dla nowych wizyt
 
 }
