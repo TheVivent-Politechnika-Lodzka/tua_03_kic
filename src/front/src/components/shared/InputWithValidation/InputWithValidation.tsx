@@ -12,6 +12,7 @@ interface InputWithValidationProps {
     value: string | undefined;
     validationType: ActionType;
     isValid: boolean;
+    onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
 const InputWithValidation = ({
@@ -19,9 +20,21 @@ const InputWithValidation = ({
     value,
     validationType,
     isValid,
+    onChange,
 }: InputWithValidationProps) => {
-    const [input, setInput] = useState<string | undefined>(value);
-    const { state, dispatch } = useContext(validationContext);
+  const [input, setInput] = useState<string | undefined>(value);
+  const { state, dispatch } = useContext(validationContext);
+
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setInput(e.target.value);
+        dispatch({
+            type: validationType,
+            payload: { ...state, input: e.target.value },
+        });
+        if (onChange) {
+            onChange(e);
+        }
+    };
 
     return (
         <div className={styles.edit_field_wrapper}>
@@ -30,13 +43,7 @@ const InputWithValidation = ({
                 <input
                     type="text"
                     value={input}
-                    onChange={(e) => {
-                        setInput(e.target.value);
-                        dispatch({
-                            type: validationType,
-                            payload: { ...state, input: e.target.value },
-                        });
-                    }}
+                    onChange={handleChange}
                     className={`${styles.input} ${
                         isValid ? styles.valid : styles.invalid
                     }`}

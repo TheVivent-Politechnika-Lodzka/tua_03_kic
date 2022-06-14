@@ -26,7 +26,7 @@ import java.util.Date;
         @NamedQuery(name = "Appointment.findBySpecialistId", query = "select a from Appointment a where a.specialist.id = :specialistId"),
         @NamedQuery(name = "Appointment.findByClientLogin", query = "select a from Appointment a where a.client.login = :login"),
         @NamedQuery(name = "Appointment.findBetweenDates", query = "select a from Appointment a where a.startDate >= :startDate and a.startDate <= :endDate"),
-        @NamedQuery(name = "Appointment.searchByPhrase", query = "select a from Appointment a where a.client.login like %:phrase% or a.specialist.login like %:phrase%"),
+        @NamedQuery(name = "Appointment.searchByPhrase", query = "select a from Appointment a where a.client.login like concat('%', :phrase, '%') or a.specialist.login like concat('%', :phrase, '%')"),
 })
 @ToString
 @NoArgsConstructor
