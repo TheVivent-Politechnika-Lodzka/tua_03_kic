@@ -6,7 +6,6 @@ import jakarta.annotation.security.RolesAllowed;
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.Path;
-import jakarta.ws.rs.PathParam;
 import jakarta.ws.rs.core.Response;
 import pl.lodz.p.it.ssbd2022.ssbd03.common.Config;
 import pl.lodz.p.it.ssbd2022.ssbd03.common.Roles;
@@ -18,16 +17,7 @@ import pl.lodz.p.it.ssbd2022.ssbd03.mappers.AppointmentMapper;
 import pl.lodz.p.it.ssbd2022.ssbd03.mappers.ImplantMapper;
 import pl.lodz.p.it.ssbd2022.ssbd03.mappers.ImplantReviewMapper;
 import pl.lodz.p.it.ssbd2022.ssbd03.mop.dto.*;
-import jakarta.ws.rs.core.Response;
-import pl.lodz.p.it.ssbd2022.ssbd03.common.Config;
-import pl.lodz.p.it.ssbd2022.ssbd03.entities.Appointment;
-import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.TransactionException;
-import pl.lodz.p.it.ssbd2022.ssbd03.mappers.AppointmentMapper;
-import pl.lodz.p.it.ssbd2022.ssbd03.mop.dto.AppointmentDto;
 import pl.lodz.p.it.ssbd2022.ssbd03.mop.ejb.services.MOPServiceInterface;
-import pl.lodz.p.it.ssbd2022.ssbd03.security.Tagger;
-
-import java.util.UUID;
 import pl.lodz.p.it.ssbd2022.ssbd03.security.Tagger;
 import pl.lodz.p.it.ssbd2022.ssbd03.utils.PaginationData;
 
@@ -163,8 +153,8 @@ public class MOPEndpoint implements MOPEndpointInterface {
     /**
      * MOP.7 - Przeglądaj listę wizyt
      *
-     * @param page numer aktualnie przeglądanej strony
-     * @param size ilość rekordów na danej stronie
+     * @param page   numer aktualnie przeglądanej strony
+     * @param size   ilość rekordów na danej stronie
      * @param phrase wyszukiwana fraza
      * @return lista wizyt
      * @throws TransactionException w przypadku braku zatwierdzenia transakcji
@@ -223,10 +213,10 @@ public class MOPEndpoint implements MOPEndpointInterface {
 
     /**
      * MOK.15 - Dodaj recenzję wszczepu
+     *
      * @param createImplantReviewDto - Nowo napisana recenzja
      * @return nowo utworzona recenzja
      * @throws TransactionException jeśli transakcja nie została zatwierdzona
-     *
      */
     @Override
     public Response addImplantsReview(CreateImplantReviewDto createImplantReviewDto) {
@@ -249,6 +239,7 @@ public class MOPEndpoint implements MOPEndpointInterface {
 
     /**
      * MOK.16 - Usuń recenzję wszczepu
+     *
      * @param id Id recenzji wszczepu
      * @return Odpowiedź HTTP
      * @throws TransactionException jeśli transakcja nie została zatwierdzona
@@ -263,7 +254,7 @@ public class MOPEndpoint implements MOPEndpointInterface {
             commitedTX = mopService.isLastTransactionCommited();
         } while (!commitedTX && --TXCounter > 0);
 
-        if(!commitedTX){
+        if (!commitedTX) {
             throw new TransactionException();
         }
 
