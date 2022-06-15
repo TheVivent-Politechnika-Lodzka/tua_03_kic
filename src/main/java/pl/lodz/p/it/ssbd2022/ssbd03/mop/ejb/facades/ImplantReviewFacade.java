@@ -94,7 +94,7 @@ public class ImplantReviewFacade extends AbstractFacade<ImplantReview> {
     @RolesAllowed({Roles.ADMINISTRATOR, Roles.CLIENT})
     public void remove(ImplantReview entity) {
         try {
-            super.remove(entity);
+            super.unsafeRemove(entity);
         } catch (PersistenceException e) {
             throw new DatabaseException(e.getCause());
         }

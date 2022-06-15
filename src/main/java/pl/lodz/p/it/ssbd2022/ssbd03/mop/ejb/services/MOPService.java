@@ -11,16 +11,14 @@ import jakarta.inject.Inject;
 import jakarta.interceptor.Interceptors;
 import pl.lodz.p.it.ssbd2022.ssbd03.common.AbstractService;
 import pl.lodz.p.it.ssbd2022.ssbd03.common.Roles;
-import pl.lodz.p.it.ssbd2022.ssbd03.entities.Appointment;
-import pl.lodz.p.it.ssbd2022.ssbd03.entities.Implant;
-import pl.lodz.p.it.ssbd2022.ssbd03.entities.ImplantReview;
-import pl.lodz.p.it.ssbd2022.ssbd03.entities.Status;
+import pl.lodz.p.it.ssbd2022.ssbd03.entities.*;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.InvalidParametersException;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.appointment.AppointmentNotFinishedException;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.appointment.AppointmentNotFoundException;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.appointment.AppointmentStatusException;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.implant_review.ClientRemovesOtherReviewsException;
 import pl.lodz.p.it.ssbd2022.ssbd03.interceptors.TrackerInterceptor;
+import pl.lodz.p.it.ssbd2022.ssbd03.mop.ejb.facades.AccountFacade;
 import pl.lodz.p.it.ssbd2022.ssbd03.mop.ejb.facades.AppointmentFacade;
 import pl.lodz.p.it.ssbd2022.ssbd03.mop.ejb.facades.ImplantFacade;
 import pl.lodz.p.it.ssbd2022.ssbd03.mop.ejb.facades.ImplantReviewFacade;
@@ -42,10 +40,15 @@ public class MOPService extends AbstractService implements MOPServiceInterface, 
 
     @Inject
     AppointmentFacade appointmentFacade;
+
     @Inject
     private ImplantFacade implantFacade;
+
     @Inject
     private ImplantReviewFacade implantReviewFacade;
+
+    @Inject
+    private AccountFacade accountFacade;
 
 
     /**
@@ -170,8 +173,14 @@ public class MOPService extends AbstractService implements MOPServiceInterface, 
     @Override
     @RolesAllowed({Roles.ADMINISTRATOR, Roles.CLIENT})
     public void deleteReview(UUID id, String login) {
+
         ImplantReview review = implantReviewFacade.findByUUID(id);
-        if(!review.getClient().getLogin().equals(login)) {
+        Account account = accountFacade.findByLogin(login);
+        boolean isAdmin = account.getAccessLevelCollection()
+                .stream()
+                .anyMatch(accessLevel -> accessLevel.getLevel().equals(Roles.ADMINISTRATOR));
+
+        if(!review.getClient().getLogin().equals(login) && !isAdmin) {
             throw new ClientRemovesOtherReviewsException();
         }
         implantReviewFacade.remove(review);
