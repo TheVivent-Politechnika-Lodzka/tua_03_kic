@@ -21,6 +21,7 @@ export type ActionType =
     | "VALIDATE_PHONENUMBER"
     | "VALIDATE_PESEL"
     | "VALIDATE_PASSWORD"
+    | "VALIDATE_NAME"
     | "RESET_VALIDATION";
 
 interface ValidationAction {

@@ -19,6 +19,7 @@ import { FaSearch } from "react-icons/fa";
 import { useTranslation } from "react-i18next";
 import { useStoreSelector } from "../../../redux/reduxHooks";
 import styles from "./implantListPage.module.scss";
+import { useNavigate } from "react-router";
 
 export const ImplantListPage = () => {
     const [phrase, setPhrase] = useState<string>("");
@@ -33,6 +34,7 @@ export const ImplantListPage = () => {
     const [page, setPage] = useState<number>(1);
     const { t } = useTranslation();
     const user = useStoreSelector((state) => state.user.cur);
+    const navigate = useNavigate();
 
     const statusSelectList = [
         {
@@ -91,7 +93,6 @@ export const ImplantListPage = () => {
         return () => clearTimeout(delayDebounceFn);
     }, [phrase]);
 
-    const goto = () => {};
 
     return (
         <Container fluid={true} mt={40}>
@@ -99,7 +100,7 @@ export const ImplantListPage = () => {
                 <Grid.Col span={2}>
                     {user === "ADMINISTRATOR" ? (
                         <GreenGradientButton
-                            onClick={goto}
+                            onClick={()=>navigate("/create-implant")}
                             label={t("implantListPage.addImplant")}
                         />
                     ) : (
