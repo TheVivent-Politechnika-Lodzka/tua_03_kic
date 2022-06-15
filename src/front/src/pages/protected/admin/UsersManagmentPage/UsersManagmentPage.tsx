@@ -12,15 +12,8 @@ import UserRecord from "../../../../components/UserRecord/UserRecord";
 import styles from "./style.module.scss";
 
 const UsersManagmentPage = () => {
-    const [account, setAccounts] = useState<ShowAccountInfo[]>([]);
-    const [modal, setModal] = useState<boolean>(false);
-    const [userLogin, setUserLogin] = useState<string>("");
-    const [query, setQuery] = useState<string>("");
-    const [findAll] = useFindAllUsersMutation();
     const navigate = useNavigate();
     const { t } = useTranslation();
-    const [page, setPage] = useState<number>(1);
-    const limit = 3;
 
     return (
         <section className={styles.users_managment_page}>
@@ -28,7 +21,23 @@ const UsersManagmentPage = () => {
                 <SearchInput placeholder="Wpisz frazę..." />
             </div>
             <div className={styles.table_container}>
-                <UserRecord />
+                <div className={styles.table_header}>
+                    <div className={styles.table_header_cell_wrapper}>
+                        <p className={styles.table_header_cell}>Login</p>
+                        <p className={styles.table_header_cell}>Imię</p>
+                        <p className={styles.table_header_cell}>Nazwisko</p>
+                        <p className={styles.table_header_cell}>
+                            Czy zatwierdzone
+                        </p>
+                        <p className={styles.table_header_cell}>Czy aktywne</p>
+                        <p className={styles.table_header_cell}>Więcej</p>
+                    </div>
+                </div>
+                <div className={styles.table_body}>
+                    <UserRecord />
+                    <UserRecord />
+                    <UserRecord />
+                </div>
             </div>
         </section>
     );
