@@ -5,6 +5,9 @@ import {
     faInfoCircle,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { useState } from "react";
+import { useNavigate } from "react-router";
+import AccountDetails from "../AccountDetails/AccountDetails";
 import AccessLevel from "../shared/AccessLevel/AccessLevel";
 import styles from "./style.module.scss";
 
@@ -13,6 +16,9 @@ interface UserRecordProps {
 }
 
 const UserRecord = ({ user }: UserRecordProps) => {
+    const [modal, setModal] = useState<boolean>(false);
+    const navigate = useNavigate();
+
     return (
         <div className={styles.user_record_wrapper}>
             <div className={styles.avatar_wrapper}>
@@ -59,10 +65,16 @@ const UserRecord = ({ user }: UserRecordProps) => {
                 </p>
             </div>
             <div className={styles.detail_wrapper}>
-                <div className={styles.info_button} onClick={() => {}}>
+                <div
+                    className={styles.info_button}
+                    onClick={() => {
+                        setModal(true);
+                    }}
+                >
                     <FontAwesomeIcon icon={faInfoCircle} />
                 </div>
             </div>
+            <AccountDetails login={user?.login} isOpened={modal} onClose={() => {setModal(false)}} />
         </div>
     );
 };
