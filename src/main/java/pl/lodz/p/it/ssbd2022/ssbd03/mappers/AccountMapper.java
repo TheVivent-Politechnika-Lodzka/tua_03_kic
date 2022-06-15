@@ -8,6 +8,8 @@ import pl.lodz.p.it.ssbd2022.ssbd03.mok.dto.AccountWithAccessLevelsDto;
 import pl.lodz.p.it.ssbd2022.ssbd03.mok.dto.no_etag.CreateAccountDto;
 import pl.lodz.p.it.ssbd2022.ssbd03.mok.dto.no_etag.RegisterClientDto;
 import pl.lodz.p.it.ssbd2022.ssbd03.mok.dto.access_levels.AccessLevelDto;
+import pl.lodz.p.it.ssbd2022.ssbd03.mop.dto.SpecialistDataDto;
+import pl.lodz.p.it.ssbd2022.ssbd03.mop.dto.SpecialistForMopDto;
 import pl.lodz.p.it.ssbd2022.ssbd03.utils.HashAlgorithm;
 
 import java.util.Collection;
@@ -119,10 +121,29 @@ public class AccountMapper {
      * @param accounts Lista kont, które będą konwertowane
      * @return Lista zawierająca DTO skonwertowanych kont
      */
-    public List<AccountWithAccessLevelsDto> createListOfAccountWithAccessLevelDTO(Collection<Account> accounts){
+    public List<AccountWithAccessLevelsDto> createListOfAccountWithAccessLevelDTO(Collection<Account> accounts) {
         return null == accounts ? null : accounts.stream()
                 .filter(Objects::nonNull)
                 .map(this::createAccountWithAccessLevelsDtoFromAccount)
+                .collect(Collectors.toList());
+    }
+
+    public SpecialistForMopDto accountSpecialistListElementDto(Account account) {
+        SpecialistDataDto dataspecialist = accessLevelMapper.dataSpecialistListElementDtoList(account.getAccessLevelCollection());
+        SpecialistForMopDto specialistForMopDto = new SpecialistForMopDto(
+                account.getId(),
+                account.getFirstName(),
+                account.getLastName(),
+                dataspecialist.getContactEmail(),
+                dataspecialist.getPhoneNumber()
+        );
+        return specialistForMopDto;
+    }
+
+    public List<SpecialistForMopDto> accountSpecialistListElementDtoList(Collection<Account> accounts) {
+        return null == accounts ? null : accounts.stream()
+                .filter(Objects::nonNull)
+                .map(this::accountSpecialistListElementDto)
                 .collect(Collectors.toList());
     }
 

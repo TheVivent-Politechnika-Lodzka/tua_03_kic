@@ -10,6 +10,7 @@ import pl.lodz.p.it.ssbd2022.ssbd03.mok.dto.access_levels.AccessLevelDto;
 import pl.lodz.p.it.ssbd2022.ssbd03.mok.dto.access_levels.DataAdministratorDto;
 import pl.lodz.p.it.ssbd2022.ssbd03.mok.dto.access_levels.DataClientDto;
 import pl.lodz.p.it.ssbd2022.ssbd03.mok.dto.access_levels.DataSpecialistDto;
+import pl.lodz.p.it.ssbd2022.ssbd03.mop.dto.SpecialistDataDto;
 
 import java.util.Collection;
 import java.util.List;
@@ -120,6 +121,31 @@ public class AccessLevelMapper {
                 .filter(Objects::nonNull)
                 .map(this::createAccessLevelDtoFromEntity)
                 .collect(Collectors.toList());
+    }
+
+
+    /**
+     * Metoda tworząca obiekt typu DataSpecialistDto na podstawie encji specjalisty
+     *
+     * @param dataSpecialist Specjalista, który zostanie skonwertowany na DTO
+     * @return DTO podanego specjalisty
+     */
+    public SpecialistDataDto createSpecialistDataDtoFromEntity(DataSpecialist dataSpecialist) {
+        SpecialistDataDto dto = new SpecialistDataDto(dataSpecialist.getContactEmail(), dataSpecialist.getPhoneNumber());
+        return dto;
+    }
+
+    public SpecialistDataDto dataSpecialistListElementDto(AccessLevel accessLevel) {
+        if (accessLevel instanceof DataSpecialist)
+            return createSpecialistDataDtoFromEntity((DataSpecialist) accessLevel);
+        return null;
+    }
+
+    public SpecialistDataDto dataSpecialistListElementDtoList(Collection<AccessLevel> accessLevels) {
+        return null == accessLevels ? null : accessLevels.stream()
+                .filter(Objects::nonNull)
+                .map(this::dataSpecialistListElementDto)
+                .collect(Collectors.toList()).get(0);
     }
 
     /**
