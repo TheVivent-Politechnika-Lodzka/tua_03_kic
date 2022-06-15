@@ -38,10 +38,10 @@ public interface MOPEndpointInterface {
     }
 
     // MOP.2 - Archiwizuj wszczep
-    @PUT
+    @PATCH
     @RolesAllowed(Roles.ADMINISTRATOR)
     @Consumes(MediaType.APPLICATION_JSON)
-    @Path("/archive/{id}")
+    @Path("/implant/archive/{id}")
     default Response archiveImplant(@PathParam("id") UUID id) {
         throw new MethodNotImplementedException();
     }

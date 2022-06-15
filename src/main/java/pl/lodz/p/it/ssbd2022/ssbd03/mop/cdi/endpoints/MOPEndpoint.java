@@ -16,8 +16,8 @@ import pl.lodz.p.it.ssbd2022.ssbd03.entities.ImplantReview;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.TransactionException;
 import pl.lodz.p.it.ssbd2022.ssbd03.mappers.AppointmentMapper;
 import pl.lodz.p.it.ssbd2022.ssbd03.mappers.ImplantMapper;
-import pl.lodz.p.it.ssbd2022.ssbd03.mop.dto.CreateImplantDto;
-import pl.lodz.p.it.ssbd2022.ssbd03.mop.dto.ImplantDto;
+import pl.lodz.p.it.ssbd2022.ssbd03.mappers.ImplantReviewMapper;
+import pl.lodz.p.it.ssbd2022.ssbd03.mop.dto.*;
 import pl.lodz.p.it.ssbd2022.ssbd03.mop.ejb.services.MOPServiceInterface;
 import pl.lodz.p.it.ssbd2022.ssbd03.security.Tagger;
 import pl.lodz.p.it.ssbd2022.ssbd03.utils.PaginationData;
@@ -31,7 +31,7 @@ import java.util.UUID;
 public class MOPEndpoint implements MOPEndpointInterface {
 
     @Inject
-    MOPServiceInterface mopService;
+    MOPServiceInterface mopServiceInterface;
 
     @Inject
     AppointmentMapper appointmentMapper;
@@ -45,37 +45,9 @@ public class MOPEndpoint implements MOPEndpointInterface {
     @Inject
     private ImplantReviewMapper implantReviewMapper;
 
-
-    /**
-     * MOP.13 Odwołaj dowolną wizytę
-     * Metodę może wykonać tylko konto z poziomem dostępu administratora.
-     *
-     * @param id Identyfikator wizyty, która ma zostać odwołana
-     * @return odpowiedź HTTP
-     */
-    @Override
-    public Response cancelAnyVisit(UUID id) {
-        tagger.verifyTag();
-        Appointment cancelledAppointment;
-
-        int TXCounter = Config.MAX_TX_RETRIES;
-        boolean commitedTX;
-        do {
-            cancelledAppointment = mopService.cancelAppointment(id);
-            commitedTX = mopService.isLastTransactionCommited();
-        } while (!commitedTX && --TXCounter > 0);
-
-        if (!commitedTX) {
-            throw new TransactionException();
-        }
-
-        AppointmentDto appointmentDto = appointmentMapper.createAppointmentDtoFromAppointment(cancelledAppointment);
-
-        return Response.ok(appointmentDto).tag(tagger.tag(appointmentDto)).build();
-    }
-
     /**
      * MOP.1 - Dodaj nowy wszczep
+     *
      * @param createImplantDto - dane nowego wszczepu
      * @return odpowiedź zawierająca status http
      * @throws TransactionException jeśli transakcja nie została zatwierdzona
@@ -88,8 +60,8 @@ public class MOPEndpoint implements MOPEndpointInterface {
         Implant implant = implantMapper.createImplantFromDto(createImplantDto);
         Implant createdImplant;
         do {
-            createdImplant = mopService.createImplant(implant);
-            commitedTX = mopService.isLastTransactionCommited();
+            createdImplant = mopServiceInterface.createImplant(implant);
+            commitedTX = mopServiceInterface.isLastTransactionCommited();
         } while (!commitedTX && --TXCounter > 0);
 
         if (!commitedTX) {
@@ -98,25 +70,6 @@ public class MOPEndpoint implements MOPEndpointInterface {
         ImplantDto implantDto = implantMapper.createImplantDtoFromImplant(createdImplant);
 
         return Response.ok(implantDto).build();
-    }
-
-    //MOP.4 - Przegladaj szczegoły wszczepu
-    @Override
-    public Response getImplant(UUID id) {
-        Implant implant;
-        int TXCounter = Config.MAX_TX_RETRIES;
-        boolean commitedTX;
-        do {
-            implant = mopService.findImplantByUuid(id);
-
-            commitedTX = mopService.isLastTransactionCommited();
-        } while (!commitedTX && TXCounter-- > 0);
-
-        if (!commitedTX) {
-            throw new TransactionException();
-        }
-
-        return Response.ok(createdImplant).build();
     }
 
     /**
@@ -149,6 +102,25 @@ public class MOPEndpoint implements MOPEndpointInterface {
         return Response.ok(imp).tag(tagger.tag(imp)).build();
     }
 
+    //MOP.4 - Przegladaj szczegoły wszczepu
+    @Override
+    public Response getImplant(UUID id) {
+        Implant implant;
+        int TXCounter = Config.MAX_TX_RETRIES;
+        boolean commitedTX;
+        do {
+            implant = mopServiceInterface.findImplantByUuid(id);
+
+            commitedTX = mopServiceInterface.isLastTransactionCommited();
+        } while (!commitedTX && TXCounter-- > 0);
+
+        if (!commitedTX) {
+            throw new TransactionException();
+        }
+
+        ImplantDto dto = implantMapper.createImplantDtoFromImplant(implant);
+        return Response.ok(dto).tag(tagger.tag(dto)).build();
+    }
 
     /**
      * MOK.5 - Przeglądaj listę wszczepów
@@ -167,8 +139,8 @@ public class MOPEndpoint implements MOPEndpointInterface {
         int TXCounter = Config.MAX_TX_RETRIES;
         boolean commitedTX;
         do {
-            paginationData = mopService.findImplants(page, size, phrase, archived);
-            commitedTX = mopService.isLastTransactionCommited();
+            paginationData = mopServiceInterface.findImplants(page, size, phrase, archived);
+            commitedTX = mopServiceInterface.isLastTransactionCommited();
         } while (!commitedTX && TXCounter-- > 0);
 
         if (!commitedTX) {
@@ -184,8 +156,8 @@ public class MOPEndpoint implements MOPEndpointInterface {
     /**
      * MOP.7 - Przeglądaj listę wizyt
      *
-     * @param page numer aktualnie przeglądanej strony
-     * @param size ilość rekordów na danej stronie
+     * @param page   numer aktualnie przeglądanej strony
+     * @param size   ilość rekordów na danej stronie
      * @param phrase wyszukiwana fraza
      * @return lista wizyt
      * @throws TransactionException w przypadku braku zatwierdzenia transakcji
@@ -197,8 +169,8 @@ public class MOPEndpoint implements MOPEndpointInterface {
         int TXCounter = Config.MAX_TX_RETRIES;
         boolean commitedTX;
         do {
-            paginationData = mopService.findVisits(page, size, phrase);
-            commitedTX = mopService.isLastTransactionCommited();
+            paginationData = mopServiceInterface.findVisits(page, size, phrase);
+            commitedTX = mopServiceInterface.isLastTransactionCommited();
         } while (!commitedTX && TXCounter-- > 0);
 
         if (!commitedTX) {
@@ -229,8 +201,8 @@ public class MOPEndpoint implements MOPEndpointInterface {
         int TXCounter = Config.MAX_TX_RETRIES;
         boolean commitedTX;
         do {
-            editedAppointment = mopService.editAppointment(id, update);
-            commitedTX = mopService.isLastTransactionCommited();
+            editedAppointment = mopServiceInterface.editAppointment(id, update);
+            commitedTX = mopServiceInterface.isLastTransactionCommited();
         } while (!commitedTX && --TXCounter > 0);
 
         if (!commitedTX) {
@@ -242,12 +214,41 @@ public class MOPEndpoint implements MOPEndpointInterface {
         return Response.ok(app).tag(tagger.tag(app)).build();
     }
 
+
+    /**
+     * MOP.13 Odwołaj dowolną wizytę
+     * Metodę może wykonać tylko konto z poziomem dostępu administratora.
+     *
+     * @param id Identyfikator wizyty, która ma zostać odwołana
+     * @return odpowiedź HTTP
+     */
+    @Override
+    public Response cancelAnyVisit(UUID id) {
+        tagger.verifyTag();
+        Appointment cancelledAppointment;
+
+        int TXCounter = Config.MAX_TX_RETRIES;
+        boolean commitedTX;
+        do {
+            cancelledAppointment = mopServiceInterface.cancelAppointment(id);
+            commitedTX = mopServiceInterface.isLastTransactionCommited();
+        } while (!commitedTX && --TXCounter > 0);
+
+        if (!commitedTX) {
+            throw new TransactionException();
+        }
+
+        AppointmentDto appointmentDto = appointmentMapper.createAppointmentDtoFromAppointment(cancelledAppointment);
+
+        return Response.ok(appointmentDto).tag(tagger.tag(appointmentDto)).build();
+    }
+
     /**
      * MOK.15 - Dodaj recenzję wszczepu
+     *
      * @param createImplantReviewDto - Nowo napisana recenzja
      * @return nowo utworzona recenzja
      * @throws TransactionException jeśli transakcja nie została zatwierdzona
-     *
      */
     @Override
     public Response addImplantsReview(CreateImplantReviewDto createImplantReviewDto) {
@@ -256,8 +257,8 @@ public class MOPEndpoint implements MOPEndpointInterface {
         ImplantReview implantReview = implantReviewMapper.createImplantReviewFromDto(createImplantReviewDto);
         ImplantReview createdReview;
         do {
-            createdReview = mopService.createReview(implantReview);
-            commitedTX = mopService.isLastTransactionCommited();
+            createdReview = mopServiceInterface.createReview(implantReview);
+            commitedTX = mopServiceInterface.isLastTransactionCommited();
         } while (!commitedTX && --TXCounter > 0);
 
         if (!commitedTX) {
