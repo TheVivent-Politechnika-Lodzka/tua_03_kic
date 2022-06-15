@@ -71,7 +71,7 @@ public class MOPEndpoint implements MOPEndpointInterface {
         return Response.ok(implantDto).build();
     }
 
-    //MOP.4 -Edytuj wszczep
+    //MOP.3 -Edytuj wszczep
     public Response editImplant(UUID id, ImplantDto implantDto) {
         tagger.verifyTag(implantDto);
 

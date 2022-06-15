@@ -9,7 +9,7 @@ import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.AppBaseException;
  */
 
 @ApplicationException(rollback = true)
-public class ImplantArchivedExceptions extends AppBaseException {
+public class ImplantArchivedException extends AppBaseException {
 
     private static final String IMPLANT_TO_EDIT_IS_ARCHIVED = "server.error.appBase.implantToEditIsArchived";
 
@@ -19,7 +19,7 @@ public class ImplantArchivedExceptions extends AppBaseException {
      * @param message Wiadomość zawarta w wyjątku
      * @return wyjatek typu ImplantAlreadyExistExceptions
      */
-    private ImplantArchivedExceptions(String message) {
+    private ImplantArchivedException(String message) {
         super(message, Response.Status.CONFLICT);
     }
 
@@ -28,8 +28,8 @@ public class ImplantArchivedExceptions extends AppBaseException {
      *  w przypadku, gdy implant z podaną nazwą istnieje w bazie danych
      *  @return wyjatek typu ImplantAlreadyExistsException
      */
-    public static ImplantArchivedExceptions editArchivedImplant() {
-        return new ImplantArchivedExceptions(IMPLANT_TO_EDIT_IS_ARCHIVED);
+    public static ImplantArchivedException editArchivedImplant() {
+        return new ImplantArchivedException(IMPLANT_TO_EDIT_IS_ARCHIVED);
     }
 
 }

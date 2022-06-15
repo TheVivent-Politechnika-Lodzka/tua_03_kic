@@ -52,6 +52,12 @@ public class ImplantMapper {
         return implant;
     }
 
+    /**
+     * Mapuje dane z obiektu ImplantDto na obiekt Implant
+     *
+     * @param implantDto Obiekt ImplantDto
+     * @return Implant - obiekt wszczepu
+     */
     public Implant createImplantFromImplantDto(ImplantDto implantDto) {
         Implant implant = new Implant();
         implant.setName(implantDto.getName());

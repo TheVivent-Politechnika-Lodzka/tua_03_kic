@@ -67,6 +67,8 @@ public class ImplantFacade extends AbstractFacade<Implant> {
      * Metoda edytująca implant w bazie danych.
      *
      * @param entity
+     * @throws ImplantAlreadyExistExceptions - wyjątek rzucany w przypadku, gdy implant o podanej nazwie już istnieje w bazie danych
+     * @throws DatabaseException - gdy wystąpi błąd związany z bazą danych
      */
     @Override
     @RolesAllowed(Roles.ADMINISTRATOR)

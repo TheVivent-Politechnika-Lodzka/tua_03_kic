@@ -18,7 +18,7 @@ import pl.lodz.p.it.ssbd2022.ssbd03.common.Roles;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.Implant;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.appointment.AppointmentNotFinishedException;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.appointment.AppointmentNotFoundException;
-import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.implant.ImplantArchivedExceptions;
+import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.implant.ImplantArchivedException;
 import pl.lodz.p.it.ssbd2022.ssbd03.interceptors.TrackerInterceptor;
 import pl.lodz.p.it.ssbd2022.ssbd03.mop.ejb.facades.AppointmentFacade;
 import pl.lodz.p.it.ssbd2022.ssbd03.mop.ejb.facades.ImplantFacade;
@@ -60,7 +60,7 @@ public class MOPService extends AbstractService implements MOPServiceInterface, 
         Implant implantFromDB = implantFacade.findByUUID(uuid);
 
         if(implantFromDB.isArchived()){
-            throw ImplantArchivedExceptions.editArchivedImplant();
+            throw ImplantArchivedException.editArchivedImplant();
         }
 
         implantFromDB.setName(implant.getName());
