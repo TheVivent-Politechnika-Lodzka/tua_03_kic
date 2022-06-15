@@ -64,7 +64,7 @@ const AccountDetails = ({ login, isOpened, onClose }: AccountDetailsProps) => {
 
     return (
         <ReactModal isOpen={isOpened} style={customStyles} ariaHideApp={false}>
-            <section className={styles.accountDetailsPage}>
+            <section className={styles.account_details_page}>
                 {loading.pageLoading ? (
                     <ReactLoading
                         type="cylon"
@@ -73,23 +73,23 @@ const AccountDetails = ({ login, isOpened, onClose }: AccountDetailsProps) => {
                         height="10rem"
                     />
                 ) : (
-                    <div className={styles.accountDetailsContent}>
+                    <div className={styles.content}>
                         <FontAwesomeIcon
-                            className={styles.closeIcon}
+                            className={styles.close_icon}
                             icon={faClose}
                             onClick={onClose}
                         />
-                        <div className={styles.accountGeneralDetails}>
+                        <div className={styles.account_general_details}>
                             <img
-                                className={styles.accountAvatar}
+                                className={styles.avatar}
                                 src={avatar}
                                 alt="Account general: Avatar"
                             />
-                            <p className={styles.accountLogin}>
+                            <p className={styles.login}>
                                 {account?.login}
                             </p>
-                            <div className={styles.accountAccessLevelsWrapper}>
-                                <p className={styles.accountAccessLevelsTitle}>
+                            <div className={styles.access_levels_wrapper}>
+                                <p className={styles.title}>
                                     Poziomy dostępu:
                                 </p>
                                 {account?.accessLevels.map((accessLevel) => (
@@ -99,7 +99,7 @@ const AccountDetails = ({ login, isOpened, onClose }: AccountDetailsProps) => {
                                     />
                                 ))}
                             </div>
-                            <div className={styles.accountActionsWrapper}>
+                            <div className={styles.actions_wrapper}>
                                 <ActionButton
                                     onClick={() => {
                                         navigate(`/accounts/${login}`);
@@ -131,39 +131,39 @@ const AccountDetails = ({ login, isOpened, onClose }: AccountDetailsProps) => {
                                 />
                             </div>
                         </div>
-                        <div className={styles.accountDetails}>
-                            <p className={styles.detailsTitle}>
+                        <div className={styles.account_details}>
+                            <p className={styles.account_details_title}>
                                 Dane szczegółowe
                             </p>
-                            <div className={styles.detailsWrapper}>
-                                <div className={styles.detailWrapper}>
-                                    <p className={styles.detailTitle}>Imię:</p>
-                                    <p className={styles.detailDescription}>
+                            <div className={styles.details_wrapper}>
+                                <div className={styles.detail_wrapper}>
+                                    <p className={styles.title}>Imię:</p>
+                                    <p className={styles.description}>
                                         {account?.firstName}
                                     </p>
                                 </div>
-                                <div className={styles.detailWrapper}>
-                                    <p className={styles.detailTitle}>
+                                <div className={styles.detail_wrapper}>
+                                    <p className={styles.title}>
                                         Nazwisko:
                                     </p>
-                                    <p className={styles.detailDescription}>
+                                    <p className={styles.description}>
                                         {account?.lastName}
                                     </p>
                                 </div>
-                                <div className={styles.detailWrapper}>
-                                    <p className={styles.detailTitle}>Email:</p>
-                                    <p className={styles.detailDescription}>
+                                <div className={styles.detail_wrapper}>
+                                    <p className={styles.title}>Email:</p>
+                                    <p className={styles.description}>
                                         {account?.email}
                                     </p>
                                 </div>
                                 {account?.accessLevels.some((level) => {
                                     return level.level === "CLIENT";
                                 }) && (
-                                    <div className={styles.detailWrapper}>
-                                        <p className={styles.detailTitle}>
+                                    <div className={styles.detail_wrapper}>
+                                        <p className={styles.title}>
                                             Numer PESEL:
                                         </p>
-                                        <p className={styles.detailDescription}>
+                                        <p className={styles.description}>
                                             {account?.accessLevels
                                                 .filter(
                                                     (level) =>
@@ -179,11 +179,11 @@ const AccountDetails = ({ login, isOpened, onClose }: AccountDetailsProps) => {
                                         level.level === "SPECIALIST"
                                     );
                                 }) && (
-                                    <div className={styles.detailWrapper}>
-                                        <p className={styles.detailTitle}>
+                                    <div className={styles.detail_wrapper}>
+                                        <p className={styles.title}>
                                             Numer telefonu:
                                         </p>
-                                        <p className={styles.detailDescription}>
+                                        <p className={styles.description}>
                                             {account?.accessLevels
                                                 .filter(
                                                     (level) =>
@@ -197,8 +197,8 @@ const AccountDetails = ({ login, isOpened, onClose }: AccountDetailsProps) => {
                                         </p>
                                     </div>
                                 )}
-                                <div className={styles.detailWrapper}>
-                                    <p className={styles.detailTitle}>Język:</p>
+                                <div className={styles.detail_wrapper}>
+                                    <p className={styles.title}>Język:</p>
                                     <img
                                         src={
                                             account?.language?.language === "pl"
@@ -206,7 +206,7 @@ const AccountDetails = ({ login, isOpened, onClose }: AccountDetailsProps) => {
                                                 : flagEN
                                         }
                                         alt="Detail description: language"
-                                        className={styles.detailFlag}
+                                        className={styles.flag}
                                     />
                                 </div>
                             </div>

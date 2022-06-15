@@ -1,24 +1,24 @@
 @import "../../variables.scss";
 
-.accountDetailsPage {
-    width: 80%;
+.account_details_page {
+    width: 70%;
     height: 100%;
     display: flex;
     justify-content: space-evenly;
     align-items: center;
 
-    .accountDetailsContent {
-        margin-top: 5rem;
+    .content {
+        margin-top: 4.5rem;
         width: 100%;
         display: flex;
         justify-content: space-evenly;
         align-items: center;
         position: relative;
 
-        .accountGeneralDetails {
-            width: 44rem;
-            height: 36rem;
-            border-radius: 2.4rem;
+        .account_general_details {
+            width: 39.6rem;
+            height: 32rem;
+            border-radius: 2.2rem;
             background-color: $secondary-color;
             display: flex;
             justify-content: flex-start;
@@ -26,40 +26,40 @@
             align-items: center;
             position: relative;
 
-            .accountAvatar {
-                width: 15rem;
-                height: 15rem;
+            .avatar {
+                width: 14.4rem;
+                height: 14.4rem;
                 border-radius: 100%;
-                border: 10px solid $secondary-color;
-                margin-top: -7rem;
+                border: 9px solid $secondary-color;
+                margin-top: -6.3rem;
             }
 
-            .accountLogin {
+            .login {
                 color: white;
-                font-size: 3rem;
+                font-size: 2.4rem;
             }
 
-            .accountAccessLevelsWrapper {
-                width: 90%;
+            .access_levels_wrapper {
+                width: 80%;
                 display: flex;
                 justify-content: space-evenly;
                 flex-direction: row;
                 align-items: center;
-                margin-top: 2rem;
+                margin-top: 1.6rem;
 
-                .accountAccessLevelsTitle {
+                .title {
                     color: white;
-                    font-size: 1.5rem;
+                    font-size: 1.2rem;
                     font-weight: bold;
                 }
             }
 
-            .accountActionsWrapper {
-                margin-top: 2rem;
+            .actions_wrapper {
+                margin-top: 1.5rem;
                 display: flex;
                 flex-direction: column;
                 justify-content: space-evenly;
-                height: 100%;
+                height: 14rem;
 
                 & > * {
                     width: 20rem;
@@ -68,58 +68,58 @@
             }
         }
 
-        .accountDetails {
-            width: 41.5rem;
-            height: 42rem;
-            border-radius: 38px;
-            padding: 2.75rem 3.25rem;
+        .account_details {
+            width: 33.75rem;
+            height: 35rem;
+            border-radius: 30.8px;
+            padding: 2.21rem 2.6rem;
             background-color: $secondary-color;
 
-            .detailsTitle {
-                font-size: 2.25rem;
+            .account_details_title {
+                font-size: 2rem;
                 font-weight: bold;
-                padding-bottom: 2rem;
+                padding-bottom: 1.8rem;
                 color: white;
                 width: 100%;
                 border-bottom: 2px solid $light-gray;
             }
 
-            .detailsWrapper {
+            .details_wrapper {
                 display: flex;
                 flex-direction: column;
                 justify-content: space-evenly;
                 height: 90%;
 
-                .detailWrapper {
+                .detail_wrapper {
                     display: flex;
                     flex-direction: row;
                     justify-content: space-between;
 
-                    .detailTitle {
+                    .title {
                         font-weight: bold;
                     }
 
-                    .detailDescription,
-                    .detailTitle {
+                    .description,
+                    .title {
                         color: white;
-                        font-size: 1.5rem;
+                        font-size: 1.17rem;
                     }
 
-                    .detailFlag {
-                        width: 3.1rem;
-                        height: 1.7rem;
+                    .flag {
+                        width: 2.6rem;
+                        height: 1.4rem;
                     }
                 }
             }
         }
 
-        .closeIcon {
+        .close_icon {
             font-size: 2.5rem;
             color: white;
             cursor: pointer;
             position: absolute;
-            top: -5.5rem;
-            right: -3rem;
+            top: -9rem;
+            right: -12.5rem;
         }
     }
 }
