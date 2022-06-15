@@ -18,6 +18,7 @@ import pl.lodz.p.it.ssbd2022.ssbd03.mappers.ImplantMapper;
 import pl.lodz.p.it.ssbd2022.ssbd03.mappers.ImplantReviewMapper;
 import pl.lodz.p.it.ssbd2022.ssbd03.mop.dto.*;
 import pl.lodz.p.it.ssbd2022.ssbd03.mop.ejb.services.MOPServiceInterface;
+import pl.lodz.p.it.ssbd2022.ssbd03.security.AuthContext;
 import pl.lodz.p.it.ssbd2022.ssbd03.security.Tagger;
 import pl.lodz.p.it.ssbd2022.ssbd03.utils.PaginationData;
 
@@ -31,6 +32,9 @@ public class MOPEndpoint implements MOPEndpointInterface {
 
     @Inject
     MOPServiceInterface mopService;
+
+    @Inject
+    AuthContext authContext;
 
     @Inject
     AppointmentMapper appointmentMapper;
@@ -250,7 +254,8 @@ public class MOPEndpoint implements MOPEndpointInterface {
         boolean commitedTX;
 
         do {
-            mopService.deleteReview(id);
+            String login = authContext.getCurrentUserLogin();
+            mopService.deleteReview(id, login);
             commitedTX = mopService.isLastTransactionCommited();
         } while (!commitedTX && --TXCounter > 0);
 

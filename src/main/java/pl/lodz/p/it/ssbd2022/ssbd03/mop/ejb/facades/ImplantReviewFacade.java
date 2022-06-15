@@ -88,14 +88,13 @@ public class ImplantReviewFacade extends AbstractFacade<ImplantReview> {
      * Metoda usuwająca recenzję implantu z bazy danych
      *
      * @param entity Recenzja implantu
-     * @throws InvalidParametersException - wyjątek rzucany w przypadku, gdy podano nieprawidłowy identyfikator recenzji implantu
-     * @throws DatabaseException          - wyjątek rzucany w przypadku błędu związanego z bazą danych
+     * @throws DatabaseException - wyjątek rzucany w przypadku błędu związanego z bazą danych
      */
     @Override
     @RolesAllowed({Roles.ADMINISTRATOR, Roles.CLIENT})
     public void remove(ImplantReview entity) {
         try {
-            super.unsafeRemove(entity);
+            super.remove(entity);
         } catch (PersistenceException e) {
             throw new DatabaseException(e.getCause());
         }

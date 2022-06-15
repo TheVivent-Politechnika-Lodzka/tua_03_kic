@@ -254,7 +254,7 @@ public class StartupConfig {
                 zachodzące słońce
                 """);
         implant.setPrice(100);
-        implant.setManufacturer("Manufacturer kox");
+        implant.setManufacturer("Manufacturer super gut");
         implant.setPopularity(0);
         implant.setDuration(Duration.ofDays(1));
 

@@ -19,6 +19,7 @@ import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.InvalidParametersException;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.appointment.AppointmentNotFinishedException;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.appointment.AppointmentNotFoundException;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.appointment.AppointmentStatusException;
+import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.implant_review.ClientRemovesOtherReviewsException;
 import pl.lodz.p.it.ssbd2022.ssbd03.interceptors.TrackerInterceptor;
 import pl.lodz.p.it.ssbd2022.ssbd03.mop.ejb.facades.AppointmentFacade;
 import pl.lodz.p.it.ssbd2022.ssbd03.mop.ejb.facades.ImplantFacade;
@@ -168,8 +169,11 @@ public class MOPService extends AbstractService implements MOPServiceInterface, 
      */
     @Override
     @RolesAllowed({Roles.ADMINISTRATOR, Roles.CLIENT})
-    public void deleteReview(UUID id) {
+    public void deleteReview(UUID id, String login) {
         ImplantReview review = implantReviewFacade.findByUUID(id);
+        if(!review.getClient().getLogin().equals(login)) {
+            throw new ClientRemovesOtherReviewsException();
+        }
         implantReviewFacade.remove(review);
     }
 }
