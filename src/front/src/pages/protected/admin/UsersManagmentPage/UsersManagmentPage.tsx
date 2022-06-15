@@ -11,6 +11,7 @@ import SearchInput from "../../../../components/SearchInput/SearchInput";
 import UserRecord from "../../../../components/UserRecord/UserRecord";
 import ReactLoading from "react-loading";
 import styles from "./style.module.scss";
+import { retry } from "@reduxjs/toolkit/dist/query";
 
 const UsersManagmentPage = () => {
     const [users, setUsers] = useState<AccountDetails[]>();
@@ -19,19 +20,25 @@ const UsersManagmentPage = () => {
         actionLoading: false,
     });
     const [error, setError] = useState<ApiError>();
+    const [phrase, setPhrase] = useState<string>(" ");
     const [rerender, setRerender] = useState<boolean>(false);
     const navigate = useNavigate();
     const { t } = useTranslation();
 
     const handleGetAllUsers = async () => {
         try {
-            const data = await listAccounts({ page: 1, limit: 4 });
+            setLoading({ ...loading, actionLoading: true });
+            const data = await listAccounts({
+                page: 1,
+                limit: 4,
+                phrase: phrase,
+            });
             if ("errorMessage" in data) return;
             setUsers(data.data);
-            setLoading({ ...loading, pageLoading: false });
+            setLoading({ pageLoading: false, actionLoading: false });
             setRerender(false);
         } catch (error: ApiError | any) {
-            setLoading({ ...loading, pageLoading: false });
+            setLoading({ pageLoading: false, actionLoading: false });
             setError(error);
             setRerender(false);
             console.error(`${error?.status} ${error?.errorMessage}`);
@@ -42,10 +49,25 @@ const UsersManagmentPage = () => {
         handleGetAllUsers();
     }, [rerender]);
 
+    useEffect(() => {
+        if (phrase.length === 0) {
+            handleGetAllUsers();
+            return;
+        }
+        if (phrase.length < 3) return;
+        const timer = setTimeout(() => {
+            handleGetAllUsers();
+        }, 500);
+        return () => clearTimeout(timer);
+    }, [phrase]);
+
     return (
         <section className={styles.users_managment_page}>
             <div className={styles.input_container}>
-                <SearchInput placeholder="Wpisz frazę..." />
+                <SearchInput
+                    onChange={setPhrase}
+                    placeholder="Wpisz frazę..."
+                />
             </div>
 
             <div className={styles.table_container}>
