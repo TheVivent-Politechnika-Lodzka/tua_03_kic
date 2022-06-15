@@ -1,7 +1,7 @@
-import Logo from "../../../component/Logo/Logo";
-import LangSelect from "../../../component/Selector/LangBarSelect/LangSelect";
-import LoginForm from "../../../component/Form/loginForm/LoginForm";
-import RegistrationForm from "../../../component/Form/registerForm/RegistrationForm";
+import Logo from "../../../components/Logo/Logo";
+import LangSelect from "../../../components/Selector/LangBarSelect/LangSelect";
+import LoginForm from "../../../components/Form/loginForm/LoginForm";
+import RegistrationForm from "../../../components/Form/registerForm/RegistrationForm";
 import styles from "./loginPage.module.scss";
 import { GoogleReCaptchaProvider } from "react-google-recaptcha-v3";
 

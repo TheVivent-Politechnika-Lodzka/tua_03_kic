@@ -1,33 +1,31 @@
-import "./style.scss";
-import { FaRobot } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import LangSelect from "../../../component/Selector/LangBarSelect/LangSelect";
-import Logo from "../../../component/Logo/Logo";
+import robot from "../../../assets/robot.gif";
+import styles from "./style.module.scss";
 
 const ErrorPage = () => {
-  const { t } = useTranslation();
-  const navigate = useNavigate();
-  return (
-    <div>
-      <Logo />
-      <LangSelect />
-      <div className="errorbox">
-        <div className="errortext">
-          <FaRobot size="50px" className="icon" />
-          {t("error_page")}
-        </div>
+    const { t } = useTranslation();
 
-        <div className="linktext">
-          {t("invite_main_page")}
-
-          <div className="button" onClick={() => navigate("/")}>
-            {t("main_page")}
-          </div>
-        </div>
-      </div>
-    </div>
-  );
+    const navigate = useNavigate();
+    return (
+        <section className={styles.error_page}>
+            <div className={styles.errorbox_wrapper}>
+                <img className={styles.robot} src={robot} alt="robot" />
+                <div className={styles.errortext_wrapper}>
+                    <div className={styles.errortext}>{t("error_page")}</div>
+                    <div className={styles.linkerror}>
+                        {t("invite_main_page")}
+                    </div>
+                    <div
+                        className={styles.button}
+                        onClick={() => navigate("/")}
+                    >
+                        {t("main_page")}
+                    </div>
+                </div>
+            </div>
+        </section>
+    );
 };
 
 export default ErrorPage;

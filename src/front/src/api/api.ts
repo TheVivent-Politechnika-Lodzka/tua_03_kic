@@ -15,7 +15,7 @@ import {
     RemoveAccessLevel,
     ResetPasswordTokenDto,
 } from "./types/apiParams";
-import { JWT } from "./types/common";
+import { JWTTokens } from "./types/common";
 import {
     PaginationFilterParams,
     RemoveAccessLevelParams,
@@ -24,7 +24,7 @@ import {
 // TODO przenieść do .env / package.json
 // const BASE_URL = "https://kic.agency:8403/api"
 const BASE_URL = "https://localhost:8181/api";
-const TOKEN_STORAGE_KEY = "AUTH_TOKEN";
+const TOKEN_STORAGE_KEY = "ACCESS_TOKEN";
 
 const api = createApi({
     baseQuery: fetchBaseQuery({
@@ -43,16 +43,16 @@ const api = createApi({
     // ENDPOINTY
     endpoints: (builder) => ({
         // LOGOWANIE
-        login: builder.mutation<JWT, LoginCredentials>({
+        login: builder.mutation<JWTTokens, LoginCredentials>({
             query: (credentials: LoginCredentials) => ({
                 url: "/mok/login",
                 method: "POST",
                 body: credentials,
                 responseHandler: async (response) => {
                     if (response.ok) {
-                        const token = await response.text();
-                        localStorage.setItem(TOKEN_STORAGE_KEY, token);
-                        return jwtDecode(token);
+                        const { accessToken } = await response.json();
+                        localStorage.setItem(TOKEN_STORAGE_KEY, accessToken);
+                        return jwtDecode(accessToken);
                     }
                 },
             }),

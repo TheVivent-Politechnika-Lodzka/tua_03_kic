@@ -1,0 +1,19 @@
+@import "../../variables.scss";
+
+.page_layout {
+    display: flex;
+    flex-direction: row;
+    background-color: $primary-color;
+
+    .sidebar_wrapper {
+        height: 100vh;
+        width: 5.4rem;
+    }
+
+    .content_wrapper {
+        width: 100%;
+        display: flex;
+        justify-content: flex-start;
+        flex-direction: column;
+    }
+}

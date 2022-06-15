@@ -25,9 +25,9 @@ public class AppBaseExceptionMapper implements ExceptionMapper<AppBaseException>
      */
     @Override
     public Response toResponse(AppBaseException e) {
-        String cause = e.getCause() != null ? "\n\nCause: " + e.getCause() : "";
-        StringBuilder message = new StringBuilder();
-        message.append(e.getMessage()).append(cause);
-        return Response.status(e.getResponse().getStatus()).entity(provider.getMessage(message.toString())).build();
+        return Response
+                .status(e.getResponse().getStatus())
+                .entity(provider.getMessage(e.getMessage()))
+                .build();
     }
 }

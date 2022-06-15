@@ -19,9 +19,9 @@ import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.database.DatabaseException;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.implant.ImplantAlreadyExistExceptions;
 import pl.lodz.p.it.ssbd2022.ssbd03.interceptors.TrackerInterceptor;
 import pl.lodz.p.it.ssbd2022.ssbd03.security.Tagger;
-
-
 import java.util.UUID;
+import pl.lodz.p.it.ssbd2022.ssbd03.utils.PaginationData;
+import java.util.List;
 
 @Interceptors(TrackerInterceptor.class)
 @Stateless
@@ -84,6 +84,43 @@ public class ImplantFacade extends AbstractFacade<Implant> {
     }
 
     /**
+     * Metoda do zwracania listy wszczepów
+     * @param pageNumber - numer strony
+     * @param perPage - ilość pozycji na stronie
+     * @param phrase - szukana fraza
+     * @param archived określa czy zwracac archiwalne czy niearchiwalne wszczepy
+     * @return lista wszczepów
+     * @throws InvalidParametersException jeśli podano nieprawidłowe parametry
+     * @throws DatabaseException jeśli wystąpił błąd z bazą danych
+     */
+    @PermitAll
+    public PaginationData findInRangeWithPhrase(int pageNumber, int perPage, String phrase, boolean archived) {
+        try {
+            TypedQuery<Implant> typedQuery = entityManager.createNamedQuery("Implant.searchByPhrase", Implant.class);
+
+            pageNumber--;
+
+            List<Implant> data = typedQuery.setParameter("phrase", "%" + phrase + "%")
+                    .setParameter("archived", archived)
+                    .setMaxResults(perPage)
+                    .setFirstResult(pageNumber * perPage)
+                    .getResultList();
+
+            pageNumber++;
+            int totalCount = this.count();
+            int totalPages = (int) Math.ceil((double) totalCount / perPage);
+    
+
+
+            return new PaginationData(totalCount, totalPages, pageNumber, data);
+        } catch (IllegalArgumentException e) {
+            throw new InvalidParametersException(e.getCause());
+        } catch (PersistenceException e) {
+            throw new DatabaseException(e.getCause());
+        }
+    }
+
+    /**
      * Metoda edytująca wszczep w bazie danych. Uwzględnia wersję
      *
      * @param entity Obiekt encji
@@ -93,6 +130,4 @@ public class ImplantFacade extends AbstractFacade<Implant> {
     public void edit(Implant entity) {
         super.edit(entity);
     }
-
-
 }

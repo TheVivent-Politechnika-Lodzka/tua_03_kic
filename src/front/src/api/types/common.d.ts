@@ -1,4 +1,4 @@
-export type AccessLevelName = "ADMINISTRATOR" | "CLIENT" | "SPECIALIST";
+export type AccessLevelName = "ADMINISTRATOR" | "CLIENT" | "SPECIALIST" | "UNAUTHORIZED";
 
 export interface Language {
     language: string;
@@ -14,6 +14,11 @@ export interface JWT {
     auth: string;
     sub: string;
     exp: number;
+}
+
+export interface JWTTokens {
+    accessToken: JWT;
+    refreshToken: JWT;
 }
 
 interface ShowAccountInfo {

@@ -1,6 +1,5 @@
 package pl.lodz.p.it.ssbd2022.ssbd03.mop.dto;
 
-import jakarta.validation.constraints.Positive;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -30,8 +29,5 @@ public class CreateImplantDto {
 
     @Url
     private String url;
-
-
-
 
 }

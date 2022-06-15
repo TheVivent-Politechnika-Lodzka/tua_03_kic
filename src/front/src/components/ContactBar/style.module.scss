@@ -1,0 +1,64 @@
+@import "../../variables.scss";
+
+//TODO: KONIECZNIE ZAGNIEŹDZIĆ KLASY
+.contact_section {
+    display: flex;
+    justify-content: space-evenly;
+    border-top: 4px $secondary-color dotted;
+    width: 100%;
+}
+
+.contact {
+    display: flex;
+    justify-content: flex-start;
+    flex-direction: column;
+    text-align: left;
+    width: 50%;
+}
+
+.social_media {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    flex-direction: column;
+    padding-right: 40px;
+}
+
+.contact_section_title1,
+.contact_section_title2 {
+    font-weight: bold;
+    font-size: 2.2rem;
+    color: #ffffff;
+    padding-top: 2rem;
+}
+
+.contact_section_items {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    flex-direction: row;
+    width: 100%;
+    color: $white;
+    padding-block: 1rem;
+
+    .contact_section_item {
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        flex-direction: row;
+        font-style: normal;
+        font-weight: 200;
+        font-size: 1.75rem;
+        padding-bottom: 2rem;
+
+        &:nth-child(2) {
+            margin-left: 3rem;
+        }
+
+        .contact_icon {
+            padding-right: 20px;
+            color: $white;
+            font-size: 3rem;
+        }
+    }
+}
