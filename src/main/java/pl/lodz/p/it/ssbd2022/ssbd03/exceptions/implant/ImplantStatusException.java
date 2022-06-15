@@ -9,7 +9,7 @@ import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.AppBaseException;
  */
 @ApplicationException(rollback = true)
 public class ImplantStatusException extends AppBaseException {
-    private static final String IMPLANT_STATUS_ALREDY_ARCHIVE = "server.error.appBase.implantAlreadyArchive";
+    private static final String IMPLANT_STATUS_ALREDY_ARCHIVE = "server.error.appBase.implantAlreadyArchived";
 
     /**
      * Konstruktor odpowiadający za tworzenie wyjątków dotyczących błędów w ramach archiwizacji implantu
