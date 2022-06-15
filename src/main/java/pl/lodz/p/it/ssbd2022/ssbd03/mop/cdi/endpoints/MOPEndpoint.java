@@ -13,6 +13,7 @@ import pl.lodz.p.it.ssbd2022.ssbd03.common.Roles;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.Appointment;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.Implant;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.ImplantReview;
+import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.MethodNotImplementedException;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.TransactionException;
 import pl.lodz.p.it.ssbd2022.ssbd03.mappers.AppointmentMapper;
 import pl.lodz.p.it.ssbd2022.ssbd03.mappers.ImplantMapper;
@@ -198,7 +199,7 @@ public class MOPEndpoint implements MOPEndpointInterface {
     /**
      * MOP.9 - Zarezerwuj wizytę
      * @param createAppointmentDto - dane nowej wizyty
-     * @return Response - zawierająca status HTTP i utworzoną wizytę
+     * @return status HTTP i utworzoną wizytę
      */
     @Override
     public Response createAppointment(CreateAppointmentDto createAppointmentDto) {

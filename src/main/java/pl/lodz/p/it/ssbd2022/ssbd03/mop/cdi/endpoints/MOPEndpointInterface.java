@@ -118,12 +118,11 @@ public interface MOPEndpointInterface {
         throw new MethodNotImplementedException();
     }
 
-    // MOP.9 - Zarezerwuj wizytę
-
     /**
      * MOP.9 - Zarezerwuj wizytę
      * @param dto - dane nowej wizyty
-     * @return Response - zawierająca status HTTP i utworzoną wizytę
+     * @return status HTTP i utworzoną wizytę
+     * @throws MethodNotImplementedException w przypadku braku implementacji metody
      */
     @POST // ze względu na dodatkowe akcje zawierające się na utworzenie wizyty (obliczenie ceny, daty końcowej, itp.)
     @RolesAllowed(Roles.CLIENT)
