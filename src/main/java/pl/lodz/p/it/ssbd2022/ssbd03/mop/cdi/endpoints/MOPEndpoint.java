@@ -253,8 +253,9 @@ public class MOPEndpoint implements MOPEndpointInterface {
         int TXCounter = Config.MAX_TX_RETRIES;
         boolean commitedTX;
 
+        String login = authContext.getCurrentUserLogin();
         do {
-            String login = authContext.getCurrentUserLogin();
+
             mopService.deleteReview(id, login);
             commitedTX = mopService.isLastTransactionCommited();
         } while (!commitedTX && --TXCounter > 0);
