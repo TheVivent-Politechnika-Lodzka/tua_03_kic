@@ -52,7 +52,7 @@ const AccountDetails = ({ login, isOpened, onClose }: AccountDetailsProps) => {
 
     const handleDeactivateActivateAccount = async (deactivate: boolean) => {
         try {
-            setLoading({ ...loading, actionLoading: false });
+            setLoading({ ...loading, actionLoading: true });
             if (deactivate) {
                 await deactivateAccount(
                     account?.login as string,
@@ -154,13 +154,14 @@ const AccountDetails = ({ login, isOpened, onClose }: AccountDetailsProps) => {
                                     }
                                     color="orange"
                                     icon={
-                                        account?.active ? faUnlockAlt : faLock
+                                        account?.active ? faLock : faUnlockAlt
                                     }
                                     onClick={() => {
                                         handleDeactivateActivateAccount(
                                             account?.active as boolean
                                         );
                                     }}
+                                    isLoading={loading.actionLoading}
                                 />
                             </div>
                         </div>

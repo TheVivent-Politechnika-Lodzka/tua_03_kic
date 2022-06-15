@@ -76,6 +76,7 @@ const AccountDetailsPage = () => {
                                 icon={faEdit}
                             />
                             <ActionButton
+                                onClick={() => {}}
                                 title="Zmień hasło"
                                 color="purple"
                                 icon={faKey}

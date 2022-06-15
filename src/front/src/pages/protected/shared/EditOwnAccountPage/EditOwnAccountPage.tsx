@@ -355,6 +355,7 @@ const EditOwnAccountPageInternal = () => {
                                     icon={faCheck}
                                     color="green"
                                     title="Zatwierdź"
+                                    isLoading={loading.actionLoading}
                                 />
                                 <ActionButton
                                     onClick={() => {
