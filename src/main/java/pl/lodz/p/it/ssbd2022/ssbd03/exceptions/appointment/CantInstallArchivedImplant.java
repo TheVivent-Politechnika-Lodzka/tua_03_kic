@@ -14,6 +14,9 @@ public class CantInstallArchivedImplant extends AppBaseException {
 
     private static final String MESSAGE = "server.error.appBase.cantInstallArchivedImplant";
 
+    /**
+     * konstruktor wyjątku
+     */
     public CantInstallArchivedImplant() {
         super(MESSAGE, Response.Status.BAD_REQUEST);
     }

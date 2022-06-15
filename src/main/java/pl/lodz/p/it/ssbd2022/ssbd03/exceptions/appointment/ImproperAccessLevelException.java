@@ -18,10 +18,18 @@ public class ImproperAccessLevelException extends AppBaseException {
         super(message, Response.Status.BAD_REQUEST);
     }
 
+    /**
+     * Zwraca wyjątek z informacją, że konto nie jest specjalistą
+     * @return
+     */
     public static ImproperAccessLevelException accountNotSpecialist() {
         return new ImproperAccessLevelException(ACCOUNT_NOT_SPECIALIST);
     }
 
+    /**
+     * Zwraca wyjątek z informacją, że konto nie jest klientem
+     * @return
+     */
     public static ImproperAccessLevelException accountNotClient() {
         return new ImproperAccessLevelException(ACCOUNT_NOT_CLIENT);
     }

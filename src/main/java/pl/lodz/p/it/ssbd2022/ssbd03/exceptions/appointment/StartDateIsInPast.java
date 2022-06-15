@@ -12,6 +12,9 @@ public class StartDateIsInPast extends AppBaseException {
 
     private static final String START_DATE_IS_IN_PAST = "server.error.appBase.startDateIsInPast";
 
+    /**
+     * konstruktor wyjątku
+     */
     public StartDateIsInPast() {
         super(START_DATE_IS_IN_PAST, Response.Status.BAD_REQUEST);
     }

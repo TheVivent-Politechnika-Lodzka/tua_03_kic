@@ -12,6 +12,9 @@ public class SpecialistHasNoTimeException extends AppBaseException {
 
     private static final String MESSAGE = "server.error.appBase.specialistHasNoTime";
 
+    /**
+     * kontruktor wyjątku
+     */
     public SpecialistHasNoTimeException() {
         super(MESSAGE, Response.Status.BAD_REQUEST);
     }
