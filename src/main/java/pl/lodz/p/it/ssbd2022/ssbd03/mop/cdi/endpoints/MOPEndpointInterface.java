@@ -89,7 +89,7 @@ public interface MOPEndpointInterface {
     @GET
     @PermitAll
     @Produces(MediaType.APPLICATION_JSON)
-    @Path("/list/specialists")
+    @Path("/specialist/list")
     default Response listSpecialists(@QueryParam("page") int page, @QueryParam("size") int size, @QueryParam("phrase") @DefaultValue("") String phrase) {
         throw new MethodNotImplementedException();
     }

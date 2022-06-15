@@ -10,13 +10,9 @@ import jakarta.ws.rs.PathParam;
 import jakarta.ws.rs.core.Response;
 import pl.lodz.p.it.ssbd2022.ssbd03.common.Config;
 import pl.lodz.p.it.ssbd2022.ssbd03.common.Roles;
-import pl.lodz.p.it.ssbd2022.ssbd03.entities.Appointment;
-import pl.lodz.p.it.ssbd2022.ssbd03.entities.Implant;
-import pl.lodz.p.it.ssbd2022.ssbd03.entities.ImplantReview;
+import pl.lodz.p.it.ssbd2022.ssbd03.entities.*;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.TransactionException;
-import pl.lodz.p.it.ssbd2022.ssbd03.mappers.AppointmentMapper;
-import pl.lodz.p.it.ssbd2022.ssbd03.mappers.ImplantMapper;
-import pl.lodz.p.it.ssbd2022.ssbd03.mappers.ImplantReviewMapper;
+import pl.lodz.p.it.ssbd2022.ssbd03.mappers.*;
 import pl.lodz.p.it.ssbd2022.ssbd03.mop.dto.*;
 import jakarta.ws.rs.core.Response;
 import pl.lodz.p.it.ssbd2022.ssbd03.common.Config;
@@ -47,6 +43,9 @@ public class MOPEndpoint implements MOPEndpointInterface {
 
     @Inject
     private ImplantMapper implantMapper;
+
+    @Inject
+    private AccountMapper accountMapper;
 
     @Inject
     private ImplantReviewMapper implantReviewMapper;
@@ -158,6 +157,28 @@ public class MOPEndpoint implements MOPEndpointInterface {
         List<ImplantListElementDto> implantsDto = implantMapper.getListFromImplantListElementDtoFromImplant(implants);
         paginationData.setData(implantsDto);
         return Response.ok().entity(paginationData).build();
+    }
+
+    @PermitAll
+    @Override
+    public Response listSpecialists(int page, int size, String phrase) {
+        PaginationData paginationData;
+        int TXCounter = Config.MAX_TX_RETRIES;
+        boolean commitedTX;
+        do {
+            paginationData = mopService.findSpecialists(page, size, phrase);
+            commitedTX = mopService.isLastTransactionCommited();
+        } while (!commitedTX && TXCounter-- > 0);
+
+        if (!commitedTX) {
+            throw new TransactionException();
+        }
+
+        List<Account> accounts = paginationData.getData();
+        List<SpecialistForMopDto> accountsDTO = accountMapper.accountSpecialistListElementDtoList(accounts);
+        paginationData.setData(accountsDTO);
+        return Response.ok().entity(paginationData).build();
+
     }
 
     /**
