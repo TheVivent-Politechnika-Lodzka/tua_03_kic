@@ -1,4 +1,8 @@
-import { faCheck, faInfo, faInfoCircle } from "@fortawesome/free-solid-svg-icons";
+import {
+    faCheck,
+    faInfo,
+    faInfoCircle,
+} from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { style } from "@mui/system";
 import { AccessLevelDto } from "../../api/types/apiParams";
@@ -30,7 +34,9 @@ const UserRecord = () => {
             </div>
             <div className={styles.detail_wrapper}>
                 <FontAwesomeIcon className={styles.icon} icon={faCheck} />
-                <p className={styles.detail}>Zatwierdzone</p>
+                <p className={styles.detail}>
+                    {true ? "Zatwierdzone" : "Niezatwierdzone"}
+                </p>
             </div>
             <div className={styles.detail_wrapper}>
                 <div
@@ -38,7 +44,9 @@ const UserRecord = () => {
                         true ? styles.active : styles.inactive
                     } `}
                 />
-                <p className={styles.detail}>Aktywny</p>
+                <p className={styles.detail}>
+                    {true ? "Aktywne" : "Nieaktywne"}
+                </p>
             </div>
             <div className={styles.detail_wrapper}>
                 <div className={styles.info_button} onClick={() => {}}>

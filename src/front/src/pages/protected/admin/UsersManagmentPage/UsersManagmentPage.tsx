@@ -22,15 +22,14 @@ const UsersManagmentPage = () => {
             </div>
             <div className={styles.table_container}>
                 <div className={styles.table_header}>
-                    <div className={styles.table_header_cell_wrapper}>
-                        <p className={styles.table_header_cell}>Login</p>
-                        <p className={styles.table_header_cell}>Imię</p>
-                        <p className={styles.table_header_cell}>Nazwisko</p>
-                        <p className={styles.table_header_cell}>
-                            Czy zatwierdzone
-                        </p>
-                        <p className={styles.table_header_cell}>Czy aktywne</p>
-                        <p className={styles.table_header_cell}>Więcej</p>
+                    <div className={styles.cell_wrapper}>
+                        <p className={styles.cell}>{" "}</p>
+                        <p className={styles.cell}>Login</p>
+                        <p className={styles.cell}>Imię</p>
+                        <p className={styles.cell}>Nazwisko</p>
+                        <p className={styles.cell}>Czy zatwierdzone</p>
+                        <p className={styles.cell}>Czy aktywne</p>
+                        <p className={styles.cell}>Więcej</p>
                     </div>
                 </div>
                 <div className={styles.table_body}>
