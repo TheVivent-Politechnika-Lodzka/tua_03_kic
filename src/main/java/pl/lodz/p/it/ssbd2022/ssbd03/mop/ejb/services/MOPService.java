@@ -167,7 +167,7 @@ public class MOPService extends AbstractService implements MOPServiceInterface, 
      * @param specialistId - identyfikator specjalisty
      * @param implantId    - identyfikator wszczepu
      * @param startDate    - data rozpoczęcia wizyty
-     * @return Appointment -- nowa wizyta
+     * @return nowa wizyta
      */
     @Override
     @RolesAllowed(Roles.CLIENT)
@@ -181,7 +181,7 @@ public class MOPService extends AbstractService implements MOPServiceInterface, 
         }
         appointment.setClient(accountFacade.findByLogin(clientLogin));
 
-        // weryfikacja czy specjalisty posiada rolę SPECIALIST
+        // weryfikacja czy specjalista posiada rolę SPECIALIST
         Account specialist = accountFacade.findByUUID(specialistId);
         if (!specialist.isInRole(Roles.SPECIALIST)) {
             throw ImproperAccessLevelException.accountNotSpecialist();
@@ -193,6 +193,7 @@ public class MOPService extends AbstractService implements MOPServiceInterface, 
         if (implant.isArchived()) {
             throw new CantInstallArchivedImplant();
         }
+        // ta metoda (v) od razu archiwizuje wszystkie dane a propos wszczepu do wizyty
         appointment.setImplant(implantFacade.findByUUID(implantId));
 
         // wryfikacja czy data rozpoczęcia wizyty jest późniejsza niż data aktualna
@@ -208,8 +209,6 @@ public class MOPService extends AbstractService implements MOPServiceInterface, 
         appointment.setPrice(appointment.getImplant().getPrice());
 
         checkDateAvailabilityForAppointment(specialistId, startDate, endDate);
-
-        // TODO: przepisać dane wszczepu do wizyty
 
         appointmentFacade.create(appointment);
         return appointment;

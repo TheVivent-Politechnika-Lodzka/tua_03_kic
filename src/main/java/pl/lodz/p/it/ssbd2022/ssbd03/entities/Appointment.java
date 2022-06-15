@@ -6,9 +6,16 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 import pl.lodz.p.it.ssbd2022.ssbd03.common.AbstractEntity;
+import pl.lodz.p.it.ssbd2022.ssbd03.validation.Description;
+import pl.lodz.p.it.ssbd2022.ssbd03.validation.Manufacturer;
+import pl.lodz.p.it.ssbd2022.ssbd03.validation.Name;
+import pl.lodz.p.it.ssbd2022.ssbd03.validation.Price;
 
 import java.io.Serializable;
+import java.time.Duration;
 import java.time.Instant;
+
+import static pl.lodz.p.it.ssbd2022.ssbd03.entities.Account.CONSTRAINT_EMAIL_UNIQUE;
 
 @Entity
 @Table(
@@ -19,6 +26,7 @@ import java.time.Instant;
                 @Index(name = "appointment_implant_id", columnList = "implant_id"),
         }
 )
+@SecondaryTable( name = "implant_backup_in_appointment" )
 @NamedQueries({
         @NamedQuery(name = "Appointment.findAll", query = "select a from Appointment a"),
         @NamedQuery(name = "Appointment.findById", query = "select a from Appointment a where a.id = :id"),
@@ -55,7 +63,6 @@ public class Appointment extends AbstractEntity implements Serializable {
     @JoinColumn(name = "implant_id", referencedColumnName = "id", updatable = false)
     @ManyToOne(cascade = CascadeType.PERSIST)
     @Getter
-    @Setter
     private Implant implant;
 
     @Basic(optional = false)
@@ -89,4 +96,44 @@ public class Appointment extends AbstractEntity implements Serializable {
     @Setter
     private Status status = Status.PENDING; // wartość domyślna dla nowych wizyt
 
+    // ################ backed up implant details ######################
+
+    @Basic(optional = false)
+    @Column(name = "name", nullable = false, table="implant_backup_in_appointment", length = 50, updatable = false)
+    @Getter
+    @Name
+    private String implantName;
+
+    @Basic(optional = false)
+    @Column(name = "description", nullable = false, table="implant_backup_in_appointment", updatable = false)
+    @Getter
+    @Description
+    private String implantDescription;
+
+    @Basic(optional = false)
+    @Column(name = "manufacturer", nullable = false, table="implant_backup_in_appointment", updatable = false)
+    @Getter
+    @Manufacturer
+    private String implantManufacturer;
+
+    @Basic(optional = false)
+    @Column(name = "price", nullable = false, table="implant_backup_in_appointment", updatable = false)
+    @Getter
+    @Price
+    private int implantPrice;
+
+    @Basic(optional = false)
+    @Column(name = "duration", nullable = false, table="implant_backup_in_appointment", updatable = false)
+    @Getter
+    private Duration implantDuration;
+
+    // własny setter dla lepszej spójności danych
+    public void setImplant(Implant implant) {
+        this.implant = implant;
+        implantDescription = implant.getDescription();
+        implantDuration = implant.getDuration();
+        implantManufacturer = implant.getManufacturer();
+        implantName = implant.getName();
+        implantPrice = implant.getPrice();
+    }
 }
