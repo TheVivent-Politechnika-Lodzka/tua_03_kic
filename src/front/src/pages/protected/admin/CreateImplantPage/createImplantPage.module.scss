@@ -11,8 +11,8 @@ $gray: #ffffff;
     margin-top: 1rem;
 
     .image {
-        width: 30vw;
-        height: 20vw;
+        width: 35vw;
+        height: 25vw;
         background-color: #ffffff;
         border-radius: 1vw;
     }
@@ -20,105 +20,93 @@ $gray: #ffffff;
     .margin {
         margin-top: 6vh;
     }
+    .inputMargin {
+        margin-bottom: 1.5vh;
+    }
 
-    .full {
-        width: 35vw;
-        height: 100%;
-        background-color: #ffffff;
+    .formfield {
+        font-family: inherit;
+        height: 4vh;
+        border: 0;
+        border-bottom: 0.25vh solid $gray;
+        outline: 0;
+        font-size: 2vh;
+        color: $white;
+        padding: 7px 0;
+        background: transparent;
+        transition: border-color 0.2s;
+        color: transparent;
+        cursor: text;
+        color: #ffffff;
+    }
+
+    .formlabel {
+        display: block;
+        font-size: 1.5vh;
+        color: $gray;
+    }
+
+    .formfield:focus {
+        border-width: 0.25vh;
+        border-image: linear-gradient(to right, $blue, $green);
+        border-image-slice: 1;
+    }
+
+    .descriptionfield {
+        font-family: inherit;
+        width: 100%;
+        min-height: 10vw;
+        border: 0;
+        border: 0.25vh solid $gray;
+        border-radius: 1vw;
+        outline: 0;
+        font-size: 2vh;
+        overflow-wrap: break-word;
+        color: $white;
+        padding: 7px 0;
+        background: transparent;
+        transition: border-color 0.2s;
+        color: transparent;
+
+        cursor: text;
+        color: #ffffff;
+    }
+    .descriptionfield:focus {
+        border-width: 0.25vh;
+
+        border-image: linear-gradient(to right, $blue, $green);
+        border-image-slice: 1;
+        border-radius: 1vw;
+    }
+
+    .numberfield {
+        font-family: inherit;
+        height: 4vh;
+        width: 50%;
+        padding-right: 10vw;
+        border: 0.25vh solid $gray;
+        border-radius: 1vh;
+        outline: 0;
+        font-size: 2vh;
+        overflow-wrap: break-word;
+        color: $white;
+        padding: 7px 0;
+        background: transparent;
+        transition: border-color 0.2s;
+        color: transparent;
+        cursor: text;
+        color: #ffffff;
+    }
+    .numberfield:focus {
+        border-image: linear-gradient(to right, $blue, $green);
+        border-image-slice: 1;
+        border-width: 0.25vh;
+        border-radius: 1vh;
     }
 }
-
 .text {
-    margin-top: 1rem;
+    margin-top: 1vh;
     font-size: 2vw;
     font-weight: 800;
     color: #ffffff;
-}
-
-.inputMargin {
-    margin-bottom: 1.5vh;
-}
-
-.formfield {
-    font-family: inherit;
-    height: 4vh;
-    border: 0;
-    border-bottom: 2px solid $gray;
-    outline: 0;
-    font-size: 2vh;
-    color: $white;
-    padding: 7px 0;
-    background: transparent;
-    transition: border-color 0.2s;
-    color: transparent;
-    cursor: text;
-    color: #ffffff;
-    margin-top: 10px;
-}
-
-.formlabel {
-    display: block;
-    font-size: 1.5vh;
-    color: $gray;
-}
-
-.formfield:focus {
-    border-width: 3px;
-    border-image: linear-gradient(to right, $blue, $green);
-    border-image-slice: 1;
-}
-
-.descriptionfield {
-    font-family: inherit;
-    width: 100%;
-    height: 8vw;
-    border: 0;
-    border: 2px solid $gray;
-    border-radius: 1vw;
-    outline: 0;
-    font-size: 2vh;
-    overflow-wrap: break-word;
-    color: $white;
-    padding: 7px 0;
-    background: transparent;
-    transition: border-color 0.2s;
-    color: transparent;
-
-    cursor: text;
-    color: #ffffff;
-    margin-top: 10px;
-}
-.descriptionfield:focus {
-    border-width: 3px;
-
-    border-image: linear-gradient(to right, $blue, $green);
-    border-image-slice: 1;
-    border-radius: 1vw;
-}
-
-.numberfield {
-    font-family: inherit;
-    height: 4vh;
-    width: 50%;
-    padding-right: 10vw;
-    border: 0;
-    border: 0.25vh solid $gray;
-    border-radius: 1vh;
-    outline: 0;
-    font-size: 2vh;
-    overflow-wrap: break-word;
-    color: $white;
-    padding: 7px 0;
-    background: transparent;
-    transition: border-color 0.2s;
-    color: transparent;
-    cursor: text;
-    color: #ffffff;
-    margin-top: 10px;
-}
-.numberfield:focus {
-    border-image: linear-gradient(to right, $blue, $green);
-    border-image-slice: 1;
-    border-width: 0.25vh;
-    border-radius: 1vh;
 }

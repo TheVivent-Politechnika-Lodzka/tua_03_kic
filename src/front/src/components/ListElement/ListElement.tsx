@@ -1,7 +1,8 @@
 import { SimpleGrid, Container } from "@mantine/core";
 import { useTranslation } from "react-i18next";
 import { ImplantListElementDto } from "../../api/mop";
-import { BlueGradientButton } from "../Button/BlueGradientButton copy";
+import { BlueGradientButton } from "../Button/BlueGradientButton";
+
 import styles from "./listElement.module.scss";
 
 export const ListElement = (props: { element: ImplantListElementDto }) => {

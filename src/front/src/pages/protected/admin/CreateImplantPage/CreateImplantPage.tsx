@@ -9,12 +9,12 @@ import {
     TextInput,
 } from "@mantine/core";
 import { Container } from "react-bootstrap";
-import { GreenGradientButton } from "../../../../components/Button/GreenGradientButton";
-import { BlueGradientButton } from "../../../../components/Button/BlueGradientButton copy";
 import { Box } from "@mui/material";
 import { useForm } from "@mantine/form";
+import { useTranslation } from "react-i18next";
 
 export const CreateImplantPage = () => {
+    const { t } = useTranslation();
     const form = useForm<{
         name: string;
         manufacturer: string;
@@ -32,41 +32,44 @@ export const CreateImplantPage = () => {
         validate: (values) => ({
             name:
                 values.name.length < 4
-                    ? "Too short name"
+                    ? `${t("createImplantPage.tooShort")}`
                     : values.name.length > 50
-                    ? "Too long name"
+                    ? `${t("createImplantPage.tooLong")}`
                     : null,
             manufacturer:
                 values.manufacturer.length < 10
-                    ? "Too short name"
+                    ? `${t("createImplantPage.tooShort")}`
                     : values.manufacturer.length > 50
-                    ? "Too long name"
+                    ? `${t("createImplantPage.tooLong")}`
                     : null,
             price:
                 values.price === undefined
-                    ? "Price is required"
-                    : values.price < 1
-                    ? "Price must be positive number"
+                    ? `${t("createImplantPage.priceReq")}`
+                    : values.price <= 0
+                    ? `${t("createImplantPage.pricePos")}`
                     : null,
             duration:
                 values.duration === undefined
-                    ? "Duration time is required"
-                    : values.duration < 1
-                    ? "Duration must be positive number"
+                    ? `${t("createImplantPage.durationReq")}`
+                    : values.duration <= 0
+                    ? `${t("createImplantPage.durationPos")}`
                     : null,
             description:
                 values.description.length < 100
-                    ? "Too short description"
+                    ? `${t("createImplantPage.tooShort")}`
                     : values.description.length > 1000
-                    ? "Too long description"
+                    ? `${t("createImplantPage.tooLong")}`
                     : null,
         }),
     });
 
+    //TODO valid message
     return (
         <div>
             <Center>
-                <div className={styles.text}>Dodaj wszczep</div>
+                <div className={styles.text}>
+                    {t("createImplantPage.addImplant")}
+                </div>
             </Center>
             <Center>
                 <div className={styles.container}>
@@ -82,12 +85,24 @@ export const CreateImplantPage = () => {
                                     ></div>
                                 </Center>
                                 <Center>
-                                    <div className={styles.margin}>
-                                        <BlueGradientButton
-                                            label="DODAJ ZDJECIE"
-                                            onClick={() => console.log("D")}
-                                        />
-                                    </div>
+                                    <Button
+                                        type="button"
+                                        variant="gradient"
+                                        gradient={{
+                                            from: "teal",
+                                            to: "lime",
+                                            deg: 105,
+                                        }}
+                                        styles={{
+                                            root: {
+                                                marginTop: "2vh",
+                                                minWidth: "15vw",
+                                                height: "5vh",
+                                            },
+                                        }}
+                                    >
+                                        {t("createImplantPage.choosePhoto")}
+                                    </Button>
                                 </Center>
                             </Grid.Col>
                             <Grid.Col
@@ -110,13 +125,17 @@ export const CreateImplantPage = () => {
                                                 )}
                                             >
                                                 <TextInput
-                                                    label="Name"
+                                                    label={t(
+                                                        "createImplantPage.name"
+                                                    )}
                                                     classNames={{
                                                         wrapper: `${styles.inputMargin}`,
                                                         input: `${styles.formfield}`,
                                                         label: `${styles.formlabel}`,
                                                     }}
-                                                    placeholder="Name"
+                                                    placeholder={t(
+                                                        "createImplantPage.name"
+                                                    )}
                                                     {...form.getInputProps(
                                                         "name"
                                                     )}
@@ -124,8 +143,12 @@ export const CreateImplantPage = () => {
                                                     required
                                                 />
                                                 <TextInput
-                                                    label="Manufacturer"
-                                                    placeholder="Manufacturer"
+                                                    label={t(
+                                                        "createImplantPage.manufacturer"
+                                                    )}
+                                                    placeholder={t(
+                                                        "createImplantPage.manufacturer"
+                                                    )}
                                                     classNames={{
                                                         wrapper: `${styles.inputMargin}`,
                                                         input: `${styles.formfield}`,
@@ -141,7 +164,9 @@ export const CreateImplantPage = () => {
                                                     <Center inline>
                                                         <NumberInput
                                                             mt="sm"
-                                                            label="Price"
+                                                            label={t(
+                                                                "createImplantPage.price"
+                                                            )}
                                                             placeholder="000 ZŁ"
                                                             classNames={{
                                                                 wrapper: `${styles.inputMargin}`,
@@ -158,7 +183,9 @@ export const CreateImplantPage = () => {
 
                                                     <NumberInput
                                                         mt="sm"
-                                                        label="Duration"
+                                                        label={t(
+                                                            "createImplantPage.duration"
+                                                        )}
                                                         placeholder="000 MIN"
                                                         classNames={{
                                                             wrapper: `${styles.inputMargin}`,
@@ -174,8 +201,12 @@ export const CreateImplantPage = () => {
                                                 </Center>
 
                                                 <Textarea
-                                                    label="Description"
-                                                    placeholder="Description"
+                                                    label={t(
+                                                        "createImplantPage.description"
+                                                    )}
+                                                    placeholder={t(
+                                                        "createImplantPage.description"
+                                                    )}
                                                     {...form.getInputProps(
                                                         "description"
                                                     )}
@@ -187,12 +218,28 @@ export const CreateImplantPage = () => {
                                                     variant="unstyled"
                                                     required
                                                 />
-                                                <Group
-                                                    position="center"
-                                                    mt="md"
-                                                >
-                                                    <Button type="submit">
-                                                        Submit
+                                                <Group position="left" mt="md">
+                                                    <Button
+                                                        type="submit"
+                                                        variant="gradient"
+                                                        gradient={{
+                                                            from: "teal",
+                                                            to: "lime",
+                                                            deg: 105,
+                                                        }}
+                                                        styles={{
+                                                            root: {
+                                                                marginTop:
+                                                                    "2vh",
+                                                                minWidth:
+                                                                    "15vw",
+                                                                height: "5vh",
+                                                            },
+                                                        }}
+                                                    >
+                                                        {t(
+                                                            "createImplantPage.addImplantUpper"
+                                                        )}
                                                     </Button>
                                                 </Group>
                                             </form>
@@ -201,14 +248,6 @@ export const CreateImplantPage = () => {
                                 </Center>
                             </Grid.Col>
                         </Grid>
-                        <Center>
-                            <div className={styles.margin}>
-                                <GreenGradientButton
-                                    label="DODAJ WSZCZEP"
-                                    onClick={() => console.log("heheh")}
-                                />
-                            </div>
-                        </Center>
                     </Container>
                 </div>
             </Center>

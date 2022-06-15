@@ -147,6 +147,21 @@
         "listElement": {
             "details": "Szczegóły"
         }
+    },
+    "createImplantPage": {
+        "addImplant": "Dodaj wszczep",
+        "choosePhoto": "WYBIERZ ZDJĘCIE",
+        "name": "Nazwa",
+        "manufacturer": "Producent",
+        "price": "Cena",
+        "duration": "Czas zabiegu",
+        "description": "Opis",
+        "addImplantUpper": "DODAJ IMPLANT",
+        "tooShort": "Za krótki tekst",
+        "tooLong": "Za długi tekst",
+        "priceReq": "Cena jest wymagana",
+        "pricePos": "Cena musi być liczbą dodatnią",
+        "durationReq": "Czas zabiegu jest wymagany",
+        "durationPos": "Czas zabiegu musi być liczbą dodatnią "
     }
-
 }

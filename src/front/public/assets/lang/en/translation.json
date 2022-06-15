@@ -148,5 +148,22 @@
         "listElement": {
             "details": "Details"
         }
+    },
+
+    "createImplantPage": {
+        "addImplant": "Add implant",
+        "choosePhoto": "CHOOOSE PHOTO",
+        "name": "Name",
+        "manufacturer": "Manufacturer",
+        "price": "Price",
+        "duration": "Duration",
+        "description": "Description",
+        "addImplantUpper": "ADD IMPLANT",
+        "tooShort": "Too short",
+        "tooLong": "Too long",
+        "priceReq": "Price is required",
+        "pricePos": "Price must be positive number",
+        "durationReq": "Duration time is required",
+        "durationPos": "Duration must be positive number"
     }
 }
