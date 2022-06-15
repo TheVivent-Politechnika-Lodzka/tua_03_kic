@@ -14,7 +14,7 @@ import pl.lodz.p.it.ssbd2022.ssbd03.common.AbstractService;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.InvalidParametersException;
 import pl.lodz.p.it.ssbd2022.ssbd03.common.Roles;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.Implant;
-import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.MethodNotImplementedException;
+import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.appointment.AppointmentFinishAttemptBeforeEndDateException;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.appointment.AppointmentFinishAttemptByInvalidSpecialistException;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.appointment.AppointmentStatusException;
 import pl.lodz.p.it.ssbd2022.ssbd03.interceptors.TrackerInterceptor;
@@ -22,7 +22,7 @@ import pl.lodz.p.it.ssbd2022.ssbd03.mop.ejb.facades.AppointmentFacade;
 import pl.lodz.p.it.ssbd2022.ssbd03.mop.ejb.facades.ImplantFacade;
 import pl.lodz.p.it.ssbd2022.ssbd03.utils.PaginationData;
 
-import java.util.List;
+import java.util.Date;
 import java.util.UUID;
 
 import static pl.lodz.p.it.ssbd2022.ssbd03.entities.Status.FINISHED;
@@ -77,6 +77,7 @@ public class MOPService extends AbstractService implements MOPServiceInterface, 
      * @return wizyta oznaczona jako zakończona
      * @throws AppointmentFinishAttemptByInvalidSpecialistException gdy specjalista próbuje zakończyć wizytę inną niż własna
      * @throws AppointmentStatusException gdy wizyta jest już odwołana bądź oznaczona jako zakończona
+     * @throws AppointmentFinishAttemptBeforeEndDateException gdy specjalista próbuje oznaczyc wizytę jako zakończoną przed datą zakończenia
      */
     @RolesAllowed(Roles.SPECIALIST)
     @Override
@@ -85,6 +86,7 @@ public class MOPService extends AbstractService implements MOPServiceInterface, 
         if (!appointment.getSpecialist().getLogin().equals(login)) throw new AppointmentFinishAttemptByInvalidSpecialistException();
         if (appointment.getStatus().equals(REJECTED)) throw AppointmentStatusException.appointmentStatusAlreadyCancelled();
         if (appointment.getStatus().equals(FINISHED)) throw AppointmentStatusException.appointmentStatusAlreadyFinished();
+        if (appointment.getEndDate().after(new Date())) throw new AppointmentFinishAttemptBeforeEndDateException();
 
         appointment.setStatus(FINISHED);
         appointmentFacade.edit(appointment);
