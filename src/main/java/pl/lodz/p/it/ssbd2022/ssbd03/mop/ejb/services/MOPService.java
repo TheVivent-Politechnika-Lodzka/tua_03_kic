@@ -23,9 +23,7 @@ import pl.lodz.p.it.ssbd2022.ssbd03.common.Roles;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.Appointment;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.appointment.AppointmentStatusException;
 import pl.lodz.p.it.ssbd2022.ssbd03.interceptors.TrackerInterceptor;
-import pl.lodz.p.it.ssbd2022.ssbd03.mop.ejb.facades.AppointmentFacade;
-import pl.lodz.p.it.ssbd2022.ssbd03.mop.ejb.facades.ImplantFacade;
-import pl.lodz.p.it.ssbd2022.ssbd03.mop.ejb.facades.ImplantReviewFacade;
+import pl.lodz.p.it.ssbd2022.ssbd03.mop.ejb.facades.*;
 import pl.lodz.p.it.ssbd2022.ssbd03.utils.PaginationData;
 
 import java.util.UUID;
@@ -52,6 +50,9 @@ public class MOPService extends AbstractService implements MOPServiceInterface, 
     private ImplantFacade implantFacade;
     @Inject
     private ImplantReviewFacade implantReviewFacade;
+
+    @Inject
+    private AccountFacade accountFacade;
 
 
     /**
@@ -149,6 +150,15 @@ public class MOPService extends AbstractService implements MOPServiceInterface, 
             throw new InvalidParametersException();
         }
         return appointmentFacade.findInRangeWithPhrase(page, pageSize, phrase);
+    }
+
+    @Override
+    @PermitAll
+    public PaginationData findSpecialists(int page, int pageSize, String phrase) {
+        if (page == 0 || pageSize == 0){
+            throw new InvalidParametersException();
+        }
+        return accountFacade.findInRangeWithPhrase(page, pageSize, phrase);
     }
 
     @Override

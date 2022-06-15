@@ -58,7 +58,13 @@ public interface MOPServiceInterface extends ServiceLocalInterface {
         throw new MethodNotImplementedException();
     }
 
-    default List<Account> findSpecialists(int page, int pageSize, String phrase) {
+    /**
+     * @param page
+     * @param pageSize
+     * @param phrase
+     * @return
+     */
+    default PaginationData findSpecialists(int page, int pageSize, String phrase) {
         throw new MethodNotImplementedException();
     }
 
