@@ -135,5 +135,18 @@
     "listAccount": "Accounts list",
     "createAccount": "Create account",
     "detailsAccount": "My account",
-    "editAccount": "Edit my account"
+    "editAccount": "Edit my account",
+
+    "implantListPage": {
+        "addImplant": "ADD IMPLANT",
+        "status": "Status",
+        "search": "Search ...",
+        "amount": "Amount",
+        "active": "Available",
+        "archived": "Archived",
+        "items": "items",
+        "listElement": {
+            "details": "Details"
+        }
+    }
 }
