@@ -19,6 +19,7 @@ const UsersManagmentPage = () => {
         actionLoading: false,
     });
     const [error, setError] = useState<ApiError>();
+    const [rerender, setRerender] = useState<boolean>(false);
     const navigate = useNavigate();
     const { t } = useTranslation();
 
@@ -28,16 +29,18 @@ const UsersManagmentPage = () => {
             if ("errorMessage" in data) return;
             setUsers(data.data);
             setLoading({ ...loading, pageLoading: false });
+            setRerender(false);
         } catch (error: ApiError | any) {
             setLoading({ ...loading, pageLoading: false });
             setError(error);
+            setRerender(false);
             console.error(`${error?.status} ${error?.errorMessage}`);
         }
     };
 
     useEffect(() => {
         handleGetAllUsers();
-    }, []);
+    }, [rerender]);
 
     return (
         <section className={styles.users_managment_page}>
@@ -69,7 +72,13 @@ const UsersManagmentPage = () => {
                         </div>
                         <div className={styles.table_body}>
                             {users?.map((user) => (
-                                <UserRecord key={user.id} user={user} />
+                                <UserRecord
+                                    handleChange={() => {
+                                        setRerender(true);
+                                    }}
+                                    key={user.id}
+                                    user={user}
+                                />
                             ))}
                         </div>
                     </>

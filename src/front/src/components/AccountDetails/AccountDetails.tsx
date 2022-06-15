@@ -13,7 +13,12 @@ import avatar from "../../assets/images/avatar.jpg";
 import AccessLevel from "../shared/AccessLevel/AccessLevel";
 import flagPL from "../../assets/images/PL.png";
 import flagEN from "../../assets/images/EN.png";
-import { getAccount } from "../../api";
+import {
+    activateAccount,
+    deactivateAccount,
+    getAccount,
+    GetAccountResponse,
+} from "../../api";
 import ActionButton from "../shared/ActionButton/ActionButton";
 import { useNavigate } from "react-router";
 import styles from "./style.module.scss";
@@ -25,8 +30,11 @@ interface AccountDetailsProps {
 }
 
 const AccountDetails = ({ login, isOpened, onClose }: AccountDetailsProps) => {
-    const [account, setAccount] = useState<AccountDetails>();
-    const [loading, setLoading] = useState<Loading>({ pageLoading: true });
+    const [account, setAccount] = useState<GetAccountResponse>();
+    const [loading, setLoading] = useState<Loading>({
+        pageLoading: true,
+        actionLoading: false,
+    });
 
     const navigate = useNavigate();
 
@@ -34,12 +42,36 @@ const AccountDetails = ({ login, isOpened, onClose }: AccountDetailsProps) => {
         try {
             setLoading({ pageLoading: true });
             const data = await getAccount(login);
-            console.log(data);
-            setAccount(data as AccountDetails);
+            setAccount(data as GetAccountResponse);
             setLoading({ pageLoading: false });
         } catch (error: ApiError | any) {
             setLoading({ pageLoading: false });
-            console.error(`${error?.status} ${error?.errorMessage}`);
+            alert(`${error?.status} ${error?.errorMessage}`);
+        }
+    };
+
+    const handleDeactivateActivateAccount = async (deactivate: boolean) => {
+        try {
+            setLoading({ ...loading, actionLoading: false });
+            if (deactivate) {
+                await deactivateAccount(
+                    account?.login as string,
+                    account?.etag as string
+                );
+                setLoading({ ...loading, actionLoading: false });
+                onClose();
+                return;
+            }
+
+            await activateAccount(
+                account?.login as string,
+                account?.etag as string
+            );
+            setLoading({ ...loading, actionLoading: false });
+            onClose();
+        } catch (error: ApiError | any) {
+            setLoading({ pageLoading: false });
+            alert(`${error?.status} ${error?.errorMessage}`);
         }
     };
 
@@ -60,7 +92,7 @@ const AccountDetails = ({ login, isOpened, onClose }: AccountDetailsProps) => {
 
     useEffect(() => {
         handleGetAccount();
-    }, [login]);
+    }, [isOpened]);
 
     return (
         <ReactModal isOpen={isOpened} style={customStyles} ariaHideApp={false}>
@@ -85,13 +117,9 @@ const AccountDetails = ({ login, isOpened, onClose }: AccountDetailsProps) => {
                                 src={avatar}
                                 alt="Account general: Avatar"
                             />
-                            <p className={styles.login}>
-                                {account?.login}
-                            </p>
+                            <p className={styles.login}>{account?.login}</p>
                             <div className={styles.access_levels_wrapper}>
-                                <p className={styles.title}>
-                                    Poziomy dostępu:
-                                </p>
+                                <p className={styles.title}>Poziomy dostępu:</p>
                                 {account?.accessLevels.map((accessLevel) => (
                                     <AccessLevel
                                         key={accessLevel.level}
@@ -128,6 +156,11 @@ const AccountDetails = ({ login, isOpened, onClose }: AccountDetailsProps) => {
                                     icon={
                                         account?.active ? faUnlockAlt : faLock
                                     }
+                                    onClick={() => {
+                                        handleDeactivateActivateAccount(
+                                            account?.active as boolean
+                                        );
+                                    }}
                                 />
                             </div>
                         </div>
@@ -143,9 +176,7 @@ const AccountDetails = ({ login, isOpened, onClose }: AccountDetailsProps) => {
                                     </p>
                                 </div>
                                 <div className={styles.detail_wrapper}>
-                                    <p className={styles.title}>
-                                        Nazwisko:
-                                    </p>
+                                    <p className={styles.title}>Nazwisko:</p>
                                     <p className={styles.description}>
                                         {account?.lastName}
                                     </p>
