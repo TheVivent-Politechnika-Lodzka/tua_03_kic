@@ -4,6 +4,7 @@ import {
     Center,
     Grid,
     Group,
+    Image,
     NumberInput,
     Textarea,
     TextInput,
@@ -12,9 +13,13 @@ import { Container } from "react-bootstrap";
 import { Box } from "@mui/material";
 import { useForm } from "@mantine/form";
 import { useTranslation } from "react-i18next";
+import { createImplant } from "../../../../api/mop";
+import { uploadPhoto } from "./upload";
+import { useState } from "react";
 
 export const CreateImplantPage = () => {
     const { t } = useTranslation();
+    const [url, setUrl] = useState(``);
     const form = useForm<{
         name: string;
         manufacturer: string;
@@ -63,6 +68,17 @@ export const CreateImplantPage = () => {
         }),
     });
 
+    const putImplant = (values: any) => {
+        createImplant({
+            name: values.name,
+            description: values.description,
+            manufacturer: values.manufacturer,
+            price: values.price,
+            duration: values.duration,
+            url: url,
+        });
+    };
+
     //TODO valid message
     return (
         <div>
@@ -82,9 +98,27 @@ export const CreateImplantPage = () => {
                                 <Center>
                                     <div
                                         className={`${styles.image} ${styles.margin}`}
-                                    ></div>
+                                    >
+                                        <Image
+                                            radius="md"
+                                            src={url}
+                                            alt="image create"
+                                        />
+                                    </div>
                                 </Center>
                                 <Center>
+                                    <input
+                                        id="photoInput"
+                                        className="formPhotoInput"
+                                        type="file"
+                                        name="myImage"
+                                        onChange={async (event) => {
+                                            const u = await uploadPhoto(event);
+                                            if (u) {
+                                                setUrl(u);
+                                            }
+                                        }}
+                                    />
                                     <Button
                                         type="button"
                                         variant="gradient"

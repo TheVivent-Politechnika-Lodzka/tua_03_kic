@@ -81,7 +81,7 @@ export interface CreateImplantResponse {
     version: number;
 }
 
-export async function createImplants(params: CreateImplantRequest) {
+export async function createImplant(params: CreateImplantRequest) {
     try {
         const { data } = await axios.get<CreateImplantResponse>(
             "/mop/implant/create",
