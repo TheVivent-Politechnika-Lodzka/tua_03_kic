@@ -1,15 +1,18 @@
 import {
+    faC,
+    faCancel,
     faCheck,
-    faInfo,
     faInfoCircle,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { style } from "@mui/system";
-import { AccessLevelDto } from "../../api/types/apiParams";
 import AccessLevel from "../shared/AccessLevel/AccessLevel";
 import styles from "./style.module.scss";
 
-const UserRecord = () => {
+interface UserRecordProps {
+    user: AccountDetails;
+}
+
+const UserRecord = ({ user }: UserRecordProps) => {
     return (
         <div className={styles.user_record_wrapper}>
             <div className={styles.avatar_wrapper}>
@@ -19,33 +22,40 @@ const UserRecord = () => {
                     alt="user"
                 />
                 <div className={styles.access_levels_wrapper}>
-                    <AccessLevel accessLevel="SPECIALIST" />
-                    <AccessLevel accessLevel="ADMINISTRATOR" />
+                    {user?.accessLevels.map((accessLevel, index) => (
+                        <AccessLevel
+                            key={user?.login + index}
+                            accessLevel={accessLevel?.level}
+                        />
+                    ))}
                 </div>
             </div>
             <div className={styles.detail_wrapper}>
-                <p className={styles.detail}>JohnKcoc123</p>
+                <p className={styles.detail}>{user?.login}</p>
             </div>
             <div className={styles.detail_wrapper}>
-                <p className={styles.detail}>Jan</p>
+                <p className={styles.detail}>{user?.firstName}</p>
             </div>
             <div className={styles.detail_wrapper}>
-                <p className={styles.detail}>Paweł</p>
+                <p className={styles.detail}>{user?.lastName}</p>
             </div>
             <div className={styles.detail_wrapper}>
-                <FontAwesomeIcon className={styles.icon} icon={faCheck} />
+                <FontAwesomeIcon
+                    className={styles.icon}
+                    icon={user?.confirmed ? faCheck : faCancel}
+                />
                 <p className={styles.detail}>
-                    {true ? "Zatwierdzone" : "Niezatwierdzone"}
+                    {user?.confirmed ? "Zatwierdzone" : "Niezatwierdzone"}
                 </p>
             </div>
             <div className={styles.detail_wrapper}>
                 <div
                     className={`${styles.is_active_circle} ${
-                        true ? styles.active : styles.inactive
+                        user?.active ? styles.active : styles.inactive
                     } `}
                 />
                 <p className={styles.detail}>
-                    {true ? "Aktywne" : "Nieaktywne"}
+                    {user?.active ? "Aktywne" : "Nieaktywne"}
                 </p>
             </div>
             <div className={styles.detail_wrapper}>

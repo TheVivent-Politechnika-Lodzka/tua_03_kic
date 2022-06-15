@@ -46,7 +46,6 @@ const UsersManagmentPage = () => {
             </div>
 
             <div className={styles.table_container}>
-                {" "}
                 {loading.pageLoading ? (
                     <ReactLoading
                         type="cylon"
@@ -69,7 +68,9 @@ const UsersManagmentPage = () => {
                             </div>
                         </div>
                         <div className={styles.table_body}>
-                            <UserRecord />
+                            {users?.map((user) => (
+                                <UserRecord key={user.id} user={user} />
+                            ))}
                         </div>
                     </>
                 )}

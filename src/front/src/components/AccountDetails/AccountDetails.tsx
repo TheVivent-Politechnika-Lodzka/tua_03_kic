@@ -120,13 +120,13 @@ const AccountDetails = ({ login, isOpened, onClose }: AccountDetailsProps) => {
                                 />
                                 <ActionButton
                                     title={
-                                        account?.isActive
+                                        account?.active
                                             ? "Zablokuj konto"
                                             : "Odblokuj konto"
                                     }
                                     color="orange"
                                     icon={
-                                        account?.isActive ? faUnlockAlt : faLock
+                                        account?.active ? faUnlockAlt : faLock
                                     }
                                 />
                             </div>
