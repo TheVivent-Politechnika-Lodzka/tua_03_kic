@@ -62,7 +62,7 @@ const AccountDetailsPage = () => {
                                 <AccessLevel
                                     clickable={true}
                                     key={accessLevel.level}
-                                    accessLevel={accessLevel}
+                                    accessLevel={accessLevel.level}
                                 />
                             ))}
                         </div>

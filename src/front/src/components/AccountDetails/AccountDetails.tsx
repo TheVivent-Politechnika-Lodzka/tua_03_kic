@@ -95,7 +95,7 @@ const AccountDetails = ({ login, isOpened, onClose }: AccountDetailsProps) => {
                                 {account?.accessLevels.map((accessLevel) => (
                                     <AccessLevel
                                         key={accessLevel.level}
-                                        accessLevel={accessLevel}
+                                        accessLevel={accessLevel.level}
                                     />
                                 ))}
                             </div>

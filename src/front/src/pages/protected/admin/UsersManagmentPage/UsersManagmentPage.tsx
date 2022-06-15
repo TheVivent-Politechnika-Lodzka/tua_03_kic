@@ -8,6 +8,7 @@ import AccountDetails from "../../../../components/AccountDetails/AccountDetails
 import ActivateButton from "../../../../components/Button/ActivateButton/ActivateButton";
 import { DeactivateButton } from "../../../../components/Button/DeactivateButton/DeactivateButton";
 import SearchInput from "../../../../components/SearchInput/SearchInput";
+import UserRecord from "../../../../components/UserRecord/UserRecord";
 import styles from "./style.module.scss";
 
 const UsersManagmentPage = () => {
@@ -27,7 +28,7 @@ const UsersManagmentPage = () => {
                 <SearchInput placeholder="Wpisz frazę..." />
             </div>
             <div className={styles.table_container}>
-                    
+                <UserRecord />
             </div>
         </section>
     );
