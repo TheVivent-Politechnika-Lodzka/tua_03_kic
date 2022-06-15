@@ -125,22 +125,34 @@ public class AccessLevelMapper {
 
 
     /**
-     * Metoda tworząca obiekt typu DataSpecialistDto na podstawie encji specjalisty
+     * Metoda tworząca obiekt typu SpecialistDataDto na podstawie encji specjalisty
      *
-     * @param dataSpecialist Specjalista, który zostanie skonwertowany na DTO
-     * @return DTO podanego specjalisty
+     * @param dataSpecialist -  Specjalista, który zostanie skonwertowany na DTO
+     * @return - DTO podanego specjalisty
      */
     public SpecialistDataDto createSpecialistDataDtoFromEntity(DataSpecialist dataSpecialist) {
         SpecialistDataDto dto = new SpecialistDataDto(dataSpecialist.getContactEmail(), dataSpecialist.getPhoneNumber());
         return dto;
     }
 
+    /**
+     * Metoda zwracjąca SpecialistDataDto na podstawie encji specjalisty( jeżeli encja specjalisty jest null, to zwraca null)
+     *
+     * @param accessLevel - poziom dostępu( AccessLevel)
+     * @return - DTO podanego specjalisty, lub null
+     */
     public SpecialistDataDto dataSpecialistListElementDto(AccessLevel accessLevel) {
         if (accessLevel instanceof DataSpecialist)
             return createSpecialistDataDtoFromEntity((DataSpecialist) accessLevel);
         return null;
     }
 
+    /**
+     * Metoda zwracająca SpecialistDataDto na podstawie kolekcji poziomów dostępów( jeżeli kolekcja poziomów dostępu jest null, to zwraca null)
+     *
+     * @param accessLevels - kolejka poziomów dostępu( Collection<AccessLevel>)
+     * @return - zwraca SpecialistDataDto, lub null
+     */
     public SpecialistDataDto dataSpecialistListElementDtoList(Collection<AccessLevel> accessLevels) {
         return null == accessLevels ? null : accessLevels.stream()
                 .filter(Objects::nonNull)

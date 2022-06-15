@@ -70,9 +70,10 @@ public interface MOPEndpointInterface {
 
     /**
      * MOP.5 - Przeglądaj listę wszczepów
-     * @param page numer strony
-     * @param size ilość pozycji na stronie
-     * @param phrase szukana fraza
+     *
+     * @param page     numer strony
+     * @param size     ilość pozycji na stronie
+     * @param phrase   szukana fraza
      * @param archived określa czy zwracac archiwalne czy niearchiwalne wszczepy
      * @return lista wszczepów
      * @throws MethodNotImplementedException - w przypadku braku implementacji metody
@@ -85,7 +86,16 @@ public interface MOPEndpointInterface {
         throw new MethodNotImplementedException();
     }
 
-    // MOP.6 - przeglądaj listę specjalistów
+    /**
+     * MOP.6 - Przeglądaj listę specialistów
+     * dostęp dla wszytskich użytkowników serwisu, włącznie z użytkownikami nieautoryzowanymi
+     *
+     * @param page   - numer strony( int)
+     * @param size   - ilość pozycji na stronie( int)
+     * @param phrase - szukana fraza( String)
+     * @return lista specialistów
+     * @throws MethodNotImplementedException - w przypadku braku implementacji metody
+     */
     @GET
     @PermitAll
     @Produces(MediaType.APPLICATION_JSON)
@@ -97,8 +107,8 @@ public interface MOPEndpointInterface {
     /**
      * MOP.7 - Przeglądaj listę wizyt
      *
-     * @param page numer aktualnie przeglądanej strony
-     * @param size ilość rekordów na danej stronie
+     * @param page   numer aktualnie przeglądanej strony
+     * @param size   ilość rekordów na danej stronie
      * @param phrase wyszukiwana fraza
      * @return lista wizyt
      * @throws MethodNotImplementedException w przypadku braku implementacji metody
@@ -141,7 +151,7 @@ public interface MOPEndpointInterface {
     /**
      * MOP.11 - Edytuj dowolną wizytę
      *
-     * @param id id konkretnej wizyty
+     * @param id                 id konkretnej wizyty
      * @param appointmentEditDto obiekt dto edytowanej wizyty
      * @return odpowiedź serwera (wizyta)
      * @throws MethodNotImplementedException w przypadku braku implementacji metody
@@ -190,6 +200,7 @@ public interface MOPEndpointInterface {
 
     /**
      * MOP.15 - Dodaj recenzję wszczepu
+     *
      * @param createImplantReviewDto Recenzja wszczepu napisana przez użytkownika
      * @return recenzja wszczepu
      * @throws MethodNotImplementedException - w przypadku braku implementacji metody

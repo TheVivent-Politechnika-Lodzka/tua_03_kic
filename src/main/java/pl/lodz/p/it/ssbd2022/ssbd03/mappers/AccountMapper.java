@@ -128,6 +128,12 @@ public class AccountMapper {
                 .collect(Collectors.toList());
     }
 
+    /**
+     * Metoda mapująca konto na DTO specjalisty dla MOP'a
+     *
+     * @param account - konto, które będzie skonwertowane( Account)
+     * @return - DTO specjalisty dla MOP'a
+     */
     public SpecialistForMopDto accountSpecialistListElementDto(Account account) {
         SpecialistDataDto dataspecialist = accessLevelMapper.dataSpecialistListElementDtoList(account.getAccessLevelCollection());
         SpecialistForMopDto specialistForMopDto = new SpecialistForMopDto(
@@ -140,6 +146,12 @@ public class AccountMapper {
         return specialistForMopDto;
     }
 
+    /**
+     * Metoda pozwalająca na konwersję listy specialistów ( Collection<Account> ) na listę DTO ( List<SpecialistForMopDto> )
+     *
+     * @param accounts - lista specialistów
+     * @return - lista DTO specialistów
+     */
     public List<SpecialistForMopDto> accountSpecialistListElementDtoList(Collection<Account> accounts) {
         return null == accounts ? null : accounts.stream()
                 .filter(Objects::nonNull)
