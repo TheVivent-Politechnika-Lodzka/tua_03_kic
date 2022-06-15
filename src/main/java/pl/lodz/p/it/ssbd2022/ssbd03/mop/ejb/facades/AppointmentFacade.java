@@ -62,6 +62,15 @@ public class AppointmentFacade extends AbstractFacade<Appointment> {
         super.create(entity);
     }
 
+    /**
+     * zwraca listę wizyt dla danego specjalisty w danym okresie
+     * @param specialistId  - id specjalisty
+     * @param startDate     - data startowa
+     * @param endDate       - data końcowa
+     * @param pageNumber    - numer strony
+     * @param perPage       - ilość wyników na stronę
+     * @return wynik
+     */
     public PaginationData findSpecialistAppointmentsInGivenPeriod(UUID specialistId, Instant startDate, Instant endDate, int pageNumber, int perPage) {
         TypedQuery<Appointment> typedQuery = entityManager.createNamedQuery("Appointment.findSpecialistAppointmentsInGivenPeriod", Appointment.class);
         typedQuery.setParameter("specialistId", specialistId);

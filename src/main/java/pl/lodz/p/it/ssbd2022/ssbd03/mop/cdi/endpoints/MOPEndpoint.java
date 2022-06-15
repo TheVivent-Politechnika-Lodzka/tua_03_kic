@@ -200,6 +200,7 @@ public class MOPEndpoint implements MOPEndpointInterface {
      * MOP.9 - Zarezerwuj wizytę
      * @param createAppointmentDto - dane nowej wizyty
      * @return status HTTP i utworzoną wizytę
+     * @throws TransactionException, w przypadku odrzucenia transakcji z nieznanego powodu
      */
     @Override
     public Response createAppointment(CreateAppointmentDto createAppointmentDto) {

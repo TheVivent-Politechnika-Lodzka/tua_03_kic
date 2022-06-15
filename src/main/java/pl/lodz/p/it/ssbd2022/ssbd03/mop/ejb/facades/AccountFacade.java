@@ -70,7 +70,8 @@ public class AccountFacade extends AbstractFacade<Account> {
      * @param id - id użytkownika, którego szukamy
      * @return Obiekt znalezionego konta
      * @throws InvalidParametersException, gdy podano niepoprawną wartość parametru
-     * @throws DatabaseException,          gdy wystąpi błąd związany z bazą danych
+     * @throws DatabaseException - gdy wystąpi błąd związany z bazą danych
+     * @throws ResourceNotFoundException, gdy nie znaleziono zasobu
      */
     @PermitAll
     public Account findByUUID(UUID id) {
@@ -80,8 +81,6 @@ public class AccountFacade extends AbstractFacade<Account> {
             return typedQuery.getSingleResult();
         } catch (NoResultException e) {
             throw new ResourceNotFoundException();
-        } catch (IllegalArgumentException e) {
-            throw new InvalidParametersException(e.getCause());
         } catch (PersistenceException e) {
             throw new DatabaseException(e.getCause());
         }

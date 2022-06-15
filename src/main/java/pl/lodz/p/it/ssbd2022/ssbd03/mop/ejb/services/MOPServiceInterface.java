@@ -88,7 +88,8 @@ public interface MOPServiceInterface extends ServiceLocalInterface {
      * @param specialistId      - identyfikator specjalisty
      * @param implantId         - identyfikator wszczepu
      * @param startDate         - data rozpoczęcia wizyty
-     * @return Appointment - nowa wizyta
+     * @return nowa wizyta
+     * @throws MethodNotImplementedException w przypadku niezaimplementowanej metody
      */
     default Appointment createAppointment(String clientLogin, UUID specialistId, UUID implantId, Instant startDate) {
         throw new MethodNotImplementedException();

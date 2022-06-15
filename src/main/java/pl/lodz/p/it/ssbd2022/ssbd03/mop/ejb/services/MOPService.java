@@ -52,6 +52,7 @@ public class MOPService extends AbstractService implements MOPServiceInterface, 
      *
      * @param id identyfikator wizyty, która ma zostać odwołana
      * @return Wizyta, która została odwołana
+     * @throws AppointmentStatusException - gdy wizyta jest już zakończona (wykoana/odwołana)
      */
     @Override
     @RolesAllowed(Roles.ADMINISTRATOR)
@@ -168,6 +169,9 @@ public class MOPService extends AbstractService implements MOPServiceInterface, 
      * @param implantId    - identyfikator wszczepu
      * @param startDate    - data rozpoczęcia wizyty
      * @return nowa wizyta
+     * @throws ImproperAccessLevelException - w przypadku próby przypisanie użytkownika do złej roli w wizycie
+     * @throws CantInstallArchivedImplant - w przypadku kiedy wszczep jest zarchiwizowany
+     * @throws StartDateIsInPast - w przypadku gdy podana data jest datą z przeszłości
      */
     @Override
     @RolesAllowed(Roles.CLIENT)
