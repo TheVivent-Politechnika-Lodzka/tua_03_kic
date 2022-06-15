@@ -57,30 +57,39 @@ export const ImplantListPage = () => {
         { label: `3 ${t("implantListPage.items")}`, value: "3" },
     ];
 
-    useEffect(() => {
-        const getData = async () => {
-            let data;
-            try {
-                if (amountElement !== null) {
-                    data = await listImplants({
-                        page: page,
-                        size: JSON.parse(amountElement),
-                        phrase: phrase,
-                        archived: status === "true",
-                    });
-                }
-            } catch (err) {
-                alert(err);
+    const fetchData = async () => {
+        let data;
+        try {
+            if (amountElement !== null) {
+                data = await listImplants({
+                    page: page,
+                    size: JSON.parse(amountElement),
+                    phrase: phrase,
+                    archived: status === "true",
+                });
             }
+        } catch (err) {
+            alert(err);
+        }
 
-            const check = (value: any): value is ListImplantResponse => {
-                return true;
-            };
-
-            if (check(data)) setImplantList(data);
+        const check = (value: any): value is ListImplantResponse => {
+            return true;
         };
-        getData();
-    }, [page, amountElement, status, phrase]);
+
+        if (check(data)) setImplantList(data);
+    };
+
+    useEffect(() => {
+        fetchData();
+    }, [page, amountElement, status]);
+
+    useEffect(() => {
+        const delayDebounceFn = setTimeout(() => {
+            fetchData();
+        }, 600);
+
+        return () => clearTimeout(delayDebounceFn);
+    }, [phrase]);
 
     const goto = () => {};
 
