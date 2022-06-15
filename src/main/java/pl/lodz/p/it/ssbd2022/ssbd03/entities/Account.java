@@ -45,6 +45,7 @@ import static pl.lodz.p.it.ssbd2022.ssbd03.entities.Account.CONSTRAINT_LOGIN_UNI
         @NamedQuery(name = "Account.findByConfirmed", query = "select a from Account a order by a.confirmed"),
         @NamedQuery(name = "Account.findByActive", query = "select a from Account a order by a.active"),
         @NamedQuery(name = "Account.searchByPhrase", query = "select a from Account a where lower(concat(a.firstName, ' ', a.lastName)) like lower(:phrase)"),
+        @NamedQuery(name = "Account.searchSpecialistByPhrase", query = "select a.account from AccessLevel a where lower(concat(a.account.firstName, ' ', a.account.lastName)) like lower(:phrase) and a.level = SPECIALIST") ,
 })
 @ToString
 @NoArgsConstructor
