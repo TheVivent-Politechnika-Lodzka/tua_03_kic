@@ -1,5 +1,5 @@
-$blue: #11998e;
-$green: #38ef7d;
+$blue: #15628d;
+$green: #15628d;
 $white: #fff;
 $gray: #ffffff;
 
@@ -41,17 +41,16 @@ $gray: #ffffff;
 
 .formfield {
     font-family: inherit;
-    width: 100%;
+    height: 4vh;
     border: 0;
     border-bottom: 2px solid $gray;
     outline: 0;
-    font-size: 1.3rem;
+    font-size: 2vh;
     color: $white;
     padding: 7px 0;
     background: transparent;
     transition: border-color 0.2s;
     color: transparent;
-    font-size: 1.3rem;
     cursor: text;
     color: #ffffff;
     margin-top: 10px;
@@ -59,7 +58,7 @@ $gray: #ffffff;
 
 .formlabel {
     display: block;
-    font-size: 1rem;
+    font-size: 1.5vh;
     color: $gray;
 }
 
@@ -77,14 +76,14 @@ $gray: #ffffff;
     border: 2px solid $gray;
     border-radius: 1vw;
     outline: 0;
-    font-size: 1.3rem;
+    font-size: 2vh;
     overflow-wrap: break-word;
     color: $white;
     padding: 7px 0;
     background: transparent;
     transition: border-color 0.2s;
     color: transparent;
-    font-size: 1.3rem;
+
     cursor: text;
     color: #ffffff;
     margin-top: 10px;
@@ -99,28 +98,27 @@ $gray: #ffffff;
 
 .numberfield {
     font-family: inherit;
+    height: 4vh;
     width: 50%;
     padding-right: 10vw;
     border: 0;
-    border: 2px solid $gray;
-    border-radius: 0.25vw;
+    border: 0.25vh solid $gray;
+    border-radius: 1vh;
     outline: 0;
-    font-size: 1.3rem;
+    font-size: 2vh;
     overflow-wrap: break-word;
     color: $white;
     padding: 7px 0;
     background: transparent;
     transition: border-color 0.2s;
     color: transparent;
-    font-size: 1.3rem;
     cursor: text;
     color: #ffffff;
     margin-top: 10px;
 }
 .numberfield:focus {
-  border-width: 3px;
-
-  border-image: linear-gradient(to right, $blue, $green);
-  border-image-slice: 1;
-  border-radius: 1vw;
+    border-image: linear-gradient(to right, $blue, $green);
+    border-image-slice: 1;
+    border-width: 0.25vh;
+    border-radius: 1vh;
 }
