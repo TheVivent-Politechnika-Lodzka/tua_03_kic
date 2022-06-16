@@ -172,6 +172,8 @@ public class MOPService extends AbstractService implements MOPServiceInterface, 
     @Override
     @RolesAllowed(Roles.CLIENT)
     public ImplantReview createReview(ImplantReview review) {
+        // TODO: stworzyć fasadę z named query które będzie szukać po loginie i id wszczepu
+        //  przeszukiwanie w ten sposób jest BARDZO zasobożerne przy większej ilości recenzji
         Appointment clientAppointment = appointmentFacade.findByClientLogin(review.getClient().getLogin())
                 .stream()
                 .filter(appointment -> appointment.getImplant().getId().equals(review.getImplant().getId()))
@@ -214,30 +216,6 @@ public class MOPService extends AbstractService implements MOPServiceInterface, 
         }
         appointmentFacade.edit(appointmentFromDb);
         return appointmentFromDb;
-    }
-
-    /**
-     * Metoda tworząca recenzję wszczepu oraz zwracająca nowo utworzoną recenzję.
-     * Recenzja nie może być utworzona, gdy wszczep nie został jeszcze wmontowany.
-     *
-     * @param review - Recenzja wszczepu
-     * @return Nowo utworzona recenzja wszczepu
-     */
-    @Override
-    @RolesAllowed(Roles.CLIENT)
-    public ImplantReview createReview(ImplantReview review) {
-        Appointment clientAppointment = appointmentFacade.findByClientLogin(review.getClient().getLogin())
-                .stream()
-                .filter(appointment -> appointment.getImplant().getId().equals(review.getImplant().getId()))
-                .findFirst()
-                .orElseThrow(AppointmentNotFoundException::new);
-
-        if (!clientAppointment.getStatus().equals(Status.FINISHED)) {
-            throw new AppointmentNotFinishedException();
-        }
-
-        implantReviewFacade.create(review);
-        return implantReviewFacade.findByUUID(review.getId());
     }
 
     /**

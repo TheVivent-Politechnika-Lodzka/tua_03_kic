@@ -144,14 +144,4 @@ public class ImplantFacade extends AbstractFacade<Implant> {
         }
     }
 
-    /**
-     * Metoda edytująca wszczep w bazie danych. Uwzględnia wersję
-     *
-     * @param entity Obiekt encji
-     */
-    @Override
-    @RolesAllowed(Roles.ADMINISTRATOR)
-    public void edit(Implant entity) {
-        super.edit(entity);
-    }
 }

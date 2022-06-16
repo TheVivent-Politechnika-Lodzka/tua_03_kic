@@ -50,34 +50,6 @@ public class MOPEndpoint implements MOPEndpointInterface {
     private Tagger tagger;
 
     /**
-     * MOP.13 Odwołaj dowolną wizytę
-     * Metodę może wykonać tylko konto z poziomem dostępu administratora.
-     *
-     * @param id Identyfikator wizyty, która ma zostać odwołana
-     * @return odpowiedź HTTP
-     */
-    @Override
-    public Response cancelAnyVisit(UUID id) {
-        tagger.verifyTag();
-        Appointment cancelledAppointment;
-
-        int TXCounter = Config.MAX_TX_RETRIES;
-        boolean commitedTX;
-        do {
-            cancelledAppointment = mopService.cancelAppointment(id);
-            commitedTX = mopService.isLastTransactionCommited();
-        } while (!commitedTX && --TXCounter > 0);
-
-        if (!commitedTX) {
-            throw new TransactionException();
-        }
-
-        AppointmentDto appointmentDto = appointmentMapper.createAppointmentDtoFromAppointment(cancelledAppointment);
-
-        return Response.ok(appointmentDto).tag(tagger.tag(appointmentDto)).build();
-    }
-
-    /**
      * MOP.1 - Dodaj nowy wszczep
      *
      * @param createImplantDto - dane nowego wszczepu
@@ -121,8 +93,8 @@ public class MOPEndpoint implements MOPEndpointInterface {
         boolean commitedTX;
 
         do {
-            archiveImplant = mopServiceInterface.archiveImplant(id);
-            commitedTX = mopServiceInterface.isLastTransactionCommited();
+            archiveImplant = mopService.archiveImplant(id);
+            commitedTX = mopService.isLastTransactionCommited();
         } while (!commitedTX && --TXCounter > 0);
 
         if (!commitedTX) {
@@ -283,8 +255,8 @@ public class MOPEndpoint implements MOPEndpointInterface {
         int TXCounter = Config.MAX_TX_RETRIES;
         boolean commitedTX;
         do {
-            cancelledAppointment = mopServiceInterface.cancelAppointment(id);
-            commitedTX = mopServiceInterface.isLastTransactionCommited();
+            cancelledAppointment = mopService.cancelAppointment(id);
+            commitedTX = mopService.isLastTransactionCommited();
         } while (!commitedTX && --TXCounter > 0);
 
         if (!commitedTX) {
