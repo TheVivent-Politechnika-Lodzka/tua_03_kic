@@ -128,7 +128,7 @@ public class AppointmentFacade extends AbstractFacade<Appointment> {
      * @param perPage    ilość rekordów na danej stronie
      * @return Lista wizyt użytkownika o podanym loginie
      */
-    public PaginationData findByClientLoginInRange(String login,int pageNumber, int perPage) {
+    public PaginationData findByClientLoginInRange(int pageNumber, int perPage,String login) {
         try {
             TypedQuery<Appointment> typedQuery = entityManager.createNamedQuery("Appointment.findByLogin", Appointment.class);
 

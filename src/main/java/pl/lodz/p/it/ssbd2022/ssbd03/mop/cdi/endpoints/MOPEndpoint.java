@@ -207,7 +207,7 @@ public class MOPEndpoint implements MOPEndpointInterface {
     public Response listMyVisits(int page, int size) {
         PaginationData paginationData;
         String login = authContext.getCurrentUserLogin();
-
+        System.out.println(login +" Twój stary zul");
         int TXCounter = Config.MAX_TX_RETRIES;
         boolean commitedTX;
         do {

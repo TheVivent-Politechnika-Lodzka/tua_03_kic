@@ -156,7 +156,7 @@ public class MOPService extends AbstractService implements MOPServiceInterface, 
         if(page == 0 || pageSize == 0) {
             throw new InvalidParametersException();
         }
-        return appointmentFacade.findByClientLoginInRange(login, pageSize, page);
+        return appointmentFacade.findByClientLoginInRange(page, pageSize, login);
     }
 
     @Override
