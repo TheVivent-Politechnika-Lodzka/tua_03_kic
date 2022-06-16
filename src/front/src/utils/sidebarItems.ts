@@ -17,7 +17,7 @@ interface SideBarRoute {
 const unauthenticatedSidebarItems: SideBarRoute[] = [
     { title: "Strona główna", icon: faHome, path: "/" },
     { title: "Specjaliści", icon: faStethoscope, path: "/specialists" },
-    { title: "Cyberwszczepy", icon: faMicrochip, path: "/chips" },
+    { title: "Cyberwszczepy", icon: faMicrochip, path: "/implants" },
 ];
 
 const authorizedSidebarItems: SideBarRoute[] = [
@@ -25,7 +25,7 @@ const authorizedSidebarItems: SideBarRoute[] = [
     { title: "Profil użytkownika", icon: faUser, path: "/account" },
     { title: "Wizyty", icon: faCalendarAlt, path: "/visits" },
     { title: "Specjaliści", icon: faStethoscope, path: "/specialists" },
-    { title: "Cyberwszczepy", icon: faMicrochip, path: "/chips" },
+    { title: "Cyberwszczepy", icon: faMicrochip, path: "/implants" },
 ];
 
 const adminSidebarItems: SideBarRoute[] = [
@@ -38,7 +38,7 @@ const adminSidebarItems: SideBarRoute[] = [
         icon: faStethoscope,
         path: "/specialists",
     },
-    { title: "Zarządzaj cyberwszczepami", icon: faMicrochip, path: "/chips" },
+    { title: "Zarządzaj cyberwszczepami", icon: faMicrochip, path: "/implants" },
 ];
 
 const handleSwitchSidebarItems = (accessLevel: AccessLevelType) => {

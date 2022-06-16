@@ -11,6 +11,7 @@ import pl.lodz.p.it.ssbd2022.ssbd03.entities.Status;
 import pl.lodz.p.it.ssbd2022.ssbd03.mok.dto.AccountWithAccessLevelsDto;
 import pl.lodz.p.it.ssbd2022.ssbd03.validation.Description;
 
+import java.time.Instant;
 import java.util.Date;
 import java.util.UUID;
 
@@ -30,7 +31,7 @@ public class AppointmentListElementDto {
 
     private Status status;
 
-    private Date startDate;
+    private Instant startDate;
 
     @Description
     private String description;
