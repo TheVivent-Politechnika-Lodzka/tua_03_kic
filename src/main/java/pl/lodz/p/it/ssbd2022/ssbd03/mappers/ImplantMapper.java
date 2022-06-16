@@ -75,7 +75,8 @@ public class ImplantMapper {
                 implant.getPrice(),
                 implant.isArchived(),
                 implant.getPopularity(),
-                implant.getDuration()
+                implant.getDuration(),
+                implant.getImage()
         );
         return implantDto;
 
