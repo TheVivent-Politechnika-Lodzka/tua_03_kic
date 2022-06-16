@@ -208,15 +208,30 @@ public class MOPService extends AbstractService implements MOPServiceInterface, 
         }
         return appointmentFacade.findInRangeWithPhrase(page, pageSize, phrase);
     }
-
     @Override
     @PermitAll
-    public Appointment editOwnAppointment(UUID id, Appointment appointment,String login){
+    public Appointment findVisit(UUID uuid){ //TODO:Podzielić metodę dla administratora (może wziąć szczegóły każdej wizyty) a reszta użytkowników tylko swoich
+        return appointmentFacade.findById(uuid);
+    }
+    /**
+     * Metoda zwracająca edytowaną wizytę
+     *
+     * @param id     id wizyty
+     * @param update wartości które mają zostać zaktualizowane
+     * @param login   nazwa uzytkownika który bierze udział w wizycie
+     * @return  Edytowana wizyta
+     * @throws UserNotPartOfAppointment w przypadku gdy użytkownik nieuprzywilejowany edytuje nie swoja wizytę
+     */
+    @Override
+    @PermitAll
+    public Appointment editOwnAppointment(UUID id, Appointment update,String login){
         Appointment appointmentFromDb = appointmentFacade.findById(id);
-        if(appointmentFromDb.getClient().getLogin() == login || appointmentFromDb.getSpecialist().getLogin() == login){
-            return null;
+        if(!(appointmentFromDb.getClient().getLogin().equals(login) || appointmentFromDb.getSpecialist().getLogin().equals(login))) {
+            throw new UserNotPartOfAppointment();
         }
-        return null;
+        appointmentFromDb.setDescription(update.getDescription());
+        appointmentFacade.edit(appointmentFromDb);
+        return appointmentFromDb;
     }
     @Override
     @RolesAllowed(Roles.ADMINISTRATOR)

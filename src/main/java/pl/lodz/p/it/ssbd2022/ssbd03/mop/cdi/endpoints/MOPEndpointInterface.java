@@ -148,7 +148,7 @@ public interface MOPEndpointInterface {
     @PUT
     @RolesAllowed({Roles.CLIENT,Roles.SPECIALIST})
     @Consumes(MediaType.APPLICATION_JSON)
-    @Path("/edit/visit/{id}")
+    @Path("/edit/visit/my/{id}")
     default Response editOwnVisit(@PathParam("id") UUID id, AppointmentEditDto appointmentEditDto) {
         throw new MethodNotImplementedException();
     }
@@ -233,5 +233,16 @@ public interface MOPEndpointInterface {
     default Response deleteImplantsReview(@PathParam("id") UUID id) {
         throw new MethodNotImplementedException();
     }
-
+    /**
+     * MOP.17 - Pobierz szczegóły wizyty
+     *
+     * @param uuid Id wizyty
+     * @return Szczegóły wizyty
+     * @throws MethodNotImplementedException - w przypadku braku implementacji metody
+     */
+    @GET
+    @RolesAllowed(Roles.AUTHENTICATED)
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Path("/visit/{id}")
+    default Response getVisitDetails(@PathParam("id") UUID uuid){throw new MethodNotImplementedException();}
 }

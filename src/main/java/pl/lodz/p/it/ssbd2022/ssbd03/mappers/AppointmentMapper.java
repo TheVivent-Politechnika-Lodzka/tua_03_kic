@@ -35,6 +35,8 @@ public class AppointmentMapper {
     public AppointmentEditDto createEditDtoFromAppointment(Appointment appointment) {
         AppointmentEditDto appointmentEditDto = new AppointmentEditDto();
         appointmentEditDto.setDescription(appointment.getDescription());
+        appointmentEditDto.setId(appointment.getId());
+        appointmentEditDto.setVersion(appointment.getVersion());
         appointmentEditDto.setStatus(appointment.getStatus());
         return appointmentEditDto;
     }

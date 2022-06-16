@@ -102,6 +102,16 @@ public interface MOPServiceInterface extends ServiceLocalInterface {
     default PaginationData findVisits(int page, int pageSize, String phrase) {
         throw new MethodNotImplementedException();
     }
+    /**
+     * Metoda zwracająca listę wszystkich wizyt
+     *
+     * @param uuid     id wizyty
+     * @return szczegóły wizyty
+     * @throws MethodNotImplementedException w przypadku niezaimplementowanej metody
+     */
+    default Appointment findVisit(UUID uuid){
+        throw new MethodNotImplementedException();
+    }
 
     /**
      * Metoda tworząca nową wizytę

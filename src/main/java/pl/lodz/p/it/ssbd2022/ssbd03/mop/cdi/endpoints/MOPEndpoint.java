@@ -263,13 +263,13 @@ public class MOPEndpoint implements MOPEndpointInterface {
         int TXCounter = Config.MAX_TX_RETRIES;
         boolean commitedTX;
         do {
-            editedAppointment = mopService.editAppointment(id, update);
+            editedAppointment = mopService.editOwnAppointment(id, update, login);
             commitedTX = mopService.isLastTransactionCommited();
         } while (!commitedTX && --TXCounter > 0);
         if (!commitedTX) {
             throw new TransactionException();
         }
-        AppointmentEditDto app = appointmentMapper.createEditDtoFromAppointment(editedAppointment);
+        AppointmentDto app = appointmentMapper.createAppointmentDtoFromAppointment(editedAppointment);
         return Response.ok(app).tag(tagger.tag(app)).build();
     }
     /**
@@ -382,5 +382,21 @@ public class MOPEndpoint implements MOPEndpointInterface {
         }
 
         return Response.ok().build();
+    }
+    @Override
+    public Response getVisitDetails (UUID uuid){
+        Appointment appointment;
+        int TXCounter = Config.MAX_TX_RETRIES;
+        boolean commitedTX;
+        do {
+            appointment = mopService.findVisit(uuid);
+            commitedTX = mopService.isLastTransactionCommited();
+        } while (!commitedTX && --TXCounter > 0);
+
+        if (!commitedTX) {
+            throw new TransactionException();
+        }
+        AppointmentDto appointmentDto = appointmentMapper.createAppointmentDtoFromAppointment(appointment);
+        return Response.ok(appointmentDto).tag(tagger.tag(appointmentDto)).build();
     }
 }
