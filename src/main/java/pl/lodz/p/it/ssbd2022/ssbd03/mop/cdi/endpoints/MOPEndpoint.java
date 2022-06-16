@@ -8,6 +8,7 @@ import jakarta.inject.Inject;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.core.Response;
 import pl.lodz.p.it.ssbd2022.ssbd03.common.Config;
+import pl.lodz.p.it.ssbd2022.ssbd03.entities.Appointment;
 import pl.lodz.p.it.ssbd2022.ssbd03.common.Roles;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.Appointment;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.Implant;
@@ -16,9 +17,14 @@ import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.MethodNotImplementedException;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.TransactionException;
 import pl.lodz.p.it.ssbd2022.ssbd03.mappers.AppointmentMapper;
 import pl.lodz.p.it.ssbd2022.ssbd03.mappers.ImplantMapper;
+import pl.lodz.p.it.ssbd2022.ssbd03.mop.dto.AppointmentDto;
+import pl.lodz.p.it.ssbd2022.ssbd03.mop.dto.CreateImplantDto;
+import pl.lodz.p.it.ssbd2022.ssbd03.mop.dto.ImplantListElementDto;
 import pl.lodz.p.it.ssbd2022.ssbd03.mappers.ImplantReviewMapper;
 import pl.lodz.p.it.ssbd2022.ssbd03.mop.dto.*;
 import pl.lodz.p.it.ssbd2022.ssbd03.mop.ejb.services.MOPServiceInterface;
+import pl.lodz.p.it.ssbd2022.ssbd03.security.AuthContext;
+import pl.lodz.p.it.ssbd2022.ssbd03.security.Tagger;
 import pl.lodz.p.it.ssbd2022.ssbd03.security.AuthContext;
 import pl.lodz.p.it.ssbd2022.ssbd03.security.Tagger;
 
@@ -305,6 +311,33 @@ public class MOPEndpoint implements MOPEndpointInterface {
 
         AppointmentDto appointmentDto = appointmentMapper.createAppointmentDtoFromAppointment(cancelledAppointment);
 
+        return Response.ok(appointmentDto).tag(tagger.tag(appointmentDto)).build();
+    }
+    /**
+     * MOP.14 - Oznacz wizytę jako zakończoną
+     *
+     * @param id identyfikator wizyty, która ma zostać oznaczona jako zakończona
+     * @return zakończona wizyta
+     */
+    @Override
+    public Response finishVisit(UUID id) {
+        tagger.verifyTag();
+
+        String login = authContext.getCurrentUserLogin();
+        Appointment finishedAppointment;
+
+        int TXCounter = Config.MAX_TX_RETRIES;
+        boolean commitedTX;
+        do {
+            finishedAppointment = mopService.finishAppointment(id, login);
+            commitedTX = mopService.isLastTransactionCommited();
+        } while (!commitedTX && --TXCounter > 0);
+
+        if (!commitedTX) {
+            throw new TransactionException();
+        }
+
+        AppointmentDto appointmentDto = appointmentMapper.createAppointmentDtoFromAppointment(finishedAppointment);
         return Response.ok(appointmentDto).tag(tagger.tag(appointmentDto)).build();
     }
 

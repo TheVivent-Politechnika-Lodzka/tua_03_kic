@@ -3,10 +3,9 @@ package pl.lodz.p.it.ssbd2022.ssbd03.exceptions.appointment;
 import jakarta.ejb.ApplicationException;
 import jakarta.ws.rs.core.Response;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.AppBaseException;
-import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.account.AccountStatusException;
 
 /**
- * Wyjątek reprezentujący błąd związany z próbą anulowania wizyty
+ * Wyjątek reprezentujący błąd związany z próbą anulowania wizyty bądź oznaczenia wizyty jako zakończonej
  */
 @ApplicationException(rollback = true)
 public class AppointmentStatusException extends AppBaseException {
@@ -17,7 +16,7 @@ public class AppointmentStatusException extends AppBaseException {
 
     /**
      * Metoda będąca konstruktorem odpowiadającym za tworzenie wyjątków dotyczących błędów
-     * w ramach anulowania wizyty
+     * w ramach anulowania bądź oznaczania wizyty jako zakończonej
      *
      * @param message Wiadomość zawarta w wyjątku
      */
@@ -27,7 +26,7 @@ public class AppointmentStatusException extends AppBaseException {
     }
 
     /**
-     * Metoda zwracająca wyjątek w przypadku próby anulowania wizyty, gdy została już ona anulowana
+     * Metoda zwracająca wyjątek w przypadku próby anulowania bądź zakończenia wizyty, gdy została już ona anulowana
      *
      * @return Wyjątek typu AppointmentStatusException, response status Bad Request
      */
@@ -36,7 +35,7 @@ public class AppointmentStatusException extends AppBaseException {
     }
 
     /**
-     * Metoda zwracająca wyjątek w przypadku próby anulowania wizyty, gdy została już ona zakończona
+     * Metoda zwracająca wyjątek w przypadku próby anulowania bądź zakończenia wizyty, gdy została już ona zakończona
      *
      * @return Wyjątek typu AppointmentStatusException, response status Bad Request
      */
