@@ -179,7 +179,6 @@ public class AppointmentFacade extends AbstractFacade<Appointment> {
                     .getResultList();
 
             pageNumber++;
-            System.out.println(data + " Twój stary menel");
             int totalCount = this.count();
             int totalPages = (int) Math.ceil((double) totalCount / perPage);
 
