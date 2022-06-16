@@ -116,7 +116,7 @@ public interface MOPEndpointInterface {
     @RolesAllowed({Roles.CLIENT, Roles.SPECIALIST})
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/list/visits/my")
-    default Response listMyVisits(@QueryParam("page") int page, @QueryParam("size") int size, @QueryParam("login") @DefaultValue("") String login) {
+    default Response listMyVisits(@QueryParam("page") int page, @QueryParam("size") int size) {
         throw new MethodNotImplementedException();
     }
 

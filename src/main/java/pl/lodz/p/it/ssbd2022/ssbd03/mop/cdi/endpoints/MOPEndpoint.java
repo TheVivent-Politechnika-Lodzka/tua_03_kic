@@ -25,6 +25,7 @@ import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.TransactionException;
 import pl.lodz.p.it.ssbd2022.ssbd03.mappers.AppointmentMapper;
 import pl.lodz.p.it.ssbd2022.ssbd03.mop.dto.AppointmentDto;
 import pl.lodz.p.it.ssbd2022.ssbd03.mop.ejb.services.MOPServiceInterface;
+import pl.lodz.p.it.ssbd2022.ssbd03.security.AuthContext;
 import pl.lodz.p.it.ssbd2022.ssbd03.security.Tagger;
 
 import java.util.UUID;
@@ -53,6 +54,9 @@ public class MOPEndpoint implements MOPEndpointInterface {
 
     @Inject
     private Tagger tagger;
+
+    @Inject
+    private AuthContext authContext;
 
     /**
      * MOP.13 Odwołaj dowolną wizytę
@@ -195,14 +199,15 @@ public class MOPEndpoint implements MOPEndpointInterface {
      *
      * @param page numer aktualnie przeglądanej strony
      * @param size ilość rekordów na danej stronie
-     * @param login wyszukiwana fraza
      * @return lista wizyt
      * @throws TransactionException w przypadku braku zatwierdzenia transakcji
      */
-    @PermitAll
+    @RolesAllowed({Roles.CLIENT, Roles.SPECIALIST})
     @Override
-    public Response listMyVisits(int page, int size, String login) {
+    public Response listMyVisits(int page, int size) {
         PaginationData paginationData;
+        String login = authContext.getCurrentUserLogin();
+
         int TXCounter = Config.MAX_TX_RETRIES;
         boolean commitedTX;
         do {

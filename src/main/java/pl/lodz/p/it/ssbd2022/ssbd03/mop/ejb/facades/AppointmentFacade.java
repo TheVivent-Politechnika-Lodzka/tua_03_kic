@@ -130,7 +130,7 @@ public class AppointmentFacade extends AbstractFacade<Appointment> {
      */
     public PaginationData findByClientLoginInRange(String login,int pageNumber, int perPage) {
         try {
-            TypedQuery<Appointment> typedQuery = entityManager.createNamedQuery("Appointment.findByClientLogin", Appointment.class);
+            TypedQuery<Appointment> typedQuery = entityManager.createNamedQuery("Appointment.findByLogin", Appointment.class);
 
             pageNumber--;
 
@@ -140,6 +140,7 @@ public class AppointmentFacade extends AbstractFacade<Appointment> {
                     .getResultList();
 
             pageNumber++;
+            System.out.println(data + " Twój stary menel");
             int totalCount = this.count();
             int totalPages = (int) Math.ceil((double) totalCount / perPage);
 

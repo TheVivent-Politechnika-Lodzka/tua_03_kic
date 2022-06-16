@@ -21,7 +21,6 @@ public class AppointmentDto implements Taggable {
 
     private UUID id;
     private Long version;
-
     private AccountWithAccessLevelsDto client;
     private AccountWithAccessLevelsDto specialist;
     private ImplantDto implant;
