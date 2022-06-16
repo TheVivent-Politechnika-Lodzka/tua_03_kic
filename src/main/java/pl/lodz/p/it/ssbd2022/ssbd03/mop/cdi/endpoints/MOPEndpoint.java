@@ -12,7 +12,6 @@ import pl.lodz.p.it.ssbd2022.ssbd03.common.Roles;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.Appointment;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.Implant;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.ImplantReview;
-import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.MethodNotImplementedException;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.TransactionException;
 import pl.lodz.p.it.ssbd2022.ssbd03.mappers.AppointmentMapper;
 import pl.lodz.p.it.ssbd2022.ssbd03.mappers.ImplantMapper;
@@ -24,11 +23,10 @@ import pl.lodz.p.it.ssbd2022.ssbd03.security.Tagger;
 
 import java.time.Instant;
 import java.util.UUID;
-import pl.lodz.p.it.ssbd2022.ssbd03.security.Tagger;
+
 import pl.lodz.p.it.ssbd2022.ssbd03.utils.PaginationData;
 
 import java.util.List;
-import java.util.UUID;
 
 @RequestScoped
 @DenyAll
@@ -279,6 +277,34 @@ public class MOPEndpoint implements MOPEndpointInterface {
         return Response.ok(app).tag(tagger.tag(app)).build();
     }
 
+    /** MOP.12 - Odwołaj swoją wizytę
+     * Endpoint pozwalający odwołać wizytę (REJECTED)
+     *
+     * @param id - id wizyty
+     * @return status HTTP oraz zmodyfikowana wizyta
+     * @throws TransactionException, gdy transakcja się nie powiedzie
+     */
+    @Override
+    public Response cancelVisit(UUID id) {
+        tagger.verifyTag();
+        Appointment cancelledAppointment;
+
+        int TXCounter = Config.MAX_TX_RETRIES;
+        boolean commitedTX;
+        do {
+            cancelledAppointment = mopService.cancelAnyAppointment(id);
+            commitedTX = mopService.isLastTransactionCommited();
+        } while (!commitedTX && --TXCounter > 0);
+
+        if (!commitedTX) {
+            throw new TransactionException();
+        }
+
+        AppointmentDto appointmentDto = appointmentMapper.createAppointmentDtoFromAppointment(cancelledAppointment);
+
+        return Response.ok(appointmentDto).tag(tagger.tag(appointmentDto)).build();
+    }
+
 
     /**
      * MOP.13 Odwołaj dowolną wizytę
@@ -295,7 +321,7 @@ public class MOPEndpoint implements MOPEndpointInterface {
         int TXCounter = Config.MAX_TX_RETRIES;
         boolean commitedTX;
         do {
-            cancelledAppointment = mopService.cancelAppointment(id);
+            cancelledAppointment = mopService.cancelAnyAppointment(id);
             commitedTX = mopService.isLastTransactionCommited();
         } while (!commitedTX && --TXCounter > 0);
 
