@@ -12,6 +12,7 @@ import lombok.Getter;
 import org.hibernate.exception.ConstraintViolationException;
 import pl.lodz.p.it.ssbd2022.ssbd03.common.AbstractFacade;
 import pl.lodz.p.it.ssbd2022.ssbd03.common.Roles;
+import pl.lodz.p.it.ssbd2022.ssbd03.entities.Account;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.Implant;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.InvalidParametersException;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.ResourceNotFoundException;
@@ -19,9 +20,13 @@ import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.database.DatabaseException;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.implant.ImplantAlreadyExistExceptions;
 import pl.lodz.p.it.ssbd2022.ssbd03.interceptors.TrackerInterceptor;
 import pl.lodz.p.it.ssbd2022.ssbd03.security.Tagger;
+
 import java.util.UUID;
+
 import pl.lodz.p.it.ssbd2022.ssbd03.utils.PaginationData;
+
 import java.util.List;
+import java.util.UUID;
 
 @Interceptors(TrackerInterceptor.class)
 @Stateless
@@ -59,6 +64,26 @@ public class ImplantFacade extends AbstractFacade<Implant> {
         }
     }
 
+    /**
+     * Metoda edytująca implant w bazie danych.
+     *
+     * @param entity
+     * @throws ImplantAlreadyExistExceptions - wyjątek rzucany w przypadku, gdy implant o podanej nazwie już istnieje w bazie danych
+     * @throws DatabaseException - gdy wystąpi błąd związany z bazą danych
+     */
+    @Override
+    @RolesAllowed(Roles.ADMINISTRATOR)
+    public void edit(Implant entity) {
+        try {
+            super.edit(entity);
+        } catch (ConstraintViolationException e) {
+            if (e.getConstraintName().contains(Implant.CONSTRAINT_NAME_UNIQUE)) {
+                throw ImplantAlreadyExistExceptions.nameExists();
+            }
+            throw new DatabaseException(e);
+        }
+    }
+
 
     /**
      * Metoda wyszukująca konkretny implant w bazie danych
@@ -66,7 +91,7 @@ public class ImplantFacade extends AbstractFacade<Implant> {
      * @param uuid - uuid implantu
      * @return implant
      * @throws InvalidParametersException, gdy podano niepoprawną wartość parametru
-     * @throws DatabaseException,          gdy wystąpi błąd związany z bazą danych
+     * @throws DatabaseException, gdy wystąpi błąd związany z bazą danych
      */
     @PermitAll
     public Implant findByUUID(UUID uuid) {
@@ -85,10 +110,11 @@ public class ImplantFacade extends AbstractFacade<Implant> {
 
     /**
      * Metoda do zwracania listy wszczepów
+     *
      * @param pageNumber - numer strony
-     * @param perPage - ilość pozycji na stronie
-     * @param phrase - szukana fraza
-     * @param archived określa czy zwracac archiwalne czy niearchiwalne wszczepy
+     * @param perPage    - ilość pozycji na stronie
+     * @param phrase     - szukana fraza
+     * @param archived   określa czy zwracac archiwalne czy niearchiwalne wszczepy
      * @return lista wszczepów
      * @throws InvalidParametersException jeśli podano nieprawidłowe parametry
      * @throws DatabaseException jeśli wystąpił błąd z bazą danych
@@ -109,8 +135,6 @@ public class ImplantFacade extends AbstractFacade<Implant> {
             pageNumber++;
             int totalCount = this.count();
             int totalPages = (int) Math.ceil((double) totalCount / perPage);
-    
-
 
             return new PaginationData(totalCount, totalPages, pageNumber, data);
         } catch (IllegalArgumentException e) {

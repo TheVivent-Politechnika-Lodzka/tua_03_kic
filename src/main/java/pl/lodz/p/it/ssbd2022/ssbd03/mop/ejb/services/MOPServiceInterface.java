@@ -39,7 +39,15 @@ public interface MOPServiceInterface extends ServiceLocalInterface {
         throw new MethodNotImplementedException();
     }
 
-    default Implant updateImplant(Implant implant) {
+    /**
+     * Metoda zwracająca liste wszczepów
+     *
+     * @param uuid  uuid implantu do edycji
+     * @param implant dane do modyfikacji implantu
+     * @return zmodyfikowany implant
+     * @throws MethodNotImplementedException metoda nie jest zaimplementowana
+     */
+    default Implant editImplant(UUID uuid, Implant implant) {
         throw new MethodNotImplementedException();
     }
 
@@ -49,9 +57,10 @@ public interface MOPServiceInterface extends ServiceLocalInterface {
 
     /**
      * Metoda zwracająca liste wszczepów
-     * @param page numer strony
-     * @param pageSize  ilość pozycji na stronie
-     * @param phrase szukana fraza
+     *
+     * @param page     numer strony
+     * @param pageSize ilość pozycji na stronie
+     * @param phrase   szukana fraza
      * @param archived określa czy zwracac archiwalne czy niearchiwalne wszczepy
      * @return lista wszczepów
      * @throws MethodNotImplementedException metoda nie jest zaimplementowana
@@ -67,7 +76,7 @@ public interface MOPServiceInterface extends ServiceLocalInterface {
      * @return wszczep
      * @throws MethodNotImplementedException metoda nie jest zaimplementowana
      */
-    default public Implant findImplantByUuid(UUID uuid){
+    default public Implant findImplantByUuid(UUID uuid) {
         throw new MethodNotImplementedException();
     }
 
@@ -83,9 +92,9 @@ public interface MOPServiceInterface extends ServiceLocalInterface {
     /**
      * Metoda zwracająca listę wszystkich wizyt
      *
-     * @param page numer aktualnie przeglądanej strony
+     * @param page     numer aktualnie przeglądanej strony
      * @param pageSize ilość rekordów na danej stronie
-     * @param phrase wyszukiwana fraza
+     * @param phrase   wyszukiwana fraza
      * @return Lista wizyt zgodnych z parametrami wyszukiwania
      * @throws MethodNotImplementedException w przypadku niezaimplementowanej metody
      */
@@ -100,7 +109,7 @@ public interface MOPServiceInterface extends ServiceLocalInterface {
     /**
      * Metoda pozwalająca na edycję wizyty przez administratora
      *
-     * @param id UUID edytowanej wizyty
+     * @param id          UUID edytowanej wizyty
      * @param appointment parametry wizyty do edycji
      * @return Zedytowana wizyta
      * @throws MethodNotImplementedException w przypadku braku zaimplementowania metody
@@ -131,15 +140,22 @@ public interface MOPServiceInterface extends ServiceLocalInterface {
 
     /**
      * Metoda dodająca recenzję dla danego wszczepu, po zakończeniu wizyty
+     *
      * @param review Recenzja wszczepu, napisana przez klienta
      * @return Recenzja wszczepu
-     * @throws MethodNotImplementedException metoda nie jest zaimplementowana
+     * @throws MethodNotImplementedException w momencie, gdy metoda jest niezaimplementowana
      */
     default ImplantReview createReview(ImplantReview review) {
         throw new MethodNotImplementedException();
     }
 
-    default void deleteReview(ImplantReview review) {
+    /**
+     * Metoda usuwająca recenzję dla danego wszczepu
+     *
+     * @param id Identyfikator recenzji wszczepu, która ma zostać usunięta
+     * @throws MethodNotImplementedException w momencie, gdy metoda jest niezaimplementowana
+     */
+    default void deleteReview(UUID id, String login) {
         throw new MethodNotImplementedException();
     }
 

@@ -2,7 +2,6 @@ package pl.lodz.p.it.ssbd2022.ssbd03.mop.ejb.services;
 
 import com.fasterxml.jackson.databind.ser.DefaultSerializerProvider;
 import jakarta.annotation.security.DenyAll;
-import jakarta.annotation.security.RolesAllowed;
 import jakarta.annotation.security.PermitAll;
 import jakarta.annotation.security.RolesAllowed;
 import jakarta.ejb.SessionSynchronization;
@@ -12,9 +11,8 @@ import jakarta.ejb.TransactionAttributeType;
 import jakarta.inject.Inject;
 import jakarta.interceptor.Interceptors;
 import pl.lodz.p.it.ssbd2022.ssbd03.common.AbstractService;
-import pl.lodz.p.it.ssbd2022.ssbd03.entities.Appointment;
-import pl.lodz.p.it.ssbd2022.ssbd03.entities.ImplantReview;
-import pl.lodz.p.it.ssbd2022.ssbd03.entities.Status;
+import pl.lodz.p.it.ssbd2022.ssbd03.common.Roles;
+import pl.lodz.p.it.ssbd2022.ssbd03.entities.*;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.InvalidParametersException;
 import pl.lodz.p.it.ssbd2022.ssbd03.common.Roles;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.Implant;
@@ -22,10 +20,11 @@ import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.account.AccountStatusException;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.implant.ImplantStatusException;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.appointment.AppointmentNotFinishedException;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.appointment.AppointmentNotFoundException;
-import pl.lodz.p.it.ssbd2022.ssbd03.common.Roles;
-import pl.lodz.p.it.ssbd2022.ssbd03.entities.Appointment;
+import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.implant.ImplantArchivedException;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.appointment.AppointmentStatusException;
+import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.implant_review.ClientRemovesOtherReviewsException;
 import pl.lodz.p.it.ssbd2022.ssbd03.interceptors.TrackerInterceptor;
+import pl.lodz.p.it.ssbd2022.ssbd03.mop.ejb.facades.AccountFacade;
 import pl.lodz.p.it.ssbd2022.ssbd03.mop.ejb.facades.AppointmentFacade;
 import pl.lodz.p.it.ssbd2022.ssbd03.mop.ejb.facades.ImplantFacade;
 import pl.lodz.p.it.ssbd2022.ssbd03.mop.ejb.facades.ImplantReviewFacade;
@@ -54,10 +53,15 @@ public class MOPService extends AbstractService implements MOPServiceInterface, 
 
     @Inject
     AppointmentFacade appointmentFacade;
+
     @Inject
     private ImplantFacade implantFacade;
+
     @Inject
     private ImplantReviewFacade implantReviewFacade;
+
+    @Inject
+    private AccountFacade accountFacade;
 
 
     /**
@@ -114,6 +118,26 @@ public class MOPService extends AbstractService implements MOPServiceInterface, 
         return tmp;
     }
 
+    @Override
+    @RolesAllowed(Roles.ADMINISTRATOR)
+    public Implant editImplant(UUID uuid, Implant implant){
+        Implant implantFromDB = implantFacade.findByUUID(uuid);
+
+        if(implantFromDB.isArchived()){
+            throw ImplantArchivedException.editArchivedImplant();
+        }
+
+        implantFromDB.setName(implant.getName());
+        implantFromDB.setDescription(implant.getDescription());
+        implantFromDB.setImage(implant.getImage());
+        implantFromDB.setDuration(implant.getDuration());
+        implantFromDB.setManufacturer(implant.getManufacturer());
+        implantFromDB.setPrice(implant.getPrice());
+
+        implantFacade.edit(implantFromDB);
+        return implantFromDB;
+    }
+
     /**
      * Metoda zwracająca liste wszczepów
      *
@@ -142,7 +166,6 @@ public class MOPService extends AbstractService implements MOPServiceInterface, 
     /**
      * Metoda tworząca recenzję wszczepu oraz zwracająca nowo utworzoną recenzję.
      * Recenzja nie może być utworzona, gdy wszczep nie został jeszcze wmontowany.
-     *
      * @param review - Recenzja wszczepu
      * @return Nowo utworzona recenzja wszczepu
      */
@@ -155,7 +178,7 @@ public class MOPService extends AbstractService implements MOPServiceInterface, 
                 .findFirst()
                 .orElseThrow(AppointmentNotFoundException::new);
 
-        if (!clientAppointment.getStatus().equals(Status.FINISHED)) {
+        if(!clientAppointment.getStatus().equals(Status.FINISHED)) {
             throw new AppointmentNotFinishedException();
         }
 
@@ -191,5 +214,50 @@ public class MOPService extends AbstractService implements MOPServiceInterface, 
         }
         appointmentFacade.edit(appointmentFromDb);
         return appointmentFromDb;
+    }
+
+    /**
+     * Metoda tworząca recenzję wszczepu oraz zwracająca nowo utworzoną recenzję.
+     * Recenzja nie może być utworzona, gdy wszczep nie został jeszcze wmontowany.
+     *
+     * @param review - Recenzja wszczepu
+     * @return Nowo utworzona recenzja wszczepu
+     */
+    @Override
+    @RolesAllowed(Roles.CLIENT)
+    public ImplantReview createReview(ImplantReview review) {
+        Appointment clientAppointment = appointmentFacade.findByClientLogin(review.getClient().getLogin())
+                .stream()
+                .filter(appointment -> appointment.getImplant().getId().equals(review.getImplant().getId()))
+                .findFirst()
+                .orElseThrow(AppointmentNotFoundException::new);
+
+        if (!clientAppointment.getStatus().equals(Status.FINISHED)) {
+            throw new AppointmentNotFinishedException();
+        }
+
+        implantReviewFacade.create(review);
+        return implantReviewFacade.findByUUID(review.getId());
+    }
+
+    /**
+     * Metoda usuwająca recenzję wszczepu
+     *
+     * @param id Identyfikator recenzji wszczepu, która ma zostać usunięta
+     */
+    @Override
+    @RolesAllowed({Roles.ADMINISTRATOR, Roles.CLIENT})
+    public void deleteReview(UUID id, String login) {
+
+        ImplantReview review = implantReviewFacade.findByUUID(id);
+        Account account = accountFacade.findByLogin(login);
+        boolean isAdmin = account.getAccessLevelCollection()
+                .stream()
+                .anyMatch(accessLevel -> accessLevel.getLevel().equals(Roles.ADMINISTRATOR));
+
+        if(!review.getClient().getLogin().equals(login) && !isAdmin) {
+            throw new ClientRemovesOtherReviewsException();
+        }
+        implantReviewFacade.remove(review);
     }
 }
