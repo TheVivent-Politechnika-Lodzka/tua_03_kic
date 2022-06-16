@@ -171,12 +171,18 @@ public interface MOPEndpointInterface {
         throw new MethodNotImplementedException();
     }
 
-    // MOP.12 - Odwołaj swoją wizytę
-    @DELETE
+    /** MOP.12 - Odwołaj swoją wizytę
+     * Endpoint pozwalający odwołać wizytę (REJECTED)
+     *
+     * @param id - id wizyty
+     * @return status HTTP oraz zmodyfikowana wizyta
+     * @throws MethodNotImplementedException, gdy metoda nie jest zaimplementowana
+     */
+    @PATCH
     @RolesAllowed({Roles.CLIENT, Roles.SPECIALIST})
     @Consumes(MediaType.APPLICATION_JSON)
-    @Path("/cancel/visit")
-    default Response cancelVisit(String json) {
+    @Path("/visit/cancel/my/{id}")
+    default Response cancelOwnVisit(@PathParam("id") UUID id) {
         throw new MethodNotImplementedException();
     }
 
