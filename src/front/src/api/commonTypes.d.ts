@@ -48,3 +48,9 @@ interface Loading {
     pageLoading: boolean;
     actionLoading?: boolean;
 }
+
+interface Pagination {
+    currentPage?: number;
+    pageSize?: number;
+    totalPages?: number;
+}

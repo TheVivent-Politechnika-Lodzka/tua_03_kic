@@ -12,6 +12,7 @@ import UserRecord from "../../../../components/UserRecord/UserRecord";
 import ReactLoading from "react-loading";
 import styles from "./style.module.scss";
 import { retry } from "@reduxjs/toolkit/dist/query";
+import Pagination from "../../../../components/Pagination/Pagination";
 
 const UsersManagmentPage = () => {
     const [users, setUsers] = useState<AccountDetails[]>();
@@ -22,6 +23,13 @@ const UsersManagmentPage = () => {
     const [error, setError] = useState<ApiError>();
     const [phrase, setPhrase] = useState<string>(" ");
     const [rerender, setRerender] = useState<boolean>(false);
+
+    const [pagination, setPagination] = useState<Pagination>({
+        currentPage: 1,
+        pageSize: 4,
+        totalPages: 0,
+    });
+
     const navigate = useNavigate();
     const { t } = useTranslation();
 
@@ -29,12 +37,13 @@ const UsersManagmentPage = () => {
         try {
             setLoading({ ...loading, actionLoading: true });
             const data = await listAccounts({
-                page: 1,
+                page: pagination?.currentPage as number,
                 limit: 4,
                 phrase: phrase,
             });
             if ("errorMessage" in data) return;
             setUsers(data.data);
+            setPagination({ ...pagination, totalPages: data.totalPages });
             setLoading({ pageLoading: false, actionLoading: false });
             setRerender(false);
         } catch (error: ApiError | any) {
@@ -47,7 +56,7 @@ const UsersManagmentPage = () => {
 
     useEffect(() => {
         handleGetAllUsers();
-    }, [rerender]);
+    }, [rerender, pagination.currentPage]);
 
     useEffect(() => {
         if (phrase.length === 0) {
@@ -103,6 +112,7 @@ const UsersManagmentPage = () => {
                                 />
                             ))}
                         </div>
+                        <Pagination pagination={pagination} handleFunction={setPagination}/>
                     </>
                 )}
             </div>
