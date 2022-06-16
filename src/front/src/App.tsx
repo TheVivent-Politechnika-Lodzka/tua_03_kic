@@ -14,6 +14,7 @@ import AccountDetailsPage from "./pages/protected/shared/AccountDetailsPage/Acco
 import EditOwnAccountPage from "./pages/protected/shared/EditOwnAccountPage/EditOwnAccountPage";
 import authorizedRoutes from "./security/authorizedRoutes";
 import PageLayout from "./pages/PageLayout/PageLayout";
+import { ImplantListPage } from "./pages/unprotected/implantList";
 
 function App() {
     const user = useStoreSelector((state) => state.user);
@@ -39,6 +40,7 @@ function App() {
                     <Route path="/*" element={<ErrorPage />} />
                     <Route element={<PageLayout />}>
                         <Route path="/" element={<HomePage />} />
+                        <Route path="/implants" element={<ImplantListPage />} />
                         {user.cur ? (
                             <>
                                 <Route

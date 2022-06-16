@@ -6,7 +6,6 @@ import jakarta.annotation.security.RolesAllowed;
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.Path;
-import jakarta.ws.rs.PathParam;
 import jakarta.ws.rs.core.Response;
 import pl.lodz.p.it.ssbd2022.ssbd03.common.Config;
 import pl.lodz.p.it.ssbd2022.ssbd03.common.Roles;
@@ -19,12 +18,6 @@ import pl.lodz.p.it.ssbd2022.ssbd03.mappers.AppointmentMapper;
 import pl.lodz.p.it.ssbd2022.ssbd03.mappers.ImplantMapper;
 import pl.lodz.p.it.ssbd2022.ssbd03.mappers.ImplantReviewMapper;
 import pl.lodz.p.it.ssbd2022.ssbd03.mop.dto.*;
-import jakarta.ws.rs.core.Response;
-import pl.lodz.p.it.ssbd2022.ssbd03.common.Config;
-import pl.lodz.p.it.ssbd2022.ssbd03.entities.Appointment;
-import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.TransactionException;
-import pl.lodz.p.it.ssbd2022.ssbd03.mappers.AppointmentMapper;
-import pl.lodz.p.it.ssbd2022.ssbd03.mop.dto.AppointmentDto;
 import pl.lodz.p.it.ssbd2022.ssbd03.mop.ejb.services.MOPServiceInterface;
 import pl.lodz.p.it.ssbd2022.ssbd03.security.AuthContext;
 import pl.lodz.p.it.ssbd2022.ssbd03.security.Tagger;
@@ -44,6 +37,9 @@ public class MOPEndpoint implements MOPEndpointInterface {
 
     @Inject
     private MOPServiceInterface mopService;
+
+    @Inject
+    AuthContext authContext;
 
     @Inject
     private AppointmentMapper appointmentMapper;
@@ -115,6 +111,57 @@ public class MOPEndpoint implements MOPEndpointInterface {
         return Response.ok(implantDto).build();
     }
 
+    /**
+     * MOP 2 - Archiwizuj wszczep
+     *
+     * @param id - uuid wszczepu poddawanego archiwizacji
+     * @return odpowiedź zawieracjąca status http oraz nowy tag
+     * @throws TransactionException jeśli transakcja nie została zatwierdzona
+     */
+    @Override
+    public Response archiveImplant(UUID id) {
+
+        tagger.verifyTag();
+
+        Implant archiveImplant;
+        int TXCounter = Config.MAX_TX_RETRIES;
+        boolean commitedTX;
+
+        do {
+            archiveImplant = mopService.archiveImplant(id);
+            commitedTX = mopService.isLastTransactionCommited();
+        } while (!commitedTX && --TXCounter > 0);
+
+        if (!commitedTX) {
+            throw new TransactionException();
+        }
+
+        ImplantDto imp = implantMapper.createImplantDtoFromImplant(archiveImplant);
+
+        return Response.ok(imp).tag(tagger.tag(imp)).build();
+    }
+
+    //MOP.3 -Edytuj wszczep
+    public Response editImplant(UUID id, ImplantDto implantDto) {
+        tagger.verifyTag(implantDto);
+
+        Implant implant;
+        int TXCounter = Config.MAX_TX_RETRIES;
+        boolean commitedTX;
+        do {
+            implant = mopService.editImplant(id, implantMapper.createImplantFromImplantDto(implantDto));
+            commitedTX = mopService.isLastTransactionCommited();
+        } while (!commitedTX && --TXCounter > 0);
+
+        if (!commitedTX) {
+            throw new TransactionException();
+        }
+
+        ImplantDto updatedImplant = implantMapper.createImplantDtoFromImplant(implant);
+
+        return Response.ok(updatedImplant).tag(tagger.tag(updatedImplant)).build();
+    }
+
     //MOP.4 - Przegladaj szczegoły wszczepu
     @Override
     public Response getImplant(UUID id) {
@@ -169,8 +216,8 @@ public class MOPEndpoint implements MOPEndpointInterface {
     /**
      * MOP.7 - Przeglądaj listę wizyt
      *
-     * @param page numer aktualnie przeglądanej strony
-     * @param size ilość rekordów na danej stronie
+     * @param page   numer aktualnie przeglądanej strony
+     * @param size   ilość rekordów na danej stronie
      * @param phrase wyszukiwana fraza
      * @return lista wizyt
      * @throws TransactionException w przypadku braku zatwierdzenia transakcji
@@ -262,12 +309,41 @@ public class MOPEndpoint implements MOPEndpointInterface {
         return Response.ok(app).tag(tagger.tag(app)).build();
     }
 
+
+    /**
+     * MOP.13 Odwołaj dowolną wizytę
+     * Metodę może wykonać tylko konto z poziomem dostępu administratora.
+     *
+     * @param id Identyfikator wizyty, która ma zostać odwołana
+     * @return odpowiedź HTTP
+     */
+    @Override
+    public Response cancelAnyVisit(UUID id) {
+        tagger.verifyTag();
+        Appointment cancelledAppointment;
+
+        int TXCounter = Config.MAX_TX_RETRIES;
+        boolean commitedTX;
+        do {
+            cancelledAppointment = mopService.cancelAppointment(id);
+            commitedTX = mopService.isLastTransactionCommited();
+        } while (!commitedTX && --TXCounter > 0);
+
+        if (!commitedTX) {
+            throw new TransactionException();
+        }
+
+        AppointmentDto appointmentDto = appointmentMapper.createAppointmentDtoFromAppointment(cancelledAppointment);
+
+        return Response.ok(appointmentDto).tag(tagger.tag(appointmentDto)).build();
+    }
+
     /**
      * MOK.15 - Dodaj recenzję wszczepu
+     *
      * @param createImplantReviewDto - Nowo napisana recenzja
      * @return nowo utworzona recenzja
      * @throws TransactionException jeśli transakcja nie została zatwierdzona
-     *
      */
     @Override
     public Response addImplantsReview(CreateImplantReviewDto createImplantReviewDto) {
@@ -288,5 +364,29 @@ public class MOPEndpoint implements MOPEndpointInterface {
         return Response.ok().entity(createdReviewDto).build();
     }
 
+    /**
+     * MOK.16 - Usuń recenzję wszczepu
+     *
+     * @param id Id recenzji wszczepu
+     * @return Odpowiedź HTTP
+     * @throws TransactionException jeśli transakcja nie została zatwierdzona
+     */
+    @Override
+    public Response deleteImplantsReview(UUID id) {
+        int TXCounter = Config.MAX_TX_RETRIES;
+        boolean commitedTX;
 
+        String login = authContext.getCurrentUserLogin();
+        do {
+
+            mopService.deleteReview(id, login);
+            commitedTX = mopService.isLastTransactionCommited();
+        } while (!commitedTX && --TXCounter > 0);
+
+        if (!commitedTX) {
+            throw new TransactionException();
+        }
+
+        return Response.ok().build();
+    }
 }

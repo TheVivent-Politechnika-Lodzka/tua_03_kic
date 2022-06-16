@@ -1,5 +1,6 @@
 package pl.lodz.p.it.ssbd2022.ssbd03.mop.ejb.services;
 
+import com.fasterxml.jackson.databind.ser.DefaultSerializerProvider;
 import jakarta.annotation.security.DenyAll;
 import jakarta.annotation.security.PermitAll;
 import jakarta.annotation.security.RolesAllowed;
@@ -14,6 +15,15 @@ import pl.lodz.p.it.ssbd2022.ssbd03.common.Roles;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.*;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.InvalidParametersException;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.appointment.*;
+import pl.lodz.p.it.ssbd2022.ssbd03.common.Roles;
+import pl.lodz.p.it.ssbd2022.ssbd03.entities.Implant;
+import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.account.AccountStatusException;
+import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.implant.ImplantStatusException;
+import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.appointment.AppointmentNotFinishedException;
+import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.appointment.AppointmentNotFoundException;
+import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.implant.ImplantArchivedException;
+import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.appointment.AppointmentStatusException;
+import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.implant_review.ClientRemovesOtherReviewsException;
 import pl.lodz.p.it.ssbd2022.ssbd03.interceptors.TrackerInterceptor;
 import pl.lodz.p.it.ssbd2022.ssbd03.mop.ejb.facades.AccountFacade;
 import pl.lodz.p.it.ssbd2022.ssbd03.mop.ejb.facades.AppointmentFacade;
@@ -23,10 +33,17 @@ import pl.lodz.p.it.ssbd2022.ssbd03.utils.PaginationData;
 
 import java.time.Instant;
 import java.util.UUID;
+
+import pl.lodz.p.it.ssbd2022.ssbd03.mop.ejb.facades.AppointmentFacade;
+
+import java.util.List;
+import java.util.UUID;
 import java.util.logging.Logger;
 
 import static pl.lodz.p.it.ssbd2022.ssbd03.entities.Status.FINISHED;
 import static pl.lodz.p.it.ssbd2022.ssbd03.entities.Status.REJECTED;
+
+import java.util.UUID;
 
 @Stateful
 @DenyAll
@@ -38,10 +55,13 @@ public class MOPService extends AbstractService implements MOPServiceInterface, 
 
     @Inject
     AppointmentFacade appointmentFacade;
+
     @Inject
     private ImplantFacade implantFacade;
+
     @Inject
     private ImplantReviewFacade implantReviewFacade;
+
     @Inject
     private AccountFacade accountFacade;
 
@@ -83,6 +103,45 @@ public class MOPService extends AbstractService implements MOPServiceInterface, 
     }
 
     /**
+     * Serwis odpowiadający za archiwizację wszczepu - MOP. 2
+     *
+     * @param id - uuid archiwizowanego wszczepu
+     * @return tmp - zarchiwizowany Implant
+     * @throws ImplantStatusException jeżeli archiwizowany wszczep jest już zarchiwizowany
+     */
+    @RolesAllowed(Roles.ADMINISTRATOR)
+    @Override
+    public Implant archiveImplant(UUID id) {
+        Implant tmp = implantFacade.findByUUID(id);
+        if (tmp.isArchived()) {
+            throw ImplantStatusException.implantArleadyArchive();
+        }
+        tmp.setArchived(true);
+        implantFacade.edit(tmp);
+        return tmp;
+    }
+
+    @Override
+    @RolesAllowed(Roles.ADMINISTRATOR)
+    public Implant editImplant(UUID uuid, Implant implant){
+        Implant implantFromDB = implantFacade.findByUUID(uuid);
+
+        if(implantFromDB.isArchived()){
+            throw ImplantArchivedException.editArchivedImplant();
+        }
+
+        implantFromDB.setName(implant.getName());
+        implantFromDB.setDescription(implant.getDescription());
+        implantFromDB.setImage(implant.getImage());
+        implantFromDB.setDuration(implant.getDuration());
+        implantFromDB.setManufacturer(implant.getManufacturer());
+        implantFromDB.setPrice(implant.getPrice());
+
+        implantFacade.edit(implantFromDB);
+        return implantFromDB;
+    }
+
+    /**
      * Metoda zwracająca liste wszczepów
      *
      * @param page     numer strony
@@ -117,6 +176,8 @@ public class MOPService extends AbstractService implements MOPServiceInterface, 
     @Override
     @RolesAllowed(Roles.CLIENT)
     public ImplantReview createReview(ImplantReview review) {
+        // TODO: stworzyć fasadę z named query które będzie szukać po loginie i id wszczepu
+        //  przeszukiwanie w ten sposób jest BARDZO zasobożerne przy większej ilości recenzji
         Appointment clientAppointment = appointmentFacade.findByClientLogin(review.getClient().getLogin())
                 .stream()
                 .filter(appointment -> appointment.getImplant().getId().equals(review.getImplant().getId()))
@@ -159,6 +220,27 @@ public class MOPService extends AbstractService implements MOPServiceInterface, 
         }
         appointmentFacade.edit(appointmentFromDb);
         return appointmentFromDb;
+    }
+
+    /**
+     * Metoda usuwająca recenzję wszczepu
+     *
+     * @param id Identyfikator recenzji wszczepu, która ma zostać usunięta
+     */
+    @Override
+    @RolesAllowed({Roles.ADMINISTRATOR, Roles.CLIENT})
+    public void deleteReview(UUID id, String login) {
+
+        ImplantReview review = implantReviewFacade.findByUUID(id);
+        Account account = accountFacade.findByLogin(login);
+        boolean isAdmin = account.getAccessLevelCollection()
+                .stream()
+                .anyMatch(accessLevel -> accessLevel.getLevel().equals(Roles.ADMINISTRATOR));
+
+        if(!review.getClient().getLogin().equals(login) && !isAdmin) {
+            throw new ClientRemovesOtherReviewsException();
+        }
+        implantReviewFacade.remove(review);
     }
 
     /**
