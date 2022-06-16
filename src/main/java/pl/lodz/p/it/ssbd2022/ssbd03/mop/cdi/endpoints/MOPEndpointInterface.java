@@ -3,6 +3,7 @@ package pl.lodz.p.it.ssbd2022.ssbd03.mop.cdi.endpoints;
 import jakarta.annotation.security.DenyAll;
 import jakarta.annotation.security.PermitAll;
 import jakarta.annotation.security.RolesAllowed;
+import jakarta.validation.Valid;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
@@ -11,6 +12,7 @@ import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.MethodNotImplementedException;
 import pl.lodz.p.it.ssbd2022.ssbd03.mop.dto.AppointmentEditDto;
 import pl.lodz.p.it.ssbd2022.ssbd03.mop.dto.CreateImplantDto;
 import pl.lodz.p.it.ssbd2022.ssbd03.mop.dto.CreateImplantReviewDto;
+import pl.lodz.p.it.ssbd2022.ssbd03.mop.dto.ImplantDto;
 
 import java.util.UUID;
 
@@ -41,12 +43,19 @@ public interface MOPEndpointInterface {
         throw new MethodNotImplementedException();
     }
 
-    // MOP.3 - Edytuj wszczep
+    /**
+     * MOP.3 - Edytuj wszczep
+     *
+     * @param id uuid wszczepu do edycji
+     * @param implantDto dane do modyfikacji implantu
+     * @return Response - zawierająca status HTTP
+     * @throws MethodNotImplementedException - w przypadku braku implementacji metody
+     */
     @PUT
     @RolesAllowed(Roles.ADMINISTRATOR)
     @Consumes(MediaType.APPLICATION_JSON)
-    @Path("/edit")
-    default Response edit(String json) {
+    @Path("/implant/edit/{id}")
+    default Response editImplant(@PathParam("id") UUID id , @Valid ImplantDto implantDto) {
         throw new MethodNotImplementedException();
     }
 
@@ -60,7 +69,7 @@ public interface MOPEndpointInterface {
     @GET
     @PermitAll
     @Produces(MediaType.APPLICATION_JSON)
-    @Path("/implants/details/{id}")
+    @Path("/implant/details/{id}")
     default Response getImplant(@PathParam("id") UUID id) {
         throw new MethodNotImplementedException();
     }

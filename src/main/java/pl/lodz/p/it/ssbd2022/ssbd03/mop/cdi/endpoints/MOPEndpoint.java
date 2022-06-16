@@ -103,6 +103,27 @@ public class MOPEndpoint implements MOPEndpointInterface {
         return Response.ok(implantDto).build();
     }
 
+    //MOP.3 -Edytuj wszczep
+    public Response editImplant(UUID id, ImplantDto implantDto) {
+        tagger.verifyTag(implantDto);
+
+        Implant implant;
+        int TXCounter = Config.MAX_TX_RETRIES;
+        boolean commitedTX;
+        do {
+            implant = mopService.editImplant(id, implantMapper.createImplantFromImplantDto(implantDto));
+            commitedTX = mopService.isLastTransactionCommited();
+        } while (!commitedTX && --TXCounter > 0);
+
+        if (!commitedTX) {
+            throw new TransactionException();
+        }
+
+        ImplantDto updatedImplant = implantMapper.createImplantDtoFromImplant(implant);
+
+        return Response.ok(updatedImplant).tag(tagger.tag(updatedImplant)).build();
+    }
+
     //MOP.4 - Przegladaj szczegoły wszczepu
     @Override
     public Response getImplant(UUID id) {

@@ -15,6 +15,7 @@ import pl.lodz.p.it.ssbd2022.ssbd03.entities.*;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.InvalidParametersException;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.appointment.AppointmentNotFinishedException;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.appointment.AppointmentNotFoundException;
+import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.implant.ImplantArchivedException;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.appointment.AppointmentStatusException;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.implant_review.ClientRemovesOtherReviewsException;
 import pl.lodz.p.it.ssbd2022.ssbd03.interceptors.TrackerInterceptor;
@@ -84,6 +85,26 @@ public class MOPService extends AbstractService implements MOPServiceInterface, 
     public Implant createImplant(Implant implant) {
         implantFacade.create(implant);
         return implantFacade.findByUUID(implant.getId());
+    }
+
+    @Override
+    @RolesAllowed(Roles.ADMINISTRATOR)
+    public Implant editImplant(UUID uuid, Implant implant){
+        Implant implantFromDB = implantFacade.findByUUID(uuid);
+
+        if(implantFromDB.isArchived()){
+            throw ImplantArchivedException.editArchivedImplant();
+        }
+
+        implantFromDB.setName(implant.getName());
+        implantFromDB.setDescription(implant.getDescription());
+        implantFromDB.setImage(implant.getImage());
+        implantFromDB.setDuration(implant.getDuration());
+        implantFromDB.setManufacturer(implant.getManufacturer());
+        implantFromDB.setPrice(implant.getPrice());
+
+        implantFacade.edit(implantFromDB);
+        return implantFromDB;
     }
 
     /**
