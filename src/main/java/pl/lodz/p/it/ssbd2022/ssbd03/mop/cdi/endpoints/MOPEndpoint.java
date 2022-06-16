@@ -12,7 +12,6 @@ import pl.lodz.p.it.ssbd2022.ssbd03.common.Roles;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.Appointment;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.Implant;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.ImplantReview;
-import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.MethodNotImplementedException;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.TransactionException;
 import pl.lodz.p.it.ssbd2022.ssbd03.mappers.AppointmentMapper;
 import pl.lodz.p.it.ssbd2022.ssbd03.mappers.ImplantMapper;
@@ -24,11 +23,9 @@ import pl.lodz.p.it.ssbd2022.ssbd03.security.Tagger;
 
 import java.time.Instant;
 import java.util.UUID;
-import pl.lodz.p.it.ssbd2022.ssbd03.security.Tagger;
 import pl.lodz.p.it.ssbd2022.ssbd03.utils.PaginationData;
 
 import java.util.List;
-import java.util.UUID;
 
 @RequestScoped
 @DenyAll
@@ -53,36 +50,7 @@ public class MOPEndpoint implements MOPEndpointInterface {
     @Inject
     private Tagger tagger;
 
-    @Inject
-    private AuthContext authContext;
 
-    /**
-     * MOP.13 Odwołaj dowolną wizytę
-     * Metodę może wykonać tylko konto z poziomem dostępu administratora.
-     *
-     * @param id Identyfikator wizyty, która ma zostać odwołana
-     * @return odpowiedź HTTP
-     */
-    @Override
-    public Response cancelAnyVisit(UUID id) {
-        tagger.verifyTag();
-        Appointment cancelledAppointment;
-
-        int TXCounter = Config.MAX_TX_RETRIES;
-        boolean commitedTX;
-        do {
-            cancelledAppointment = mopService.cancelAppointment(id);
-            commitedTX = mopService.isLastTransactionCommited();
-        } while (!commitedTX && --TXCounter > 0);
-
-        if (!commitedTX) {
-            throw new TransactionException();
-        }
-
-        AppointmentDto appointmentDto = appointmentMapper.createAppointmentDtoFromAppointment(cancelledAppointment);
-
-        return Response.ok(appointmentDto).tag(tagger.tag(appointmentDto)).build();
-    }
 
     /**
      * MOP.1 - Dodaj nowy wszczep
@@ -242,7 +210,36 @@ public class MOPEndpoint implements MOPEndpointInterface {
         paginationData.setData(appointmentDtos);
         return Response.ok().entity(paginationData).build();
     }
+    /**
+     * MOP.8 - Przeglądaj swoje wizyty
+     *
+     * @param page numer aktualnie przeglądanej strony
+     * @param size ilość rekordów na danej stronie
+     * @return lista wizyt
+     * @throws TransactionException w przypadku braku zatwierdzenia transakcji
+     */
+    @RolesAllowed({Roles.CLIENT, Roles.SPECIALIST})
+    @Override
+    public Response listMyVisits(int page, int size) {
+        PaginationData paginationData;
+        String login = authContext.getCurrentUserLogin();
+        System.out.println(login +" Twój stary zul");
+        int TXCounter = Config.MAX_TX_RETRIES;
+        boolean commitedTX;
+        do {
+            paginationData = mopService.findVisitsByLogin(page, size, login);
+            commitedTX = mopService.isLastTransactionCommited();
+        } while (!commitedTX && TXCounter-- > 0);
 
+        if (!commitedTX) {
+            throw new TransactionException();
+        }
+
+        List<Appointment> appointments = paginationData.getData();
+        List<AppointmentListElementDto> appointmentDtos = appointmentMapper.appointmentListElementDtoList(appointments);
+        paginationData.setData(appointmentDtos);
+        return Response.ok().entity(paginationData).build();
+    }
     /**
      * MOP.9 - Zarezerwuj wizytę
      * @param createAppointmentDto - dane nowej wizyty
@@ -277,38 +274,6 @@ public class MOPEndpoint implements MOPEndpointInterface {
 
         return Response.ok(appointmentDto).tag(tagger.tag(appointmentDto)).build();
     }
-
-    /**
-     * MOP.8 - Przeglądaj swoje wizyty
-     *
-     * @param page numer aktualnie przeglądanej strony
-     * @param size ilość rekordów na danej stronie
-     * @return lista wizyt
-     * @throws TransactionException w przypadku braku zatwierdzenia transakcji
-     */
-    @RolesAllowed({Roles.CLIENT, Roles.SPECIALIST})
-    @Override
-    public Response listMyVisits(int page, int size) {
-        PaginationData paginationData;
-        String login = authContext.getCurrentUserLogin();
-        System.out.println(login +" Twój stary zul");
-        int TXCounter = Config.MAX_TX_RETRIES;
-        boolean commitedTX;
-        do {
-            paginationData = mopService.findVisitsByLogin(page, size, login);
-            commitedTX = mopService.isLastTransactionCommited();
-        } while (!commitedTX && TXCounter-- > 0);
-
-        if (!commitedTX) {
-            throw new TransactionException();
-        }
-
-        List<Appointment> appointments = paginationData.getData();
-        List<AppointmentListElementDto> appointmentDtos = appointmentMapper.appointmentListElementDtoList(appointments);
-        paginationData.setData(appointmentDtos);
-        return Response.ok().entity(paginationData).build();
-    }
-
 
     /**
      * MOP.11 - Edytuj dowolną wizytę
