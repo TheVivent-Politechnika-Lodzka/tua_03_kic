@@ -8,7 +8,6 @@ import lombok.Setter;
 import pl.lodz.p.it.ssbd2022.ssbd03.security.Taggable;
 import pl.lodz.p.it.ssbd2022.ssbd03.validation.*;
 
-import java.time.Duration;
 import java.util.UUID;
 
 @Getter
@@ -40,7 +39,7 @@ public class ImplantDto implements Taggable {
     private int popularity;
 
     @DurationValue
-    private Duration duration;
+    private long duration;
 
     @Url
     private String image;

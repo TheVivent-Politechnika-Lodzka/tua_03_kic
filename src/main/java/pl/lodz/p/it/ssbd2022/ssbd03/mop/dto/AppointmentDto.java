@@ -5,9 +5,12 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import pl.lodz.p.it.ssbd2022.ssbd03.entities.Account;
+import pl.lodz.p.it.ssbd2022.ssbd03.entities.Implant;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.Status;
 import pl.lodz.p.it.ssbd2022.ssbd03.mok.dto.AccountWithAccessLevelsDto;
 import pl.lodz.p.it.ssbd2022.ssbd03.security.Taggable;
+import java.time.Instant;
 import pl.lodz.p.it.ssbd2022.ssbd03.validation.Price;
 
 import java.util.Date;
@@ -35,10 +38,10 @@ public class AppointmentDto implements Taggable {
     private ImplantDto implant;
 
     @NotNull
-    private Date startDate;
+    private Instant startDate;
 
     @NotNull
-    private Date endDate;
+    private Instant endDate;
 
     @Price
     private int price;

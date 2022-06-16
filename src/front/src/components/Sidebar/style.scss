@@ -1,0 +1,63 @@
+@import url("https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap");
+@import "../../variables.scss";
+
+.sidebar {
+    background-color: $primary-color;
+    width: 5.4rem;
+    height: 100%;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    flex-direction: column;
+    transition: 0.75s width ease-in-out, 0.75s padding ease-in-out;
+    position: fixed;
+    z-index: 999;
+
+    .logo-wrapper {
+        border-bottom: 1px solid $light-gray;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 80%;
+        height: 5.4rem;
+        cursor: pointer;
+        user-select: none;
+        overflow: hidden;
+
+        .logo {
+            color: white;
+            width: 3.2rem;
+            height: 3.2rem;
+        }
+
+        .logo-name {
+            color: white;
+            font-size: 3.8rem;
+            font-family: "Orbitron", sans-serif;
+            margin-left: 1.13rem;
+        }
+    }
+
+    .routes-wrapper {
+        margin-top: 2.25rem;
+        width: 100%;
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        flex-direction: column;
+        height: 70%;
+
+        & > * {
+            margin-bottom: 1.58rem;
+        }
+    }
+
+    .logout-wrapper {
+        margin-top: auto;
+        padding: 1.5rem;
+    }
+}
+
+.expanded {
+    width: 20rem;
+}
