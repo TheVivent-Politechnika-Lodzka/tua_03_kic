@@ -6,7 +6,7 @@
     align-items: center;
     text-decoration: none;
     list-style-type: none;
-    margin-top: 2rem;
+    margin-top: 2.5rem;
 
     .pagination_link {
         text-decoration: none;
@@ -18,7 +18,7 @@
         cursor: pointer;
 
         &:hover {
-            color: $purple;
+            font-weight: bolder;
         }
 
         &_label {
@@ -28,8 +28,8 @@
     }
 
     .current {
-        background-color: $purple;
-        color: $white;
+        background-color: $white;
+        color: $primary-color;
         font-weight: bold;
     }
 }

@@ -1,17 +1,11 @@
-import { ChangeEvent, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router";
 import { listAccounts } from "../../../../api";
-import { useFindAllUsersMutation } from "../../../../api/api";
-import { AccountWithAccessLevelsDto } from "../../../../api/types/apiParams";
-import { ShowAccountInfo } from "../../../../api/types/common";
-import ActivateButton from "../../../../components/Button/ActivateButton/ActivateButton";
-import { DeactivateButton } from "../../../../components/Button/DeactivateButton/DeactivateButton";
 import SearchInput from "../../../../components/SearchInput/SearchInput";
 import UserRecord from "../../../../components/UserRecord/UserRecord";
 import ReactLoading from "react-loading";
 import styles from "./style.module.scss";
-import { retry } from "@reduxjs/toolkit/dist/query";
 import Pagination from "../../../../components/Pagination/Pagination";
 
 const UsersManagmentPage = () => {
@@ -75,7 +69,7 @@ const UsersManagmentPage = () => {
             <div className={styles.input_container}>
                 <SearchInput
                     onChange={setPhrase}
-                    placeholder="Wpisz frazę..."
+                    placeholder="Wyszukaj użytkowników..."
                 />
             </div>
 

@@ -253,27 +253,29 @@ const AccountDetails = ({ login, isOpened, onClose }: AccountDetailsProps) => {
                                 </div>
                             </div>
                         </div>
+                        <ConfirmActionModal
+                            title={
+                                account?.active
+                                    ? "Zablokuj konto"
+                                    : "Odblokuj konto"
+                            }
+                            description={`Czy na pewno chcesz ${
+                                account?.active ? "zablokować" : "odblokować"
+                            } konto? Operacja jest nieodwracalna.`}
+                            isLoading={loading.actionLoading as boolean}
+                            isOpened={opened}
+                            handleFunction={async () => {
+                                await handleDeactivateActivateAccount(
+                                    account?.active as boolean
+                                );
+                                setOpened(false);
+                            }}
+                            onClose={() => {
+                                setOpened(false);
+                            }}
+                        />
                     </div>
                 )}
-                <ConfirmActionModal
-                    title={
-                        account?.active ? "Zablokuj konto" : "Odblokuj konto"
-                    }
-                    description={`Czy na pewno chcesz ${
-                        account?.active ? "zablokować" : "odblokować"
-                    } konto? Operacja jest nieodwracalna.`}
-                    isLoading={loading.actionLoading as boolean}
-                    isOpened={opened}
-                    handleFunction={async () => {
-                        await handleDeactivateActivateAccount(
-                            account?.active as boolean
-                        );
-                        setOpened(false);
-                    }}
-                    onClose={() => {
-                        setOpened(false);
-                    }}
-                />
             </section>
         </ReactModal>
     );

@@ -22,14 +22,14 @@ const ConfirmActionModal = ({
 }: ConfirmActionModalProps) => {
     return (
         <Modal
-            styles={{ modal: { backgroundColor: "#262633"} }}
+            styles={{ modal: { backgroundColor: "#262633" } }}
             size="lg"
             centered
             overflow="outside"
             radius="lg"
             opened={isOpened}
             onClose={onClose}
-            transition="rotate-left"
+            transition="pop-bottom-left"
             transitionDuration={200}
             transitionTimingFunction="ease-in-out"
         >

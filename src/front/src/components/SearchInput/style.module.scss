@@ -1,26 +1,24 @@
 @import "../../variables.scss";
 
 .search_input_wrapper {
-    border-radius: 2rem;
     position: relative;
 
     .search_input {
-        font-size: 1.5rem;
+        font-size: 1.25rem;
         outline: none;
         border: none;
-        padding: 0.75rem 2rem 0.75rem 4rem;
+        padding: 0.7rem 2rem 0.7rem 3.5rem;
         border-radius: 0.5rem;
 
         &::placeholder {
             color: $light-gray;
         }
-
     }
 
     .icon {
         position: absolute;
         padding-inline: 0.5rem;
-        font-size: 1.75rem;
+        font-size: 1.5rem;
         color: black;
         border-right: 2px $light-gray solid;
         top: 25%;
