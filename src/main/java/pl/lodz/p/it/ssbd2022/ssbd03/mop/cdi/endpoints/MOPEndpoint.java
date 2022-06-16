@@ -54,12 +54,6 @@ public class MOPEndpoint implements MOPEndpointInterface {
     private ImplantMapper implantMapper;
 
     @Inject
-    private AuthContext authContext;
-
-    @Inject
-    private AppointmentMapper appointmentMapper;
-
-    @Inject
     private ImplantReviewMapper implantReviewMapper;
 
     @Inject

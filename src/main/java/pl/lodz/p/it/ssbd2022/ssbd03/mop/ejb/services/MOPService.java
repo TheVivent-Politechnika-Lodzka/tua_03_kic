@@ -71,9 +71,6 @@ public class MOPService extends AbstractService implements MOPServiceInterface, 
     private ImplantFacade implantFacade;
 
     @Inject
-    private AppointmentFacade appointmentFacade;
-
-    @Inject
     private ImplantReviewFacade implantReviewFacade;
 
     @Inject
@@ -190,7 +187,7 @@ public class MOPService extends AbstractService implements MOPServiceInterface, 
         if (!appointment.getSpecialist().getLogin().equals(login)) throw new AppointmentFinishAttemptByInvalidSpecialistException();
         if (appointment.getStatus().equals(REJECTED)) throw AppointmentStatusException.appointmentStatusAlreadyCancelled();
         if (appointment.getStatus().equals(FINISHED)) throw AppointmentStatusException.appointmentStatusAlreadyFinished();
-        if (appointment.getEndDate().after(new Date())) throw new AppointmentFinishAttemptBeforeEndDateException();
+        if (appointment.getEndDate().isAfter(Instant.now())) throw new AppointmentFinishAttemptBeforeEndDateException();
 
         appointment.setStatus(FINISHED);
         appointmentFacade.edit(appointment);
