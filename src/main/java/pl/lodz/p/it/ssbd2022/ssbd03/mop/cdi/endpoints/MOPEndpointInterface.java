@@ -7,14 +7,11 @@ import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import pl.lodz.p.it.ssbd2022.ssbd03.common.Roles;
-import pl.lodz.p.it.ssbd2022.ssbd03.entities.Appointment;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.MethodNotImplementedException;
-import pl.lodz.p.it.ssbd2022.ssbd03.mop.dto.AppointmentDto;
 import pl.lodz.p.it.ssbd2022.ssbd03.mop.dto.AppointmentEditDto;
 import pl.lodz.p.it.ssbd2022.ssbd03.mop.dto.CreateImplantDto;
 import pl.lodz.p.it.ssbd2022.ssbd03.mop.dto.CreateImplantReviewDto;
 
-import java.util.List;
 import java.util.UUID;
 
 @DenyAll
@@ -70,9 +67,10 @@ public interface MOPEndpointInterface {
 
     /**
      * MOP.5 - Przeglądaj listę wszczepów
-     * @param page numer strony
-     * @param size ilość pozycji na stronie
-     * @param phrase szukana fraza
+     *
+     * @param page     numer strony
+     * @param size     ilość pozycji na stronie
+     * @param phrase   szukana fraza
      * @param archived określa czy zwracac archiwalne czy niearchiwalne wszczepy
      * @return lista wszczepów
      * @throws MethodNotImplementedException - w przypadku braku implementacji metody
@@ -97,8 +95,8 @@ public interface MOPEndpointInterface {
     /**
      * MOP.7 - Przeglądaj listę wizyt
      *
-     * @param page numer aktualnie przeglądanej strony
-     * @param size ilość rekordów na danej stronie
+     * @param page   numer aktualnie przeglądanej strony
+     * @param size   ilość rekordów na danej stronie
      * @param phrase wyszukiwana fraza
      * @return lista wizyt
      * @throws MethodNotImplementedException w przypadku braku implementacji metody
@@ -141,7 +139,7 @@ public interface MOPEndpointInterface {
     /**
      * MOP.11 - Edytuj dowolną wizytę
      *
-     * @param id id konkretnej wizyty
+     * @param id                 id konkretnej wizyty
      * @param appointmentEditDto obiekt dto edytowanej wizyty
      * @return odpowiedź serwera (wizyta)
      * @throws MethodNotImplementedException w przypadku braku implementacji metody
@@ -190,6 +188,8 @@ public interface MOPEndpointInterface {
 
     /**
      * MOP.15 - Dodaj recenzję wszczepu
+     * Metodę można wykonać tylko konto z poziomem dostępu klienta.
+     *
      * @param createImplantReviewDto Recenzja wszczepu napisana przez użytkownika
      * @return recenzja wszczepu
      * @throws MethodNotImplementedException - w przypadku braku implementacji metody
@@ -197,17 +197,23 @@ public interface MOPEndpointInterface {
     @PUT
     @RolesAllowed(Roles.CLIENT)
     @Consumes(MediaType.APPLICATION_JSON)
-    @Path("/implants/reviews")
+    @Path("/implant/review")
     default Response addImplantsReview(CreateImplantReviewDto createImplantReviewDto) {
         throw new MethodNotImplementedException();
     }
 
-    // MOP.16 - Usuń recenzję wszczepu
+    /**
+     * MOP.16 - Usuń recenzję wszczepu
+     *
+     * @param id Id recenzji wszczepu
+     * @return Komunikat o usuniętej recenzji
+     * @throws MethodNotImplementedException - w przypadku braku implementacji metody
+     */
     @DELETE
-    @RolesAllowed({Roles.CLIENT, Roles.ADMINISTRATOR})
+    @RolesAllowed({Roles.ADMINISTRATOR, Roles.CLIENT})
     @Consumes(MediaType.APPLICATION_JSON)
-    @Path("/implants/reviews")
-    default Response deleteImplantsReview(String json) {
+    @Path("/implant/review/{id}")
+    default Response deleteImplantsReview(@PathParam("id") UUID id) {
         throw new MethodNotImplementedException();
     }
 
