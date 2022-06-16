@@ -5,11 +5,12 @@ import ActionButton from "../../../../components/shared/ActionButton/ActionButto
 import avatar from "../../../../assets/images/avatar.jpg";
 import flagPL from "../../../../assets/images/PL.png";
 import flagEN from "../../../../assets/images/EN.png";
-import "./style.scss";
 import { useEffect, useState } from "react";
 import ReactLoading from "react-loading";
 import { useStoreSelector } from "../../../../redux/reduxHooks";
 import { getOwnAccount } from "../../../../api";
+import styles from "./style.module.scss";
+import { style } from "@mui/system";
 
 const AccountDetailsPage = () => {
     const [account, setAccount] = useState<AccountDetails>();
@@ -38,7 +39,7 @@ const AccountDetailsPage = () => {
     useEffect(() => {}, [accessLevel]);
 
     return (
-        <section className="account-details-page">
+        <section className={styles.account_details_page}>
             {loading.pageLoading ? (
                 <ReactLoading
                     type="cylon"
@@ -47,20 +48,16 @@ const AccountDetailsPage = () => {
                     height="10rem"
                 />
             ) : (
-                <div className="account-details-content">
-                    <div
-                        className="account-general-details"
-                    >
+                <div className={styles.content}>
+                    <div className={styles.account_general_details}>
                         <img
-                            className="account-avatar"
+                            className={styles.avatar}
                             src={avatar}
                             alt="Account general: Avatar"
                         />
-                        <p className="account-login">{account?.login}</p>
-                        <div className="account-access-levels-wrapper">
-                            <p className="account-access-levels-title">
-                                Poziomy dostępu:{" "}
-                            </p>
+                        <p className={styles.login}>{account?.login}</p>
+                        <div className={styles.account_access_levels_wrapper}>
+                            <p className={styles.title}>Poziomy dostępu: </p>
                             {account?.accessLevels.map((accessLevel) => (
                                 <AccessLevel
                                     clickable={true}
@@ -69,7 +66,7 @@ const AccountDetailsPage = () => {
                                 />
                             ))}
                         </div>
-                        <div className="account-actions-wrapper">
+                        <div className={styles.account_actions_wrapper}>
                             <ActionButton
                                 onClick={() => {
                                     navigate("/account/edit");
@@ -85,31 +82,33 @@ const AccountDetailsPage = () => {
                             />
                         </div>
                     </div>
-                    <div className="account-details">
-                        <p className="details-title">Dane szczegółowe</p>
-                        <div className="details-wrapper">
-                            <div className="detail-wrapper">
-                                <p className="detail-title">Imię:</p>
-                                <p className="detail-description">
+                    <div className={styles.account_details}>
+                        <p className={styles.title}>Dane szczegółowe</p>
+                        <div className={styles.details_wrapper}>
+                            <div className={styles.detail_wrapper}>
+                                <p className={styles.field_title}>Imię:</p>
+                                <p className={styles.field_description}>
                                     {account?.firstName}
                                 </p>
                             </div>
-                            <div className="detail-wrapper">
-                                <p className="detail-title">Nazwisko:</p>
-                                <p className="detail-description">
+                            <div className={styles.detail_wrapper}>
+                                <p className={styles.field_title}>Nazwisko:</p>
+                                <p className={styles.field_description}>
                                     {account?.lastName}
                                 </p>
                             </div>
-                            <div className="detail-wrapper">
-                                <p className="detail-title">Email:</p>
-                                <p className="detail-description">
+                            <div className={styles.detail_wrapper}>
+                                <p className={styles.field_title}>Email:</p>
+                                <p className={styles.field_description}>
                                     {account?.email}
                                 </p>
                             </div>
                             {accessLevel === "CLIENT" ? (
-                                <div className="detail-wrapper">
-                                    <p className="detail-title">Numer PESEL:</p>
-                                    <p className="detail-description">
+                                <div className={styles.detail_wrapper}>
+                                    <p className={styles.field_title}>
+                                        Numer PESEL:
+                                    </p>
+                                    <p className={styles.field_description}>
                                         {account?.accessLevels
                                             .filter(
                                                 (level) =>
@@ -119,11 +118,11 @@ const AccountDetailsPage = () => {
                                     </p>
                                 </div>
                             ) : (
-                                <div className="detail-wrapper">
-                                    <p className="detail-title">
+                                <div className={styles.detail_wrapper}>
+                                    <p className={styles.field_title}>
                                         Numer telefonu:
                                     </p>
-                                    <p className="detail-description">
+                                    <p className={styles.field_description}>
                                         {account?.accessLevels
                                             .filter(
                                                 (level) =>
@@ -133,8 +132,8 @@ const AccountDetailsPage = () => {
                                     </p>
                                 </div>
                             )}
-                            <div className="detail-wrapper">
-                                <p className="detail-title">Język:</p>
+                            <div className={styles.detail_wrapper}>
+                                <p className={styles.field_title}>Język:</p>
                                 <img
                                     src={
                                         account?.language?.language === "pl"
@@ -142,7 +141,7 @@ const AccountDetailsPage = () => {
                                             : flagEN
                                     }
                                     alt="Detail description: language"
-                                    className="detail-flag"
+                                    className={styles.flag}
                                 />
                             </div>
                         </div>

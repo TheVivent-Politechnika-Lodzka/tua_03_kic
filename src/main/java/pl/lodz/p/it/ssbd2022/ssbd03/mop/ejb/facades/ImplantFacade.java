@@ -26,6 +26,7 @@ import java.util.UUID;
 import pl.lodz.p.it.ssbd2022.ssbd03.utils.PaginationData;
 
 import java.util.List;
+import java.util.UUID;
 
 @Interceptors(TrackerInterceptor.class)
 @Stateless
@@ -90,7 +91,7 @@ public class ImplantFacade extends AbstractFacade<Implant> {
      * @param uuid - uuid implantu
      * @return implant
      * @throws InvalidParametersException, gdy podano niepoprawną wartość parametru
-     * @throws DatabaseException,          gdy wystąpi błąd związany z bazą danych
+     * @throws DatabaseException, gdy wystąpi błąd związany z bazą danych
      */
     @PermitAll
     public Implant findByUUID(UUID uuid) {
@@ -109,13 +110,14 @@ public class ImplantFacade extends AbstractFacade<Implant> {
 
     /**
      * Metoda do zwracania listy wszczepów
+     *
      * @param pageNumber - numer strony
      * @param perPage    - ilość pozycji na stronie
      * @param phrase     - szukana fraza
      * @param archived   określa czy zwracac archiwalne czy niearchiwalne wszczepy
      * @return lista wszczepów
      * @throws InvalidParametersException jeśli podano nieprawidłowe parametry
-     * @throws DatabaseException          jeśli wystąpił błąd z bazą danych
+     * @throws DatabaseException jeśli wystąpił błąd z bazą danych
      */
     @PermitAll
     public PaginationData findInRangeWithPhrase(int pageNumber, int perPage, String phrase, boolean archived) {

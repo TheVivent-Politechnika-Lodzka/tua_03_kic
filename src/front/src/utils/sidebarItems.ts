@@ -14,28 +14,49 @@ interface SideBarRoute {
     path: string;
 }
 
+const unauthenticatedSidebarItems: SideBarRoute[] = [
+    { title: "Strona główna", icon: faHome, path: "/" },
+    { title: "Specjaliści", icon: faStethoscope, path: "/specialists" },
+    { title: "Cyberwszczepy", icon: faMicrochip, path: "/implants" },
+];
+
+const authorizedSidebarItems: SideBarRoute[] = [
+    { title: "Strona główna", icon: faHome, path: "/" },
+    { title: "Profil użytkownika", icon: faUser, path: "/account" },
+    { title: "Wizyty", icon: faCalendarAlt, path: "/visits" },
+    { title: "Specjaliści", icon: faStethoscope, path: "/specialists" },
+    { title: "Cyberwszczepy", icon: faMicrochip, path: "/implants" },
+];
 
 const adminSidebarItems: SideBarRoute[] = [
     { title: "Strona główna", icon: faHome, path: "/" },
     { title: "Profil użytkownika", icon: faUser, path: "/account" },
     { title: "Zarządzaj kontami", icon: faUserCog, path: "/accounts" },
     { title: "Zarządzaj wizytami", icon: faCalendarAlt, path: "/visits" },
-    { title: "Zarządzaj specjalistami", icon: faStethoscope, path: "/specialists" },
-    { title: "Zarządzaj cyberwszczepami", icon: faMicrochip, path: "/chips" },
+    {
+        title: "Zarządzaj specjalistami",
+        icon: faStethoscope,
+        path: "/specialists",
+    },
+    { title: "Zarządzaj cyberwszczepami", icon: faMicrochip, path: "/implants" },
 ];
 
-const sidebarItems: SideBarRoute[] = [
-    { title: "Strona główna", icon: faHome, path: "/" },
-    { title: "Profil użytkownika", icon: faUser, path: "/account" },
-    { title: "Wizyty", icon: faCalendarAlt, path: "/visits" },
-    { title: "Specjaliści", icon: faStethoscope, path: "/specialists" },
-    { title: "Cyberwszczepy", icon: faMicrochip, path: "/chips" },
-];
-
-const handleSwitchSidebarItems = (isAdmin: boolean) => {
-    return isAdmin ? adminSidebarItems : sidebarItems;
-}
-
-
+const handleSwitchSidebarItems = (accessLevel: AccessLevelType) => {
+    switch (accessLevel) {
+        case "ADMINISTRATOR": {
+            return adminSidebarItems;
+        }
+        case "CLIENT":
+        case "SPECIALIST": {
+            return authorizedSidebarItems;
+        }
+        case "UNAUTHORIZED": {
+            return unauthenticatedSidebarItems;
+        }
+        default: {
+            return unauthenticatedSidebarItems;
+        }
+    }
+};
 
 export { handleSwitchSidebarItems };

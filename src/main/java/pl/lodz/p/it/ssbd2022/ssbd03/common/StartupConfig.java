@@ -6,14 +6,18 @@ import jakarta.ejb.Startup;
 import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
-import pl.lodz.p.it.ssbd2022.ssbd03.entities.Account;
-import pl.lodz.p.it.ssbd2022.ssbd03.entities.Appointment;
-import pl.lodz.p.it.ssbd2022.ssbd03.entities.Implant;
-import pl.lodz.p.it.ssbd2022.ssbd03.entities.Status;
+import pl.lodz.p.it.ssbd2022.ssbd03.entities.*;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.access_levels.DataAdministrator;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.access_levels.DataClient;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.access_levels.DataSpecialist;
 import pl.lodz.p.it.ssbd2022.ssbd03.utils.HashAlgorithm;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.Duration;
+import java.time.LocalTime;
+import java.util.Date;
+import java.util.List;
 import java.time.Duration;
 import java.util.Date;
 import java.util.Locale;
@@ -35,7 +39,13 @@ public class StartupConfig {
         createClientAdmin();
         createClient();
         createSpecialist();
+        createImplant();
+        em.flush();
+
         createAppointment();
+        em.flush();
+
+        createImplantReview();
         em.flush();
     }
 
@@ -144,6 +154,52 @@ public class StartupConfig {
         em.persist(specialist);
     }
 
+    public void createImplant() {
+        Implant implant = new Implant();
+        implant.setName("implant");
+        implant.setDescription("testowy implant zwiększający siłę przebicia przez ściany amerykańskie (z kartonu) o 10% maksymalnego zdrowia");
+        implant.setManufacturer("Janusz Nowak");
+        implant.setPrice(1000);
+        implant.setPopularity(0);
+        implant.setDuration(Duration.between(LocalTime.NOON, LocalTime.MAX));
+
+        em.persist(implant);
+    }
+
+//    public void createAppointment() {
+//
+//        Account accountClient = em.createNamedQuery("Account.findByLogin", Account.class)
+//                .setParameter("login", "client").getSingleResult();
+//        Account accountSpecialist = em.createNamedQuery("Account.findByLogin", Account.class)
+//                .setParameter("login", "spec").getSingleResult();
+//        List<Implant> implants = em.createNamedQuery("Implant.findAll", Implant.class).getResultList();
+//
+//        Appointment appointment = new Appointment();
+//        Date dateStart = null;
+//        try {
+//            dateStart = new SimpleDateFormat("dd/MM/yyyy").parse("31/12/2021");
+//        } catch (ParseException e) {
+//            e.printStackTrace();
+//        }
+//        Date dateEnd = null;
+//        try {
+//            dateEnd = new SimpleDateFormat("dd/MM/yyyy").parse("31/12/2021");
+//        } catch (ParseException e) {
+//            e.printStackTrace();
+//        }
+//
+//        appointment.setStartDate(dateStart);
+//        appointment.setEndDate(dateEnd);
+//        appointment.setPrice(100);
+//        appointment.setStatus(Status.PENDING);
+//        appointment.setDescription("Przykladowa wizyta");
+//        appointment.setSpecialist(accountSpecialist);
+//        appointment.setClient(accountClient);
+//        appointment.setImplant(implants.get(0));
+//
+//        em.persist(appointment);
+//    }
+
     public void createAppointment() {
 
         Account client = em.createNamedQuery("Account.findByLogin", Account.class).setParameter("login", "client").getSingleResult();
@@ -151,13 +207,15 @@ public class StartupConfig {
 
         Implant implant = new Implant();
         implant.setName("Implant tak fajny ze wszystkich stron");
-        implant.setDescription("Na pierwszym planie obrazu widać wzgórze, " +
-                "na którym oracz orze ziemie.Ten fragment płótna przyciąga uwagę, " +
-                "gdyż wzgórze przedstawione jest w jasnych kolorach. " +
-                "Chłop ma na sobie czerwony kubrak przykuwający wzrok na tle " +
-                "brązów i zieleni.Na dalszym planie widać pasterza i psa pilnującego " +
-                "stado owiec.Oraz rybaka zarzucającego sieć, statek, miasto i " +
-                "zachodzące słońce");
+        implant.setDescription("""
+                Na pierwszym planie obrazu widać wzgórze,
+                na którym oracz orze ziemie.Ten fragment płótna przyciąga uwagę,
+                gdyż wzgórze przedstawione jest w jasnych kolorach.
+                Chłop ma na sobie czerwony kubrak przykuwający wzrok na tle
+                brązów i zieleni.Na dalszym planie widać pasterza i psa pilnującego
+                stado owiec.Oraz rybaka zarzucającego sieć, statek, miasto i
+                zachodzące słońce
+                """);
         implant.setPrice(100);
         implant.setManufacturer("Manufacturer kox");
         implant.setPopularity(0);
@@ -176,5 +234,38 @@ public class StartupConfig {
         appointment.setDescription("Appointment description");
 
         em.persist(appointment);
+    }
+
+    public void createImplantReview() {
+        ImplantReview review = new ImplantReview();
+        review.setReview("Testowy review");
+        review.setRating(5);
+
+        Implant implant =  new Implant();
+
+        implant.setName("Implant tak fajny ze wszystkich stron xD");
+        implant.setDescription("""
+                Na pierwszym planie obrazu widać wzgórze,
+                na którym oracz orze ziemie.Ten fragment płótna przyciąga uwagę,
+                gdyż wzgórze przedstawione jest w jasnych kolorach.
+                Chłop ma na sobie czerwony kubrak przykuwający wzrok na tle
+                brązów i zieleni.Na dalszym planie widać pasterza i psa pilnującego
+                stado owiec.Oraz rybaka zarzucającego sieć, statek, miasto i
+                zachodzące słońce
+                """);
+        implant.setPrice(100);
+        implant.setManufacturer("Manufacturer super gut");
+        implant.setPopularity(0);
+        implant.setDuration(Duration.ofDays(1));
+
+        em.persist(implant);
+
+        Account client = em.createNamedQuery("Account.findByLogin", Account.class)
+                .setParameter("login", "client")
+                .getSingleResult();
+
+        review.setClient(client);
+        review.setImplant(implant);
+        em.persist(review);
     }
 }

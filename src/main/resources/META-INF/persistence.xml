@@ -53,6 +53,7 @@
 
         <class>pl.lodz.p.it.ssbd2022.ssbd03.entities.access_levels.AccessLevel</class>
         <class>pl.lodz.p.it.ssbd2022.ssbd03.entities.Account</class>
+        <class>pl.lodz.p.it.ssbd2022.ssbd03.entities.access_levels.DataAdministrator</class>
         <class>pl.lodz.p.it.ssbd2022.ssbd03.entities.access_levels.DataClient</class>
         <class>pl.lodz.p.it.ssbd2022.ssbd03.entities.access_levels.DataSpecialist</class>
         <exclude-unlisted-classes>true</exclude-unlisted-classes>

@@ -9,11 +9,12 @@ import ActivateAccountPage from "./pages/unprotected/activate/ActivateAccountPag
 import HomeLayout from "./components/Layout/HomeLayout";
 import ResetPasswordForm from "./components/Form/resetPasswordForm/ResetPasswordForm";
 import ResetPasswordTokenForm from "./components/Form/resetPasswordTokenForm/ResetPasswordTokenForm";
-import AuthorizedLayoutPage from "./pages/protected/AuthoirzedLayout/AuthorizedLayoutPage";
 import { ValidationProvider } from "./context/validationContext";
 import AccountDetailsPage from "./pages/protected/shared/AccountDetailsPage/AccountDetailsPage";
 import EditOwnAccountPage from "./pages/protected/shared/EditOwnAccountPage/EditOwnAccountPage";
 import authorizedRoutes from "./security/authorizedRoutes";
+import PageLayout from "./pages/PageLayout/PageLayout";
+import { ImplantListPage } from "./pages/unprotected/implantList";
 
 function App() {
     const user = useStoreSelector((state) => state.user);
@@ -37,38 +38,39 @@ function App() {
             <ValidationProvider>
                 <Routes>
                     <Route path="/*" element={<ErrorPage />} />
-                    {user.cur ? (
-                        <Route element={<AuthorizedLayoutPage />}>
-                            <Route
-                                path="/account"
-                                element={<AccountDetailsPage />}
-                            />
-                            <Route
-                                path="/account/edit"
-                                element={<EditOwnAccountPage />}
-                            />
-                            {authorizedRoutes(user.cur as AccessLevelType)}
-                        </Route>
-                    ) : (
-                        <>
-                            <Route element={<HomeLayout />}>
-                                <Route path="/" element={<HomePage />} />
-                            </Route>
-                            <Route path="/login" element={<LoginPage />} />
-                            <Route
-                                path="/active"
-                                element={<ActivateAccountPage />}
-                            />
-                            <Route
-                                path="/reset-password"
-                                element={<ResetPasswordForm />}
-                            />
-                            <Route
-                                path="/reset-password-token"
-                                element={<ResetPasswordTokenForm />}
-                            />
-                        </>
-                    )}
+                    <Route element={<PageLayout />}>
+                        <Route path="/" element={<HomePage />} />
+                        <Route path="/implants" element={<ImplantListPage />} />
+                        {user.cur ? (
+                            <>
+                                <Route
+                                    path="/account"
+                                    element={<AccountDetailsPage />}
+                                />
+                                <Route
+                                    path="/account/edit"
+                                    element={<EditOwnAccountPage />}
+                                />
+                                {authorizedRoutes(user.cur as AccessLevelType)}
+                            </>
+                        ) : (
+                            <>
+                                <Route path="/login" element={<LoginPage />} />
+                                <Route
+                                    path="/active"
+                                    element={<ActivateAccountPage />}
+                                />
+                                <Route
+                                    path="/reset-password"
+                                    element={<ResetPasswordForm />}
+                                />
+                                <Route
+                                    path="/reset-password-token"
+                                    element={<ResetPasswordTokenForm />}
+                                />
+                            </>
+                        )}
+                    </Route>
                 </Routes>
             </ValidationProvider>
         </Router>

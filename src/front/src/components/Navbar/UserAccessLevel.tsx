@@ -4,7 +4,7 @@ import {
     faUserDoctor,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import "./style.scss";
+import styles from "./style.module.scss";
 
 interface UserAccessLevelProps {
     accessLevel: string;
@@ -14,39 +14,33 @@ const UserAccessLevel = ({ accessLevel }: UserAccessLevelProps) => {
     switch (accessLevel) {
         case "ADMINISTRATOR": {
             return (
-                <div className="user-access-level-wrapper">
-                    <FontAwesomeIcon
-                        className="access-level-icon"
-                        icon={faUserCog}
-                    />
-                    <p className="access-level-text">Administrator</p>
+                <div className={styles.user_access_level_wrapper}>
+                    <FontAwesomeIcon className={styles.icon} icon={faUserCog} />
+                    <p className={styles.text}>Administrator</p>
                 </div>
             );
         }
         case "SPECIALIST": {
             return (
-                <div className="user-access-level-wrapper">
+                <div className={styles.user_access_level_wrapper}>
                     <FontAwesomeIcon
-                        className="access-level-icon"
+                        className={styles.icon}
                         icon={faUserDoctor}
                     />
-                    <p className="access-level-text">Specjalista</p>
+                    <p className={styles.text}>Specjalista</p>
                 </div>
             );
         }
         case "CLIENT": {
             return (
-                <div className="user-access-level-wrapper">
-                    <FontAwesomeIcon
-                        className="access-level-icon"
-                        icon={faUser}
-                    />
-                    <p className="access-level-text">Klient</p>
+                <div className={styles.user_access_level_wrapper}>
+                    <FontAwesomeIcon className={styles.icon} icon={faUser} />
+                    <p className={styles.text}>Klient</p>
                 </div>
             );
         }
         default: {
-            return null;
+            return <></>;
         }
     }
 };

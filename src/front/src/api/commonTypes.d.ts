@@ -8,7 +8,7 @@ interface Taggable {
   version: number;
 }
 
-type AccessLevelType = "ADMINISTRATOR" | "CLIENT" | "SPECIALIST";
+type AccessLevelType = "ADMINISTRATOR" | "CLIENT" | "SPECIALIST" | "UNAUTHORIZED";
 
 interface AccessLevel {
   level: AccessLevelType;
