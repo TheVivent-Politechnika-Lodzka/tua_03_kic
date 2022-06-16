@@ -189,7 +189,31 @@ public class MOPEndpoint implements MOPEndpointInterface {
         paginationData.setData(appointmentDtos);
         return Response.ok().entity(paginationData).build();
     }
-
+    /**
+     * MOP.10 - Edytuj swoją wizytę
+     *
+     * @param id                 id konkretnej wizyty
+     * @param appointmentEditDto obiekt dto edytowanej wizyty
+     * @return odpowiedz HTTP
+     */
+    @Override
+    @RolesAllowed(Roles.CLIENT)
+    public Response editOwnVisit(UUID id, AppointmentEditDto appointmentEditDto) {
+        tagger.verifyTag(appointmentEditDto);
+        Appointment update = appointmentMapper.createAppointmentFromEditDto(appointmentEditDto);
+        Appointment editedAppointment;
+        int TXCounter = Config.MAX_TX_RETRIES;
+        boolean commitedTX;
+        do {
+            editedAppointment = mopService.editAppointment(id, update);
+            commitedTX = mopService.isLastTransactionCommited();
+        } while (!commitedTX && --TXCounter > 0);
+        if (!commitedTX) {
+            throw new TransactionException();
+        }
+        AppointmentEditDto app = appointmentMapper.createEditDtoFromAppointment(editedAppointment);
+        return Response.ok(app).tag(tagger.tag(app)).build();
+    }
     /**
      * MOP.11 - Edytuj dowolną wizytę
      *

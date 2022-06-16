@@ -134,7 +134,7 @@ public interface MOPEndpointInterface {
     @RolesAllowed(Roles.CLIENT)
     @Consumes(MediaType.APPLICATION_JSON)
     @Path("/edit/visit")
-    default Response editVisit(String json) {
+    default Response editOwnVisit(@QueryParam("id") UUID id, AppointmentEditDto appointmentEditDto) {
         throw new MethodNotImplementedException();
     }
 
