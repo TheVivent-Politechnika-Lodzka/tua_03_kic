@@ -40,11 +40,12 @@ public class ImplantReviewFacade extends AbstractFacade<ImplantReview> {
 
     /**
      * Metoda zwracająca receznję implantu o podanym identyfikatorze
+     *
      * @param uuid Identyfikator recenzji implantu
      * @return Recenzja implantu o podanym identyfikatorze
-     * @throws ResourceNotFoundException - wyjątek rzucany w przypadku, gdy nie znaleziono recenzji implantu o podanym identyfikatorze
+     * @throws ResourceNotFoundException  - wyjątek rzucany w przypadku, gdy nie znaleziono recenzji implantu o podanym identyfikatorze
      * @throws InvalidParametersException - wyjątek rzucany w przypadku, gdy podano nieprawidłowy identyfikator recenzji implantu
-     * @throws DatabaseException - wyjątek rzucany w przypadku błędu związanego z bazą danych
+     * @throws DatabaseException          - wyjątek rzucany w przypadku błędu związanego z bazą danych
      */
     public ImplantReview findByUUID(UUID uuid) {
         try {
@@ -67,8 +68,8 @@ public class ImplantReviewFacade extends AbstractFacade<ImplantReview> {
      * @throws ImplantReviewAlreadyExistsException - wyjątek rzucany w przypadku, gdy recenzja dla danego implantu,
      *                                             napisana przez tego samego użytkownika istnieje
      *                                             w bazie danych
-     *                                            (nie można dodawać dwóch recenzji dla tego samego implantu przez tego samego użytkownika)
-     * @throws DatabaseException - wyjątek rzucany w przypadku błędu związanego z bazą danych
+     *                                             (nie można dodawać dwóch recenzji dla tego samego implantu przez tego samego użytkownika)
+     * @throws DatabaseException                   - wyjątek rzucany w przypadku błędu związanego z bazą danych
      */
     @Override
     @RolesAllowed(Roles.CLIENT)
@@ -80,6 +81,22 @@ public class ImplantReviewFacade extends AbstractFacade<ImplantReview> {
                 throw new ImplantReviewAlreadyExistsException();
             }
             throw new DatabaseException(e);
+        }
+    }
+
+    /**
+     * Metoda usuwająca recenzję implantu z bazy danych
+     *
+     * @param entity Recenzja implantu
+     * @throws DatabaseException - wyjątek rzucany w przypadku błędu związanego z bazą danych
+     */
+    @Override
+    @RolesAllowed({Roles.ADMINISTRATOR, Roles.CLIENT})
+    public void remove(ImplantReview entity) {
+        try {
+            super.unsafeRemove(entity);
+        } catch (PersistenceException e) {
+            throw new DatabaseException(e.getCause());
         }
     }
 
