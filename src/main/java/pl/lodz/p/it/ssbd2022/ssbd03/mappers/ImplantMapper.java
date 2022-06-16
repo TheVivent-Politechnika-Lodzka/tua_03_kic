@@ -59,6 +59,12 @@ public class ImplantMapper {
     }
 
 
+    /**
+     * Metoda konwertująca encję implantu na jego DTO
+     *
+     * @param implant Implant, która będzie konwertowany
+     * @return DTO skonwertowanego implantu
+     */
     public ImplantDto createImplantDtoFromImplant(Implant implant) {
         ImplantDto implantDto = new ImplantDto(
                 implant.getId(),

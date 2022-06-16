@@ -12,6 +12,12 @@ public class AppointmentMapper {
     @Inject
     private ImplantMapper implantMapper;
 
+    /**
+     * Metoda konwertująca encję wizyty na jej DTO
+     *
+     * @param appointment Wizyta, która będzie konwertowana
+     * @return DTO skonwertowanej wizyty
+     */
     public AppointmentDto createAppointmentDtoFromAppointment(Appointment appointment) {
         AppointmentDto appointmentDto = new AppointmentDto(
                 appointment.getId(),

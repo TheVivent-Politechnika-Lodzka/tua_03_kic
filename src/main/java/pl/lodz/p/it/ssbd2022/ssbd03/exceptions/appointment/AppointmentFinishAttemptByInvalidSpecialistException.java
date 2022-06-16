@@ -12,6 +12,10 @@ public class AppointmentFinishAttemptByInvalidSpecialistException extends AppBas
 
     private static final String INVALID_SPECIALIST = "server.error.appBase.appointmentFinishAttemptByInvalidSpecialist";
 
+    /**
+     * Konstruktor o dostępie publicznym potrzebny do budowania wyjątku
+     * z klasy AppointmentFinishAttemptByInvalidSpecialistException
+     */
     public AppointmentFinishAttemptByInvalidSpecialistException() {
         super(INVALID_SPECIALIST, Response.Status.UNAUTHORIZED);
     }

@@ -12,6 +12,10 @@ public class AppointmentFinishAttemptBeforeEndDateException extends AppBaseExcep
 
     private static final String APPOINTMENT_END_DATE_EXCEPTION = "server.error.appBase.appointmentFinishAttemptBeforeEndDateException";
 
+    /**
+     * Konstruktor o dostępie publicznym potrzebny do budowania wyjątku
+     * z klasy AppointmentFinishAttemptBeforeEndDateException
+     */
     public AppointmentFinishAttemptBeforeEndDateException() {
         super(APPOINTMENT_END_DATE_EXCEPTION, Response.Status.BAD_REQUEST);
     }
