@@ -9,6 +9,7 @@ import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import pl.lodz.p.it.ssbd2022.ssbd03.common.Roles;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.MethodNotImplementedException;
+import pl.lodz.p.it.ssbd2022.ssbd03.mop.dto.*;
 import pl.lodz.p.it.ssbd2022.ssbd03.mop.dto.AppointmentEditDto;
 import pl.lodz.p.it.ssbd2022.ssbd03.mop.dto.CreateImplantDto;
 import pl.lodz.p.it.ssbd2022.ssbd03.mop.dto.CreateImplantReviewDto;
@@ -129,12 +130,17 @@ public interface MOPEndpointInterface {
         throw new MethodNotImplementedException();
     }
 
-    // MOP.9 - Zarezerwuj wizytę
-    @POST
+    /**
+     * MOP.9 - Zarezerwuj wizytę
+     * @param dto - dane nowej wizyty
+     * @return status HTTP i utworzoną wizytę
+     * @throws MethodNotImplementedException w przypadku braku implementacji metody
+     */
+    @POST // ze względu na dodatkowe akcje zawierające się na utworzenie wizyty (obliczenie ceny, daty końcowej, itp.)
     @RolesAllowed(Roles.CLIENT)
     @Consumes(MediaType.APPLICATION_JSON)
-    @Path("/reserve")
-    default Response reserve(String json) {
+    @Path("/visit/create")
+    default Response createAppointment(@Valid CreateAppointmentDto dto) {
         throw new MethodNotImplementedException();
     }
 

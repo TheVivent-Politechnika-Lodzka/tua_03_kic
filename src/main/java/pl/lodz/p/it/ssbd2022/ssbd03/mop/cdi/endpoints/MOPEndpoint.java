@@ -12,6 +12,7 @@ import pl.lodz.p.it.ssbd2022.ssbd03.common.Roles;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.Appointment;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.Implant;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.ImplantReview;
+import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.MethodNotImplementedException;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.TransactionException;
 import pl.lodz.p.it.ssbd2022.ssbd03.mappers.AppointmentMapper;
 import pl.lodz.p.it.ssbd2022.ssbd03.mappers.ImplantMapper;
@@ -20,6 +21,9 @@ import pl.lodz.p.it.ssbd2022.ssbd03.mop.dto.*;
 import pl.lodz.p.it.ssbd2022.ssbd03.mop.ejb.services.MOPServiceInterface;
 import pl.lodz.p.it.ssbd2022.ssbd03.security.AuthContext;
 import pl.lodz.p.it.ssbd2022.ssbd03.security.Tagger;
+
+import java.time.Instant;
+import java.util.UUID;
 import pl.lodz.p.it.ssbd2022.ssbd03.security.Tagger;
 import pl.lodz.p.it.ssbd2022.ssbd03.utils.PaginationData;
 
@@ -32,13 +36,13 @@ import java.util.UUID;
 public class MOPEndpoint implements MOPEndpointInterface {
 
     @Inject
-    MOPServiceInterface mopService;
+    private MOPServiceInterface mopService;
 
     @Inject
     AuthContext authContext;
 
     @Inject
-    AppointmentMapper appointmentMapper;
+    private AppointmentMapper appointmentMapper;
 
     @Inject
     private ImplantMapper implantMapper;
@@ -48,6 +52,7 @@ public class MOPEndpoint implements MOPEndpointInterface {
 
     @Inject
     private Tagger tagger;
+
 
     /**
      * MOP.1 - Dodaj nowy wszczep
@@ -206,6 +211,41 @@ public class MOPEndpoint implements MOPEndpointInterface {
         List<AppointmentListElementDto> appointmentDtos = appointmentMapper.appointmentListElementDtoList(appointments);
         paginationData.setData(appointmentDtos);
         return Response.ok().entity(paginationData).build();
+    }
+
+    /**
+     * MOP.9 - Zarezerwuj wizytę
+     * @param createAppointmentDto - dane nowej wizyty
+     * @return status HTTP i utworzoną wizytę
+     * @throws TransactionException, w przypadku odrzucenia transakcji z nieznanego powodu
+     */
+    @Override
+    public Response createAppointment(CreateAppointmentDto createAppointmentDto) {
+
+        String clientLogin = authContext.getCurrentUserLogin();
+        UUID specialistId = createAppointmentDto.getSpecialistId();
+        UUID implantId = createAppointmentDto.getImplantId();
+        Instant startDate = createAppointmentDto.getStartDate();
+
+        Appointment createdAppointment;
+        int TXCounter = Config.MAX_TX_RETRIES;
+        boolean commitedTX;
+        do {
+            createdAppointment = mopService.createAppointment(
+                    clientLogin,
+                    specialistId,
+                    implantId,
+                    startDate
+            );
+            commitedTX = mopService.isLastTransactionCommited();
+        } while (!commitedTX && TXCounter-- > 0);
+
+        if (!commitedTX) {
+            throw new TransactionException();
+        }
+        AppointmentDto appointmentDto = appointmentMapper.createAppointmentDtoFromAppointment(createdAppointment);
+
+        return Response.ok(appointmentDto).tag(tagger.tag(appointmentDto)).build();
     }
 
     /**

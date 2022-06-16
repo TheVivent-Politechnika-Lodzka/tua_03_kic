@@ -80,10 +80,12 @@ public class AppointmentMapper {
     public AppointmentDto createAppointmentDtoFromAppointment(Appointment appointment) {
         AppointmentDto appointmentDto = new AppointmentDto();
         appointmentDto.setId(appointment.getId());
+        appointmentDto.setVersion(appointment.getVersion());
         appointmentDto.setDescription(appointment.getDescription());
         appointmentDto.setStatus(appointment.getStatus());
         appointmentDto.setStartDate(appointment.getStartDate());
         appointmentDto.setEndDate(appointment.getEndDate());
+        appointmentDto.setPrice(appointment.getPrice());
         appointmentDto.setClient(
                 accountMapper.createAccountWithAccessLevelsDtoFromAccount(appointment.getClient())
         );

@@ -10,6 +10,7 @@ import pl.lodz.p.it.ssbd2022.ssbd03.entities.Status;
 import pl.lodz.p.it.ssbd2022.ssbd03.mok.dto.AccountWithAccessLevelsDto;
 import pl.lodz.p.it.ssbd2022.ssbd03.security.Taggable;
 
+import java.time.Instant;
 import java.util.Date;
 import java.util.UUID;
 
@@ -25,8 +26,8 @@ public class AppointmentDto implements Taggable {
     private AccountWithAccessLevelsDto client;
     private AccountWithAccessLevelsDto specialist;
     private ImplantDto implant;
-    private Date startDate;
-    private Date endDate;
+    private Instant startDate;
+    private Instant endDate;
     private int price;
     private String description;
     private Status status;

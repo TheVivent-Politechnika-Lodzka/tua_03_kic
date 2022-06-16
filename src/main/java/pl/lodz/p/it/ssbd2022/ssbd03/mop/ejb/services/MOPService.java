@@ -14,6 +14,7 @@ import pl.lodz.p.it.ssbd2022.ssbd03.common.AbstractService;
 import pl.lodz.p.it.ssbd2022.ssbd03.common.Roles;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.*;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.InvalidParametersException;
+import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.appointment.*;
 import pl.lodz.p.it.ssbd2022.ssbd03.common.Roles;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.Implant;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.account.AccountStatusException;
@@ -30,6 +31,7 @@ import pl.lodz.p.it.ssbd2022.ssbd03.mop.ejb.facades.ImplantFacade;
 import pl.lodz.p.it.ssbd2022.ssbd03.mop.ejb.facades.ImplantReviewFacade;
 import pl.lodz.p.it.ssbd2022.ssbd03.utils.PaginationData;
 
+import java.time.Instant;
 import java.util.UUID;
 
 import pl.lodz.p.it.ssbd2022.ssbd03.mop.ejb.facades.AppointmentFacade;
@@ -70,6 +72,7 @@ public class MOPService extends AbstractService implements MOPServiceInterface, 
      *
      * @param id identyfikator wizyty, która ma zostać odwołana
      * @return Wizyta, która została odwołana
+     * @throws AppointmentStatusException - gdy wizyta jest już zakończona (wykoana/odwołana)
      */
     @Override
     @RolesAllowed(Roles.ADMINISTRATOR)
@@ -92,8 +95,8 @@ public class MOPService extends AbstractService implements MOPServiceInterface, 
      * @param implant - nowy wszczep
      * @return Implant
      */
-    @RolesAllowed(Roles.ADMINISTRATOR)
     @Override
+    @RolesAllowed(Roles.ADMINISTRATOR)
     public Implant createImplant(Implant implant) {
         implantFacade.create(implant);
         return implantFacade.findByUUID(implant.getId());
@@ -166,6 +169,7 @@ public class MOPService extends AbstractService implements MOPServiceInterface, 
     /**
      * Metoda tworząca recenzję wszczepu oraz zwracająca nowo utworzoną recenzję.
      * Recenzja nie może być utworzona, gdy wszczep nie został jeszcze wmontowany.
+     *
      * @param review - Recenzja wszczepu
      * @return Nowo utworzona recenzja wszczepu
      */
@@ -180,7 +184,7 @@ public class MOPService extends AbstractService implements MOPServiceInterface, 
                 .findFirst()
                 .orElseThrow(AppointmentNotFoundException::new);
 
-        if(!clientAppointment.getStatus().equals(Status.FINISHED)) {
+        if (!clientAppointment.getStatus().equals(Status.FINISHED)) {
             throw new AppointmentNotFinishedException();
         }
 
@@ -237,5 +241,77 @@ public class MOPService extends AbstractService implements MOPServiceInterface, 
             throw new ClientRemovesOtherReviewsException();
         }
         implantReviewFacade.remove(review);
+    }
+
+    /**
+     * Metoda tworząca nową wizytę
+     *
+     * @param clientLogin  - login klienta
+     * @param specialistId - identyfikator specjalisty
+     * @param implantId    - identyfikator wszczepu
+     * @param startDate    - data rozpoczęcia wizyty
+     * @return nowa wizyta
+     * @throws ImproperAccessLevelException - w przypadku próby przypisanie użytkownika do złej roli w wizycie
+     * @throws CantInstallArchivedImplant - w przypadku kiedy wszczep jest zarchiwizowany
+     * @throws StartDateIsInPast - w przypadku gdy podana data jest datą z przeszłości
+     */
+    @Override
+    @RolesAllowed(Roles.CLIENT)
+    public Appointment createAppointment(String clientLogin, UUID specialistId, UUID implantId, Instant startDate) {
+        Appointment appointment = new Appointment();
+
+        // weryfikacja czy klient posiada rolę CLIENT (technicznie nie ma sensu, ale lepiej, żeby było)
+        Account client = accountFacade.findByLogin(clientLogin);
+        if (!client.isInRole(Roles.CLIENT)) {
+            throw ImproperAccessLevelException.accountNotClient();
+        }
+        appointment.setClient(accountFacade.findByLogin(clientLogin));
+
+        // weryfikacja czy specjalista posiada rolę SPECIALIST
+        Account specialist = accountFacade.findByUUID(specialistId);
+        if (!specialist.isInRole(Roles.SPECIALIST)) {
+            throw ImproperAccessLevelException.accountNotSpecialist();
+        }
+        appointment.setSpecialist(accountFacade.findByUUID(specialistId));
+
+        // weryfikacja czy wszczep istnieje i nie jest zarchiwizowany
+        Implant implant = implantFacade.findByUUID(implantId);
+        if (implant.isArchived()) {
+            throw new CantInstallArchivedImplant();
+        }
+        // ta metoda (v) od razu archiwizuje wszystkie dane a propos wszczepu do wizyty
+        appointment.setImplant(implantFacade.findByUUID(implantId));
+
+        // wryfikacja czy data rozpoczęcia wizyty jest późniejsza niż data aktualna
+        if (startDate.isBefore(Instant.now())) {
+            throw new StartDateIsInPast();
+        }
+        appointment.setStartDate(startDate);
+        Instant endDate = startDate.plus(appointment.getImplant().getDuration());
+        appointment.setEndDate(endDate);
+
+        // proste settery
+        appointment.setDescription("");
+        appointment.setPrice(appointment.getImplant().getPrice());
+
+        checkDateAvailabilityForAppointment(specialistId, startDate, endDate);
+
+        appointmentFacade.create(appointment);
+        return appointment;
+    }
+
+    /**
+     * Metoda weryfikująca, czy specjalista ma czas na wizytę w danym terminie
+     * @param specialistId - identyfikator specjalisty
+     * @param startDate    - data rozpoczęcia wizyty
+     * @param endDate      - data zakończenia wizyty
+     * @throws SpecialistHasNoTimeException w przypadku, gdy specjalista nie ma czasu na wizytę (appBase)
+     */
+    @TransactionAttribute(TransactionAttributeType.MANDATORY)
+    private void checkDateAvailabilityForAppointment(UUID specialistId, Instant startDate, Instant endDate) {
+        PaginationData appointments = appointmentFacade.findSpecialistAppointmentsInGivenPeriod(specialistId, startDate, endDate, 1, 1);
+        if (appointments.getData().size() > 0) {
+            throw new SpecialistHasNoTimeException();
+        }
     }
 }
