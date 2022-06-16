@@ -285,14 +285,14 @@ public class MOPEndpoint implements MOPEndpointInterface {
      * @throws TransactionException, gdy transakcja się nie powiedzie
      */
     @Override
-    public Response cancelVisit(UUID id) {
+    public Response cancelOwnVisit(UUID id) {
         tagger.verifyTag();
         Appointment cancelledAppointment;
 
         int TXCounter = Config.MAX_TX_RETRIES;
         boolean commitedTX;
         do {
-            cancelledAppointment = mopService.cancelAnyAppointment(id);
+            cancelledAppointment = mopService.cancelOwnAppointment(id);
             commitedTX = mopService.isLastTransactionCommited();
         } while (!commitedTX && --TXCounter > 0);
 

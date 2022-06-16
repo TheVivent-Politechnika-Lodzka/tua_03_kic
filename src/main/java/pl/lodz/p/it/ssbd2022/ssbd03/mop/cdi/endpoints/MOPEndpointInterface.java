@@ -17,8 +17,6 @@ import pl.lodz.p.it.ssbd2022.ssbd03.mop.dto.ImplantDto;
 
 import java.util.UUID;
 
-import java.util.UUID;
-
 @DenyAll
 public interface MOPEndpointInterface {
 
@@ -180,7 +178,7 @@ public interface MOPEndpointInterface {
     @RolesAllowed({Roles.CLIENT, Roles.SPECIALIST})
     @Consumes(MediaType.APPLICATION_JSON)
     @Path("/visit/cancel/my/{id}")
-    default Response cancelVisit(@PathParam("id") UUID id) {
+    default Response cancelOwnVisit(@PathParam("id") UUID id) {
         throw new MethodNotImplementedException();
     }
 
