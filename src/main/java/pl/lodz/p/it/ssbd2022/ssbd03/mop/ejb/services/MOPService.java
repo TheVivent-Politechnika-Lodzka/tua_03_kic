@@ -1,5 +1,6 @@
 package pl.lodz.p.it.ssbd2022.ssbd03.mop.ejb.services;
 
+import com.fasterxml.jackson.databind.ser.DefaultSerializerProvider;
 import jakarta.annotation.security.DenyAll;
 import jakarta.annotation.security.PermitAll;
 import jakarta.annotation.security.RolesAllowed;
@@ -13,6 +14,10 @@ import pl.lodz.p.it.ssbd2022.ssbd03.common.AbstractService;
 import pl.lodz.p.it.ssbd2022.ssbd03.common.Roles;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.*;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.InvalidParametersException;
+import pl.lodz.p.it.ssbd2022.ssbd03.common.Roles;
+import pl.lodz.p.it.ssbd2022.ssbd03.entities.Implant;
+import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.account.AccountStatusException;
+import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.implant.ImplantStatusException;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.appointment.AppointmentNotFinishedException;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.appointment.AppointmentNotFoundException;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.implant.ImplantArchivedException;
@@ -26,10 +31,17 @@ import pl.lodz.p.it.ssbd2022.ssbd03.mop.ejb.facades.ImplantReviewFacade;
 import pl.lodz.p.it.ssbd2022.ssbd03.utils.PaginationData;
 
 import java.util.UUID;
+
+import pl.lodz.p.it.ssbd2022.ssbd03.mop.ejb.facades.AppointmentFacade;
+
+import java.util.List;
+import java.util.UUID;
 import java.util.logging.Logger;
 
 import static pl.lodz.p.it.ssbd2022.ssbd03.entities.Status.FINISHED;
 import static pl.lodz.p.it.ssbd2022.ssbd03.entities.Status.REJECTED;
+
+import java.util.UUID;
 
 @Stateful
 @DenyAll
@@ -80,11 +92,30 @@ public class MOPService extends AbstractService implements MOPServiceInterface, 
      * @param implant - nowy wszczep
      * @return Implant
      */
-    @Override
     @RolesAllowed(Roles.ADMINISTRATOR)
+    @Override
     public Implant createImplant(Implant implant) {
         implantFacade.create(implant);
         return implantFacade.findByUUID(implant.getId());
+    }
+
+    /**
+     * Serwis odpowiadający za archiwizację wszczepu - MOP. 2
+     *
+     * @param id - uuid archiwizowanego wszczepu
+     * @return tmp - zarchiwizowany Implant
+     * @throws ImplantStatusException jeżeli archiwizowany wszczep jest już zarchiwizowany
+     */
+    @RolesAllowed(Roles.ADMINISTRATOR)
+    @Override
+    public Implant archiveImplant(UUID id) {
+        Implant tmp = implantFacade.findByUUID(id);
+        if (tmp.isArchived()) {
+            throw ImplantStatusException.implantArleadyArchive();
+        }
+        tmp.setArchived(true);
+        implantFacade.edit(tmp);
+        return tmp;
     }
 
     @Override
@@ -133,6 +164,31 @@ public class MOPService extends AbstractService implements MOPServiceInterface, 
     }
 
     /**
+     * Metoda tworząca recenzję wszczepu oraz zwracająca nowo utworzoną recenzję.
+     * Recenzja nie może być utworzona, gdy wszczep nie został jeszcze wmontowany.
+     * @param review - Recenzja wszczepu
+     * @return Nowo utworzona recenzja wszczepu
+     */
+    @Override
+    @RolesAllowed(Roles.CLIENT)
+    public ImplantReview createReview(ImplantReview review) {
+        // TODO: stworzyć fasadę z named query które będzie szukać po loginie i id wszczepu
+        //  przeszukiwanie w ten sposób jest BARDZO zasobożerne przy większej ilości recenzji
+        Appointment clientAppointment = appointmentFacade.findByClientLogin(review.getClient().getLogin())
+                .stream()
+                .filter(appointment -> appointment.getImplant().getId().equals(review.getImplant().getId()))
+                .findFirst()
+                .orElseThrow(AppointmentNotFoundException::new);
+
+        if(!clientAppointment.getStatus().equals(Status.FINISHED)) {
+            throw new AppointmentNotFinishedException();
+        }
+
+        implantReviewFacade.create(review);
+        return implantReviewFacade.findByUUID(review.getId());
+    }
+
+    /**
      * Metoda zwracająca liste wizyt
      *
      * @param page     numer aktualnie przeglądanej strony
@@ -160,30 +216,6 @@ public class MOPService extends AbstractService implements MOPServiceInterface, 
         }
         appointmentFacade.edit(appointmentFromDb);
         return appointmentFromDb;
-    }
-
-    /**
-     * Metoda tworząca recenzję wszczepu oraz zwracająca nowo utworzoną recenzję.
-     * Recenzja nie może być utworzona, gdy wszczep nie został jeszcze wmontowany.
-     *
-     * @param review - Recenzja wszczepu
-     * @return Nowo utworzona recenzja wszczepu
-     */
-    @Override
-    @RolesAllowed(Roles.CLIENT)
-    public ImplantReview createReview(ImplantReview review) {
-        Appointment clientAppointment = appointmentFacade.findByClientLogin(review.getClient().getLogin())
-                .stream()
-                .filter(appointment -> appointment.getImplant().getId().equals(review.getImplant().getId()))
-                .findFirst()
-                .orElseThrow(AppointmentNotFoundException::new);
-
-        if (!clientAppointment.getStatus().equals(Status.FINISHED)) {
-            throw new AppointmentNotFinishedException();
-        }
-
-        implantReviewFacade.create(review);
-        return implantReviewFacade.findByUUID(review.getId());
     }
 
     /**

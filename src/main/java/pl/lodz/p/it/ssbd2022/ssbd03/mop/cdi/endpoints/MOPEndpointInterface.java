@@ -16,6 +16,8 @@ import pl.lodz.p.it.ssbd2022.ssbd03.mop.dto.ImplantDto;
 
 import java.util.UUID;
 
+import java.util.UUID;
+
 @DenyAll
 public interface MOPEndpointInterface {
 
@@ -34,12 +36,12 @@ public interface MOPEndpointInterface {
         throw new MethodNotImplementedException();
     }
 
-    // MOP.2 - Usuń wszczep (w sumie nwm czy będziemy usuwać, czy tylko archiwizować)
-    @DELETE
+    // MOP.2 - Archiwizuj wszczep
+    @PATCH
     @RolesAllowed(Roles.ADMINISTRATOR)
     @Consumes(MediaType.APPLICATION_JSON)
-    @Path("/delete/{id}")
-    default Response delete(@PathParam("id") String id) {
+    @Path("/implant/archive/{id}")
+    default Response archiveImplant(@PathParam("id") UUID id) {
         throw new MethodNotImplementedException();
     }
 

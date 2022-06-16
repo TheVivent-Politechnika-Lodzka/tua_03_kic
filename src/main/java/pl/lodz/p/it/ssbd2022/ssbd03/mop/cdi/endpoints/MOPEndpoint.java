@@ -20,6 +20,7 @@ import pl.lodz.p.it.ssbd2022.ssbd03.mop.dto.*;
 import pl.lodz.p.it.ssbd2022.ssbd03.mop.ejb.services.MOPServiceInterface;
 import pl.lodz.p.it.ssbd2022.ssbd03.security.AuthContext;
 import pl.lodz.p.it.ssbd2022.ssbd03.security.Tagger;
+import pl.lodz.p.it.ssbd2022.ssbd03.security.Tagger;
 import pl.lodz.p.it.ssbd2022.ssbd03.utils.PaginationData;
 
 import java.util.List;
@@ -49,34 +50,6 @@ public class MOPEndpoint implements MOPEndpointInterface {
     private Tagger tagger;
 
     /**
-     * MOP.13 Odwołaj dowolną wizytę
-     * Metodę może wykonać tylko konto z poziomem dostępu administratora.
-     *
-     * @param id Identyfikator wizyty, która ma zostać odwołana
-     * @return odpowiedź HTTP
-     */
-    @Override
-    public Response cancelAnyVisit(UUID id) {
-        tagger.verifyTag();
-        Appointment cancelledAppointment;
-
-        int TXCounter = Config.MAX_TX_RETRIES;
-        boolean commitedTX;
-        do {
-            cancelledAppointment = mopService.cancelAppointment(id);
-            commitedTX = mopService.isLastTransactionCommited();
-        } while (!commitedTX && --TXCounter > 0);
-
-        if (!commitedTX) {
-            throw new TransactionException();
-        }
-
-        AppointmentDto appointmentDto = appointmentMapper.createAppointmentDtoFromAppointment(cancelledAppointment);
-
-        return Response.ok(appointmentDto).tag(tagger.tag(appointmentDto)).build();
-    }
-
-    /**
      * MOP.1 - Dodaj nowy wszczep
      *
      * @param createImplantDto - dane nowego wszczepu
@@ -101,6 +74,36 @@ public class MOPEndpoint implements MOPEndpointInterface {
         ImplantDto implantDto = implantMapper.createImplantDtoFromImplant(createdImplant);
 
         return Response.ok(implantDto).build();
+    }
+
+    /**
+     * MOP 2 - Archiwizuj wszczep
+     *
+     * @param id - uuid wszczepu poddawanego archiwizacji
+     * @return odpowiedź zawieracjąca status http oraz nowy tag
+     * @throws TransactionException jeśli transakcja nie została zatwierdzona
+     */
+    @Override
+    public Response archiveImplant(UUID id) {
+
+        tagger.verifyTag();
+
+        Implant archiveImplant;
+        int TXCounter = Config.MAX_TX_RETRIES;
+        boolean commitedTX;
+
+        do {
+            archiveImplant = mopService.archiveImplant(id);
+            commitedTX = mopService.isLastTransactionCommited();
+        } while (!commitedTX && --TXCounter > 0);
+
+        if (!commitedTX) {
+            throw new TransactionException();
+        }
+
+        ImplantDto imp = implantMapper.createImplantDtoFromImplant(archiveImplant);
+
+        return Response.ok(imp).tag(tagger.tag(imp)).build();
     }
 
     //MOP.3 -Edytuj wszczep
@@ -234,6 +237,35 @@ public class MOPEndpoint implements MOPEndpointInterface {
         AppointmentEditDto app = appointmentMapper.createEditDtoFromAppointment(editedAppointment);
 
         return Response.ok(app).tag(tagger.tag(app)).build();
+    }
+
+
+    /**
+     * MOP.13 Odwołaj dowolną wizytę
+     * Metodę może wykonać tylko konto z poziomem dostępu administratora.
+     *
+     * @param id Identyfikator wizyty, która ma zostać odwołana
+     * @return odpowiedź HTTP
+     */
+    @Override
+    public Response cancelAnyVisit(UUID id) {
+        tagger.verifyTag();
+        Appointment cancelledAppointment;
+
+        int TXCounter = Config.MAX_TX_RETRIES;
+        boolean commitedTX;
+        do {
+            cancelledAppointment = mopService.cancelAppointment(id);
+            commitedTX = mopService.isLastTransactionCommited();
+        } while (!commitedTX && --TXCounter > 0);
+
+        if (!commitedTX) {
+            throw new TransactionException();
+        }
+
+        AppointmentDto appointmentDto = appointmentMapper.createAppointmentDtoFromAppointment(cancelledAppointment);
+
+        return Response.ok(appointmentDto).tag(tagger.tag(appointmentDto)).build();
     }
 
     /**

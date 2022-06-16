@@ -143,4 +143,5 @@ public class ImplantFacade extends AbstractFacade<Implant> {
             throw new DatabaseException(e.getCause());
         }
     }
+
 }

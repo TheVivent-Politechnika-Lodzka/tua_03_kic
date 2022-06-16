@@ -18,8 +18,20 @@ public interface MOPServiceInterface extends ServiceLocalInterface {
      *
      * @param implant - nowy wszczep
      * @return - nowy wszczep
+     * @throws MethodNotImplementedException jeśli serwis nie jest zaimplementowany
      */
     default Implant createImplant(Implant implant) {
+        throw new MethodNotImplementedException();
+    }
+
+    /**
+     * Serwis powiązany z MOP 2 - archiwizacja wszczepu
+     *
+     * @param implant - uuid archiwizowanego wszczepu
+     * @return obiekt Implant
+     * @throws MethodNotImplementedException jeśli serwis nie jest zaimplementowany
+     */
+    default Implant archiveImplant(UUID implant) {
         throw new MethodNotImplementedException();
     }
 
