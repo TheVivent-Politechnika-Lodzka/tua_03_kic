@@ -146,10 +146,10 @@ public interface MOPEndpointInterface {
 
     // MOP.10 - Edytuj swoją wizytę
     @PUT
-    @RolesAllowed(Roles.CLIENT)
+    @RolesAllowed({Roles.CLIENT,Roles.SPECIALIST})
     @Consumes(MediaType.APPLICATION_JSON)
-    @Path("/edit/visit")
-    default Response editOwnVisit(@QueryParam("id") UUID id, AppointmentEditDto appointmentEditDto) {
+    @Path("/edit/visit/{id}")
+    default Response editOwnVisit(@PathParam("id") UUID id, AppointmentEditDto appointmentEditDto) {
         throw new MethodNotImplementedException();
     }
 

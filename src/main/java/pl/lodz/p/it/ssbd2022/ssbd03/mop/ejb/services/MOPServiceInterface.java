@@ -132,6 +132,9 @@ public interface MOPServiceInterface extends ServiceLocalInterface {
     default Appointment editAppointment(UUID id, Appointment appointment) {
         throw new MethodNotImplementedException();
     }
+    default Appointment editOwnAppointment(UUID id, Appointment appointment,String login) {
+        throw new MethodNotImplementedException();
+    }
 
     /**
      * Metoda pozwalająca na odwołanie dowolnej wizyty, wywoływana z poziomu serwisu.

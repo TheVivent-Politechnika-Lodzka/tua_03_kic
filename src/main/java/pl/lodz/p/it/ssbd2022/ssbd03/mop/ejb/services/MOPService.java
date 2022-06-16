@@ -191,7 +191,6 @@ public class MOPService extends AbstractService implements MOPServiceInterface, 
         implantReviewFacade.create(review);
         return implantReviewFacade.findByUUID(review.getId());
     }
-
     /**
      * Metoda zwracająca liste wizyt
      *
@@ -210,6 +209,15 @@ public class MOPService extends AbstractService implements MOPServiceInterface, 
         return appointmentFacade.findInRangeWithPhrase(page, pageSize, phrase);
     }
 
+    @Override
+    @PermitAll
+    public Appointment editOwnAppointment(UUID id, Appointment appointment,String login){
+        Appointment appointmentFromDb = appointmentFacade.findById(id);
+        if(appointmentFromDb.getClient().getLogin() == login || appointmentFromDb.getSpecialist().getLogin() == login){
+            return null;
+        }
+        return null;
+    }
     @Override
     @RolesAllowed(Roles.ADMINISTRATOR)
     public Appointment editAppointmentByAdministrator(UUID uuid, Appointment appointment) {
