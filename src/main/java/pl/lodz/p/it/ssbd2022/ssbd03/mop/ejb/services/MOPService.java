@@ -12,9 +12,14 @@ import jakarta.interceptor.Interceptors;
 import pl.lodz.p.it.ssbd2022.ssbd03.common.AbstractService;
 import pl.lodz.p.it.ssbd2022.ssbd03.common.Roles;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.*;
+ import pl.lodz.p.it.ssbd2022.ssbd03.entities.Appointment;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.InvalidParametersException;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.appointment.*;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.Implant;
+import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.appointment.AppointmentFinishAttemptBeforeEndDateException;
+import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.appointment.AppointmentFinishAttemptByInvalidSpecialistException;
+import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.appointment.AppointmentStatusException;
+import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.account.AccountStatusException;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.implant.ImplantStatusException;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.appointment.AppointmentNotFinishedException;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.appointment.AppointmentNotFoundException;
@@ -22,12 +27,19 @@ import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.implant.ImplantArchivedException;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.appointment.AppointmentStatusException;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.implant_review.ClientRemovesOtherReviewsException;
 import pl.lodz.p.it.ssbd2022.ssbd03.interceptors.TrackerInterceptor;
+import pl.lodz.p.it.ssbd2022.ssbd03.mop.ejb.facades.AppointmentFacade;
 import pl.lodz.p.it.ssbd2022.ssbd03.mop.ejb.facades.AccountFacade;
 import pl.lodz.p.it.ssbd2022.ssbd03.mop.ejb.facades.AppointmentFacade;
 import pl.lodz.p.it.ssbd2022.ssbd03.mop.ejb.facades.ImplantFacade;
 import pl.lodz.p.it.ssbd2022.ssbd03.mop.ejb.facades.ImplantReviewFacade;
 import pl.lodz.p.it.ssbd2022.ssbd03.security.AuthContext;
 import pl.lodz.p.it.ssbd2022.ssbd03.utils.PaginationData;
+
+import java.util.Date;
+import java.util.UUID;
+
+import static pl.lodz.p.it.ssbd2022.ssbd03.entities.Status.FINISHED;
+import static pl.lodz.p.it.ssbd2022.ssbd03.entities.Status.REJECTED;
 
 import java.time.Instant;
 import java.time.LocalDate;
@@ -196,6 +208,29 @@ public class MOPService extends AbstractService implements MOPServiceInterface, 
             throw new InvalidParametersException();
         }
         return implantFacade.findInRangeWithPhrase(page, pageSize, phrase, archived);
+    }
+
+    /**
+     * Metoda zapewniająca możliwość oznaczenia wizyty jako zakończonej
+     * @param id identyfikator wizyty
+     * @param login login specjalisty oznaczającego wizytę jako zakończoną
+     * @return wizyta oznaczona jako zakończona
+     * @throws AppointmentFinishAttemptByInvalidSpecialistException gdy specjalista próbuje zakończyć wizytę inną niż własna
+     * @throws AppointmentStatusException gdy wizyta jest już odwołana bądź oznaczona jako zakończona
+     * @throws AppointmentFinishAttemptBeforeEndDateException gdy specjalista próbuje oznaczyc wizytę jako zakończoną przed datą zakończenia
+     */
+    @RolesAllowed(Roles.SPECIALIST)
+    @Override
+    public Appointment finishAppointment(UUID id, String login) {
+        Appointment appointment = appointmentFacade.findById(id);
+        if (!appointment.getSpecialist().getLogin().equals(login)) throw new AppointmentFinishAttemptByInvalidSpecialistException();
+        if (appointment.getStatus().equals(REJECTED)) throw AppointmentStatusException.appointmentStatusAlreadyCancelled();
+        if (appointment.getStatus().equals(FINISHED)) throw AppointmentStatusException.appointmentStatusAlreadyFinished();
+        if (appointment.getEndDate().isAfter(Instant.now())) throw new AppointmentFinishAttemptBeforeEndDateException();
+
+        appointment.setStatus(FINISHED);
+        appointmentFacade.edit(appointment);
+        return appointmentFacade.findById(appointment.getId());
     }
 
     @Override

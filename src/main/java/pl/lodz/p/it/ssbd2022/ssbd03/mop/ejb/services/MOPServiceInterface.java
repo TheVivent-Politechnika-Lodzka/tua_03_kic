@@ -157,7 +157,14 @@ public interface MOPServiceInterface extends ServiceLocalInterface {
         throw new MethodNotImplementedException();
     }
 
-    default Appointment finishAppointment(Appointment appointment) {
+    /**
+     * Metoda zapewniająca możliwość oznaczenia wizyty jako zakończonej
+     * @param id identyfikator wizyty
+     * @param login login specjalisty oznaczającego wizytę jako zakończoną
+     * @return wizyta oznaczona jako zakończona
+     * @throws MethodNotImplementedException gdy metoda nie jest zaimplementowana
+     */
+    default Appointment finishAppointment(UUID id, String login) {
         throw new MethodNotImplementedException();
     }
 
@@ -181,5 +188,4 @@ public interface MOPServiceInterface extends ServiceLocalInterface {
     default void deleteReview(UUID id, String login) {
         throw new MethodNotImplementedException();
     }
-
 }

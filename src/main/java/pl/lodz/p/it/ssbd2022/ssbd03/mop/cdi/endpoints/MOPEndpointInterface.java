@@ -17,6 +17,10 @@ import pl.lodz.p.it.ssbd2022.ssbd03.mop.dto.ImplantDto;
 
 import java.util.UUID;
 
+import java.util.UUID;
+
+import java.util.UUID;
+
 @DenyAll
 public interface MOPEndpointInterface {
 
@@ -198,12 +202,18 @@ public interface MOPEndpointInterface {
         throw new MethodNotImplementedException();
     }
 
-    // MOP.14 - Oznacz wizytę jako zakończoną
-    @POST
+    /**
+     * MOP.14 - Oznacz wizytę jako zakończoną
+     *
+     * @param id identyfikator wizyty, która ma zostać oznaczona jako zakończona
+     * @return Response - odpowiedź zawierająca status HTTP
+     * @throws MethodNotImplementedException w przypadku braku implementacji metody
+     */
+    @PATCH
     @RolesAllowed(Roles.SPECIALIST)
     @Consumes(MediaType.APPLICATION_JSON)
-    @Path("/finish/visit")
-    default Response finishVisit(String json) {
+    @Path("/finish/visit/{id}")
+    default Response finishVisit(@PathParam("id") UUID id) {
         throw new MethodNotImplementedException();
     }
 
