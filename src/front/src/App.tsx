@@ -6,7 +6,6 @@ import { useStoreSelector, useStoreDispatch } from "./redux/reduxHooks";
 import jwtDecode from "jwt-decode";
 import { login as loginDispatch } from "./redux/userSlice";
 import ActivateAccountPage from "./pages/unprotected/activate/ActivateAccountPage";
-import HomeLayout from "./components/Layout/HomeLayout";
 import ResetPasswordForm from "./components/Form/resetPasswordForm/ResetPasswordForm";
 import ResetPasswordTokenForm from "./components/Form/resetPasswordTokenForm/ResetPasswordTokenForm";
 import { ValidationProvider } from "./context/validationContext";

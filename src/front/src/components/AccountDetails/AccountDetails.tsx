@@ -23,6 +23,11 @@ import ActionButton from "../shared/ActionButton/ActionButton";
 import { useNavigate } from "react-router";
 import styles from "./style.module.scss";
 import ConfirmActionModal from "../ConfirmActionModal/ConfirmActionModal";
+import { showNotification } from "@mantine/notifications";
+import {
+    failureNotificationItems,
+    successNotficiationItems,
+} from "../../utils/showNotificationsItems";
 
 interface AccountDetailsProps {
     login: string;
@@ -61,6 +66,9 @@ const AccountDetails = ({ login, isOpened, onClose }: AccountDetailsProps) => {
                     account?.etag as string
                 );
                 setLoading({ ...loading, actionLoading: false });
+                showNotification(
+                    successNotficiationItems("Konto zostało deaktywowane")
+                );
                 onClose();
                 return;
             }
@@ -70,10 +78,13 @@ const AccountDetails = ({ login, isOpened, onClose }: AccountDetailsProps) => {
                 account?.etag as string
             );
             setLoading({ ...loading, actionLoading: false });
+            showNotification(
+                successNotficiationItems("Konto zostało aktywowane")
+            );
             onClose();
         } catch (error: ApiError | any) {
             setLoading({ pageLoading: false });
-            alert(`${error?.status} ${error?.errorMessage}`);
+            showNotification(failureNotificationItems(error?.errorMessage));
         }
     };
 

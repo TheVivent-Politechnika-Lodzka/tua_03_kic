@@ -1,7 +1,12 @@
 import { useContext, useEffect, useState } from "react";
 import avatar from "../../../../assets/images/avatar.jpg";
 import style from "./style.module.scss";
-import { faCancel, faCheck, faEdit } from "@fortawesome/free-solid-svg-icons";
+import {
+    faCancel,
+    faCheck,
+    faCheckCircle,
+    faEdit,
+} from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useNavigate } from "react-router-dom";
 import InputWithValidation from "../../../../components/shared/InputWithValidation/InputWithValidation";
@@ -20,6 +25,11 @@ import {
     useGoogleReCaptcha,
 } from "react-google-recaptcha-v3";
 import ConfirmActionModal from "../../../../components/ConfirmActionModal/ConfirmActionModal";
+import { showNotification } from "@mantine/notifications";
+import {
+    failureNotificationItems,
+    successNotficiationItems,
+} from "../../../../utils/showNotificationsItems";
 
 const EditOwnAccountPageInternal = () => {
     const [account, setAccount] = useState<GetAccountResponse>();
@@ -56,6 +66,7 @@ const EditOwnAccountPageInternal = () => {
         } catch (error: ApiError | any) {
             setLoading({ ...loading, pageLoading: false });
             setError(error);
+            showNotification(failureNotificationItems(error?.errorMessage));
             console.error(`${error?.status} ${error?.errorMessage}`);
         }
     };
@@ -81,6 +92,9 @@ const EditOwnAccountPageInternal = () => {
         setAccount(response);
         navigate("/account");
         setLoading({ ...loading, actionLoading: false });
+        showNotification(
+            successNotficiationItems("Konto zostało zaktualizowane")
+        );
     };
 
     useEffect(() => {
