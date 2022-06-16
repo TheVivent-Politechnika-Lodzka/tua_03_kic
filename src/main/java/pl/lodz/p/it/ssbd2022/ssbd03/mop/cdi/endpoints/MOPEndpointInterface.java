@@ -179,7 +179,7 @@ public interface MOPEndpointInterface {
     @PATCH
     @RolesAllowed({Roles.CLIENT, Roles.SPECIALIST})
     @Consumes(MediaType.APPLICATION_JSON)
-    @Path("/visit/cancel/{id}")
+    @Path("/visit/cancel/my/{id}")
     default Response cancelVisit(@PathParam("id") UUID id) {
         throw new MethodNotImplementedException();
     }
