@@ -9,14 +9,14 @@ import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.AppBaseException;
  * w przypadku gdy ktoś próbuje anulować wizytę później niż dzień przed nią
  */
 @ApplicationException(rollback = true)
-public class AppointmentCannotBeCancelledAnymore extends AppBaseException {
+public class AppointmentCannotBeCancelledAnymoreException extends AppBaseException {
 
     private static final String APPOINTMENT_CANNOT_BE_CANCELLED_ANYMORE = "server.error.appBase.appointmentCannotBeCancelledAnymore";
 
     /**
      * konstruktor wyjątku
      */
-    public AppointmentCannotBeCancelledAnymore() {
+    public AppointmentCannotBeCancelledAnymoreException() {
         super(APPOINTMENT_CANNOT_BE_CANCELLED_ANYMORE, Response.Status.FORBIDDEN);
     }
 

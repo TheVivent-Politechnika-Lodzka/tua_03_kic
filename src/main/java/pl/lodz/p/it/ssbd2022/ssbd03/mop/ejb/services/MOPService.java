@@ -1,6 +1,5 @@
 package pl.lodz.p.it.ssbd2022.ssbd03.mop.ejb.services;
 
-import com.fasterxml.jackson.databind.ser.DefaultSerializerProvider;
 import jakarta.annotation.security.DenyAll;
 import jakarta.annotation.security.PermitAll;
 import jakarta.annotation.security.RolesAllowed;
@@ -15,9 +14,7 @@ import pl.lodz.p.it.ssbd2022.ssbd03.common.Roles;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.*;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.InvalidParametersException;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.appointment.*;
-import pl.lodz.p.it.ssbd2022.ssbd03.common.Roles;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.Implant;
-import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.account.AccountStatusException;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.implant.ImplantStatusException;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.appointment.AppointmentNotFinishedException;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.appointment.AppointmentNotFoundException;
@@ -29,21 +26,18 @@ import pl.lodz.p.it.ssbd2022.ssbd03.mop.ejb.facades.AccountFacade;
 import pl.lodz.p.it.ssbd2022.ssbd03.mop.ejb.facades.AppointmentFacade;
 import pl.lodz.p.it.ssbd2022.ssbd03.mop.ejb.facades.ImplantFacade;
 import pl.lodz.p.it.ssbd2022.ssbd03.mop.ejb.facades.ImplantReviewFacade;
+import pl.lodz.p.it.ssbd2022.ssbd03.security.AuthContext;
 import pl.lodz.p.it.ssbd2022.ssbd03.utils.PaginationData;
 
 import java.time.Instant;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.UUID;
 
-import pl.lodz.p.it.ssbd2022.ssbd03.mop.ejb.facades.AppointmentFacade;
-
-import java.util.List;
-import java.util.UUID;
 import java.util.logging.Logger;
 
 import static pl.lodz.p.it.ssbd2022.ssbd03.entities.Status.FINISHED;
 import static pl.lodz.p.it.ssbd2022.ssbd03.entities.Status.REJECTED;
-
-import java.util.UUID;
 
 @Stateful
 @DenyAll
@@ -65,6 +59,9 @@ public class MOPService extends AbstractService implements MOPServiceInterface, 
     @Inject
     private AccountFacade accountFacade;
 
+    @Inject
+    private AuthContext authContext;
+
 
     /**
      * Metoda pozwalająca na odwołanie dowolnej wizyty, wywoływana z poziomu serwisu.
@@ -76,12 +73,53 @@ public class MOPService extends AbstractService implements MOPServiceInterface, 
      */
     @Override
     @RolesAllowed(Roles.ADMINISTRATOR)
-    public Appointment cancelAppointment(UUID id) {
+    public Appointment cancelAnyAppointment(UUID id) {
         Appointment appointment = appointmentFacade.findById(id);
         if (appointment.getStatus().equals(REJECTED))
             throw AppointmentStatusException.appointmentStatusAlreadyCancelled();
         if (appointment.getStatus().equals(FINISHED))
             throw AppointmentStatusException.appointmentStatusAlreadyFinished();
+
+        appointment.setStatus(REJECTED);
+        appointmentFacade.edit(appointment);
+
+        return appointment;
+    }
+
+    /**
+     * Metoda pozwalająca na odwołanie własnej wizyty, wywoływana z poziomu serwisu.
+     * Może ją wykonać tylko konto z poziomem dostępu klienta/specjalisty
+     *
+     * @param id identyfikator wizyty, która ma zostać odwołana
+     * @return Wizyta, która została odwołana
+     * @throws AppointmentStatusException, gdy wizyta jest już zakończona (wykonana/odwołana)
+     * @throws AppointmentDoesNotBelongToYouException, gdy wizyta nie należy do Ciebie
+     * @throws AppointmentCannotBeCancelledAnymoreException, gdy wizyta nie może zostać odwołana
+     */
+    @Override
+    @RolesAllowed({Roles.CLIENT, Roles.SPECIALIST})
+    public Appointment cancelOwnAppointment(UUID id) {
+        Account thisAccount = authContext.getCurrentUser();
+        Appointment appointment = appointmentFacade.findById(id);
+
+        // sprawdzenie czy wizyta nie jest już zakończona
+        if (appointment.getStatus().equals(REJECTED))
+            throw AppointmentStatusException.appointmentStatusAlreadyCancelled();
+        if (appointment.getStatus().equals(FINISHED))
+            throw AppointmentStatusException.appointmentStatusAlreadyFinished();
+
+        // sprawdzenie czy wizyta należy do tego konta
+        if (!(
+                appointment.getClient().getId().equals(thisAccount.getId())
+                || appointment.getSpecialist().getId().equals(thisAccount.getId())
+        ))
+            throw new AppointmentDoesNotBelongToYouException();
+
+        // sprawdzenie czy wizytę można anulować (można maksymalnie dzień wcześniej)
+        LocalDate today = LocalDate.now();
+        LocalDate appointmentDate = LocalDate.ofInstant(appointment.getStartDate(), ZoneId.systemDefault());
+        if (today.getDayOfYear() >= appointmentDate.getDayOfYear())
+            throw new AppointmentCannotBeCancelledAnymoreException();
 
         appointment.setStatus(REJECTED);
         appointmentFacade.edit(appointment);
@@ -242,6 +280,7 @@ public class MOPService extends AbstractService implements MOPServiceInterface, 
         }
         implantReviewFacade.remove(review);
     }
+
 
     /**
      * Metoda tworząca nową wizytę
