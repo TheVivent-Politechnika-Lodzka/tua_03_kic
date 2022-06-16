@@ -22,6 +22,7 @@ import {
 import ActionButton from "../shared/ActionButton/ActionButton";
 import { useNavigate } from "react-router";
 import styles from "./style.module.scss";
+import ConfirmActionModal from "../ConfirmActionModal/ConfirmActionModal";
 
 interface AccountDetailsProps {
     login: string;
@@ -35,6 +36,7 @@ const AccountDetails = ({ login, isOpened, onClose }: AccountDetailsProps) => {
         pageLoading: true,
         actionLoading: false,
     });
+    const [opened, setOpened] = useState<boolean>(false);
 
     const navigate = useNavigate();
 
@@ -157,11 +159,8 @@ const AccountDetails = ({ login, isOpened, onClose }: AccountDetailsProps) => {
                                         account?.active ? faLock : faUnlockAlt
                                     }
                                     onClick={() => {
-                                        handleDeactivateActivateAccount(
-                                            account?.active as boolean
-                                        );
+                                        setOpened(true);
                                     }}
-                                    isLoading={loading.actionLoading}
                                 />
                             </div>
                         </div>
@@ -245,6 +244,25 @@ const AccountDetails = ({ login, isOpened, onClose }: AccountDetailsProps) => {
                         </div>
                     </div>
                 )}
+                <ConfirmActionModal
+                    title={
+                        account?.active ? "Zablokuj konto" : "Odblokuj konto"
+                    }
+                    description={`Czy na pewno chcesz ${
+                        account?.active ? "zablokować" : "odblokować"
+                    } konto? Operacja jest nieodwracalna.`}
+                    isLoading={loading.actionLoading as boolean}
+                    isOpened={opened}
+                    handleFunction={async () => {
+                        await handleDeactivateActivateAccount(
+                            account?.active as boolean
+                        );
+                        setOpened(false);
+                    }}
+                    onClose={() => {
+                        setOpened(false);
+                    }}
+                />
             </section>
         </ReactModal>
     );

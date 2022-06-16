@@ -19,6 +19,7 @@ import {
     GoogleReCaptchaProvider,
     useGoogleReCaptcha,
 } from "react-google-recaptcha-v3";
+import ConfirmActionModal from "../../../../components/ConfirmActionModal/ConfirmActionModal";
 
 const EditOwnAccountPageInternal = () => {
     const [account, setAccount] = useState<GetAccountResponse>();
@@ -27,6 +28,7 @@ const EditOwnAccountPageInternal = () => {
         actionLoading: false,
     });
     const [error, setError] = useState<ApiError>();
+    const [opened, setOpened] = useState<boolean>(false);
     const { executeRecaptcha } = useGoogleReCaptcha();
 
     const accessLevel = useStoreSelector((state) => state.user.cur);
@@ -350,12 +352,13 @@ const EditOwnAccountPageInternal = () => {
                             </div>
                             <div className={style.edit_data_buttons_wrapper}>
                                 <ActionButton
-                                    onClick={handleSubmit}
+                                    onClick={() => {
+                                        setOpened(true);
+                                    }}
                                     isDisabled={!isEveryFieldValid}
                                     icon={faCheck}
                                     color="green"
                                     title="Zatwierdź"
-                                    isLoading={loading.actionLoading}
                                 />
                                 <ActionButton
                                     onClick={() => {
@@ -370,6 +373,19 @@ const EditOwnAccountPageInternal = () => {
                     </div>
                 </>
             )}
+            <ConfirmActionModal
+                isOpened={opened}
+                onClose={() => {
+                    setOpened(false);
+                }}
+                handleFunction={async () => {
+                    await handleSubmit();
+                    setOpened(false);
+                }}
+                isLoading={loading.actionLoading as boolean}
+                title="Edycja swoich własnych danych"
+                description="Czy na pewno chcesz zmienić swoje własne dane? Operacja jest nieodwracalna"
+            />
         </section>
     );
 };
