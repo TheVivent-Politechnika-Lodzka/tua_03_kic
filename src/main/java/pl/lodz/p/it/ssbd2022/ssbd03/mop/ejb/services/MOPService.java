@@ -150,6 +150,14 @@ public class MOPService extends AbstractService implements MOPServiceInterface, 
         }
         return appointmentFacade.findInRangeWithPhrase(page, pageSize, phrase);
     }
+    @Override
+    @PermitAll
+    public PaginationData findVisitsByLogin(int page, int pageSize, String login) {
+        if(page == 0 || pageSize == 0) {
+            throw new InvalidParametersException();
+        }
+        return appointmentFacade.findByClientLoginInRange(login, pageSize, page);
+    }
 
     @Override
     @RolesAllowed(Roles.ADMINISTRATOR)

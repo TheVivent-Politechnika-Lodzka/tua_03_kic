@@ -191,6 +191,37 @@ public class MOPEndpoint implements MOPEndpointInterface {
     }
 
     /**
+     * MOP.8 - Przeglądaj swoje wizyty
+     *
+     * @param page numer aktualnie przeglądanej strony
+     * @param size ilość rekordów na danej stronie
+     * @param login wyszukiwana fraza
+     * @return lista wizyt
+     * @throws TransactionException w przypadku braku zatwierdzenia transakcji
+     */
+    @PermitAll
+    @Override
+    public Response listMyVisits(int page, int size, String login) {
+        PaginationData paginationData;
+        int TXCounter = Config.MAX_TX_RETRIES;
+        boolean commitedTX;
+        do {
+            paginationData = mopService.findVisitsByLogin(page, size, login);
+            commitedTX = mopService.isLastTransactionCommited();
+        } while (!commitedTX && TXCounter-- > 0);
+
+        if (!commitedTX) {
+            throw new TransactionException();
+        }
+
+        List<Appointment> appointments = paginationData.getData();
+        List<AppointmentListElementDto> appointmentDtos = appointmentMapper.appointmentListElementDtoList(appointments);
+        paginationData.setData(appointmentDtos);
+        return Response.ok().entity(paginationData).build();
+    }
+
+
+    /**
      * MOP.11 - Edytuj dowolną wizytę
      *
      * @param id                 id konkretnej wizyty
