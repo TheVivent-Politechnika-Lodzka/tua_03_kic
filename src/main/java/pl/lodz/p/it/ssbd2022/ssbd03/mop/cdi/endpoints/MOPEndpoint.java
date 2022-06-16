@@ -53,36 +53,6 @@ public class MOPEndpoint implements MOPEndpointInterface {
     @Inject
     private Tagger tagger;
 
-    @Inject
-    private AuthContext authContext;
-
-    /**
-     * MOP.13 Odwołaj dowolną wizytę
-     * Metodę może wykonać tylko konto z poziomem dostępu administratora.
-     *
-     * @param id Identyfikator wizyty, która ma zostać odwołana
-     * @return odpowiedź HTTP
-     */
-    @Override
-    public Response cancelAnyVisit(UUID id) {
-        tagger.verifyTag();
-        Appointment cancelledAppointment;
-
-        int TXCounter = Config.MAX_TX_RETRIES;
-        boolean commitedTX;
-        do {
-            cancelledAppointment = mopService.cancelAppointment(id);
-            commitedTX = mopService.isLastTransactionCommited();
-        } while (!commitedTX && --TXCounter > 0);
-
-        if (!commitedTX) {
-            throw new TransactionException();
-        }
-
-        AppointmentDto appointmentDto = appointmentMapper.createAppointmentDtoFromAppointment(cancelledAppointment);
-
-        return Response.ok(appointmentDto).tag(tagger.tag(appointmentDto)).build();
-    }
 
     /**
      * MOP.1 - Dodaj nowy wszczep
