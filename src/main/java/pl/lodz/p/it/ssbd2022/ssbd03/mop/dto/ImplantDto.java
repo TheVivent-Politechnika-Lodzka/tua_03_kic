@@ -18,6 +18,7 @@ public class ImplantDto implements Taggable {
 
     @NotNull(message = "server.error.validation.constraints.notNull.id")
     private UUID id;
+
     @NotNull(message = "server.error.validation.constraints.notNull.version")
     private Long version;
 
@@ -43,3 +44,4 @@ public class ImplantDto implements Taggable {
     @Url
     private String image;
 }
+

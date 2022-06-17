@@ -13,25 +13,6 @@ import java.util.stream.Collectors;
 
 public class ImplantMapper {
 
-    /**
-     * Metoda konwertująca encję Implantu na DTO
-     *
-     * @param implant Obiekt Implantu
-     * @return ImplantDto
-     */
-    public ImplantDto createImplantDtoFromImplant(Implant implant) {
-        return new ImplantDto(
-                implant.getId(),
-                implant.getVersion(),
-                implant.getName(),
-                implant.getDescription(),
-                implant.getManufacturer(),
-                implant.getPrice(),
-                implant.isArchived(),
-                implant.getPopularity(),
-                implant.getDuration().toSeconds(),
-                implant.getImage());
-    }
 
     /**
      * Mapuje dane z obiektu CreateImplantDto na obiekt Implant
@@ -101,4 +82,27 @@ public class ImplantMapper {
     }
 
 
+    /**
+     * Metoda konwertująca encję implantu na jego DTO
+     *
+     * @param implant Implant, która będzie konwertowany
+     * @return DTO skonwertowanego implantu
+     */
+    public ImplantDto createImplantDtoFromImplant(Implant implant) {
+        ImplantDto implantDto = new ImplantDto(
+                implant.getId(),
+                implant.getVersion(),
+                implant.getName(),
+                implant.getDescription(),
+                implant.getManufacturer(),
+                implant.getPrice(),
+                implant.isArchived(),
+                implant.getPopularity(),
+                implant.getDuration().toSeconds(),
+                implant.getImage()
+        );
+        return implantDto;
+
+    }
 }
+

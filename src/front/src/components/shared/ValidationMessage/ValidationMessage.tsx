@@ -9,7 +9,7 @@ const ValidationMessage = ({ message, isValid }: ValidationMessageProps) => {
   return (
     <div className={styles.validation_message}>
       <p className={`${styles.text} ${isValid ? styles.valid : styles.invalid}`}>
-        ⇦ {message}
+      • {message}
       </p>
     </div>
   );

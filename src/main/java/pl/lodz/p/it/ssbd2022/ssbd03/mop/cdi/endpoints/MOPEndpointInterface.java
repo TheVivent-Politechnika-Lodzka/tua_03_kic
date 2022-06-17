@@ -19,6 +19,8 @@ import java.util.UUID;
 
 import java.util.UUID;
 
+import java.util.UUID;
+
 @DenyAll
 public interface MOPEndpointInterface {
 
@@ -148,7 +150,7 @@ public interface MOPEndpointInterface {
      * MOP.11 - Edytuj dowolną wizytę
      *
      * @param id                 id konkretnej wizyty
-     * @param appointmentEditDto obiekt dto edytowanej wizyty
+     * @param appointmentOwnEditDto obiekt dto edytowanej wizyty
      * @return odpowiedź serwera (wizyta)
      * @throws MethodNotImplementedException w przypadku braku implementacji metody
      */
@@ -156,7 +158,7 @@ public interface MOPEndpointInterface {
     @RolesAllowed({Roles.CLIENT,Roles.SPECIALIST})
     @Consumes(MediaType.APPLICATION_JSON)
     @Path("/edit/visit/my/{id}")
-    default Response editOwnVisit(@PathParam("id") UUID id,@Valid AppointmentEditDto appointmentEditDto) {
+    default Response editOwnVisit(@PathParam("id") UUID id,@Valid AppointmentOwnEditDto appointmentOwnEditDto) {
         throw new MethodNotImplementedException();
     }
 
@@ -176,12 +178,18 @@ public interface MOPEndpointInterface {
         throw new MethodNotImplementedException();
     }
 
-    // MOP.12 - Odwołaj swoją wizytę
-    @DELETE
+    /** MOP.12 - Odwołaj swoją wizytę
+     * Endpoint pozwalający odwołać wizytę (REJECTED)
+     *
+     * @param id - id wizyty
+     * @return status HTTP oraz zmodyfikowana wizyta
+     * @throws MethodNotImplementedException, gdy metoda nie jest zaimplementowana
+     */
+    @PATCH
     @RolesAllowed({Roles.CLIENT, Roles.SPECIALIST})
     @Consumes(MediaType.APPLICATION_JSON)
-    @Path("/cancel/visit")
-    default Response cancelVisit(String json) {
+    @Path("/visit/cancel/my/{id}")
+    default Response cancelOwnVisit(@PathParam("id") UUID id) {
         throw new MethodNotImplementedException();
     }
 
@@ -201,12 +209,18 @@ public interface MOPEndpointInterface {
         throw new MethodNotImplementedException();
     }
 
-    // MOP.14 - Oznacz wizytę jako zakończoną
-    @POST
+    /**
+     * MOP.14 - Oznacz wizytę jako zakończoną
+     *
+     * @param id identyfikator wizyty, która ma zostać oznaczona jako zakończona
+     * @return Response - odpowiedź zawierająca status HTTP
+     * @throws MethodNotImplementedException w przypadku braku implementacji metody
+     */
+    @PATCH
     @RolesAllowed(Roles.SPECIALIST)
     @Consumes(MediaType.APPLICATION_JSON)
-    @Path("/finish/visit")
-    default Response finishVisit(String json) {
+    @Path("/finish/visit/{id}")
+    default Response finishVisit(@PathParam("id") UUID id) {
         throw new MethodNotImplementedException();
     }
 
