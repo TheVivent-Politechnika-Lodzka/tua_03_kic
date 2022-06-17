@@ -2,13 +2,16 @@ package pl.lodz.p.it.ssbd2022.ssbd03.mop.ejb.facades;
 
 import jakarta.annotation.security.PermitAll;
 import jakarta.annotation.security.RolesAllowed;
+import jakarta.ejb.Stateful;
 import jakarta.ejb.Stateless;
 import jakarta.ejb.TransactionAttribute;
 import jakarta.ejb.TransactionAttributeType;
 import jakarta.inject.Inject;
 import jakarta.interceptor.Interceptors;
 import jakarta.persistence.*;
+import jakarta.transaction.Transactional;
 import lombok.Getter;
+import org.hibernate.Hibernate;
 import org.hibernate.exception.ConstraintViolationException;
 import pl.lodz.p.it.ssbd2022.ssbd03.common.AbstractFacade;
 import pl.lodz.p.it.ssbd2022.ssbd03.common.Roles;
@@ -66,15 +69,13 @@ public class AccountFacade extends AbstractFacade<Account> {
     @PermitAll
     public PaginationData findInRangeWithPhrase(int pageNumber, int perPage, String phrase) {
         try {
-            TypedQuery<Account> typedQuery = entityManager.createNamedQuery("Account.searchSpecialistByPhrase", Account.class);
-
+            //TODO naprawic datadoctor
+            TypedQuery<Account> typedQuery = entityManager.createNamedQuery("DataDoctor.searchSpecialistByPhrase", Account.class);
             pageNumber--;
-
-            List<Account> data = typedQuery.setParameter("phrase", "%" + phrase + "%")
+            List<Account> data = typedQuery
                     .setMaxResults(perPage)
                     .setFirstResult(pageNumber * perPage)
                     .getResultList();
-
             pageNumber++;
 
             int totalCount = this.count();
