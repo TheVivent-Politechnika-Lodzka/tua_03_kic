@@ -144,12 +144,19 @@ public interface MOPEndpointInterface {
         throw new MethodNotImplementedException();
     }
 
-    // MOP.10 - Edytuj swoją wizytę
+    /**
+     * MOP.11 - Edytuj dowolną wizytę
+     *
+     * @param id                 id konkretnej wizyty
+     * @param appointmentEditDto obiekt dto edytowanej wizyty
+     * @return odpowiedź serwera (wizyta)
+     * @throws MethodNotImplementedException w przypadku braku implementacji metody
+     */
     @PUT
     @RolesAllowed({Roles.CLIENT,Roles.SPECIALIST})
     @Consumes(MediaType.APPLICATION_JSON)
     @Path("/edit/visit/my/{id}")
-    default Response editOwnVisit(@PathParam("id") UUID id, AppointmentEditDto appointmentEditDto) {
+    default Response editOwnVisit(@PathParam("id") UUID id,@Valid AppointmentEditDto appointmentEditDto) {
         throw new MethodNotImplementedException();
     }
 

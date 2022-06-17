@@ -253,11 +253,12 @@ public class MOPEndpoint implements MOPEndpointInterface {
      * @param id                 id konkretnej wizyty
      * @param appointmentEditDto obiekt dto edytowanej wizyty
      * @return odpowiedz HTTP
+     * @throws TransactionException jeśli transakcja nie została zatwierdzona
      */
     @Override
     public Response editOwnVisit(UUID id, AppointmentEditDto appointmentEditDto) {
-        String login = authContext.getCurrentUserLogin();
         tagger.verifyTag(appointmentEditDto);
+        String login = authContext.getCurrentUserLogin();
         Appointment update = appointmentMapper.createAppointmentFromEditDto(appointmentEditDto);
         Appointment editedAppointment;
         int TXCounter = Config.MAX_TX_RETRIES;

@@ -40,10 +40,9 @@ import java.util.List;
 import java.util.UUID;
 import java.util.logging.Logger;
 
-import static pl.lodz.p.it.ssbd2022.ssbd03.entities.Status.FINISHED;
-import static pl.lodz.p.it.ssbd2022.ssbd03.entities.Status.REJECTED;
-
 import java.util.UUID;
+
+import static pl.lodz.p.it.ssbd2022.ssbd03.entities.Status.*;
 
 @Stateful
 @DenyAll
@@ -220,19 +219,28 @@ public class MOPService extends AbstractService implements MOPServiceInterface, 
      * @param update wartości które mają zostać zaktualizowane
      * @param login   nazwa uzytkownika który bierze udział w wizycie
      * @return  Edytowana wizyta
-     * @throws UserNotPartOfAppointment w przypadku gdy użytkownik nieuprzywilejowany edytuje nie swoja wizytę
+     * @throws UserNotPartOfAppointment w przypadku gdy użytkownik edytuje nie swoja wizytę
      */
-    @Override
+    @Override // TODO: Edycja daty dla specjalist oraz klienta, jesli klient cos zmieni to zmienia się status na PENDING, a specjalista moze tylko zmienić status na ACCEPTED, tylko specjalista moze zmienić description
     @PermitAll
     public Appointment editOwnAppointment(UUID id, Appointment update,String login){
         Appointment appointmentFromDb = appointmentFacade.findById(id);
         if(!(appointmentFromDb.getClient().getLogin().equals(login) || appointmentFromDb.getSpecialist().getLogin().equals(login))) {
             throw new UserNotPartOfAppointment();
         }
+        if(appointmentFromDb.getClient().getLogin().equals(login)){
+
+            appointmentFromDb.setStatus(PENDING);
+        }
+        else{
+
+        }
         appointmentFromDb.setDescription(update.getDescription());
         appointmentFacade.edit(appointmentFromDb);
         return appointmentFromDb;
     }
+
+    private Appointment c
     @Override
     @RolesAllowed(Roles.ADMINISTRATOR)
     public Appointment editAppointmentByAdministrator(UUID uuid, Appointment appointment) {

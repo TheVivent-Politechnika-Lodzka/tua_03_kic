@@ -103,7 +103,7 @@ public interface MOPServiceInterface extends ServiceLocalInterface {
         throw new MethodNotImplementedException();
     }
     /**
-     * Metoda zwracająca listę wszystkich wizyt
+     * Metoda wizytę po UUID
      *
      * @param uuid     id wizyty
      * @return szczegóły wizyty
