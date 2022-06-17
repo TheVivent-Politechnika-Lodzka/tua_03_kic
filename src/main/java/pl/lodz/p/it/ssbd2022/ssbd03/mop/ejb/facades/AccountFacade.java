@@ -70,10 +70,12 @@ public class AccountFacade extends AbstractFacade<Account> {
      * Metoda zwracająca listę specialistów względem wprowadzonej paginacji i frazy
      * dostęp dla wszystkich
      *
-     * @param pageNumber - numer strony( int)
-     * @param perPage    - liczba rekordów na stronie( int)
-     * @param phrase     - fraza do wyszukania( String)
-     * @return lista specialistów( PaginationData)
+     * @param pageNumber - numer strony (int)
+     * @param perPage    - liczba rekordów na stronie (int)
+     * @param phrase     - fraza do wyszukania (String)
+     * @return lista specialistów (PaginationData)
+     * @throws  InvalidParametersException przy błędnym podaniu parametrów
+     * @throws DatabaseException przy błędzie bazy danych
      */
     @PermitAll
     public PaginationData findInRangeWithPhrase(int pageNumber, int perPage, String phrase) {
@@ -81,7 +83,7 @@ public class AccountFacade extends AbstractFacade<Account> {
             //TODO naprawic datadoctor
             TypedQuery<Account> typedQuery = entityManager.createNamedQuery("DataDoctor.searchSpecialistByPhrase", Account.class);
             pageNumber--;
-            List<Account> data = typedQuery
+            List<Account> data = typedQuery.setParameter("phrase", "%" + phrase + "%")
                     .setMaxResults(perPage)
                     .setFirstResult(pageNumber * perPage)
                     .getResultList();
