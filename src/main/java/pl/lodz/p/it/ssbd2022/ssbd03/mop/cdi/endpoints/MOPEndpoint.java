@@ -24,6 +24,7 @@ import pl.lodz.p.it.ssbd2022.ssbd03.mop.ejb.services.MOPServiceInterface;
 import pl.lodz.p.it.ssbd2022.ssbd03.security.Tagger;
 
 import java.util.UUID;
+
 import pl.lodz.p.it.ssbd2022.ssbd03.security.Tagger;
 import pl.lodz.p.it.ssbd2022.ssbd03.utils.PaginationData;
 
@@ -159,6 +160,15 @@ public class MOPEndpoint implements MOPEndpointInterface {
         return Response.ok().entity(paginationData).build();
     }
 
+    /**
+     * MOK.6 - Przeglądaj listę specialistów
+     * dostęp posiadają wszyscy użytkownicy serwisu włącznie z nieuwierzytelnionymi
+     *
+     * @param page   - numer strony( int)
+     * @param size   - ilość specialistó wyświetlanych na jednej stronie( int)
+     * @param phrase - szukana fraza specialisty( String)
+     * @return zwraca odpowiedz zawierającą listę specialistów
+     */
     @PermitAll
     @Override
     public Response listSpecialists(int page, int size, String phrase) {
@@ -184,8 +194,8 @@ public class MOPEndpoint implements MOPEndpointInterface {
     /**
      * MOP.7 - Przeglądaj listę wizyt
      *
-     * @param page numer aktualnie przeglądanej strony
-     * @param size ilość rekordów na danej stronie
+     * @param page   numer aktualnie przeglądanej strony
+     * @param size   ilość rekordów na danej stronie
      * @param phrase wyszukiwana fraza
      * @return lista wizyt
      * @throws TransactionException w przypadku braku zatwierdzenia transakcji
@@ -244,10 +254,10 @@ public class MOPEndpoint implements MOPEndpointInterface {
 
     /**
      * MOK.15 - Dodaj recenzję wszczepu
+     *
      * @param createImplantReviewDto - Nowo napisana recenzja
      * @return nowo utworzona recenzja
      * @throws TransactionException jeśli transakcja nie została zatwierdzona
-     *
      */
     @Override
     public Response addImplantsReview(CreateImplantReviewDto createImplantReviewDto) {

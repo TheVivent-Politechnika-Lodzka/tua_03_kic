@@ -27,6 +27,7 @@ import pl.lodz.p.it.ssbd2022.ssbd03.mop.ejb.facades.*;
 import pl.lodz.p.it.ssbd2022.ssbd03.utils.PaginationData;
 
 import java.util.UUID;
+
 import pl.lodz.p.it.ssbd2022.ssbd03.mop.ejb.facades.AppointmentFacade;
 
 import java.util.List;
@@ -66,8 +67,10 @@ public class MOPService extends AbstractService implements MOPServiceInterface, 
     @RolesAllowed(Roles.ADMINISTRATOR)
     public Appointment cancelAppointment(UUID id) {
         Appointment appointment = appointmentFacade.findById(id);
-        if (appointment.getStatus().equals(REJECTED)) throw AppointmentStatusException.appointmentStatusAlreadyCancelled();
-        if (appointment.getStatus().equals(FINISHED)) throw AppointmentStatusException.appointmentStatusAlreadyFinished();
+        if (appointment.getStatus().equals(REJECTED))
+            throw AppointmentStatusException.appointmentStatusAlreadyCancelled();
+        if (appointment.getStatus().equals(FINISHED))
+            throw AppointmentStatusException.appointmentStatusAlreadyFinished();
 
         appointment.setStatus(REJECTED);
         appointmentFacade.edit(appointment);
@@ -77,6 +80,7 @@ public class MOPService extends AbstractService implements MOPServiceInterface, 
 
     /**
      * Metoda tworząca nowy wszczep
+     *
      * @param implant - nowy wszczep
      * @return Implant
      */
@@ -89,9 +93,10 @@ public class MOPService extends AbstractService implements MOPServiceInterface, 
 
     /**
      * Metoda zwracająca liste wszczepów
-     * @param page numer strony
-     * @param pageSize  ilość pozycji na stronie na stronie
-     * @param phrase szukana fraza
+     *
+     * @param page     numer strony
+     * @param pageSize ilość pozycji na stronie na stronie
+     * @param phrase   szukana fraza
      * @param archived określa czy zwracac archiwalne czy niearchiwalne wszczepy
      * @return lista wszczepów
      * @throws InvalidParametersException jeśli podano nieprawidłowe parametry
@@ -99,7 +104,7 @@ public class MOPService extends AbstractService implements MOPServiceInterface, 
     @Override
     @PermitAll
     public PaginationData findImplants(int page, int pageSize, String phrase, boolean archived) {
-        if(page == 0 || pageSize == 0) {
+        if (page == 0 || pageSize == 0) {
             throw new InvalidParametersException();
         }
         return implantFacade.findInRangeWithPhrase(page, pageSize, phrase, archived);
@@ -107,13 +112,14 @@ public class MOPService extends AbstractService implements MOPServiceInterface, 
 
     @Override
     @PermitAll
-    public Implant findImplantByUuid(UUID uuid){
+    public Implant findImplantByUuid(UUID uuid) {
         return implantFacade.findByUUID(uuid);
     }
 
     /**
      * Metoda tworząca recenzję wszczepu oraz zwracająca nowo utworzoną recenzję.
      * Recenzja nie może być utworzona, gdy wszczep nie został jeszcze wmontowany.
+     *
      * @param review - Recenzja wszczepu
      * @return Nowo utworzona recenzja wszczepu
      */
@@ -126,7 +132,7 @@ public class MOPService extends AbstractService implements MOPServiceInterface, 
                 .findFirst()
                 .orElseThrow(AppointmentNotFoundException::new);
 
-        if(!clientAppointment.getStatus().equals(Status.FINISHED)) {
+        if (!clientAppointment.getStatus().equals(Status.FINISHED)) {
             throw new AppointmentNotFinishedException();
         }
 
@@ -137,25 +143,34 @@ public class MOPService extends AbstractService implements MOPServiceInterface, 
     /**
      * Metoda zwracająca liste wizyt
      *
-     * @param page numer aktualnie przeglądanej strony
-     * @param pageSize  ilość rekordów na danej stronie
-     * @param phrase wyszukiwana fraza
-     * @return  Lista wizyt zgodnych z parametrami wyszukiwania
+     * @param page     numer aktualnie przeglądanej strony
+     * @param pageSize ilość rekordów na danej stronie
+     * @param phrase   wyszukiwana fraza
+     * @return Lista wizyt zgodnych z parametrami wyszukiwania
      * @throws InvalidParametersException w przypadku podania nieprawidłowych parametrów
      */
     @Override
     @PermitAll
     public PaginationData findVisits(int page, int pageSize, String phrase) {
-        if(page == 0 || pageSize == 0) {
+        if (page == 0 || pageSize == 0) {
             throw new InvalidParametersException();
         }
         return appointmentFacade.findInRangeWithPhrase(page, pageSize, phrase);
     }
 
+    /**
+     * Metoda zwracająca liste specialistów - MOK.6
+     * dostęp dla wszytskich
+     *
+     * @param page     - numer strony( int)
+     * @param pageSize - ilość rekordów na stronie(int)
+     * @param phrase   - szukana fraza( String)
+     * @return - lista specialistów( PaginationData)
+     */
     @Override
     @PermitAll
     public PaginationData findSpecialists(int page, int pageSize, String phrase) {
-        if (page == 0 || pageSize == 0){
+        if (page == 0 || pageSize == 0) {
             throw new InvalidParametersException();
         }
         return accountFacade.findInRangeWithPhrase(page, pageSize, phrase);
@@ -166,7 +181,7 @@ public class MOPService extends AbstractService implements MOPServiceInterface, 
     public Appointment editAppointmentByAdministrator(UUID uuid, Appointment appointment) {
         Appointment appointmentFromDb = appointmentFacade.findById(uuid);
         appointmentFromDb.setDescription(appointment.getDescription());
-        if(appointmentFromDb.getStatus() == Status.ACCEPTED) {
+        if (appointmentFromDb.getStatus() == Status.ACCEPTED) {
             appointmentFromDb.setStatus(appointment.getStatus());
         }
         appointmentFacade.edit(appointmentFromDb);

@@ -66,6 +66,15 @@ public class AccountFacade extends AbstractFacade<Account> {
         }
     }
 
+    /**
+     * Metoda zwracająca listę specialistów względem wprowadzonej paginacji i frazy
+     * dostęp dla wszystkich
+     *
+     * @param pageNumber - numer strony( int)
+     * @param perPage    - liczba rekordów na stronie( int)
+     * @param phrase     - fraza do wyszukania( String)
+     * @return lista specialistów( PaginationData)
+     */
     @PermitAll
     public PaginationData findInRangeWithPhrase(int pageNumber, int perPage, String phrase) {
         try {
