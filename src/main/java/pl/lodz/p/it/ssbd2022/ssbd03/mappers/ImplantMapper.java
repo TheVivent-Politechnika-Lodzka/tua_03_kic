@@ -13,25 +13,6 @@ import java.util.stream.Collectors;
 
 public class ImplantMapper {
 
-    /**
-     * Metoda konwertująca encję Implantu na DTO
-     *
-     * @param implant Obiekt Implantu
-     * @return ImplantDto
-     */
-    public ImplantDto createImplantDtoFromImplant(Implant implant) {
-        return new ImplantDto(
-                implant.getId(),
-                implant.getVersion(),
-                implant.getName(),
-                implant.getDescription(),
-                implant.getManufacturer(),
-                implant.getPrice(),
-                implant.isArchived(),
-                implant.getPopularity(),
-                implant.getDuration(),
-                implant.getImage());
-    }
 
     /**
      * Mapuje dane z obiektu CreateImplantDto na obiekt Implant
@@ -47,8 +28,27 @@ public class ImplantMapper {
         implant.setPrice(implantDto.getPrice());
         implant.setArchived(false);
         implant.setPopularity(0);
-        implant.setDuration(Duration.ofMillis(implantDto.getDuration()));
+        implant.setDuration(Duration.ofSeconds(implantDto.getDuration()));
         implant.setImage(implantDto.getUrl());
+        return implant;
+    }
+
+    /**
+     * Mapuje dane z obiektu ImplantDto na obiekt Implant
+     *
+     * @param implantDto Obiekt ImplantDto
+     * @return Implant - obiekt wszczepu
+     */
+    public Implant createImplantFromImplantDto(ImplantDto implantDto) {
+        Implant implant = new Implant();
+        implant.setName(implantDto.getName());
+        implant.setDescription(implantDto.getDescription());
+        implant.setManufacturer(implantDto.getManufacturer());
+        implant.setPrice(implantDto.getPrice());
+        implant.setArchived(implantDto.isArchived());
+        implant.setPopularity(implantDto.getPopularity());
+        implant.setDuration(Duration.ofSeconds(implantDto.getDuration()));
+        implant.setImage(implantDto.getImage());
         return implant;
     }
 
@@ -82,4 +82,27 @@ public class ImplantMapper {
     }
 
 
+    /**
+     * Metoda konwertująca encję implantu na jego DTO
+     *
+     * @param implant Implant, która będzie konwertowany
+     * @return DTO skonwertowanego implantu
+     */
+    public ImplantDto createImplantDtoFromImplant(Implant implant) {
+        ImplantDto implantDto = new ImplantDto(
+                implant.getId(),
+                implant.getVersion(),
+                implant.getName(),
+                implant.getDescription(),
+                implant.getManufacturer(),
+                implant.getPrice(),
+                implant.isArchived(),
+                implant.getPopularity(),
+                implant.getDuration().toSeconds(),
+                implant.getImage()
+        );
+        return implantDto;
+
+    }
 }
+
