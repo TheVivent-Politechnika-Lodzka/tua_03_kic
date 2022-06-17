@@ -131,7 +131,7 @@ public class AccountMapper {
     /**
      * Metoda mapująca konto na DTO specjalisty dla MOP'a
      *
-     * @param account - konto, które będzie skonwertowane( Account)
+     * @param account - konto, które będzie skonwertowane (Account)
      * @return - DTO specjalisty dla MOP'a
      */
     public SpecialistForMopDto accountSpecialistListElementDto(Account account) {

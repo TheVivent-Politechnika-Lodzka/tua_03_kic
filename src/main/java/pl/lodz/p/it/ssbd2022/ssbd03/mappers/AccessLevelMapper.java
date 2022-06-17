@@ -138,7 +138,7 @@ public class AccessLevelMapper {
     /**
      * Metoda zwracjąca SpecialistDataDto na podstawie encji specjalisty( jeżeli encja specjalisty jest null, to zwraca null)
      *
-     * @param accessLevel - poziom dostępu( AccessLevel)
+     * @param accessLevel - poziom dostępu (AccessLevel)
      * @return - DTO podanego specjalisty, lub null
      */
     public SpecialistDataDto dataSpecialistListElementDto(AccessLevel accessLevel) {
@@ -150,7 +150,7 @@ public class AccessLevelMapper {
     /**
      * Metoda zwracająca SpecialistDataDto na podstawie kolekcji poziomów dostępów( jeżeli kolekcja poziomów dostępu jest null, to zwraca null)
      *
-     * @param accessLevels - kolejka poziomów dostępu( Collection<AccessLevel>)
+     * @param accessLevels - kolekcja poziomów dostępu (Collection<AccessLevel>)
      * @return - zwraca SpecialistDataDto, lub null
      */
     public SpecialistDataDto dataSpecialistListElementDtoList(Collection<AccessLevel> accessLevels) {

@@ -88,7 +88,7 @@ public interface MOPEndpointInterface {
 
     /**
      * MOP.6 - Przeglądaj listę specialistów
-     * dostęp dla wszytskich użytkowników serwisu, włącznie z użytkownikami nieautoryzowanymi
+     * dostęp dla wszytskich użytkowników serwisu, włącznie z użytkownikami nieuwierzytelnionymi
      *
      * @param page   - numer strony (int)
      * @param size   - ilość pozycji na stronie (int)

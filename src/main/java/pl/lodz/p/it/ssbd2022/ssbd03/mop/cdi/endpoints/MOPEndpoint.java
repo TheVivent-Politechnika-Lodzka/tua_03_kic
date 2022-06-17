@@ -168,7 +168,7 @@ public class MOPEndpoint implements MOPEndpointInterface {
      * @param size   - ilość specialistó wyświetlanych na jednej stronie (int)
      * @param phrase - szukana fraza specialisty (String)
      * @return zwraca odpowiedz zawierającą listę specialistów
-     * @throws TransactionException błąd tranzakcji
+     * @throws TransactionException błąd transakcji
      */
     @PermitAll
     @Override
