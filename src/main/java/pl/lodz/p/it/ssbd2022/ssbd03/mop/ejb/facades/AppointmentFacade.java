@@ -166,6 +166,8 @@ public class AppointmentFacade extends AbstractFacade<Appointment> {
      * @param pageNumber numer aktualnie przeglądanej strony
      * @param perPage    ilość rekordów na danej stronie
      * @return Lista wizyt użytkownika o podanym loginie
+     * @throws InvalidParametersException w przypadku podania nieprawidłowych parametrów
+     * @throws DatabaseException          w przypadku wystąpienia błędu bazy danych
      */
     public PaginationData findByClientLoginInRange(int pageNumber, int perPage,String login) {
         try {
