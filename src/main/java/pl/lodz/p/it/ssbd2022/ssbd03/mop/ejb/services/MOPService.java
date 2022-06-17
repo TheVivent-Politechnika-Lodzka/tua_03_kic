@@ -159,13 +159,14 @@ public class MOPService extends AbstractService implements MOPServiceInterface, 
     }
 
     /**
-     * Metoda zwracająca liste specialistów - MOK.6
+     * Metoda zwracająca liste specialistów - MOP.6
      * dostęp dla wszytskich
      *
-     * @param page     - numer strony( int)
-     * @param pageSize - ilość rekordów na stronie(int)
-     * @param phrase   - szukana fraza( String)
-     * @return - lista specialistów( PaginationData)
+     * @param page     - numer strony (int)
+     * @param pageSize - ilość rekordów na stronie (int)
+     * @param phrase   - szukana fraza (String)
+     * @return - lista specialistów (PaginationData)
+     * @throws InvalidParametersException przy podaniu błędnych parametrów
      */
     @Override
     @PermitAll

@@ -161,13 +161,14 @@ public class MOPEndpoint implements MOPEndpointInterface {
     }
 
     /**
-     * MOK.6 - Przeglądaj listę specialistów
+     * MOP.6 - Przeglądaj listę specialistów
      * dostęp posiadają wszyscy użytkownicy serwisu włącznie z nieuwierzytelnionymi
      *
-     * @param page   - numer strony( int)
-     * @param size   - ilość specialistó wyświetlanych na jednej stronie( int)
-     * @param phrase - szukana fraza specialisty( String)
+     * @param page   - numer strony (int)
+     * @param size   - ilość specialistó wyświetlanych na jednej stronie (int)
+     * @param phrase - szukana fraza specialisty (String)
      * @return zwraca odpowiedz zawierającą listę specialistów
+     * @throws TransactionException błąd tranzakcji
      */
     @PermitAll
     @Override

@@ -90,9 +90,9 @@ public interface MOPEndpointInterface {
      * MOP.6 - Przeglądaj listę specialistów
      * dostęp dla wszytskich użytkowników serwisu, włącznie z użytkownikami nieautoryzowanymi
      *
-     * @param page   - numer strony( int)
-     * @param size   - ilość pozycji na stronie( int)
-     * @param phrase - szukana fraza( String)
+     * @param page   - numer strony (int)
+     * @param size   - ilość pozycji na stronie (int)
+     * @param phrase - szukana fraza (String)
      * @return lista specialistów
      * @throws MethodNotImplementedException - w przypadku braku implementacji metody
      */

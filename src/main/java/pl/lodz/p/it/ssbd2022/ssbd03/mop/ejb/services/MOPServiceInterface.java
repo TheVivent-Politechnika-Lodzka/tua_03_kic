@@ -61,7 +61,7 @@ public interface MOPServiceInterface extends ServiceLocalInterface {
     }
 
     /**
-     * Metoda zwracająca liste specialistów
+     * Metoda zwracająca liste specialistów - MOP.6
      *
      * @param page     - numer strony( int)
      * @param pageSize - ilość pozycji na stronie( int)
