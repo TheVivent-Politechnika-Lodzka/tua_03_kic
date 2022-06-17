@@ -6,7 +6,7 @@ import {
     faUnlockAlt,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import ReactModal from "react-modal";
 import ReactLoading from "react-loading";
 import avatar from "../../assets/images/avatar.jpg";
@@ -29,6 +29,10 @@ import {
     failureNotificationItems,
     successNotficiationItems,
 } from "../../utils/showNotificationsItems";
+import { validationContext } from "../../context/validationContext";
+import InputWithValidation from "../shared/InputWithValidation/InputWithValidation";
+import ValidationMessage from "../shared/ValidationMessage/ValidationMessage";
+import { set } from "immer/dist/internal";
 
 interface AccountDetailsProps {
     login: string;
@@ -394,13 +398,70 @@ const AddAccessLevelModal = ({
         contactEmail: "",
     });
 
+    const {
+        state,
+        state: {
+            isFirstNameValid,
+            isLastNameValid,
+            isPhoneNumberValid,
+            isPESELValid,
+            isEmailValid,
+        },
+        dispatch,
+    } = useContext(validationContext);
+
     return (
         <ConfirmActionModal
-            title="Dodaj poziom dostępu"
+            title={`Dodaj poziom dostępu ${accessLevel}`}
             isLoading={isLoading}
             isOpened={isOpened}
             handleFunction={handleFunction}
             onClose={onClose}
-        ></ConfirmActionModal>
+        >
+            {accessLevel === "CLIENT" && (
+                <>
+                    <div className={styles.edit_field}>
+                        <InputWithValidation
+                            title="Numer PESEL: "
+                            value={accessLevelToAdd.pesel}
+                            validationType="VALIDATE_PESEL"
+                            isValid={isPESELValid}
+                            onChange={(e) => {
+                                if (e.target.value)
+                                    setAccessLevelToAdd((old) => {
+                                        old.pesel = e.target.value;
+                                        return old;
+                                    });
+                            }}
+                        />
+                        <div />
+                        <ValidationMessage
+                            isValid={isPESELValid}
+                            message="Numer pesel musi składać się z 11 cyfr."
+                        />
+                    </div>
+                    <div className={styles.edit_field}>
+                        <InputWithValidation
+                            title="Numer telefonu: "
+                            value={accessLevelToAdd.phoneNumber}
+                            validationType="VALIDATE_PHONENUMBER"
+                            isValid={isPhoneNumberValid}
+                            onChange={(e) => {
+                                if (e.target.value)
+                                    setAccessLevelToAdd((old) => {
+                                        old.phoneNumber = e.target.value;
+                                        return old;
+                                    });
+                            }}
+                        />
+                        <div />
+                        <ValidationMessage
+                            isValid={isPhoneNumberValid}
+                            message="Numer telefonu musi składać się z 9 cyfr."
+                        />
+                    </div>
+                </>
+            )}
+        </ConfirmActionModal>
     );
 };
