@@ -12,6 +12,7 @@ interface InputWithValidationProps {
     value: string | undefined;
     validationType: ActionType;
     isValid: boolean;
+    type?: string;
     onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
@@ -21,9 +22,10 @@ const InputWithValidation = ({
     validationType,
     isValid,
     onChange,
+    type = "text",
 }: InputWithValidationProps) => {
-  const [input, setInput] = useState<string | undefined>(value);
-  const { state, dispatch } = useContext(validationContext);
+    const [input, setInput] = useState<string | undefined>(value);
+    const { state, dispatch } = useContext(validationContext);
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setInput(e.target.value);
@@ -41,7 +43,7 @@ const InputWithValidation = ({
             <p className={styles.title}>{title}</p>
             <div className={styles.input_wrapper}>
                 <input
-                    type="text"
+                    type={type}
                     value={input}
                     onChange={handleChange}
                     className={`${styles.input} ${

@@ -1,88 +1,118 @@
-import { useEffect, useState } from "react";
+import { faCancel, faCheck } from "@fortawesome/free-solid-svg-icons";
+import { useContext, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate, useParams } from "react-router";
-import { useChangeAccountPasswordMutation, useGetAccountByLoginMutation } from "../../../../api/api";
+import {
+    useChangeAccountPasswordMutation,
+    useGetAccountByLoginMutation,
+} from "../../../../api/api";
 import { ChangePasswordDto } from "../../../../api/types/apiParams";
+import ConfirmActionModal from "../../../../components/ConfirmActionModal/ConfirmActionModal";
+import ActionButton from "../../../../components/shared/ActionButton/ActionButton";
+import InputWithValidation from "../../../../components/shared/InputWithValidation/InputWithValidation";
+import ValidationMessage from "../../../../components/shared/ValidationMessage/ValidationMessage";
+import { validationContext } from "../../../../context/validationContext";
 import styles from "./style.module.scss";
 
 const ChangeUserPassword = () => {
-  const navigate = useNavigate();
-  const { login } = useParams();
-  const [newPassword, setNewPassword] = useState<string>("");
-  const [accountData, setAccountData] = useState<ChangePasswordDto>({
-    login: login as string,
-    data: {
-      ETag: "",
-      newPassword: "",
-    },
-  });
-  const [getAccount] = useGetAccountByLoginMutation();
-  const [changePassword] = useChangeAccountPasswordMutation();
-  const {t} = useTranslation();
-
-  const getEtag = async () => {
-    const result = await getAccount(login as string);
-    if ("data" in result) {
-      setAccountData({
-        ...accountData,
+    const navigate = useNavigate();
+    const { login } = useParams();
+    const [newPassword, setNewPassword] = useState<string>("");
+    const [opened, setOpened] = useState<boolean>(false);
+    const [loading, setLoading] = useState<Loading>({
+        pageLoading: true,
+        actionLoading: false,
+    });
+    const [accountData, setAccountData] = useState<ChangePasswordDto>({
+        login: login as string,
         data: {
-          ...accountData.data,
-          ETag: result?.data?.ETag,
+            ETag: "",
+            newPassword: "",
         },
-      });
-    }
-  };
+    });
+    const [getAccount] = useGetAccountByLoginMutation();
+    const [changePassword] = useChangeAccountPasswordMutation();
+    const {
+        state: { isNewPasswordValid },
+    } = useContext(validationContext);
+    const { t } = useTranslation();
 
-  useEffect(() => {
-    getEtag();
-  }, []);
-
-  return (
-    <div className={styles.changeUserPasswordPage}>
-      <h2>{t("ChangeAccountPassword.title")} {login}</h2>
-      <div className={styles.inputWrapper}>
-        <input
-          onChange={(e) => {
-            setNewPassword(e.target.value);
+    const getEtag = async () => {
+        const result = await getAccount(login as string);
+        if ("data" in result) {
             setAccountData({
-              ...accountData,
-              data: {
-                ...accountData.data,
-                newPassword: e.target.value,
-              },
+                ...accountData,
+                data: {
+                    ...accountData.data,
+                    ETag: result?.data?.ETag,
+                },
             });
-          }}
-          value={newPassword}
-          type="password"
-          placeholder={t("ChangeAccountPassword.input_placeholder")}
-          className={styles.changePasswordInput}
-        />
-        <button
-          onClick={() => {
-            if (newPassword.length >= 8) {
-              changePassword(accountData)
-                .then((res) => console.log(res))
-                .catch((err) => console.log(err));
-            }
-          }}
-          className={styles.submitButton}
-        >
-          {t("ChangeAccountPassword.change_password_button")}
-        </button>
-      </div>
-      {newPassword !== "" && newPassword.length < 8 && (
-        <p className={styles.error}>{t("ChangeAccountPassword.too_short_password_error")}</p>
-      )}
-      <button
-        onClick={() => {
-          navigate("/accounts");
-        }}
-        className={styles.submitButton}
-      >
-        {t("ChangeAccountPassword.go_back_button")}
-      </button>
-    </div>
-  );
+        }
+    };
+
+    useEffect(() => {
+        getEtag();
+    }, []);
+
+    return (
+        <div className={styles.change_user_password_page}>
+            <div className={styles.title_wrapper}>
+                <h2>
+                    {t("ChangeAccountPassword.title")} {login}
+                </h2>
+            </div>
+            <div className={styles.content}>
+                <div className={styles.change_password_wrapper}>
+                    <InputWithValidation
+                        title="Nowe hasło: "
+                        validationType="VALIDATE_NEW_PASSWORD"
+                        isValid={isNewPasswordValid}
+                        value={newPassword}
+                        type="password"
+                        onChange={(e) => setNewPassword(e.target.value)}
+                    />
+                    <div className={styles.action_buttons_wrapper}>
+                        <ActionButton
+                            onClick={() => {
+                                setOpened(true);
+                            }}
+                            isDisabled={!isNewPasswordValid}
+                            icon={faCheck}
+                            color="green"
+                            title="Zatwierdź"
+                        />
+                        <ActionButton
+                            onClick={() => {
+                                navigate("/account");
+                            }}
+                            icon={faCancel}
+                            color="red"
+                            title="Anuluj"
+                        />
+                    </div>
+                </div>
+            </div>
+            <div className={styles.validation_status_wrapper}>
+                <ValidationMessage
+                    isValid={isNewPasswordValid}
+                    message="Hasło musi być dłuższe niż 8 znaków oraz musi zawierać co jedną dużą literę, jedną cyfrę i jeden znak specjalny"
+                />
+            </div>
+            <ConfirmActionModal
+                isOpened={opened}
+                onClose={() => {
+                    setOpened(false);
+                }}
+                handleFunction={async () => {
+                    // await handleSubmit();
+                    setOpened(false);
+                }}
+                isLoading={loading.actionLoading as boolean}
+                title={`Zmiana hasła użytkownika`}
+                description={`Czy na pewno chcesz zmienić hasło użytkownika ${login}? Operacja jest nieodwracalna`}
+            />
+        </div>
+    );
 };
 
 export default ChangeUserPassword;
