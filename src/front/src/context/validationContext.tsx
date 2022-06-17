@@ -9,7 +9,8 @@ interface ContextState {
     isPhoneNumberValid: boolean;
     isPESELValid: boolean;
     isEmailValid: boolean;
-    isPasswordValid: boolean;
+    isOldPasswordValid: boolean;
+    isNewPasswordValid: boolean;
     input: string;
 }
 
@@ -20,7 +21,8 @@ export type ActionType =
     | "VALIDATE_EMAIL"
     | "VALIDATE_PHONENUMBER"
     | "VALIDATE_PESEL"
-    | "VALIDATE_PASSWORD"
+    | "VALIDATE_OLD_PASSWORD"
+    | "VALIDATE_NEW_PASSWORD"
     | "RESET_VALIDATION";
 
 interface ValidationAction {
@@ -43,7 +45,8 @@ const initialState: ContextState = {
     isPhoneNumberValid: true,
     isPESELValid: true,
     isEmailValid: true,
-    isPasswordValid: true,
+    isOldPasswordValid: true,
+    isNewPasswordValid: true,
     input: "",
 };
 
@@ -90,6 +93,24 @@ const validationReducer = (state: ContextState, action: ValidationAction) => {
                 isEmailValid: validate(
                     action.payload.input,
                     /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+                ),
+            };
+        }
+        case "VALIDATE_OLD_PASSWORD": {
+            return {
+                ...state,
+                isOldPasswordValid: validate(
+                    action.payload.input,
+                    /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,128}$/
+                ),
+            };
+        }
+        case "VALIDATE_NEW_PASSWORD": {
+            return {
+                ...state,
+                isNewPasswordValid: validate(
+                    action.payload.input,
+                    /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,128}$/
                 ),
             };
         }
