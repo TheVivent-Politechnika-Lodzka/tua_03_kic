@@ -1,11 +1,9 @@
-import { SerializedError } from "@reduxjs/toolkit";
-import { FetchBaseQueryError } from "@reduxjs/toolkit/dist/query";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate, useParams } from "react-router";
 import { useChangeAccountPasswordMutation, useGetAccountByLoginMutation } from "../../../../api/api";
 import { ChangePasswordDto } from "../../../../api/types/apiParams";
-import styles from "./changeUserPassword.module.scss";
+import styles from "./style.module.scss";
 
 const ChangeUserPassword = () => {
   const navigate = useNavigate();
