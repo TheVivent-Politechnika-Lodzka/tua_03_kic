@@ -484,8 +484,10 @@ const UserDetails = () => {
                 }}
                 isLoading={loading.actionLoading ?? false}
                 title="Edycja danych innego konta"
-                description="Czy na pewno chcesz zmienić dane tego konta? Operacja jest nieodwracalna"
-            />
+            >
+                Czy na pewno chcesz zmienić dane tego konta? Operacja jest
+                nieodwracalna
+            </ConfirmActionModal>
         </section>
     );
 };

@@ -18,6 +18,7 @@ import {
     deactivateAccount,
     getAccount,
     GetAccountResponse,
+    removeAccessLevel,
 } from "../../api";
 import ActionButton from "../shared/ActionButton/ActionButton";
 import { useNavigate } from "react-router";
@@ -41,10 +42,51 @@ const AccountDetails = ({ login, isOpened, onClose }: AccountDetailsProps) => {
         pageLoading: true,
         actionLoading: false,
     });
-    const [opened, setOpened] = useState<boolean>(false);
+    const [accessLevelToProcess, setAccessLevelToProcess] =
+        useState<AccessLevelType>("ADMINISTRATOR");
+    const [isAccountBlockModalOpen, setAccountBlockModalOpen] =
+        useState<boolean>(false);
+    const [isAccountRemoveAccessLevelOpen, setAccountRemoveAccessLevelOpen] =
+        useState<boolean>(false);
+    const [isAddAccessLevelModalOpen, setAddAccessLevelModalOpen] =
+        useState<boolean>(false);
     const accountsAccessLevels =
         account?.accessLevels.map((level) => level.level) ?? [];
     const navigate = useNavigate();
+
+    const handleAccessLevelClikc = async (
+        level: AccessLevelType,
+        alreadyHas: boolean
+    ) => {
+        setAccessLevelToProcess(level);
+        if (alreadyHas) {
+            setAccountRemoveAccessLevelOpen(true);
+        } else {
+            setAddAccessLevelModalOpen(true);
+        }
+    };
+
+    const handleRemoveAccessLevel = async () => {
+        setLoading({ ...loading, actionLoading: true });
+        const level = accessLevelToProcess;
+        if (!account) return;
+        const response = await removeAccessLevel(account.login, {
+            etag: account.etag,
+            level,
+        });
+        if ("errorMessage" in response) {
+            setLoading({ ...loading, actionLoading: false });
+            showNotification(failureNotificationItems(response.errorMessage));
+            return;
+        }
+        showNotification(
+            successNotficiationItems("Poziom dostępu został usunięty")
+        );
+        setAccount(response);
+        setLoading({ ...loading, actionLoading: false });
+    };
+
+    const handleAddAccessLevel = async () => {};
 
     const handleGetAccount = async () => {
         try {
@@ -149,26 +191,17 @@ const AccountDetails = ({ login, isOpened, onClose }: AccountDetailsProps) => {
                                                     entry as AccessLevelType
                                                 )
                                             }
+                                            onClick={() => {
+                                                handleAccessLevelClikc(
+                                                    entry as AccessLevelType,
+                                                    accountsAccessLevels.includes(
+                                                        entry as AccessLevelType
+                                                    )
+                                                );
+                                            }}
                                         />
                                     )
                                 )}
-
-                                {/* {account?.accessLevels.map((accessLevel) => (
-                                    <AccessLevel
-                                        key={accessLevel.level}
-                                        accessLevel={accessLevel.level}
-                                    />
-                                ))} */}
-
-                                {/* <AccessLevel accessLevel={"ADMINISTRATOR"} />
-                                <AccessLevel
-                                    clickable={true}
-                                    accessLevel={"SPECIALIST"}
-                                />
-                                <AccessLevel
-                                    clickable={true}
-                                    accessLevel={"CLIENT"}
-                                /> */}
                             </div>
                             <div className={styles.actions_wrapper}>
                                 <ActionButton
@@ -200,7 +233,7 @@ const AccountDetails = ({ login, isOpened, onClose }: AccountDetailsProps) => {
                                         account?.active ? faLock : faUnlockAlt
                                     }
                                     onClick={() => {
-                                        setOpened(true);
+                                        setAccountBlockModalOpen(true);
                                     }}
                                 />
                             </div>
@@ -289,20 +322,48 @@ const AccountDetails = ({ login, isOpened, onClose }: AccountDetailsProps) => {
                                     ? "Zablokuj konto"
                                     : "Odblokuj konto"
                             }
-                            description={`Czy na pewno chcesz ${
-                                account?.active ? "zablokować" : "odblokować"
-                            } konto? Operacja jest nieodwracalna.`}
                             isLoading={loading.actionLoading as boolean}
-                            isOpened={opened}
+                            isOpened={isAccountBlockModalOpen}
                             handleFunction={async () => {
                                 await handleDeactivateActivateAccount(
                                     account?.active as boolean
                                 );
-                                setOpened(false);
+                                setAccountBlockModalOpen(false);
                             }}
                             onClose={() => {
-                                setOpened(false);
+                                setAccountBlockModalOpen(false);
                             }}
+                        >
+                            Czy na pewno chcesz{" "}
+                            {account?.active ? "zablokować" : "odblokować"}{" "}
+                            konto? Operacja jest nieodwracalna.
+                        </ConfirmActionModal>
+                        <ConfirmActionModal
+                            title="Usuń poziom dostępu"
+                            isLoading={loading.actionLoading as boolean}
+                            isOpened={isAccountRemoveAccessLevelOpen}
+                            handleFunction={async () => {
+                                await handleRemoveAccessLevel();
+                                setAccountRemoveAccessLevelOpen(false);
+                            }}
+                            onClose={() => {
+                                setAccountRemoveAccessLevelOpen(false);
+                            }}
+                        >
+                            Czy na pewno chcesz usunąć poziom dostępu ? Operacja
+                            jest nieodwracalna.
+                        </ConfirmActionModal>
+                        <AddAccessLevelModal
+                            isLoading={loading.actionLoading as boolean}
+                            isOpened={isAddAccessLevelModalOpen}
+                            onClose={() => {
+                                setAddAccessLevelModalOpen(false);
+                            }}
+                            handleFunction={async () => {
+                                await handleAddAccessLevel();
+                                setAddAccessLevelModalOpen(false);
+                            }}
+                            accessLevel={accessLevelToProcess}
                         />
                     </div>
                 )}
@@ -312,3 +373,34 @@ const AccountDetails = ({ login, isOpened, onClose }: AccountDetailsProps) => {
 };
 
 export default AccountDetails;
+
+const AddAccessLevelModal = ({
+    isLoading,
+    isOpened,
+    handleFunction,
+    onClose,
+    accessLevel,
+}: {
+    isLoading: boolean;
+    isOpened: boolean;
+    handleFunction: () => void;
+    onClose: () => void;
+    accessLevel: AccessLevelType;
+}) => {
+    const [accessLevelToAdd, setAccessLevelToAdd] = useState<AccessLevel>({
+        level: accessLevel,
+        pesel: "",
+        phoneNumber: "",
+        contactEmail: "",
+    });
+
+    return (
+        <ConfirmActionModal
+            title="Dodaj poziom dostępu"
+            isLoading={isLoading}
+            isOpened={isOpened}
+            handleFunction={handleFunction}
+            onClose={onClose}
+        ></ConfirmActionModal>
+    );
+};

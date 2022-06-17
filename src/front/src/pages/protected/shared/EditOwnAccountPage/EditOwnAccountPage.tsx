@@ -398,8 +398,10 @@ const EditOwnAccountPageInternal = () => {
                 }}
                 isLoading={loading.actionLoading as boolean}
                 title="Edycja swoich własnych danych"
-                description="Czy na pewno chcesz zmienić swoje własne dane? Operacja jest nieodwracalna"
-            />
+            >
+                Czy na pewno chcesz zmienić swoje własne dane? Operacja jest
+                nieodwracalna
+            </ConfirmActionModal>
         </section>
     );
 };
