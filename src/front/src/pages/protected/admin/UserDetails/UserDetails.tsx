@@ -2,11 +2,6 @@ import { useState, useEffect, useContext } from "react";
 import { useNavigate, useParams } from "react-router";
 import style from "./userDetails.module.scss";
 import { useTranslation } from "react-i18next";
-import { AccountWithAccessLevelsDto } from "../../../../api/types/apiParams";
-import { useGetAccountByLoginMutation } from "../../../../api/api";
-import RemoveAccessLevelForm from "../../../../components/Form/removeAccessLevelForm/RemoveAccessLevelForm";
-import EditAccountDataForm from "../../../../components/Form/editAccountDataForm/EditAccountDataForm";
-import AddAccessLevelButton from "../../../../components/Button/AddAccessLevelButton/AddAccessLevelButton";
 import {
     editAnyAccount,
     getAccount,
@@ -16,22 +11,11 @@ import ReactLoading from "react-loading";
 import { failureNotificationItems } from "../../../../utils/showNotificationsItems";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import avatar from "../../../../assets/images/avatar.jpg";
-import {
-    faCancel,
-    faCheck,
-    faCheckCircle,
-    faEdit,
-} from "@fortawesome/free-solid-svg-icons";
+import { faCancel, faCheck, faEdit } from "@fortawesome/free-solid-svg-icons";
 import InputWithValidation from "../../../../components/shared/InputWithValidation/InputWithValidation";
 import ValidationMessage from "../../../../components/shared/ValidationMessage/ValidationMessage";
 import ActionButton from "../../../../components/shared/ActionButton/ActionButton";
 import { validationContext } from "../../../../context/validationContext";
-import { useStoreSelector } from "../../../../redux/reduxHooks";
-import { editOwnAccount, getOwnAccount } from "../../../../api";
-import {
-    GoogleReCaptchaProvider,
-    useGoogleReCaptcha,
-} from "react-google-recaptcha-v3";
 import ConfirmActionModal from "../../../../components/ConfirmActionModal/ConfirmActionModal";
 import { showNotification } from "@mantine/notifications";
 import { successNotficiationItems } from "../../../../utils/showNotificationsItems";
@@ -498,9 +482,9 @@ const UserDetails = () => {
                     await handleSubmit();
                     setOpened(false);
                 }}
-                isLoading={loading.actionLoading as boolean}
-                title="Edycja swoich własnych danych"
-                description="Czy na pewno chcesz zmienić swoje własne dane? Operacja jest nieodwracalna"
+                isLoading={loading.actionLoading ?? false}
+                title="Edycja danych innego konta"
+                description="Czy na pewno chcesz zmienić dane tego konta? Operacja jest nieodwracalna"
             />
         </section>
     );

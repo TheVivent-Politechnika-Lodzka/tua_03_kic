@@ -42,7 +42,8 @@ const AccountDetails = ({ login, isOpened, onClose }: AccountDetailsProps) => {
         actionLoading: false,
     });
     const [opened, setOpened] = useState<boolean>(false);
-
+    const accountsAccessLevels =
+        account?.accessLevels.map((level) => level.level) ?? [];
     const navigate = useNavigate();
 
     const handleGetAccount = async () => {
@@ -133,12 +134,41 @@ const AccountDetails = ({ login, isOpened, onClose }: AccountDetailsProps) => {
                             <p className={styles.login}>{account?.login}</p>
                             <div className={styles.access_levels_wrapper}>
                                 <p className={styles.title}>Poziomy dostępu:</p>
-                                {account?.accessLevels.map((accessLevel) => (
+
+                                {["ADMINISTRATOR", "CLIENT", "SPECIALIST"].map(
+                                    (entry) => (
+                                        <AccessLevel
+                                            key={entry}
+                                            accessLevel={
+                                                entry as AccessLevelType
+                                            }
+                                            clickable={true}
+                                            selectable={false}
+                                            grayed={
+                                                !accountsAccessLevels.includes(
+                                                    entry as AccessLevelType
+                                                )
+                                            }
+                                        />
+                                    )
+                                )}
+
+                                {/* {account?.accessLevels.map((accessLevel) => (
                                     <AccessLevel
                                         key={accessLevel.level}
                                         accessLevel={accessLevel.level}
                                     />
-                                ))}
+                                ))} */}
+
+                                {/* <AccessLevel accessLevel={"ADMINISTRATOR"} />
+                                <AccessLevel
+                                    clickable={true}
+                                    accessLevel={"SPECIALIST"}
+                                />
+                                <AccessLevel
+                                    clickable={true}
+                                    accessLevel={"CLIENT"}
+                                /> */}
                             </div>
                             <div className={styles.actions_wrapper}>
                                 <ActionButton
