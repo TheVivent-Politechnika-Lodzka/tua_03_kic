@@ -42,17 +42,6 @@ import static pl.lodz.p.it.ssbd2022.ssbd03.entities.Account.CONSTRAINT_LOGIN_UNI
         @NamedQuery(name = "Account.findByConfirmed", query = "select a from Account a order by a.confirmed"),
         @NamedQuery(name = "Account.findByActive", query = "select a from Account a order by a.active"),
         @NamedQuery(name = "Account.searchByPhrase", query = "select a from Account a where lower(concat(a.firstName, ' ', a.lastName)) like lower(:phrase)"),
-        })
-
-@NamedNativeQueries({
-        @NamedNativeQuery(name = "Account.searchSpecialistByPhrase", query = """
-                select * from account a where
-                account.id in (
-                    select account_id from access_level where access_level.id in (
-                        select id from data_specialist
-                    ) and 
-                lower(concat(a.account.firstName, ' ', a.account.lastName)) like lower(:phrase)
-                """, resultClass = Account.class),
 })
 
 @ToString
@@ -92,7 +81,7 @@ public class Account extends AbstractEntity implements Serializable {
     @NotNull
     private boolean active;
 
-    @OneToMany(fetch = FetchType.EAGER, cascade = {CascadeType.REMOVE, CascadeType.PERSIST}, mappedBy = "account", orphanRemoval = true)
+    @OneToMany(fetch = FetchType.EAGER, cascade = {CascadeType.REMOVE, CascadeType.ALL}, mappedBy = "account", orphanRemoval = true)
     @Getter
     private Collection<AccessLevel> accessLevelCollection = new ArrayList<>();
 
