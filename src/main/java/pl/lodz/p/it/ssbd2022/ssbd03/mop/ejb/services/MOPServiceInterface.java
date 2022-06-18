@@ -209,4 +209,16 @@ public interface MOPServiceInterface extends ServiceLocalInterface {
     default void deleteReview(UUID id, String login) {
         throw new MethodNotImplementedException();
     }
+
+
+    /**
+     * Metoda zwracająca listę wszystkich recenzji dla danego wszczepu
+     * @param id identyfikator wszczepu
+     * @return lista recenzji dla wszczepu
+     * @throws MethodNotImplementedException w przypadku niezaimplementowanej metody
+     *
+     */
+    default PaginationData getAllImplantReviews(int page, int pageSize, UUID id) {
+        throw new MethodNotImplementedException();
+    }
 }

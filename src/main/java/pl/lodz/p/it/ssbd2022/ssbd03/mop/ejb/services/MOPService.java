@@ -37,6 +37,7 @@ import pl.lodz.p.it.ssbd2022.ssbd03.mop.ejb.facades.*;
 import pl.lodz.p.it.ssbd2022.ssbd03.utils.PaginationData;
 
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 
 import pl.lodz.p.it.ssbd2022.ssbd03.mop.ejb.facades.AppointmentFacade;
@@ -402,6 +403,15 @@ public class MOPService extends AbstractService implements MOPServiceInterface, 
 
         appointmentFacade.create(appointment);
         return appointment;
+    }
+
+    @Override
+    @PermitAll
+    public PaginationData getAllImplantReviews(int page, int pageSize, UUID id) {
+        if(page == 0 || pageSize == 0) {
+            throw new InvalidParametersException();
+        }
+        return implantReviewFacade.findInRangeWithPhrase(page, pageSize, id);
     }
 
     /**
