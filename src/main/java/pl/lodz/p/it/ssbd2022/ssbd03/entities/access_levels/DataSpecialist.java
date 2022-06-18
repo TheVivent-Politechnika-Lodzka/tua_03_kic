@@ -22,7 +22,10 @@ import java.util.Collection;
 @NamedQueries({
         @NamedQuery(name = "DataDoctor.findAll", query = "select d from DataSpecialist d"),
         @NamedQuery(name = "DataDoctor.findById", query = "select d from DataSpecialist d where d.id = :id"),
+        @NamedQuery(name = "DataDoctor.searchSpecialistByPhrase", query = "select d.account from DataSpecialist d where" +
+                " lower(concat(d.account.firstName, ' ', d.account.lastName)) like lower(:phrase)"),
 })
+
 @ToString(callSuper = true)
 @NoArgsConstructor
 public class DataSpecialist extends AccessLevel implements Serializable {

@@ -147,6 +147,16 @@
         "listElement": {
             "details": "Szczegóły"
         }
+    },
+
+    "appointmentListPage": {
+        "addImplant": "DODAJ WIZYTĘ",
+        "search": "Szukaj ...",
+        "amount": "Ilość",
+        "items": "pozycji",
+        "listElement": {
+            "details": "Szczegóły"
+        }
     }
 
 }

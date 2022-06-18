@@ -148,5 +148,15 @@
         "listElement": {
             "details": "Details"
         }
+    },
+
+    "appointmentListPage": {
+        "addImplant": "ADD APPOINTMENT",
+        "search": "Search ...",
+        "amount": "Amount",
+        "items": "items",
+        "listElement": {
+            "details": "Details"
+        }
     }
 }
