@@ -234,7 +234,6 @@ public class MOPEndpoint implements MOPEndpointInterface {
      * @return lista wizyt
      * @throws TransactionException w przypadku braku zatwierdzenia transakcji
      */
-    @PermitAll
     @Override
     public Response listVisits(int page, int size, String phrase) {
         PaginationData paginationData;
