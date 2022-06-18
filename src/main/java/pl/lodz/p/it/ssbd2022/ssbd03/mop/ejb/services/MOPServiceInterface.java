@@ -81,7 +81,16 @@ public interface MOPServiceInterface extends ServiceLocalInterface {
         throw new MethodNotImplementedException();
     }
 
-    default List<Account> findSpecialists(int page, int pageSize, String phrase) {
+    /**
+     * Metoda zwracająca liste specialistów - MOP.6
+     *
+     * @param page     - numer strony (int)
+     * @param pageSize - ilość pozycji na stronie (int)
+     * @param phrase   - szukana fraza (String)
+     * @return - lista specialistów (PaginationData)
+     * @throws MethodNotImplementedException - metoda nie jest zaimplementowana
+     */
+    default PaginationData findSpecialists(int page, int pageSize, String phrase) {
         throw new MethodNotImplementedException();
     }
 
