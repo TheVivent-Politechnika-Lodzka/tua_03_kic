@@ -2,6 +2,7 @@ import { Route } from "react-router-dom";
 import AdminMainPage from "../pages/protected/admin/AdminPage/AdminMainPage";
 import CreateAccountPage from "../pages/protected/admin/AdminPage/createAccountPage/CreateAccountPage";
 import ChangeUserPassword from "../pages/protected/admin/ChangeUserPassword/ChangeUserPassword";
+import CreateUserPage from "../pages/protected/admin/CreateUserPage";
 import UserDetails from "../pages/protected/admin/UserDetails/UserDetails";
 import UserManagment from "../pages/protected/admin/UsersManagmentPage/UsersManagmentPage";
 import ClientMainPage from "../pages/protected/client/ClientMainPage";
@@ -26,16 +27,10 @@ const authorizedRoutes = (accessLevel: AccessLevelType) => {
             );
         }
         case "SPECIALIST": {
-            return (
-                <>
-                </>
-            );
+            return <></>;
         }
         case "CLIENT": {
-            return (
-                <>
-                </>
-            );
+            return <></>;
         }
         default: {
             return <></>;
