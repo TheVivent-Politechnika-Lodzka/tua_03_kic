@@ -147,7 +147,7 @@ public interface MOPEndpointInterface {
     }
 
     /**
-     * MOP.11 - Edytuj dowolną wizytę
+     * MOP.10- Edytuj swoją wizytę
      *
      * @param id                 id konkretnej wizyty
      * @param appointmentOwnEditDto obiekt dto edytowanej wizyty

@@ -298,6 +298,7 @@ public class MOPService extends AbstractService implements MOPServiceInterface, 
      * @param login   nazwa uzytkownika który bierze udział w wizycie
      * @return  Edytowana wizyta
      * @throws UserNotPartOfAppointment w przypadku gdy użytkownik edytuje nie swoja wizytę
+     * @throws AppointmentStatusException w przypadku gdy użytkownik chce edytować zakończoną lub odrzuconą wizytę
      */
     @Override
     @PermitAll
