@@ -1,20 +1,26 @@
-import { SimpleGrid, Container } from "@mantine/core";
-import { useTranslation } from "react-i18next";
-import { AppointmentListElementDto } from "../../api/mop"
-import { BlueGradientButton } from "../Button/BlueGradientButton copy";
+import {SimpleGrid, Grid} from "@mantine/core";
+import {useTranslation} from "react-i18next";
+import {AppointmentListElementDto} from "../../api/mop"
+import {BlueGradientButton} from "../Button/BlueGradientButton copy";
 import styles from "./listElement.module.scss";
 
 export const AppointmentListElement = (props: { element: AppointmentListElementDto }) => {
-    const {t} =useTranslation();
+    const {t} = useTranslation();
 
     return (
         <div className={styles.container}>
-            <SimpleGrid cols={3}>
-                <div className={styles.image}>
-                    <img src={props.element.client_url} height="50px" alt="img" />
-                    <img src={props.element.specialist_url} height="20px" alt="img" />
-                </div>
-                <div className={styles.text}>
+            <SimpleGrid cols={3} >
+                <SimpleGrid cols={3}>
+                    <div className={styles.image_top}>
+                        <img src={props.element.client_url} height="40px" alt="img"/>
+                    </div>
+                    <div className={styles.image_bottom} >
+                        <img src={props.element.specialist_url} height="40px" alt="img"/>
+                    </div>
+                    <div />
+                </SimpleGrid>
+
+                <div className={styles.text} >
                     <p
                         className={styles.description}
                     >{`${props.element.description.substring(0, 200)}${

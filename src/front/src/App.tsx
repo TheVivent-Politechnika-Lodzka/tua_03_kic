@@ -42,7 +42,6 @@ function App() {
                     <Route element={<PageLayout />}>
                         <Route path="/" element={<HomePage />} />
                         <Route path="/implants" element={<ImplantListPage />} />
-                        <Route path="/appointments" element={<AppointmentListPage />} />
                         {user.cur ? (
                             <>
                                 <Route

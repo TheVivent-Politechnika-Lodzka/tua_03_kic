@@ -77,22 +77,8 @@ export const AppointmentListPage = () => {
         return () => clearTimeout(delayDebounceFn);
     }, [phrase]);
 
-    const goto = () => {};
-
     return (
         <Container fluid={true} mt={40}>
-            <Grid>
-                <Grid.Col span={2}>
-                    {user === "ADMINISTRATOR" ? (
-                        <GreenGradientButton
-                            onClick={goto}
-                            label={t("appointmentListPage.addImplant")}
-                        />
-                    ) : (
-                        <></>
-                    )}
-                </Grid.Col>
-            </Grid>
 
             <Grid mt="xs">
                 <Grid.Col span={6} offset={3}>

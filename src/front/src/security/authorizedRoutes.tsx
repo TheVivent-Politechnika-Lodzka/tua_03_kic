@@ -6,6 +6,7 @@ import UserDetails from "../pages/protected/admin/UserDetails/UserDetails";
 import UserManagment from "../pages/protected/admin/UserManagment/UserManagment";
 import ClientMainPage from "../pages/protected/client/ClientMainPage";
 import SpecialistMainPage from "../pages/protected/specialist/SpecialistMainPage";
+import {AppointmentListPage} from "../pages/protected/admin/AppointmentList";
 
 const authorizedRoutes = (accessLevel: AccessLevelType) => {
     switch (accessLevel) {
@@ -18,6 +19,7 @@ const authorizedRoutes = (accessLevel: AccessLevelType) => {
                         path="/accounts/:login/change-password"
                         element={<ChangeUserPassword />}
                     />
+                    <Route path="/visits" element={<AppointmentListPage />} />
                     <Route
                         path="/accounts/create-account"
                         element={<CreateAccountPage />}
