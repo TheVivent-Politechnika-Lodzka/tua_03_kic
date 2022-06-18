@@ -8,7 +8,7 @@ import {
     GetAccountResponse,
     getOwnAccount,
 } from "../../../../api";
-import ConfirmActionModal from "../../../../components/ConfirmActionModal/ConfirmActionModal";
+import ConfirmActionModal from "../../../../components/shared/ConfirmActionModal/ConfirmActionModal";
 import ActionButton from "../../../../components/shared/ActionButton/ActionButton";
 import InputWithValidation from "../../../../components/shared/InputWithValidation/InputWithValidation";
 import ValidationMessage from "../../../../components/shared/ValidationMessage/ValidationMessage";
@@ -19,7 +19,7 @@ import {
 } from "../../../../utils/showNotificationsItems";
 import ReactLoading from "react-loading";
 import styles from "./style.module.scss";
-import Modal from "../../../../components/Modal/Modal";
+import Modal from "../../../../components/shared/Modal/Modal";
 import {
     GoogleReCaptchaProvider,
     useGoogleReCaptcha,

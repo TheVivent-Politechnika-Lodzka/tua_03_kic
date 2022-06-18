@@ -1,6 +1,6 @@
 import { faCancel, faCheck } from "@fortawesome/free-solid-svg-icons";
 import { Modal } from "@mantine/core";
-import ActionButton from "../shared/ActionButton/ActionButton";
+import ActionButton from "../ActionButton/ActionButton";
 import styles from "./style.module.scss";
 
 interface ConfirmActionModalProps {

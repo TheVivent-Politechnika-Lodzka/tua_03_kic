@@ -21,10 +21,10 @@ import {
 import ActionButton from "../../../../components/shared/ActionButton/ActionButton";
 import { useNavigate } from "react-router";
 import styles from "./style.module.scss";
-import ConfirmActionModal from "../../../../components/ConfirmActionModal/ConfirmActionModal";
+import ConfirmActionModal from "../../../../components/shared/ConfirmActionModal/ConfirmActionModal";
 import { showNotification } from "@mantine/notifications";
 import { successNotficiationItems } from "../../../../utils/showNotificationsItems";
-import Modal from "../../../../components/Modal/Modal";
+import Modal from "../../../../components/shared/Modal/Modal";
 import ChangeUserPasswordPage from "../ChangeUserPasswordPage/ChangeUserPasswordPage";
 
 interface AccountDetailsPageProps {

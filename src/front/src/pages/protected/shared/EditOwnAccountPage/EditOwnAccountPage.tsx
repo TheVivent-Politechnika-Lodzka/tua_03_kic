@@ -24,7 +24,7 @@ import {
     GoogleReCaptchaProvider,
     useGoogleReCaptcha,
 } from "react-google-recaptcha-v3";
-import ConfirmActionModal from "../../../../components/ConfirmActionModal/ConfirmActionModal";
+import ConfirmActionModal from "../../../../components/shared/ConfirmActionModal/ConfirmActionModal";
 import { showNotification } from "@mantine/notifications";
 import {
     failureNotificationItems,
