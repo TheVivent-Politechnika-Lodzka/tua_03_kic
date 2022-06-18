@@ -1,5 +1,22 @@
 @import "../../variables.scss";
 
+
+.edit_fields_wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 90%;
+
+    .edit_field {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-direction: row;
+      width: 90%;
+      margin-bottom: 2.5rem;
+    }
+}
+
 .account_details_page {
     width: 70%;
     height: 100%;
