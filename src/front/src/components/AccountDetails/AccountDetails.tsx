@@ -7,7 +7,6 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useEffect, useState } from "react";
-import ReactModal from "react-modal";
 import ReactLoading from "react-loading";
 import avatar from "../../assets/images/avatar.jpg";
 import AccessLevel from "../shared/AccessLevel/AccessLevel";
@@ -29,6 +28,7 @@ import {
     successNotficiationItems,
 } from "../../utils/showNotificationsItems";
 import Modal from "../Modal/Modal";
+import ChangeUserPasswordPage from "../../pages/protected/admin/ChangeUserPasswordPage/ChangeUserPasswordPage";
 
 interface AccountDetailsProps {
     login: string;
@@ -42,7 +42,10 @@ const AccountDetails = ({ login, isOpened, onClose }: AccountDetailsProps) => {
         pageLoading: true,
         actionLoading: false,
     });
-    const [opened, setOpened] = useState<boolean>(false);
+    const [changePasswordModal, setChangePasswordModal] =
+        useState<boolean>(false);
+    const [confirmActionModal, setConfirmActionModal] =
+        useState<boolean>(false);
 
     const navigate = useNavigate();
 
@@ -59,36 +62,38 @@ const AccountDetails = ({ login, isOpened, onClose }: AccountDetailsProps) => {
     };
 
     const handleDeactivateActivateAccount = async (deactivate: boolean) => {
-        try {
-            setLoading({ ...loading, actionLoading: true });
-            if (deactivate) {
-                await deactivateAccount(
-                    account?.login as string,
-                    account?.etag as string
-                );
-                setLoading({ ...loading, actionLoading: false });
-                showNotification(
-                    successNotficiationItems("Konto zostało deaktywowane")
-                );
-                onClose();
-                return;
-            }
+        setLoading({ ...loading, actionLoading: true });
 
+        // let response;
+        if (deactivate) {
+            await deactivateAccount(
+                account?.login as string,
+                account?.etag as string
+            );
+        } else {
             await activateAccount(
                 account?.login as string,
                 account?.etag as string
             );
-            setLoading({ ...loading, actionLoading: false });
-            showNotification(
-                successNotficiationItems("Konto zostało aktywowane")
-            );
-            onClose();
-        } catch (error: ApiError | any) {
-            setLoading({ pageLoading: false });
-            showNotification(failureNotificationItems(error?.errorMessage));
         }
+        // TODO: Ogarnąć dlaczego wywala wyjątek. Ale i tak bez tego działa elegancko
+        // if ("errorMessage" in response) {
+        //     setLoading({ ...loading, actionLoading: false });
+        //     showNotification(failureNotificationItems(response.errorMessage));
+        //     setConfirmActionModal(false);
+        //     onClose();
+        //     return;
+        // }
+        setLoading({ ...loading, actionLoading: false });
+        showNotification(
+            successNotficiationItems(
+                `Konto zostało ${deactivate ? "deaktywowane" : "aktywowane"}`
+            )
+        );
+        setConfirmActionModal(false);
+        onClose();
+        return;
     };
-
 
     useEffect(() => {
         handleGetAccount();
@@ -138,9 +143,7 @@ const AccountDetails = ({ login, isOpened, onClose }: AccountDetailsProps) => {
                                 />
                                 <ActionButton
                                     onClick={() => {
-                                        navigate(
-                                            `/accounts/${login}/change-password`
-                                        );
+                                        setChangePasswordModal(true);
                                     }}
                                     title="Zmień hasło"
                                     color="purple"
@@ -157,7 +160,7 @@ const AccountDetails = ({ login, isOpened, onClose }: AccountDetailsProps) => {
                                         account?.active ? faLock : faUnlockAlt
                                     }
                                     onClick={() => {
-                                        setOpened(true);
+                                        setConfirmActionModal(true);
                                     }}
                                 />
                             </div>
@@ -240,6 +243,14 @@ const AccountDetails = ({ login, isOpened, onClose }: AccountDetailsProps) => {
                                 </div>
                             </div>
                         </div>
+                        <ChangeUserPasswordPage
+                            isOpen={changePasswordModal}
+                            onClose={() => {
+                                setChangePasswordModal(false);
+                                onClose();
+                            }}
+                            login={login}
+                        />
                         <ConfirmActionModal
                             title={
                                 account?.active
@@ -250,15 +261,14 @@ const AccountDetails = ({ login, isOpened, onClose }: AccountDetailsProps) => {
                                 account?.active ? "zablokować" : "odblokować"
                             } konto? Operacja jest nieodwracalna.`}
                             isLoading={loading.actionLoading as boolean}
-                            isOpened={opened}
+                            isOpened={confirmActionModal}
                             handleFunction={async () => {
                                 await handleDeactivateActivateAccount(
                                     account?.active as boolean
                                 );
-                                setOpened(false);
                             }}
                             onClose={() => {
-                                setOpened(false);
+                                setConfirmActionModal(false);
                             }}
                         />
                     </div>

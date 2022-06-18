@@ -54,3 +54,8 @@ interface Pagination {
     pageSize?: number;
     totalPages?: number;
 }
+
+interface ConfirmActionModal {
+    title: string;
+    message: string;
+}

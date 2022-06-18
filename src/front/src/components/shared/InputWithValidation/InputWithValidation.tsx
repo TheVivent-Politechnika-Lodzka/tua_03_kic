@@ -41,7 +41,7 @@ const InputWithValidation = ({
     return (
         <div className={styles.edit_field_wrapper}>
             <p className={styles.title}>{title}</p>
-            <div className={styles.input_wrapper}>
+            <form className={styles.input_wrapper}>
                 <input
                     type={type}
                     value={input}
@@ -57,7 +57,7 @@ const InputWithValidation = ({
                     icon={isValid ? faCheck : faClose}
                     color="#00FF66"
                 />
-            </div>
+            </form>
         </div>
     );
 };

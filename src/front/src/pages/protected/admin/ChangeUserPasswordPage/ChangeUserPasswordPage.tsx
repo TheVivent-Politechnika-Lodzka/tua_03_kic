@@ -19,14 +19,19 @@ import {
 } from "../../../../utils/showNotificationsItems";
 import ReactLoading from "react-loading";
 import styles from "./style.module.scss";
-import { Modal } from "react-bootstrap";
+import Modal from "../../../../components/Modal/Modal";
 
 interface ChangeUserPasswordPageProps {
     isOpen: boolean;
-    onClose?: () => void;
+    onClose: () => void;
+    login: string;
 }
 
-const ChangeUserPasswordPage = ({isOpen, onClose}: ChangeUserPasswordPageProps) => {
+const ChangeUserPasswordPage = ({
+    isOpen,
+    onClose,
+    login,
+}: ChangeUserPasswordPageProps) => {
     const [account, setAccount] = useState<GetAccountResponse>();
     const [newPassword, setNewPassword] = useState<string>("");
     const [opened, setOpened] = useState<boolean>(false);
@@ -42,20 +47,16 @@ const ChangeUserPasswordPage = ({isOpen, onClose}: ChangeUserPasswordPageProps) 
     } = useContext(validationContext);
 
     const { t } = useTranslation();
-    const navigate = useNavigate();
-    const { login } = useParams();
 
     const handleGetOwnAccount = async () => {
-        try {
-            const data = await getAccount(login as string);
-            if ("errorMessage" in data) return;
-            setAccount(data);
+        const response = await getAccount(login as string);
+        if ("errorMessage" in response) {
             setLoading({ ...loading, pageLoading: false });
-        } catch (error: ApiError | any) {
-            setLoading({ ...loading, pageLoading: false });
-            showNotification(failureNotificationItems(error?.errorMessage));
-            console.error(`${error?.status} ${error?.errorMessage}`);
+            showNotification(failureNotificationItems(response?.errorMessage));
+            return;
         }
+        setAccount(response);
+        setLoading({ ...loading, pageLoading: false });
     };
 
     const handleChangeUserPassword = async () => {
@@ -74,12 +75,13 @@ const ChangeUserPasswordPage = ({isOpen, onClose}: ChangeUserPasswordPageProps) 
         }
         setLoading({ ...loading, actionLoading: false });
         setOpened(false);
+        onClose();
+        setNewPassword("");
         showNotification(
             successNotficiationItems(
                 `Hasło użytkownika ${login} zostało pomyślnie zmienione`
             )
         );
-        navigate("/accounts");
     };
 
     useEffect(() => {
@@ -88,78 +90,78 @@ const ChangeUserPasswordPage = ({isOpen, onClose}: ChangeUserPasswordPageProps) 
     }, []);
 
     return (
-        <Modal isOpen={isOpen} className={styles.change_user_password_page}>
-            {loading.pageLoading ? (
-                <ReactLoading
-                    type="bars"
-                    color="#fff"
-                    width="10rem"
-                    height="10rem"
-                />
-            ) : (
-                <>
-                    <div className={styles.title_wrapper}>
-                        <h2>
-                            {t("ChangeAccountPassword.title")} {login}
-                        </h2>
-                    </div>
-                    <div className={styles.content}>
-                        <div className={styles.change_password_wrapper}>
-                            <div className={styles.input_wrapper}>
-                                <InputWithValidation
-                                    title="Nowe hasło: "
-                                    validationType="VALIDATE_NEW_PASSWORD"
-                                    isValid={isNewPasswordValid}
-                                    value={newPassword}
-                                    type="password"
-                                    onChange={(e) =>
-                                        setNewPassword(e.target.value)
-                                    }
-                                />
-                            </div>
-                            <div className={styles.action_buttons_wrapper}>
-                                <ActionButton
-                                    onClick={() => {
-                                        setOpened(true);
-                                    }}
-                                    isDisabled={!isNewPasswordValid}
-                                    icon={faCheck}
-                                    color="green"
-                                    title="Zatwierdź"
-                                />
-                                <ActionButton
-                                    onClick={() => {
-                                        navigate("/account");
-                                    }}
-                                    icon={faCancel}
-                                    color="red"
-                                    title="Anuluj"
-                                />
-                            </div>
-                        </div>
-                        <div className={styles.validation_status_wrapper}>
-                            <ValidationMessage
-                                isValid={isNewPasswordValid}
-                                message="Hasło musi być dłuższe niż 8 znaków oraz musi zawierać co jedną dużą literę, jedną cyfrę i jeden znak specjalny"
-                            />
-                        </div>
-                    </div>
-
-                    <ConfirmActionModal
-                        isOpened={opened}
-                        onClose={() => {
-                            setOpened(false);
-                        }}
-                        handleFunction={async () => {
-                            await handleChangeUserPassword();
-                            setOpened(false);
-                        }}
-                        isLoading={loading.actionLoading as boolean}
-                        title={`Zmiana hasła użytkownika`}
-                        description={`Czy na pewno chcesz zmienić hasło użytkownika ${login}? Operacja jest nieodwracalna`}
+        <Modal isOpen={isOpen}>
+            <div className={styles.change_user_password_page}>
+                {loading.pageLoading ? (
+                    <ReactLoading
+                        type="bars"
+                        color="#fff"
+                        width="10rem"
+                        height="10rem"
                     />
-                </>
-            )}
+                ) : (
+                    <>
+                        <div className={styles.title_wrapper}>
+                            <h2>
+                                {t("ChangeAccountPassword.title")} {login}
+                            </h2>
+                        </div>
+                        <div className={styles.content}>
+                            <div className={styles.change_password_wrapper}>
+                                <div className={styles.input_wrapper}>
+                                    <InputWithValidation
+                                        title="Nowe hasło: "
+                                        validationType="VALIDATE_NEW_PASSWORD"
+                                        isValid={isNewPasswordValid}
+                                        value={newPassword}
+                                        onChange={(e) =>
+                                            setNewPassword(e.target.value)
+                                        }
+                                        type="password"
+                                    />
+                                </div>
+                                <div className={styles.action_buttons_wrapper}>
+                                    <ActionButton
+                                        onClick={() => {
+                                            setOpened(true);
+                                        }}
+                                        isDisabled={!isNewPasswordValid}
+                                        icon={faCheck}
+                                        color="green"
+                                        title="Zatwierdź"
+                                    />
+                                    <ActionButton
+                                        onClick={onClose}
+                                        icon={faCancel}
+                                        color="red"
+                                        title="Anuluj"
+                                    />
+                                </div>
+                            </div>
+                            <div className={styles.validation_status_wrapper}>
+                                <ValidationMessage
+                                    isValid={isNewPasswordValid}
+                                    message="Hasło musi być dłuższe niż 8 znaków oraz musi zawierać co jedną dużą literę, jedną cyfrę i jeden znak specjalny"
+                                />
+                            </div>
+                        </div>
+
+                        <ConfirmActionModal
+                            isOpened={opened}
+                            onClose={() => {
+                                setOpened(false);
+                            }}
+                            handleFunction={async () => {
+                                await handleChangeUserPassword();
+                                setOpened(false);
+                            }}
+                            isLoading={loading.actionLoading as boolean}
+                            title={`Zmiana hasła użytkownika`}
+                            description={`Czy na pewno chcesz zmienić hasło użytkownika ${login}? Operacja jest nieodwracalna`}
+                        />
+                    </>
+                )}
+            </div>
         </Modal>
     );
 };
