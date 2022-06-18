@@ -6,6 +6,8 @@ import {
     validationContext,
 } from "../../../context/validationContext";
 import styles from "./style.module.scss";
+import { CSSObject } from "@emotion/react";
+import CSS from "csstype";
 
 interface InputWithValidationProps {
     title: string;
@@ -13,6 +15,8 @@ interface InputWithValidationProps {
     validationType: ActionType;
     isValid: boolean;
     onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
+    required?: boolean;
+    styleWidth?: CSS.Properties;
 }
 
 const InputWithValidation = ({
@@ -20,10 +24,12 @@ const InputWithValidation = ({
     value,
     validationType,
     isValid,
+    required,
+    styleWidth,
     onChange,
 }: InputWithValidationProps) => {
-  const [input, setInput] = useState<string | undefined>(value);
-  const { state, dispatch } = useContext(validationContext);
+    const [input, setInput] = useState<string | undefined>(value);
+    const { state, dispatch } = useContext(validationContext);
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setInput(e.target.value);
@@ -38,8 +44,19 @@ const InputWithValidation = ({
 
     return (
         <div className={styles.edit_field_wrapper}>
-            <p className={styles.title}>{title}</p>
-            <div className={styles.input_wrapper}>
+            {required ? (
+                <>
+                    <p className={styles.title}>
+                        {title} <span style={{ color: "red" }}>*</span>
+                    </p>
+                </>
+            ) : (
+                <>
+                    <p className={styles.title}>{title}</p>
+                </>
+            )}
+
+            <div className={styles.input_wrapper} style={styleWidth}>
                 <input
                     type="text"
                     value={input}
