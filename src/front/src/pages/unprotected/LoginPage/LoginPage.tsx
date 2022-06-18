@@ -92,7 +92,7 @@ const LoginPage = () => {
                         icon={faSignIn}
                         color="purple"
                     />
-                    <p className={styles.forgot_password}>Zapomniałem hasła</p>
+                    <p onClick={() => {navigate("/reset-password")}} className={styles.forgot_password}>Zapomniałem hasła</p>
                 </div>
             </div>
         </section>
