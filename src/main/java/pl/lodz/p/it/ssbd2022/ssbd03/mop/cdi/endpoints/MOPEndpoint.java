@@ -58,6 +58,7 @@ public class MOPEndpoint implements MOPEndpointInterface {
     private Tagger tagger;
 
 
+
     /**
      * MOP.1 - Dodaj nowy wszczep
      *
@@ -216,7 +217,35 @@ public class MOPEndpoint implements MOPEndpointInterface {
         paginationData.setData(appointmentDtos);
         return Response.ok().entity(paginationData).build();
     }
+    /**
+     * MOP.8 - Przeglądaj swoje wizyty
+     *
+     * @param page numer aktualnie przeglądanej strony
+     * @param size ilość rekordów na danej stronie
+     * @return lista wizyt
+     * @throws TransactionException w przypadku braku zatwierdzenia transakcji
+     */
+    @RolesAllowed({Roles.CLIENT, Roles.SPECIALIST})
+    @Override
+    public Response listMyVisits(int page, int size) {
+        PaginationData paginationData;
+        String login = authContext.getCurrentUserLogin();
+        int TXCounter = Config.MAX_TX_RETRIES;
+        boolean commitedTX;
+        do {
+            paginationData = mopService.findVisitsByLogin(page, size, login);
+            commitedTX = mopService.isLastTransactionCommited();
+        } while (!commitedTX && TXCounter-- > 0);
 
+        if (!commitedTX) {
+            throw new TransactionException();
+        }
+
+        List<Appointment> appointments = paginationData.getData();
+        List<AppointmentListElementDto> appointmentDtos = appointmentMapper.appointmentListElementDtoList(appointments);
+        paginationData.setData(appointmentDtos);
+        return Response.ok().entity(paginationData).build();
+    }
     /**
      * MOP.9 - Zarezerwuj wizytę
      * @param createAppointmentDto - dane nowej wizyty
