@@ -1,7 +1,7 @@
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import HomePage from "./pages/unprotected/HomePage/HomePage";
 import ErrorPage from "./pages/unprotected/ErrorPage/ErrorPage";
-import LoginPage from "./pages/unprotected/LoginPage/LoginPage";
+import RegisterPage from "./pages/unprotected/RegisterPage/RegisterPage";
 import { useStoreSelector, useStoreDispatch } from "./redux/reduxHooks";
 import jwtDecode from "jwt-decode";
 import { login as loginDispatch } from "./redux/userSlice";
@@ -14,6 +14,7 @@ import EditOwnAccountPage from "./pages/protected/shared/EditOwnAccountPage/Edit
 import authorizedRoutes from "./security/authorizedRoutes";
 import PageLayout from "./pages/PageLayout/PageLayout";
 import { ImplantListPage } from "./pages/unprotected/ImplantListPage";
+import LoginPage from "./pages/unprotected/LoginPage/LoginPage";
 
 function App() {
     const user = useStoreSelector((state) => state.user);
@@ -55,6 +56,10 @@ function App() {
                         ) : (
                             <>
                                 <Route path="/login" element={<LoginPage />} />
+                                <Route
+                                    path="/register"
+                                    element={<RegisterPage />}
+                                />
                                 <Route
                                     path="/active"
                                     element={<ActivateAccountPage />}

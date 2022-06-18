@@ -1,0 +1,72 @@
+@import "../../../variables.scss";
+
+.login_page {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    overflow-y: hidden;
+
+    .background {
+        width: 100%;
+        height: 100%;
+        background-image: url("../../../assets/images/loginPageBackground.jpg");
+        background-size: cover;
+
+        filter: blur(8px);
+    }
+
+    .form_wrapper {
+        position: absolute;
+        display: flex;
+        justify-content: space-evenly;
+        align-items: center;
+        flex-direction: column;
+        background-color: $secondary-color;
+        height: 68%;
+        width: 30rem;
+        border-radius: 2.5rem;
+        animation: fade_in 0.75s ease-in-out;
+
+        .header {
+            font-size: 2.75rem;
+            font-weight: bold;
+            color: $white;
+        }
+
+        .input_wrapper {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-direction: column;
+            height: 35%;
+        }
+
+        .action_button_wrapper {
+            display: flex;
+            justify-content: space-evenly;
+            align-items: center;
+            flex-direction: column;
+        }
+        .forgot_password {
+            color: $white;
+            font-size: 1rem;
+            margin-top: 1.5rem;
+            align-self: center;
+            cursor: pointer;
+        }
+    }
+}
+
+@keyframes fade_in {
+    from {
+        margin-top: 12rem;
+        opacity: 0;
+    }
+    to {
+        margin-top: 0;
+        opacity: 1;
+    }
+}
