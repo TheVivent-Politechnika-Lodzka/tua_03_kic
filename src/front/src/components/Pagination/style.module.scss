@@ -1,0 +1,35 @@
+@import "../../variables.scss";
+
+.pagination_wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-decoration: none;
+    list-style-type: none;
+    margin-top: 2.5rem;
+
+    .pagination_link {
+        text-decoration: none;
+        color: $white;
+        font-size: 1.5rem;
+        margin-inline: 0.6rem;
+        padding: 0.6rem 1.23rem;
+        border-radius: 100%;
+        cursor: pointer;
+
+        &:hover {
+            font-weight: bolder;
+        }
+
+        &_label {
+            @extend .pagination_link;
+            padding: 0;
+        }
+    }
+
+    .current {
+        background-color: $white;
+        color: $primary-color;
+        font-weight: bold;
+    }
+}

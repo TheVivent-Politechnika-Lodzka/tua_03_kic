@@ -8,6 +8,7 @@ import pl.lodz.p.it.ssbd2022.ssbd03.entities.ImplantReview;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.MethodNotImplementedException;
 import pl.lodz.p.it.ssbd2022.ssbd03.utils.PaginationData;
 
+import java.time.Instant;
 import java.util.List;
 import java.util.UUID;
 
@@ -18,8 +19,20 @@ public interface MOPServiceInterface extends ServiceLocalInterface {
      *
      * @param implant - nowy wszczep
      * @return - nowy wszczep
+     * @throws MethodNotImplementedException jeśli serwis nie jest zaimplementowany
      */
     default Implant createImplant(Implant implant) {
+        throw new MethodNotImplementedException();
+    }
+
+    /**
+     * Serwis powiązany z MOP 2 - archiwizacja wszczepu
+     *
+     * @param implant - uuid archiwizowanego wszczepu
+     * @return obiekt Implant
+     * @throws MethodNotImplementedException jeśli serwis nie jest zaimplementowany
+     */
+    default Implant archiveImplant(UUID implant) {
         throw new MethodNotImplementedException();
     }
 
@@ -27,7 +40,15 @@ public interface MOPServiceInterface extends ServiceLocalInterface {
         throw new MethodNotImplementedException();
     }
 
-    default Implant updateImplant(Implant implant) {
+    /**
+     * Metoda zwracająca liste wszczepów
+     *
+     * @param uuid  uuid implantu do edycji
+     * @param implant dane do modyfikacji implantu
+     * @return zmodyfikowany implant
+     * @throws MethodNotImplementedException metoda nie jest zaimplementowana
+     */
+    default Implant editImplant(UUID uuid, Implant implant) {
         throw new MethodNotImplementedException();
     }
 
@@ -90,8 +111,30 @@ public interface MOPServiceInterface extends ServiceLocalInterface {
     default PaginationData findVisits(int page, int pageSize, String phrase) {
         throw new MethodNotImplementedException();
     }
+    /**
+     * Metoda zwracająca listę wszystkich wizyt dla podanego loginu
+     *
+     * @param page numer aktualnie przeglądanej strony
+     * @param pageSize ilość rekordów na danej stronie
+     * @param login wyszukiwana fraza
+     * @return Lista wizyt zgodnych z parametrami wyszukiwania
+     * @throws MethodNotImplementedException w przypadku niezaimplementowanej metody
+     */
+    default PaginationData findVisitsByLogin(int page, int pageSize, String login){
+        throw new MethodNotImplementedException();
+    }
 
-    default Appointment createAppointment(Appointment appointment) {
+    /**
+     * Metoda tworząca nową wizytę
+     *
+     * @param clientLogin       - login klienta
+     * @param specialistId      - identyfikator specjalisty
+     * @param implantId         - identyfikator wszczepu
+     * @param startDate         - data rozpoczęcia wizyty
+     * @return nowa wizyta
+     * @throws MethodNotImplementedException w przypadku niezaimplementowanej metody
+     */
+    default Appointment createAppointment(String clientLogin, UUID specialistId, UUID implantId, Instant startDate) {
         throw new MethodNotImplementedException();
     }
 
@@ -119,11 +162,30 @@ public interface MOPServiceInterface extends ServiceLocalInterface {
      * @return Wizyta, która została odwołana
      * @throws MethodNotImplementedException w momencie, gdy metoda jest niezaimplementowana
      */
-    default Appointment cancelAppointment(UUID id) {
+    default Appointment cancelAnyAppointment(UUID id) {
         throw new MethodNotImplementedException();
     }
 
-    default Appointment finishAppointment(Appointment appointment) {
+    /**
+     * Metoda pozwalająca na odwołanie własnej wizyty, wywoływana z poziomu serwisu.
+     * Może ją wykonać tylko konto z poziomem dostępu klienta/specjalisty
+     *
+     * @param id identyfikator wizyty, która ma zostać odwołana
+     * @return Wizyta, która została odwołana
+     * @throws MethodNotImplementedException w momencie, gdy metoda jest niezaimplementowana
+     */
+    default Appointment cancelOwnAppointment(UUID id) {
+        throw new MethodNotImplementedException();
+    }
+
+    /**
+     * Metoda zapewniająca możliwość oznaczenia wizyty jako zakończonej
+     * @param id identyfikator wizyty
+     * @param login login specjalisty oznaczającego wizytę jako zakończoną
+     * @return wizyta oznaczona jako zakończona
+     * @throws MethodNotImplementedException gdy metoda nie jest zaimplementowana
+     */
+    default Appointment finishAppointment(UUID id, String login) {
         throw new MethodNotImplementedException();
     }
 
@@ -132,14 +194,19 @@ public interface MOPServiceInterface extends ServiceLocalInterface {
      *
      * @param review Recenzja wszczepu, napisana przez klienta
      * @return Recenzja wszczepu
-     * @throws MethodNotImplementedException metoda nie jest zaimplementowana
+     * @throws MethodNotImplementedException w momencie, gdy metoda jest niezaimplementowana
      */
     default ImplantReview createReview(ImplantReview review) {
         throw new MethodNotImplementedException();
     }
 
-    default void deleteReview(ImplantReview review) {
+    /**
+     * Metoda usuwająca recenzję dla danego wszczepu
+     *
+     * @param id Identyfikator recenzji wszczepu, która ma zostać usunięta
+     * @throws MethodNotImplementedException w momencie, gdy metoda jest niezaimplementowana
+     */
+    default void deleteReview(UUID id, String login) {
         throw new MethodNotImplementedException();
     }
-
 }

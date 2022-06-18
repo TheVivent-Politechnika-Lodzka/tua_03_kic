@@ -109,11 +109,6 @@ public class Account extends AbstractEntity implements Serializable {
     @Email
     @NotNull
     private String email;
-
-    public void setEmail(String email) {
-        this.email = email.toLowerCase();
-    }
-
     @Basic(optional = false)
     @Column(name = "language", table = "account_details", nullable = false, length = 16)
     @Getter
@@ -121,6 +116,9 @@ public class Account extends AbstractEntity implements Serializable {
     @NotNull
     private Locale language;
 
+    public void setEmail(String email) {
+        this.email = email.toLowerCase();
+    }
 
     public void addAccessLevel(AccessLevel accessLevel) {
         accessLevelCollection.add(accessLevel);
@@ -130,6 +128,13 @@ public class Account extends AbstractEntity implements Serializable {
     public void removeAccessLevel(AccessLevel accessLevel) {
         accessLevelCollection.remove(accessLevel);
         accessLevel.setAccount(null);
+    }
+
+    public boolean isInRole(String role) {
+        for (AccessLevel accessLevel : accessLevelCollection) {
+            if (accessLevel.getLevel().equals(role)) return true;
+        }
+        return false;
     }
 
     @Override

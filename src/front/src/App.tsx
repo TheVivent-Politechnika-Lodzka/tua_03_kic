@@ -6,7 +6,6 @@ import { useStoreSelector, useStoreDispatch } from "./redux/reduxHooks";
 import jwtDecode from "jwt-decode";
 import { login as loginDispatch } from "./redux/userSlice";
 import ActivateAccountPage from "./pages/unprotected/activate/ActivateAccountPage";
-import HomeLayout from "./components/Layout/HomeLayout";
 import ResetPasswordForm from "./components/Form/resetPasswordForm/ResetPasswordForm";
 import ResetPasswordTokenForm from "./components/Form/resetPasswordTokenForm/ResetPasswordTokenForm";
 import { ValidationProvider } from "./context/validationContext";
@@ -14,6 +13,7 @@ import AccountDetailsPage from "./pages/protected/shared/AccountDetailsPage/Acco
 import EditOwnAccountPage from "./pages/protected/shared/EditOwnAccountPage/EditOwnAccountPage";
 import authorizedRoutes from "./security/authorizedRoutes";
 import PageLayout from "./pages/PageLayout/PageLayout";
+import { ImplantListPage } from "./pages/unprotected/implantList";
 
 function App() {
     const user = useStoreSelector((state) => state.user);
@@ -39,6 +39,7 @@ function App() {
                     <Route path="/*" element={<ErrorPage />} />
                     <Route element={<PageLayout />}>
                         <Route path="/" element={<HomePage />} />
+                        <Route path="/implants" element={<ImplantListPage />} />
                         {user.cur ? (
                             <>
                                 <Route
