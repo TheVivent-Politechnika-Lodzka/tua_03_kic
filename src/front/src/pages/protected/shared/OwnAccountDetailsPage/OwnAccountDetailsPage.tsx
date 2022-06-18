@@ -14,7 +14,7 @@ import { style } from "@mui/system";
 import ChangeOwnPasswordForm from "../../../../components/Form/changeOwnPasswordForm/ChangeOwnPasswordForm";
 import ChangeOwnPasswordPage from "../ChangeOwnPasswordPage/ChangeOwnPasswordPage";
 
-const AccountDetailsPage = () => {
+const OwnAccountDetailsPage = () => {
     const [account, setAccount] = useState<AccountDetails>();
     const [loading, setLoading] = useState<Loading>({ pageLoading: true });
     const [error, setError] = useState<ApiError>();
@@ -42,7 +42,7 @@ const AccountDetailsPage = () => {
     useEffect(() => {}, [accessLevel]);
 
     return (
-        <section className={styles.account_details_page}>
+        <section className={styles.own_account_details_page}>
             {loading.pageLoading ? (
                 <ReactLoading
                     type="bars"
@@ -175,4 +175,4 @@ const AccountDetailsPage = () => {
     );
 };
 
-export default AccountDetailsPage;
+export default OwnAccountDetailsPage;

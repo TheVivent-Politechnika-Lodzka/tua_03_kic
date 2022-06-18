@@ -8,33 +8,33 @@ import {
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useEffect, useState } from "react";
 import ReactLoading from "react-loading";
-import avatar from "../../assets/images/avatar.jpg";
-import AccessLevel from "../shared/AccessLevel/AccessLevel";
-import flagPL from "../../assets/images/PL.png";
-import flagEN from "../../assets/images/EN.png";
+import avatar from "../../../../assets/images/avatar.jpg";
+import AccessLevel from "../../../../components/shared/AccessLevel/AccessLevel";
+import flagPL from "../../../../assets/images/PL.png";
+import flagEN from "../../../../assets/images/EN.png";
 import {
     activateAccount,
     deactivateAccount,
     getAccount,
     GetAccountResponse,
-} from "../../api";
-import ActionButton from "../shared/ActionButton/ActionButton";
+} from "../../../../api";
+import ActionButton from "../../../../components/shared/ActionButton/ActionButton";
 import { useNavigate } from "react-router";
 import styles from "./style.module.scss";
-import ConfirmActionModal from "../ConfirmActionModal/ConfirmActionModal";
+import ConfirmActionModal from "../../../../components/ConfirmActionModal/ConfirmActionModal";
 import { showNotification } from "@mantine/notifications";
-import { successNotficiationItems } from "../../utils/showNotificationsItems";
-import Modal from "../Modal/Modal";
-import ChangeUserPasswordPage from "../../pages/protected/admin/ChangeUserPasswordPage/ChangeUserPasswordPage";
+import { successNotficiationItems } from "../../../../utils/showNotificationsItems";
+import Modal from "../../../../components/Modal/Modal";
+import ChangeUserPasswordPage from "../ChangeUserPasswordPage/ChangeUserPasswordPage";
 
-interface AccountDetailsProps {
+interface AccountDetailsPageProps {
     login: string;
     isOpened: boolean;
     onClose: () => void;
     isAdmin: boolean;
 }
 
-const AccountDetails = ({ login, isOpened, isAdmin, onClose }: AccountDetailsProps) => {
+const AccountDetailsPage = ({ login, isOpened, isAdmin, onClose }: AccountDetailsPageProps) => {
     const [account, setAccount] = useState<GetAccountResponse>();
     const [loading, setLoading] = useState<Loading>({
         pageLoading: true,
@@ -248,7 +248,6 @@ const AccountDetails = ({ login, isOpened, isAdmin, onClose }: AccountDetailsPro
                             isOpen={changePasswordModal}
                             onClose={() => {
                                 setChangePasswordModal(false);
-                                onClose();
                             }}
                             login={login}
                         />
@@ -279,4 +278,4 @@ const AccountDetails = ({ login, isOpened, isAdmin, onClose }: AccountDetailsPro
     );
 };
 
-export default AccountDetails;
+export default AccountDetailsPage;

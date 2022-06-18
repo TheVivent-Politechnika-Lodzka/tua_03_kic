@@ -1,14 +1,12 @@
 import {
-    faC,
     faCancel,
     faCheck,
     faInfoCircle,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router";
 import { useStoreSelector } from "../../redux/reduxHooks";
-import AccountDetails from "../AccountDetails/AccountDetails";
+import AccountDetails from "../../pages/protected/admin/AccountDetailsPage/AccountDetailsPage";
 import AccessLevel from "../shared/AccessLevel/AccessLevel";
 import styles from "./style.module.scss";
 
