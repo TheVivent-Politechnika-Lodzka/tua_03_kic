@@ -1,6 +1,6 @@
 import { Route } from "react-router-dom";
 import CreateAccountPage from "../pages/protected/admin/AdminPage/createAccountPage/CreateAccountPage";
-import ChangeUserPassword from "../pages/protected/admin/ChangeUserPassword/ChangeUserPassword";
+import ChangeUserPassword from "../pages/protected/admin/ChangeUserPasswordPage/ChangeUserPasswordPage";
 import UserDetails from "../pages/protected/admin/UserDetails/UserDetails";
 import UserManagment from "../pages/protected/admin/UsersManagmentPage/UsersManagmentPage";
 

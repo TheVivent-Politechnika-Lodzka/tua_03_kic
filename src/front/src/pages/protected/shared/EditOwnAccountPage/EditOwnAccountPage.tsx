@@ -114,7 +114,7 @@ const EditOwnAccountPageInternal = () => {
         <section className={style.edit_own_account_page}>
             {loading.pageLoading ? (
                 <ReactLoading
-                    type="cylon"
+                    type="bars"
                     color="#fff"
                     width="10rem"
                     height="10rem"

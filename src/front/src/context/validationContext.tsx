@@ -45,8 +45,8 @@ const initialState: ContextState = {
     isPhoneNumberValid: true,
     isPESELValid: true,
     isEmailValid: true,
-    isOldPasswordValid: true,
-    isNewPasswordValid: true,
+    isOldPasswordValid: false,
+    isNewPasswordValid: false,
     input: "",
 };
 
