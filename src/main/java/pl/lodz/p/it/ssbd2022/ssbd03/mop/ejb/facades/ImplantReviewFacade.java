@@ -1,5 +1,6 @@
 package pl.lodz.p.it.ssbd2022.ssbd03.mop.ejb.facades;
 
+import jakarta.annotation.security.PermitAll;
 import jakarta.annotation.security.RolesAllowed;
 import jakarta.ejb.Stateless;
 import jakarta.ejb.TransactionAttribute;
@@ -113,13 +114,14 @@ public class ImplantReviewFacade extends AbstractFacade<ImplantReview> {
      * @throws InvalidParametersException w przypadku podania nieprawidłowych parametrów
      * @throws DatabaseException w przypadku wystąpienia błędu bazy danych
      */
-    public PaginationData findByClientLoginInRange(int pageNumber, int perPage, UUID id) {
+    @PermitAll
+    public PaginationData findInRangeWithPhrase(int pageNumber, int perPage, UUID id) {
         try {
             TypedQuery<ImplantReview> typedQuery = entityManager.createNamedQuery("Review.findByImplantId", ImplantReview.class);
 
             pageNumber--;
 
-            List<ImplantReview> data = typedQuery.setParameter("id", id)
+            List<ImplantReview> data = typedQuery.setParameter("implantId", id)
                     .setMaxResults(perPage)
                     .setFirstResult(pageNumber * perPage)
                     .getResultList();
