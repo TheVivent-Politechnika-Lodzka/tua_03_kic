@@ -257,4 +257,12 @@ public interface MOPEndpointInterface {
         throw new MethodNotImplementedException();
     }
 
+    @GET
+    @RolesAllowed({Roles.ADMINISTRATOR, Roles.CLIENT})
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("/implant/{id}/reviews")
+    default Response getAllImplantsReviews(@PathParam("id") UUID id) {
+        throw new MethodNotImplementedException();
+    }
+
 }
