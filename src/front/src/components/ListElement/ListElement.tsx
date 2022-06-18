@@ -1,12 +1,17 @@
 import { SimpleGrid, Container } from "@mantine/core";
+import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { ImplantListElementDto } from "../../api/mop";
 import { BlueGradientButton } from "../Button/BlueGradientButton copy";
+import ImplantDetails from "../ImplantDetails/ImplantDetails";
 import styles from "./listElement.module.scss";
 
 export const ListElement = (props: { element: ImplantListElementDto }) => {
-    const {t} =useTranslation();
+    const { t } = useTranslation();
 
+    const [modal, setModal] = useState<boolean>(false);
+
+    useEffect(() => {}, [modal]);
     return (
         <div className={styles.container}>
             <SimpleGrid cols={3}>
@@ -32,9 +37,18 @@ export const ListElement = (props: { element: ImplantListElementDto }) => {
                     <div className={styles.button}>
                         <BlueGradientButton
                             label={t("implantListPage.listElement.details")}
-                            onClick={() => console.log(props.element.id)}
+                            onClick={() => {
+                                setModal(true);
+                            }}
                         />
                     </div>
+                    <ImplantDetails
+                        id={props.element.id}
+                        isOpened={modal}
+                        onClose={() => {
+                            setModal(false);
+                        }}
+                    />
                 </div>
             </SimpleGrid>
         </div>
