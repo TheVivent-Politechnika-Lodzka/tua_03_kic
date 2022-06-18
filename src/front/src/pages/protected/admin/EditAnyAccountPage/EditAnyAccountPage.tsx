@@ -20,7 +20,7 @@ import ConfirmActionModal from "../../../../components/ConfirmActionModal/Confir
 import { showNotification } from "@mantine/notifications";
 import { successNotficiationItems } from "../../../../utils/showNotificationsItems";
 
-const UserDetails = () => {
+const EditAnyAccountPage = () => {
     const [account, setAccount] = useState<GetAccountResponse>();
     const accountAccessLevels = account?.accessLevels.map(
         (level) => level.level
@@ -38,9 +38,12 @@ const UserDetails = () => {
         state: {
             isFirstNameValid,
             isLastNameValid,
-            isPhoneNumberValid,
+            isPhoneNumberValidAdministrator,
+            isPhoneNumberValidSpecialist,
+            isPhoneNumberValidClient,
             isPESELValid,
-            isEmailValid,
+            isEmailValidAdministrator,
+            isEmailValidSpecialist,
         },
         dispatch,
     } = useContext(validationContext);
@@ -80,9 +83,12 @@ const UserDetails = () => {
     const isEveryFieldValid =
         isFirstNameValid &&
         isLastNameValid &&
-        isPhoneNumberValid &&
+        isPhoneNumberValidAdministrator &&
+        isPhoneNumberValidSpecialist &&
+        isPhoneNumberValidClient &&
         isPESELValid &&
-        isEmailValid;
+        isEmailValidAdministrator &&
+        isEmailValidSpecialist;
 
     return (
         <section className={style.edit_own_account_page}>
@@ -221,8 +227,10 @@ const UserDetails = () => {
                                                                 level.phoneNumber
                                                         )[0]
                                                 }
-                                                validationType="VALIDATE_PHONENUMBER"
-                                                isValid={isPhoneNumberValid}
+                                                validationType="VALIDATE_PHONENUMBER_CLIENT"
+                                                isValid={
+                                                    isPhoneNumberValidClient
+                                                }
                                                 onChange={(e) => {
                                                     if (
                                                         e.target.value &&
@@ -245,7 +253,9 @@ const UserDetails = () => {
                                                 }}
                                             />
                                             <ValidationMessage
-                                                isValid={isPhoneNumberValid}
+                                                isValid={
+                                                    isPhoneNumberValidClient
+                                                }
                                                 message="Numer telefonu musi składać się z 9 cyfr."
                                             />
                                         </div>
@@ -278,8 +288,10 @@ const UserDetails = () => {
                                                                 level.phoneNumber
                                                         )[0]
                                                 }
-                                                validationType="VALIDATE_PHONENUMBER"
-                                                isValid={isPhoneNumberValid}
+                                                validationType="VALIDATE_PHONENUMBER_ADMINISTRATOR"
+                                                isValid={
+                                                    isPhoneNumberValidAdministrator
+                                                }
                                                 onChange={(e) => {
                                                     if (
                                                         e.target.value &&
@@ -302,7 +314,9 @@ const UserDetails = () => {
                                                 }}
                                             />
                                             <ValidationMessage
-                                                isValid={isPhoneNumberValid}
+                                                isValid={
+                                                    isPhoneNumberValidAdministrator
+                                                }
                                                 message="Numer telefonu musi składać się z 9 cyfr."
                                             />
                                         </div>
@@ -321,8 +335,10 @@ const UserDetails = () => {
                                                                 level.contactEmail
                                                         )[0]
                                                 }
-                                                validationType="VALIDATE_EMAIL"
-                                                isValid={isEmailValid}
+                                                validationType="VALIDATE_EMAIL_ADMINISTRATOR"
+                                                isValid={
+                                                    isEmailValidAdministrator
+                                                }
                                                 onChange={(e) => {
                                                     if (
                                                         e.target.value &&
@@ -345,7 +361,9 @@ const UserDetails = () => {
                                                 }}
                                             />
                                             <ValidationMessage
-                                                isValid={isEmailValid}
+                                                isValid={
+                                                    isEmailValidAdministrator
+                                                }
                                                 message="Email musi być poprawny."
                                             />
                                         </div>
@@ -376,8 +394,10 @@ const UserDetails = () => {
                                                                 level.phoneNumber
                                                         )[0]
                                                 }
-                                                validationType="VALIDATE_PHONENUMBER"
-                                                isValid={isPhoneNumberValid}
+                                                validationType="VALIDATE_PHONENUMBER_SPECIALIST"
+                                                isValid={
+                                                    isPhoneNumberValidSpecialist
+                                                }
                                                 onChange={(e) => {
                                                     if (
                                                         e.target.value &&
@@ -400,7 +420,9 @@ const UserDetails = () => {
                                                 }}
                                             />
                                             <ValidationMessage
-                                                isValid={isPhoneNumberValid}
+                                                isValid={
+                                                    isPhoneNumberValidSpecialist
+                                                }
                                                 message="Numer telefonu musi składać się z 9 cyfr."
                                             />
                                         </div>
@@ -419,8 +441,8 @@ const UserDetails = () => {
                                                                 level.contactEmail
                                                         )[0]
                                                 }
-                                                validationType="VALIDATE_EMAIL"
-                                                isValid={isEmailValid}
+                                                validationType="VALIDATE_EMAIL_SPECIALIST"
+                                                isValid={isEmailValidSpecialist}
                                                 onChange={(e) => {
                                                     if (
                                                         e.target.value &&
@@ -443,7 +465,7 @@ const UserDetails = () => {
                                                 }}
                                             />
                                             <ValidationMessage
-                                                isValid={isEmailValid}
+                                                isValid={isEmailValidSpecialist}
                                                 message="Email musi być poprawny."
                                             />
                                         </div>
@@ -462,7 +484,7 @@ const UserDetails = () => {
                                 />
                                 <ActionButton
                                     onClick={() => {
-                                        navigate("/account");
+                                        navigate("/accounts");
                                     }}
                                     icon={faCancel}
                                     color="red"
@@ -492,4 +514,4 @@ const UserDetails = () => {
     );
 };
 
-export default UserDetails;
+export default EditAnyAccountPage;

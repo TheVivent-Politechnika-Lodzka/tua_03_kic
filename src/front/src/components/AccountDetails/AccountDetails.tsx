@@ -105,33 +105,42 @@ const AccountDetails = ({ login, isOpened, onClose }: AccountDetailsProps) => {
     };
 
     const handleDeactivateActivateAccount = async (deactivate: boolean) => {
-        try {
-            setLoading({ ...loading, actionLoading: true });
-            if (deactivate) {
-                await deactivateAccount(
-                    account?.login as string,
-                    account?.etag as string
-                );
-                setLoading({ ...loading, actionLoading: false });
+        if (!account) return;
+        setLoading({ ...loading, actionLoading: true });
+        if (deactivate) {
+            const response = await deactivateAccount(
+                account?.login as string,
+                account?.etag as string
+            );
+            setLoading({ ...loading, actionLoading: false });
+            if ("errorMessage" in response) {
                 showNotification(
-                    successNotficiationItems("Konto zostało deaktywowane")
+                    failureNotificationItems(response.errorMessage)
                 );
                 onClose();
                 return;
             }
-
-            await activateAccount(
-                account?.login as string,
-                account?.etag as string
+            showNotification(
+                successNotficiationItems("Konto zostało deaktywowane")
             );
+            onClose();
+            return;
+        } else {
+            const response = await activateAccount(account.login, account.etag);
+            if ("errorMessage" in response) {
+                setLoading({ ...loading, actionLoading: false });
+                showNotification(
+                    failureNotificationItems(response.errorMessage)
+                );
+                onClose();
+                return;
+            }
             setLoading({ ...loading, actionLoading: false });
             showNotification(
                 successNotficiationItems("Konto zostało aktywowane")
             );
             onClose();
-        } catch (error: ApiError | any) {
             setLoading({ pageLoading: false });
-            showNotification(failureNotificationItems(error?.errorMessage));
         }
     };
 
@@ -403,11 +412,12 @@ const AddAccessLevelModal = ({
     const {
         state,
         state: {
-            isFirstNameValid,
-            isLastNameValid,
-            isPhoneNumberValid,
+            isPhoneNumberValidAdministrator,
+            isPhoneNumberValidSpecialist,
+            isPhoneNumberValidClient,
             isPESELValid,
-            isEmailValid,
+            isEmailValidAdministrator,
+            isEmailValidSpecialist,
         },
         dispatch,
     } = useContext(validationContext);
@@ -465,8 +475,8 @@ const AddAccessLevelModal = ({
                             <InputWithValidation
                                 title="Numer telefonu: "
                                 value={accessLevelToAdd.phoneNumber}
-                                validationType="VALIDATE_PHONENUMBER"
-                                isValid={isPhoneNumberValid}
+                                validationType="VALIDATE_PHONENUMBER_CLIENT"
+                                isValid={isPhoneNumberValidClient}
                                 onChange={(e) => {
                                     if (e.target.value)
                                         setAccessLevelToAdd((old) => {
@@ -477,7 +487,7 @@ const AddAccessLevelModal = ({
                             />
                             <div />
                             <ValidationMessage
-                                isValid={isPhoneNumberValid}
+                                isValid={isPhoneNumberValidClient}
                                 message="Numer telefonu musi składać się z 9 cyfr."
                             />
                         </div>
@@ -490,8 +500,8 @@ const AddAccessLevelModal = ({
                             <InputWithValidation
                                 title="Numer telefonu: "
                                 value={accessLevelToAdd.phoneNumber}
-                                validationType="VALIDATE_PHONENUMBER"
-                                isValid={isPhoneNumberValid}
+                                validationType="VALIDATE_PHONENUMBER_ADMINISTRATOR"
+                                isValid={isPhoneNumberValidAdministrator}
                                 onChange={(e) => {
                                     setAccessLevelToAdd((old) => {
                                         old.phoneNumber = e.target.value;
@@ -500,7 +510,7 @@ const AddAccessLevelModal = ({
                                 }}
                             />
                             <ValidationMessage
-                                isValid={isPhoneNumberValid}
+                                isValid={isPhoneNumberValidAdministrator}
                                 message="Numer telefonu musi składać się z 9 cyfr."
                             />
                         </div>
@@ -508,8 +518,8 @@ const AddAccessLevelModal = ({
                             <InputWithValidation
                                 title="Email kontaktowy: "
                                 value={accessLevelToAdd.contactEmail}
-                                validationType="VALIDATE_EMAIL"
-                                isValid={isEmailValid}
+                                validationType="VALIDATE_EMAIL_ADMINISTRATOR"
+                                isValid={isEmailValidAdministrator}
                                 onChange={(e) => {
                                     setAccessLevelToAdd((old) => {
                                         old.contactEmail = e.target.value;
@@ -518,7 +528,7 @@ const AddAccessLevelModal = ({
                                 }}
                             />
                             <ValidationMessage
-                                isValid={isEmailValid}
+                                isValid={isEmailValidAdministrator}
                                 message="Email musi być poprawny."
                             />
                         </div>
