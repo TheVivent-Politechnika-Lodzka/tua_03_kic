@@ -28,6 +28,7 @@ import {
     failureNotificationItems,
     successNotficiationItems,
 } from "../../utils/showNotificationsItems";
+import Modal from "../Modal/Modal";
 
 interface AccountDetailsProps {
     login: string;
@@ -88,27 +89,13 @@ const AccountDetails = ({ login, isOpened, onClose }: AccountDetailsProps) => {
         }
     };
 
-    const customStyles = {
-        overlay: {
-            backgroundColor: "rgba(0, 0, 0, 0.85)",
-        },
-        content: {
-            width: "100vw",
-            height: "100vh",
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            backgroundColor: "transparent",
-            border: "none",
-        },
-    };
 
     useEffect(() => {
         handleGetAccount();
     }, [isOpened]);
 
     return (
-        <ReactModal isOpen={isOpened} style={customStyles} ariaHideApp={false}>
+        <Modal isOpen={isOpened}>
             <section className={styles.account_details_page}>
                 {loading.pageLoading ? (
                     <ReactLoading
@@ -277,7 +264,7 @@ const AccountDetails = ({ login, isOpened, onClose }: AccountDetailsProps) => {
                     </div>
                 )}
             </section>
-        </ReactModal>
+        </Modal>
     );
 };
 

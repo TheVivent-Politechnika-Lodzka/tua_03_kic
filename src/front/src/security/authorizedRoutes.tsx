@@ -12,10 +12,6 @@ const authorizedRoutes = (accessLevel: AccessLevelType) => {
                     <Route path="/accounts" element={<UserManagment />} />
                     <Route path="/accounts/:login" element={<UserDetails />} />
                     <Route
-                        path="/accounts/:login/change-password"
-                        element={<ChangeUserPassword />}
-                    />
-                    <Route
                         path="/accounts/create-account"
                         element={<CreateAccountPage />}
                     />
