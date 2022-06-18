@@ -1,5 +1,4 @@
 import { faSignIn } from "@fortawesome/free-solid-svg-icons";
-import { Checkbox } from "@mantine/core";
 import { showNotification } from "@mantine/notifications";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -14,6 +13,8 @@ import styles from "./style.module.scss";
 import jwtDecode from "jwt-decode";
 
 const LoginPage = () => {
+    const accessToken = "ACCESS_TOKEN";
+
     const [credentials, setCredentials] = useState<Credentials>({
         login: "",
         password: "",
@@ -48,8 +49,9 @@ const LoginPage = () => {
             showNotification(failureNotificationItems(response?.errorMessage));
             return;
         }
-        const decodedJWT = jwtDecode(response.accessToken);
+        const decodedJWT = jwtDecode(response.accessToken) as string;
         dispatch(loginDispatch(decodedJWT));
+        localStorage.setItem(accessToken, response.accessToken);
         setLoading({ ...loading, actionLoading: false });
         navigate("/");
     };
@@ -92,7 +94,14 @@ const LoginPage = () => {
                         icon={faSignIn}
                         color="purple"
                     />
-                    <p onClick={() => {navigate("/reset-password")}} className={styles.forgot_password}>Zapomniałem hasła</p>
+                    <p
+                        onClick={() => {
+                            navigate("/reset-password");
+                        }}
+                        className={styles.forgot_password}
+                    >
+                        Zapomniałem hasła
+                    </p>
                 </div>
             </div>
         </section>
