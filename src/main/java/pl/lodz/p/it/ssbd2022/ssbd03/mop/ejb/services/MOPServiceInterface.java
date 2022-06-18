@@ -213,8 +213,10 @@ public interface MOPServiceInterface extends ServiceLocalInterface {
 
     /**
      * Metoda zwracająca listę wszystkich recenzji dla danego wszczepu
-     * @param id identyfikator wszczepu
-     * @return lista recenzji dla wszczepu
+     * @param page Aktualny numer strony
+     * @param pageSize Ilość recenzji na pojedynczej stronie
+     * @param id Identyfikator wszczepu
+     * @return Lista recenzji dla wszczepu
      * @throws MethodNotImplementedException w przypadku niezaimplementowanej metody
      *
      */

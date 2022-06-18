@@ -14,6 +14,7 @@ import pl.lodz.p.it.ssbd2022.ssbd03.common.Roles;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.*;
  import pl.lodz.p.it.ssbd2022.ssbd03.entities.Appointment;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.InvalidParametersException;
+import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.MethodNotImplementedException;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.appointment.*;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.Implant;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.appointment.AppointmentFinishAttemptBeforeEndDateException;
@@ -405,6 +406,15 @@ public class MOPService extends AbstractService implements MOPServiceInterface, 
         return appointment;
     }
 
+    /**
+     * Metoda zwracająca listę wszystkich recenzji dla danego wszczepu
+     * @param page Aktualny numer strony
+     * @param pageSize Ilość recenzji na pojedynczej stronie
+     * @param id Identyfikator wszczepu
+     * @return Lista recenzji dla wszczepu
+     * @throws InvalidParametersException przy podaniu błędnych parametrów
+     *
+     */
     @Override
     @PermitAll
     public PaginationData getAllImplantReviews(int page, int pageSize, UUID id) {
