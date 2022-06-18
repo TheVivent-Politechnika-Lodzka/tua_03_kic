@@ -175,6 +175,7 @@ const CreateUserPage = () => {
                                 required
                                 styleWidth={{ width: "30rem" }}
                                 title="Hasło "
+                                type="password"
                                 value={account.password}
                                 validationType="VALIDATE_PASSWORD"
                                 isValid={isPasswordValid}

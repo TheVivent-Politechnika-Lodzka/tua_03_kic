@@ -17,6 +17,7 @@ interface InputWithValidationProps {
     onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
     required?: boolean;
     styleWidth?: CSS.Properties;
+    type?: string;
 }
 
 const InputWithValidation = ({
@@ -26,6 +27,7 @@ const InputWithValidation = ({
     isValid,
     required,
     styleWidth,
+    type,
     onChange,
 }: InputWithValidationProps) => {
     const [input, setInput] = useState<string | undefined>(value);
@@ -58,8 +60,8 @@ const InputWithValidation = ({
 
             <div className={styles.input_wrapper} style={styleWidth}>
                 <input
-                    type="text"
                     value={input}
+                    type={type}
                     onChange={handleChange}
                     className={`${styles.input} ${
                         isValid ? styles.valid : styles.invalid
@@ -76,5 +78,7 @@ const InputWithValidation = ({
         </div>
     );
 };
-
+InputWithValidation.defaultProps = {
+    type: "text",
+};
 export default InputWithValidation;
