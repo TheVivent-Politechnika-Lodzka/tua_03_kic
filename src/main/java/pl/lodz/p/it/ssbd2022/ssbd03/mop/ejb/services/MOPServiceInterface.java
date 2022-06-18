@@ -153,11 +153,30 @@ public interface MOPServiceInterface extends ServiceLocalInterface {
      * @return Wizyta, która została odwołana
      * @throws MethodNotImplementedException w momencie, gdy metoda jest niezaimplementowana
      */
-    default Appointment cancelAppointment(UUID id) {
+    default Appointment cancelAnyAppointment(UUID id) {
         throw new MethodNotImplementedException();
     }
 
-    default Appointment finishAppointment(Appointment appointment) {
+    /**
+     * Metoda pozwalająca na odwołanie własnej wizyty, wywoływana z poziomu serwisu.
+     * Może ją wykonać tylko konto z poziomem dostępu klienta/specjalisty
+     *
+     * @param id identyfikator wizyty, która ma zostać odwołana
+     * @return Wizyta, która została odwołana
+     * @throws MethodNotImplementedException w momencie, gdy metoda jest niezaimplementowana
+     */
+    default Appointment cancelOwnAppointment(UUID id) {
+        throw new MethodNotImplementedException();
+    }
+
+    /**
+     * Metoda zapewniająca możliwość oznaczenia wizyty jako zakończonej
+     * @param id identyfikator wizyty
+     * @param login login specjalisty oznaczającego wizytę jako zakończoną
+     * @return wizyta oznaczona jako zakończona
+     * @throws MethodNotImplementedException gdy metoda nie jest zaimplementowana
+     */
+    default Appointment finishAppointment(UUID id, String login) {
         throw new MethodNotImplementedException();
     }
 
@@ -181,5 +200,4 @@ public interface MOPServiceInterface extends ServiceLocalInterface {
     default void deleteReview(UUID id, String login) {
         throw new MethodNotImplementedException();
     }
-
 }

@@ -1,7 +1,12 @@
 import { useContext, useEffect, useState } from "react";
 import avatar from "../../../../assets/images/avatar.jpg";
 import style from "./style.module.scss";
-import { faCancel, faCheck, faEdit } from "@fortawesome/free-solid-svg-icons";
+import {
+    faCancel,
+    faCheck,
+    faCheckCircle,
+    faEdit,
+} from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useNavigate } from "react-router-dom";
 import InputWithValidation from "../../../../components/shared/InputWithValidation/InputWithValidation";
@@ -19,6 +24,12 @@ import {
     GoogleReCaptchaProvider,
     useGoogleReCaptcha,
 } from "react-google-recaptcha-v3";
+import ConfirmActionModal from "../../../../components/ConfirmActionModal/ConfirmActionModal";
+import { showNotification } from "@mantine/notifications";
+import {
+    failureNotificationItems,
+    successNotficiationItems,
+} from "../../../../utils/showNotificationsItems";
 
 const EditOwnAccountPageInternal = () => {
     const [account, setAccount] = useState<GetAccountResponse>();
@@ -27,6 +38,7 @@ const EditOwnAccountPageInternal = () => {
         actionLoading: false,
     });
     const [error, setError] = useState<ApiError>();
+    const [opened, setOpened] = useState<boolean>(false);
     const { executeRecaptcha } = useGoogleReCaptcha();
 
     const accessLevel = useStoreSelector((state) => state.user.cur);
@@ -54,6 +66,7 @@ const EditOwnAccountPageInternal = () => {
         } catch (error: ApiError | any) {
             setLoading({ ...loading, pageLoading: false });
             setError(error);
+            showNotification(failureNotificationItems(error?.errorMessage));
             console.error(`${error?.status} ${error?.errorMessage}`);
         }
     };
@@ -79,6 +92,9 @@ const EditOwnAccountPageInternal = () => {
         setAccount(response);
         navigate("/account");
         setLoading({ ...loading, actionLoading: false });
+        showNotification(
+            successNotficiationItems("Konto zostało zaktualizowane")
+        );
     };
 
     useEffect(() => {
@@ -350,7 +366,9 @@ const EditOwnAccountPageInternal = () => {
                             </div>
                             <div className={style.edit_data_buttons_wrapper}>
                                 <ActionButton
-                                    onClick={handleSubmit}
+                                    onClick={() => {
+                                        setOpened(true);
+                                    }}
                                     isDisabled={!isEveryFieldValid}
                                     icon={faCheck}
                                     color="green"
@@ -369,6 +387,19 @@ const EditOwnAccountPageInternal = () => {
                     </div>
                 </>
             )}
+            <ConfirmActionModal
+                isOpened={opened}
+                onClose={() => {
+                    setOpened(false);
+                }}
+                handleFunction={async () => {
+                    await handleSubmit();
+                    setOpened(false);
+                }}
+                isLoading={loading.actionLoading as boolean}
+                title="Edycja swoich własnych danych"
+                description="Czy na pewno chcesz zmienić swoje własne dane? Operacja jest nieodwracalna"
+            />
         </section>
     );
 };

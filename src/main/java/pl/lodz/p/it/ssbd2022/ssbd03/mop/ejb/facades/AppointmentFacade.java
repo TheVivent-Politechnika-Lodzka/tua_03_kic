@@ -20,6 +20,7 @@ import pl.lodz.p.it.ssbd2022.ssbd03.security.Tagger;
 import pl.lodz.p.it.ssbd2022.ssbd03.utils.PaginationData;
 
 import java.time.Instant;
+
 import java.util.List;
 import java.util.UUID;
 
@@ -109,7 +110,8 @@ public class AppointmentFacade extends AbstractFacade<Appointment> {
      * @param id Identyfikator poszukiwanej wizyty
      * @return Obiekt znalezionej wizyty
      * @throws InvalidParametersException, gdy podano niepoprawną wartość parametru
-     * @throws DatabaseException,          gdy wystąpi błąd związany z bazą danych
+     * @throws ResourceNotFoundException, gdy nie znaleziono wizyty
+     * @throws DatabaseException, gdy wystąpi błąd związany z bazą danych
      */
     @PermitAll
     public Appointment findById(UUID id) {
@@ -133,8 +135,8 @@ public class AppointmentFacade extends AbstractFacade<Appointment> {
      * @param perPage    ilość rekordów na danej stronie
      * @param phrase     wyszukiwana fraza
      * @return Lista wizyt zgodnych z parametrami wyszukiwania
-     * @throws InvalidParametersException w przypadku podania nieprawidłowych parametrów
-     * @throws DatabaseException          w przypadku wystąpienia błędu bazy danych
+     * @throws InvalidParametersException, w przypadku podania nieprawidłowych parametrów
+     * @throws DatabaseException, w przypadku wystąpienia błędu bazy danych
      */
     @PermitAll
     public PaginationData findInRangeWithPhrase(int pageNumber, int perPage, String phrase) {

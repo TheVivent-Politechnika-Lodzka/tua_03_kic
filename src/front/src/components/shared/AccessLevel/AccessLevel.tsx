@@ -1,12 +1,11 @@
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
-import { AccessLevelDto } from "../../../api/types/apiParams";
 import { useStoreSelector } from "../../../redux/reduxHooks";
 import { changeLevel } from "../../../redux/userSlice";
 import styles from "./style.module.scss";
 
 interface AccessLevelProps {
-    accessLevel: AccessLevelDto;
+    accessLevel: AccessLevelType;
     clickable?: boolean;
 }
 
@@ -35,7 +34,7 @@ const AccessLevel = ({ accessLevel, clickable = false }: AccessLevelProps) => {
     const handleClick = () => {
         if (clickable) {
             for (let i = 0; i < user.auth.length; i++) {
-                if (user.auth[i] === accessLevel.level) {
+                if (user.auth[i] === accessLevel) {
                     dispatch(
                         changeLevel({
                             sub: user.sub,
@@ -55,14 +54,14 @@ const AccessLevel = ({ accessLevel, clickable = false }: AccessLevelProps) => {
         <div onClick={handleClick} className={styles.access_level_wrapper}>
             <p
                 className={`${styles.text}  ${
-                    styles[accessLevel?.level.toLowerCase()]
+                    styles[accessLevel.toLowerCase()]
                 } ${
-                    accessLevel?.level === level && styles.selected && clickable
+                    accessLevel === level && styles.selected && clickable
                         ? styles.selected
                         : null
                 }`}
             >
-                {getAccessLevel(accessLevel?.level)}
+                {getAccessLevel(accessLevel)}
             </p>
         </div>
     );
