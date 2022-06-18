@@ -5,6 +5,7 @@ import ChangeUserPassword from "../pages/protected/admin/ChangeUserPassword/Chan
 import EditAnyAccountPage from "../pages/protected/admin/EditAnyAccountPage/EditAnyAccountPage";
 import UserManagment from "../pages/protected/admin/UsersManagmentPage/UsersManagmentPage";
 import ClientMainPage from "../pages/protected/client/ClientMainPage";
+import CreateAppointmentPage from "../pages/protected/client/CreateAppointmentPage";
 import SpecialistMainPage from "../pages/protected/specialist/SpecialistMainPage";
 
 const authorizedRoutes = (accessLevel: AccessLevelType) => {
@@ -13,7 +14,10 @@ const authorizedRoutes = (accessLevel: AccessLevelType) => {
             return (
                 <>
                     <Route path="/accounts" element={<UserManagment />} />
-                    <Route path="/accounts/:login" element={<EditAnyAccountPage />} />
+                    <Route
+                        path="/accounts/:login"
+                        element={<EditAnyAccountPage />}
+                    />
                     <Route
                         path="/accounts/:login/change-password"
                         element={<ChangeUserPassword />}
@@ -26,14 +30,15 @@ const authorizedRoutes = (accessLevel: AccessLevelType) => {
             );
         }
         case "SPECIALIST": {
-            return (
-                <>
-                </>
-            );
+            return <></>;
         }
         case "CLIENT": {
             return (
                 <>
+                    <Route
+                        path="/implant/:implantId/create-appointment"
+                        element={<CreateAppointmentPage />}
+                    />
                 </>
             );
         }
