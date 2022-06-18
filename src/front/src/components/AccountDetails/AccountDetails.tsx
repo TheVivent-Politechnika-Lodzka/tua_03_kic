@@ -15,6 +15,8 @@ import flagPL from "../../assets/images/PL.png";
 import flagEN from "../../assets/images/EN.png";
 import {
     activateAccount,
+    addAccesLevel,
+    AddAccessLevelResponse,
     deactivateAccount,
     getAccount,
     GetAccountResponse,
@@ -58,7 +60,7 @@ const AccountDetails = ({ login, isOpened, onClose }: AccountDetailsProps) => {
         account?.accessLevels.map((level) => level.level) ?? [];
     const navigate = useNavigate();
 
-    const handleAccessLevelClikc = async (
+    const handleAccessLevelClick = async (
         level: AccessLevelType,
         alreadyHas: boolean
     ) => {
@@ -89,8 +91,6 @@ const AccountDetails = ({ login, isOpened, onClose }: AccountDetailsProps) => {
         setAccount(response);
         setLoading({ ...loading, actionLoading: false });
     };
-
-    const handleAddAccessLevel = async () => {};
 
     const handleGetAccount = async () => {
         try {
@@ -196,7 +196,7 @@ const AccountDetails = ({ login, isOpened, onClose }: AccountDetailsProps) => {
                                                 )
                                             }
                                             onClick={() => {
-                                                handleAccessLevelClikc(
+                                                handleAccessLevelClick(
                                                     entry as AccessLevelType,
                                                     accountsAccessLevels.includes(
                                                         entry as AccessLevelType
@@ -360,12 +360,12 @@ const AccountDetails = ({ login, isOpened, onClose }: AccountDetailsProps) => {
                         <AddAccessLevelModal
                             isLoading={loading.actionLoading as boolean}
                             isOpened={isAddAccessLevelModalOpen}
+                            account={account}
                             onClose={() => {
                                 setAddAccessLevelModalOpen(false);
                             }}
-                            handleFunction={async () => {
-                                await handleAddAccessLevel();
-                                setAddAccessLevelModalOpen(false);
+                            setAccount={async (account: GetAccountResponse) => {
+                                setAccount(account);
                             }}
                             accessLevel={accessLevelToProcess}
                         />
@@ -381,15 +381,17 @@ export default AccountDetails;
 const AddAccessLevelModal = ({
     isLoading,
     isOpened,
-    handleFunction,
     onClose,
+    setAccount,
     accessLevel,
+    account,
 }: {
     isLoading: boolean;
     isOpened: boolean;
-    handleFunction: () => void;
     onClose: () => void;
+    setAccount: (account: AddAccessLevelResponse) => void;
     accessLevel: AccessLevelType;
+    account: GetAccountResponse | undefined;
 }) => {
     const [accessLevelToAdd, setAccessLevelToAdd] = useState<AccessLevel>({
         level: accessLevel,
@@ -410,58 +412,119 @@ const AddAccessLevelModal = ({
         dispatch,
     } = useContext(validationContext);
 
+    const handleSubmit = async () => {
+        if (!account) return;
+        const response = await addAccesLevel(account.login, {
+            ...accessLevelToAdd,
+            level: accessLevel,
+            etag: account.etag,
+        });
+        if ("errorMessage" in response) {
+            showNotification(failureNotificationItems(response.errorMessage));
+            return;
+        }
+        showNotification(
+            successNotficiationItems("Poziom dostępu został dodany")
+        );
+        setAccount(response);
+        onClose();
+    };
+
     return (
         <ConfirmActionModal
             title={`Dodaj poziom dostępu ${accessLevel}`}
             isLoading={isLoading}
             isOpened={isOpened}
-            handleFunction={handleFunction}
+            handleFunction={handleSubmit}
             onClose={onClose}
         >
-            {accessLevel === "CLIENT" && (
-                <>
-                    <div className={styles.edit_field}>
-                        <InputWithValidation
-                            title="Numer PESEL: "
-                            value={accessLevelToAdd.pesel}
-                            validationType="VALIDATE_PESEL"
-                            isValid={isPESELValid}
-                            onChange={(e) => {
-                                if (e.target.value)
-                                    setAccessLevelToAdd((old) => {
-                                        old.pesel = e.target.value;
-                                        return old;
-                                    });
-                            }}
-                        />
-                        <div />
-                        <ValidationMessage
-                            isValid={isPESELValid}
-                            message="Numer pesel musi składać się z 11 cyfr."
-                        />
-                    </div>
-                    <div className={styles.edit_field}>
-                        <InputWithValidation
-                            title="Numer telefonu: "
-                            value={accessLevelToAdd.phoneNumber}
-                            validationType="VALIDATE_PHONENUMBER"
-                            isValid={isPhoneNumberValid}
-                            onChange={(e) => {
-                                if (e.target.value)
+            <div className={styles.edit_fields_wrapper}>
+                {accessLevel === "CLIENT" && (
+                    <>
+                        <div className={styles.edit_field}>
+                            <InputWithValidation
+                                title="Numer PESEL: "
+                                value={accessLevelToAdd.pesel}
+                                validationType="VALIDATE_PESEL"
+                                isValid={isPESELValid}
+                                onChange={(e) => {
+                                    if (e.target.value)
+                                        setAccessLevelToAdd((old) => {
+                                            old.pesel = e.target.value;
+                                            return old;
+                                        });
+                                }}
+                            />
+                            <div />
+                            <ValidationMessage
+                                isValid={isPESELValid}
+                                message="Numer pesel musi składać się z 11 cyfr."
+                            />
+                        </div>
+                        <div className={styles.edit_field}>
+                            <InputWithValidation
+                                title="Numer telefonu: "
+                                value={accessLevelToAdd.phoneNumber}
+                                validationType="VALIDATE_PHONENUMBER"
+                                isValid={isPhoneNumberValid}
+                                onChange={(e) => {
+                                    if (e.target.value)
+                                        setAccessLevelToAdd((old) => {
+                                            old.phoneNumber = e.target.value;
+                                            return old;
+                                        });
+                                }}
+                            />
+                            <div />
+                            <ValidationMessage
+                                isValid={isPhoneNumberValid}
+                                message="Numer telefonu musi składać się z 9 cyfr."
+                            />
+                        </div>
+                    </>
+                )}
+
+                {["ADMINISTRATOR", "SPECIALIST"].includes(accessLevel) && (
+                    <>
+                        <div className={styles.edit_field}>
+                            <InputWithValidation
+                                title="Numer telefonu: "
+                                value={accessLevelToAdd.phoneNumber}
+                                validationType="VALIDATE_PHONENUMBER"
+                                isValid={isPhoneNumberValid}
+                                onChange={(e) => {
                                     setAccessLevelToAdd((old) => {
                                         old.phoneNumber = e.target.value;
                                         return old;
                                     });
-                            }}
-                        />
-                        <div />
-                        <ValidationMessage
-                            isValid={isPhoneNumberValid}
-                            message="Numer telefonu musi składać się z 9 cyfr."
-                        />
-                    </div>
-                </>
-            )}
+                                }}
+                            />
+                            <ValidationMessage
+                                isValid={isPhoneNumberValid}
+                                message="Numer telefonu musi składać się z 9 cyfr."
+                            />
+                        </div>
+                        <div className={styles.edit_field}>
+                            <InputWithValidation
+                                title="Email kontaktowy: "
+                                value={accessLevelToAdd.contactEmail}
+                                validationType="VALIDATE_EMAIL"
+                                isValid={isEmailValid}
+                                onChange={(e) => {
+                                    setAccessLevelToAdd((old) => {
+                                        old.contactEmail = e.target.value;
+                                        return old;
+                                    });
+                                }}
+                            />
+                            <ValidationMessage
+                                isValid={isEmailValid}
+                                message="Email musi być poprawny."
+                            />
+                        </div>
+                    </>
+                )}
+            </div>
         </ConfirmActionModal>
     );
 };
