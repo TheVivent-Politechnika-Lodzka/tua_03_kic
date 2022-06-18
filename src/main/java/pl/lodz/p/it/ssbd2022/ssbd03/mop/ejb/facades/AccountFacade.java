@@ -79,8 +79,7 @@ public class AccountFacade extends AbstractFacade<Account> {
     @PermitAll
     public PaginationData findInRangeWithPhrase(int pageNumber, int perPage, String phrase) {
         try {
-            //TODO naprawic datadoctor
-            TypedQuery<Account> typedQuery = entityManager.createNamedQuery("DataDoctor.searchSpecialistByPhrase", Account.class);
+            TypedQuery<Account> typedQuery = entityManager.createNamedQuery("DataSpecialist.searchSpecialistByPhrase", Account.class);
             pageNumber--;
             List<Account> data = typedQuery.setParameter("phrase", "%" + phrase + "%")
                     .setMaxResults(perPage)
