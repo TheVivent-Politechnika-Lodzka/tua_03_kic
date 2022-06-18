@@ -1,3 +1,5 @@
+@import url("https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,400;0,700;1,400&display=swap");
+
 $primary-color: #121218;
 $secondary-color: #262633;
 $light-gray: #737882;
@@ -7,6 +9,8 @@ $red: #f74242;
 $dark-orange: #ff6f1c;
 $purple: #9231f2;
 $white: #f0f8ff;
+$turqoise: #00c4ff;
+$green-gradient: linear-gradient(50deg, #00c4ff, $green);
 
 $administrator-main-color: #690e0e;
 $specialist-main-color: #2929a6;
@@ -22,26 +26,28 @@ $md-min: 768px;
 $lg-min: 1024px;
 $xl-min: 1200px;
 
+$font-family: "Open Sans", sans-serif;
+
 @mixin sm {
-  @media (min-width: #{$sm-min}) {
-    @content;
-  }
+    @media (min-width: #{$sm-min}) {
+        @content;
+    }
 }
 
 @mixin md {
-  @media (min-width: #{$md-min}) {
-    @content;
-  }
+    @media (min-width: #{$md-min}) {
+        @content;
+    }
 }
 
 @mixin lg {
-  @media (min-width: #{$lg-min}) {
-    @content;
-  }
+    @media (min-width: #{$lg-min}) {
+        @content;
+    }
 }
 
 @mixin xl {
-  @media (min-width: #{$xl-min}) {
-    @content;
-  }
+    @media (min-width: #{$xl-min}) {
+        @content;
+    }
 }

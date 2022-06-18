@@ -8,6 +8,11 @@ interface Taggable {
     version: number;
 }
 
+interface Credentials {
+    login: string;
+    password: string;
+}
+
 type AccessLevelType =
     | "ADMINISTRATOR"
     | "CLIENT"
