@@ -7,6 +7,7 @@ import {
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
+import { useStoreSelector } from "../../redux/reduxHooks";
 import AccountDetails from "../AccountDetails/AccountDetails";
 import AccessLevel from "../shared/AccessLevel/AccessLevel";
 import styles from "./style.module.scss";
@@ -18,7 +19,8 @@ interface UserRecordProps {
 
 const UserRecord = ({ user, handleChange }: UserRecordProps) => {
     const [modal, setModal] = useState<boolean>(false);
-    const navigate = useNavigate();
+    const login = useStoreSelector((state) => state.user.sub);
+    const accessLevel = useStoreSelector((state) => state.user.cur);
 
     useEffect(() => {
         handleChange(true);
@@ -81,6 +83,9 @@ const UserRecord = ({ user, handleChange }: UserRecordProps) => {
             </div>
             <AccountDetails
                 login={user?.login}
+                isAdmin={
+                    accessLevel === "ADMINISTRATOR" && user?.login === login
+                }
                 isOpened={modal}
                 onClose={() => {
                     setModal(false);

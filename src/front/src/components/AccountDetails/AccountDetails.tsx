@@ -23,10 +23,7 @@ import { useNavigate } from "react-router";
 import styles from "./style.module.scss";
 import ConfirmActionModal from "../ConfirmActionModal/ConfirmActionModal";
 import { showNotification } from "@mantine/notifications";
-import {
-    failureNotificationItems,
-    successNotficiationItems,
-} from "../../utils/showNotificationsItems";
+import { successNotficiationItems } from "../../utils/showNotificationsItems";
 import Modal from "../Modal/Modal";
 import ChangeUserPasswordPage from "../../pages/protected/admin/ChangeUserPasswordPage/ChangeUserPasswordPage";
 
@@ -34,9 +31,10 @@ interface AccountDetailsProps {
     login: string;
     isOpened: boolean;
     onClose: () => void;
+    isAdmin: boolean;
 }
 
-const AccountDetails = ({ login, isOpened, onClose }: AccountDetailsProps) => {
+const AccountDetails = ({ login, isOpened, isAdmin, onClose }: AccountDetailsProps) => {
     const [account, setAccount] = useState<GetAccountResponse>();
     const [loading, setLoading] = useState<Loading>({
         pageLoading: true,
@@ -134,6 +132,7 @@ const AccountDetails = ({ login, isOpened, onClose }: AccountDetailsProps) => {
                             </div>
                             <div className={styles.actions_wrapper}>
                                 <ActionButton
+                                    isDisabled={isAdmin}
                                     onClick={() => {
                                         navigate(`/accounts/${login}`);
                                     }}
@@ -142,6 +141,7 @@ const AccountDetails = ({ login, isOpened, onClose }: AccountDetailsProps) => {
                                     icon={faEdit}
                                 />
                                 <ActionButton
+                                    isDisabled={isAdmin}
                                     onClick={() => {
                                         setChangePasswordModal(true);
                                     }}
@@ -150,6 +150,7 @@ const AccountDetails = ({ login, isOpened, onClose }: AccountDetailsProps) => {
                                     icon={faKey}
                                 />
                                 <ActionButton
+                                    isDisabled={isAdmin}
                                     title={
                                         account?.active
                                             ? "Zablokuj konto"

@@ -11,11 +11,14 @@ import { useStoreSelector } from "../../../../redux/reduxHooks";
 import { getOwnAccount } from "../../../../api";
 import styles from "./style.module.scss";
 import { style } from "@mui/system";
+import ChangeOwnPasswordForm from "../../../../components/Form/changeOwnPasswordForm/ChangeOwnPasswordForm";
+import ChangeOwnPasswordPage from "../ChangeOwnPasswordPage/ChangeOwnPasswordPage";
 
 const AccountDetailsPage = () => {
     const [account, setAccount] = useState<AccountDetails>();
     const [loading, setLoading] = useState<Loading>({ pageLoading: true });
     const [error, setError] = useState<ApiError>();
+    const [opened, setOpened] = useState<boolean>(false);
 
     const accessLevel = useStoreSelector((state) => state.user.cur);
     const navigate = useNavigate();
@@ -48,106 +51,125 @@ const AccountDetailsPage = () => {
                     height="10rem"
                 />
             ) : (
-                <div className={styles.content}>
-                    <div className={styles.account_general_details}>
-                        <img
-                            className={styles.avatar}
-                            src={avatar}
-                            alt="Account general: Avatar"
-                        />
-                        <p className={styles.login}>{account?.login}</p>
-                        <div className={styles.account_access_levels_wrapper}>
-                            <p className={styles.title}>Poziomy dostępu: </p>
-                            {account?.accessLevels.map((accessLevel) => (
-                                <AccessLevel
-                                    clickable={true}
-                                    key={accessLevel.level}
-                                    accessLevel={accessLevel.level}
+                <>
+                    <div className={styles.content}>
+                        <div className={styles.account_general_details}>
+                            <img
+                                className={styles.avatar}
+                                src={avatar}
+                                alt="Account general: Avatar"
+                            />
+                            <p className={styles.login}>{account?.login}</p>
+                            <div
+                                className={styles.account_access_levels_wrapper}
+                            >
+                                <p className={styles.title}>
+                                    Poziomy dostępu:{" "}
+                                </p>
+                                {account?.accessLevels.map((accessLevel) => (
+                                    <AccessLevel
+                                        clickable={true}
+                                        key={accessLevel.level}
+                                        accessLevel={accessLevel.level}
+                                    />
+                                ))}
+                            </div>
+                            <div className={styles.account_actions_wrapper}>
+                                <ActionButton
+                                    onClick={() => {
+                                        navigate("/account/edit");
+                                    }}
+                                    title="Edytuj konto"
+                                    color="green"
+                                    icon={faEdit}
                                 />
-                            ))}
-                        </div>
-                        <div className={styles.account_actions_wrapper}>
-                            <ActionButton
-                                onClick={() => {
-                                    navigate("/account/edit");
-                                }}
-                                title="Edytuj konto"
-                                color="green"
-                                icon={faEdit}
-                            />
-                            <ActionButton
-                                onClick={() => {}}
-                                title="Zmień hasło"
-                                color="purple"
-                                icon={faKey}
-                            />
-                        </div>
-                    </div>
-                    <div className={styles.account_details}>
-                        <p className={styles.title}>Dane szczegółowe</p>
-                        <div className={styles.details_wrapper}>
-                            <div className={styles.detail_wrapper}>
-                                <p className={styles.field_title}>Imię:</p>
-                                <p className={styles.field_description}>
-                                    {account?.firstName}
-                                </p>
-                            </div>
-                            <div className={styles.detail_wrapper}>
-                                <p className={styles.field_title}>Nazwisko:</p>
-                                <p className={styles.field_description}>
-                                    {account?.lastName}
-                                </p>
-                            </div>
-                            <div className={styles.detail_wrapper}>
-                                <p className={styles.field_title}>Email:</p>
-                                <p className={styles.field_description}>
-                                    {account?.email}
-                                </p>
-                            </div>
-                            {accessLevel === "CLIENT" ? (
-                                <div className={styles.detail_wrapper}>
-                                    <p className={styles.field_title}>
-                                        Numer PESEL:
-                                    </p>
-                                    <p className={styles.field_description}>
-                                        {account?.accessLevels
-                                            .filter(
-                                                (level) =>
-                                                    level.level === "CLIENT"
-                                            )
-                                            .map((level) => level.pesel)}
-                                    </p>
-                                </div>
-                            ) : (
-                                <div className={styles.detail_wrapper}>
-                                    <p className={styles.field_title}>
-                                        Numer telefonu:
-                                    </p>
-                                    <p className={styles.field_description}>
-                                        {account?.accessLevels
-                                            .filter(
-                                                (level) =>
-                                                    level.level === accessLevel
-                                            )
-                                            .map((level) => level.phoneNumber)}
-                                    </p>
-                                </div>
-                            )}
-                            <div className={styles.detail_wrapper}>
-                                <p className={styles.field_title}>Język:</p>
-                                <img
-                                    src={
-                                        account?.language?.language === "pl"
-                                            ? flagPL
-                                            : flagEN
-                                    }
-                                    alt="Detail description: language"
-                                    className={styles.flag}
+                                <ActionButton
+                                    onClick={() => {
+                                        setOpened(true);
+                                    }}
+                                    title="Zmień hasło"
+                                    color="purple"
+                                    icon={faKey}
                                 />
                             </div>
                         </div>
+                        <div className={styles.account_details}>
+                            <p className={styles.title}>Dane szczegółowe</p>
+                            <div className={styles.details_wrapper}>
+                                <div className={styles.detail_wrapper}>
+                                    <p className={styles.field_title}>Imię:</p>
+                                    <p className={styles.field_description}>
+                                        {account?.firstName}
+                                    </p>
+                                </div>
+                                <div className={styles.detail_wrapper}>
+                                    <p className={styles.field_title}>
+                                        Nazwisko:
+                                    </p>
+                                    <p className={styles.field_description}>
+                                        {account?.lastName}
+                                    </p>
+                                </div>
+                                <div className={styles.detail_wrapper}>
+                                    <p className={styles.field_title}>Email:</p>
+                                    <p className={styles.field_description}>
+                                        {account?.email}
+                                    </p>
+                                </div>
+                                {accessLevel === "CLIENT" ? (
+                                    <div className={styles.detail_wrapper}>
+                                        <p className={styles.field_title}>
+                                            Numer PESEL:
+                                        </p>
+                                        <p className={styles.field_description}>
+                                            {account?.accessLevels
+                                                .filter(
+                                                    (level) =>
+                                                        level.level === "CLIENT"
+                                                )
+                                                .map((level) => level.pesel)}
+                                        </p>
+                                    </div>
+                                ) : (
+                                    <div className={styles.detail_wrapper}>
+                                        <p className={styles.field_title}>
+                                            Numer telefonu:
+                                        </p>
+                                        <p className={styles.field_description}>
+                                            {account?.accessLevels
+                                                .filter(
+                                                    (level) =>
+                                                        level.level ===
+                                                        accessLevel
+                                                )
+                                                .map(
+                                                    (level) => level.phoneNumber
+                                                )}
+                                        </p>
+                                    </div>
+                                )}
+                                <div className={styles.detail_wrapper}>
+                                    <p className={styles.field_title}>Język:</p>
+                                    <img
+                                        src={
+                                            account?.language?.language === "pl"
+                                                ? flagPL
+                                                : flagEN
+                                        }
+                                        alt="Detail description: language"
+                                        className={styles.flag}
+                                    />
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                </div>
+                    <ChangeOwnPasswordPage
+                        isOpen={opened}
+                        onClose={() => {
+                            setOpened(false);
+                        }}
+                    />
+                </>
             )}
         </section>
     );

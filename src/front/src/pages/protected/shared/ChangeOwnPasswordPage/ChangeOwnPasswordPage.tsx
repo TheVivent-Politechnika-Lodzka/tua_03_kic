@@ -2,11 +2,11 @@ import { faCancel, faCheck } from "@fortawesome/free-solid-svg-icons";
 import { showNotification } from "@mantine/notifications";
 import { useContext, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useNavigate, useParams } from "react-router";
 import {
-    changeAnyPassword,
-    getAccount,
+    changeOwnPassword,
+    ChangeOwnPasswordRequest,
     GetAccountResponse,
+    getOwnAccount,
 } from "../../../../api";
 import ConfirmActionModal from "../../../../components/ConfirmActionModal/ConfirmActionModal";
 import ActionButton from "../../../../components/shared/ActionButton/ActionButton";
@@ -20,36 +20,44 @@ import {
 import ReactLoading from "react-loading";
 import styles from "./style.module.scss";
 import Modal from "../../../../components/Modal/Modal";
+import {
+    GoogleReCaptchaProvider,
+    useGoogleReCaptcha,
+} from "react-google-recaptcha-v3";
+import { display, style } from "@mui/system";
 
-interface ChangeUserPasswordPageProps {
+interface ChangeOwnPasswordPageProps {
     isOpen: boolean;
     onClose: () => void;
-    login: string;
 }
 
-const ChangeUserPasswordPage = ({
+const ChangeOwnPasswordInternal = ({
     isOpen,
     onClose,
-    login,
-}: ChangeUserPasswordPageProps) => {
+}: ChangeOwnPasswordPageProps) => {
     const [account, setAccount] = useState<GetAccountResponse>();
-    const [newPassword, setNewPassword] = useState<string>("");
+    const [password, setPassword] = useState({
+        oldPassword: "",
+        newPassword: "",
+    });
     const [opened, setOpened] = useState<boolean>(false);
     const [loading, setLoading] = useState<Loading>({
         pageLoading: true,
         actionLoading: false,
     });
 
+    const { executeRecaptcha } = useGoogleReCaptcha();
+
     const {
         state,
-        state: { isNewPasswordValid },
+        state: { isOldPasswordValid, isNewPasswordValid },
         dispatch,
     } = useContext(validationContext);
 
     const { t } = useTranslation();
 
     const handleGetOwnAccount = async () => {
-        const response = await getAccount(login as string);
+        const response = await getOwnAccount();
         if ("errorMessage" in response) {
             setLoading({ ...loading, pageLoading: false });
             showNotification(failureNotificationItems(response?.errorMessage));
@@ -59,14 +67,19 @@ const ChangeUserPasswordPage = ({
         setLoading({ ...loading, pageLoading: false });
     };
 
-    const handleChangeUserPassword = async () => {
+    const handleChangeOwnPassword = async () => {
+        if (!account || !executeRecaptcha) return;
         setLoading({ ...loading, actionLoading: true });
-        if (!account) return;
-        const response = await changeAnyPassword(login as string, {
-            newPassword: newPassword,
+
+        const captcha = await executeRecaptcha("change_own_password");
+
+        const response = await changeOwnPassword({
+            oldPassword: password.oldPassword,
+            newPassword: password.newPassword,
             id: account?.id,
             version: account?.version,
             etag: account?.etag,
+            captcha: captcha,
         });
         if ("errorMessage" in response) {
             setLoading({ ...loading, actionLoading: false });
@@ -76,22 +89,28 @@ const ChangeUserPasswordPage = ({
         setLoading({ ...loading, actionLoading: false });
         setOpened(false);
         onClose();
-        setNewPassword("");
+        setPassword({ oldPassword: "", newPassword: "" });
+        dispatch({ type: "RESET_VALIDATION", payload: { ...state } });
         showNotification(
-            successNotficiationItems(
-                `Hasło użytkownika ${login} zostało pomyślnie zmienione`
-            )
+            successNotficiationItems(`Hasło zostało pomyślnie zmienione`)
         );
     };
+
+    const arePasswordsValid = isOldPasswordValid && isNewPasswordValid;
+    const arePasswordsSame = password.newPassword === password.oldPassword;
 
     useEffect(() => {
         handleGetOwnAccount();
         dispatch({ type: "RESET_VALIDATION", payload: { ...state } });
     }, []);
 
+    useEffect(() => {
+        handleGetOwnAccount();
+    }, [opened]);
+
     return (
         <Modal isOpen={isOpen}>
-            <div className={styles.change_user_password_page}>
+            <div className={styles.change_own_password_page}>
                 {loading.pageLoading ? (
                     <ReactLoading
                         type="bars"
@@ -102,20 +121,34 @@ const ChangeUserPasswordPage = ({
                 ) : (
                     <>
                         <div className={styles.title_wrapper}>
-                            <h2>
-                                {t("ChangeAccountPassword.title")} {login}
-                            </h2>
+                            <h2>Zmień swoje hasło</h2>
                         </div>
                         <div className={styles.content}>
                             <div className={styles.change_password_wrapper}>
                                 <div className={styles.input_wrapper}>
                                     <InputWithValidation
+                                        title="Stare hasło: "
+                                        validationType="VALIDATE_OLD_PASSWORD"
+                                        isValid={isOldPasswordValid}
+                                        value={password.oldPassword}
+                                        onChange={(e) =>
+                                            setPassword({
+                                                ...password,
+                                                oldPassword: e.target.value,
+                                            })
+                                        }
+                                        type="password"
+                                    />
+                                    <InputWithValidation
                                         title="Nowe hasło: "
                                         validationType="VALIDATE_NEW_PASSWORD"
                                         isValid={isNewPasswordValid}
-                                        value={newPassword}
+                                        value={password.newPassword}
                                         onChange={(e) =>
-                                            setNewPassword(e.target.value)
+                                            setPassword({
+                                                ...password,
+                                                newPassword: e.target.value,
+                                            })
                                         }
                                         type="password"
                                     />
@@ -125,7 +158,10 @@ const ChangeUserPasswordPage = ({
                                         onClick={() => {
                                             setOpened(true);
                                         }}
-                                        isDisabled={!isNewPasswordValid}
+                                        isDisabled={
+                                            !arePasswordsValid ||
+                                            arePasswordsSame
+                                        }
                                         icon={faCheck}
                                         color="green"
                                         title="Zatwierdź"
@@ -140,8 +176,12 @@ const ChangeUserPasswordPage = ({
                             </div>
                             <div className={styles.validation_status_wrapper}>
                                 <ValidationMessage
-                                    isValid={isNewPasswordValid}
-                                    message="Hasło musi być dłuższe niż 8 znaków oraz musi zawierać jedną dużą literę, jedną cyfrę i jeden znak specjalny"
+                                    isValid={arePasswordsValid}
+                                    message="Oba hasła muszą być dłuższe niż 8 znaków oraz muszą zawierać jedną dużą literę, jedną cyfrę i jeden znak specjalny"
+                                />
+                                <ValidationMessage
+                                    isValid={!arePasswordsSame}
+                                    message="Hasła nie mogą być takie same"
                                 />
                             </div>
                         </div>
@@ -152,12 +192,12 @@ const ChangeUserPasswordPage = ({
                                 setOpened(false);
                             }}
                             handleFunction={async () => {
-                                await handleChangeUserPassword();
+                                await handleChangeOwnPassword();
                                 setOpened(false);
                             }}
                             isLoading={loading.actionLoading as boolean}
-                            title={`Zmiana hasła użytkownika`}
-                            description={`Czy na pewno chcesz zmienić hasło użytkownika ${login}? Operacja jest nieodwracalna`}
+                            title={`Zmiana swojego hasła`}
+                            description={`Czy na pewno chcesz zmienić hasło? Operacja jest nieodwracalna`}
                         />
                     </>
                 )}
@@ -166,4 +206,15 @@ const ChangeUserPasswordPage = ({
     );
 };
 
-export default ChangeUserPasswordPage;
+const ChangeOwnPasswordPage = ({
+    isOpen,
+    onClose,
+}: ChangeOwnPasswordPageProps) => {
+    return (
+        <GoogleReCaptchaProvider reCaptchaKey="6Lf85hEgAAAAAONrGfo8SoQSb9GmfzHXTTgjKJzT">
+            <ChangeOwnPasswordInternal isOpen={isOpen} onClose={onClose} />
+        </GoogleReCaptchaProvider>
+    );
+};
+
+export default ChangeOwnPasswordPage;
