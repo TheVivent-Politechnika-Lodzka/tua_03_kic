@@ -21,7 +21,7 @@ const authorizedRoutes = (accessLevel: AccessLevelType) => {
                     />
                     <Route
                         path="/accounts/create-account"
-                        element={<CreateAccountPage />}
+                        element={<CreateUserPage />}
                     />
                 </>
             );

@@ -7,6 +7,10 @@ import UserRecord from "../../../../components/UserRecord/UserRecord";
 import ReactLoading from "react-loading";
 import styles from "./style.module.scss";
 import Pagination from "../../../../components/Pagination/Pagination";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faUserPlus } from "@fortawesome/free-solid-svg-icons";
+import ActionButton from "../../../../components/shared/ActionButton/ActionButton";
+import { Button } from "react-bootstrap";
 
 const UsersManagmentPage = () => {
     const [users, setUsers] = useState<AccountDetails[]>();
@@ -71,6 +75,19 @@ const UsersManagmentPage = () => {
                     onChange={setPhrase}
                     placeholder="Wyszukaj użytkowników..."
                 />
+
+                <Button
+                    className={styles.button}
+                    onClick={() => {
+                        navigate("/accounts/create-account");
+                    }}
+                >
+                    <FontAwesomeIcon
+                        style={{ margin: "0", padding: "0" }}
+                        icon={faUserPlus}
+                        size="2x"
+                    />
+                </Button>
             </div>
 
             <div className={styles.table_container}>
@@ -106,7 +123,10 @@ const UsersManagmentPage = () => {
                                 />
                             ))}
                         </div>
-                        <Pagination pagination={pagination} handleFunction={setPagination}/>
+                        <Pagination
+                            pagination={pagination}
+                            handleFunction={setPagination}
+                        />
                     </>
                 )}
             </div>
