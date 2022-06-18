@@ -1,116 +1,94 @@
-import { useContext, useEffect, useState } from "react";
-import avatar from "../../../../assets/images/avatar.jpg";
-import style from "./style.module.scss";
+import { useState, useEffect, useContext } from "react";
+import { useNavigate, useParams } from "react-router";
+import style from "./userDetails.module.scss";
+import { useTranslation } from "react-i18next";
 import {
-    faCancel,
-    faCheck,
-    faCheckCircle,
-    faEdit,
-} from "@fortawesome/free-solid-svg-icons";
+    editAnyAccount,
+    getAccount,
+    GetAccountResponse,
+} from "../../../../api";
+import ReactLoading from "react-loading";
+import { failureNotificationItems } from "../../../../utils/showNotificationsItems";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useNavigate } from "react-router-dom";
+import avatar from "../../../../assets/images/avatar.jpg";
+import { faCancel, faCheck, faEdit } from "@fortawesome/free-solid-svg-icons";
 import InputWithValidation from "../../../../components/shared/InputWithValidation/InputWithValidation";
 import ValidationMessage from "../../../../components/shared/ValidationMessage/ValidationMessage";
 import ActionButton from "../../../../components/shared/ActionButton/ActionButton";
 import { validationContext } from "../../../../context/validationContext";
-import { useStoreSelector } from "../../../../redux/reduxHooks";
-import {
-    editOwnAccount,
-    GetAccountResponse,
-    getOwnAccount,
-} from "../../../../api";
-import ReactLoading from "react-loading";
-import {
-    GoogleReCaptchaProvider,
-    useGoogleReCaptcha,
-} from "react-google-recaptcha-v3";
 import ConfirmActionModal from "../../../../components/ConfirmActionModal/ConfirmActionModal";
 import { showNotification } from "@mantine/notifications";
-import {
-    failureNotificationItems,
-    successNotficiationItems,
-} from "../../../../utils/showNotificationsItems";
+import { successNotficiationItems } from "../../../../utils/showNotificationsItems";
 
-const EditOwnAccountPageInternal = () => {
+const EditAnyAccountPage = () => {
     const [account, setAccount] = useState<GetAccountResponse>();
+    const accountAccessLevels = account?.accessLevels.map(
+        (level) => level.level
+    );
+    const [opened, setOpened] = useState(false);
     const [loading, setLoading] = useState<Loading>({
         pageLoading: true,
         actionLoading: false,
     });
-    const [error, setError] = useState<ApiError>();
-    const [opened, setOpened] = useState<boolean>(false);
-    const { executeRecaptcha } = useGoogleReCaptcha();
-
-    const accessLevel = useStoreSelector((state) => state.user.cur);
-
+    const navigate = useNavigate();
+    const { login } = useParams();
+    const { t } = useTranslation();
     const {
         state,
         state: {
             isFirstNameValid,
             isLastNameValid,
             isPhoneNumberValidAdministrator,
+            isPhoneNumberValidSpecialist,
             isPhoneNumberValidClient,
             isPESELValid,
             isEmailValidAdministrator,
+            isEmailValidSpecialist,
         },
         dispatch,
     } = useContext(validationContext);
 
-    const navigate = useNavigate();
+    useEffect(() => {
+        handleGetUser();
+    }, []);
 
-    const handleGetOwnAccount = async () => {
-        try {
-            const data = await getOwnAccount();
-            if ("errorMessage" in data) return;
-            setAccount(data);
-            setLoading({ ...loading, pageLoading: false });
-        } catch (error: ApiError | any) {
-            setLoading({ ...loading, pageLoading: false });
-            setError(error);
-            showNotification(failureNotificationItems(error?.errorMessage));
-            console.error(`${error?.status} ${error?.errorMessage}`);
-        }
-    };
-
-    const handleSubmit = async () => {
-        if (!account || !executeRecaptcha) return;
-        setLoading({ ...loading, actionLoading: true });
-
-        const captcha = await executeRecaptcha("edit_account");
-
-        const request = {
-            ...account,
-            captcha,
-        };
-        const response = await editOwnAccount(request);
+    const handleGetUser = async () => {
+        if (!login) return;
+        setLoading({ ...loading, pageLoading: true });
+        const response = await getAccount(login);
         if ("errorMessage" in response) {
-            setError(response);
-            console.error(`${response.status} ${response.errorMessage}`);
-            alert(response.errorMessage);
-            setLoading({ ...loading, actionLoading: false });
+            showNotification(failureNotificationItems(response.errorMessage));
+            setLoading({ ...loading, pageLoading: false });
             return;
         }
         setAccount(response);
-        navigate("/account");
-        setLoading({ ...loading, actionLoading: false });
-        showNotification(
-            successNotficiationItems("Konto zostało zaktualizowane")
-        );
+        setLoading({ ...loading, pageLoading: false });
     };
 
-    useEffect(() => {
-        // Gdyby uzywac przy rejestracji to trzeba dodac nową akcję w reducerze albo idk nowy initialState
-        dispatch({ type: "RESET_VALIDATION", payload: { ...state } });
-        handleGetOwnAccount();
-    }, []);
+    const handleSubmit = async () => {
+        setLoading({ ...loading, actionLoading: true });
+        if (!account || !login) return;
+        const response = await editAnyAccount(login, account);
+        if ("errorMessage" in response) {
+            showNotification(failureNotificationItems(response.errorMessage));
+            setLoading({ ...loading, actionLoading: false });
+            return;
+        }
+        showNotification(successNotficiationItems(t("account.edit.success")));
+        setAccount(response);
+
+        setLoading({ ...loading, actionLoading: false });
+    };
 
     const isEveryFieldValid =
         isFirstNameValid &&
         isLastNameValid &&
         isPhoneNumberValidAdministrator &&
+        isPhoneNumberValidSpecialist &&
         isPhoneNumberValidClient &&
         isPESELValid &&
-        isEmailValidAdministrator;
+        isEmailValidAdministrator &&
+        isEmailValidSpecialist;
 
     return (
         <section className={style.edit_own_account_page}>
@@ -181,8 +159,15 @@ const EditOwnAccountPageInternal = () => {
                                     />
                                 </div>
 
-                                {accessLevel === "CLIENT" ? (
+                                {accountAccessLevels?.includes("CLIENT") ? (
                                     <>
+                                        <div
+                                            className={
+                                                style.access_level_name_header
+                                            }
+                                        >
+                                            CLIENT
+                                        </div>
                                         <div className={style.edit_field}>
                                             <InputWithValidation
                                                 title="Numer PESEL: "
@@ -235,7 +220,7 @@ const EditOwnAccountPageInternal = () => {
                                                         .filter(
                                                             (level) =>
                                                                 level.level ===
-                                                                accessLevel
+                                                                "CLIENT"
                                                         )
                                                         .map(
                                                             (level) =>
@@ -257,7 +242,7 @@ const EditOwnAccountPageInternal = () => {
                                                                 (level) => {
                                                                     if (
                                                                         level.level ===
-                                                                        accessLevel
+                                                                        "CLIENT"
                                                                     )
                                                                         level.phoneNumber =
                                                                             e.target.value;
@@ -277,10 +262,17 @@ const EditOwnAccountPageInternal = () => {
                                     </>
                                 ) : null}
 
-                                {["ADMINISTRATOR", "SPECIALIST"].includes(
-                                    accessLevel
+                                {accountAccessLevels?.includes(
+                                    "ADMINISTRATOR"
                                 ) ? (
                                     <>
+                                        <div
+                                            className={
+                                                style.access_level_name_header
+                                            }
+                                        >
+                                            ADMINISTRATOR
+                                        </div>
                                         <div className={style.edit_field}>
                                             <InputWithValidation
                                                 title="Numer telefonu: "
@@ -289,7 +281,7 @@ const EditOwnAccountPageInternal = () => {
                                                         .filter(
                                                             (level) =>
                                                                 level.level ===
-                                                                accessLevel
+                                                                "ADMINISTRATOR"
                                                         )
                                                         .map(
                                                             (level) =>
@@ -311,7 +303,7 @@ const EditOwnAccountPageInternal = () => {
                                                                 (level) => {
                                                                     if (
                                                                         level.level ===
-                                                                        accessLevel
+                                                                        "ADMINISTRATOR"
                                                                     )
                                                                         level.phoneNumber =
                                                                             e.target.value;
@@ -336,7 +328,7 @@ const EditOwnAccountPageInternal = () => {
                                                         .filter(
                                                             (level) =>
                                                                 level.level ===
-                                                                accessLevel
+                                                                "ADMINISTRATOR"
                                                         )
                                                         .map(
                                                             (level) =>
@@ -358,7 +350,7 @@ const EditOwnAccountPageInternal = () => {
                                                                 (level) => {
                                                                     if (
                                                                         level.level ===
-                                                                        accessLevel
+                                                                        "ADMINISTRATOR"
                                                                     )
                                                                         level.contactEmail =
                                                                             e.target.value;
@@ -377,6 +369,108 @@ const EditOwnAccountPageInternal = () => {
                                         </div>
                                     </>
                                 ) : null}
+
+                                {accountAccessLevels?.includes("SPECIALIST") ? (
+                                    <>
+                                        <div
+                                            className={
+                                                style.access_level_name_header
+                                            }
+                                        >
+                                            SPECIALIST
+                                        </div>
+                                        <div className={style.edit_field}>
+                                            <InputWithValidation
+                                                title="Numer telefonu: "
+                                                value={
+                                                    account?.accessLevels
+                                                        .filter(
+                                                            (level) =>
+                                                                level.level ===
+                                                                "SPECIALIST"
+                                                        )
+                                                        .map(
+                                                            (level) =>
+                                                                level.phoneNumber
+                                                        )[0]
+                                                }
+                                                validationType="VALIDATE_PHONENUMBER_SPECIALIST"
+                                                isValid={
+                                                    isPhoneNumberValidSpecialist
+                                                }
+                                                onChange={(e) => {
+                                                    if (
+                                                        e.target.value &&
+                                                        account
+                                                    )
+                                                        setAccount((old) => {
+                                                            if (!old) return;
+                                                            old.accessLevels.forEach(
+                                                                (level) => {
+                                                                    if (
+                                                                        level.level ===
+                                                                        "SPECIALIST"
+                                                                    )
+                                                                        level.phoneNumber =
+                                                                            e.target.value;
+                                                                }
+                                                            );
+                                                            return old;
+                                                        });
+                                                }}
+                                            />
+                                            <ValidationMessage
+                                                isValid={
+                                                    isPhoneNumberValidSpecialist
+                                                }
+                                                message="Numer telefonu musi składać się z 9 cyfr."
+                                            />
+                                        </div>
+                                        <div className={style.edit_field}>
+                                            <InputWithValidation
+                                                title="Email kontaktowy: "
+                                                value={
+                                                    account?.accessLevels
+                                                        .filter(
+                                                            (level) =>
+                                                                level.level ===
+                                                                "SPECIALIST"
+                                                        )
+                                                        .map(
+                                                            (level) =>
+                                                                level.contactEmail
+                                                        )[0]
+                                                }
+                                                validationType="VALIDATE_EMAIL_SPECIALIST"
+                                                isValid={isEmailValidSpecialist}
+                                                onChange={(e) => {
+                                                    if (
+                                                        e.target.value &&
+                                                        account
+                                                    )
+                                                        setAccount((old) => {
+                                                            if (!old) return;
+                                                            old.accessLevels.forEach(
+                                                                (level) => {
+                                                                    if (
+                                                                        level.level ===
+                                                                        "SPECIALIST"
+                                                                    )
+                                                                        level.contactEmail =
+                                                                            e.target.value;
+                                                                }
+                                                            );
+                                                            return old;
+                                                        });
+                                                }}
+                                            />
+                                            <ValidationMessage
+                                                isValid={isEmailValidSpecialist}
+                                                message="Email musi być poprawny."
+                                            />
+                                        </div>
+                                    </>
+                                ) : null}
                             </div>
                             <div className={style.edit_data_buttons_wrapper}>
                                 <ActionButton
@@ -390,7 +484,7 @@ const EditOwnAccountPageInternal = () => {
                                 />
                                 <ActionButton
                                     onClick={() => {
-                                        navigate("/account");
+                                        navigate("/accounts");
                                     }}
                                     icon={faCancel}
                                     color="red"
@@ -410,22 +504,14 @@ const EditOwnAccountPageInternal = () => {
                     await handleSubmit();
                     setOpened(false);
                 }}
-                isLoading={loading.actionLoading as boolean}
-                title="Edycja swoich własnych danych"
+                isLoading={loading.actionLoading ?? false}
+                title="Edycja danych innego konta"
             >
-                Czy na pewno chcesz zmienić swoje własne dane? Operacja jest
+                Czy na pewno chcesz zmienić dane tego konta? Operacja jest
                 nieodwracalna
             </ConfirmActionModal>
         </section>
     );
 };
 
-const EditOwnAccountPage = () => {
-    return (
-        <GoogleReCaptchaProvider reCaptchaKey="6Lf85hEgAAAAAONrGfo8SoQSb9GmfzHXTTgjKJzT">
-            <EditOwnAccountPageInternal />
-        </GoogleReCaptchaProvider>
-    );
-};
-
-export default EditOwnAccountPage;
+export default EditAnyAccountPage;

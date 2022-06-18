@@ -1,7 +1,8 @@
 @import "../../../variables.scss";
 
+
 .access_level_wrapper {
-    cursor: pointer;
+    margin-right: 0.3rem;
 
     .text {
         padding: 0.35rem 0.72rem;
@@ -25,5 +26,9 @@
 
     .client {
         background: $client-gradient;
+    }
+
+    .grayed {
+        background: $grayed-gradient;
     }
 }

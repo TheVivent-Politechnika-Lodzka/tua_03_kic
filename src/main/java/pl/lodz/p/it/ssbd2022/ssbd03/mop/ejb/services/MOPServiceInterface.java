@@ -81,7 +81,16 @@ public interface MOPServiceInterface extends ServiceLocalInterface {
         throw new MethodNotImplementedException();
     }
 
-    default List<Account> findSpecialists(int page, int pageSize, String phrase) {
+    /**
+     * Metoda zwracająca liste specialistów - MOP.6
+     *
+     * @param page     - numer strony (int)
+     * @param pageSize - ilość pozycji na stronie (int)
+     * @param phrase   - szukana fraza (String)
+     * @return - lista specialistów (PaginationData)
+     * @throws MethodNotImplementedException - metoda nie jest zaimplementowana
+     */
+    default PaginationData findSpecialists(int page, int pageSize, String phrase) {
         throw new MethodNotImplementedException();
     }
 
@@ -100,6 +109,18 @@ public interface MOPServiceInterface extends ServiceLocalInterface {
      * @throws MethodNotImplementedException w przypadku niezaimplementowanej metody
      */
     default PaginationData findVisits(int page, int pageSize, String phrase) {
+        throw new MethodNotImplementedException();
+    }
+    /**
+     * Metoda zwracająca listę wszystkich wizyt dla podanego loginu
+     *
+     * @param page numer aktualnie przeglądanej strony
+     * @param pageSize ilość rekordów na danej stronie
+     * @param login wyszukiwana fraza
+     * @return Lista wizyt zgodnych z parametrami wyszukiwania
+     * @throws MethodNotImplementedException w przypadku niezaimplementowanej metody
+     */
+    default PaginationData findVisitsByLogin(int page, int pageSize, String login){
         throw new MethodNotImplementedException();
     }
 

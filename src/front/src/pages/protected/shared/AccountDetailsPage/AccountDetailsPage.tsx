@@ -61,6 +61,7 @@ const AccountDetailsPage = () => {
                             {account?.accessLevels.map((accessLevel) => (
                                 <AccessLevel
                                     clickable={true}
+                                    selectable={true}
                                     key={accessLevel.level}
                                     accessLevel={accessLevel.level}
                                 />
