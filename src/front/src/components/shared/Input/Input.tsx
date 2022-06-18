@@ -6,11 +6,19 @@ interface InputProps {
     title: string;
     type: string;
     onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
+    style?: React.CSSProperties;
 }
 
-const Input = ({ placeholder, value, title, type, onChange }: InputProps) => {
+const Input = ({
+    placeholder,
+    value,
+    title,
+    type,
+    onChange,
+    style,
+}: InputProps) => {
     return (
-        <div className={styles.input_wrapper}>
+        <div className={styles.input_wrapper} style={style}>
             <p className={styles.title}>{title}</p>
             <input
                 className={styles.input}
