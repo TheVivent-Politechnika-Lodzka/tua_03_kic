@@ -1,0 +1,52 @@
+@import "../../variables.scss";
+
+.appointment_record_wrapper {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    flex-direction: row;
+    background-color: $secondary-color;
+    padding-block: 1rem;
+    margin-block: 0.4rem;
+    border-radius: 2rem;
+    width: 100%;
+
+    }
+
+    .detail_wrapper {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 100%;
+        word-break: break-all;
+        text-align: center;
+        white-space: nowrap;
+        width: 20%;
+
+        .detail {
+            font-size: 1.25rem;
+            color: $white;
+            align-self: center;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .info_button {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 2rem;
+            color: $white;
+            background: $cyan;
+            width: 3rem;
+            height: 3rem;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            transition: 0.2s all ease-in-out;
+
+            &:hover {
+                filter: brightness(140%);
+            }
+        }
+    }

@@ -5,6 +5,7 @@ import ChangeUserPassword from "../pages/protected/admin/ChangeUserPassword/Chan
 import UserDetails from "../pages/protected/admin/UserDetails/UserDetails";
 import UserManagment from "../pages/protected/admin/UsersManagmentPage/UsersManagmentPage";
 import ClientMainPage from "../pages/protected/client/ClientMainPage";
+import { OwnAppointmentsList } from "../pages/protected/shared/OwnAppointmentsList/OwnAppointmentsList";
 import SpecialistMainPage from "../pages/protected/specialist/SpecialistMainPage";
 
 const authorizedRoutes = (accessLevel: AccessLevelType) => {
@@ -28,12 +29,14 @@ const authorizedRoutes = (accessLevel: AccessLevelType) => {
         case "SPECIALIST": {
             return (
                 <>
+                <Route path="/visits" element={<OwnAppointmentsList/>}/>
                 </>
             );
         }
         case "CLIENT": {
             return (
                 <>
+                <Route path="/visits" element={<OwnAppointmentsList/>}/>
                 </>
             );
         }
