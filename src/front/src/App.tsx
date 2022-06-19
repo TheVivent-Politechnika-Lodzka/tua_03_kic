@@ -15,6 +15,7 @@ import authorizedRoutes from "./security/authorizedRoutes";
 import PageLayout from "./pages/PageLayout/PageLayout";
 import { ImplantListPage } from "./pages/unprotected/ImplantListPage";
 import LoginPage from "./pages/unprotected/LoginPage/LoginPage";
+import SpecialistList from "./pages/unprotected/SpecialistList";
 
 function App() {
     const user = useStoreSelector((state) => state.user);
@@ -71,6 +72,10 @@ function App() {
                                 <Route
                                     path="/reset-password-token"
                                     element={<ResetPasswordTokenForm />}
+                                />
+                                <Route
+                                    path="/specialists"
+                                    element={<SpecialistList />}
                                 />
                             </>
                         )}
