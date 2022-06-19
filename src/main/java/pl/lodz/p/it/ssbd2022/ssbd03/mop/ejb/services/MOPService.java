@@ -33,10 +33,13 @@ import pl.lodz.p.it.ssbd2022.ssbd03.mop.ejb.facades.AppointmentFacade;
 import pl.lodz.p.it.ssbd2022.ssbd03.mop.ejb.facades.ImplantFacade;
 import pl.lodz.p.it.ssbd2022.ssbd03.mop.ejb.facades.ImplantReviewFacade;
 import pl.lodz.p.it.ssbd2022.ssbd03.security.AuthContext;
+import pl.lodz.p.it.ssbd2022.ssbd03.mop.ejb.facades.*;
 import pl.lodz.p.it.ssbd2022.ssbd03.utils.PaginationData;
 
 import java.util.Date;
 import java.util.UUID;
+
+import pl.lodz.p.it.ssbd2022.ssbd03.mop.ejb.facades.AppointmentFacade;
 
 import static pl.lodz.p.it.ssbd2022.ssbd03.entities.Status.FINISHED;
 import static pl.lodz.p.it.ssbd2022.ssbd03.entities.Status.REJECTED;
@@ -268,6 +271,7 @@ public class MOPService extends AbstractService implements MOPServiceInterface, 
         implantReviewFacade.create(review);
         return implantReviewFacade.findByUUID(review.getId());
     }
+
     /**
      * Metoda zwracająca liste wizyt
      *
@@ -332,6 +336,33 @@ public class MOPService extends AbstractService implements MOPServiceInterface, 
         }
         appointmentFacade.edit(appointmentFromDb);
         return appointmentFromDb;
+    }
+    @Override
+    @PermitAll
+    public PaginationData findVisitsByLogin(int page, int pageSize, String login) {
+        if(page == 0 || pageSize == 0) {
+            throw new InvalidParametersException();
+        }
+        return appointmentFacade.findByClientLoginInRange(page, pageSize, login);
+    }
+
+    /**
+     * Metoda zwracająca liste specialistów - MOP.6
+     * dostęp dla wszytskich
+     *
+     * @param page     - numer strony (int)
+     * @param pageSize - ilość rekordów na stronie (int)
+     * @param phrase   - szukana fraza (String)
+     * @return - lista specialistów (PaginationData)
+     * @throws InvalidParametersException przy podaniu błędnych parametrów
+     */
+    @Override
+    @PermitAll
+    public PaginationData findSpecialists(int page, int pageSize, String phrase) {
+        if (page == 0 || pageSize == 0) {
+            throw new InvalidParametersException();
+        }
+        return accountFacade.findInRangeWithPhrase(page, pageSize, phrase);
     }
 
     @Override

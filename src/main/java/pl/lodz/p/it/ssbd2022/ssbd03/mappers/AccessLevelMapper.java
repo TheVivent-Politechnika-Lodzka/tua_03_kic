@@ -10,6 +10,7 @@ import pl.lodz.p.it.ssbd2022.ssbd03.mok.dto.access_levels.AccessLevelDto;
 import pl.lodz.p.it.ssbd2022.ssbd03.mok.dto.access_levels.DataAdministratorDto;
 import pl.lodz.p.it.ssbd2022.ssbd03.mok.dto.access_levels.DataClientDto;
 import pl.lodz.p.it.ssbd2022.ssbd03.mok.dto.access_levels.DataSpecialistDto;
+import pl.lodz.p.it.ssbd2022.ssbd03.mop.dto.SpecialistDataDto;
 
 import java.util.Collection;
 import java.util.List;
@@ -120,6 +121,43 @@ public class AccessLevelMapper {
                 .filter(Objects::nonNull)
                 .map(this::createAccessLevelDtoFromEntity)
                 .collect(Collectors.toList());
+    }
+
+
+    /**
+     * Metoda tworząca obiekt typu SpecialistDataDto na podstawie encji specjalisty
+     *
+     * @param dataSpecialist -  Specjalista, który zostanie skonwertowany na DTO
+     * @return - DTO podanego specjalisty
+     */
+    public SpecialistDataDto createSpecialistDataDtoFromEntity(DataSpecialist dataSpecialist) {
+        SpecialistDataDto dto = new SpecialistDataDto(dataSpecialist.getContactEmail(), dataSpecialist.getPhoneNumber());
+        return dto;
+    }
+
+    /**
+     * Metoda zwracjąca SpecialistDataDto na podstawie encji specjalisty( jeżeli encja specjalisty jest null, to zwraca null)
+     *
+     * @param accessLevel - poziom dostępu (AccessLevel)
+     * @return - DTO podanego specjalisty, lub null
+     */
+    public SpecialistDataDto dataSpecialistListElementDto(AccessLevel accessLevel) {
+        if (accessLevel instanceof DataSpecialist)
+            return createSpecialistDataDtoFromEntity((DataSpecialist) accessLevel);
+        return null;
+    }
+
+    /**
+     * Metoda zwracająca SpecialistDataDto na podstawie kolekcji poziomów dostępów( jeżeli kolekcja poziomów dostępu jest null, to zwraca null)
+     *
+     * @param accessLevels - kolekcja poziomów dostępu (Collection<AccessLevel>)
+     * @return - zwraca SpecialistDataDto, lub null
+     */
+    public SpecialistDataDto dataSpecialistListElementDtoList(Collection<AccessLevel> accessLevels) {
+        return null == accessLevels ? null : accessLevels.stream()
+                .filter(Objects::nonNull)
+                .map(this::dataSpecialistListElementDto)
+                .collect(Collectors.toList()).get(0);
     }
 
     /**
