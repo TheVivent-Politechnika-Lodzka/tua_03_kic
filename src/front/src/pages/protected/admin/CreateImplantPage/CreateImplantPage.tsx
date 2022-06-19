@@ -5,6 +5,7 @@ import {
     Grid,
     Group,
     Image,
+    Input,
     NumberInput,
     Textarea,
     TextInput,
@@ -16,6 +17,12 @@ import { useTranslation } from "react-i18next";
 import { createImplant } from "../../../../api/mop";
 import { uploadPhoto } from "./upload";
 import { useState } from "react";
+import { HiOutlinePhotograph } from "react-icons/hi";
+import { showNotification } from "@mantine/notifications";
+import {
+    failureNotificationItems,
+    successNotficiationItems,
+} from "../../../../utils/showNotificationsItems";
 
 export const CreateImplantPage = () => {
     const { t } = useTranslation();
@@ -69,17 +76,21 @@ export const CreateImplantPage = () => {
     });
 
     const putImplant = (values: any) => {
-        createImplant({
-            name: values.name,
-            description: values.description,
-            manufacturer: values.manufacturer,
-            price: values.price,
-            duration: values.duration,
-            url: url,
-        });
+        try {
+            createImplant({
+                name: values.name,
+                description: values.description,
+                manufacturer: values.manufacturer,
+                price: values.price,
+                duration: values.duration,
+                url: url,
+            });
+            showNotification(successNotficiationItems(""));
+        } catch (error: ApiError | any) {
+            showNotification(failureNotificationItems(error?.errorMessage));
+        }
     };
 
-    //TODO valid message
     return (
         <div>
             <Center>
@@ -96,22 +107,30 @@ export const CreateImplantPage = () => {
                                 sx={{ width: "35vw", height: "60vh" }}
                             >
                                 <Center>
-                                    <div
-                                        className={`${styles.image} ${styles.margin}`}
-                                    >
+                                    {url.length === 0 ? (
+                                        <div
+                                            className={`${styles.image} ${styles.margin}`}
+                                        >
+                                            <Center>
+                                                <HiOutlinePhotograph size="80px" />
+                                            </Center>
+                                        </div>
+                                    ) : (
                                         <Image
                                             radius="md"
                                             src={url}
+                                            height="20vw"
                                             alt="image create"
+                                            styles={{
+                                                root: { marginTop: "6vh" },
+                                            }}
                                         />
-                                    </div>
+                                    )}
                                 </Center>
                                 <Center>
                                     <input
-                                        id="photoInput"
-                                        className="formPhotoInput"
+                                        id="file-input"
                                         type="file"
-                                        name="myImage"
                                         onChange={async (event) => {
                                             const u = await uploadPhoto(event);
                                             if (u) {
@@ -119,24 +138,6 @@ export const CreateImplantPage = () => {
                                             }
                                         }}
                                     />
-                                    <Button
-                                        type="button"
-                                        variant="gradient"
-                                        gradient={{
-                                            from: "teal",
-                                            to: "lime",
-                                            deg: 105,
-                                        }}
-                                        styles={{
-                                            root: {
-                                                marginTop: "2vh",
-                                                minWidth: "15vw",
-                                                height: "5vh",
-                                            },
-                                        }}
-                                    >
-                                        {t("createImplantPage.choosePhoto")}
-                                    </Button>
                                 </Center>
                             </Grid.Col>
                             <Grid.Col
@@ -154,8 +155,9 @@ export const CreateImplantPage = () => {
                                         >
                                             <form
                                                 onSubmit={form.onSubmit(
-                                                    (values: any) =>
-                                                        console.log(values)
+                                                    (values) => {
+                                                        putImplant(values);
+                                                    }
                                                 )}
                                             >
                                                 <TextInput

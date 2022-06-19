@@ -38,9 +38,9 @@ export interface GetImplantResponse extends ImplantDetails, Etag {}
 /**
  * zwraca listę implantów i informacje o paginacji
  * @params page aktualna strone,
- * @params size ilosc pozycji na stronie 
+ * @params size ilosc pozycji na stronie
  * @params phrase szukana fraze
- * @params archived implant zarchiwizowane 
+ * @params archived implant zarchiwizowane
  * @returns @example {totalCount, totalPages, currentPage, data} | {errorMessage, status}
  */
 export async function listImplants(params: ListImplantsRequest) {
@@ -69,7 +69,7 @@ export async function listImplants(params: ListImplantsRequest) {
  * @param id identyfikator implantu
  * @returns GetImplantResponse | {errorMessage, status}
  */
- export async function getImplant(id: string) {
+export async function getImplant(id: string) {
     try {
         const { data, headers } = await axios.get<ImplantDetails>(
             `/mop/implant/details/${id}`
@@ -157,8 +157,10 @@ export interface CreateImplantResponse {
 }
 
 export async function createImplant(params: CreateImplantRequest) {
+    console.log(params);
+
     try {
-        const { data } = await axios.get<CreateImplantResponse>(
+        const { data } = await axios.put<CreateImplantResponse>(
             "/mop/implant/create",
             {
                 params,
