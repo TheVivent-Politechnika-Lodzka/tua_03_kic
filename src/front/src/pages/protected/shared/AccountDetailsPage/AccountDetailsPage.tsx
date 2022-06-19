@@ -61,8 +61,9 @@ const AccountDetailsPage = () => {
                             {account?.accessLevels.map((accessLevel) => (
                                 <AccessLevel
                                     clickable={true}
+                                    selectable={true}
                                     key={accessLevel.level}
-                                    accessLevel={accessLevel}
+                                    accessLevel={accessLevel.level}
                                 />
                             ))}
                         </div>
@@ -76,6 +77,7 @@ const AccountDetailsPage = () => {
                                 icon={faEdit}
                             />
                             <ActionButton
+                                onClick={() => {}}
                                 title="Zmień hasło"
                                 color="purple"
                                 icon={faKey}

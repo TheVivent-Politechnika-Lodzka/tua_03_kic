@@ -26,6 +26,7 @@ grant select on TABLE access_level to ssbd03mop;
 grant select,insert,update on TABLE appointment to ssbd03mop;
 grant select,insert,update on TABLE implant to ssbd03mop;
 grant select,insert,delete on TABLE implant_review to ssbd03mop;
+grant select,insert,delete on TABLE implant_backup_in_appointment to ssbd03mop;
 
 -- uprawnienia dla konta AUTH
 grant select on TABLE auth_view to ssbd03auth;

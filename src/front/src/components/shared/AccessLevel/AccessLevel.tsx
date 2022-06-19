@@ -1,13 +1,15 @@
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
-import { AccessLevelDto } from "../../../api/types/apiParams";
 import { useStoreSelector } from "../../../redux/reduxHooks";
 import { changeLevel } from "../../../redux/userSlice";
 import styles from "./style.module.scss";
 
 interface AccessLevelProps {
-    accessLevel: AccessLevelDto;
+    accessLevel: AccessLevelType;
     clickable?: boolean;
+    selectable?: boolean;
+    onClick?: () => void;
+    grayed?: boolean;
 }
 
 const getAccessLevel = (accessLevel: string) => {
@@ -27,15 +29,22 @@ const getAccessLevel = (accessLevel: string) => {
     }
 };
 
-const AccessLevel = ({ accessLevel, clickable = false }: AccessLevelProps) => {
+const AccessLevel = ({
+    accessLevel,
+    clickable = false,
+    selectable = false,
+    grayed = false,
+    onClick,
+}: AccessLevelProps) => {
     const user = useStoreSelector((state) => state.user);
     const level = useStoreSelector((state) => state.user.cur);
     const dispatch = useDispatch();
 
     const handleClick = () => {
-        if (clickable) {
+        if (!clickable) return;
+        if (selectable) {
             for (let i = 0; i < user.auth.length; i++) {
-                if (user.auth[i] === accessLevel.level) {
+                if (user.auth[i] === accessLevel) {
                     dispatch(
                         changeLevel({
                             sub: user.sub,
@@ -47,22 +56,30 @@ const AccessLevel = ({ accessLevel, clickable = false }: AccessLevelProps) => {
                 }
             }
         }
+        if (onClick) onClick();
     };
 
     useEffect(() => {}, []);
 
     return (
-        <div onClick={handleClick} className={styles.access_level_wrapper}>
+        <div
+            onClick={handleClick}
+            className={styles.access_level_wrapper}
+            style={{ cursor: `${clickable ? "pointer" : "default"}` }}
+        >
             <p
                 className={`${styles.text}  ${
-                    styles[accessLevel?.level.toLowerCase()]
+                    grayed ? styles.grayed : styles[accessLevel.toLowerCase()]
                 } ${
-                    accessLevel?.level === level && styles.selected && clickable
+                    accessLevel === level &&
+                    styles.selected &&
+                    clickable &&
+                    selectable
                         ? styles.selected
                         : null
                 }`}
             >
-                {getAccessLevel(accessLevel?.level)}
+                {getAccessLevel(accessLevel)}
             </p>
         </div>
     );

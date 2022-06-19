@@ -26,11 +26,10 @@ import static pl.lodz.p.it.ssbd2022.ssbd03.entities.access_levels.AccessLevel.CO
         @NamedQuery(name = "AccessLevel.findByLogin", query = "select a from AccessLevel a where a.account.login = :login"),
         @NamedQuery(name = "AccessLevel.findById", query = "select a from AccessLevel a where a.id = :id"),
         @NamedQuery(name = "AccessLevel.findByAccountId", query = "select a from AccessLevel a where a.account.id = :id"),
-        @NamedQuery(name = "AccessLevel.findByAccessLevel", query = "select a from AccessLevel a WHERE a.level = :level")
-//        @NamedQuery(name = "AccessLevel.findByActive", query = "select a from AccessLevel a order by a.active")
+        @NamedQuery(name = "AccessLevel.findByAccessLevel", query = "select a from AccessLevel a WHERE a.level = :level"),
 })
 @ToString(callSuper = true)
-public abstract class AccessLevel extends AbstractEntity implements Serializable {
+public class AccessLevel extends AbstractEntity implements Serializable {
 
     public static final String CONSTRAINT_ACCESS_LEVEL_FOR_ACCOUNT_UNIQUE = "constraint_unique_access_level_for_account";
     private static final long serialVersionUID = 1L;

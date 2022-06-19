@@ -4,10 +4,7 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 import pl.lodz.p.it.ssbd2022.ssbd03.common.AbstractEntity;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.access_levels.AccessLevel;
 import pl.lodz.p.it.ssbd2022.ssbd03.validation.FirstName;
@@ -46,8 +43,10 @@ import static pl.lodz.p.it.ssbd2022.ssbd03.entities.Account.CONSTRAINT_LOGIN_UNI
         @NamedQuery(name = "Account.findByActive", query = "select a from Account a order by a.active"),
         @NamedQuery(name = "Account.searchByPhrase", query = "select a from Account a where lower(concat(a.firstName, ' ', a.lastName)) like lower(:phrase)"),
 })
+
 @ToString
 @NoArgsConstructor
+@AllArgsConstructor
 public class Account extends AbstractEntity implements Serializable {
 
     public static final String CONSTRAINT_LOGIN_UNIQUE = "account_login_unique";
@@ -82,7 +81,7 @@ public class Account extends AbstractEntity implements Serializable {
     @NotNull
     private boolean active;
 
-    @OneToMany(fetch = FetchType.EAGER, cascade = {CascadeType.REMOVE, CascadeType.PERSIST}, mappedBy = "account", orphanRemoval = true)
+    @OneToMany(fetch = FetchType.EAGER, cascade = {CascadeType.REMOVE, CascadeType.ALL}, mappedBy = "account", orphanRemoval = true)
     @Getter
     private Collection<AccessLevel> accessLevelCollection = new ArrayList<>();
 
@@ -110,11 +109,6 @@ public class Account extends AbstractEntity implements Serializable {
     @Email
     @NotNull
     private String email;
-
-    public void setEmail(String email) {
-        this.email = email.toLowerCase();
-    }
-
     @Basic(optional = false)
     @Column(name = "language", table = "account_details", nullable = false, length = 16)
     @Getter
@@ -122,6 +116,9 @@ public class Account extends AbstractEntity implements Serializable {
     @NotNull
     private Locale language;
 
+    public void setEmail(String email) {
+        this.email = email.toLowerCase();
+    }
 
     public void addAccessLevel(AccessLevel accessLevel) {
         accessLevelCollection.add(accessLevel);
@@ -131,6 +128,13 @@ public class Account extends AbstractEntity implements Serializable {
     public void removeAccessLevel(AccessLevel accessLevel) {
         accessLevelCollection.remove(accessLevel);
         accessLevel.setAccount(null);
+    }
+
+    public boolean isInRole(String role) {
+        for (AccessLevel accessLevel : accessLevelCollection) {
+            if (accessLevel.getLevel().equals(role)) return true;
+        }
+        return false;
     }
 
     @Override

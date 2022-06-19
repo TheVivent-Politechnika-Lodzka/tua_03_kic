@@ -163,5 +163,16 @@
         "pricePos": "Cena musi być liczbą dodatnią",
         "durationReq": "Czas zabiegu jest wymagany",
         "durationPos": "Czas zabiegu musi być liczbą dodatnią "
+    },
+
+    "appointmentListPage": {
+        "addImplant": "DODAJ WIZYTĘ",
+        "search": "Szukaj ...",
+        "amount": "Ilość",
+        "items": "pozycji",
+        "listElement": {
+            "details": "Szczegóły"
+        }
     }
+
 }

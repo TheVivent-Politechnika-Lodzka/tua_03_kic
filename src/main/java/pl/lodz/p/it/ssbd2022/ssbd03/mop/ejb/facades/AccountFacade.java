@@ -2,26 +2,28 @@ package pl.lodz.p.it.ssbd2022.ssbd03.mop.ejb.facades;
 
 import jakarta.annotation.security.PermitAll;
 import jakarta.annotation.security.RolesAllowed;
+import jakarta.ejb.Stateful;
 import jakarta.ejb.Stateless;
 import jakarta.ejb.TransactionAttribute;
 import jakarta.ejb.TransactionAttributeType;
 import jakarta.inject.Inject;
 import jakarta.interceptor.Interceptors;
 import jakarta.persistence.*;
+import jakarta.transaction.Transactional;
 import lombok.Getter;
+import org.hibernate.Hibernate;
 import org.hibernate.exception.ConstraintViolationException;
 import pl.lodz.p.it.ssbd2022.ssbd03.common.AbstractFacade;
-import pl.lodz.p.it.ssbd2022.ssbd03.common.Roles;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.Account;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.InvalidParametersException;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.ResourceNotFoundException;
-import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.account.AccountAlreadyExistsException;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.database.DatabaseException;
 import pl.lodz.p.it.ssbd2022.ssbd03.interceptors.TrackerInterceptor;
 import pl.lodz.p.it.ssbd2022.ssbd03.security.Tagger;
 import pl.lodz.p.it.ssbd2022.ssbd03.utils.PaginationData;
 
 import java.util.List;
+import java.util.UUID;
 
 @Interceptors(TrackerInterceptor.class)
 @Stateless
@@ -46,7 +48,7 @@ public class AccountFacade extends AbstractFacade<Account> {
      * @param login Login użytkownika, którego szukamy
      * @return Obiekt znalezionego konta
      * @throws InvalidParametersException, gdy podano niepoprawną wartość parametru
-     * @throws DatabaseException,          gdy wystąpi błąd związany z bazą danych
+     * @throws DatabaseException, gdy wystąpi błąd związany z bazą danych
      */
     @PermitAll
     public Account findByLogin(String login) {
@@ -58,6 +60,62 @@ public class AccountFacade extends AbstractFacade<Account> {
             throw new ResourceNotFoundException();
         } catch (IllegalArgumentException e) {
             throw new InvalidParametersException(e.getCause());
+        } catch (PersistenceException e) {
+            throw new DatabaseException(e.getCause());
+        }
+    }
+
+    /**
+     * Metoda zwracająca listę specialistów względem wprowadzonej paginacji i frazy
+     * dostęp dla wszystkich
+     *
+     * @param pageNumber - numer strony (int)
+     * @param perPage    - liczba rekordów na stronie (int)
+     * @param phrase     - fraza do wyszukania (String)
+     * @return lista specialistów (PaginationData)
+     * @throws  InvalidParametersException przy błędnym podaniu parametrów
+     * @throws DatabaseException przy błędzie bazy danych
+     */
+    @PermitAll
+    public PaginationData findInRangeWithPhrase(int pageNumber, int perPage, String phrase) {
+        try {
+            //TODO naprawic datadoctor
+            TypedQuery<Account> typedQuery = entityManager.createNamedQuery("DataDoctor.searchSpecialistByPhrase", Account.class);
+            pageNumber--;
+            List<Account> data = typedQuery.setParameter("phrase", "%" + phrase + "%")
+                    .setMaxResults(perPage)
+                    .setFirstResult(pageNumber * perPage)
+                    .getResultList();
+            pageNumber++;
+
+            int totalCount = this.count();
+            int totalPages = (int) Math.ceil((double) totalCount / perPage);
+
+            return new PaginationData(totalCount, totalPages, pageNumber, data);
+        } catch (IllegalArgumentException e) {
+            throw new InvalidParametersException(e.getCause());
+        } catch (PersistenceException e) {
+            throw new DatabaseException(e.getCause());
+        }
+    }
+
+    /**
+     * Metoda wyszukująca konkretne konto względem wprowadzonego id
+     *
+     * @param id - id użytkownika, którego szukamy
+     * @return Obiekt znalezionego konta
+     * @throws InvalidParametersException, gdy podano niepoprawną wartość parametru
+     * @throws DatabaseException - gdy wystąpi błąd związany z bazą danych
+     * @throws ResourceNotFoundException, gdy nie znaleziono zasobu
+     */
+    @PermitAll
+    public Account findByUUID(UUID id) {
+        try {
+            TypedQuery<Account> typedQuery = entityManager.createNamedQuery("Account.findById", Account.class);
+            typedQuery.setParameter("id", id);
+            return typedQuery.getSingleResult();
+        } catch (NoResultException e) {
+            throw new ResourceNotFoundException();
         } catch (PersistenceException e) {
             throw new DatabaseException(e.getCause());
         }

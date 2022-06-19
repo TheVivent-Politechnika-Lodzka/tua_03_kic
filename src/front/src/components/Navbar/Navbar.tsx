@@ -37,7 +37,7 @@ const Navbar = () => {
                     </div>
                     <div
                         onClick={() => {
-                            navigate("/login");
+                            navigate("/register");
                         }}
                         className={styles.register}
                     >
