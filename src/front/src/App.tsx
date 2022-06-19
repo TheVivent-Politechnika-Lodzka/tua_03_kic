@@ -15,7 +15,6 @@ import authorizedRoutes from "./security/authorizedRoutes";
 import PageLayout from "./pages/PageLayout/PageLayout";
 import { ImplantListPage } from "./pages/unprotected/ImplantListPage";
 import LoginPage from "./pages/unprotected/LoginPage/LoginPage";
-import { AppointmentListPage } from "./pages/protected/admin/AppointmentList";
 
 function App() {
     const user = useStoreSelector((state) => state.user);
