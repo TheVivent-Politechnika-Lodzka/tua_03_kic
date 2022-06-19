@@ -101,7 +101,7 @@ const RegisterPageInternal = () => {
                 <div className={styles.edit_field} title="email">
                     <InputWithValidation
                         required
-                        styleWidth={{ width: "30rem" }}
+                        styleWidth={{ width: "20rem" }}
                         title={t("registerPage.email")}
                         value={account.email}
                         validationType="VALIDATE_EMAIL_ADMINISTRATOR"
@@ -124,7 +124,7 @@ const RegisterPageInternal = () => {
                 <div className={styles.edit_field} title="firstName">
                     <InputWithValidation
                         required
-                        styleWidth={{ width: "30rem" }}
+                        styleWidth={{ width: "20rem" }}
                         title={t("registerPage.firstName")}
                         value={account.firstName}
                         validationType="VALIDATE_FIRSTNAME"
@@ -146,7 +146,7 @@ const RegisterPageInternal = () => {
                 <div className={styles.edit_field} title="lastName">
                     <InputWithValidation
                         required
-                        styleWidth={{ width: "30rem" }}
+                        styleWidth={{ width: "20rem" }}
                         title={t("registerPage.lastName")}
                         value={account.lastName}
                         validationType="VALIDATE_LASTNAME"
@@ -169,7 +169,7 @@ const RegisterPageInternal = () => {
                 <div className={styles.edit_field} title="pesel">
                     <InputWithValidation
                         required
-                        styleWidth={{ width: "30rem" }}
+                        styleWidth={{ width: "20rem" }}
                         title="PESEL "
                         value={account.pesel}
                         validationType="VALIDATE_PESEL"
@@ -192,7 +192,7 @@ const RegisterPageInternal = () => {
                 <div className={styles.edit_field} title="login">
                     <InputWithValidation
                         required
-                        styleWidth={{ width: "30rem" }}
+                        styleWidth={{ width: "20rem" }}
                         title={t("registerPage.login")}
                         value={account.login}
                         validationType="VALIDATE_LOGIN"
@@ -215,7 +215,7 @@ const RegisterPageInternal = () => {
                 <div className={styles.edit_field} title="phoneNumber">
                     <InputWithValidation
                         required
-                        styleWidth={{ width: "30rem" }}
+                        styleWidth={{ width: "20rem" }}
                         title={t("registerPage.phoneNumber")}
                         value={account.phoneNumber}
                         validationType="VALIDATE_PHONENUMBER_CLIENT"
@@ -238,7 +238,7 @@ const RegisterPageInternal = () => {
                 <div className={styles.edit_field} title="password">
                     <InputWithValidation
                         required
-                        styleWidth={{ width: "30rem" }}
+                        styleWidth={{ width: "20rem" }}
                         title={t("registerPage.password")}
                         type="password"
                         value={account.password}
@@ -262,7 +262,7 @@ const RegisterPageInternal = () => {
                 <div className={styles.edit_field} title="repeat-password">
                     <InputWithValidation
                         required
-                        styleWidth={{ width: "30rem" }}
+                        styleWidth={{ width: "20rem" }}
                         title={t("registerPage.repaet_password")}
                         type="password"
                         value={repeatPassword}
