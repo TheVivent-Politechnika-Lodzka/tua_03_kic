@@ -6,7 +6,6 @@ import { useStoreSelector, useStoreDispatch } from "./redux/reduxHooks";
 import jwtDecode from "jwt-decode";
 import { login as loginDispatch } from "./redux/userSlice";
 import ActivateAccountPage from "./pages/unprotected/ActivatePage/ActivateAccountPage";
-import ResetPasswordTokenForm from "./components/Form/resetPasswordTokenForm/ResetPasswordTokenForm";
 import { ValidationProvider } from "./context/validationContext";
 import AccountDetailsPage from "./pages/protected/shared/AccountDetailsPage/AccountDetailsPage";
 import EditOwnAccountPage from "./pages/protected/shared/EditOwnAccountPage/EditOwnAccountPage";
@@ -14,6 +13,7 @@ import authorizedRoutes from "./security/authorizedRoutes";
 import PageLayout from "./pages/PageLayout/PageLayout";
 import { ImplantListPage } from "./pages/unprotected/ImplantListPage";
 import LoginPage from "./pages/unprotected/LoginPage/LoginPage";
+import ResetPasswordPage from "./pages/unprotected/ResetPasswordPage";
 
 function App() {
     const user = useStoreSelector((state) => state.user);
@@ -64,8 +64,8 @@ function App() {
                                     element={<ActivateAccountPage />}
                                 />
                                 <Route
-                                    path="/reset-password-token"
-                                    element={<ResetPasswordTokenForm />}
+                                    path="/reset-password/:token"
+                                    element={<ResetPasswordPage />}
                                 />
                             </>
                         )}
