@@ -1,5 +1,6 @@
 package pl.lodz.p.it.ssbd2022.ssbd03.mop.ejb.facades;
 
+import jakarta.annotation.security.PermitAll;
 import jakarta.annotation.security.RolesAllowed;
 import jakarta.ejb.Stateless;
 import jakarta.ejb.TransactionAttribute;
@@ -18,7 +19,9 @@ import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.database.DatabaseException;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.implant_review.ImplantReviewAlreadyExistsException;
 import pl.lodz.p.it.ssbd2022.ssbd03.interceptors.TrackerInterceptor;
 import pl.lodz.p.it.ssbd2022.ssbd03.security.Tagger;
+import pl.lodz.p.it.ssbd2022.ssbd03.utils.PaginationData;
 
+import java.util.List;
 import java.util.UUID;
 
 @Interceptors(TrackerInterceptor.class)
@@ -95,6 +98,41 @@ public class ImplantReviewFacade extends AbstractFacade<ImplantReview> {
     public void remove(ImplantReview entity) {
         try {
             super.unsafeRemove(entity);
+        } catch (PersistenceException e) {
+            throw new DatabaseException(e.getCause());
+        }
+    }
+
+
+    /**
+     * Metoda zwracająca recenzje dla danego implantu
+     *
+     * @param id Identyfikator implantu
+     * @param pageNumber numer aktualnie przeglądanej strony
+     * @param perPage ilość rekordów na danej stronie
+     * @return Lista wizyt użytkownika o podanym loginie
+     * @throws InvalidParametersException w przypadku podania nieprawidłowych parametrów
+     * @throws DatabaseException w przypadku wystąpienia błędu bazy danych
+     */
+    @PermitAll
+    public PaginationData findInRangeWithPhrase(int pageNumber, int perPage, UUID id) {
+        try {
+            TypedQuery<ImplantReview> typedQuery = entityManager.createNamedQuery("Review.findByImplantId", ImplantReview.class);
+
+            pageNumber--;
+
+            List<ImplantReview> data = typedQuery.setParameter("implantId", id)
+                    .setMaxResults(perPage)
+                    .setFirstResult(pageNumber * perPage)
+                    .getResultList();
+
+            pageNumber++;
+            int totalCount = this.count();
+            int totalPages = (int) Math.ceil((double) totalCount / perPage);
+
+            return new PaginationData(totalCount, totalPages, pageNumber, data);
+        } catch (IllegalArgumentException e) {
+            throw new InvalidParametersException(e.getCause());
         } catch (PersistenceException e) {
             throw new DatabaseException(e.getCause());
         }

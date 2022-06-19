@@ -258,7 +258,6 @@ public interface MOPEndpointInterface {
      */
     @DELETE
     @RolesAllowed({Roles.ADMINISTRATOR, Roles.CLIENT})
-    @Consumes(MediaType.APPLICATION_JSON)
     @Path("/implant/review/{id}")
     default Response deleteImplantsReview(@PathParam("id") UUID id) {
         throw new MethodNotImplementedException();
@@ -275,4 +274,22 @@ public interface MOPEndpointInterface {
     @Consumes(MediaType.APPLICATION_JSON)
     @Path("/visit/{id}")
     default Response getVisitDetails(@PathParam("id") UUID uuid){throw new MethodNotImplementedException();}
+
+    /**
+     * MOP.18 - Wyświetl recenzje dla danego wszczepu
+     * @param size Ilość recenzji do wyświetlenia na jednej stronie
+     * @param page Numer strony
+     * @param id Identyfikator wszczepu
+     * @return Lista recenzji wszczepu
+     * @throws MethodNotImplementedException - w przypadku braku implementacji metody
+     */
+    @GET
+    @PermitAll
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Path("/implant/{id}/reviews")
+    default Response getAllImplantReviews(@QueryParam("page") int page, @QueryParam("size") int size, @PathParam("id") UUID id) {
+        throw new MethodNotImplementedException();
+    }
+
 }
