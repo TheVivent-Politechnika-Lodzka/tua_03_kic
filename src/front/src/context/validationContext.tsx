@@ -29,6 +29,7 @@ export type ActionType =
     | "VALIDATE_PESEL"
     | "VALIDATE_PASSWORD"
     | "VALIDATE_LOGIN"
+    | "R"
     | "RESET_VALIDATION";
 
 interface ValidationAction {
@@ -46,16 +47,16 @@ interface ValidationContext {
 // INITIAL STATE
 
 const initialState: ContextState = {
-    isFirstNameValid: true,
-    isLastNameValid: true,
-    isPhoneNumberValidAdministrator: true,
-    isPhoneNumberValidSpecialist: true,
-    isPhoneNumberValidClient: true,
-    isPESELValid: true,
-    isEmailValidAdministrator: true,
-    isEmailValidSpecialist: true,
-    isPasswordValid: true,
-    isLoginValid: true,
+    isFirstNameValid: false,
+    isLastNameValid: false,
+    isPhoneNumberValidAdministrator: false,
+    isPhoneNumberValidSpecialist: false,
+    isPhoneNumberValidClient: false,
+    isPESELValid: false,
+    isEmailValidAdministrator: false,
+    isEmailValidSpecialist: false,
+    isPasswordValid: false,
+    isLoginValid: false,
     input: "",
 };
 
@@ -140,10 +141,21 @@ const validationReducer = (state: ContextState, action: ValidationAction) => {
                 ...state,
                 isLoginValid: validate(
                     action.payload.input,
-                    /^[a-zA-Z\u00C0-\u017F'][a-zA-Z-\u00C0-\u017F' ]+[a-zA-Z\u00C0-\u017F']{3,30}$/
+                    // /^[a-zA-Z\u00C0-\u017F'][a-zA-Z-\u00C0-\u017F' ]+[a-zA-Z\u00C0-\u017F']{3,30}$/
+                    /^[a-zA-Z\u00C0-\u017F']{3,30}$/
                 ),
             };
         }
+        case "VALIDATE_PASSWORD": {
+            return {
+                ...state,
+                isPasswordValid: validate(
+                    action.payload.input,
+                    /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,128}$/
+                ),
+            };
+        }
+
         case "RESET_VALIDATION": {
             return {
                 ...initialState,
