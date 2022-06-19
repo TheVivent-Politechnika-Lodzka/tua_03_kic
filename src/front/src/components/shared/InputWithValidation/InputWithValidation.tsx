@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { faCheck, faClose } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -6,7 +6,6 @@ import {
     validationContext,
 } from "../../../context/validationContext";
 import styles from "./style.module.scss";
-import { CSSObject } from "@emotion/react";
 import CSS from "csstype";
 
 interface InputWithValidationProps {
@@ -43,6 +42,13 @@ const InputWithValidation = ({
             onChange(e);
         }
     };
+
+    useEffect(() => {
+        dispatch({
+            type: validationType,
+            payload: { ...state, input: input ?? "" },
+        });
+    }, [input]);
 
     return (
         <div className={styles.edit_field_wrapper}>
