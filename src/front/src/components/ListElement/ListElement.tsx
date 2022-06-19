@@ -1,8 +1,9 @@
-import { SimpleGrid, Container } from "@mantine/core";
+import { SimpleGrid, Container, Center } from "@mantine/core";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { ImplantListElementDto } from "../../api/mop";
 import { BlueGradientButton } from "../Button/BlueGradientButton";
+import ImplantDetails from "../ImplantDetails/ImplantDetails";
 
 import styles from "./listElement.module.scss";
 
@@ -31,9 +32,10 @@ export const ListElement = (props: { element: ImplantListElementDto }) => {
                     }`}</p>
                 </div>
                 <div className={styles.buttons}>
-                    <div className={styles.price}>{`${
-                        props.element.price
-                    }${" ZL"}`}</div>
+                    <div className={styles.price}>
+                        {`${props.element.price}${" ZL"}`}
+                    </div>
+
                     <div className={styles.button}>
                         <BlueGradientButton
                             label={t("implantListPage.listElement.details")}

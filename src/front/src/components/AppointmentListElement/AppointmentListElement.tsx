@@ -1,7 +1,8 @@
 import {SimpleGrid, Grid} from "@mantine/core";
 import {useTranslation} from "react-i18next";
 import {AppointmentListElementDto} from "../../api/mop"
-import {BlueGradientButton} from "../Button/BlueGradientButton copy";
+import { BlueGradientButton } from "../Button/BlueGradientButton";
+
 import styles from "./listElement.module.scss";
 
 export const AppointmentListElement = (props: { element: AppointmentListElementDto }) => {
