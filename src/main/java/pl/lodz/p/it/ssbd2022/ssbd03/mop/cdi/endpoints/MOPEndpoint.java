@@ -316,7 +316,32 @@ public class MOPEndpoint implements MOPEndpointInterface {
 
         return Response.ok(appointmentDto).tag(tagger.tag(appointmentDto)).build();
     }
-
+    /**
+     * MOP.10 - Edytuj swoją wizytę
+     *
+     * @param id                 id konkretnej wizyty
+     * @param appointmentOwnEditDto obiekt dto edycji naniesionych do wizyty
+     * @return odpowiedz HTTP
+     * @throws TransactionException jeśli transakcja nie została zatwierdzona
+     */
+    @Override
+    public Response editOwnVisit(UUID id, AppointmentOwnEditDto appointmentOwnEditDto) {
+        tagger.verifyTag(appointmentOwnEditDto);
+        String login = authContext.getCurrentUserLogin();
+        Appointment update = appointmentMapper.createAppointmentFromAppointmentOwnEditDto(appointmentOwnEditDto);
+        Appointment editedAppointment;
+        int TXCounter = Config.MAX_TX_RETRIES;
+        boolean commitedTX;
+        do {
+            editedAppointment = mopService.editOwnAppointment(id, update, login);
+            commitedTX = mopService.isLastTransactionCommited();
+        } while (!commitedTX && --TXCounter > 0);
+        if (!commitedTX) {
+            throw new TransactionException();
+        }
+        AppointmentDto app = appointmentMapper.createAppointmentDtoFromAppointment(editedAppointment);
+        return Response.ok(app).tag(tagger.tag(app)).build();
+    }
     /**
      * MOP.11 - Edytuj dowolną wizytę
      *
@@ -481,5 +506,21 @@ public class MOPEndpoint implements MOPEndpointInterface {
         }
 
         return Response.ok().build();
+    }
+    @Override
+    public Response getVisitDetails (UUID uuid){
+        Appointment appointment;
+        int TXCounter = Config.MAX_TX_RETRIES;
+        boolean commitedTX;
+        do {
+            appointment = mopService.findVisit(uuid);
+            commitedTX = mopService.isLastTransactionCommited();
+        } while (!commitedTX && --TXCounter > 0);
+
+        if (!commitedTX) {
+            throw new TransactionException();
+        }
+        AppointmentDto appointmentDto = appointmentMapper.createAppointmentDtoFromAppointment(appointment);
+        return Response.ok(appointmentDto).tag(tagger.tag(appointmentDto)).build();
     }
 }
