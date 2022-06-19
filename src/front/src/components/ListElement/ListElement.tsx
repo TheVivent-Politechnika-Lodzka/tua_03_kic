@@ -17,27 +17,37 @@ export const ListElement = (props: { element: ImplantListElementDto }) => {
         <div className={styles.container}>
             <SimpleGrid cols={3}>
                 <div>
-                    {props.element.url ? (
-                        <Image
-                            radius="md"
-                            src={props.element.url}
-                            alt="img"
-                            height="18vh"
-                            styles={{
-                                root: { paddingTop: "2vh", paddingLeft: "2vh" },
-                            }}
-                        />
-                    ) : (
-                        <Image
-                            radius="md"
-                            src="brak.jpg"
-                            alt="img"
-                            height="18vh"
-                            styles={{
-                                root: { paddingTop: "2vh", paddingLeft: "2vh" },
-                            }}
-                        />
-                    )}
+                    <Center>
+                        {props.element.url ? (
+                            <Image
+                                radius="md"
+                                src={props.element.url}
+                                alt="img"
+                                height="18vh"
+                                width="35vh"
+                                styles={{
+                                    root: {
+                                        paddingTop: "2vh",
+                                        paddingLeft: "2vh",
+                                    },
+                                }}
+                            />
+                        ) : (
+                            <Image
+                                radius="md"
+                                src="brak.jpg"
+                                alt="img"
+                                height="18vh"
+                                width="35vh"
+                                styles={{
+                                    root: {
+                                        paddingTop: "2vh",
+                                        paddingLeft: "2vh",
+                                    },
+                                }}
+                            />
+                        )}{" "}
+                    </Center>
                 </div>
 
                 <div className={styles.text}>
