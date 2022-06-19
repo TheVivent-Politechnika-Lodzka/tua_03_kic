@@ -29,7 +29,7 @@ export type ActionType =
     | "VALIDATE_PESEL"
     | "VALIDATE_PASSWORD"
     | "VALIDATE_LOGIN"
-    | "R"
+    | "REPEAT_PASSWORD"
     | "RESET_VALIDATION";
 
 interface ValidationAction {

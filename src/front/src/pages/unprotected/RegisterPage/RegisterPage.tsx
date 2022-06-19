@@ -86,10 +86,8 @@ const RegisterPageInternal = () => {
             repeatPassword.length > 0
         ) {
             setRepeatPasswordMatch(true);
-            console.log("log");
         } else {
             setRepeatPasswordMatch(false);
-            console.log("log");
         }
     }, [account.password, repeatPassword]);
 
@@ -268,7 +266,7 @@ const RegisterPageInternal = () => {
                         title={t("registerPage.repaet_password")}
                         type="password"
                         value={repeatPassword}
-                        validationType="R"
+                        validationType="REPEAT_PASSWORD"
                         isValid={repeatPasswordMatch}
                         onChange={(e) => {
                             setRepeatPassword(e.target.value);
