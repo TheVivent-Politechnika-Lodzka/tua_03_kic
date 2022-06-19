@@ -97,11 +97,20 @@ public interface MOPEndpointInterface {
         throw new MethodNotImplementedException();
     }
 
-    // MOP.6 - przeglądaj listę specjalistów
+    /**
+     * MOP.6 - Przeglądaj listę specialistów
+     * dostęp dla wszytskich użytkowników serwisu, włącznie z użytkownikami nieuwierzytelnionymi
+     *
+     * @param page   - numer strony (int)
+     * @param size   - ilość pozycji na stronie (int)
+     * @param phrase - szukana fraza (String)
+     * @return lista specialistów
+     * @throws MethodNotImplementedException - w przypadku braku implementacji metody
+     */
     @GET
     @PermitAll
     @Produces(MediaType.APPLICATION_JSON)
-    @Path("/list/specialists")
+    @Path("/specialist/list")
     default Response listSpecialists(@QueryParam("page") int page, @QueryParam("size") int size, @QueryParam("phrase") @DefaultValue("") String phrase) {
         throw new MethodNotImplementedException();
     }
@@ -128,7 +137,7 @@ public interface MOPEndpointInterface {
     @RolesAllowed({Roles.CLIENT, Roles.SPECIALIST})
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/list/visits/my")
-    default Response listMyVisits(@QueryParam("page") int page, @QueryParam("size") int size, @QueryParam("phrase") @DefaultValue("") String phrase) {
+    default Response listMyVisits(@QueryParam("page") int page, @QueryParam("size") int size) {
         throw new MethodNotImplementedException();
     }
 

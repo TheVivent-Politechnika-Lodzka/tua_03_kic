@@ -161,4 +161,36 @@ public class AppointmentFacade extends AbstractFacade<Appointment> {
             throw new DatabaseException(e.getCause());
         }
     }
+    /**
+     * Metoda zwracająca wybraną ilość wizyty użytkownika o podanym loginie
+     *
+     * @param login Login użytkownika
+     * @param pageNumber numer aktualnie przeglądanej strony
+     * @param perPage    ilość rekordów na danej stronie
+     * @return Lista wizyt użytkownika o podanym loginie
+     * @throws InvalidParametersException w przypadku podania nieprawidłowych parametrów
+     * @throws DatabaseException          w przypadku wystąpienia błędu bazy danych
+     */
+    public PaginationData findByClientLoginInRange(int pageNumber, int perPage,String login) {
+        try {
+            TypedQuery<Appointment> typedQuery = entityManager.createNamedQuery("Appointment.findByLogin", Appointment.class);
+
+            pageNumber--;
+
+            List<Appointment> data = typedQuery.setParameter("login",login)
+                    .setMaxResults(perPage)
+                    .setFirstResult(pageNumber * perPage)
+                    .getResultList();
+
+            pageNumber++;
+            int totalCount = this.count();
+            int totalPages = (int) Math.ceil((double) totalCount / perPage);
+
+            return new PaginationData(totalCount, totalPages, pageNumber, data);
+        } catch (IllegalArgumentException e) {
+            throw new InvalidParametersException(e.getCause());
+        } catch (PersistenceException e) {
+            throw new DatabaseException(e.getCause());
+        }
+    }
 }

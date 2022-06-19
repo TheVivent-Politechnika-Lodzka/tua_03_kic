@@ -226,7 +226,7 @@ public class StartupConfig {
         implant.setPrice(100);
         implant.setManufacturer("Manufacturer kox");
         implant.setPopularity(0);
-        implant.setDuration(Duration.ofDays(1));
+        implant.setDuration(Duration.ofMinutes(30));
 
         em.persist(implant);
 
@@ -263,7 +263,7 @@ public class StartupConfig {
         implant.setPrice(100);
         implant.setManufacturer("Manufacturer super gut");
         implant.setPopularity(0);
-        implant.setDuration(Duration.ofDays(1));
+        implant.setDuration(Duration.ofMinutes(120));
 
         em.persist(implant);
 

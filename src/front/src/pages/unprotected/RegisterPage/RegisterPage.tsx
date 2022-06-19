@@ -2,10 +2,10 @@ import Logo from "../../../components/Logo/Logo";
 import LangSelect from "../../../components/Selector/LangBarSelect/LangSelect";
 import LoginForm from "../../../components/Form/loginForm/LoginForm";
 import RegistrationForm from "../../../components/Form/registerForm/RegistrationForm";
-import styles from "./loginPage.module.scss";
+import styles from "./registerPage.module.scss";
 import { GoogleReCaptchaProvider } from "react-google-recaptcha-v3";
 
-const LoginPage = () => {
+const RegisterPage = () => {
   return (
     <div>
       <Logo />
@@ -20,4 +20,4 @@ const LoginPage = () => {
   );
 };
 
-export default LoginPage;
+export default RegisterPage;

@@ -1,13 +1,18 @@
 package pl.lodz.p.it.ssbd2022.ssbd03.mop.ejb.facades;
 
 import jakarta.annotation.security.PermitAll;
+import jakarta.annotation.security.RolesAllowed;
+import jakarta.ejb.Stateful;
 import jakarta.ejb.Stateless;
 import jakarta.ejb.TransactionAttribute;
 import jakarta.ejb.TransactionAttributeType;
 import jakarta.inject.Inject;
 import jakarta.interceptor.Interceptors;
 import jakarta.persistence.*;
+import jakarta.transaction.Transactional;
 import lombok.Getter;
+import org.hibernate.Hibernate;
+import org.hibernate.exception.ConstraintViolationException;
 import pl.lodz.p.it.ssbd2022.ssbd03.common.AbstractFacade;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.Account;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.InvalidParametersException;
@@ -53,6 +58,40 @@ public class AccountFacade extends AbstractFacade<Account> {
             return typedQuery.getSingleResult();
         } catch (NoResultException e) {
             throw new ResourceNotFoundException();
+        } catch (IllegalArgumentException e) {
+            throw new InvalidParametersException(e.getCause());
+        } catch (PersistenceException e) {
+            throw new DatabaseException(e.getCause());
+        }
+    }
+
+    /**
+     * Metoda zwracająca listę specialistów względem wprowadzonej paginacji i frazy
+     * dostęp dla wszystkich
+     *
+     * @param pageNumber - numer strony (int)
+     * @param perPage    - liczba rekordów na stronie (int)
+     * @param phrase     - fraza do wyszukania (String)
+     * @return lista specialistów (PaginationData)
+     * @throws  InvalidParametersException przy błędnym podaniu parametrów
+     * @throws DatabaseException przy błędzie bazy danych
+     */
+    @PermitAll
+    public PaginationData findInRangeWithPhrase(int pageNumber, int perPage, String phrase) {
+        try {
+            //TODO naprawic datadoctor
+            TypedQuery<Account> typedQuery = entityManager.createNamedQuery("DataDoctor.searchSpecialistByPhrase", Account.class);
+            pageNumber--;
+            List<Account> data = typedQuery.setParameter("phrase", "%" + phrase + "%")
+                    .setMaxResults(perPage)
+                    .setFirstResult(pageNumber * perPage)
+                    .getResultList();
+            pageNumber++;
+
+            int totalCount = this.count();
+            int totalPages = (int) Math.ceil((double) totalCount / perPage);
+
+            return new PaginationData(totalCount, totalPages, pageNumber, data);
         } catch (IllegalArgumentException e) {
             throw new InvalidParametersException(e.getCause());
         } catch (PersistenceException e) {
