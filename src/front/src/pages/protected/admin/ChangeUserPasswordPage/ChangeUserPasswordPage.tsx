@@ -2,7 +2,6 @@ import { faCancel, faCheck } from "@fortawesome/free-solid-svg-icons";
 import { showNotification } from "@mantine/notifications";
 import { useContext, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useNavigate, useParams } from "react-router";
 import {
     changeAnyPassword,
     getAccount,
@@ -157,8 +156,9 @@ const ChangeUserPasswordPage = ({
                             }}
                             isLoading={loading.actionLoading as boolean}
                             title={`Zmiana hasła użytkownika`}
-                            description={`Czy na pewno chcesz zmienić hasło użytkownika ${login}? Operacja jest nieodwracalna`}
-                        />
+                        >
+                            {`Czy na pewno chcesz zmienić hasło użytkownika ${login}? Operacja jest nieodwracalna`}
+                        </ConfirmActionModal>
                     </>
                 )}
             </div>

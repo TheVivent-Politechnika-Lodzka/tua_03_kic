@@ -4,12 +4,12 @@ import { showNotification } from "@mantine/notifications";
 import { useContext, useState } from "react";
 import { useNavigate } from "react-router";
 import { createAccount, CreateAccountRequest } from "../../../../api";
-import ConfirmActionModal from "../../../../components/ConfirmActionModal/ConfirmActionModal";
 import ActionButton from "../../../../components/shared/ActionButton/ActionButton";
 import InputWithValidation from "../../../../components/shared/InputWithValidation/InputWithValidation";
 import ValidationMessage from "../../../../components/shared/ValidationMessage/ValidationMessage";
 import { validationContext } from "../../../../context/validationContext";
 import { successNotficiationItems } from "../../../../utils/showNotificationsItems";
+import ConfirmActionModal from "../../../../components/shared/ConfirmActionModal/ConfirmActionModal";
 
 const CreateUserPage = () => {
     const [account, setAccount] = useState<CreateAccountRequest>({

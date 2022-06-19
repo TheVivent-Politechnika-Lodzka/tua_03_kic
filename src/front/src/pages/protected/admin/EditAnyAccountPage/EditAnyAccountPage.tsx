@@ -16,9 +16,9 @@ import InputWithValidation from "../../../../components/shared/InputWithValidati
 import ValidationMessage from "../../../../components/shared/ValidationMessage/ValidationMessage";
 import ActionButton from "../../../../components/shared/ActionButton/ActionButton";
 import { validationContext } from "../../../../context/validationContext";
-import ConfirmActionModal from "../../../../components/ConfirmActionModal/ConfirmActionModal";
 import { showNotification } from "@mantine/notifications";
 import { successNotficiationItems } from "../../../../utils/showNotificationsItems";
+import ConfirmActionModal from "../../../../components/shared/ConfirmActionModal/ConfirmActionModal";
 
 const EditAnyAccountPage = () => {
     const [account, setAccount] = useState<GetAccountResponse>();

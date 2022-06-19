@@ -197,8 +197,10 @@ const ChangeOwnPasswordInternal = ({
                             }}
                             isLoading={loading.actionLoading as boolean}
                             title={`Zmiana swojego hasła`}
-                            description={`Czy na pewno chcesz zmienić hasło? Operacja jest nieodwracalna`}
-                        />
+                        >
+                            Czy na pewno chcesz zmienić hasło? Operacja jest
+                            nieodwracalna
+                        </ConfirmActionModal>
                     </>
                 )}
             </div>

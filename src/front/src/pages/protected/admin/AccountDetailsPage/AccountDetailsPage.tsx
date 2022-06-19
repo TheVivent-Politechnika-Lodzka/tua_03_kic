@@ -6,9 +6,7 @@ import {
     faUnlockAlt,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useEffect, useState } from "react";
 import { useContext, useEffect, useState } from "react";
-import ReactModal from "react-modal";
 import ReactLoading from "react-loading";
 import avatar from "../../../../assets/images/avatar.jpg";
 import AccessLevel from "../../../../components/shared/AccessLevel/AccessLevel";
@@ -21,26 +19,22 @@ import {
     deactivateAccount,
     getAccount,
     GetAccountResponse,
-} from "../../../../api";
-import ActionButton from "../../../../components/shared/ActionButton/ActionButton";
     removeAccessLevel,
-} from "../../api";
-import ActionButton from "../shared/ActionButton/ActionButton";
+} from "../../../../api";
 import { useNavigate } from "react-router";
 import styles from "./style.module.scss";
 import ConfirmActionModal from "../../../../components/shared/ConfirmActionModal/ConfirmActionModal";
 import { showNotification } from "@mantine/notifications";
-import { successNotficiationItems } from "../../../../utils/showNotificationsItems";
 import Modal from "../../../../components/shared/Modal/Modal";
 import ChangeUserPasswordPage from "../ChangeUserPasswordPage/ChangeUserPasswordPage";
 import {
     failureNotificationItems,
     successNotficiationItems,
-} from "../../utils/showNotificationsItems";
-import { validationContext } from "../../context/validationContext";
-import InputWithValidation from "../shared/InputWithValidation/InputWithValidation";
-import ValidationMessage from "../shared/ValidationMessage/ValidationMessage";
-import { set } from "immer/dist/internal";
+} from "../../../../utils/showNotificationsItems";
+import ActionButton from "../../../../components/shared/ActionButton/ActionButton";
+import InputWithValidation from "../../../../components/shared/InputWithValidation/InputWithValidation";
+import ValidationMessage from "../../../../components/shared/ValidationMessage/ValidationMessage";
+import { validationContext } from "../../../../context/validationContext";
 
 interface AccountDetailsPageProps {
     login: string;
@@ -49,15 +43,18 @@ interface AccountDetailsPageProps {
     isAdmin: boolean;
 }
 
-const AccountDetailsPage = ({ login, isOpened, isAdmin, onClose }: AccountDetailsPageProps) => {
+const AccountDetailsPage = ({
+    login,
+    isOpened,
+    isAdmin,
+    onClose,
+}: AccountDetailsPageProps) => {
     const [account, setAccount] = useState<GetAccountResponse>();
     const [loading, setLoading] = useState<Loading>({
         pageLoading: true,
         actionLoading: false,
     });
     const [changePasswordModal, setChangePasswordModal] =
-        useState<boolean>(false);
-    const [confirmActionModal, setConfirmActionModal] =
         useState<boolean>(false);
 
     const [accessLevelToProcess, setAccessLevelToProcess] =
@@ -430,16 +427,12 @@ const AddAccessLevelModal = ({
     });
 
     const {
-        state,
         state: {
             isPhoneNumberValidAdministrator,
-            isPhoneNumberValidSpecialist,
             isPhoneNumberValidClient,
             isPESELValid,
             isEmailValidAdministrator,
-            isEmailValidSpecialist,
         },
-        dispatch,
     } = useContext(validationContext);
 
     const handleSubmit = async () => {

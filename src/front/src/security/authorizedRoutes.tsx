@@ -1,8 +1,4 @@
 import { Route } from "react-router-dom";
-import CreateAccountPage from "../pages/protected/admin/AdminPage/createAccountPage/CreateAccountPage";
-import ChangeUserPassword from "../pages/protected/admin/ChangeUserPasswordPage/ChangeUserPasswordPage";
-import UserDetails from "../pages/protected/admin/UserDetails/UserDetails";
-import ChangeUserPassword from "../pages/protected/admin/ChangeUserPassword/ChangeUserPassword";
 import CreateUserPage from "../pages/protected/admin/CreateUserPage";
 import EditAnyAccountPage from "../pages/protected/admin/EditAnyAccountPage/EditAnyAccountPage";
 import UserManagment from "../pages/protected/admin/UsersManagmentPage/UsersManagmentPage";
@@ -17,10 +13,6 @@ const authorizedRoutes = (accessLevel: AccessLevelType) => {
                     <Route
                         path="/accounts/:login"
                         element={<EditAnyAccountPage />}
-                    />
-                    <Route
-                        path="/accounts/:login/change-password"
-                        element={<ChangeUserPassword />}
                     />
                     <Route path="/visits" element={<AppointmentListPage />} />
                     <Route
