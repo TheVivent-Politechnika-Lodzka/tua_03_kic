@@ -1,16 +1,17 @@
 import { faSignIn } from "@fortawesome/free-solid-svg-icons";
 import { showNotification } from "@mantine/notifications";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router";
-import { login } from "../../../api";
+import { login, resetPassword } from "../../../api";
 import { login as loginDispatch } from "../../../redux/userSlice";
 import ActionButton from "../../../components/shared/ActionButton/ActionButton";
 import Input from "../../../components/shared/Input/Input";
 import { failureNotificationItems } from "../../../utils/showNotificationsItems";
 import styles from "./style.module.scss";
 import jwtDecode from "jwt-decode";
+import { ResetPasswordModal } from "./ResetPasswordModal";
 
 const LoginPage = () => {
     const accessToken = "ACCESS_TOKEN";
@@ -23,6 +24,8 @@ const LoginPage = () => {
         pageLoading: false,
         actionLoading: false,
     });
+    const [isResetPasswordModalOpen, setResetPasswordModalOpen] =
+        useState(false);
 
     const dispatch = useDispatch();
     const navigate = useNavigate();
@@ -96,7 +99,7 @@ const LoginPage = () => {
                     />
                     <p
                         onClick={() => {
-                            navigate("/reset-password");
+                            setResetPasswordModalOpen(true);
                         }}
                         className={styles.forgot_password}
                     >
@@ -104,6 +107,12 @@ const LoginPage = () => {
                     </p>
                 </div>
             </div>
+            <ResetPasswordModal
+                isOpen={isResetPasswordModalOpen}
+                onClose={() => {
+                    setResetPasswordModalOpen(false);
+                }}
+            />
         </section>
     );
 };

@@ -140,7 +140,7 @@ const validationReducer = (state: ContextState, action: ValidationAction) => {
                 ...state,
                 isLoginValid: validate(
                     action.payload.input,
-                    /^[a-zA-Z\u00C0-\u017F'][a-zA-Z-\u00C0-\u017F' ]+[a-zA-Z\u00C0-\u017F']{3,30}$/
+                    /^[a-zA-Z\u00C0-\u017F']{3,30}$/
                 ),
             };
         }

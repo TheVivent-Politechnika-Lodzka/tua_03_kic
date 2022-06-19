@@ -6,7 +6,6 @@ import { useStoreSelector, useStoreDispatch } from "./redux/reduxHooks";
 import jwtDecode from "jwt-decode";
 import { login as loginDispatch } from "./redux/userSlice";
 import ActivateAccountPage from "./pages/unprotected/ActivatePage/ActivateAccountPage";
-import ResetPasswordForm from "./components/Form/resetPasswordForm/ResetPasswordForm";
 import ResetPasswordTokenForm from "./components/Form/resetPasswordTokenForm/ResetPasswordTokenForm";
 import { ValidationProvider } from "./context/validationContext";
 import AccountDetailsPage from "./pages/protected/shared/AccountDetailsPage/AccountDetailsPage";
@@ -63,10 +62,6 @@ function App() {
                                 <Route
                                     path="/active"
                                     element={<ActivateAccountPage />}
-                                />
-                                <Route
-                                    path="/reset-password"
-                                    element={<ResetPasswordForm />}
                                 />
                                 <Route
                                     path="/reset-password-token"
