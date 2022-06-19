@@ -162,9 +162,8 @@ export async function createImplant(params: CreateImplantRequest) {
     try {
         const { data } = await axios.put<CreateImplantResponse>(
             "/mop/implant/create",
-            {
-                params,
-            }
+
+            params
         );
         return data;
     } catch (error) {

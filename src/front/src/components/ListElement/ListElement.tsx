@@ -1,4 +1,4 @@
-import { SimpleGrid, Container, Center } from "@mantine/core";
+import { SimpleGrid, Container, Center, Image } from "@mantine/core";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { ImplantListElementDto } from "../../api/mop";
@@ -16,9 +16,30 @@ export const ListElement = (props: { element: ImplantListElementDto }) => {
     return (
         <div className={styles.container}>
             <SimpleGrid cols={3}>
-                <div className={styles.image}>
-                    <img src={props.element.url} height="50px" alt="img" />
+                <div>
+                    {props.element.url ? (
+                        <Image
+                            radius="md"
+                            src={props.element.url}
+                            alt="img"
+                            height="18vh"
+                            styles={{
+                                root: { paddingTop: "2vh", paddingLeft: "2vh" },
+                            }}
+                        />
+                    ) : (
+                        <Image
+                            radius="md"
+                            src="brak.jpg"
+                            alt="img"
+                            height="18vh"
+                            styles={{
+                                root: { paddingTop: "2vh", paddingLeft: "2vh" },
+                            }}
+                        />
+                    )}
                 </div>
+
                 <div className={styles.text}>
                     <p
                         className={styles.title}
