@@ -8,11 +8,30 @@
 
     .input_container {
         display: flex;
-        justify-content: flex-start;
+        // justify-content: flex-start;
+
+        // justify-content: space-evenly;
+
+        justify-content: space-between;
         align-items: center;
         flex-direction: row;
-        margin-left: 12rem;
+        margin-left: 11%;
         margin-top: 4rem;
+        width: 78%;
+        height: 8%;
+
+        .button {
+            height: 60%;
+            // margin-top: 10%;
+            // padding: 2rem;
+            padding-left: 2rem;
+            padding-right: 2rem;
+            border-radius: 1rem;
+            background-color: $purple;
+            // margin-top: 20%;
+            // padding: 0.15rem 1.5rem;
+            // margin: 1.5rem;
+        }
     }
     .table_container {
         display: flex;
