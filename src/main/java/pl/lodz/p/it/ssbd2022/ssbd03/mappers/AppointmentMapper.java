@@ -100,6 +100,12 @@ public class AppointmentMapper {
         );
         return appointmentDto;
     }
+    /**
+     * Metoda mapująca dane z DTO z danymi do edycji wizyty na wizytę
+     *
+     * @param appointmentOwnEditDto DTO z danymi do edycji wizyty
+     * @return wizyta ze zmianami
+     */
     public Appointment createAppointmentFromAppointmentOwnEditDto(AppointmentOwnEditDto appointmentOwnEditDto){
         Appointment appointment = new Appointment();
         appointment.setDescription(appointmentOwnEditDto.getDescription());
