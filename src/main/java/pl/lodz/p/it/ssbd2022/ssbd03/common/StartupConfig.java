@@ -12,21 +12,9 @@ import pl.lodz.p.it.ssbd2022.ssbd03.entities.access_levels.DataClient;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.access_levels.DataSpecialist;
 import pl.lodz.p.it.ssbd2022.ssbd03.utils.HashAlgorithm;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.time.Duration;
-import java.time.LocalTime;
-import java.util.Date;
-import java.util.List;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.time.Duration;
 import java.time.Instant;
 import java.time.LocalTime;
-import java.util.Date;
-import java.util.List;
-import java.time.Duration;
-import java.util.Date;
 import java.util.Locale;
 
 @Startup
@@ -235,7 +223,7 @@ public class StartupConfig {
         appointment.setSpecialist(specialist);
         appointment.setImplant(implant);
         appointment.setStartDate(Instant.now());
-        appointment.setEndDate(Instant.now().plusSeconds(60*60));
+        appointment.setEndDate(Instant.now().plusSeconds(60 * 60));
         appointment.setStatus(Status.FINISHED); // TUTAJ ZMIENIAĆ DO TESTÓW
         appointment.setPrice(100);
         appointment.setDescription("Appointment description");
@@ -248,7 +236,7 @@ public class StartupConfig {
         review.setReview("Testowy review");
         review.setRating(5);
 
-        Implant implant =  new Implant();
+        Implant implant = new Implant();
 
         implant.setName("Implant tak fajny ze wszystkich stron xD");
         implant.setDescription("""
