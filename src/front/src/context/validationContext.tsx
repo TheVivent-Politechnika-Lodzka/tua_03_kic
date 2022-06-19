@@ -13,6 +13,7 @@ interface ContextState {
     isEmailValidAdministrator: boolean;
     isEmailValidSpecialist: boolean;
     isPasswordValid: boolean;
+    isLoginValid: boolean;
     input: string;
 }
 
@@ -27,6 +28,7 @@ export type ActionType =
     | "VALIDATE_PHONENUMBER_CLIENT"
     | "VALIDATE_PESEL"
     | "VALIDATE_PASSWORD"
+    | "VALIDATE_LOGIN"
     | "RESET_VALIDATION";
 
 interface ValidationAction {
@@ -53,6 +55,7 @@ const initialState: ContextState = {
     isEmailValidAdministrator: true,
     isEmailValidSpecialist: true,
     isPasswordValid: true,
+    isLoginValid: true,
     input: "",
 };
 
@@ -129,6 +132,15 @@ const validationReducer = (state: ContextState, action: ValidationAction) => {
                 isEmailValidSpecialist: validate(
                     action.payload.input,
                     /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+                ),
+            };
+        }
+        case "VALIDATE_LOGIN": {
+            return {
+                ...state,
+                isLoginValid: validate(
+                    action.payload.input,
+                    /^[a-zA-Z\u00C0-\u017F'][a-zA-Z-\u00C0-\u017F' ]+[a-zA-Z\u00C0-\u017F']{3,30}$/
                 ),
             };
         }

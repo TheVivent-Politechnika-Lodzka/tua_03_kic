@@ -112,6 +112,16 @@ public interface MOPServiceInterface extends ServiceLocalInterface {
         throw new MethodNotImplementedException();
     }
     /**
+     * Metoda zwracająca wizytę
+     *
+     * @param uuid     id wizyty
+     * @return szczegóły wizyty
+     * @throws MethodNotImplementedException w przypadku niezaimplementowanej metody
+     */
+    default Appointment findVisit(UUID uuid){
+        throw new MethodNotImplementedException();
+    }
+    /**
      * Metoda zwracająca listę wszystkich wizyt dla podanego loginu
      *
      * @param page numer aktualnie przeglądanej strony
@@ -151,6 +161,9 @@ public interface MOPServiceInterface extends ServiceLocalInterface {
     }
 
     default Appointment editAppointment(UUID id, Appointment appointment) {
+        throw new MethodNotImplementedException();
+    }
+    default Appointment editOwnAppointment(UUID id, Appointment appointment,String login) {
         throw new MethodNotImplementedException();
     }
 

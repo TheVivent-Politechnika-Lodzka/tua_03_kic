@@ -53,6 +53,10 @@ import java.util.UUID;
 
 import java.util.logging.Logger;
 
+import java.util.UUID;
+
+import static pl.lodz.p.it.ssbd2022.ssbd03.entities.Status.*;
+
 import static pl.lodz.p.it.ssbd2022.ssbd03.entities.Status.FINISHED;
 import static pl.lodz.p.it.ssbd2022.ssbd03.entities.Status.REJECTED;
 
@@ -286,6 +290,54 @@ public class MOPService extends AbstractService implements MOPServiceInterface, 
             throw new InvalidParametersException();
         }
         return appointmentFacade.findInRangeWithPhrase(page, pageSize, phrase);
+    }
+    @Override
+    @PermitAll
+    public Appointment findVisit(UUID uuid){ //TODO:Podzielić metodę dla administratora (może wziąć szczegóły każdej wizyty) a reszta użytkowników tylko swoich
+        return appointmentFacade.findById(uuid);
+    }
+    /**
+     * Metoda zwracająca edytowaną wizytę
+     *
+     * @param id     id wizyty
+     * @param update wartości które mają zostać zaktualizowane
+     * @param login   nazwa uzytkownika który bierze udział w wizycie
+     * @return  Edytowana wizyta
+     * @throws UserNotPartOfAppointment w przypadku gdy użytkownik edytuje nie swoja wizytę
+     * @throws AppointmentStatusException w przypadku gdy użytkownik chce edytować zakończoną lub odrzuconą wizytę
+     */
+    @Override
+    @PermitAll
+    public Appointment editOwnAppointment(UUID id, Appointment update,String login){
+        Appointment appointmentFromDb = appointmentFacade.findById(id);
+        boolean didStartDateChange = false;
+        if(!(appointmentFromDb.getClient().getLogin().equals(login) || appointmentFromDb.getSpecialist().getLogin().equals(login))) {
+            throw new UserNotPartOfAppointment();
+        }
+        if(appointmentFromDb.getStatus().equals(FINISHED)){
+            throw AppointmentStatusException.appointmentStatusAlreadyFinished();
+        }
+        if(appointmentFromDb.getStatus().equals(REJECTED)){
+            throw AppointmentStatusException.appointmentStatusAlreadyCancelled();
+        }
+        if(!update.getStartDate().equals(appointmentFromDb.getStartDate())){
+        Instant endDate = update.getStartDate().plus(appointmentFromDb.getImplant().getDuration());
+        checkDateAvailabilityForAppointment(appointmentFromDb.getSpecialist().getId(),update.getStartDate(),endDate);
+        appointmentFromDb.setStartDate(update.getStartDate());
+        appointmentFromDb.setEndDate(endDate);
+        didStartDateChange = true;
+        }
+        if(appointmentFromDb.getClient().getLogin().equals(login) && didStartDateChange){
+            appointmentFromDb.setStatus(PENDING);
+        }
+        else{
+            appointmentFromDb.setDescription(update.getDescription());
+            if(update.getStatus().equals(ACCEPTED)){
+                appointmentFromDb.setStatus(ACCEPTED);
+            }
+        }
+        appointmentFacade.edit(appointmentFromDb);
+        return appointmentFromDb;
     }
     @Override
     @PermitAll
