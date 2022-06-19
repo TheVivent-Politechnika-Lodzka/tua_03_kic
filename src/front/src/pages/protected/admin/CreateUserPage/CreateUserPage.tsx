@@ -35,7 +35,7 @@ const CreateUserPage = () => {
         state: {
             isFirstNameValid,
             isLastNameValid,
-            isEmailValid,
+            isEmailValidAdministrator,
             isLoginValid,
             isPasswordValid,
         },
@@ -47,7 +47,7 @@ const CreateUserPage = () => {
     const isEveryFieldValid =
         isFirstNameValid &&
         isLastNameValid &&
-        isEmailValid &&
+        isEmailValidAdministrator &&
         isLoginValid &&
         isPasswordValid;
 
@@ -85,8 +85,8 @@ const CreateUserPage = () => {
                                 styleWidth={{ width: "30rem" }}
                                 title="Email "
                                 value={account.email}
-                                validationType="VALIDATE_EMAIL"
-                                isValid={isEmailValid}
+                                validationType="VALIDATE_EMAIL_ADMINISTRATOR"
+                                isValid={isEmailValidAdministrator}
                                 onChange={(e: any) =>
                                     setAccount({
                                         ...account,
@@ -97,7 +97,7 @@ const CreateUserPage = () => {
 
                             <div className={style.edit_field_validation}>
                                 <ValidationMessage
-                                    isValid={isEmailValid}
+                                    isValid={isEmailValidAdministrator}
                                     message="Podaj poprawny adres email"
                                 />
                             </div>
@@ -265,8 +265,10 @@ const CreateUserPage = () => {
                 }}
                 isLoading={loading.actionLoading as boolean}
                 title="Utwórz nowego użytkownika"
-                description="Czy na pewno chcesz utworzyć nowego użytkownika? Operacja jest nieodwracalna"
-            />
+            >
+                Czy na pewno chcesz utworzyć nowego użytkownika? Operacja jest
+                nieodwracalna
+            </ConfirmActionModal>
         </section>
     );
 };
