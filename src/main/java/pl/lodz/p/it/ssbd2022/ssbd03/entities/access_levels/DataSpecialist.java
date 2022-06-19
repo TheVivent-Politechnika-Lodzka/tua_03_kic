@@ -20,9 +20,12 @@ import java.util.Collection;
 @Table(name = "data_specialist")
 @DiscriminatorValue(DataSpecialist.LEVEL_NAME)
 @NamedQueries({
-        @NamedQuery(name = "DataDoctor.findAll", query = "select d from DataSpecialist d"),
-        @NamedQuery(name = "DataDoctor.findById", query = "select d from DataSpecialist d where d.id = :id"),
+        @NamedQuery(name = "DataSpecialist.findAll", query = "select d from DataSpecialist d"),
+        @NamedQuery(name = "DataSpecialist.findById", query = "select d from DataSpecialist d where d.id = :id"),
+        @NamedQuery(name = "DataSpecialist.searchSpecialistByPhrase", query = "select d.account from DataSpecialist d where" +
+                " lower(concat(d.account.firstName, ' ', d.account.lastName)) like lower(:phrase)"),
 })
+
 @ToString(callSuper = true)
 @NoArgsConstructor
 public class DataSpecialist extends AccessLevel implements Serializable {

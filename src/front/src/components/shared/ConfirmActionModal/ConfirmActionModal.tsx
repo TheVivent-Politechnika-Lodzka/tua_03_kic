@@ -1,24 +1,25 @@
 import { faCancel, faCheck } from "@fortawesome/free-solid-svg-icons";
 import { Modal } from "@mantine/core";
+import { Children } from "react";
 import ActionButton from "../ActionButton/ActionButton";
 import styles from "./style.module.scss";
 
 interface ConfirmActionModalProps {
     title: string;
-    description: string;
     isOpened: boolean;
     isLoading: boolean;
     handleFunction: () => void;
     onClose: () => void;
+    children?: React.ReactNode[] | React.ReactNode;
 }
 
 const ConfirmActionModal = ({
     title,
-    description,
     isOpened,
     handleFunction,
     isLoading,
     onClose,
+    children,
 }: ConfirmActionModalProps) => {
     return (
         <Modal
@@ -35,7 +36,7 @@ const ConfirmActionModal = ({
         >
             <div className={styles.confirm_action_modal_content}>
                 <p className={styles.title}>{title}</p>
-                <p className={styles.description}>{description}</p>
+                <p className={styles.description}>{children}</p>
                 <div className={styles.action_buttons_wrapper}>
                     <ActionButton
                         isLoading={isLoading}

@@ -6,6 +6,8 @@ import {
     validationContext,
 } from "../../../context/validationContext";
 import styles from "./style.module.scss";
+import { CSSObject } from "@emotion/react";
+import CSS from "csstype";
 
 interface InputWithValidationProps {
     title: string;
@@ -14,6 +16,9 @@ interface InputWithValidationProps {
     isValid: boolean;
     type?: string;
     onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
+    required?: boolean;
+    styleWidth?: CSS.Properties;
+    type?: string;
 }
 
 const InputWithValidation = ({
@@ -21,6 +26,9 @@ const InputWithValidation = ({
     value,
     validationType,
     isValid,
+    required,
+    styleWidth,
+    type,
     onChange,
     type = "text",
 }: InputWithValidationProps) => {
@@ -41,10 +49,23 @@ const InputWithValidation = ({
     return (
         <div className={styles.edit_field_wrapper}>
             <p className={styles.title}>{title}</p>
-            <form className={styles.input_wrapper}>
+            <div className={styles.input_wrapper} style={styleWidth}>
+            {required ? (
+                <>
+                    <p className={styles.title}>
+                        {title} <span style={{ color: "red" }}>*</span>
+                    </p>
+                </>
+            ) : (
+                <>
+                    <p className={styles.title}>{title}</p>
+                </>
+            )}
+
                 <input
                     type={type}
                     value={input}
+                    type={type}
                     onChange={handleChange}
                     className={`${styles.input} ${
                         isValid ? styles.valid : styles.invalid
@@ -57,9 +78,11 @@ const InputWithValidation = ({
                     icon={isValid ? faCheck : faClose}
                     color="#00FF66"
                 />
-            </form>
+            </div>
         </div>
     );
 };
-
+InputWithValidation.defaultProps = {
+    type: "text",
+};
 export default InputWithValidation;
