@@ -1,0 +1,51 @@
+.container {
+  background-color: #262633;
+  height: 22vh;
+  border-radius: 1.5rem;
+
+  .image_top {
+    border-radius: 100%;
+    height: 16vh;
+    width: 16vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    background-color: aliceblue;
+    margin-top: 2vh;
+    margin-left: 2vh;
+  }
+  .image_bottom {
+    border-radius: 50%;
+    height: 12vh;
+    width: 12vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    background-color: aliceblue;
+    margin-top: 8vh;
+  }
+  .text {
+    color: white;
+    width: 130%;
+    height: 18vh;
+    margin-top: 1vh;
+    overflow-wrap: break-word;
+    .description {
+      margin-top: 1rem;
+      font-size: 1vw;
+    }
+  }
+
+  .buttons {
+    display: grid;
+    height: 18vh;
+    margin-top: 1.5rem;
+    .button {
+      grid-column: 4;
+      grid-row: 2;
+      margin-left: 4vw;
+    }
+  }
+}

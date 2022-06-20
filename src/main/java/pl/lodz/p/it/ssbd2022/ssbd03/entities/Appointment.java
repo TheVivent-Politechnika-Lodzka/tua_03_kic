@@ -86,7 +86,7 @@ public class Appointment extends AbstractEntity implements Serializable {
     private int price;
 
     @Basic(optional = false)
-    @Column(name = "description", nullable = true)
+    @Column(name = "description", nullable = true,columnDefinition = "TEXT")
     @Getter
     @Setter
     private String description;

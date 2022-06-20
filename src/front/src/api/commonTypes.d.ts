@@ -8,6 +8,11 @@ interface Taggable {
     version: number;
 }
 
+interface Credentials {
+    login: string;
+    password: string;
+}
+
 type AccessLevelType =
     | "ADMINISTRATOR"
     | "CLIENT"
@@ -60,3 +65,8 @@ type Status =
     | "REJECTED"
     | "ACCEPTED"
     | "FINISHED";
+
+interface ConfirmActionModal {
+    title: string;
+    message: string;
+}

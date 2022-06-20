@@ -6,10 +6,16 @@ import { useReducer } from "react";
 interface ContextState {
     isFirstNameValid: boolean;
     isLastNameValid: boolean;
-    isPhoneNumberValid: boolean;
+    isPhoneNumberValidAdministrator: boolean;
+    isPhoneNumberValidSpecialist: boolean;
+    isPhoneNumberValidClient: boolean;
     isPESELValid: boolean;
-    isEmailValid: boolean;
+    isEmailValidAdministrator: boolean;
+    isEmailValidSpecialist: boolean;
     isPasswordValid: boolean;
+    isLoginValid: boolean;
+    isOldPasswordValid: boolean;
+    isNewPasswordValid: boolean;
     input: string;
 }
 
@@ -17,10 +23,16 @@ interface ContextState {
 export type ActionType =
     | "VALIDATE_FIRSTNAME"
     | "VALIDATE_LASTNAME"
-    | "VALIDATE_EMAIL"
-    | "VALIDATE_PHONENUMBER"
+    | "VALIDATE_EMAIL_ADMINISTRATOR"
+    | "VALIDATE_EMAIL_SPECIALIST"
+    | "VALIDATE_PHONENUMBER_ADMINISTRATOR"
+    | "VALIDATE_PHONENUMBER_SPECIALIST"
+    | "VALIDATE_PHONENUMBER_CLIENT"
     | "VALIDATE_PESEL"
     | "VALIDATE_PASSWORD"
+    | "VALIDATE_LOGIN"
+    | "VALIDATE_OLD_PASSWORD"
+    | "VALIDATE_NEW_PASSWORD"
     | "RESET_VALIDATION";
 
 interface ValidationAction {
@@ -40,10 +52,16 @@ interface ValidationContext {
 const initialState: ContextState = {
     isFirstNameValid: true,
     isLastNameValid: true,
-    isPhoneNumberValid: true,
+    isPhoneNumberValidAdministrator: true,
+    isPhoneNumberValidSpecialist: true,
+    isPhoneNumberValidClient: true,
     isPESELValid: true,
-    isEmailValid: true,
+    isOldPasswordValid: false,
+    isNewPasswordValid: false,
+    isEmailValidAdministrator: true,
+    isEmailValidSpecialist: true,
     isPasswordValid: true,
+    isLoginValid: true,
     input: "",
 };
 
@@ -72,10 +90,31 @@ const validationReducer = (state: ContextState, action: ValidationAction) => {
                 ),
             };
         }
-        case "VALIDATE_PHONENUMBER": {
+        case "VALIDATE_PHONENUMBER_ADMINISTRATOR": {
             return {
                 ...state,
-                isPhoneNumberValid: validate(action.payload.input, /^\d{9}$/),
+                isPhoneNumberValidAdministrator: validate(
+                    action.payload.input,
+                    /^\d{9}$/
+                ),
+            };
+        }
+        case "VALIDATE_PHONENUMBER_SPECIALIST": {
+            return {
+                ...state,
+                isPhoneNumberValidSpecialist: validate(
+                    action.payload.input,
+                    /^\d{9}$/
+                ),
+            };
+        }
+        case "VALIDATE_PHONENUMBER_CLIENT": {
+            return {
+                ...state,
+                isPhoneNumberValidClient: validate(
+                    action.payload.input,
+                    /^\d{9}$/
+                ),
             };
         }
         case "VALIDATE_PESEL": {
@@ -84,12 +123,48 @@ const validationReducer = (state: ContextState, action: ValidationAction) => {
                 isPESELValid: validate(action.payload.input, /^\d{11}$/),
             };
         }
-        case "VALIDATE_EMAIL": {
+        case "VALIDATE_EMAIL_ADMINISTRATOR": {
             return {
                 ...state,
-                isEmailValid: validate(
+                isEmailValidAdministrator: validate(
                     action.payload.input,
                     /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+                ),
+            };
+        }
+        case "VALIDATE_EMAIL_SPECIALIST": {
+            return {
+                ...state,
+                isEmailValidSpecialist: validate(
+                    action.payload.input,
+                    /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+                ),
+            };
+        }
+        case "VALIDATE_LOGIN": {
+            return {
+                ...state,
+                isLoginValid: validate(
+                    action.payload.input,
+                    /^[a-zA-Z\u00C0-\u017F']{3,30}$/
+                ),
+            };
+        }
+        case "VALIDATE_OLD_PASSWORD": {
+            return {
+                ...state,
+                isOldPasswordValid: validate(
+                    action.payload.input,
+                    /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,128}$/
+                ),
+            };
+        }
+        case "VALIDATE_NEW_PASSWORD": {
+            return {
+                ...state,
+                isNewPasswordValid: validate(
+                    action.payload.input,
+                    /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,128}$/
                 ),
             };
         }

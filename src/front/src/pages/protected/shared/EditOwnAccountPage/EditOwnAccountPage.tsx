@@ -24,7 +24,7 @@ import {
     GoogleReCaptchaProvider,
     useGoogleReCaptcha,
 } from "react-google-recaptcha-v3";
-import ConfirmActionModal from "../../../../components/ConfirmActionModal/ConfirmActionModal";
+import ConfirmActionModal from "../../../../components/shared/ConfirmActionModal/ConfirmActionModal";
 import { showNotification } from "@mantine/notifications";
 import {
     failureNotificationItems,
@@ -48,9 +48,10 @@ const EditOwnAccountPageInternal = () => {
         state: {
             isFirstNameValid,
             isLastNameValid,
-            isPhoneNumberValid,
+            isPhoneNumberValidAdministrator,
+            isPhoneNumberValidClient,
             isPESELValid,
-            isEmailValid,
+            isEmailValidAdministrator,
         },
         dispatch,
     } = useContext(validationContext);
@@ -106,15 +107,16 @@ const EditOwnAccountPageInternal = () => {
     const isEveryFieldValid =
         isFirstNameValid &&
         isLastNameValid &&
-        isPhoneNumberValid &&
+        isPhoneNumberValidAdministrator &&
+        isPhoneNumberValidClient &&
         isPESELValid &&
-        isEmailValid;
+        isEmailValidAdministrator;
 
     return (
         <section className={style.edit_own_account_page}>
             {loading.pageLoading ? (
                 <ReactLoading
-                    type="cylon"
+                    type="bars"
                     color="#fff"
                     width="10rem"
                     height="10rem"
@@ -240,8 +242,10 @@ const EditOwnAccountPageInternal = () => {
                                                                 level.phoneNumber
                                                         )[0]
                                                 }
-                                                validationType="VALIDATE_PHONENUMBER"
-                                                isValid={isPhoneNumberValid}
+                                                validationType="VALIDATE_PHONENUMBER_CLIENT"
+                                                isValid={
+                                                    isPhoneNumberValidClient
+                                                }
                                                 onChange={(e) => {
                                                     if (
                                                         e.target.value &&
@@ -264,7 +268,9 @@ const EditOwnAccountPageInternal = () => {
                                                 }}
                                             />
                                             <ValidationMessage
-                                                isValid={isPhoneNumberValid}
+                                                isValid={
+                                                    isPhoneNumberValidClient
+                                                }
                                                 message="Numer telefonu musi składać się z 9 cyfr."
                                             />
                                         </div>
@@ -290,8 +296,10 @@ const EditOwnAccountPageInternal = () => {
                                                                 level.phoneNumber
                                                         )[0]
                                                 }
-                                                validationType="VALIDATE_PHONENUMBER"
-                                                isValid={isPhoneNumberValid}
+                                                validationType="VALIDATE_PHONENUMBER_ADMINISTRATOR"
+                                                isValid={
+                                                    isPhoneNumberValidAdministrator
+                                                }
                                                 onChange={(e) => {
                                                     if (
                                                         e.target.value &&
@@ -314,7 +322,9 @@ const EditOwnAccountPageInternal = () => {
                                                 }}
                                             />
                                             <ValidationMessage
-                                                isValid={isPhoneNumberValid}
+                                                isValid={
+                                                    isPhoneNumberValidAdministrator
+                                                }
                                                 message="Numer telefonu musi składać się z 9 cyfr."
                                             />
                                         </div>
@@ -333,8 +343,10 @@ const EditOwnAccountPageInternal = () => {
                                                                 level.contactEmail
                                                         )[0]
                                                 }
-                                                validationType="VALIDATE_EMAIL"
-                                                isValid={isEmailValid}
+                                                validationType="VALIDATE_EMAIL_ADMINISTRATOR"
+                                                isValid={
+                                                    isEmailValidAdministrator
+                                                }
                                                 onChange={(e) => {
                                                     if (
                                                         e.target.value &&
@@ -357,7 +369,9 @@ const EditOwnAccountPageInternal = () => {
                                                 }}
                                             />
                                             <ValidationMessage
-                                                isValid={isEmailValid}
+                                                isValid={
+                                                    isEmailValidAdministrator
+                                                }
                                                 message="Email musi być poprawny."
                                             />
                                         </div>
@@ -398,8 +412,10 @@ const EditOwnAccountPageInternal = () => {
                 }}
                 isLoading={loading.actionLoading as boolean}
                 title="Edycja swoich własnych danych"
-                description="Czy na pewno chcesz zmienić swoje własne dane? Operacja jest nieodwracalna"
-            />
+            >
+                Czy na pewno chcesz zmienić swoje własne dane? Operacja jest
+                nieodwracalna
+            </ConfirmActionModal>
         </section>
     );
 };

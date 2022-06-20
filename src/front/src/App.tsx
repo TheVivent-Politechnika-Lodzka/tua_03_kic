@@ -1,19 +1,20 @@
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
-import HomePage from "./pages/unprotected/home/HomePage";
-import ErrorPage from "./pages/unprotected/error/ErrorPage";
-import LoginPage from "./pages/unprotected/loginPage/LoginPage";
+import HomePage from "./pages/unprotected/HomePage/HomePage";
+import ErrorPage from "./pages/unprotected/ErrorPage/ErrorPage";
+import RegisterPage from "./pages/unprotected/RegisterPage/RegisterPage";
 import { useStoreSelector, useStoreDispatch } from "./redux/reduxHooks";
 import jwtDecode from "jwt-decode";
 import { login as loginDispatch } from "./redux/userSlice";
-import ActivateAccountPage from "./pages/unprotected/activate/ActivateAccountPage";
-import ResetPasswordForm from "./components/Form/resetPasswordForm/ResetPasswordForm";
-import ResetPasswordTokenForm from "./components/Form/resetPasswordTokenForm/ResetPasswordTokenForm";
+import ActivateAccountPage from "./pages/unprotected/ActivatePage/ActivateAccountPage";
 import { ValidationProvider } from "./context/validationContext";
-import AccountDetailsPage from "./pages/protected/shared/AccountDetailsPage/AccountDetailsPage";
 import EditOwnAccountPage from "./pages/protected/shared/EditOwnAccountPage/EditOwnAccountPage";
 import authorizedRoutes from "./security/authorizedRoutes";
 import PageLayout from "./pages/PageLayout/PageLayout";
-import { ImplantListPage } from "./pages/unprotected/implantList";
+import OwnAccountDetailsPage from "./pages/protected/shared/OwnAccountDetailsPage/OwnAccountDetailsPage";
+import { ImplantListPage } from "./pages/unprotected/ImplantListPage";
+import LoginPage from "./pages/unprotected/LoginPage/LoginPage";
+import ResetPasswordPage from "./pages/unprotected/ResetPasswordPage";
+import SpecialistList from "./pages/unprotected/SpecialistList";
 
 function App() {
     const user = useStoreSelector((state) => state.user);
@@ -44,7 +45,7 @@ function App() {
                             <>
                                 <Route
                                     path="/account"
-                                    element={<AccountDetailsPage />}
+                                    element={<OwnAccountDetailsPage />}
                                 />
                                 <Route
                                     path="/account/edit"
@@ -56,16 +57,20 @@ function App() {
                             <>
                                 <Route path="/login" element={<LoginPage />} />
                                 <Route
+                                    path="/register"
+                                    element={<RegisterPage />}
+                                />
+                                <Route
                                     path="/active"
                                     element={<ActivateAccountPage />}
                                 />
                                 <Route
-                                    path="/reset-password"
-                                    element={<ResetPasswordForm />}
+                                    path="/reset-password/:token"
+                                    element={<ResetPasswordPage />}
                                 />
                                 <Route
-                                    path="/reset-password-token"
-                                    element={<ResetPasswordTokenForm />}
+                                    path="/specialists"
+                                    element={<SpecialistList />}
                                 />
                             </>
                         )}

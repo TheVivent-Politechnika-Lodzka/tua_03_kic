@@ -81,7 +81,16 @@ public interface MOPServiceInterface extends ServiceLocalInterface {
         throw new MethodNotImplementedException();
     }
 
-    default List<Account> findSpecialists(int page, int pageSize, String phrase) {
+    /**
+     * Metoda zwracająca liste specialistów - MOP.6
+     *
+     * @param page     - numer strony (int)
+     * @param pageSize - ilość pozycji na stronie (int)
+     * @param phrase   - szukana fraza (String)
+     * @return - lista specialistów (PaginationData)
+     * @throws MethodNotImplementedException - metoda nie jest zaimplementowana
+     */
+    default PaginationData findSpecialists(int page, int pageSize, String phrase) {
         throw new MethodNotImplementedException();
     }
 
@@ -100,6 +109,16 @@ public interface MOPServiceInterface extends ServiceLocalInterface {
      * @throws MethodNotImplementedException w przypadku niezaimplementowanej metody
      */
     default PaginationData findVisits(int page, int pageSize, String phrase) {
+        throw new MethodNotImplementedException();
+    }
+    /**
+     * Metoda zwracająca wizytę
+     *
+     * @param uuid     id wizyty
+     * @return szczegóły wizyty
+     * @throws MethodNotImplementedException w przypadku niezaimplementowanej metody
+     */
+    default Appointment findVisit(UUID uuid){
         throw new MethodNotImplementedException();
     }
     /**
@@ -142,6 +161,9 @@ public interface MOPServiceInterface extends ServiceLocalInterface {
     }
 
     default Appointment editAppointment(UUID id, Appointment appointment) {
+        throw new MethodNotImplementedException();
+    }
+    default Appointment editOwnAppointment(UUID id, Appointment appointment,String login) {
         throw new MethodNotImplementedException();
     }
 
@@ -198,6 +220,20 @@ public interface MOPServiceInterface extends ServiceLocalInterface {
      * @throws MethodNotImplementedException w momencie, gdy metoda jest niezaimplementowana
      */
     default void deleteReview(UUID id, String login) {
+        throw new MethodNotImplementedException();
+    }
+
+
+    /**
+     * Metoda zwracająca listę wszystkich recenzji dla danego wszczepu
+     * @param page Aktualny numer strony
+     * @param pageSize Ilość recenzji na pojedynczej stronie
+     * @param id Identyfikator wszczepu
+     * @return Lista recenzji dla wszczepu
+     * @throws MethodNotImplementedException w przypadku niezaimplementowanej metody
+     *
+     */
+    default PaginationData getAllImplantReviews(int page, int pageSize, UUID id) {
         throw new MethodNotImplementedException();
     }
 }
