@@ -19,6 +19,8 @@ interface ContextState {
     isPriceValid: boolean;
     isDurationValid: boolean;
     isDescriptionValid: boolean;
+    isOldPasswordValid: boolean;
+    isNewPasswordValid: boolean;
     input: string;
 }
 
@@ -40,7 +42,10 @@ export type ActionType =
     | "VALIDATE_IMPLANT_NAME"
     | "VALIDATE_PRICE"
     | "VALIDATE_DURATION"
-    | "VALIDATE_DESCRIPTION";
+    | "VALIDATE_DESCRIPTION"
+    | "VALIDATE_OLD_PASSWORD"
+    | "VALIDATE_NEW_PASSWORD"
+    | "RESET_VALIDATION";
 
 interface ValidationAction {
     payload: ContextState;
@@ -63,6 +68,8 @@ const initialState: ContextState = {
     isPhoneNumberValidSpecialist: true,
     isPhoneNumberValidClient: true,
     isPESELValid: true,
+    isOldPasswordValid: false,
+    isNewPasswordValid: false,
     isEmailValidAdministrator: true,
     isEmailValidSpecialist: true,
     isPasswordValid: true,
@@ -87,7 +94,7 @@ const validationReducer = (state: ContextState, action: ValidationAction) => {
                 ...state,
                 isFirstNameValid: validate(
                     action.payload.input,
-                    /^[a-zA-Z\u00C0-\u017F'][a-zA-Z-\u00C0-\u017F' ]+[a-zA-Z\u00C0-\u017F']{3,30}$/
+                    /^[a-zA-Z\u00C0-\u017F']{3,30}$/
                 ),
             };
         }
@@ -96,7 +103,7 @@ const validationReducer = (state: ContextState, action: ValidationAction) => {
                 ...state,
                 isLastNameValid: validate(
                     action.payload.input,
-                    /^[a-zA-Z\u00C0-\u017F'][a-zA-Z-\u00C0-\u017F' ]+[a-zA-Z\u00C0-\u017F']{3,30}$/
+                    /^[a-zA-Z\u00C0-\u017F']{3,30}$/
                 ),
             };
         }
@@ -156,7 +163,34 @@ const validationReducer = (state: ContextState, action: ValidationAction) => {
                 ...state,
                 isLoginValid: validate(
                     action.payload.input,
-                    /^[a-zA-Z\u00C0-\u017F'][a-zA-Z-\u00C0-\u017F' ]+[a-zA-Z\u00C0-\u017F']{3,30}$/
+                    /^[a-zA-Z\u00C0-\u017F']{3,30}$/
+                ),
+            };
+        }
+        case "VALIDATE_PASSWORD": {
+            return {
+                ...state,
+                isPasswordValid: validate(
+                    action.payload.input,
+                    /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,128}$/
+                ),
+            };
+        }
+        case "VALIDATE_OLD_PASSWORD": {
+            return {
+                ...state,
+                isOldPasswordValid: validate(
+                    action.payload.input,
+                    /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,128}$/
+                ),
+            };
+        }
+        case "VALIDATE_NEW_PASSWORD": {
+            return {
+                ...state,
+                isNewPasswordValid: validate(
+                    action.payload.input,
+                    /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,128}$/
                 ),
             };
         }

@@ -20,9 +20,9 @@ import java.util.Collection;
 @Table(name = "data_specialist")
 @DiscriminatorValue(DataSpecialist.LEVEL_NAME)
 @NamedQueries({
-        @NamedQuery(name = "DataDoctor.findAll", query = "select d from DataSpecialist d"),
-        @NamedQuery(name = "DataDoctor.findById", query = "select d from DataSpecialist d where d.id = :id"),
-        @NamedQuery(name = "DataDoctor.searchSpecialistByPhrase", query = "select d.account from DataSpecialist d where" +
+        @NamedQuery(name = "DataSpecialist.findAll", query = "select d from DataSpecialist d"),
+        @NamedQuery(name = "DataSpecialist.findById", query = "select d from DataSpecialist d where d.id = :id"),
+        @NamedQuery(name = "DataSpecialist.searchSpecialistByPhrase", query = "select d.account from DataSpecialist d where" +
                 " lower(concat(d.account.firstName, ' ', d.account.lastName)) like lower(:phrase)"),
 })
 
