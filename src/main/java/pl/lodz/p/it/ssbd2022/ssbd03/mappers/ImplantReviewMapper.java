@@ -10,6 +10,9 @@ import pl.lodz.p.it.ssbd2022.ssbd03.mop.dto.ImplantReviewDto;
 import pl.lodz.p.it.ssbd2022.ssbd03.mop.ejb.facades.AccountFacade;
 import pl.lodz.p.it.ssbd2022.ssbd03.mop.ejb.facades.ImplantFacade;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Stateless
 public class ImplantReviewMapper {
 
@@ -57,5 +60,18 @@ public class ImplantReviewMapper {
         implantReviewDto.setRating(review.getRating());
 
         return implantReviewDto;
+    }
+
+    /**
+     * Metoda mapuje listę obiektów typu ImplantReview na listę obiektów typu ImplantReviewDto.
+     * @param reviews Lista obiektów typu ImplantReview
+     * @return Lista obiektów typu ImplantReviewDto
+     */
+    public List<ImplantReviewDto> implantReviewDtoListfromImplantReviewList(List<ImplantReview> reviews) {
+        List<ImplantReviewDto> implantReviewDtos = new ArrayList<>();
+        for (ImplantReview review : reviews) {
+            implantReviewDtos.add(implantReviewDtofromImplantReview(review));
+        }
+        return implantReviewDtos;
     }
 }

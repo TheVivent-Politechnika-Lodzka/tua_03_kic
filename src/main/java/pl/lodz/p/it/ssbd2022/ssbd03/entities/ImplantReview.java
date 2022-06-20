@@ -25,7 +25,7 @@ import java.util.Date;
         @NamedQuery(name = "Review.findAll", query = "select a from ImplantReview a"),
         @NamedQuery(name = "Review.findById", query = "select a from ImplantReview a where a.id = :id"),
         @NamedQuery(name = "Review.findByClientId", query = "select a from ImplantReview a where a.client.id = :clientId"),
-        @NamedQuery(name = "Review.findByImplantId", query = "select a from ImplantReview a where a.implant.id = :implantId")
+        @NamedQuery(name = "Review.findByImplantId", query = "select a from ImplantReview a where a.implant.id = :implantId"),
 })
 @ToString
 @NoArgsConstructor

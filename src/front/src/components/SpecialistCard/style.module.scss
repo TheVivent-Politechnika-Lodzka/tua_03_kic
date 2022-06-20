@@ -1,0 +1,58 @@
+@import "../../variables.scss";
+
+.specialist_card {
+    // margin-left: 2.5%;
+    // margin-right: 2.5%;
+    // width: 95%;
+    margin-top: 5px;
+    height: 12rem;
+    padding: 2rem 3rem 2rem 3rem;
+    background-color: $secondary-color;
+    display: grid;
+    border-radius: 3rem;
+    grid-template-columns: 3fr 7fr;
+
+    .image {
+        width: 8rem;
+        margin-right: 3rem;
+        border-radius: 100px;
+        background: $white;
+        position: relative;
+
+        .svg {
+            color: $white;
+            max-width: 60%;
+            margin-left: 20%;
+            margin-top: 15%;
+        }
+
+        .access_level {
+            position: absolute;
+            top: 80%;
+            left: -74%;
+            display: flex;
+            justify-content: center;
+            // align-items: center;
+            width: 20rem;
+            transform: scale(0.9);
+        }
+    }
+
+    .table {
+        color: $white;
+        // height: 6rem;
+        padding-top: 1rem;
+        overflow: hidden;
+    }
+    .span {
+        text-align: center;
+    }
+
+    th {
+        color: $white;
+    }
+
+    td {
+        color: $white;
+    }
+}

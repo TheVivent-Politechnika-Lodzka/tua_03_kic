@@ -431,11 +431,13 @@ public class MOKEndpoint implements MOKEndpointInterface {
         Account account = token.getAccount();
         StringBuilder message = new StringBuilder();
 
-        message.append(provider.getMessage("account.resetPassword.email.content.link"))
+        message.append(
+                    provider.getMessage("account.resetPassword.email.content.link")
+                            .replace("{token}", token.getToken())
+                            .replace("{baseUrl}", Config.WEBSITE_URL)
+                )
                 .append(provider.getMessage("account.resetPassword.email.content.login"))
-                .append(" ").append(login)
-                .append(provider.getMessage("account.resetPassword.email.content.token"))
-                .append(" ").append(token.getToken());
+                .append(" ").append(login);
 
         emailService.sendEmail(
                 account.getEmail(),

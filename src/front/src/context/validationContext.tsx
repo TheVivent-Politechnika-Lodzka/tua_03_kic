@@ -14,6 +14,13 @@ interface ContextState {
     isEmailValidSpecialist: boolean;
     isPasswordValid: boolean;
     isLoginValid: boolean;
+    isImplantNameValid: boolean;
+    isManufacturerValid: boolean;
+    isPriceValid: boolean;
+    isDurationValid: boolean;
+    isDescriptionValid: boolean;
+    isOldPasswordValid: boolean;
+    isNewPasswordValid: boolean;
     input: string;
 }
 
@@ -28,8 +35,16 @@ export type ActionType =
     | "VALIDATE_PHONENUMBER_CLIENT"
     | "VALIDATE_PESEL"
     | "VALIDATE_PASSWORD"
+    | "VALIDATE_NAME"
     | "VALIDATE_LOGIN"
     | "REPEAT_PASSWORD"
+    | "VALIDATE_MANUFACTURER"
+    | "VALIDATE_IMPLANT_NAME"
+    | "VALIDATE_PRICE"
+    | "VALIDATE_DURATION"
+    | "VALIDATE_DESCRIPTION"
+    | "VALIDATE_OLD_PASSWORD"
+    | "VALIDATE_NEW_PASSWORD"
     | "RESET_VALIDATION";
 
 interface ValidationAction {
@@ -47,16 +62,23 @@ interface ValidationContext {
 // INITIAL STATE
 
 const initialState: ContextState = {
-    isFirstNameValid: false,
-    isLastNameValid: false,
-    isPhoneNumberValidAdministrator: false,
-    isPhoneNumberValidSpecialist: false,
-    isPhoneNumberValidClient: false,
-    isPESELValid: false,
-    isEmailValidAdministrator: false,
-    isEmailValidSpecialist: false,
-    isPasswordValid: false,
-    isLoginValid: false,
+    isFirstNameValid: true,
+    isLastNameValid: true,
+    isPhoneNumberValidAdministrator: true,
+    isPhoneNumberValidSpecialist: true,
+    isPhoneNumberValidClient: true,
+    isPESELValid: true,
+    isOldPasswordValid: false,
+    isNewPasswordValid: false,
+    isEmailValidAdministrator: true,
+    isEmailValidSpecialist: true,
+    isPasswordValid: true,
+    isLoginValid: true,
+    isImplantNameValid: false,
+    isManufacturerValid: false,
+    isPriceValid: false,
+    isDurationValid: false,
+    isDescriptionValid: false,
     input: "",
 };
 
@@ -72,7 +94,7 @@ const validationReducer = (state: ContextState, action: ValidationAction) => {
                 ...state,
                 isFirstNameValid: validate(
                     action.payload.input,
-                    /^[a-zA-Z\u00C0-\u017F'][a-zA-Z-\u00C0-\u017F' ]+[a-zA-Z\u00C0-\u017F']{3,30}$/
+                    /^[a-zA-Z\u00C0-\u017F']{3,30}$/
                 ),
             };
         }
@@ -81,7 +103,7 @@ const validationReducer = (state: ContextState, action: ValidationAction) => {
                 ...state,
                 isLastNameValid: validate(
                     action.payload.input,
-                    /^[a-zA-Z\u00C0-\u017F'][a-zA-Z-\u00C0-\u017F' ]+[a-zA-Z\u00C0-\u017F']{3,30}$/
+                    /^[a-zA-Z\u00C0-\u017F']{3,30}$/
                 ),
             };
         }
@@ -141,7 +163,6 @@ const validationReducer = (state: ContextState, action: ValidationAction) => {
                 ...state,
                 isLoginValid: validate(
                     action.payload.input,
-                    // /^[a-zA-Z\u00C0-\u017F'][a-zA-Z-\u00C0-\u017F' ]+[a-zA-Z\u00C0-\u017F']{3,30}$/
                     /^[a-zA-Z\u00C0-\u017F']{3,30}$/
                 ),
             };
@@ -152,6 +173,64 @@ const validationReducer = (state: ContextState, action: ValidationAction) => {
                 isPasswordValid: validate(
                     action.payload.input,
                     /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,128}$/
+                ),
+            };
+        }
+        case "VALIDATE_OLD_PASSWORD": {
+            return {
+                ...state,
+                isOldPasswordValid: validate(
+                    action.payload.input,
+                    /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,128}$/
+                ),
+            };
+        }
+        case "VALIDATE_NEW_PASSWORD": {
+            return {
+                ...state,
+                isNewPasswordValid: validate(
+                    action.payload.input,
+                    /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,128}$/
+                ),
+            };
+        }
+
+        case "VALIDATE_IMPLANT_NAME": {
+            return {
+                ...state,
+                isImplantNameValid: validate(
+                    action.payload.input,
+                    /^[a-zA-Z-' '-\u00C0-\u017F']{4,50}$/
+                ),
+            };
+        }
+        case "VALIDATE_MANUFACTURER": {
+            return {
+                ...state,
+                isManufacturerValid: validate(
+                    action.payload.input,
+                    /^[a-zA-Z-' '-\u00C0-\u017F']{10,50}$/
+                ),
+            };
+        }
+        case "VALIDATE_PRICE": {
+            return {
+                ...state,
+                isPriceValid: validate(action.payload.input, /^[0-9]{1,9}$/),
+            };
+        }
+        case "VALIDATE_DURATION": {
+            return {
+                ...state,
+                isDurationValid: validate(action.payload.input, /^[0-9]{1,9}$/),
+            };
+        }
+        case "VALIDATE_DESCRIPTION": {
+            return {
+                ...state,
+                isDescriptionValid: validate(
+                    action.payload.input,
+                    /^[a-zA-Z-' '-\u00C0-\u017F']{100,1000}$/
                 ),
             };
         }

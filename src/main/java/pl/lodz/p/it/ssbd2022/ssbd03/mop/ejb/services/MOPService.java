@@ -14,6 +14,7 @@ import pl.lodz.p.it.ssbd2022.ssbd03.common.Roles;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.*;
  import pl.lodz.p.it.ssbd2022.ssbd03.entities.Appointment;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.InvalidParametersException;
+import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.MethodNotImplementedException;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.appointment.*;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.Implant;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.appointment.AppointmentFinishAttemptBeforeEndDateException;
@@ -37,6 +38,7 @@ import pl.lodz.p.it.ssbd2022.ssbd03.mop.ejb.facades.*;
 import pl.lodz.p.it.ssbd2022.ssbd03.utils.PaginationData;
 
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 
 import pl.lodz.p.it.ssbd2022.ssbd03.mop.ejb.facades.AppointmentFacade;
@@ -50,6 +52,10 @@ import java.time.ZoneId;
 import java.util.UUID;
 
 import java.util.logging.Logger;
+
+import java.util.UUID;
+
+import static pl.lodz.p.it.ssbd2022.ssbd03.entities.Status.*;
 
 import static pl.lodz.p.it.ssbd2022.ssbd03.entities.Status.FINISHED;
 import static pl.lodz.p.it.ssbd2022.ssbd03.entities.Status.REJECTED;
@@ -287,6 +293,54 @@ public class MOPService extends AbstractService implements MOPServiceInterface, 
     }
     @Override
     @PermitAll
+    public Appointment findVisit(UUID uuid){ //TODO:Podzielić metodę dla administratora (może wziąć szczegóły każdej wizyty) a reszta użytkowników tylko swoich
+        return appointmentFacade.findById(uuid);
+    }
+    /**
+     * Metoda zwracająca edytowaną wizytę
+     *
+     * @param id     id wizyty
+     * @param update wartości które mają zostać zaktualizowane
+     * @param login   nazwa uzytkownika który bierze udział w wizycie
+     * @return  Edytowana wizyta
+     * @throws UserNotPartOfAppointment w przypadku gdy użytkownik edytuje nie swoja wizytę
+     * @throws AppointmentStatusException w przypadku gdy użytkownik chce edytować zakończoną lub odrzuconą wizytę
+     */
+    @Override
+    @PermitAll
+    public Appointment editOwnAppointment(UUID id, Appointment update,String login){
+        Appointment appointmentFromDb = appointmentFacade.findById(id);
+        boolean didStartDateChange = false;
+        if(!(appointmentFromDb.getClient().getLogin().equals(login) || appointmentFromDb.getSpecialist().getLogin().equals(login))) {
+            throw new UserNotPartOfAppointment();
+        }
+        if(appointmentFromDb.getStatus().equals(FINISHED)){
+            throw AppointmentStatusException.appointmentStatusAlreadyFinished();
+        }
+        if(appointmentFromDb.getStatus().equals(REJECTED)){
+            throw AppointmentStatusException.appointmentStatusAlreadyCancelled();
+        }
+        if(!update.getStartDate().equals(appointmentFromDb.getStartDate())){
+        Instant endDate = update.getStartDate().plus(appointmentFromDb.getImplant().getDuration());
+        checkDateAvailabilityForAppointment(appointmentFromDb.getSpecialist().getId(),update.getStartDate(),endDate);
+        appointmentFromDb.setStartDate(update.getStartDate());
+        appointmentFromDb.setEndDate(endDate);
+        didStartDateChange = true;
+        }
+        if(appointmentFromDb.getClient().getLogin().equals(login) && didStartDateChange){
+            appointmentFromDb.setStatus(PENDING);
+        }
+        else{
+            appointmentFromDb.setDescription(update.getDescription());
+            if(update.getStatus().equals(ACCEPTED)){
+                appointmentFromDb.setStatus(ACCEPTED);
+            }
+        }
+        appointmentFacade.edit(appointmentFromDb);
+        return appointmentFromDb;
+    }
+    @Override
+    @PermitAll
     public PaginationData findVisitsByLogin(int page, int pageSize, String login) {
         if(page == 0 || pageSize == 0) {
             throw new InvalidParametersException();
@@ -402,6 +456,24 @@ public class MOPService extends AbstractService implements MOPServiceInterface, 
 
         appointmentFacade.create(appointment);
         return appointment;
+    }
+
+    /**
+     * Metoda zwracająca listę wszystkich recenzji dla danego wszczepu
+     * @param page Aktualny numer strony
+     * @param pageSize Ilość recenzji na pojedynczej stronie
+     * @param id Identyfikator wszczepu
+     * @return Lista recenzji dla wszczepu
+     * @throws InvalidParametersException przy podaniu błędnych parametrów
+     *
+     */
+    @Override
+    @PermitAll
+    public PaginationData getAllImplantReviews(int page, int pageSize, UUID id) {
+        if(page == 0 || pageSize == 0) {
+            throw new InvalidParametersException();
+        }
+        return implantReviewFacade.findInRangeWithPhrase(page, pageSize, id);
     }
 
     /**

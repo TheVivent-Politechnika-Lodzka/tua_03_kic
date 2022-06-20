@@ -160,6 +160,24 @@
         }
     },
 
+    "createImplantPage": {
+        "addImplant": "Add implant",
+        "choosePhoto": "CHOOOSE PHOTO",
+        "name": "Name",
+        "nameMsg":"At least 5 to 50 characters",
+        "manufacturer": "Manufacturer",
+        "manufacturerMsg": "At least 10 to 50 characters",
+        "price": "Price (ZŁ)",
+        "priceMsg": "Price have to be positive number",
+        "duration": "Duration (min)",
+        "durationMsg": "Duration have to be positive number",
+        "description": "Description",
+        "descriptionMsg": "At least 100 to 1000 characters",
+        "modalTitle": "Create new implant",
+        "confirmMsg":"Are you sure to create new implant",
+        "implantCreated": "Implant created successfully"
+    },
+
     "registerPage": {
         "email": "Email",
         "emailMsg": "Enter correct e-mail address",

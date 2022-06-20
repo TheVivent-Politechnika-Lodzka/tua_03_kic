@@ -59,3 +59,14 @@ interface Pagination {
     pageSize?: number;
     totalPages?: number;
 }
+
+type Status =
+    | "PENDING"
+    | "REJECTED"
+    | "ACCEPTED"
+    | "FINISHED";
+
+interface ConfirmActionModal {
+    title: string;
+    message: string;
+}

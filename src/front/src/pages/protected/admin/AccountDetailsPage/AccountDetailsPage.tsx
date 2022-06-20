@@ -7,12 +7,11 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useContext, useEffect, useState } from "react";
-import ReactModal from "react-modal";
 import ReactLoading from "react-loading";
-import avatar from "../../assets/images/avatar.jpg";
-import AccessLevel from "../shared/AccessLevel/AccessLevel";
-import flagPL from "../../assets/images/PL.png";
-import flagEN from "../../assets/images/EN.png";
+import avatar from "../../../../assets/images/avatar.jpg";
+import AccessLevel from "../../../../components/shared/AccessLevel/AccessLevel";
+import flagPL from "../../../../assets/images/PL.png";
+import flagEN from "../../../../assets/images/EN.png";
 import {
     activateAccount,
     addAccesLevel,
@@ -21,33 +20,43 @@ import {
     getAccount,
     GetAccountResponse,
     removeAccessLevel,
-} from "../../api";
-import ActionButton from "../shared/ActionButton/ActionButton";
+} from "../../../../api";
 import { useNavigate } from "react-router";
 import styles from "./style.module.scss";
-import ConfirmActionModal from "../ConfirmActionModal/ConfirmActionModal";
+import ConfirmActionModal from "../../../../components/shared/ConfirmActionModal/ConfirmActionModal";
 import { showNotification } from "@mantine/notifications";
+import Modal from "../../../../components/shared/Modal/Modal";
+import ChangeUserPasswordPage from "../ChangeUserPasswordPage/ChangeUserPasswordPage";
 import {
     failureNotificationItems,
     successNotficiationItems,
-} from "../../utils/showNotificationsItems";
-import { validationContext } from "../../context/validationContext";
-import InputWithValidation from "../shared/InputWithValidation/InputWithValidation";
-import ValidationMessage from "../shared/ValidationMessage/ValidationMessage";
-import { set } from "immer/dist/internal";
+} from "../../../../utils/showNotificationsItems";
+import ActionButton from "../../../../components/shared/ActionButton/ActionButton";
+import InputWithValidation from "../../../../components/shared/InputWithValidation/InputWithValidation";
+import ValidationMessage from "../../../../components/shared/ValidationMessage/ValidationMessage";
+import { validationContext } from "../../../../context/validationContext";
 
-interface AccountDetailsProps {
+interface AccountDetailsPageProps {
     login: string;
     isOpened: boolean;
     onClose: () => void;
+    isAdmin: boolean;
 }
 
-const AccountDetails = ({ login, isOpened, onClose }: AccountDetailsProps) => {
+const AccountDetailsPage = ({
+    login,
+    isOpened,
+    isAdmin,
+    onClose,
+}: AccountDetailsPageProps) => {
     const [account, setAccount] = useState<GetAccountResponse>();
     const [loading, setLoading] = useState<Loading>({
         pageLoading: true,
         actionLoading: false,
     });
+    const [changePasswordModal, setChangePasswordModal] =
+        useState<boolean>(false);
+
     const [accessLevelToProcess, setAccessLevelToProcess] =
         useState<AccessLevelType>("ADMINISTRATOR");
     const [isAccountBlockModalOpen, setAccountBlockModalOpen] =
@@ -164,11 +173,11 @@ const AccountDetails = ({ login, isOpened, onClose }: AccountDetailsProps) => {
     }, [isOpened]);
 
     return (
-        <ReactModal isOpen={isOpened} style={customStyles} ariaHideApp={false}>
+        <Modal isOpen={isOpened}>
             <section className={styles.account_details_page}>
                 {loading.pageLoading ? (
                     <ReactLoading
-                        type="cylon"
+                        type="bars"
                         color="#fff"
                         width="10rem"
                         height="10rem"
@@ -218,6 +227,7 @@ const AccountDetails = ({ login, isOpened, onClose }: AccountDetailsProps) => {
                             </div>
                             <div className={styles.actions_wrapper}>
                                 <ActionButton
+                                    isDisabled={isAdmin}
                                     onClick={() => {
                                         navigate(`/accounts/${login}`);
                                     }}
@@ -226,16 +236,16 @@ const AccountDetails = ({ login, isOpened, onClose }: AccountDetailsProps) => {
                                     icon={faEdit}
                                 />
                                 <ActionButton
+                                    isDisabled={isAdmin}
                                     onClick={() => {
-                                        navigate(
-                                            `/accounts/${login}/change-password`
-                                        );
+                                        setChangePasswordModal(true);
                                     }}
                                     title="Zmień hasło"
                                     color="purple"
                                     icon={faKey}
                                 />
                                 <ActionButton
+                                    isDisabled={isAdmin}
                                     title={
                                         account?.active
                                             ? "Zablokuj konto"
@@ -329,6 +339,13 @@ const AccountDetails = ({ login, isOpened, onClose }: AccountDetailsProps) => {
                                 </div>
                             </div>
                         </div>
+                        <ChangeUserPasswordPage
+                            isOpen={changePasswordModal}
+                            onClose={() => {
+                                setChangePasswordModal(false);
+                            }}
+                            login={login}
+                        />
                         <ConfirmActionModal
                             title={
                                 account?.active
@@ -381,11 +398,11 @@ const AccountDetails = ({ login, isOpened, onClose }: AccountDetailsProps) => {
                     </div>
                 )}
             </section>
-        </ReactModal>
+        </Modal>
     );
 };
 
-export default AccountDetails;
+export default AccountDetailsPage;
 
 const AddAccessLevelModal = ({
     isLoading,
@@ -410,16 +427,12 @@ const AddAccessLevelModal = ({
     });
 
     const {
-        state,
         state: {
             isPhoneNumberValidAdministrator,
-            isPhoneNumberValidSpecialist,
             isPhoneNumberValidClient,
             isPESELValid,
             isEmailValidAdministrator,
-            isEmailValidSpecialist,
         },
-        dispatch,
     } = useContext(validationContext);
 
     const handleSubmit = async () => {

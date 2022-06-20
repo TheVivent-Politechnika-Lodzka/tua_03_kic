@@ -128,6 +128,7 @@ public class AppointmentFacade extends AbstractFacade<Appointment> {
         }
     }
 
+
     /**
      * Metoda zwracająca listę wizyt
      *
