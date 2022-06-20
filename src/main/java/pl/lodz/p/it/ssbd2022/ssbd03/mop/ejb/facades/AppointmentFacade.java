@@ -20,7 +20,6 @@ import pl.lodz.p.it.ssbd2022.ssbd03.security.Tagger;
 import pl.lodz.p.it.ssbd2022.ssbd03.utils.PaginationData;
 
 import java.time.Instant;
-
 import java.util.List;
 import java.util.UUID;
 
@@ -55,6 +54,7 @@ public class AppointmentFacade extends AbstractFacade<Appointment> {
 
     /**
      * Metoda tworząca wizytę
+     *
      * @param entity - wizyta
      */
     @Override
@@ -65,19 +65,21 @@ public class AppointmentFacade extends AbstractFacade<Appointment> {
 
     /**
      * zwraca listę wizyt dla danego specjalisty w danym okresie
-     * @param specialistId  - id specjalisty
-     * @param startDate     - data startowa
-     * @param endDate       - data końcowa
-     * @param pageNumber    - numer strony
-     * @param perPage       - ilość wyników na stronę
+     *
+     * @param specialistId - id specjalisty
+     * @param startDate    - data startowa
+     * @param endDate      - data końcowa
+     * @param pageNumber   - numer strony
+     * @param perPage      - ilość wyników na stronę
      * @return wynik
      */
+    @RolesAllowed(Roles.AUTHENTICATED)
     public PaginationData findSpecialistAppointmentsInGivenPeriod(UUID specialistId, Instant startDate, Instant endDate, int pageNumber, int perPage) {
         TypedQuery<Appointment> typedQuery = entityManager.createNamedQuery("Appointment.findSpecialistAppointmentsInGivenPeriod", Appointment.class);
         typedQuery.setParameter("specialistId", specialistId);
         typedQuery.setParameter("startDate", startDate);
         typedQuery.setParameter("endDate", endDate);
-        typedQuery.setFirstResult((pageNumber-1) * perPage);
+        typedQuery.setFirstResult((pageNumber - 1) * perPage);
         typedQuery.setMaxResults(perPage);
 
         List<Appointment> data = typedQuery.getResultList();
@@ -110,8 +112,8 @@ public class AppointmentFacade extends AbstractFacade<Appointment> {
      * @param id Identyfikator poszukiwanej wizyty
      * @return Obiekt znalezionej wizyty
      * @throws InvalidParametersException, gdy podano niepoprawną wartość parametru
-     * @throws ResourceNotFoundException, gdy nie znaleziono wizyty
-     * @throws DatabaseException, gdy wystąpi błąd związany z bazą danych
+     * @throws ResourceNotFoundException,  gdy nie znaleziono wizyty
+     * @throws DatabaseException,          gdy wystąpi błąd związany z bazą danych
      */
     @PermitAll
     public Appointment findById(UUID id) {
@@ -137,7 +139,7 @@ public class AppointmentFacade extends AbstractFacade<Appointment> {
      * @param phrase     wyszukiwana fraza
      * @return Lista wizyt zgodnych z parametrami wyszukiwania
      * @throws InvalidParametersException, w przypadku podania nieprawidłowych parametrów
-     * @throws DatabaseException, w przypadku wystąpienia błędu bazy danych
+     * @throws DatabaseException,          w przypadku wystąpienia błędu bazy danych
      */
     @PermitAll
     public PaginationData findInRangeWithPhrase(int pageNumber, int perPage, String phrase) {
@@ -162,23 +164,24 @@ public class AppointmentFacade extends AbstractFacade<Appointment> {
             throw new DatabaseException(e.getCause());
         }
     }
+
     /**
      * Metoda zwracająca wybraną ilość wizyty użytkownika o podanym loginie
      *
-     * @param login Login użytkownika
+     * @param login      Login użytkownika
      * @param pageNumber numer aktualnie przeglądanej strony
      * @param perPage    ilość rekordów na danej stronie
      * @return Lista wizyt użytkownika o podanym loginie
      * @throws InvalidParametersException w przypadku podania nieprawidłowych parametrów
      * @throws DatabaseException          w przypadku wystąpienia błędu bazy danych
      */
-    public PaginationData findByClientLoginInRange(int pageNumber, int perPage,String login) {
+    public PaginationData findByClientLoginInRange(int pageNumber, int perPage, String login) {
         try {
             TypedQuery<Appointment> typedQuery = entityManager.createNamedQuery("Appointment.findByLogin", Appointment.class);
 
             pageNumber--;
 
-            List<Appointment> data = typedQuery.setParameter("login",login)
+            List<Appointment> data = typedQuery.setParameter("login", login)
                     .setMaxResults(perPage)
                     .setFirstResult(pageNumber * perPage)
                     .getResultList();
