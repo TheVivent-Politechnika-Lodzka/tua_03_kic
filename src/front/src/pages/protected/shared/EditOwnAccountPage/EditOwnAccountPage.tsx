@@ -24,7 +24,7 @@ import {
     GoogleReCaptchaProvider,
     useGoogleReCaptcha,
 } from "react-google-recaptcha-v3";
-import ConfirmActionModal from "../../../../components/ConfirmActionModal/ConfirmActionModal";
+import ConfirmActionModal from "../../../../components/shared/ConfirmActionModal/ConfirmActionModal";
 import { showNotification } from "@mantine/notifications";
 import {
     failureNotificationItems,
@@ -116,7 +116,7 @@ const EditOwnAccountPageInternal = () => {
         <section className={style.edit_own_account_page}>
             {loading.pageLoading ? (
                 <ReactLoading
-                    type="cylon"
+                    type="bars"
                     color="#fff"
                     width="10rem"
                     height="10rem"

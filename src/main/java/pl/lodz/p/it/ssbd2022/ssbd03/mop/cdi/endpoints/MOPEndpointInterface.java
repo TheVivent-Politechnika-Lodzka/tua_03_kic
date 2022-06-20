@@ -155,12 +155,19 @@ public interface MOPEndpointInterface {
         throw new MethodNotImplementedException();
     }
 
-    // MOP.10 - Edytuj swoją wizytę
+    /**
+     * MOP.10- Edytuj swoją wizytę
+     *
+     * @param id                 id konkretnej wizyty
+     * @param appointmentOwnEditDto obiekt dto edytowanej wizyty
+     * @return odpowiedź serwera (wizyta)
+     * @throws MethodNotImplementedException w przypadku braku implementacji metody
+     */
     @PUT
-    @RolesAllowed(Roles.CLIENT)
+    @RolesAllowed({Roles.CLIENT,Roles.SPECIALIST})
     @Consumes(MediaType.APPLICATION_JSON)
-    @Path("/edit/visit")
-    default Response editVisit(String json) {
+    @Path("/edit/visit/my/{id}")
+    default Response editOwnVisit(@PathParam("id") UUID id,@Valid AppointmentOwnEditDto appointmentOwnEditDto) {
         throw new MethodNotImplementedException();
     }
 
@@ -251,9 +258,37 @@ public interface MOPEndpointInterface {
      */
     @DELETE
     @RolesAllowed({Roles.ADMINISTRATOR, Roles.CLIENT})
-    @Consumes(MediaType.APPLICATION_JSON)
     @Path("/implant/review/{id}")
     default Response deleteImplantsReview(@PathParam("id") UUID id) {
+        throw new MethodNotImplementedException();
+    }
+    /**
+     * MOP.17 - Pobierz szczegóły wizyty
+     *
+     * @param uuid Id wizyty
+     * @return Szczegóły wizyty
+     * @throws MethodNotImplementedException - w przypadku braku implementacji metody
+     */
+    @GET
+    @RolesAllowed(Roles.AUTHENTICATED)
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Path("/visit/{id}")
+    default Response getVisitDetails(@PathParam("id") UUID uuid){throw new MethodNotImplementedException();}
+
+    /**
+     * MOP.18 - Wyświetl recenzje dla danego wszczepu
+     * @param size Ilość recenzji do wyświetlenia na jednej stronie
+     * @param page Numer strony
+     * @param id Identyfikator wszczepu
+     * @return Lista recenzji wszczepu
+     * @throws MethodNotImplementedException - w przypadku braku implementacji metody
+     */
+    @GET
+    @PermitAll
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Path("/implant/{id}/reviews")
+    default Response getAllImplantReviews(@QueryParam("page") int page, @QueryParam("size") int size, @PathParam("id") UUID id) {
         throw new MethodNotImplementedException();
     }
 

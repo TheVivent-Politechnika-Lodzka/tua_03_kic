@@ -9,10 +9,10 @@ import ActivateAccountPage from "./pages/unprotected/ActivatePage/ActivateAccoun
 import ResetPasswordForm from "./components/Form/resetPasswordForm/ResetPasswordForm";
 import ResetPasswordTokenForm from "./components/Form/resetPasswordTokenForm/ResetPasswordTokenForm";
 import { ValidationProvider } from "./context/validationContext";
-import AccountDetailsPage from "./pages/protected/shared/AccountDetailsPage/AccountDetailsPage";
 import EditOwnAccountPage from "./pages/protected/shared/EditOwnAccountPage/EditOwnAccountPage";
 import authorizedRoutes from "./security/authorizedRoutes";
 import PageLayout from "./pages/PageLayout/PageLayout";
+import OwnAccountDetailsPage from "./pages/protected/shared/OwnAccountDetailsPage/OwnAccountDetailsPage";
 import { ImplantListPage } from "./pages/unprotected/ImplantListPage";
 import LoginPage from "./pages/unprotected/LoginPage/LoginPage";
 import SpecialistList from "./pages/unprotected/SpecialistList";
@@ -46,7 +46,7 @@ function App() {
                             <>
                                 <Route
                                     path="/account"
-                                    element={<AccountDetailsPage />}
+                                    element={<OwnAccountDetailsPage />}
                                 />
                                 <Route
                                     path="/account/edit"
