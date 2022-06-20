@@ -1,6 +1,7 @@
 package pl.lodz.p.it.ssbd2022.ssbd03.mok.ejb.facades;
 
 import jakarta.annotation.security.PermitAll;
+import jakarta.annotation.security.RolesAllowed;
 import jakarta.annotation.security.RunAs;
 import jakarta.ejb.Stateless;
 import jakarta.ejb.TransactionAttribute;
@@ -46,7 +47,7 @@ public class ResetPasswordFacade extends AbstractFacade<ResetPasswordToken> {
      * @param entity
      */
     @Override
-    @PermitAll
+    @RolesAllowed(Roles.ANONYMOUS)
     public void create(ResetPasswordToken entity) {
         super.create(entity);
     }
@@ -57,7 +58,7 @@ public class ResetPasswordFacade extends AbstractFacade<ResetPasswordToken> {
      * @param resetPasswordToken
      */
     @Override
-    @PermitAll
+    @RolesAllowed(Roles.ANONYMOUS)
     public void unsafeRemove(ResetPasswordToken resetPasswordToken) {
         super.unsafeRemove(resetPasswordToken);
     }
@@ -68,7 +69,7 @@ public class ResetPasswordFacade extends AbstractFacade<ResetPasswordToken> {
      * @param login
      * @return resetPasswordToken
      */
-    @PermitAll
+    @RolesAllowed(Roles.ANONYMOUS)
     public ResetPasswordToken findToken(String login) {
         try {
             TypedQuery<ResetPasswordToken> typedQuery = entityManager
@@ -81,18 +82,5 @@ public class ResetPasswordFacade extends AbstractFacade<ResetPasswordToken> {
             throw new DatabaseException(e);
         }
 
-    }
-
-    /**
-     * metoda zwraca tokeny przed podaną datą
-     *
-     * @return
-     */
-    @PermitAll
-    public List<ResetPasswordToken> findExpiredTokens() {
-        TypedQuery<ResetPasswordToken> typedQuery = entityManager
-                .createNamedQuery("ResetPassword.findBeforeDate", ResetPasswordToken.class);
-        typedQuery.setParameter("now", Instant.now());
-        return typedQuery.getResultList();
     }
 }

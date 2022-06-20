@@ -69,7 +69,7 @@ public class MOKService extends AbstractService implements MOKServiceInterface, 
     @Inject
     private HashAlgorithm hashAlgorithm;
     @Inject
-    private AccountConfirmationFacade activeAccountFacade;
+    private AccountConfirmationFacade accountConfirmationFacade;
     @Inject
     private AccessLevelFacade accessLevelFacade;
     @Inject
@@ -85,7 +85,7 @@ public class MOKService extends AbstractService implements MOKServiceInterface, 
      * @return token użytkownika uwierzytelnionego
      */
     @Override
-    @PermitAll
+    @RolesAllowed(Roles.ANONYMOUS)
     public String authenticate(String login, String password) {
         UsernamePasswordCredential credential = new UsernamePasswordCredential(login, new Password(password));
         CredentialValidationResult result = identityStoreHandler.validate(credential);
@@ -99,8 +99,9 @@ public class MOKService extends AbstractService implements MOKServiceInterface, 
 
     }
 
-    @PermitAll
+//    @PermitAll
     @Override
+    @RolesAllowed({Roles.ANONYMOUS, Roles.AUTHENTICATED})
     public String createRefreshToken(String login) {
         RefreshToken refreshToken = new RefreshToken();
         Account account = accountFacade.findByLogin(login);
@@ -118,7 +119,7 @@ public class MOKService extends AbstractService implements MOKServiceInterface, 
      * @return JWTStruct z odświeżonym tokenem
      */
     @Override
-    @PermitAll
+    @RolesAllowed({Roles.ANONYMOUS, Roles.AUTHENTICATED})
     public LoginResponseDto refreshToken(String refreshToken) {
         RefreshToken refreshTokenObject = refreshTokenFacade.findByToken(refreshToken);
 
@@ -272,14 +273,14 @@ public class MOKService extends AbstractService implements MOKServiceInterface, 
      * @return token z bazy danych, pozwalający aktywować konto
      */
     @Override
-    @PermitAll
+    @RolesAllowed(Roles.ANONYMOUS)
     public AccountConfirmationToken registerAccount(Account account) {
         accountFacade.create(account);
         String token = jwtGenerator.createRegistrationJWT(account.getLogin());
         AccountConfirmationToken accountConfirmationToken = new AccountConfirmationToken();
         accountConfirmationToken.setToken(token);
         accountConfirmationToken.setAccount(account);
-        activeAccountFacade.create(accountConfirmationToken);
+        accountConfirmationFacade.create(accountConfirmationToken);
         return accountConfirmationToken;
     }
 
@@ -292,7 +293,7 @@ public class MOKService extends AbstractService implements MOKServiceInterface, 
      * @throws TokenExpiredException       - w momencie, gdy token wygasł
      */
     @Override
-    @PermitAll
+    @RolesAllowed(Roles.ANONYMOUS)
     public Account confirmRegistration(String token) {
         Claims claims;
         try {
@@ -303,7 +304,7 @@ public class MOKService extends AbstractService implements MOKServiceInterface, 
             throw new TokenExpiredException();
         }
         String login = claims.getSubject();
-        AccountConfirmationToken accountConfirmationToken = activeAccountFacade.findToken(login);
+        AccountConfirmationToken accountConfirmationToken = accountConfirmationFacade.findToken(login);
         if (!accountConfirmationToken.getToken().equals(token)) {
             throw new TokenInvalidException();
         }
@@ -311,7 +312,7 @@ public class MOKService extends AbstractService implements MOKServiceInterface, 
         Account account = accountFacade.findByLogin(login);
         account.setConfirmed(true);
         accountFacade.unsafeEdit(account);
-        activeAccountFacade.unsafeRemove(accountConfirmationToken);
+        accountConfirmationFacade.unsafeRemove(accountConfirmationToken);
         return account;
     }
 
@@ -369,7 +370,7 @@ public class MOKService extends AbstractService implements MOKServiceInterface, 
     }
 
     @Override
-    @PermitAll
+    @RolesAllowed(Roles.ANONYMOUS)
     public ResetPasswordToken resetPassword(String login) {
         Account account = accountFacade.findByLogin(login);
         String token = jwtGenerator.createResetPasswordJWT(login);
@@ -381,7 +382,7 @@ public class MOKService extends AbstractService implements MOKServiceInterface, 
     }
 
     @Override
-    @PermitAll
+    @RolesAllowed(Roles.ANONYMOUS)
     public Account confirmResetPassword(String password, String token) {
         Claims claims;
         try {

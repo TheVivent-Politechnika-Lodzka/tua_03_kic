@@ -35,4 +35,8 @@ public class AppointmentListElementDto {
 
     @Description
     private String description;
+
+    private int price;
+
+    private Instant endDate;
 }

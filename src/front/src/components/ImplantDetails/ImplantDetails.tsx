@@ -13,6 +13,7 @@ import {
 import { archiveImplant, getImplant, GetImplantResponse } from "../../api/mop";
 import { useStoreSelector } from "../../redux/reduxHooks";
 import ConfirmActionModal from "../shared/ConfirmActionModal/ConfirmActionModal";
+import { useNavigate } from "react-router";
 
 interface ImplantDetailsProps {
     id: string;
@@ -27,6 +28,8 @@ const ImplantDetails = ({ id, isOpened, onClose }: ImplantDetailsProps) => {
         pageLoading: true,
         actionLoading: false,
     });
+
+const navigate = useNavigate();
 
     const handleGetImplant = async () => {
         const response = await getImplant(id);
@@ -170,7 +173,7 @@ const ImplantDetails = ({ id, isOpened, onClose }: ImplantDetailsProps) => {
                                             title="Edytuj"
                                             icon={faEdit}
                                             color="green"
-                                            onClick={() => {}}
+                                            onClick={() => navigate(`/implant/${implant?.id}`)}
                                         />
                                     </div>
                                     <div className={styles.button}>

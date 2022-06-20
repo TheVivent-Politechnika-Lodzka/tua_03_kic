@@ -9,6 +9,7 @@ import lombok.Setter;
 import pl.lodz.p.it.ssbd2022.ssbd03.validation.LastName;
 import pl.lodz.p.it.ssbd2022.ssbd03.validation.Name;
 import pl.lodz.p.it.ssbd2022.ssbd03.validation.PhoneNumber;
+import pl.lodz.p.it.ssbd2022.ssbd03.validation.Url;
 
 import java.util.UUID;
 
@@ -25,6 +26,9 @@ public class SpecialistForMopDto {
 
     @LastName
     private String surname;
+
+    @Url
+    private String url;
 
     @NotNull(message = "server.error.validation.constraints.notNull.email")
     @Email
