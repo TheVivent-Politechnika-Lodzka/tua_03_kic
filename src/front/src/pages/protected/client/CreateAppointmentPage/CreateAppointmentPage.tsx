@@ -2,6 +2,8 @@ import {
     faArrowAltCircleRight,
     faShoppingCart,
 } from "@fortawesome/free-solid-svg-icons";
+import "dayjs/locale/en";
+import "dayjs/locale/pl";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router";
 import style from "./style.module.scss";
@@ -17,7 +19,14 @@ import {
 } from "../../../../api/mop";
 import { showNotification } from "@mantine/notifications";
 import { failureNotificationItems } from "../../../../utils/showNotificationsItems";
-import { Instant, LocalDateTime } from "@js-joda/core";
+import { ChronoUnit, Instant, LocalDateTime } from "@js-joda/core";
+import { Indicator, Modal } from "@mantine/core";
+import ReactModal from "react-modal";
+
+interface HourInterface {
+    text: string;
+    value: Instant;
+}
 
 const CreateAppointmentPage = () => {
     const { implantId } = useParams();
@@ -29,8 +38,11 @@ const CreateAppointmentPage = () => {
     const [specialist, setSpecialist] = useState<SpecialistListElementDto>();
     const [currentPage, setCurrentPage] = useState(0);
     const [totalPages, setTotalPages] = useState(1);
-    const [availableDates, setAvailableDates] = useState<string[][]>([]);
-    const [currentMonth, setCurrentMonth] = useState(0);
+    const [availableDates, setAvailableDates] = useState<HourInterface[][]>([]);
+    const [currentMonth, setCurrentMonth] = useState(new Date());
+    const [selectedDate, setSelectedDate] = useState<Date | null>(null);
+    const [selectedHour, setSelectedHour] = useState<HourInterface>();
+    const [showSummaryModal, setShowSummaryModal] = useState(false);
 
     const handleLoadSpecialistList = async () => {
         const response = await listSpecialist({
@@ -62,18 +74,22 @@ const CreateAppointmentPage = () => {
             showNotification(failureNotificationItems(response.errorMessage));
             return;
         }
-        // setAvailableDates(response);
-        const dates: string[][] = [];
+
+        const dates: HourInterface[][] = [];
         for (const date of response) {
             const localDate = LocalDateTime.ofInstant(date);
             const dayOfMonth = localDate.dayOfMonth();
             if (!dates[dayOfMonth]) dates[dayOfMonth] = [];
             const hour = localDate.hour();
             const minute = localDate.minute();
-            dates[dayOfMonth].push(`${hour}:${minute}`);
+            const hourString = hour < 10 ? `0${hour}` : `${hour}`;
+            const minuteString = minute < 10 ? `0${minute}` : `${minute}`;
+            const hourValue = `${hourString}:${minuteString}`;
+            dates[dayOfMonth].push({
+                text: hourValue,
+                value: date,
+            });
         }
-        console.log(dates);
-
         setAvailableDates(dates);
     };
 
@@ -83,7 +99,8 @@ const CreateAppointmentPage = () => {
 
     useEffect(() => {
         handleMonthChange();
-    }, [specialist, implant]);
+        setSelectedHour(undefined);
+    }, [specialist, implant, currentMonth]);
 
     return (
         <section className={style.create_appointment_page}>
@@ -120,16 +137,56 @@ const CreateAppointmentPage = () => {
                         )}
                     </div>
                     <div className={style.date_display}>
-                        <Calendar size="xl" className={style.calendar} />
+                        <Calendar
+                            size="xl"
+                            className={style.calendar}
+                            month={currentMonth}
+                            onMonthChange={setCurrentMonth}
+                            value={selectedDate}
+                            onChange={setSelectedDate}
+                            renderDay={(date) => {
+                                const day = date.getDate();
+                                const month = date.getMonth();
+                                const color =
+                                    !availableDates[day] ||
+                                    currentMonth.getMonth() !== month
+                                        ? "red"
+                                        : "green";
+                                return (
+                                    <Indicator
+                                        size={6}
+                                        color={color}
+                                        offset={8}
+                                        zIndex={0}
+                                    >
+                                        <div>{day}</div>
+                                    </Indicator>
+                                );
+                            }}
+                        />
                         <div className={style.right_to_calendar}>
-                            <div className={style.pick_hour}>pick hour</div>
+                            <div className={style.hour_picker}>
+                                {availableDates[
+                                    selectedDate?.getDate() ?? -1
+                                ]?.map((hour) => (
+                                    <HourItem
+                                        key={hour.text}
+                                        value={hour}
+                                        onClick={(x: HourInterface) =>
+                                            setSelectedHour(x)
+                                        }
+                                        isSelected={
+                                            selectedHour?.text === hour.text
+                                        }
+                                    />
+                                ))}
+                            </div>
                             <div className={style.create_appointment}>
                                 <ActionButton
                                     onClick={() => {
-                                        navigate(
-                                            `/implant/${implantId}/create-appointment`
-                                        );
+                                        setShowSummaryModal(true);
                                     }}
+                                    isDisabled={!selectedHour}
                                     title="Przejdź do podsumowania"
                                     color="green"
                                     icon={faShoppingCart}
@@ -139,15 +196,134 @@ const CreateAppointmentPage = () => {
                     </div>
                 </div>
             </div>
+            <SummaryModal
+                show={showSummaryModal}
+                onClose={() => setShowSummaryModal(false)}
+                choosenDate={selectedHour}
+                choosenSpecialist={specialist}
+                choosenImplant={implant}
+            />
         </section>
     );
 };
 
 export default CreateAppointmentPage;
 
+interface SummaryModalInterface {
+    show: boolean;
+    onClose: () => void;
+    choosenDate: HourInterface | undefined;
+    choosenSpecialist: SpecialistListElementDto | undefined;
+    choosenImplant: GetImplantResponse | undefined;
+}
+
+const SummaryModal = ({
+    show,
+    onClose,
+    choosenDate,
+    choosenSpecialist,
+    choosenImplant,
+}: SummaryModalInterface) => {
+    const [dateString, setDateString] = useState("");
+
+    const handleSubmit = async () => {
+        if (!choosenDate || !choosenSpecialist || !choosenImplant) return;
+    };
+
+    useEffect(() => {
+        if (!choosenDate) return;
+        const localDate = LocalDateTime.ofInstant(choosenDate.value);
+        const startString = localDate
+            .truncatedTo(ChronoUnit.MINUTES)
+            .toString()
+            .replace("T", " ");
+
+        setDateString(startString);
+    }, [choosenDate]);
+
+    const customStyles = {
+        overlay: {
+            backgroundColor: "rgba(0, 0, 0, 0.85)",
+        },
+        content: {
+            top: "10vh",
+            left: "10vw",
+            width: "80vw",
+            height: "80vh",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            backgroundColor: "transparent",
+            border: "none",
+        },
+    };
+
+    return (
+        <ReactModal isOpen={show} style={customStyles} onAfterClose={onClose}>
+            <div className={style.modal_content}>
+                <div className={style.date_title}>
+                    <h4>Wybrana data rezerwacji: {dateString}</h4>
+                </div>
+                <div className={style.choosen_implant}>
+                    <h4>Wybrany implant:</h4>
+                    <div>
+                        <img
+                            className={style.implant_image}
+                            src={
+                                choosenImplant?.image ??
+                                "https://picsum.photos/200"
+                            }
+                            alt="implant"
+                        />
+                        <div>{choosenImplant?.name}</div>
+                    </div>
+                </div>
+                <div className={style.choosen_specialist}>
+                    <h2>
+                        Wybrany specjalista: {choosenSpecialist?.name}{" "}
+                        {choosenSpecialist?.surname}
+                    </h2>
+                </div>
+                <div>
+                    <ActionButton
+                        title="Zarezerwuj"
+                        color="green"
+                        icon={faShoppingCart}
+                        onClick={() => {
+                            handleSubmit();
+                        }}
+                    />
+                </div>
+            </div>
+        </ReactModal>
+    );
+};
+
+interface HourItemProps {
+    value: HourInterface;
+    onClick: (value: HourInterface) => void;
+    isSelected: boolean;
+}
+
+const HourItem = ({ value, onClick, isSelected }: HourItemProps) => {
+    const handleClick = () => {
+        onClick(value);
+    };
+
+    return (
+        <div
+            className={style.hour_item}
+            style={isSelected ? { backgroundColor: "#00b046" } : {}}
+            onClick={handleClick}
+        >
+            <h2>{value.text}</h2>
+        </div>
+    );
+};
+
 interface ImplantItemProps {
     implantId: string | undefined;
-    setImplant: (implant: GetImplantResponse) => void;
+    setImplant?: (implant: GetImplantResponse) => void;
 }
 const ImplantItem = ({ implantId, setImplant }: ImplantItemProps) => {
     const id = implantId;
@@ -161,7 +337,7 @@ const ImplantItem = ({ implantId, setImplant }: ImplantItemProps) => {
             return;
         }
         setImplantInternal(response);
-        setImplant(response);
+        if (setImplant) setImplant(response);
     };
 
     useEffect(() => {

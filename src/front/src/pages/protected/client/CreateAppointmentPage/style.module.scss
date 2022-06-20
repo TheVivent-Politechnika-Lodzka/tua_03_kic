@@ -78,17 +78,18 @@
             display: inline-block;
             position: relative;
 
-            .pick_hour {
-                display: flex;
-                flex-direction: column;
-                justify-content: space-evenly;
+            .hour_picker {
+                // display: flex;
+                // flex-direction: column;
+                // justify-content: space-evenly;
                 align-items: center;
                 width: 100%;
                 background-color: rgba(0,0,0,0.2);
                 box-shadow: 4px 4px 16px 6px rgba(0,0,0,0.5);
-                height: 75%;
-                overflow-y: scroll;
+                height: 20rem;
                 overflow-x: hidden;
+                overflow-y: scroll;
+                padding-bottom: 0.4rem;
             }
 
             .create_appointment {
@@ -106,6 +107,27 @@
             }
         }
     }
+}
+
+.hour_item {
+    
+    
+    cursor: pointer;
+    width: 80%;
+    text-align: center;
+    background-color: $white;
+    color: $light-gray;
+    font-size: 1.8rem;
+    padding: 0.4rem;
+    border-radius: 1.2rem;
+    margin: auto;
+    margin-top: 0.4rem;
+
+    &:hover {
+        background-color: $light-gray;
+        color: $white;
+    }
+    
 }
 
 .specialist_card {
@@ -172,6 +194,69 @@
         right: 1rem;
         font-size: 1.2rem;
         font-weight: bold;
+    }
+
+}
+
+.modal_content {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
+    position: relative;
+    background-color: $secondary-color;
+    height: 100%;
+    padding: 2rem;
+    border-radius: 2.2rem;
+    color: $white;
+
+    div {
+        display: block;
+        width: 100%;
+        text-align: center;
+    }
+
+    .date_title {
+        font-size: 2.5rem;
+        font-weight: bold;
+    }
+
+    .choosen_implant {
+        
+        h4 {
+            font-size: 2.5rem;
+            font-weight: bold;
+        }
+
+        div {
+            display: flex;
+            justify-content: space-evenly;
+
+            img{
+                width: 10rem;
+                height: 10rem;
+                border-radius: 100%;
+            }
+    
+            div {
+                display: flex;
+                flex-direction: column;
+                justify-content: space-evenly;
+                align-items: center;
+                font-size: 2rem;
+                font-weight: bold;
+            }
+        }
+
+        
+
+    }
+
+    .choosen_specialist{
+
+        width: 100%;
+        font-size: 2rem;
     }
 
 }
