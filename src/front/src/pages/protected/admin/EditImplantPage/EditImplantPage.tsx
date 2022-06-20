@@ -176,6 +176,7 @@ export const EditImplantPage = () => {
                                 value={implant?.price.toString() }
                                 validationType="VALIDATE_PRICE"
                                 isValid={isPriceValid}
+                                type="number"
                                 onChange={(e) => {
                                     if (e.target.value && implant)
                                     setImplant({
@@ -199,6 +200,7 @@ export const EditImplantPage = () => {
                                 value={implant?.duration.toString()}
                                 validationType="VALIDATE_DURATION"
                                 isValid={isDurationValid}
+                                type="number"
                                 onChange={(e) => {
                                     if (e.target.value && implant)
                                     setImplant({
