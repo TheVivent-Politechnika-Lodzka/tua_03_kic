@@ -1,3 +1,4 @@
+import { showNotification } from "@mantine/notifications";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import ReactLoading from "react-loading";
@@ -9,6 +10,7 @@ import {
 import { AppointmentRecord } from "../../../../components/AppointmentRecord";
 import Pagination from "../../../../components/Pagination/Pagination";
 import { useStoreSelector } from "../../../../redux/reduxHooks";
+import { failureNotificationItems } from "../../../../utils/showNotificationsItems";
 import styles from "./style.module.scss";
 
 export const OwnAppointmentsList = () => {
@@ -19,7 +21,6 @@ export const OwnAppointmentsList = () => {
         pageLoading: true,
         actionLoading: false,
     });
-    const [error, setError] = useState<ApiError>();
     const [rerender, setRerender] = useState<boolean>(false);
 
     const [pagination, setPagination] = useState<Pagination>({
@@ -35,24 +36,20 @@ export const OwnAppointmentsList = () => {
     const { t } = useTranslation();
 
     const handleGetOwnAppointments = async () => {
-        try {
             setLoading({ ...loading, actionLoading: true });
             const data = await listOwnAppointments({
                 page: pagination?.currentPage as number,
                 size: pagination?.pageSize as number,
             });
-            if ("errorMessage" in data) return;
+            if("errorMessage" in data) {
+                showNotification(failureNotificationItems(data.errorMessage));
+                return;
+            }
             setAppointments(data.data);
             setPagination({ ...pagination, totalPages: data.totalPages });
             setLoading({ pageLoading: false, actionLoading: false });
             setRerender(false);
-        } catch (error: ApiError | any) {
-            setLoading({ pageLoading: false, actionLoading: false });
-            setError(error);
-            setRerender(false);
-            console.error(`${error?.status} ${error?.errorMessage}`);
-        }
-    };
+        };
     return (
         <section className={styles.appointment_managment_page}>
             <div className={styles.table_container}>

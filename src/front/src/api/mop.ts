@@ -100,7 +100,7 @@ export async function listImplants(params: ListImplantsRequest) {
 }
 export async function listOwnAppointments(params:ListOwnAppointmentsRequest) {
     try{
-        const { data, headers } = await axios.get<ListOwnAppointmentsResponse>(
+        const { data } = await axios.get<ListOwnAppointmentsResponse>(
             "/mop/list/visits/my",{ params, });
         return data;
     }
