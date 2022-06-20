@@ -17,7 +17,7 @@ import {
 } from "../../../../api/mop";
 import { showNotification } from "@mantine/notifications";
 import { failureNotificationItems } from "../../../../utils/showNotificationsItems";
-import { Instant } from "@js-joda/core";
+import { Instant, LocalDateTime } from "@js-joda/core";
 
 const CreateAppointmentPage = () => {
     const { implantId } = useParams();
@@ -29,7 +29,7 @@ const CreateAppointmentPage = () => {
     const [specialist, setSpecialist] = useState<SpecialistListElementDto>();
     const [currentPage, setCurrentPage] = useState(0);
     const [totalPages, setTotalPages] = useState(1);
-    const [availableDates, setAvailableDates] = useState<Instant[]>([]);
+    const [availableDates, setAvailableDates] = useState<string[][]>([]);
     const [currentMonth, setCurrentMonth] = useState(0);
 
     const handleLoadSpecialistList = async () => {
@@ -62,8 +62,19 @@ const CreateAppointmentPage = () => {
             showNotification(failureNotificationItems(response.errorMessage));
             return;
         }
-        setAvailableDates(response);
-        console.log(response);
+        // setAvailableDates(response);
+        const dates: string[][] = [];
+        for (const date of response) {
+            const localDate = LocalDateTime.ofInstant(date);
+            const dayOfMonth = localDate.dayOfMonth();
+            if (!dates[dayOfMonth]) dates[dayOfMonth] = [];
+            const hour = localDate.hour();
+            const minute = localDate.minute();
+            dates[dayOfMonth].push(`${hour}:${minute}`);
+        }
+        console.log(dates);
+
+        setAvailableDates(dates);
     };
 
     useEffect(() => {
