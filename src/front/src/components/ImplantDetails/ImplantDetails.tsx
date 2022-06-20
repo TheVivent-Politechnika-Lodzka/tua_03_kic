@@ -1,4 +1,8 @@
-import { faClose, faEdit } from "@fortawesome/free-solid-svg-icons";
+import {
+    faClose,
+    faEdit,
+    faShoppingCart,
+} from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useEffect, useState } from "react";
 import ReactModal from "react-modal";
@@ -12,6 +16,7 @@ import {
 } from "../../utils/showNotificationsItems";
 import { getImplant, GetImplantResponse } from "../../api/mop";
 import { useStoreSelector } from "../../redux/reduxHooks";
+import { useNavigate } from "react-router";
 
 interface ImplantDetailsProps {
     id: string;
@@ -26,6 +31,7 @@ const ImplantDetails = ({ id, isOpened, onClose }: ImplantDetailsProps) => {
         pageLoading: true,
         actionLoading: false,
     });
+    const navigate = useNavigate();
 
     const handleGetImplant = async () => {
         const response = await getImplant(id);
@@ -142,6 +148,16 @@ const ImplantDetails = ({ id, isOpened, onClose }: ImplantDetailsProps) => {
                                             : "Dostępny"}
                                     </p>
                                 </div>
+                                <ActionButton
+                                    title="Rezerwuj"
+                                    icon={faShoppingCart}
+                                    onClick={() => {
+                                        navigate(
+                                            `/implants/${implant?.id}/create-appointment`
+                                        );
+                                    }}
+                                    color="green"
+                                />
                             </div>
                             {accessLevel === "ADMINISTRATOR" && (
                                 <div className={styles.action_wrapper}>

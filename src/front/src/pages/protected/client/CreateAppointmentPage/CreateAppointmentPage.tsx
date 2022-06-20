@@ -237,6 +237,7 @@ const SummaryModal = ({
     choosenImplant,
 }: SummaryModalInterface) => {
     const [dateString, setDateString] = useState("");
+    const navigate = useNavigate();
 
     const handleSubmit = async () => {
         if (!choosenDate || !choosenSpecialist || !choosenImplant) return;
@@ -249,9 +250,9 @@ const SummaryModal = ({
             showNotification(failureNotificationItems(response.errorMessage));
             return;
         }
-        console.log(response);
         showNotification(successNotficiationItems("Zarezerwowano wizytę"));
         onClose();
+        navigate("/visits");
     };
 
     useEffect(() => {
