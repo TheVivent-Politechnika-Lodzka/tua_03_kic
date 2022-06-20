@@ -67,7 +67,6 @@ interface ImplantDetails extends Taggable {
     image: string;
 }
 
-export interface GetImplantResponse extends ImplantDetails, Etag {}
 
 /**
  * zwraca listę implantów i informacje o paginacji
@@ -113,6 +112,41 @@ export async function listOwnAppointments(params:ListOwnAppointmentsRequest) {
         }
 }
 
+export interface EditImplantRequest extends ImplantDetails, Etag {}
+export interface EditImplantResponse extends ImplantDetails, Etag {}
+
+/**
+ *
+ * @param id - identyfikator wszczepu
+ * @param implantDetails - nowe dane wszczepu i etag
+ * @returns @example EditImplantResponse | {errorMessage, status}
+ */
+export async function editImplant(
+    id: string,
+    implantDetails: EditImplantRequest
+  ) {
+    try {
+      const { etag, ...implant } = implantDetails;
+      const { data, headers } = await axios.put(`/mop/implant/edit/${id}`, implant, {
+        headers: {
+          "If-Match": etag,
+        },
+      });
+      const newEtag = headers["etag"];
+      return { ...data, etag: newEtag } as EditImplantResponse;
+    } catch (error) {
+      if (axios.isAxiosError(error) && error.response) {
+        return {
+          errorMessage: error.response.data as string,
+          status: error.response.status,
+        } as ApiError;
+      }
+      throw error;
+    }
+  }
+
+
+  export interface GetImplantResponse extends ImplantDetails, Etag {}
 /**
  * Pobierz szczegóły implantu
  *
