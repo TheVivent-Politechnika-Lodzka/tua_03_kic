@@ -6,6 +6,7 @@ import UserManagment from "../pages/protected/admin/UsersManagmentPage/UsersMana
 import { OwnAppointmentsList } from "../pages/protected/shared/OwnAppointmentsList/OwnAppointmentsList";
 import { AppointmentListPage } from "../pages/protected/admin/AppointmentList";
 import { CreateImplantPage } from "../pages/protected/admin/CreateImplantPage";
+import { EditOwnAppointment } from "../pages/protected/shared/EditOwnAppointment";
 import { EditImplantPage } from "../pages/protected/admin/EditImplantPage";
 
 
@@ -39,6 +40,7 @@ const authorizedRoutes = (accessLevel: AccessLevelType) => {
             return (
                 <>
                     <Route path="/visits" element={<OwnAppointmentsList />} />
+                    <Route path="/visit/edit/:id" element={<EditOwnAppointment />} />
                 </>
             );
         }
@@ -46,6 +48,7 @@ const authorizedRoutes = (accessLevel: AccessLevelType) => {
             return (
                 <>
                     <Route path="/visits" element={<OwnAppointmentsList />} />
+                    <Route path="/visit/edit/:id" element={<EditOwnAppointment />} />
                 </>
             );
         }

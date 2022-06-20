@@ -1,4 +1,4 @@
-import { faClose, faEdit } from "@fortawesome/free-solid-svg-icons";
+import { faClose, faEdit, faFolder } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useEffect, useState } from "react";
 import ReactModal from "react-modal";
@@ -10,8 +10,9 @@ import {
     failureNotificationItems,
     successNotficiationItems,
 } from "../../utils/showNotificationsItems";
-import { getImplant, GetImplantResponse } from "../../api/mop";
+import { archiveImplant, getImplant, GetImplantResponse } from "../../api/mop";
 import { useStoreSelector } from "../../redux/reduxHooks";
+import ConfirmActionModal from "../shared/ConfirmActionModal/ConfirmActionModal";
 import { useNavigate } from "react-router";
 
 interface ImplantDetailsProps {
@@ -41,6 +42,8 @@ const navigate = useNavigate();
         setLoading({ pageLoading: false });
     };
 
+    const [opened, setOpened] = useState<boolean>(false);
+
     const customStyles = {
         overlay: {
             backgroundColor: "rgba(0, 0, 0, 0.85)",
@@ -54,6 +57,23 @@ const navigate = useNavigate();
             backgroundColor: "transparent",
             border: "none",
         },
+    };
+
+    const handleArchiveImpland = async () => {
+        if (!implant) return;
+        setLoading({ ...loading, actionLoading: true });
+        console.log(implant.etag);
+        console.log(implant.id);
+        const response = await archiveImplant(implant.id, implant.etag);
+        if ("errorMessage" in response) {
+            showNotification(failureNotificationItems(response.errorMessage));
+            setLoading({ ...loading, actionLoading: false });
+            return;
+        }
+        showNotification(successNotficiationItems("account.edit.success"));
+        setImplant(response);
+
+        setLoading({ ...loading, actionLoading: false });
     };
 
     useEffect(() => {
@@ -148,17 +168,44 @@ const navigate = useNavigate();
                             </div>
                             {accessLevel === "ADMINISTRATOR" && (
                                 <div className={styles.action_wrapper}>
-                                    <ActionButton
-                                        title="Edytuj"
-                                        icon={faEdit}
-                                        color="green"
-                                        onClick={() => navigate(`/implant/${implant?.id}`)}
-                                    />
+                                    <div className={styles.button}>
+                                        <ActionButton
+                                            title="Edytuj"
+                                            icon={faEdit}
+                                            color="green"
+                                            onClick={() => navigate(`/implant/${implant?.id}`)}
+                                        />
+                                    </div>
+                                    <div className={styles.button}>
+                                        <ActionButton
+                                            title="Archiwizuj"
+                                            icon={faFolder}
+                                            color="purple"
+                                            onClick={() => {
+                                                setOpened(true);
+                                            }}
+                                        />
+                                    </div>
                                 </div>
                             )}
                         </div>
                     </div>
                 )}
+                <ConfirmActionModal
+                    isOpened={opened}
+                    onClose={() => {
+                        setOpened(false);
+                    }}
+                    handleFunction={async () => {
+                        await handleArchiveImpland();
+                        setOpened(false);
+                    }}
+                    isLoading={loading.actionLoading as boolean}
+                    title="Archiwizacja implantu"
+                >
+                    Czy na pewno chcesz zarchiwizować implant? Operacja jest
+                    nieodwracalna!
+                </ConfirmActionModal>
             </section>
         </ReactModal>
     );

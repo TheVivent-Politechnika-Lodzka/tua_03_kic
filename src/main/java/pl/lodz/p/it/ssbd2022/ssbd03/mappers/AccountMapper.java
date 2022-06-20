@@ -43,6 +43,8 @@ public class AccountMapper {
         account.setConfirmed(true);
         account.setUrl(createAccountDto.getUrl());
         account.setLanguage(createAccountDto.getLanguage());
+        account.setUrl(createAccountDto.getUrl());
+        //TODO naprawić ten link
 
         return account;
     }

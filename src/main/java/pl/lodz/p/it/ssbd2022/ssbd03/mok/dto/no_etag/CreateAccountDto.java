@@ -8,6 +8,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.apache.http.nio.entity.NStringEntity;
 import pl.lodz.p.it.ssbd2022.ssbd03.mappers.json.LocaleSerializerDeserializer;
 import pl.lodz.p.it.ssbd2022.ssbd03.validation.*;
 
@@ -42,5 +43,8 @@ public class CreateAccountDto {
     @JsonbTypeDeserializer(LocaleSerializerDeserializer.class)
     @JsonbTypeSerializer(LocaleSerializerDeserializer.class)
     private Locale language;
+
+    @Url
+    private String url;
 
 }
