@@ -189,29 +189,6 @@ export async function getImplant(id: string) {
         throw error;
     }
 }
-export async function getAppointment(id: string) {
-    try {
-        const { data, headers } = await axios.get<AppointmentDetails>(
-            `mop/edit/visit/${id}`
-        );
-        const etag = headers["etag"];
-        return { ...data, etag } as GetAppointmentResponse;
-    } catch (error) {
-        if (axios.isAxiosError(error) && error.response) {
-            return {
-                errorMessage: error.response.data as string,
-                status: error.response.status,
-            } as ApiError;
-        }
-        throw error;
-    }
-}
-export interface AppointmentListElementDto {
-    id: string;
-    description: string;
-    client_url: string;
-    specialist_url: string;
-}
 
 export interface AppointmentListResponse {
     totalCounts: number;
