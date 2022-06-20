@@ -54,8 +54,7 @@ public class StartupConfig {
         admin.setLastName("administracyjny");
         admin.setEmail("szurySSBD3@gmail.com");
         admin.setLanguage(new Locale("pl"));
-
-
+        admin.setUrl("https://assets.reedpopcdn.com/cyberpunk-2077-wyciekl-dodatek-headline.jpg/BROK/resize/1920x1920%3E/format/jpg/quality/80/cyberpunk-2077-wyciekl-dodatek-headline.jpg");
         DataAdministrator dataAdministrator = new DataAdministrator();
         dataAdministrator.setPhoneNumber("000000000");
         dataAdministrator.setContactEmail("administrator@kic.agency");
@@ -74,6 +73,7 @@ public class StartupConfig {
         admin.setLastName("specjalny");
         admin.setEmail("szurySSBD2@gmail.com");
         admin.setLanguage(new Locale("en"));
+        admin.setUrl("https://assets.reedpopcdn.com/cyberpunk-2077-wyciekl-dodatek-headline.jpg/BROK/resize/1920x1920%3E/format/jpg/quality/80/cyberpunk-2077-wyciekl-dodatek-headline.jpg");
 
         DataAdministrator dataAdministrator = new DataAdministrator();
         dataAdministrator.setPhoneNumber("111111111");
@@ -97,6 +97,7 @@ public class StartupConfig {
         admin.setLastName("kliencki");
         admin.setEmail("szurySSBD@gmail.com");
         admin.setLanguage(new Locale("pl"));
+        admin.setUrl("https://assets.reedpopcdn.com/cyberpunk-2077-wyciekl-dodatek-headline.jpg/BROK/resize/1920x1920%3E/format/jpg/quality/80/cyberpunk-2077-wyciekl-dodatek-headline.jpg");
 
         DataAdministrator dataAdministrator = new DataAdministrator();
         dataAdministrator.setPhoneNumber("222222222");
@@ -121,6 +122,7 @@ public class StartupConfig {
         client.setLastName("klient");
         client.setEmail("szurySSBDclient@gmail.com");
         client.setLanguage(new Locale("pl"));
+        client.setUrl("https://assets.reedpopcdn.com/cyberpunk-2077-wyciekl-dodatek-headline.jpg/BROK/resize/1920x1920%3E/format/jpg/quality/80/cyberpunk-2077-wyciekl-dodatek-headline.jpg");
 
         DataClient dataClient = new DataClient();
         dataClient.setPesel("11111111111");
@@ -140,6 +142,7 @@ public class StartupConfig {
         specialist.setLastName("specjalista");
         specialist.setEmail("szurySSBDspec@gmail.com");
         specialist.setLanguage(new Locale("pl"));
+        specialist.setUrl("https://assets.reedpopcdn.com/cyberpunk-2077-wyciekl-dodatek-headline.jpg/BROK/resize/1920x1920%3E/format/jpg/quality/80/cyberpunk-2077-wyciekl-dodatek-headline.jpg");
 
         DataSpecialist dataSpecialist = new DataSpecialist();
         dataSpecialist.setPhoneNumber("222222222");
@@ -157,7 +160,7 @@ public class StartupConfig {
         implant.setPrice(1000);
         implant.setPopularity(0);
         implant.setDuration(Duration.between(LocalTime.NOON, LocalTime.MAX));
-
+        implant.setImage("https://assets.reedpopcdn.com/cyberpunk-2077-wyciekl-dodatek-headline.jpg/BROK/resize/1920x1920%3E/format/jpg/quality/80/cyberpunk-2077-wyciekl-dodatek-headline.jpg");
         em.persist(implant);
     }
 
@@ -215,6 +218,8 @@ public class StartupConfig {
         implant.setManufacturer("Manufacturer kox");
         implant.setPopularity(0);
         implant.setDuration(Duration.ofMinutes(30));
+        implant.setImage("https://assets.reedpopcdn.com/cyberpunk-2077-wyciekl-dodatek-headline.jpg/BROK/resize/1920x1920%3E/format/jpg/quality/80/cyberpunk-2077-wyciekl-dodatek-headline.jpg");
+
 
         em.persist(implant);
 
@@ -252,6 +257,7 @@ public class StartupConfig {
         implant.setManufacturer("Manufacturer super gut");
         implant.setPopularity(0);
         implant.setDuration(Duration.ofMinutes(120));
+        implant.setImage("https://assets.reedpopcdn.com/cyberpunk-2077-wyciekl-dodatek-headline.jpg/BROK/resize/1920x1920%3E/format/jpg/quality/80/cyberpunk-2077-wyciekl-dodatek-headline.jpg");
 
         em.persist(implant);
 

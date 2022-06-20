@@ -81,6 +81,13 @@ public class Account extends AbstractEntity implements Serializable {
     @NotNull
     private boolean active;
 
+    @Column(name = "url",length = 2000)
+    @Size(min = 8, max = 2000)
+    @Getter
+    @Setter
+    @NotNull
+    private String url;
+
     @OneToMany(fetch = FetchType.EAGER, cascade = {CascadeType.REMOVE, CascadeType.ALL}, mappedBy = "account", orphanRemoval = true)
     @Getter
     private Collection<AccessLevel> accessLevelCollection = new ArrayList<>();

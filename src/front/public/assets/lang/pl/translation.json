@@ -175,4 +175,29 @@
         "confirmMsg": "Czy jesteś pewny?",
         "implantCreated": "Pomyślnie utworzono implant"
     }
+    },
+
+    "registerPage": {
+        "email": "Mail",
+        "emailMsg": "Podaj poprawny adres mailowy",
+        "firstName": "Imie",
+        "firstNameMsg": "Wymagane od 3 do 30 znaków",
+        "lastName": "Nazwisko",
+        "lastNameMsg": "Wymagane od 3 do 30 znaków",
+        "peselMsg": "PESEL składa się z 11 liczb",
+        "login": "Login",
+        "loginMsg": "Wymagane od 3 do 30 znaków",
+        "phoneNumber": "Numer telefonu",
+        "phoneNumberMsg": "Numer telefonu składa sie z 9 liczb",
+        "password": "Password",
+        "passwordMsg": "Wymagane 8 znaków, duża i mała litera,liczba",
+        "repaet_password": "Powtórz hasło",
+        "repaet_passwordMsg": "Hasła muszą pasować",
+        "language": "Język",
+        "sign_in": "Sign in",
+        "cancel": "Cancel",
+        "polish": "polish",
+        "english": "english",
+        "send_email":"Wysłaliśmy Ci maila z linkiem powierdzającym"
+    }
 }

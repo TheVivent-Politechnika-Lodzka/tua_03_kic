@@ -1,7 +1,7 @@
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import HomePage from "./pages/unprotected/HomePage/HomePage";
 import ErrorPage from "./pages/unprotected/ErrorPage/ErrorPage";
-import RegisterPage from "./pages/unprotected/RegisterPage/RegisterPage";
+import {RegisterPage} from "./pages/unprotected/RegisterPage";
 import { useStoreSelector, useStoreDispatch } from "./redux/reduxHooks";
 import jwtDecode from "jwt-decode";
 import { login as loginDispatch } from "./redux/userSlice";
