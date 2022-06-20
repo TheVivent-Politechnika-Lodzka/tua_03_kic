@@ -510,11 +510,12 @@ public class MOPEndpoint implements MOPEndpointInterface {
     }
     @Override
     public Response getVisitDetails (UUID uuid){
+        String login = authContext.getCurrentUserLogin();
         Appointment appointment;
         int TXCounter = Config.MAX_TX_RETRIES;
         boolean commitedTX;
         do {
-            appointment = mopService.findVisit(uuid);
+            appointment = mopService.findVisit(uuid, login);
             commitedTX = mopService.isLastTransactionCommited();
         } while (!commitedTX && --TXCounter > 0);
 
