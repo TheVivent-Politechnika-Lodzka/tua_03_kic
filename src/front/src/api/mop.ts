@@ -38,9 +38,9 @@ export interface GetImplantResponse extends ImplantDetails, Etag {}
 /**
  * zwraca listę implantów i informacje o paginacji
  * @params page aktualna strone,
- * @params size ilosc pozycji na stronie 
+ * @params size ilosc pozycji na stronie
  * @params phrase szukana fraze
- * @params archived implant zarchiwizowane 
+ * @params archived implant zarchiwizowane
  * @returns @example {totalCount, totalPages, currentPage, data} | {errorMessage, status}
  */
 export async function listImplants(params: ListImplantsRequest) {
@@ -69,7 +69,7 @@ export async function listImplants(params: ListImplantsRequest) {
  * @param id identyfikator implantu
  * @returns GetImplantResponse | {errorMessage, status}
  */
- export async function getImplant(id: string) {
+export async function getImplant(id: string) {
     try {
         const { data, headers } = await axios.get<ImplantDetails>(
             `/mop/implant/details/${id}`
@@ -125,3 +125,47 @@ export async function listAppointments(params: AppointmentsListRequest) {
         throw error;
     }
 }
+
+//----------------------------------------------------- MOP 6 -------------------------------------------------------//
+
+export interface SpecialistListElementDto {
+    id: string;
+    name: string;
+    surname: string;
+    email: string;
+    phoneNumber: string;
+}
+
+export interface SpecialistListResponse {
+    totalCounts: number;
+    totalPages: number;
+    currentPage: number;
+    data: SpecialistListElementDto[];
+}
+
+export interface SpecialistListRequest {
+    page: number;
+    size: number;
+    phrase?: string;
+}
+
+export async function listSpecialist(params: SpecialistListRequest) {
+    try {
+        const { data } = await axios.get<SpecialistListResponse>(
+            "/mop/specialist/list",
+            {
+                params,
+            }
+        );
+        return data;
+    } catch (error) {
+        if (axios.isAxiosError(error) && error.response) {
+            return {
+                errorMessage: error.response.data as string,
+                status: error.response.status,
+            } as ApiError;
+        }
+        throw error;
+    }
+}
+//------------------------------------------------- KONIEC MOP 6 ----------------------------------------------------//
