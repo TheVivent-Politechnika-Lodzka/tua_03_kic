@@ -177,6 +177,25 @@
         "confirmMsg":"Are you sure to create new implant",
         "implantCreated": "Implant created successfully"
     },
+    "editImplantPage": {
+        "addImplant": "Edit implant",
+        "choosePhoto": "CHOOOSE PHOTO",
+        "name": "Name",
+        "nameMsg":"At least 5 to 50 characters",
+        "manufacturer": "Manufacturer",
+        "manufacturerMsg": "At least 10 to 50 characters",
+        "price": "Price (ZŁ)",
+        "priceMsg": "Price have to be positive number",
+        "duration": "Duration (min)",
+        "durationMsg": "Duration have to be positive number",
+        "description": "Description",
+        "descriptionMsg": "At least 100 to 1000 characters",
+        "modalTitle": "Edit implant",
+        "confirmMsg":"Are you sure to edit implant",
+        "implantEdited": "Implant edited successfully",
+        "cancel": "Cancel",
+        "confirm": "Confirm"
+    },
 
     "registerPage": {
         "email": "Email",

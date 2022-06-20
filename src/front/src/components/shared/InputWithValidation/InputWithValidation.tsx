@@ -29,7 +29,7 @@ const InputWithValidation = ({
     onChange,
     type = "text",
 }: InputWithValidationProps) => {
-    const [input, setInput] = useState<string | undefined>(value);
+    const [input, setInput] = useState<string | undefined>("");
     const { state, dispatch } = useContext(validationContext);
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -49,6 +49,10 @@ const InputWithValidation = ({
             payload: { ...state, input: input ?? "" },
         });
     }, [input]);
+
+    useEffect(() => {
+        setInput(value)
+    }, [value])
 
     return (
         <div className={styles.edit_field_wrapper}>

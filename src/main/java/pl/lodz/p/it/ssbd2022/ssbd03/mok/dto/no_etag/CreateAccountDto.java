@@ -9,10 +9,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import pl.lodz.p.it.ssbd2022.ssbd03.mappers.json.LocaleSerializerDeserializer;
-import pl.lodz.p.it.ssbd2022.ssbd03.validation.FirstName;
-import pl.lodz.p.it.ssbd2022.ssbd03.validation.LastName;
-import pl.lodz.p.it.ssbd2022.ssbd03.validation.Login;
-import pl.lodz.p.it.ssbd2022.ssbd03.validation.Password;
+import pl.lodz.p.it.ssbd2022.ssbd03.validation.*;
 
 import java.util.Locale;
 
@@ -37,6 +34,9 @@ public class CreateAccountDto {
 
     @LastName
     private String lastName;
+
+    @Url
+    private String url;
 
     @NotNull(message = "server.error.validation.constraints.notNull.language")
     @JsonbTypeDeserializer(LocaleSerializerDeserializer.class)
