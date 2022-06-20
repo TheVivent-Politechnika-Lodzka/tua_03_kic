@@ -152,6 +152,7 @@ public class AccountFacade extends AbstractFacade<Account> {
      * @throws AccountAlreadyExistsException gdy użytkownik o podanym loginie lub emailu już istnieje
      */
 
+    @Override
     @RolesAllowed({Roles.ANONYMOUS, Roles.ADMINISTRATOR})
     public void create(Account entity) {
         try {
