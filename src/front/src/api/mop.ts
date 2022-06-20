@@ -1,4 +1,6 @@
+import { Instant } from "@js-joda/core";
 import axios from "axios";
+import { EditOwnAppointment } from "../pages/protected/shared/EditOwnAppointment";
 
 export interface ListImplantsRequest {
     page: number;
@@ -29,12 +31,13 @@ export interface AppointmentListElementDto {
     implant: ImplantDetails;
     status: Status;
     startDate: string;
-    endDate:string;
-    price:number;
+    endDate: string;
+    price: number;
     description: string;
+    version: number;
 }
 
-interface ImplantDetails{
+interface ImplantDetails {
     id: string;
     version: number;
     name: string;
@@ -47,7 +50,7 @@ interface ImplantDetails{
     img: string;
 }
 
-interface ListOwnAppointmentsRequest{
+interface ListOwnAppointmentsRequest {
     page: number;
     size: number;
 }
@@ -74,9 +77,9 @@ export interface GetImplantResponse extends ImplantDetails, Etag {}
 /**
  * zwraca listę implantów i informacje o paginacji
  * @params page aktualna strone,
- * @params size ilosc pozycji na stronie 
+ * @params size ilosc pozycji na stronie
  * @params phrase szukana fraze
- * @params archived implant zarchiwizowane 
+ * @params archived implant zarchiwizowane
  * @returns @example {totalCount, totalPages, currentPage, data} | {errorMessage, status}
  */
 export async function listImplants(params: ListImplantsRequest) {
@@ -98,38 +101,39 @@ export async function listImplants(params: ListImplantsRequest) {
         throw error;
     }
 }
-export async function listOwnAppointments(params:ListOwnAppointmentsRequest) {
-    try{
+export async function listOwnAppointments(params: ListOwnAppointmentsRequest) {
+    try {
         const { data } = await axios.get<ListOwnAppointmentsResponse>(
-            "/mop/list/visits/my",{ params, });
+            "/mop/list/visits/my",
+            { params }
+        );
         return data;
-    }
-        catch (error) {
-            if (axios.isAxiosError(error) && error.response) {
-                return {
-                    errorMessage: error.response.data as string,
-                    status: error.response.status,
-                } as ApiError;
-            }
-            throw error;
+    } catch (error) {
+        if (axios.isAxiosError(error) && error.response) {
+            return {
+                errorMessage: error.response.data as string,
+                status: error.response.status,
+            } as ApiError;
         }
+        throw error;
+    }
 }
 export async function getAppointmentDetails(id: string) {
-    try{
+    try {
         const { data, headers } = await axios.get<AppointmentListElementDto>(
-            "/mop/visit/"+ id);
-            const etag = headers["etag"];
-        return {data, etag};
-    }
-        catch (error) {
-            if (axios.isAxiosError(error) && error.response) {
-                return {
-                    errorMessage: error.response.data as string,
-                    status: error.response.status,
-                } as ApiError;
-            }
-            throw error;
+            "/mop/visit/" + id
+        );
+        const etag = headers["etag"];
+        return { data, etag };
+    } catch (error) {
+        if (axios.isAxiosError(error) && error.response) {
+            return {
+                errorMessage: error.response.data as string,
+                status: error.response.status,
+            } as ApiError;
         }
+        throw error;
+    }
 }
 
 /**
@@ -225,9 +229,21 @@ export interface CreateImplantResponse {
     version: number;
 }
 
-export async function createImplant(params: CreateImplantRequest) {
-    console.log(params);
+interface EditOwnAppointmentRequest {
+    id: string;
+    version: number;
+    description: string;
+    etag: string;
+    startDate: Instant;
+    status: string;
+}
 
+interface EditOwnAppointmentRespone {
+    appointment: AppointmentListElementDto;
+    etag: string;
+}
+
+export async function createImplant(params: CreateImplantRequest) {
     try {
         const { data } = await axios.put<CreateImplantResponse>(
             "/mop/implant/create",
@@ -246,6 +262,30 @@ export async function createImplant(params: CreateImplantRequest) {
     }
 }
 
+export async function editOwnAppointment(params: EditOwnAppointmentRequest) {
+    try {
+        const {etag, ...body} = params
+        const { data, headers } = await axios.put<EditOwnAppointmentRespone>(
+            `/mop/edit/visit/my/${body.id}`,
+            body,
+            {
+                headers: {
+                    "If-Match": etag,
+                },
+            }
+        );
+        const newEtag = headers["etag"];
+        return {...data, etag:newEtag };
+    } catch (error) {
+        if (axios.isAxiosError(error) && error.response) {
+            return {
+                errorMessage: error.response.data as string,
+                status: error.response.status,
+            } as ApiError;
+        }
+        throw error;
+    }
+}
 
 //----------------------------------------------------- MOP 6 -------------------------------------------------------//
 
