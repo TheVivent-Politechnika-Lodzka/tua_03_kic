@@ -39,7 +39,7 @@
         background-color: $secondary-color;
         width: 40vw;
         border-radius: 2.5rem;
-        animation: fade_in 0.75s ease-in-out;
+        animation: fadeIn 0.75s ease-in-out;
 
         .register_page_header {
             width: 100%;
@@ -118,7 +118,7 @@
     }
 }
 
-@keyframes fade_in {
+@keyframes fadeIn {
     from {
         margin-top: 12rem;
         opacity: 0;

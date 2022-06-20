@@ -1,60 +1,57 @@
 @import "../../../variables.scss";
 
 .reset_password_modal {
+    width: 70%;
+    height: 100%;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
 
-        width: 70%;
-        height: 100%;
+    .content {
+        margin-top: 4.5rem;
+        width: 100%;
         display: flex;
         justify-content: space-evenly;
         align-items: center;
+        position: relative;
+        animation: 0.75s fadeIn ease-in-out;
 
-        .content {
-            margin-top: 4.5rem;
-            width: 100%;
+        .reset_password_content {
+            padding: 2.5rem 3rem;
+            width: 30rem;
+            height: 22rem;
+            border-radius: 2.2rem;
+            background-color: $secondary-color;
             display: flex;
-            justify-content: space-evenly;
+            flex-direction: column;
             align-items: center;
             position: relative;
+            animation: 0.25s zoomIn ease-in-out;
 
-            .reset_password_content {
-                width: 39.6rem;
-                height: 20rem;
-                border-radius: 2.2rem;
-                background-color: $secondary-color;
-                display: flex;
-                // justify-content: flex-start;
-                flex-direction: column;
-                align-items: center;
-                position: relative;
-
-
-                .edit_fields_wrapper {
-                    display: flex;
-                    flex-direction: column;
-                    align-items: center;
-                    width: 90%;
-                    margin-top: 3rem;
-
-                    .edit_field {
-                        display: flex;
-                        justify-content: space-between;
-                        align-items: center;
-                        flex-direction: row;
-                        width: 90%;
-                        margin-bottom: 2.5rem;
-                    }
-
-                }
-                .button_wrapper {
-                    margin-top: 1rem;
-                }
+            .title {
+                font-size: 2.25rem;
+                font-weight: bold;
+                color: $white;
             }
 
+            .edit_fields_wrapper {
+                display: flex;
+                flex-direction: column;
+                width: 100%;
+                color: $white;
+                padding-block: 2rem;
+            }
+
+            .button_wrapper {
+                margin-top: 1.75rem;
+
+                & > * {
+                    width: 18rem;
+                    padding: 1rem;
+                }
+            }
         }
-
-
-
-
+    }
 }
 
 .close_icon {
@@ -62,11 +59,10 @@
     color: white;
     cursor: pointer;
     position: absolute;
-    top: -9rem;
+    top: -15rem;
     right: -12.5rem;
-    z-index: 10000000;
+    z-index: 9999;
 }
-
 
 .login_page {
     position: relative;
@@ -94,9 +90,9 @@
         flex-direction: column;
         background-color: $secondary-color;
         height: 68%;
-        width: 30rem;
+        width: 29rem;
         border-radius: 2.5rem;
-        animation: fade_in 0.75s ease-in-out;
+        animation: fadeInFromBottom 0.75s ease-in-out;
 
         .header {
             font-size: 2.75rem;
@@ -128,7 +124,7 @@
     }
 }
 
-@keyframes fade_in {
+@keyframes fadeInFromBottom {
     from {
         margin-top: 12rem;
         opacity: 0;
@@ -136,5 +132,25 @@
     to {
         margin-top: 0;
         opacity: 1;
+    }
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes zoomIn {
+    from {
+        opacity: 0;
+        transform: scale(0.75);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
     }
 }
