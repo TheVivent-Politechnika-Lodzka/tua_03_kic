@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { faCheck, faClose } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -42,6 +42,13 @@ const InputWithValidation = ({
             onChange(e);
         }
     };
+
+    useEffect(() => {
+        dispatch({
+            type: validationType,
+            payload: { ...state, input: input ?? "" },
+        });
+    }, [input]);
 
     return (
         <div className={styles.edit_field_wrapper}>

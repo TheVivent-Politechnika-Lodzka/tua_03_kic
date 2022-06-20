@@ -6,8 +6,6 @@ import { useStoreSelector, useStoreDispatch } from "./redux/reduxHooks";
 import jwtDecode from "jwt-decode";
 import { login as loginDispatch } from "./redux/userSlice";
 import ActivateAccountPage from "./pages/unprotected/ActivatePage/ActivateAccountPage";
-import ResetPasswordForm from "./components/Form/resetPasswordForm/ResetPasswordForm";
-import ResetPasswordTokenForm from "./components/Form/resetPasswordTokenForm/ResetPasswordTokenForm";
 import { ValidationProvider } from "./context/validationContext";
 import EditOwnAccountPage from "./pages/protected/shared/EditOwnAccountPage/EditOwnAccountPage";
 import authorizedRoutes from "./security/authorizedRoutes";
@@ -15,6 +13,7 @@ import PageLayout from "./pages/PageLayout/PageLayout";
 import OwnAccountDetailsPage from "./pages/protected/shared/OwnAccountDetailsPage/OwnAccountDetailsPage";
 import { ImplantListPage } from "./pages/unprotected/ImplantListPage";
 import LoginPage from "./pages/unprotected/LoginPage/LoginPage";
+import ResetPasswordPage from "./pages/unprotected/ResetPasswordPage";
 import SpecialistList from "./pages/unprotected/SpecialistList";
 
 function App() {
@@ -66,12 +65,8 @@ function App() {
                                     element={<ActivateAccountPage />}
                                 />
                                 <Route
-                                    path="/reset-password"
-                                    element={<ResetPasswordForm />}
-                                />
-                                <Route
-                                    path="/reset-password-token"
-                                    element={<ResetPasswordTokenForm />}
+                                    path="/reset-password/:token"
+                                    element={<ResetPasswordPage />}
                                 />
                                 <Route
                                     path="/specialists"
