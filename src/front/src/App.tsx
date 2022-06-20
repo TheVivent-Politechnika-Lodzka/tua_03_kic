@@ -14,7 +14,7 @@ import OwnAccountDetailsPage from "./pages/protected/shared/OwnAccountDetailsPag
 import { ImplantListPage } from "./pages/unprotected/ImplantListPage";
 import LoginPage from "./pages/unprotected/LoginPage/LoginPage";
 import ResetPasswordPage from "./pages/unprotected/ResetPasswordPage";
-import SpecialistList from "./pages/unprotected/SpecialistList";
+import SpecialistList from "./pages/unprotected/SpecialistListPage";
 
 function App() {
     const user = useStoreSelector((state) => state.user);
