@@ -41,6 +41,10 @@ function App() {
                     <Route element={<PageLayout />}>
                         <Route path="/" element={<HomePage />} />
                         <Route path="/implants" element={<ImplantListPage />} />
+                        <Route
+                            path="/specialists"
+                            element={<SpecialistList />}
+                        />
                         {user.cur ? (
                             <>
                                 <Route
@@ -67,10 +71,6 @@ function App() {
                                 <Route
                                     path="/reset-password/:token"
                                     element={<ResetPasswordPage />}
-                                />
-                                <Route
-                                    path="/specialists"
-                                    element={<SpecialistList />}
                                 />
                             </>
                         )}
