@@ -8,7 +8,10 @@ import ActionButton from "../../../../components/shared/ActionButton/ActionButto
 import InputWithValidation from "../../../../components/shared/InputWithValidation/InputWithValidation";
 import ValidationMessage from "../../../../components/shared/ValidationMessage/ValidationMessage";
 import { validationContext } from "../../../../context/validationContext";
-import { failureNotificationItems, successNotficiationItems } from "../../../../utils/showNotificationsItems";
+import {
+    failureNotificationItems,
+    successNotficiationItems,
+} from "../../../../utils/showNotificationsItems";
 import ConfirmActionModal from "../../../../components/shared/ConfirmActionModal/ConfirmActionModal";
 
 const CreateUserPage = () => {
@@ -29,7 +32,6 @@ const CreateUserPage = () => {
 
     const [error, setError] = useState<ApiError>();
     const [opened, setOpened] = useState<boolean>(false);
-
 
     const {
         state,
@@ -98,7 +100,7 @@ const CreateUserPage = () => {
                             <div className={style.edit_field_validation}>
                                 <ValidationMessage
                                     isValid={isEmailValidAdministrator}
-                                    message="Podaj poprawny adres email"
+                                    message="Należy podać poprawny email (powinien zawierać znak @)."
                                 />
                             </div>
                         </div>
@@ -120,7 +122,7 @@ const CreateUserPage = () => {
                             <div className={style.edit_field_validation}>
                                 <ValidationMessage
                                     isValid={isFirstNameValid}
-                                    message="Imię powinno skłądać się z minimum 3 i maksymalnie 30 znaków"
+                                    message="Imię powinno skłądać się z minimum 3 i maksymalnie 30 znaków."
                                 />
                             </div>
                         </div>
@@ -143,7 +145,7 @@ const CreateUserPage = () => {
                             <div className={style.edit_field_validation}>
                                 <ValidationMessage
                                     isValid={isLastNameValid}
-                                    message="Nazwisko powinno skłądać się z minimum 3 i maksymalnie 30 znaków"
+                                    message="Nazwisko powinno skłądać się z minimum 3 i maksymalnie 30 znaków."
                                 />
                             </div>
                         </div>
@@ -166,7 +168,7 @@ const CreateUserPage = () => {
                             <div className={style.edit_field_validation}>
                                 <ValidationMessage
                                     isValid={isLoginValid}
-                                    message="Identyfikator powinien skłądać się z minimum 3 i maksymalnie 30 znaków"
+                                    message="Identyfikator powinien skłądać się z minimum 3 i maksymalnie 30 znaków."
                                 />
                             </div>
                         </div>
@@ -190,7 +192,7 @@ const CreateUserPage = () => {
                             <div className={style.edit_field_validation}>
                                 <ValidationMessage
                                     isValid={isPasswordValid}
-                                    message="Tutaj sobie coś wpisz czy cóś"
+                                    message="Hasło powinno zawierać co najmniej jedną dużą literę, jedną małą literę, jedną cyfrę i jedną znak specjalny."
                                 />
                             </div>
                         </div>
@@ -205,7 +207,6 @@ const CreateUserPage = () => {
                             <select
                                 id="lenguageToCreate"
                                 name="lenguageToCreate"
-                                // value={lenguageFromForm}
                                 required
                                 className={style.select}
                                 onChange={(e: any) =>
