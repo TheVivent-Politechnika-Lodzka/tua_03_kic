@@ -1,6 +1,7 @@
 package pl.lodz.p.it.ssbd2022.ssbd03.mok.ejb.facades;
 
 import jakarta.annotation.security.PermitAll;
+import jakarta.annotation.security.RolesAllowed;
 import jakarta.ejb.Stateless;
 import jakarta.ejb.TransactionAttribute;
 import jakarta.ejb.TransactionAttributeType;
@@ -9,6 +10,7 @@ import jakarta.interceptor.Interceptors;
 import jakarta.persistence.*;
 import lombok.Getter;
 import pl.lodz.p.it.ssbd2022.ssbd03.common.AbstractFacade;
+import pl.lodz.p.it.ssbd2022.ssbd03.common.Roles;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.tokens.AccountConfirmationToken;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.ResourceNotFoundException;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.database.DatabaseException;
@@ -41,7 +43,7 @@ public class AccountConfirmationFacade extends AbstractFacade<AccountConfirmatio
      * @param entity
      */
     @Override
-    @PermitAll
+    @RolesAllowed(Roles.ANONYMOUS)
     public void create(AccountConfirmationToken entity) {
         super.create(entity);
     }
@@ -51,7 +53,7 @@ public class AccountConfirmationFacade extends AbstractFacade<AccountConfirmatio
      * @param entity
      */
     @Override
-    @PermitAll
+    @RolesAllowed(Roles.ANONYMOUS)
     public void unsafeRemove(AccountConfirmationToken entity) {
         super.unsafeRemove(entity);
     }
@@ -62,7 +64,7 @@ public class AccountConfirmationFacade extends AbstractFacade<AccountConfirmatio
      * @return ConfirmationAccountToken - obiekt zawierający token użytkownika o podanym loginie
      * @throws DatabaseException, gdy wystąpi błąd związany z bazą danych
      */
-    @PermitAll
+    @RolesAllowed(Roles.ANONYMOUS)
     public AccountConfirmationToken findToken(String login){
         try {
             TypedQuery<AccountConfirmationToken> typedQuery = entityManager

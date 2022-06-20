@@ -69,7 +69,7 @@ public class MOKService extends AbstractService implements MOKServiceInterface, 
     @Inject
     private HashAlgorithm hashAlgorithm;
     @Inject
-    private AccountConfirmationFacade activeAccountFacade;
+    private AccountConfirmationFacade accountConfirmationFacade;
     @Inject
     private AccessLevelFacade accessLevelFacade;
     @Inject
@@ -279,7 +279,7 @@ public class MOKService extends AbstractService implements MOKServiceInterface, 
         AccountConfirmationToken accountConfirmationToken = new AccountConfirmationToken();
         accountConfirmationToken.setToken(token);
         accountConfirmationToken.setAccount(account);
-        activeAccountFacade.create(accountConfirmationToken);
+        accountConfirmationFacade.create(accountConfirmationToken);
         return accountConfirmationToken;
     }
 
@@ -303,7 +303,7 @@ public class MOKService extends AbstractService implements MOKServiceInterface, 
             throw new TokenExpiredException();
         }
         String login = claims.getSubject();
-        AccountConfirmationToken accountConfirmationToken = activeAccountFacade.findToken(login);
+        AccountConfirmationToken accountConfirmationToken = accountConfirmationFacade.findToken(login);
         if (!accountConfirmationToken.getToken().equals(token)) {
             throw new TokenInvalidException();
         }
@@ -311,7 +311,7 @@ public class MOKService extends AbstractService implements MOKServiceInterface, 
         Account account = accountFacade.findByLogin(login);
         account.setConfirmed(true);
         accountFacade.unsafeEdit(account);
-        activeAccountFacade.unsafeRemove(accountConfirmationToken);
+        accountConfirmationFacade.unsafeRemove(accountConfirmationToken);
         return account;
     }
 
