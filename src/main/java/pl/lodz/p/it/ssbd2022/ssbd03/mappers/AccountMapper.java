@@ -41,7 +41,10 @@ public class AccountMapper {
         account.setPassword(hashAlgorithm.generate(createAccountDto.getPassword().toCharArray()));
         account.setActive(false);
         account.setConfirmed(true);
+        account.setUrl(createAccountDto.getUrl());
         account.setLanguage(createAccountDto.getLanguage());
+        account.setUrl(createAccountDto.getUrl());
+        //TODO naprawić ten link
 
         return account;
     }
@@ -83,7 +86,7 @@ public class AccountMapper {
         account.setFirstName(accountDto.getFirstName());
         account.setLastName(accountDto.getLastName());
         account.setLanguage(accountDto.getLanguage());
-
+        account.setUrl(accountDto.getUrl());
         for (AccessLevelDto accessLevelDto : accountDto.getAccessLevels()) {
             account.addAccessLevel(accessLevelMapper.createAccessLevelFromDto(accessLevelDto));
         }
@@ -107,6 +110,7 @@ public class AccountMapper {
                 account.getEmail(),
                 account.isActive(),
                 account.isConfirmed(),
+                account.getUrl(),
                 account.getLanguage(),
                 null,
                 accessLevelMapper.createListOfAccessLevelDTO(account.getAccessLevelCollection())
@@ -141,6 +145,7 @@ public class AccountMapper {
                 account.getId(),
                 account.getFirstName(),
                 account.getLastName(),
+                account.getUrl(),
                 dataspecialist.getContactEmail(),
                 dataspecialist.getPhoneNumber()
         );

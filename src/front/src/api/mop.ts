@@ -1,6 +1,6 @@
 import { Instant } from "@js-joda/core";
 import axios from "axios";
-import { EditOwnAppointment } from "../pages/protected/shared/EditOwnAppointment";
+import { StringLiteralLike } from "typescript";
 
 export interface ListImplantsRequest {
     page: number;
@@ -28,26 +28,13 @@ export interface AppointmentListElementDto {
     id: string;
     client: AccountDetails;
     specialist: AccountDetails;
-    implant: ImplantDetails;
+    implant: ImplantDto;
     status: Status;
     startDate: string;
     endDate: string;
     price: number;
     description: string;
     version: number;
-}
-
-interface ImplantDetails {
-    id: string;
-    version: number;
-    name: string;
-    description: string;
-    manufacturer: string;
-    price: number;
-    archived: boolean;
-    popularity: number;
-    duration: number;
-    img: string;
 }
 
 interface ListOwnAppointmentsRequest {
@@ -61,18 +48,8 @@ export interface ListOwnAppointmentsResponse {
     currentPage: number;
     data: AppointmentListElementDto[];
 }
-interface ImplantDetails extends Taggable {
-    name: string;
-    description: string;
-    manufacturer: string;
-    price: number;
-    archived: boolean;
-    popularity: number;
-    duration: number;
-    image: string;
-}
 
-export interface GetImplantResponse extends ImplantDetails, Etag {}
+export interface GetImplantResponse extends ImplantDto, Etag {}
 
 /**
  * zwraca listę implantów i informacje o paginacji
@@ -136,6 +113,44 @@ export async function getAppointmentDetails(id: string) {
     }
 }
 
+export interface EditImplantRequest extends ImplantDto, Etag {}
+export interface EditImplantResponse extends ImplantDto, Etag {}
+
+/**
+ *
+ * @param id - identyfikator wszczepu
+ * @param implantDetails - nowe dane wszczepu i etag
+ * @returns @example EditImplantResponse | {errorMessage, status}
+ */
+export async function editImplant(
+    id: string,
+    implantDetails: EditImplantRequest
+) {
+    try {
+        const { etag, ...implant } = implantDetails;
+        const { data, headers } = await axios.put(
+            `/mop/implant/edit/${id}`,
+            implant,
+            {
+                headers: {
+                    "If-Match": etag,
+                },
+            }
+        );
+        const newEtag = headers["etag"];
+        return { ...data, etag: newEtag } as EditImplantResponse;
+    } catch (error) {
+        if (axios.isAxiosError(error) && error.response) {
+            return {
+                errorMessage: error.response.data as string,
+                status: error.response.status,
+            } as ApiError;
+        }
+        throw error;
+    }
+}
+
+export interface GetImplantResponse extends ImplantDto, Etag {}
 /**
  * Pobierz szczegóły implantu
  *
@@ -144,11 +159,11 @@ export async function getAppointmentDetails(id: string) {
  */
 export async function getImplant(id: string) {
     try {
-        const { data, headers } = await axios.get<ImplantDetails>(
+        const { data, headers } = await axios.get<ImplantDto>(
             `/mop/implant/details/${id}`
         );
         const etag = headers["etag"];
-        return { ...data, etag } as GetImplantResponse;
+        return { ...data, etag: etag } as GetImplantResponse;
     } catch (error) {
         if (axios.isAxiosError(error) && error.response) {
             return {
@@ -288,7 +303,6 @@ export async function editOwnAppointment(params: EditOwnAppointmentRequest) {
 }
 
 //----------------------------------------------------- MOP 6 -------------------------------------------------------//
-
 export interface SpecialistListElementDto {
     id: string;
     name: string;
@@ -330,3 +344,35 @@ export async function listSpecialist(params: SpecialistListRequest) {
     }
 }
 //------------------------------------------------- KONIEC MOP 6 ----------------------------------------------------//
+//
+//
+//
+//----------------------------------------------------- MOP 2 -------------------------------------------------------//
+
+export interface ArchiveImplantRequest extends Etag {}
+export interface ArchiveImplantResponse extends ImplantDto, Etag {}
+
+export async function archiveImplant(id: string, implantEtag: string) {
+    try {
+        const { data, headers } = await axios.patch(
+            `/mop/implant/archive/${id}`,
+            {},
+            {
+                headers: {
+                    "If-Match": implantEtag,
+                },
+            }
+        );
+        const newEtag = headers["etag"];
+        return { ...data, etag: newEtag } as ArchiveImplantResponse;
+    } catch (error) {
+        if (axios.isAxiosError(error) && error.response) {
+            return {
+                errorMessage: error.response.data as string,
+                status: error.response.status,
+            } as ApiError;
+        }
+        throw error;
+    }
+}
+//------------------------------------------------- KONIEC MOP 2 ----------------------------------------------------//

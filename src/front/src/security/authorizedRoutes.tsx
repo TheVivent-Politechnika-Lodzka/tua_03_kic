@@ -7,6 +7,7 @@ import { OwnAppointmentsList } from "../pages/protected/shared/OwnAppointmentsLi
 import { AppointmentListPage } from "../pages/protected/admin/AppointmentList";
 import { CreateImplantPage } from "../pages/protected/admin/CreateImplantPage";
 import { EditOwnAppointment } from "../pages/protected/shared/EditOwnAppointment";
+import { EditImplantPage } from "../pages/protected/admin/EditImplantPage";
 
 
 const authorizedRoutes = (accessLevel: AccessLevelType) => {
@@ -27,6 +28,10 @@ const authorizedRoutes = (accessLevel: AccessLevelType) => {
                     <Route
                         path="/create-implant"
                         element={<CreateImplantPage />}
+                    />
+                    <Route
+                        path="/implant/:id"
+                        element={<EditImplantPage />}
                     />
                 </>
             );
