@@ -13,6 +13,7 @@ import pl.lodz.p.it.ssbd2022.ssbd03.common.Roles;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.*;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.MethodNotImplementedException;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.TransactionException;
+import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.database.InAppOptimisticLockException;
 import pl.lodz.p.it.ssbd2022.ssbd03.mappers.AppointmentMapper;
 import pl.lodz.p.it.ssbd2022.ssbd03.mappers.ImplantMapper;
 import pl.lodz.p.it.ssbd2022.ssbd03.mop.dto.AppointmentDto;
@@ -441,16 +442,23 @@ public class MOPEndpoint implements MOPEndpointInterface {
         tagger.verifyTag();
 
         String login = authContext.getCurrentUserLogin();
-        Appointment finishedAppointment;
+        Appointment finishedAppointment = null;
 
         int TXCounter = Config.MAX_TX_RETRIES;
-        boolean commitedTX;
+        boolean commitedTX = false;
+
         do {
-            finishedAppointment = mopService.finishAppointment(id, login);
-            commitedTX = mopService.isLastTransactionCommited();
+            try {
+                finishedAppointment = mopService.finishAppointment(id, login);
+                commitedTX = mopService.isLastTransactionCommited();
+            } catch (InAppOptimisticLockException ex) {
+                if (TXCounter - 1 <= 0) {
+                    throw ex;
+                }
+            }
         } while (!commitedTX && --TXCounter > 0);
 
-        if (!commitedTX) {
+        if (!commitedTX || finishedAppointment == null) {
             throw new TransactionException();
         }
 

@@ -72,7 +72,7 @@ public class ImplantFacade extends AbstractFacade<Implant> {
      * @throws DatabaseException - gdy wystąpi błąd związany z bazą danych
      */
     @Override
-    @RolesAllowed(Roles.ADMINISTRATOR)
+    @RolesAllowed({Roles.ADMINISTRATOR, Roles.SPECIALIST})
     public void edit(Implant entity) {
         try {
             super.edit(entity);

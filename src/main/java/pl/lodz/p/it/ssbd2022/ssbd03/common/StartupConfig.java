@@ -228,8 +228,8 @@ public class StartupConfig {
         appointment.setSpecialist(specialist);
         appointment.setImplant(implant);
         appointment.setStartDate(Instant.now());
-        appointment.setEndDate(Instant.now().plusSeconds(60 * 60));
-        appointment.setStatus(Status.FINISHED); // TUTAJ ZMIENIAĆ DO TESTÓW
+        appointment.setEndDate(Instant.now().plusSeconds(10)); // zmieniono do testow
+        appointment.setStatus(Status.ACCEPTED); // TUTAJ ZMIENIAĆ DO TESTÓW
         appointment.setPrice(100);
         appointment.setDescription("Appointment description");
 
