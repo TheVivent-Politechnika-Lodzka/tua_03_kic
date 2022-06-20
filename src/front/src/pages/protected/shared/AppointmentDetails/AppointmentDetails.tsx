@@ -14,6 +14,7 @@ import Modal from "../../../../components/shared/Modal/Modal";
 import { useStoreSelector } from "../../../../redux/reduxHooks";
 import { failureNotificationItems } from "../../../../utils/showNotificationsItems";
 import styles from "./style.module.scss";
+import { useNavigate } from "react-router-dom";
 interface AccountDetailsProps {
     isOpened: boolean;
     appointmentId: string;
@@ -29,12 +30,16 @@ export const AppointmentDetails = ({
         pageLoading: true,
         actionLoading: false,
     });
-    const [error, setError] = useState<ApiError>();
+    let navigate = useNavigate(); 
+    const routeChange = (id:string) =>{ 
+      let path = `/visit/edit/${id}`; 
+      navigate(path);
+    }
     const [implantModal, setImplantModal] = useState<boolean>(false);
     const [appointment, setAppointment] = useState<AppointmentListElementDto>();
     const [startDate, setStartDate] = useState<string>("");
     const [endDate, setEndDate] = useState<string>("");
-    const [id, setId] = useState<string>("");
+    const [implantId, setImplantId] = useState<string>("");
     const handleGetAppointmentDetails = async () => {
         const data = await getAppointmentDetails(appointmentId);
         if ("errorMessage" in data) {
@@ -42,7 +47,7 @@ export const AppointmentDetails = ({
             return;
         }
         setAppointment(data.data);
-        setId(data.data.implant.id);
+        setImplantId(data.data.implant.id);
         setLoading({ pageLoading: false, actionLoading: false });
     };
     useEffect(() => {
@@ -179,12 +184,12 @@ export const AppointmentDetails = ({
                                     title="Edytuj wizyte"
                                     color="purple"
                                     icon={faInfoCircle}
-                                    onClick={() => console.log("essa")}
+                                    onClick={() => routeChange(appointmentId)}
                                 ></ActionButton>
                             </div>
                         </div>
                         <ImplantDetails
-                            id={id}
+                            id={implantId}
                             isOpened={implantModal}
                             onClose={() => {
                                 setImplantModal(false);

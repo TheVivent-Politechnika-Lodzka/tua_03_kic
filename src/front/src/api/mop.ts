@@ -1,3 +1,4 @@
+import { Instant } from "@js-joda/core";
 import axios from "axios";
 import { StringLiteralLike } from "typescript";
 
@@ -33,6 +34,7 @@ export interface AppointmentListElementDto {
     endDate: string;
     price: number;
     description: string;
+    version: number;
 }
 
 interface ListOwnAppointmentsRequest {
@@ -242,9 +244,21 @@ export interface CreateImplantResponse {
     version: number;
 }
 
-export async function createImplant(params: CreateImplantRequest) {
-    console.log(params);
+interface EditOwnAppointmentRequest {
+    id: string;
+    version: number;
+    description: string;
+    etag: string;
+    startDate: Instant;
+    status: string;
+}
 
+interface EditOwnAppointmentRespone {
+    appointment: AppointmentListElementDto;
+    etag: string;
+}
+
+export async function createImplant(params: CreateImplantRequest) {
     try {
         const { data } = await axios.put<CreateImplantResponse>(
             "/mop/implant/create",
@@ -252,6 +266,31 @@ export async function createImplant(params: CreateImplantRequest) {
             params
         );
         return data;
+    } catch (error) {
+        if (axios.isAxiosError(error) && error.response) {
+            return {
+                errorMessage: error.response.data as string,
+                status: error.response.status,
+            } as ApiError;
+        }
+        throw error;
+    }
+}
+
+export async function editOwnAppointment(params: EditOwnAppointmentRequest) {
+    try {
+        const {etag, ...body} = params
+        const { data, headers } = await axios.put<EditOwnAppointmentRespone>(
+            `/mop/edit/visit/my/${body.id}`,
+            body,
+            {
+                headers: {
+                    "If-Match": etag,
+                },
+            }
+        );
+        const newEtag = headers["etag"];
+        return {...data, etag:newEtag };
     } catch (error) {
         if (axios.isAxiosError(error) && error.response) {
             return {
