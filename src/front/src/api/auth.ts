@@ -37,6 +37,7 @@ export interface RegisterRequest {
     email: string;
     phoneNumber: string;
     pesel: string;
+    url: string
     language: {
         language: string;
     };
@@ -55,6 +56,7 @@ export interface RegisterRequest {
  *      email:        string;
  *      phoneNumber:  string;
  *      pesel:        string;
+ *      url:          string;
  *      language: {
  *        language:   string;
  *      };

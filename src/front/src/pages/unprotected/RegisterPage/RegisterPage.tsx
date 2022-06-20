@@ -13,6 +13,9 @@ import { validationContext } from "../../../context/validationContext";
 import InputWithValidation from "../../../components/shared/InputWithValidation/InputWithValidation";
 import ValidationMessage from "../../../components/shared/ValidationMessage/ValidationMessage";
 import { RegisterModal } from "../../../components/RegisterModal";
+import { Center, Image } from "@mantine/core";
+import { uploadPhoto } from "../../../utils/upload";
+import { HiOutlinePhotograph } from "react-icons/hi";
 
 const RegisterPageInternal = () => {
     const [account, setAccount] = useState<RegisterRequest>({
@@ -23,6 +26,7 @@ const RegisterPageInternal = () => {
         email: "",
         phoneNumber: "",
         pesel: "",
+        url:"",
         language: {
             language: "pl",
         },
@@ -95,9 +99,42 @@ const RegisterPageInternal = () => {
         <section className={styles.register_page}>
             <div className={styles.background} />
             <div className={styles.form_wrapper}>
-                <div className={styles.create_user_page_header}>
+                <div className={styles.register_page_header}>
                     {t("sign_in")}
-                </div>{" "}
+                </div>
+                <div className={styles.edit_fields_wrapper}>
+                        {account.url.length === 0 ? (
+                            <div className={`${styles.image} ${styles.margin}`}>
+                                <Center>
+                                    <HiOutlinePhotograph size="80px" />
+                                </Center>
+                            </div>
+                        ) : (
+                            <Image
+                                radius="md"
+                                src={account.url}
+                                height="20vw"
+                                alt="image create"
+                                styles={{
+                                    root: { marginTop: "6vh" },
+                                }}
+                            />
+                        )}
+
+                        <input
+                            id="file-input"
+                            type="file"
+                            onChange={async (event) => {
+                                const u = await uploadPhoto(event);
+                                if (u) {
+                                    setAccount({
+                                        ...account,
+                                        url: u,
+                                    });
+                                }
+                            }}
+                        />
+                    </div>
                 <div className={styles.edit_field} title="email">
                     <InputWithValidation
                         required
@@ -309,7 +346,7 @@ const RegisterPageInternal = () => {
                         </option>
                     </select>
                 </div>
-                <div className={styles.create_user_buttons_wrapper}>
+                <div className={styles.register_buttons_wrapper}>
                     <ActionButton
                         onClick={() => {
                             handleSubmit();

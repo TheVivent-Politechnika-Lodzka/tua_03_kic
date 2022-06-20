@@ -18,6 +18,18 @@
         filter: blur(8px);
     }
 
+    .image {
+        width: 30vw;
+        height: 20vw;
+        background-color: #ffffff;
+        opacity: 0.3;
+        border-radius: 1vw;
+    }
+    
+    .margin {
+        margin-top: 6vh;
+    }
+
     .form_wrapper {
         position: absolute;
         display: flex;
@@ -29,7 +41,7 @@
         border-radius: 2.5rem;
         animation: fade_in 0.75s ease-in-out;
 
-        .create_user_page_header {
+        .register_page_header {
             width: 100%;
             display: flex;
             justify-content: center;
@@ -87,7 +99,7 @@
             color: #cccccc;
             border-bottom: 1px solid $light-green;
         }
-        .create_user_buttons_wrapper {
+        .register_buttons_wrapper {
             display: flex;
             justify-content: flex-start;
             flex-direction: row;

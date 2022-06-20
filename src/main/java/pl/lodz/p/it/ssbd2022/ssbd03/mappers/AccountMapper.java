@@ -63,6 +63,7 @@ public class AccountMapper {
         account.setLanguage(registerClientAccountDto.getLanguage());
         account.setActive(true);
         account.setConfirmed(false);
+        account.setUrl(registerClientAccountDto.getUrl());
         DataClient dataClient = new DataClient();
         dataClient.setPesel(registerClientAccountDto.getPesel());
         dataClient.setPhoneNumber(registerClientAccountDto.getPhoneNumber());

@@ -41,6 +41,9 @@ public class RegisterClientDto {
     @Pesel
     private String pesel;
 
+    @Url
+    private String url;
+
     @NotNull(message = "server.error.validation.constraints.notNull.language")
     @JsonbTypeSerializer(LocaleSerializerDeserializer.class)
     @JsonbTypeDeserializer(LocaleSerializerDeserializer.class)
