@@ -82,17 +82,4 @@ public class ResetPasswordFacade extends AbstractFacade<ResetPasswordToken> {
         }
 
     }
-
-    /**
-     * metoda zwraca tokeny przed podaną datą
-     *
-     * @return
-     */
-    @PermitAll
-    public List<ResetPasswordToken> findExpiredTokens() {
-        TypedQuery<ResetPasswordToken> typedQuery = entityManager
-                .createNamedQuery("ResetPassword.findBeforeDate", ResetPasswordToken.class);
-        typedQuery.setParameter("now", Instant.now());
-        return typedQuery.getResultList();
-    }
 }
