@@ -6,10 +6,7 @@ import UserManagment from "../pages/protected/admin/UsersManagmentPage/UsersMana
 import { OwnAppointmentsList } from "../pages/protected/shared/OwnAppointmentsList/OwnAppointmentsList";
 import { AppointmentListPage } from "../pages/protected/admin/AppointmentList";
 import { CreateImplantPage } from "../pages/protected/admin/CreateImplantPage";
-
-import ClientMainPage from "../pages/protected/client/ClientMainPage";
 import CreateAppointmentPage from "../pages/protected/client/CreateAppointmentPage";
-import SpecialistMainPage from "../pages/protected/specialist/SpecialistMainPage";
 
 const authorizedRoutes = (accessLevel: AccessLevelType) => {
     switch (accessLevel) {

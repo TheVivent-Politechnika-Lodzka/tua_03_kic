@@ -4,13 +4,38 @@ import { useNavigate, useParams } from "react-router";
 import style from "./style.module.scss";
 import { Calendar } from "@mantine/dates";
 import ActionButton from "../../../../components/shared/ActionButton/ActionButton";
+import {
+    getImplant,
+    GetImplantResponse,
+    listSpecialist,
+    SpecialistListElementDto,
+    SpecialistListResponse,
+} from "../../../../api/mop";
+import { showNotification } from "@mantine/notifications";
+import {
+    failureNotificationItems,
+    successNotficiationItems,
+} from "../../../../utils/showNotificationsItems";
 
 const CreateAppointmentPage = () => {
     const { implantId } = useParams();
     const navigate = useNavigate();
-    const [implant, setImplant] = useState<any>(); // TODO zmienić na GetImplantResponse
-    const [specialistList, setSpecialistList] = useState<any>(); // TODO zmienić na GetSpecialistListResponse
+    const [specialistList, setSpecialistList] =
+        useState<SpecialistListElementDto[]>(); // TODO zmienić na GetSpecialistListResponse
     const [specialist, setSpecialist] = useState<any>(); // TODO zmienić na GetSpecialistResponse
+
+    const handleLoadSpecialistList = async () => {
+        const response = await listSpecialist({ size: 5, page: 1, phrase: "" });
+        if ("errorMessage" in response) {
+            showNotification(failureNotificationItems(response.errorMessage));
+            return;
+        }
+        setSpecialistList(response.data);
+    };
+
+    useEffect(() => {
+        handleLoadSpecialistList();
+    }, []);
 
     return (
         <section className={style.create_appointment_page}>
@@ -37,7 +62,7 @@ const CreateAppointmentPage = () => {
                                 <ActionButton
                                     onClick={() => {
                                         navigate(
-                                            "/implant/adasdasd/create-appointment"
+                                            `/implant/${implantId}/create-appointment`
                                         );
                                     }}
                                     title="Przejdź do podsumowania"
@@ -60,21 +85,28 @@ interface ImplantItemProps {
 }
 const ImplantItem = ({ implantId }: ImplantItemProps) => {
     const id = implantId;
-    const [implant, setImplant] = useState<any>(); // TODO zmienić na GetImplantResponse
+    const [implant, setImplant] = useState<GetImplantResponse>();
 
-    const getImplant = async () => {
-        setImplant({ name: "test", price: 100 });
+    const handleLoadImplant = async () => {
+        if (!id) return;
+        const response = await getImplant(id);
+        if ("errorMessage" in response) {
+            showNotification(failureNotificationItems(response.errorMessage));
+            return;
+        }
+        console.log(response);
+        setImplant(response);
     };
 
     useEffect(() => {
-        getImplant();
-    }, []);
+        handleLoadImplant();
+    }, [id]);
 
     return (
         <div className={style.implant}>
             <img
                 className={style.implant_image}
-                src="https://via.placeholder.com/150"
+                src={implant?.image}
                 alt="implant"
             />
             <div className={style.implant_title}>
