@@ -132,7 +132,7 @@ export const EditImplantPage = () => {
                                 validationType="VALIDATE_IMPLANT_NAME"
                                 isValid={isImplantNameValid}
                                 onChange={(e) => {
-                                    if (e.target.value && implant)
+                                    if (implant)
                                     setImplant({
                                         ...implant,
                                         name: e.target.value,
@@ -154,7 +154,7 @@ export const EditImplantPage = () => {
                                 validationType="VALIDATE_MANUFACTURER"
                                 isValid={isManufacturerValid}
                                 onChange={(e) => {
-                                    if (e.target.value && implant)
+                                    if (implant)
                                     setImplant({
                                         ...implant,
                                         manufacturer: e.target.value,
@@ -178,7 +178,7 @@ export const EditImplantPage = () => {
                                 isValid={isPriceValid}
                                 type="number"
                                 onChange={(e) => {
-                                    if (e.target.value && implant)
+                                    if (implant)
                                     setImplant({
                                         ...implant,
                                         price: parseInt(e.target.value),
@@ -202,7 +202,7 @@ export const EditImplantPage = () => {
                                 isValid={isDurationValid}
                                 type="number"
                                 onChange={(e) => {
-                                    if (e.target.value && implant)
+                                    if (implant)
                                     setImplant({
                                         ...implant,
                                         duration: parseInt(e.target.value),
@@ -225,7 +225,7 @@ export const EditImplantPage = () => {
                                 validationType="VALIDATE_DESCRIPTION"
                                 isValid={isDescriptionValid}
                                 onChange={(e) => {
-                                    if (e.target.value && implant)
+                                    if (implant)
                                     setImplant({
                                         ...implant,
                                         description: e.target.value,
