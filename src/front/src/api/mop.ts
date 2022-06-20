@@ -136,6 +136,23 @@ export async function getImplant(id: string) {
         throw error;
     }
 }
+export async function getAppointment(id: string) {
+    try {
+        const { data, headers } = await axios.get<AppointmentDetails>(
+            `mop/edit/visit/${id}`
+        );
+        const etag = headers["etag"];
+        return { ...data, etag } as GetAppointmentResponse;
+    } catch (error) {
+        if (axios.isAxiosError(error) && error.response) {
+            return {
+                errorMessage: error.response.data as string,
+                status: error.response.status,
+            } as ApiError;
+        }
+        throw error;
+    }
+}
 export interface AppointmentListElementDto {
     id: string;
     description: string;
@@ -155,6 +172,13 @@ export interface AppointmentsListRequest {
     size: number;
     phrase?: string;
 }
+
+interface AppointmentDetails extends Taggable {
+    description: string;
+    status: Status;
+}
+
+export interface GetAppointmentResponse extends AppointmentDetails, Etag {}
 
 export async function listAppointments(params: AppointmentsListRequest) {
     try {
