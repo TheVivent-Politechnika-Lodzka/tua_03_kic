@@ -43,7 +43,6 @@ export const EditImplantPage = () => {
     } = useContext(validationContext);
 
     useEffect(() => {
-        // dispatch({ type: "RESET_VALIDATION", payload: { ...state } });
         handleGetImplant();
     }, []);
 
