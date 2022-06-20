@@ -13,13 +13,15 @@ import pl.lodz.p.it.ssbd2022.ssbd03.mok.dto.*;
 import pl.lodz.p.it.ssbd2022.ssbd03.mok.dto.access_levels.AccessLevelDto;
 import pl.lodz.p.it.ssbd2022.ssbd03.mok.dto.no_etag.*;
 
+import javax.management.relation.Role;
+
 
 public interface MOKEndpointInterface {
 
     // ping
     @GET
     @Path("/ping")
-    @PermitAll
+    @RolesAllowed({Roles.ADMINISTRATOR, Roles.SPECIALIST})
     default Response ping() {
         return Response.ok("pong").build();
     }
@@ -33,7 +35,7 @@ public interface MOKEndpointInterface {
      */
     @POST
     @Path("/register")
-    @PermitAll
+    @RolesAllowed(Roles.ANONYMOUS)
     @Consumes(MediaType.APPLICATION_JSON)
     default Response register(@Valid RegisterClientDto registerClientDto) {
         throw new MethodNotImplementedException();
@@ -48,7 +50,7 @@ public interface MOKEndpointInterface {
      */
     @POST
     @Path("/register-confirm")
-    @PermitAll
+    @RolesAllowed(Roles.ANONYMOUS)
     @Consumes(MediaType.APPLICATION_JSON)
     default Response confirmRegistration(@Valid RegisterClientConfirmDto registerConfirmDto) {
         throw new MethodNotImplementedException();
@@ -127,7 +129,6 @@ public interface MOKEndpointInterface {
      *
      * @param login       Login użytkownika, którego poziom dostępu ma zostać odłączony
      * @param accessLevel Poziom dostępu, który ma zostać odłączony (klient, specjalista bądź administrator)
-     * @param eTag        Wartość ETag
      * @return odpowiedź HTTP
      * @throws MethodNotImplementedException w momencie, gdy metoda jest niezaimplementowana
      * @throws TransactionException          w momencie, gdy transakcja nie została zatwierdzona
@@ -222,7 +223,7 @@ public interface MOKEndpointInterface {
      */
     @POST
     @Path("/login")
-    @PermitAll
+    @RolesAllowed(Roles.ANONYMOUS)
     @Consumes(MediaType.APPLICATION_JSON)
     default Response login(@Valid LoginCredentialsDto loginCredentialsDto) {
         throw new MethodNotImplementedException();
@@ -236,7 +237,7 @@ public interface MOKEndpointInterface {
      */
     @POST
     @Path("/refresh-token")
-    @PermitAll
+    @RolesAllowed({Roles.ANONYMOUS, Roles.AUTHENTICATED})
     @Consumes(MediaType.APPLICATION_JSON)
     default Response refreshToken(@Valid RefreshTokenDto refreshTokenDto) {
         throw new MethodNotImplementedException();
@@ -275,7 +276,7 @@ public interface MOKEndpointInterface {
      */
     @POST
     @Path("/reset-password/{login}")
-    @PermitAll
+    @RolesAllowed(Roles.ANONYMOUS)
     @Consumes(MediaType.APPLICATION_JSON)
     default Response resetPassword(@PathParam("login") String login) {
         throw new MethodNotImplementedException();
@@ -293,7 +294,7 @@ public interface MOKEndpointInterface {
      */
     @POST
     @Path("/reset-password-token")
-    @PermitAll
+    @RolesAllowed(Roles.ANONYMOUS)
     @Consumes(MediaType.APPLICATION_JSON)
     default Response resetPasswordToken(@Valid ResetPasswordTokenDto resetPasswordDto) {
         throw new MethodNotImplementedException();
