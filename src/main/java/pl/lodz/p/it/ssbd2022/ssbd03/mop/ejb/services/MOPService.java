@@ -450,7 +450,7 @@ public class MOPService extends AbstractService implements MOPServiceInterface, 
     public List<Instant> getSpecialistAvailabilityInMonth(UUID specialistId, Instant month, Duration duration) {
         // wyciągnięcie ilości dni w danym miesiącu (trzeba tak, bo trzeba pamiętać, że każdy miesiąc ma inną ilość dni)
         // oraz istnieją lata przestępne
-        int daysInMonth = YearMonth.from(month.atZone(ZoneId.systemDefault()).toLocalDate()).lengthOfMonth();
+        int daysInMonth = YearMonth.from(month.atZone(ZoneId.systemDefault())).lengthOfMonth();
         // wyciągnięcie pierwszego dnia miesiąca
         LocalDate startLocalDate = YearMonth.from(month.atZone(ZoneId.systemDefault())).atDay(1);
         Instant startDate = startLocalDate.atStartOfDay(ZoneId.systemDefault()).toInstant();

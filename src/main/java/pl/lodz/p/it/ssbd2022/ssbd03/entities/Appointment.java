@@ -15,8 +15,6 @@ import java.io.Serializable;
 import java.time.Duration;
 import java.time.Instant;
 
-import static pl.lodz.p.it.ssbd2022.ssbd03.entities.Account.CONSTRAINT_EMAIL_UNIQUE;
-
 @Entity
 @Table(
         name = "appointment",
@@ -26,7 +24,7 @@ import static pl.lodz.p.it.ssbd2022.ssbd03.entities.Account.CONSTRAINT_EMAIL_UNI
                 @Index(name = "appointment_implant_id", columnList = "implant_id"),
         }
 )
-@SecondaryTable( name = "implant_backup_in_appointment" )
+@SecondaryTable(name = "implant_backup_in_appointment")
 @NamedQueries({
         @NamedQuery(name = "Appointment.findAll", query = "select a from Appointment a"),
         @NamedQuery(name = "Appointment.findById", query = "select a from Appointment a where a.id = :id"),
@@ -36,8 +34,8 @@ import static pl.lodz.p.it.ssbd2022.ssbd03.entities.Account.CONSTRAINT_EMAIL_UNI
         @NamedQuery(name = "Appointment.findSpecialistAppointmentsInGivenPeriod", query = """
                 select a from Appointment a where
                 a.specialist.id = :specialistId and (
-                    (a.startDate >= :startDate and a.startDate <= :endDate) or
-                    (a.endDate >= :startDate and a.endDate <= :endDate)
+                    (a.startDate >= :startDate and a.startDate < :endDate) or
+                    (a.endDate > :startDate and a.endDate <= :endDate)
                 )
                 """), // nie mogę użyć BETWEEN, ponieważ JPA nie wspiera BETWEEN na Instant
         @NamedQuery(name = "Appointment.findByLogin", query = "select a from Appointment a where a.client.login = :login or a.specialist.login = :login"),
@@ -86,7 +84,7 @@ public class Appointment extends AbstractEntity implements Serializable {
     private int price;
 
     @Basic(optional = false)
-    @Column(name = "description", nullable = true,columnDefinition = "TEXT")
+    @Column(name = "description", nullable = true, columnDefinition = "TEXT")
     @Getter
     @Setter
     private String description;
@@ -101,31 +99,31 @@ public class Appointment extends AbstractEntity implements Serializable {
     // ################ backed up implant details ######################
 
     @Basic(optional = false)
-    @Column(name = "name", nullable = false, table="implant_backup_in_appointment", length = 50, updatable = false)
+    @Column(name = "name", nullable = false, table = "implant_backup_in_appointment", length = 50, updatable = false)
     @Getter
     @Name
     private String implantName;
 
     @Basic(optional = false)
-    @Column(name = "description", nullable = false, table="implant_backup_in_appointment", updatable = false)
+    @Column(name = "description", nullable = false, table = "implant_backup_in_appointment", updatable = false)
     @Getter
     @Description
     private String implantDescription;
 
     @Basic(optional = false)
-    @Column(name = "manufacturer", nullable = false, table="implant_backup_in_appointment", updatable = false)
+    @Column(name = "manufacturer", nullable = false, table = "implant_backup_in_appointment", updatable = false)
     @Getter
     @Manufacturer
     private String implantManufacturer;
 
     @Basic(optional = false)
-    @Column(name = "price", nullable = false, table="implant_backup_in_appointment", updatable = false)
+    @Column(name = "price", nullable = false, table = "implant_backup_in_appointment", updatable = false)
     @Getter
     @Price
     private int implantPrice;
 
     @Basic(optional = false)
-    @Column(name = "duration", nullable = false, table="implant_backup_in_appointment", updatable = false)
+    @Column(name = "duration", nullable = false, table = "implant_backup_in_appointment", updatable = false)
     @Getter
     private Duration implantDuration;
 
