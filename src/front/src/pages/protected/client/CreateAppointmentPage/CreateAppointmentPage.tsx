@@ -10,12 +10,14 @@ import ActionButton from "../../../../components/shared/ActionButton/ActionButto
 import {
     getImplant,
     GetImplantResponse,
+    getSpecialistAvailability,
     listSpecialist,
     SpecialistListElementDto,
     SpecialistListResponse,
 } from "../../../../api/mop";
 import { showNotification } from "@mantine/notifications";
 import { failureNotificationItems } from "../../../../utils/showNotificationsItems";
+import { Instant } from "@js-joda/core";
 
 const CreateAppointmentPage = () => {
     const { implantId } = useParams();
@@ -23,9 +25,12 @@ const CreateAppointmentPage = () => {
     const [specialistList, setSpecialistList] = useState<
         SpecialistListElementDto[]
     >([]);
+    const [implant, setImplant] = useState<GetImplantResponse>();
     const [specialist, setSpecialist] = useState<SpecialistListElementDto>();
     const [currentPage, setCurrentPage] = useState(0);
     const [totalPages, setTotalPages] = useState(1);
+    const [availableDates, setAvailableDates] = useState<Instant[]>([]);
+    const [currentMonth, setCurrentMonth] = useState(0);
 
     const handleLoadSpecialistList = async () => {
         const response = await listSpecialist({
@@ -45,16 +50,39 @@ const CreateAppointmentPage = () => {
         }
     };
 
+    const handleMonthChange = async () => {
+        if (!specialist) return;
+        if (!implant) return;
+        const response = await getSpecialistAvailability(
+            specialist?.id,
+            Instant.now(),
+            implant.duration
+        );
+        if ("errorMessage" in response) {
+            showNotification(failureNotificationItems(response.errorMessage));
+            return;
+        }
+        setAvailableDates(response);
+        console.log(response);
+    };
+
     useEffect(() => {
         handleLoadSpecialistList();
     }, []);
+
+    useEffect(() => {
+        handleMonthChange();
+    }, [specialist, implant]);
 
     return (
         <section className={style.create_appointment_page}>
             <h1>Zarezerwuj wizytę</h1>
             <div className={style.appointment_container}>
                 <div className={style.implant_display}>
-                    <ImplantItem implantId={implantId} />
+                    <ImplantItem
+                        implantId={implantId}
+                        setImplant={setImplant}
+                    />
                 </div>
                 <div className={style.bottom_wrapper}>
                     <div className={style.specialist_display}>
@@ -108,10 +136,11 @@ export default CreateAppointmentPage;
 
 interface ImplantItemProps {
     implantId: string | undefined;
+    setImplant: (implant: GetImplantResponse) => void;
 }
-const ImplantItem = ({ implantId }: ImplantItemProps) => {
+const ImplantItem = ({ implantId, setImplant }: ImplantItemProps) => {
     const id = implantId;
-    const [implant, setImplant] = useState<GetImplantResponse>();
+    const [implant, setImplantInternal] = useState<GetImplantResponse>();
 
     const handleLoadImplant = async () => {
         if (!id) return;
@@ -120,6 +149,7 @@ const ImplantItem = ({ implantId }: ImplantItemProps) => {
             showNotification(failureNotificationItems(response.errorMessage));
             return;
         }
+        setImplantInternal(response);
         setImplant(response);
     };
 

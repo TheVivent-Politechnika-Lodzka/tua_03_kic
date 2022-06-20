@@ -1,3 +1,4 @@
+import { Instant } from "@js-joda/core";
 import axios from "axios";
 
 export interface ListImplantsRequest {
@@ -32,7 +33,7 @@ export interface AppointmentListElementDto {
     description: string;
 }
 
-interface ImplantDetails{
+interface ImplantDetails {
     id: string;
     version: number;
     name: string;
@@ -45,7 +46,7 @@ interface ImplantDetails{
     img: string;
 }
 
-interface ListOwnAppointmentsRequest{
+interface ListOwnAppointmentsRequest {
     page: number;
     size: number;
 }
@@ -72,9 +73,9 @@ export interface GetImplantResponse extends ImplantDetails, Etag {}
 /**
  * zwraca listę implantów i informacje o paginacji
  * @params page aktualna strone,
- * @params size ilosc pozycji na stronie 
+ * @params size ilosc pozycji na stronie
  * @params phrase szukana fraze
- * @params archived implant zarchiwizowane 
+ * @params archived implant zarchiwizowane
  * @returns @example {totalCount, totalPages, currentPage, data} | {errorMessage, status}
  */
 export async function listImplants(params: ListImplantsRequest) {
@@ -96,21 +97,22 @@ export async function listImplants(params: ListImplantsRequest) {
         throw error;
     }
 }
-export async function listOwnAppointments(params:ListOwnAppointmentsRequest) {
-    try{
+export async function listOwnAppointments(params: ListOwnAppointmentsRequest) {
+    try {
         const { data } = await axios.get<ListOwnAppointmentsResponse>(
-            "/mop/list/visits/my",{ params, });
+            "/mop/list/visits/my",
+            { params }
+        );
         return data;
-    }
-        catch (error) {
-            if (axios.isAxiosError(error) && error.response) {
-                return {
-                    errorMessage: error.response.data as string,
-                    status: error.response.status,
-                } as ApiError;
-            }
-            throw error;
+    } catch (error) {
+        if (axios.isAxiosError(error) && error.response) {
+            return {
+                errorMessage: error.response.data as string,
+                status: error.response.status,
+            } as ApiError;
         }
+        throw error;
+    }
 }
 
 /**
@@ -227,7 +229,6 @@ export async function createImplant(params: CreateImplantRequest) {
     }
 }
 
-
 //----------------------------------------------------- MOP 6 -------------------------------------------------------//
 
 export interface SpecialistListElementDto {
@@ -271,3 +272,29 @@ export async function listSpecialist(params: SpecialistListRequest) {
     }
 }
 //------------------------------------------------- KONIEC MOP 6 ----------------------------------------------------//
+
+export async function getSpecialistAvailability(
+    specialistId: string,
+    month: Instant,
+    duration: number
+) {
+    try {
+        const { data } = await axios.get<string[]>(
+            `/mop/specialists/${specialistId}/availability/${month.toString()}/${duration}`
+        );
+
+        const availability = data.map((day) => {
+            return Instant.parse(day);
+        });
+
+        return availability;
+    } catch (error) {
+        if (axios.isAxiosError(error) && error.response) {
+            return {
+                errorMessage: error.response.data as string,
+                status: error.response.status,
+            } as ApiError;
+        }
+        throw error;
+    }
+}
