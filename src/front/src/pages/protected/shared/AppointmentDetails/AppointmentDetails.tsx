@@ -1,8 +1,12 @@
 import { faClose, faInfoCircle } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { ChronoUnit, Instant, LocalDateTime } from "@js-joda/core";
-import { useState } from "react";
-import { AppointmentListElementDto } from "../../../../api/mop";
+import { useEffect, useState } from "react";
+import ReactLoading from "react-loading";
+import {
+    AppointmentListElementDto,
+    getAppointmentDetails,
+} from "../../../../api/mop";
 import ImplantDetails from "../../../../components/ImplantDetails/ImplantDetails";
 import ActionButton from "../../../../components/shared/ActionButton/ActionButton";
 import Modal from "../../../../components/shared/Modal/Modal";
@@ -10,24 +14,73 @@ import { useStoreSelector } from "../../../../redux/reduxHooks";
 import styles from "./style.module.scss";
 interface AccountDetailsProps {
     isOpened: boolean;
-    appointment: AppointmentListElementDto;
+    appointmentId: string;
     onClose: () => void;
 }
 export const AppointmentDetails = ({
     isOpened,
-    appointment,
+    appointmentId,
     onClose,
 }: AccountDetailsProps) => {
     const aLevel = useStoreSelector((state) => state.user.cur);
-    const startDate = Instant.parse(appointment.startDate);
-    const fixedStartDate = LocalDateTime.ofInstant(startDate);
-    const endDate = Instant.parse(appointment.endDate);
-    const fixedEndDate = LocalDateTime.ofInstant(endDate);
+    const [loading, setLoading] = useState<Loading>({
+        pageLoading: true,
+        actionLoading: false,
+    });
+    const [error, setError] = useState<ApiError>();
     const [implantModal, setImplantModal] = useState<boolean>(false);
+    const [appointment, setAppointment] = useState<AppointmentListElementDto>();
+    const [startDate, setStartDate] = useState<string>("");
+    const [endDate, setEndDate] = useState<string>("");
+    const [id,setId] = useState<string>('')
+    const handleGetAppointmentDetails = async () => {
+        try {
+            const data = await getAppointmentDetails(appointmentId);
+            if ("errorMessage" in data) return;
+            setAppointment(data.data);
+            setId(data.data.implant.id);
+            setLoading({ pageLoading: false, actionLoading: false });
+        } catch (error: ApiError | any) {
+            setLoading({ pageLoading: false, actionLoading: false });
+            setError(error);
+            console.error(`${error?.status} ${error?.errorMessage}`);
+        }
+    };
+    useEffect(() => {
+        if (!appointment) return;
+        const startDate = Instant.parse(appointment.startDate);
+        const fixedStartDate = LocalDateTime.ofInstant(startDate);
+        const endDate = Instant.parse(appointment.endDate);
+        const fixedEndDate = LocalDateTime.ofInstant(endDate);
+        setStartDate(
+            fixedStartDate
+                .truncatedTo(ChronoUnit.MINUTES)
+                .toString()
+                .replace("T", " ")
+        );
+        setEndDate(
+            fixedEndDate
+                .truncatedTo(ChronoUnit.MINUTES)
+                .toString()
+                .replace("T", " ")
+        );
+    }, [appointment]);
+    useEffect(() => {
+        handleGetAppointmentDetails();
+    },[])
+
     return (
         <Modal isOpen={isOpened}>
             <section className={styles.account_details_page}>
-                <div className={styles.content}>
+            {loading.pageLoading ? (
+                    <ReactLoading
+                        type="cylon"
+                        color="#fff"
+                        width="10rem"
+                        height="10rem"
+                        className={styles.loading}
+                    />
+                ) :(<div className={styles.content}>
                     <FontAwesomeIcon
                         className={styles.close_icon}
                         icon={faClose}
@@ -71,7 +124,7 @@ export const AppointmentDetails = ({
                             <div className={styles.detail_wrapper}>
                                 <p className={styles.title}>Cena wizyty:</p>
                                 <p className={styles.description}>
-                                    {appointment?.price}
+                                    {appointment?.price + "zł"}
                                 </p>
                             </div>
                             <div className={styles.detail_wrapper}>
@@ -79,10 +132,7 @@ export const AppointmentDetails = ({
                                     Data rozpoczęcia wizyty:
                                 </p>
                                 <p className={styles.description}>
-                                    {fixedStartDate
-                                        .truncatedTo(ChronoUnit.MINUTES)
-                                        .toString()
-                                        .replace("T", " ")}
+                                    {startDate}
                                 </p>
                             </div>
                             <div className={styles.detail_wrapper}>
@@ -90,24 +140,21 @@ export const AppointmentDetails = ({
                                     Data zakończenia wizyty:
                                 </p>
                                 <p className={styles.description}>
-                                    {fixedEndDate
-                                        .truncatedTo(ChronoUnit.MINUTES)
-                                        .toString()
-                                        .replace("T", " ")}
+                                    {endDate}
                                 </p>
                             </div>
                             <div className={styles.detail_wrapper}>
                                 <p className={styles.title}>
                                     Obecnie wybrany implant:
                                 </p>
-                                <p className={styles.description}>
+                                <div className={styles.description}>
                                     <ActionButton
                                         title="Wyświetl"
                                         color="purple"
                                         icon={faInfoCircle}
                                         onClick={() => setImplantModal(true)}
                                     ></ActionButton>
-                                </p>
+                                </div>
                             </div>
                             <div className={styles.detail_wrapper}>
                                 <p className={styles.title}>Status wizyty:</p>
@@ -132,13 +179,13 @@ export const AppointmentDetails = ({
                         </div>
                     </div>
                     <ImplantDetails
-                        id={appointment.implant.id}
+                        id={id}
                         isOpened={implantModal}
                         onClose={() => {
                             setImplantModal(false);
                         }}
                     />
-                </div>
+                </div>)}
             </section>
         </Modal>
     );

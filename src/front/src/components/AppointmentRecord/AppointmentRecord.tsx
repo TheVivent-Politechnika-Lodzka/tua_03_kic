@@ -55,7 +55,7 @@ export const AppointmentRecord = ({ appointment }: AppointmentRecordProps) => {
             </div>
             <AppointmentDetails
                 isOpened={modal}
-                appointment={appointment}
+                appointmentId={appointment?.id}
                 onClose={() => {
                     setModal(false);
                 }}

@@ -100,9 +100,26 @@ export async function listImplants(params: ListImplantsRequest) {
 }
 export async function listOwnAppointments(params:ListOwnAppointmentsRequest) {
     try{
-        const { data } = await axios.get<ListOwnAppointmentsResponse>(
+        const { data, headers } = await axios.get<ListOwnAppointmentsResponse>(
             "/mop/list/visits/my",{ params, });
         return data;
+    }
+        catch (error) {
+            if (axios.isAxiosError(error) && error.response) {
+                return {
+                    errorMessage: error.response.data as string,
+                    status: error.response.status,
+                } as ApiError;
+            }
+            throw error;
+        }
+}
+export async function getAppointmentDetails(id: string) {
+    try{
+        const { data, headers } = await axios.get<AppointmentListElementDto>(
+            "/mop/visit/"+ id);
+            const etag = headers["etag"];
+        return {data, etag};
     }
         catch (error) {
             if (axios.isAxiosError(error) && error.response) {
