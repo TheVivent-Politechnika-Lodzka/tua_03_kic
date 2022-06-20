@@ -76,19 +76,22 @@ const EditAnyAccountPage = () => {
         }
         showNotification(successNotficiationItems(t("account.edit.success")));
         setAccount(response);
-
         setLoading({ ...loading, actionLoading: false });
+        navigate("/accounts");
     };
 
     const isEveryFieldValid =
         isFirstNameValid &&
         isLastNameValid &&
-        isPhoneNumberValidAdministrator &&
-        isPhoneNumberValidSpecialist &&
-        isPhoneNumberValidClient &&
-        isPESELValid &&
-        isEmailValidAdministrator &&
-        isEmailValidSpecialist;
+        (accountAccessLevels?.includes("ADMINISTRATOR")
+            ? isPhoneNumberValidAdministrator && isEmailValidAdministrator
+            : true) &&
+        (accountAccessLevels?.includes("SPECIALIST")
+            ? isPhoneNumberValidSpecialist && isEmailValidSpecialist
+            : true) &&
+        (accountAccessLevels?.includes("CLIENT")
+            ? isPhoneNumberValidClient && isPESELValid
+            : true);
 
     return (
         <section className={style.edit_own_account_page}>
