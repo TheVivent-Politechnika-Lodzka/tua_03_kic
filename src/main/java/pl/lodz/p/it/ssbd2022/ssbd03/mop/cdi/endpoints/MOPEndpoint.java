@@ -25,6 +25,7 @@ import pl.lodz.p.it.ssbd2022.ssbd03.security.AuthContext;
 import pl.lodz.p.it.ssbd2022.ssbd03.security.Tagger;
 import pl.lodz.p.it.ssbd2022.ssbd03.utils.PaginationData;
 
+import java.time.Duration;
 import java.time.Instant;
 import java.util.List;
 import java.util.UUID;
@@ -314,19 +315,22 @@ public class MOPEndpoint implements MOPEndpointInterface {
      * MOP.9 - Zarezerwuj wizytę, dostępność specjalisty
      *
      * @param specialistId - id specjalisty
-     * @param month        - miesiąc
+     * @param month         - miesiąc wizyty (Instant)
+     * @param duration      - długość wizyty
      * @return lista dostępności
-     * @throws MethodNotImplementedException w przypadku braku implementacji metody
+     * @throws TransactionException w przypadku braku zatwierdzenia transakcji
      */
     @Override
-    public Response getSpecialistAvailability(UUID specialistId, Instant month) {
+    public Response getSpecialistAvailability(UUID specialistId, String month, int duration) {
 
-        String test;
+        List<Instant> availability;
+        Duration durationObj = Duration.ofSeconds(duration);
+        Instant monthObj = Instant.parse(month);
 
         int TXCounter = Config.MAX_TX_RETRIES;
         boolean commitedTX;
         do {
-            test = mopService.getSpecialistAvailabilityInMonth(specialistId, month);
+            availability = mopService.getSpecialistAvailabilityInMonth(specialistId, monthObj, durationObj);
             commitedTX = mopService.isLastTransactionCommited();
         } while (!commitedTX && TXCounter-- > 0);
 
@@ -334,7 +338,7 @@ public class MOPEndpoint implements MOPEndpointInterface {
             throw new TransactionException();
         }
 
-        return Response.ok(test).build();
+        return Response.ok(availability).build();
     }
 
     /**

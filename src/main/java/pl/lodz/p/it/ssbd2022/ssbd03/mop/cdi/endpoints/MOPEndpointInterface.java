@@ -10,8 +10,8 @@ import jakarta.ws.rs.core.Response;
 import pl.lodz.p.it.ssbd2022.ssbd03.common.Roles;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.MethodNotImplementedException;
 import pl.lodz.p.it.ssbd2022.ssbd03.mop.dto.*;
+import pl.lodz.p.it.ssbd2022.ssbd03.validation.DurationValue;
 
-import java.time.Instant;
 import java.util.UUID;
 
 @DenyAll
@@ -153,15 +153,20 @@ public interface MOPEndpointInterface {
      * MOP.9 - Zarezerwuj wizytę, dostępność specjalisty
      *
      * @param specialistId - id specjalisty
-     * @param month        - miesiąc
+     * @param month         - miesiąc wizyty (Instant)
+     * @param duration      - długość wizyty
      * @return lista dostępności
      * @throws MethodNotImplementedException w przypadku braku implementacji metody
      */
     @GET
     @RolesAllowed(Roles.CLIENT)
     @Produces(MediaType.APPLICATION_JSON)
-    @Path("/specialists/{id}/availability/{month}")
-    default Response getSpecialistAvailability(@PathParam("id") UUID specialistId, @PathParam("month") Instant month) {
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Path("/specialists/{id}/availability/{month}/{duration}")
+    default Response getSpecialistAvailability(
+            @PathParam("id") UUID specialistId,
+            @PathParam("month") String month,
+            @DurationValue @PathParam("duration") int duration) {
         throw new MethodNotImplementedException();
     }
 
