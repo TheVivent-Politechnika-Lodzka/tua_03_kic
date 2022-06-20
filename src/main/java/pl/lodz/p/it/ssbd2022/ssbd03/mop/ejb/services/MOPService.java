@@ -464,7 +464,7 @@ public class MOPService extends AbstractService implements MOPServiceInterface, 
         for (; i < daysInMonth; i++) {
             Instant day = startDate.plus(i, ChronoUnit.DAYS);
 
-            for (int j = 0; j < 7; j++) {
+            for (int j = 0; j < 8; j++) {
                 Instant start = day.plus(j + 8, ChronoUnit.HOURS);
                 Instant end = start.plus(duration);
                 try {
