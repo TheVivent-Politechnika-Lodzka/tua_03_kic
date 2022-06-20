@@ -81,7 +81,8 @@ public class Account extends AbstractEntity implements Serializable {
     @NotNull
     private boolean active;
 
-    @Column(name = "url")
+    @Column(name = "url",length = 2000)
+    @Size(min = 8, max = 2000)
     @Getter
     @Setter
     @NotNull
