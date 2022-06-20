@@ -1,18 +1,55 @@
-import { SimpleGrid, Container } from "@mantine/core";
+import { SimpleGrid, Container, Center, Image } from "@mantine/core";
+import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { ImplantListElementDto } from "../../api/mop";
-import { BlueGradientButton } from "../Button/BlueGradientButton copy";
+import { BlueGradientButton } from "../Button/BlueGradientButton";
+import ImplantDetails from "../ImplantDetails/ImplantDetails";
+
 import styles from "./listElement.module.scss";
 
 export const ListElement = (props: { element: ImplantListElementDto }) => {
-    const {t} =useTranslation();
+    const { t } = useTranslation();
 
+    const [modal, setModal] = useState<boolean>(false);
+
+    useEffect(() => {}, [modal]);
     return (
         <div className={styles.container}>
             <SimpleGrid cols={3}>
-                <div className={styles.image}>
-                    <img src={props.element.url} height="50px" alt="img" />
+                <div>
+                    <Center>
+                        {props.element.url ? (
+                            <Image
+                                radius="md"
+                                src={props.element.url}
+                                alt="img"
+                                height="18vh"
+                                width="35vh"
+                                styles={{
+                                    root: {
+                                        paddingTop: "2vh",
+                                        paddingLeft: "2vh",
+                                    },
+                                }}
+                            />
+                        ) : (
+                            <Image
+                                radius="md"
+                                src="brak.jpg"
+                                alt="img"
+                                height="18vh"
+                                width="35vh"
+                                styles={{
+                                    root: {
+                                        paddingTop: "2vh",
+                                        paddingLeft: "2vh",
+                                    },
+                                }}
+                            />
+                        )}{" "}
+                    </Center>
                 </div>
+
                 <div className={styles.text}>
                     <p
                         className={styles.title}
@@ -26,15 +63,25 @@ export const ListElement = (props: { element: ImplantListElementDto }) => {
                     }`}</p>
                 </div>
                 <div className={styles.buttons}>
-                    <div className={styles.price}>{`${
-                        props.element.price
-                    }${" ZL"}`}</div>
+                    <div className={styles.price}>
+                        {`${props.element.price}${" ZL"}`}
+                    </div>
+
                     <div className={styles.button}>
                         <BlueGradientButton
                             label={t("implantListPage.listElement.details")}
-                            onClick={() => console.log(props.element.id)}
+                            onClick={() => {
+                                setModal(true);
+                            }}
                         />
                     </div>
+                    <ImplantDetails
+                        id={props.element.id}
+                        isOpened={modal}
+                        onClose={() => {
+                            setModal(false);
+                        }}
+                    />
                 </div>
             </SimpleGrid>
         </div>

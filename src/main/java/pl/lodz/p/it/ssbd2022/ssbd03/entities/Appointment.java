@@ -40,6 +40,8 @@ import static pl.lodz.p.it.ssbd2022.ssbd03.entities.Account.CONSTRAINT_EMAIL_UNI
                     (a.endDate >= :startDate and a.endDate <= :endDate)
                 )
                 """), // nie mogę użyć BETWEEN, ponieważ JPA nie wspiera BETWEEN na Instant
+        @NamedQuery(name = "Appointment.findByLogin", query = "select a from Appointment a where a.client.login = :login or a.specialist.login = :login"),
+        @NamedQuery(name = "Appointment.findBetweenDates", query = "select a from Appointment a where a.startDate >= :startDate and a.startDate <= :endDate"),
         @NamedQuery(name = "Appointment.searchByPhrase", query = "select a from Appointment a where a.client.login like concat('%', :phrase, '%') or a.specialist.login like concat('%', :phrase, '%')"),
 })
 @ToString
@@ -84,7 +86,7 @@ public class Appointment extends AbstractEntity implements Serializable {
     private int price;
 
     @Basic(optional = false)
-    @Column(name = "description", nullable = true)
+    @Column(name = "description", nullable = true,columnDefinition = "TEXT")
     @Getter
     @Setter
     private String description;

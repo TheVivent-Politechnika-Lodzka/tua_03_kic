@@ -1,46 +1,46 @@
 @import "../../../variables.scss";
 
 .edit_field_wrapper {
-  display: flex;
-  flex-direction: column;
-
-  .title {
-    font-weight: bold;
-    font-size: 1.25rem;
-  }
-
-  .input_wrapper {
     display: flex;
-    flex-direction: row;
-    align-items: center;
+    flex-direction: column;
 
-    .input {
-      outline: none;
-      border: none;
-      font-size: 1.25rem;
-      padding-block: 1rem;
-      background: none;
-      color: white;
-      transition: 0.15s border-bottom ease-in;
-
-      &.valid {
-        border-bottom: 2px solid $light-green;
-      }
-      &.invalid {
-        border-bottom: 2px solid $red;
-      }
+    .title {
+        font-weight: bold;
+        font-size: 1.25rem;
     }
 
-    .icon {
-      font-size: 2rem;
+    .input_wrapper {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
 
-      &.valid {
-        color: $light-green;
-      }
+        .input {
+            outline: none;
+            border: none;
+            font-size: 1.25rem;
+            padding-block: 1rem;
+            background: none;
+            color: white;
+            transition: 0.15s border-bottom ease-in;
 
-      &.invalid {
-        color: $red;
-      }
+            &.valid {
+                border-bottom: 2px solid $light-green;
+            }
+            &.invalid {
+                border-bottom: 2px solid $red;
+            }
+        }
+
+        .icon {
+            font-size: 2rem;
+
+            &.valid {
+                color: $light-green;
+            }
+
+            &.invalid {
+                color: $red;
+            }
+        }
     }
-  }
 }

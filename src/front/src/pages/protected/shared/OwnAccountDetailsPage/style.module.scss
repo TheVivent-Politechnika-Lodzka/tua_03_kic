@@ -1,0 +1,109 @@
+@import "/src/variables.scss";
+
+.own_account_details_page {
+    height: 100%;
+    background-color: $primary-color;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    .content {
+        margin-top: 4.5rem;
+        width: 75%;
+        display: flex;
+        justify-content: space-evenly;
+        align-items: center;
+
+        .account_general_details {
+            width: 39.6rem;
+            height: 28rem;
+            border-radius: 2.2rem;
+            background-color: $secondary-color;
+            display: flex;
+            justify-content: flex-start;
+            flex-direction: column;
+            align-items: center;
+
+            .avatar {
+                width: 14.4rem;
+                height: 14.4rem;
+                border-radius: 100%;
+                border: 9px solid $secondary-color;
+                margin-top: -6.3rem;
+            }
+
+            .login {
+                color: white;
+                font-size: 2.4rem;
+            }
+
+            .account_access_levels_wrapper {
+                width: 80%;
+                display: flex;
+                justify-content: space-evenly;
+                flex-direction: row;
+                align-items: center;
+                margin-top: 1.6rem;
+
+                .title {
+                    color: white;
+                    font-size: 1.2rem;
+                    font-weight: bold;
+                }
+            }
+
+            .account_actions_wrapper {
+                margin-top: 2.7rem;
+                display: flex;
+                flex-direction: column;
+                justify-content: space-between;
+                height: 7.5rem;
+            }
+        }
+
+        .account_details {
+            width: 33.75rem;
+            height: 34rem;
+            border-radius: 30.8px;
+            padding: 2.21rem 2.6rem;
+            background-color: $secondary-color;
+
+            .title {
+                font-size: 2rem;
+                font-weight: bold;
+                padding-bottom: 1.8rem;
+                color: white;
+                width: 100%;
+                border-bottom: 2px solid $light-gray;
+            }
+
+            .details_wrapper {
+                display: flex;
+                flex-direction: column;
+                justify-content: space-evenly;
+                height: 90%;
+
+                .detail_wrapper {
+                    display: flex;
+                    flex-direction: row;
+                    justify-content: space-between;
+
+                    .field_title {
+                        font-weight: bold;
+                    }
+
+                    .field_description,
+                    .field_title {
+                        color: white;
+                        font-size: 1.17rem;
+                    }
+
+                    .flag {
+                        width: 2.6rem;
+                        height: 1.4rem;
+                    }
+                }
+            }
+        }
+    }
+}

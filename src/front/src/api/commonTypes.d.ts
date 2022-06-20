@@ -8,6 +8,11 @@ interface Taggable {
     version: number;
 }
 
+interface Credentials {
+    login: string;
+    password: string;
+}
+
 type AccessLevelType =
     | "ADMINISTRATOR"
     | "CLIENT"
@@ -53,4 +58,15 @@ interface Pagination {
     currentPage?: number;
     pageSize?: number;
     totalPages?: number;
+}
+
+type Status =
+    | "PENDING"
+    | "REJECTED"
+    | "ACCEPTED"
+    | "FINISHED";
+
+interface ConfirmActionModal {
+    title: string;
+    message: string;
 }

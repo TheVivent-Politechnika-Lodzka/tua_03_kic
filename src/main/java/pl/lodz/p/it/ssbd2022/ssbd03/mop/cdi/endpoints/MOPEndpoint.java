@@ -10,9 +10,8 @@ import jakarta.ws.rs.core.Response;
 import pl.lodz.p.it.ssbd2022.ssbd03.common.Config;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.Appointment;
 import pl.lodz.p.it.ssbd2022.ssbd03.common.Roles;
-import pl.lodz.p.it.ssbd2022.ssbd03.entities.Appointment;
-import pl.lodz.p.it.ssbd2022.ssbd03.entities.Implant;
-import pl.lodz.p.it.ssbd2022.ssbd03.entities.ImplantReview;
+import pl.lodz.p.it.ssbd2022.ssbd03.entities.*;
+import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.MethodNotImplementedException;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.TransactionException;
 import pl.lodz.p.it.ssbd2022.ssbd03.mappers.AppointmentMapper;
 import pl.lodz.p.it.ssbd2022.ssbd03.mappers.ImplantMapper;
@@ -20,11 +19,15 @@ import pl.lodz.p.it.ssbd2022.ssbd03.mop.dto.AppointmentDto;
 import pl.lodz.p.it.ssbd2022.ssbd03.mop.dto.CreateImplantDto;
 import pl.lodz.p.it.ssbd2022.ssbd03.mop.dto.ImplantListElementDto;
 import pl.lodz.p.it.ssbd2022.ssbd03.mappers.ImplantReviewMapper;
+import pl.lodz.p.it.ssbd2022.ssbd03.mappers.*;
 import pl.lodz.p.it.ssbd2022.ssbd03.mop.dto.*;
 import pl.lodz.p.it.ssbd2022.ssbd03.mop.ejb.services.MOPServiceInterface;
 import pl.lodz.p.it.ssbd2022.ssbd03.security.AuthContext;
 import pl.lodz.p.it.ssbd2022.ssbd03.security.Tagger;
 import pl.lodz.p.it.ssbd2022.ssbd03.security.AuthContext;
+
+import java.util.UUID;
+
 import pl.lodz.p.it.ssbd2022.ssbd03.security.Tagger;
 
 import java.time.Instant;
@@ -52,10 +55,14 @@ public class MOPEndpoint implements MOPEndpointInterface {
     private ImplantMapper implantMapper;
 
     @Inject
+    private AccountMapper accountMapper;
+
+    @Inject
     private ImplantReviewMapper implantReviewMapper;
 
     @Inject
     private Tagger tagger;
+
 
 
     /**
@@ -188,6 +195,38 @@ public class MOPEndpoint implements MOPEndpointInterface {
     }
 
     /**
+     * MOP.6 - Przeglądaj listę specialistów
+     * dostęp posiadają wszyscy użytkownicy serwisu włącznie z nieuwierzytelnionymi
+     *
+     * @param page   - numer strony (int)
+     * @param size   - ilość specialistó wyświetlanych na jednej stronie (int)
+     * @param phrase - szukana fraza specialisty (String)
+     * @return zwraca odpowiedz zawierającą listę specialistów
+     * @throws TransactionException błąd transakcji
+     */
+    @PermitAll
+    @Override
+    public Response listSpecialists(int page, int size, String phrase) {
+        PaginationData paginationData;
+        int TXCounter = Config.MAX_TX_RETRIES;
+        boolean commitedTX;
+        do {
+            paginationData = mopService.findSpecialists(page, size, phrase);
+            commitedTX = mopService.isLastTransactionCommited();
+        } while (!commitedTX && TXCounter-- > 0);
+
+        if (!commitedTX) {
+            throw new TransactionException();
+        }
+
+        List<Account> accounts = paginationData.getData();
+        List<SpecialistForMopDto> accountsDTO = accountMapper.accountSpecialistListElementDtoList(accounts);
+        paginationData.setData(accountsDTO);
+        return Response.ok().entity(paginationData).build();
+
+    }
+
+    /**
      * MOP.7 - Przeglądaj listę wizyt
      *
      * @param page   numer aktualnie przeglądanej strony
@@ -196,7 +235,6 @@ public class MOPEndpoint implements MOPEndpointInterface {
      * @return lista wizyt
      * @throws TransactionException w przypadku braku zatwierdzenia transakcji
      */
-    @PermitAll
     @Override
     public Response listVisits(int page, int size, String phrase) {
         PaginationData paginationData;
@@ -216,7 +254,35 @@ public class MOPEndpoint implements MOPEndpointInterface {
         paginationData.setData(appointmentDtos);
         return Response.ok().entity(paginationData).build();
     }
+    /**
+     * MOP.8 - Przeglądaj swoje wizyty
+     *
+     * @param page numer aktualnie przeglądanej strony
+     * @param size ilość rekordów na danej stronie
+     * @return lista wizyt
+     * @throws TransactionException w przypadku braku zatwierdzenia transakcji
+     */
+    @RolesAllowed({Roles.CLIENT, Roles.SPECIALIST})
+    @Override
+    public Response listMyVisits(int page, int size) {
+        PaginationData paginationData;
+        String login = authContext.getCurrentUserLogin();
+        int TXCounter = Config.MAX_TX_RETRIES;
+        boolean commitedTX;
+        do {
+            paginationData = mopService.findVisitsByLogin(page, size, login);
+            commitedTX = mopService.isLastTransactionCommited();
+        } while (!commitedTX && TXCounter-- > 0);
 
+        if (!commitedTX) {
+            throw new TransactionException();
+        }
+
+        List<Appointment> appointments = paginationData.getData();
+        List<AppointmentListElementDto> appointmentDtos = appointmentMapper.appointmentListElementDtoList(appointments);
+        paginationData.setData(appointmentDtos);
+        return Response.ok().entity(paginationData).build();
+    }
     /**
      * MOP.9 - Zarezerwuj wizytę
      * @param createAppointmentDto - dane nowej wizyty
@@ -251,7 +317,32 @@ public class MOPEndpoint implements MOPEndpointInterface {
 
         return Response.ok(appointmentDto).tag(tagger.tag(appointmentDto)).build();
     }
-
+    /**
+     * MOP.10 - Edytuj swoją wizytę
+     *
+     * @param id                 id konkretnej wizyty
+     * @param appointmentOwnEditDto obiekt dto edycji naniesionych do wizyty
+     * @return odpowiedz HTTP
+     * @throws TransactionException jeśli transakcja nie została zatwierdzona
+     */
+    @Override
+    public Response editOwnVisit(UUID id, AppointmentOwnEditDto appointmentOwnEditDto) {
+        tagger.verifyTag(appointmentOwnEditDto);
+        String login = authContext.getCurrentUserLogin();
+        Appointment update = appointmentMapper.createAppointmentFromAppointmentOwnEditDto(appointmentOwnEditDto);
+        Appointment editedAppointment;
+        int TXCounter = Config.MAX_TX_RETRIES;
+        boolean commitedTX;
+        do {
+            editedAppointment = mopService.editOwnAppointment(id, update, login);
+            commitedTX = mopService.isLastTransactionCommited();
+        } while (!commitedTX && --TXCounter > 0);
+        if (!commitedTX) {
+            throw new TransactionException();
+        }
+        AppointmentDto app = appointmentMapper.createAppointmentDtoFromAppointment(editedAppointment);
+        return Response.ok(app).tag(tagger.tag(app)).build();
+    }
     /**
      * MOP.11 - Edytuj dowolną wizytę
      *
@@ -407,7 +498,6 @@ public class MOPEndpoint implements MOPEndpointInterface {
 
         String login = authContext.getCurrentUserLogin();
         do {
-
             mopService.deleteReview(id, login);
             commitedTX = mopService.isLastTransactionCommited();
         } while (!commitedTX && --TXCounter > 0);
@@ -417,5 +507,49 @@ public class MOPEndpoint implements MOPEndpointInterface {
         }
 
         return Response.ok().build();
+    }
+    @Override
+    public Response getVisitDetails (UUID uuid){
+        Appointment appointment;
+        int TXCounter = Config.MAX_TX_RETRIES;
+        boolean commitedTX;
+        do {
+            appointment = mopService.findVisit(uuid);
+            commitedTX = mopService.isLastTransactionCommited();
+        } while (!commitedTX && --TXCounter > 0);
+
+        if (!commitedTX) {
+            throw new TransactionException();
+        }
+        AppointmentDto appointmentDto = appointmentMapper.createAppointmentDtoFromAppointment(appointment);
+        return Response.ok(appointmentDto).tag(tagger.tag(appointmentDto)).build();
+    }
+
+    /**
+     * MOP.18 - Wyświetl recenzje dla danego wszczepu
+     * @param size Ilość recenzji do wyświetlenia na jednej stronie
+     * @param page Numer strony
+     * @param id Identyfikator wszczepu
+     * @return Lista recenzji wszczepu
+     * @throws TransactionException jeśli transakcja nie została zatwierdzona
+     */
+    @Override
+    public Response getAllImplantReviews(int page, int size, UUID id) {
+        int TXCounter = Config.MAX_TX_RETRIES;
+        boolean commitedTX;
+        PaginationData paginationData;
+
+        do {
+            paginationData = mopService.getAllImplantReviews(page, size, id);
+            commitedTX = mopService.isLastTransactionCommited();
+        } while (!commitedTX && --TXCounter > 0);
+
+        if (!commitedTX) {
+            throw new TransactionException();
+        }
+        List<ImplantReview> implantReviews = paginationData.getData();
+        List<ImplantReviewDto> implantReviewDtos = implantReviewMapper.implantReviewDtoListfromImplantReviewList(implantReviews);
+        paginationData.setData(implantReviewDtos);
+        return Response.ok().entity(paginationData).build();
     }
 }
