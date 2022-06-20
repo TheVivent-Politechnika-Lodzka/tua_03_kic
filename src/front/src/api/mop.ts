@@ -30,8 +30,8 @@ export interface AppointmentListElementDto {
     implant: ImplantDto;
     status: Status;
     startDate: string;
-    endDate:string;
-    price:number;
+    endDate: string;
+    price: number;
     description: string;
 }
 
@@ -94,25 +94,25 @@ export async function listOwnAppointments(params: ListOwnAppointmentsRequest) {
     }
 }
 export async function getAppointmentDetails(id: string) {
-    try{
+    try {
         const { data, headers } = await axios.get<AppointmentListElementDto>(
-            "/mop/visit/"+ id);
-            const etag = headers["etag"];
-        return {data, etag};
-    }
-        catch (error) {
-            if (axios.isAxiosError(error) && error.response) {
-                return {
-                    errorMessage: error.response.data as string,
-                    status: error.response.status,
-                } as ApiError;
-            }
-            throw error;
+            "/mop/visit/" + id
+        );
+        const etag = headers["etag"];
+        return { data, etag };
+    } catch (error) {
+        if (axios.isAxiosError(error) && error.response) {
+            return {
+                errorMessage: error.response.data as string,
+                status: error.response.status,
+            } as ApiError;
         }
+        throw error;
+    }
 }
 
-export interface EditImplantRequest extends ImplantDetails, Etag {}
-export interface EditImplantResponse extends ImplantDetails, Etag {}
+export interface EditImplantRequest extends ImplantDto, Etag {}
+export interface EditImplantResponse extends ImplantDto, Etag {}
 
 /**
  *
@@ -123,29 +123,32 @@ export interface EditImplantResponse extends ImplantDetails, Etag {}
 export async function editImplant(
     id: string,
     implantDetails: EditImplantRequest
-  ) {
+) {
     try {
-      const { etag, ...implant } = implantDetails;
-      const { data, headers } = await axios.put(`/mop/implant/edit/${id}`, implant, {
-        headers: {
-          "If-Match": etag,
-        },
-      });
-      const newEtag = headers["etag"];
-      return { ...data, etag: newEtag } as EditImplantResponse;
+        const { etag, ...implant } = implantDetails;
+        const { data, headers } = await axios.put(
+            `/mop/implant/edit/${id}`,
+            implant,
+            {
+                headers: {
+                    "If-Match": etag,
+                },
+            }
+        );
+        const newEtag = headers["etag"];
+        return { ...data, etag: newEtag } as EditImplantResponse;
     } catch (error) {
-      if (axios.isAxiosError(error) && error.response) {
-        return {
-          errorMessage: error.response.data as string,
-          status: error.response.status,
-        } as ApiError;
-      }
-      throw error;
+        if (axios.isAxiosError(error) && error.response) {
+            return {
+                errorMessage: error.response.data as string,
+                status: error.response.status,
+            } as ApiError;
+        }
+        throw error;
     }
-  }
+}
 
-
-  export interface GetImplantResponse extends ImplantDetails, Etag {}
+export interface GetImplantResponse extends ImplantDto, Etag {}
 /**
  * Pobierz szczegóły implantu
  *
