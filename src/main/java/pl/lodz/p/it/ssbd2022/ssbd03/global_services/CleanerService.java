@@ -10,10 +10,6 @@ import pl.lodz.p.it.ssbd2022.ssbd03.global_services.facades.AccountFacade;
 import pl.lodz.p.it.ssbd2022.ssbd03.global_services.facades.RefreshTokenFacade;
 import pl.lodz.p.it.ssbd2022.ssbd03.global_services.facades.ResetPasswordFacade;
 import pl.lodz.p.it.ssbd2022.ssbd03.interceptors.TrackerInterceptor;
-//import pl.lodz.p.it.ssbd2022.ssbd03.mok.ejb.facades.AccountConfirmationFacade;
-//import pl.lodz.p.it.ssbd2022.ssbd03.mok.ejb.facades.AccountFacade;
-//import pl.lodz.p.it.ssbd2022.ssbd03.mok.ejb.facades.RefreshTokenFacade;
-//import pl.lodz.p.it.ssbd2022.ssbd03.mok.ejb.facades.ResetPasswordFacade;
 
 @Startup
 @Singleton
