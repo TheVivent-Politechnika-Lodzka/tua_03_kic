@@ -102,15 +102,14 @@ const AccountDetailsPage = ({
     };
 
     const handleGetAccount = async () => {
-        try {
-            setLoading({ pageLoading: true });
-            const data = await getAccount(login);
-            setAccount(data as GetAccountResponse);
-            setLoading({ pageLoading: false });
-        } catch (error: ApiError | any) {
-            setLoading({ pageLoading: false });
-            alert(`${error?.status} ${error?.errorMessage}`);
+        setLoading({ pageLoading: true });
+        const data = await getAccount(login);
+        if ("errorMessage" in data) {
+            showNotification(failureNotificationItems(data.errorMessage));
+            return;
         }
+        setAccount(data as GetAccountResponse);
+        setLoading({ pageLoading: false });
     };
 
     const handleDeactivateActivateAccount = async (deactivate: boolean) => {
@@ -152,22 +151,6 @@ const AccountDetailsPage = ({
             setLoading({ pageLoading: false });
         }
     };
-
-    const customStyles = {
-        overlay: {
-            backgroundColor: "rgba(0, 0, 0, 0.85)",
-        },
-        content: {
-            width: "100vw",
-            height: "100vh",
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            backgroundColor: "transparent",
-            border: "none",
-        },
-    };
-
     useEffect(() => {
         handleGetAccount();
     }, [isOpened]);

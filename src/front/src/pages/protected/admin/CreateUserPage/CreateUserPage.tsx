@@ -8,7 +8,7 @@ import ActionButton from "../../../../components/shared/ActionButton/ActionButto
 import InputWithValidation from "../../../../components/shared/InputWithValidation/InputWithValidation";
 import ValidationMessage from "../../../../components/shared/ValidationMessage/ValidationMessage";
 import { validationContext } from "../../../../context/validationContext";
-import { successNotficiationItems } from "../../../../utils/showNotificationsItems";
+import { failureNotificationItems, successNotficiationItems } from "../../../../utils/showNotificationsItems";
 import ConfirmActionModal from "../../../../components/shared/ConfirmActionModal/ConfirmActionModal";
 
 const CreateUserPage = () => {
@@ -62,9 +62,8 @@ const CreateUserPage = () => {
         const response = await createAccount(request);
         if ("errorMessage" in response) {
             setError(response);
-            console.log(`${response.status} ${response.errorMessage}`);
-            alert(response.errorMessage);
             setLoading({ ...loading, actionLoading: false });
+            showNotification(failureNotificationItems(response.errorMessage));
             return;
         }
         navigate("/accounts");
