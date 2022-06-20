@@ -47,6 +47,10 @@ public class AccountWithAccessLevelsDto implements Taggable {
 
     private String captcha;
 
+    private String url;
+
     private List<AccessLevelDto> accessLevels = new ArrayList<>();
+
+
 
 }

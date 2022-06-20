@@ -28,11 +28,7 @@ const UserRecord = ({ user, handleChange }: UserRecordProps) => {
     return (
         <div className={styles.user_record_wrapper}>
             <div className={styles.avatar_wrapper}>
-                <img
-                    className={styles.avatar}
-                    src="https://i.pravatar.cc/100"
-                    alt="user"
-                />
+                <img className={styles.avatar} src={user?.url} alt="user" />
                 <div className={styles.access_levels_wrapper}>
                     {user?.accessLevels.map((accessLevel, index) => (
                         <AccessLevel

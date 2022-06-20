@@ -39,6 +39,7 @@ interface AccountDetails extends Taggable {
     active: boolean;
     confirmed: boolean;
     accessLevels: AccessLevel[];
+    url: string;
 }
 
 interface Etag {

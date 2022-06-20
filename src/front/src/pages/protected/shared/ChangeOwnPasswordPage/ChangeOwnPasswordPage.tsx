@@ -135,7 +135,7 @@ const ChangeOwnPasswordInternal = ({
                                                 oldPassword: e.target.value,
                                             })
                                         }
-                                        type="new-password"
+                                        type="password"
                                         required
                                     />
                                     <InputWithValidation
@@ -149,7 +149,7 @@ const ChangeOwnPasswordInternal = ({
                                                 newPassword: e.target.value,
                                             })
                                         }
-                                        type="new-password"
+                                        type="password"
                                         required
                                     />
                                 </div>
