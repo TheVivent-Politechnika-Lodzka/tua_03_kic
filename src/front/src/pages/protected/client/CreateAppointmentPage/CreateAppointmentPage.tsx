@@ -10,6 +10,7 @@ import style from "./style.module.scss";
 import { Calendar } from "@mantine/dates";
 import ActionButton from "../../../../components/shared/ActionButton/ActionButton";
 import {
+    createAppointment,
     getImplant,
     GetImplantResponse,
     getSpecialistAvailability,
@@ -18,7 +19,10 @@ import {
     SpecialistListResponse,
 } from "../../../../api/mop";
 import { showNotification } from "@mantine/notifications";
-import { failureNotificationItems } from "../../../../utils/showNotificationsItems";
+import {
+    failureNotificationItems,
+    successNotficiationItems,
+} from "../../../../utils/showNotificationsItems";
 import { ChronoUnit, Instant, LocalDateTime } from "@js-joda/core";
 import { Indicator, Modal } from "@mantine/core";
 import ReactModal from "react-modal";
@@ -144,6 +148,9 @@ const CreateAppointmentPage = () => {
                             onMonthChange={setCurrentMonth}
                             value={selectedDate}
                             onChange={setSelectedDate}
+                            excludeDate={(date) => {
+                                return !availableDates[date.getDate()];
+                            }}
                             renderDay={(date) => {
                                 const day = date.getDate();
                                 const month = date.getMonth();
@@ -158,6 +165,7 @@ const CreateAppointmentPage = () => {
                                         color={color}
                                         offset={8}
                                         zIndex={0}
+                                        disabled={color === "red"}
                                     >
                                         <div>{day}</div>
                                     </Indicator>
@@ -198,7 +206,11 @@ const CreateAppointmentPage = () => {
             </div>
             <SummaryModal
                 show={showSummaryModal}
-                onClose={() => setShowSummaryModal(false)}
+                onClose={() => {
+                    setShowSummaryModal(false);
+                    handleMonthChange();
+                    setSelectedHour(undefined);
+                }}
                 choosenDate={selectedHour}
                 choosenSpecialist={specialist}
                 choosenImplant={implant}
@@ -228,6 +240,18 @@ const SummaryModal = ({
 
     const handleSubmit = async () => {
         if (!choosenDate || !choosenSpecialist || !choosenImplant) return;
+        const response = await createAppointment({
+            specialistId: choosenSpecialist.id,
+            implantId: choosenImplant.id,
+            startDate: choosenDate.value.toString(),
+        });
+        if ("errorMessage" in response) {
+            showNotification(failureNotificationItems(response.errorMessage));
+            return;
+        }
+        console.log(response);
+        showNotification(successNotficiationItems("Zarezerwowano wizytę"));
+        onClose();
     };
 
     useEffect(() => {
@@ -307,6 +331,9 @@ interface HourItemProps {
 
 const HourItem = ({ value, onClick, isSelected }: HourItemProps) => {
     const handleClick = () => {
+        const text = value.text;
+        const inst = value.value.toString();
+        console.log({ text, inst });
         onClick(value);
     };
 
