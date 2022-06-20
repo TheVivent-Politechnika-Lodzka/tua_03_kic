@@ -77,7 +77,7 @@ const validationReducer = (state: ContextState, action: ValidationAction) => {
                 ...state,
                 isFirstNameValid: validate(
                     action.payload.input,
-                    /^[a-zA-Z\u00C0-\u017F'][a-zA-Z-\u00C0-\u017F' ]+[a-zA-Z\u00C0-\u017F']{3,30}$/
+                    /^[a-zA-Z\u00C0-\u017F']{3,30}$/
                 ),
             };
         }
@@ -86,7 +86,7 @@ const validationReducer = (state: ContextState, action: ValidationAction) => {
                 ...state,
                 isLastNameValid: validate(
                     action.payload.input,
-                    /^[a-zA-Z\u00C0-\u017F'][a-zA-Z-\u00C0-\u017F' ]+[a-zA-Z\u00C0-\u017F']{3,30}$/
+                    /^[a-zA-Z\u00C0-\u017F']{3,30}$/
                 ),
             };
         }
@@ -147,6 +147,15 @@ const validationReducer = (state: ContextState, action: ValidationAction) => {
                 isLoginValid: validate(
                     action.payload.input,
                     /^[a-zA-Z\u00C0-\u017F']{3,30}$/
+                ),
+            };
+        }
+        case "VALIDATE_PASSWORD": {
+            return {
+                ...state,
+                isPasswordValid: validate(
+                    action.payload.input,
+                    /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,128}$/
                 ),
             };
         }

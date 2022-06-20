@@ -22,7 +22,6 @@
             background: none;
             color: white;
             transition: 0.15s border-bottom ease-in;
-            -webkit-text-security: disc;
 
             &.valid {
                 border-bottom: 2px solid $light-green;

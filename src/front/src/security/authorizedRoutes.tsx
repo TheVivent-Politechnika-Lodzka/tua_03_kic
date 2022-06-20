@@ -2,8 +2,8 @@ import { Route } from "react-router-dom";
 import CreateUserPage from "../pages/protected/admin/CreateUserPage";
 import EditAnyAccountPage from "../pages/protected/admin/EditAnyAccountPage/EditAnyAccountPage";
 import UserManagment from "../pages/protected/admin/UsersManagmentPage/UsersManagmentPage";
+import { OwnAppointmentsList } from "../pages/protected/shared/OwnAppointmentsList/OwnAppointmentsList";
 import { AppointmentListPage } from "../pages/protected/admin/AppointmentList";
-import SpecialistList from "../pages/unprotected/SpecialistList";
 
 const authorizedRoutes = (accessLevel: AccessLevelType) => {
     switch (accessLevel) {
@@ -24,10 +24,18 @@ const authorizedRoutes = (accessLevel: AccessLevelType) => {
             );
         }
         case "SPECIALIST": {
-            return <></>;
+            return (
+                <>
+                    <Route path="/visits" element={<OwnAppointmentsList />} />
+                </>
+            );
         }
         case "CLIENT": {
-            return <></>;
+            return (
+                <>
+                    <Route path="/visits" element={<OwnAppointmentsList />} />
+                </>
+            );
         }
         default: {
             return <></>;

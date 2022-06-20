@@ -10,8 +10,6 @@ import ReactLoading from "react-loading";
 import { useStoreSelector } from "../../../../redux/reduxHooks";
 import { getOwnAccount } from "../../../../api";
 import styles from "./style.module.scss";
-import { style } from "@mui/system";
-import ChangeOwnPasswordForm from "../../../../components/Form/changeOwnPasswordForm/ChangeOwnPasswordForm";
 import ChangeOwnPasswordPage from "../ChangeOwnPasswordPage/ChangeOwnPasswordPage";
 
 const OwnAccountDetailsPage = () => {
@@ -68,7 +66,8 @@ const OwnAccountDetailsPage = () => {
                                 </p>
                                 {account?.accessLevels.map((accessLevel) => (
                                     <AccessLevel
-                                        clickable={true}
+                                        clickable
+                                        selectable
                                         key={accessLevel.level}
                                         accessLevel={accessLevel.level}
                                     />
