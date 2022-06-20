@@ -1,4 +1,5 @@
 import axios from "axios";
+import { StringLiteralLike } from "typescript";
 
 export interface ListImplantsRequest {
     page: number;
@@ -26,28 +27,15 @@ export interface AppointmentListElementDto {
     id: string;
     client: AccountDetails;
     specialist: AccountDetails;
-    implant: ImplantDetails;
+    implant: ImplantDto;
     status: Status;
     startDate: string;
-    endDate:string;
-    price:number;
-    description: string;
-}
-
-interface ImplantDetails{
-    id: string;
-    version: number;
-    name: string;
-    description: string;
-    manufacturer: string;
+    endDate: string;
     price: number;
-    archived: boolean;
-    popularity: number;
-    duration: number;
-    img: string;
+    description: string;
 }
 
-interface ListOwnAppointmentsRequest{
+interface ListOwnAppointmentsRequest {
     page: number;
     size: number;
 }
@@ -58,24 +46,15 @@ export interface ListOwnAppointmentsResponse {
     currentPage: number;
     data: AppointmentListElementDto[];
 }
-interface ImplantDetails extends Taggable {
-    name: string;
-    description: string;
-    manufacturer: string;
-    price: number;
-    archived: boolean;
-    popularity: number;
-    duration: number;
-    image: string;
-}
 
+export interface GetImplantResponse extends ImplantDto, Etag {}
 
 /**
  * zwraca listę implantów i informacje o paginacji
  * @params page aktualna strone,
- * @params size ilosc pozycji na stronie 
+ * @params size ilosc pozycji na stronie
  * @params phrase szukana fraze
- * @params archived implant zarchiwizowane 
+ * @params archived implant zarchiwizowane
  * @returns @example {totalCount, totalPages, currentPage, data} | {errorMessage, status}
  */
 export async function listImplants(params: ListImplantsRequest) {
@@ -97,42 +76,43 @@ export async function listImplants(params: ListImplantsRequest) {
         throw error;
     }
 }
-export async function listOwnAppointments(params:ListOwnAppointmentsRequest) {
-    try{
+export async function listOwnAppointments(params: ListOwnAppointmentsRequest) {
+    try {
         const { data } = await axios.get<ListOwnAppointmentsResponse>(
-            "/mop/list/visits/my",{ params, });
+            "/mop/list/visits/my",
+            { params }
+        );
         return data;
-    }
-        catch (error) {
-            if (axios.isAxiosError(error) && error.response) {
-                return {
-                    errorMessage: error.response.data as string,
-                    status: error.response.status,
-                } as ApiError;
-            }
-            throw error;
+    } catch (error) {
+        if (axios.isAxiosError(error) && error.response) {
+            return {
+                errorMessage: error.response.data as string,
+                status: error.response.status,
+            } as ApiError;
         }
+        throw error;
+    }
 }
 export async function getAppointmentDetails(id: string) {
-    try{
+    try {
         const { data, headers } = await axios.get<AppointmentListElementDto>(
-            "/mop/visit/"+ id);
-            const etag = headers["etag"];
-        return {data, etag};
-    }
-        catch (error) {
-            if (axios.isAxiosError(error) && error.response) {
-                return {
-                    errorMessage: error.response.data as string,
-                    status: error.response.status,
-                } as ApiError;
-            }
-            throw error;
+            "/mop/visit/" + id
+        );
+        const etag = headers["etag"];
+        return { data, etag };
+    } catch (error) {
+        if (axios.isAxiosError(error) && error.response) {
+            return {
+                errorMessage: error.response.data as string,
+                status: error.response.status,
+            } as ApiError;
         }
+        throw error;
+    }
 }
 
-export interface EditImplantRequest extends ImplantDetails, Etag {}
-export interface EditImplantResponse extends ImplantDetails, Etag {}
+export interface EditImplantRequest extends ImplantDto, Etag {}
+export interface EditImplantResponse extends ImplantDto, Etag {}
 
 /**
  *
@@ -143,29 +123,32 @@ export interface EditImplantResponse extends ImplantDetails, Etag {}
 export async function editImplant(
     id: string,
     implantDetails: EditImplantRequest
-  ) {
+) {
     try {
-      const { etag, ...implant } = implantDetails;
-      const { data, headers } = await axios.put(`/mop/implant/edit/${id}`, implant, {
-        headers: {
-          "If-Match": etag,
-        },
-      });
-      const newEtag = headers["etag"];
-      return { ...data, etag: newEtag } as EditImplantResponse;
+        const { etag, ...implant } = implantDetails;
+        const { data, headers } = await axios.put(
+            `/mop/implant/edit/${id}`,
+            implant,
+            {
+                headers: {
+                    "If-Match": etag,
+                },
+            }
+        );
+        const newEtag = headers["etag"];
+        return { ...data, etag: newEtag } as EditImplantResponse;
     } catch (error) {
-      if (axios.isAxiosError(error) && error.response) {
-        return {
-          errorMessage: error.response.data as string,
-          status: error.response.status,
-        } as ApiError;
-      }
-      throw error;
+        if (axios.isAxiosError(error) && error.response) {
+            return {
+                errorMessage: error.response.data as string,
+                status: error.response.status,
+            } as ApiError;
+        }
+        throw error;
     }
-  }
+}
 
-
-  export interface GetImplantResponse extends ImplantDetails, Etag {}
+export interface GetImplantResponse extends ImplantDto, Etag {}
 /**
  * Pobierz szczegóły implantu
  *
@@ -174,11 +157,11 @@ export async function editImplant(
  */
 export async function getImplant(id: string) {
     try {
-        const { data, headers } = await axios.get<ImplantDetails>(
+        const { data, headers } = await axios.get<ImplantDto>(
             `/mop/implant/details/${id}`
         );
         const etag = headers["etag"];
-        return { ...data, etag } as GetImplantResponse;
+        return { ...data, etag: etag } as GetImplantResponse;
     } catch (error) {
         if (axios.isAxiosError(error) && error.response) {
             return {
@@ -280,9 +263,7 @@ export async function createImplant(params: CreateImplantRequest) {
     }
 }
 
-
 //----------------------------------------------------- MOP 6 -------------------------------------------------------//
-
 export interface SpecialistListElementDto {
     id: string;
     name: string;
@@ -324,3 +305,35 @@ export async function listSpecialist(params: SpecialistListRequest) {
     }
 }
 //------------------------------------------------- KONIEC MOP 6 ----------------------------------------------------//
+//
+//
+//
+//----------------------------------------------------- MOP 2 -------------------------------------------------------//
+
+export interface ArchiveImplantRequest extends Etag {}
+export interface ArchiveImplantResponse extends ImplantDto, Etag {}
+
+export async function archiveImplant(id: string, implantEtag: string) {
+    try {
+        const { data, headers } = await axios.patch(
+            `/mop/implant/archive/${id}`,
+            {},
+            {
+                headers: {
+                    "If-Match": implantEtag,
+                },
+            }
+        );
+        const newEtag = headers["etag"];
+        return { ...data, etag: newEtag } as ArchiveImplantResponse;
+    } catch (error) {
+        if (axios.isAxiosError(error) && error.response) {
+            return {
+                errorMessage: error.response.data as string,
+                status: error.response.status,
+            } as ApiError;
+        }
+        throw error;
+    }
+}
+//------------------------------------------------- KONIEC MOP 2 ----------------------------------------------------//
