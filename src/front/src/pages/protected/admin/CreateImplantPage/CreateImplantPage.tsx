@@ -1,10 +1,8 @@
 import style from "./createImplantPage.module.scss";
 import { faCancel, faCheck } from "@fortawesome/free-solid-svg-icons";
 import { showNotification } from "@mantine/notifications";
-import { useContext, useState, useTransition } from "react";
+import { useContext, useState } from "react";
 import { useNavigate } from "react-router";
-import { createAccount, CreateAccountRequest } from "../../../../api";
-
 import ActionButton from "../../../../components/shared/ActionButton/ActionButton";
 import InputWithValidation from "../../../../components/shared/InputWithValidation/InputWithValidation";
 import ValidationMessage from "../../../../components/shared/ValidationMessage/ValidationMessage";
