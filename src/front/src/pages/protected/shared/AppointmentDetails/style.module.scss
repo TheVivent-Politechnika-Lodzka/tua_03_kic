@@ -20,7 +20,7 @@
         display: flex;
         flex-direction: row;
         flex-wrap: wrap;
-        justify-content:space-evenly;
+        justify-content: space-evenly;
         height: 80%;
 
         .detail_wrapper {
@@ -28,7 +28,7 @@
             flex-direction: row;
             width: 50%;
             align-items: center;
-            
+
             .title {
                 font-weight: bold;
                 width: fit-content;
@@ -40,14 +40,13 @@
                 color: white;
                 font-size: 1rem;
             }
-            .description{
+            .description {
                 word-break: break-all;
                 overflow-y: scroll;
                 text-overflow: ellipsis;
-                margin-left:10px;
+                margin-left: 10px;
                 max-height: 5rem;
             }
-
         }
     }
 }
@@ -73,4 +72,11 @@
     justify-content: space-evenly;
     align-items: center;
     position: relative;
+}
+.button_holder {
+    height: 4rem;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
 }

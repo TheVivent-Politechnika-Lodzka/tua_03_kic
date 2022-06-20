@@ -1,7 +1,10 @@
-import { faClose } from "@fortawesome/free-solid-svg-icons";
+import { faClose, faInfoCircle } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { ChronoUnit, Instant, LocalDateTime } from "@js-joda/core";
+import { useState } from "react";
 import { AppointmentListElementDto } from "../../../../api/mop";
+import ImplantDetails from "../../../../components/ImplantDetails/ImplantDetails";
+import ActionButton from "../../../../components/shared/ActionButton/ActionButton";
 import Modal from "../../../../components/shared/Modal/Modal";
 import { useStoreSelector } from "../../../../redux/reduxHooks";
 import styles from "./style.module.scss";
@@ -20,6 +23,7 @@ export const AppointmentDetails = ({
     const fixedStartDate = LocalDateTime.ofInstant(startDate);
     const endDate = Instant.parse(appointment.endDate);
     const fixedEndDate = LocalDateTime.ofInstant(endDate);
+    const [implantModal, setImplantModal] = useState<boolean>(false);
     return (
         <Modal isOpen={isOpened}>
             <section className={styles.account_details_page}>
@@ -94,16 +98,46 @@ export const AppointmentDetails = ({
                             </div>
                             <div className={styles.detail_wrapper}>
                                 <p className={styles.title}>
-                                    Szczegóły implantu:
+                                    Obecnie wybrany implant:
                                 </p>
-                                <p className={styles.description}>DODAĆ Szczegóły</p>
+                                <p className={styles.description}>
+                                    <ActionButton
+                                        title="Wyświetl"
+                                        color="purple"
+                                        icon={faInfoCircle}
+                                        onClick={() => setImplantModal(true)}
+                                    ></ActionButton>
+                                </p>
                             </div>
                             <div className={styles.detail_wrapper}>
                                 <p className={styles.title}>Status wizyty:</p>
-                                <p className={styles.description}>{appointment?.status}</p>
+                                <p className={styles.description}>
+                                    {appointment?.status}
+                                </p>
                             </div>
                         </div>
+                        <div className={styles.button_holder}>
+                            <ActionButton //TODO dodać implementacje takowych przycisków, przyciski są w celu ustalenia stylowania
+                                title="Odwołaj wizyte"
+                                color="purple"
+                                icon={faInfoCircle}
+                                onClick={() => console.log("essa")}
+                            ></ActionButton>
+                            <ActionButton
+                                title="Edytuj wizyte"
+                                color="purple"
+                                icon={faInfoCircle}
+                                onClick={() => console.log("essa")}
+                            ></ActionButton>
+                        </div>
                     </div>
+                    <ImplantDetails
+                        id={appointment.implant.id}
+                        isOpened={implantModal}
+                        onClose={() => {
+                            setImplantModal(false);
+                        }}
+                    />
                 </div>
             </section>
         </Modal>
