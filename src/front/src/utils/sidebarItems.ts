@@ -34,11 +34,15 @@ const adminSidebarItems: SideBarRoute[] = [
     { title: "Zarządzaj kontami", icon: faUserCog, path: "/accounts" },
     { title: "Zarządzaj wizytami", icon: faCalendarAlt, path: "/visits" },
     {
-        title: "Zarządzaj specjalistami",
+        title: "Specjaliści",
         icon: faStethoscope,
         path: "/specialists",
     },
-    { title: "Zarządzaj cyberwszczepami", icon: faMicrochip, path: "/implants" },
+    {
+        title: "Zarządzaj cyberwszczepami",
+        icon: faMicrochip,
+        path: "/implants",
+    },
 ];
 
 const handleSwitchSidebarItems = (accessLevel: AccessLevelType) => {
