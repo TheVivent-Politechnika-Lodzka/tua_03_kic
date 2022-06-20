@@ -238,8 +238,13 @@ public class MOPService extends AbstractService implements MOPServiceInterface, 
         if (appointment.getEndDate().isAfter(Instant.now())) throw new AppointmentFinishAttemptBeforeEndDateException();
 
         appointment.setStatus(FINISHED);
+
+        Implant implant = appointment.getImplant();
+        implant.setPopularity(implant.getPopularity() + 1);
+
         appointmentFacade.edit(appointment);
-        return appointmentFacade.findById(appointment.getId());
+
+        return appointment;
     }
 
     @Override
