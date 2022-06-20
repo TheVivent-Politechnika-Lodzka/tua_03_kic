@@ -6,7 +6,6 @@ import { useNavigate } from "react-router";
 import { register, RegisterRequest } from "../../../api";
 import ActionButton from "../../../components/shared/ActionButton/ActionButton";
 import { failureNotificationItems } from "../../../utils/showNotificationsItems";
-import styles from "./registerPage.module.scss";
 import { GoogleReCaptchaProvider } from "react-google-recaptcha-v3";
 import { useGoogleReCaptcha } from "react-google-recaptcha-v3";
 import { validationContext } from "../../../context/validationContext";
@@ -16,6 +15,7 @@ import { RegisterModal } from "../../../components/RegisterModal";
 import { Center, Image } from "@mantine/core";
 import { uploadPhoto } from "../../../utils/upload";
 import { HiOutlinePhotograph } from "react-icons/hi";
+import styles from "./style.module.scss";
 
 const RegisterPageInternal = () => {
     const [account, setAccount] = useState<RegisterRequest>({
@@ -26,7 +26,7 @@ const RegisterPageInternal = () => {
         email: "",
         phoneNumber: "",
         pesel: "",
-        url:"",
+        url: "",
         language: {
             language: "pl",
         },
@@ -103,38 +103,38 @@ const RegisterPageInternal = () => {
                     {t("sign_in")}
                 </div>
                 <div className={styles.edit_fields_wrapper}>
-                        {account.url.length === 0 ? (
-                            <div className={`${styles.image} ${styles.margin}`}>
-                                <Center>
-                                    <HiOutlinePhotograph size="80px" />
-                                </Center>
-                            </div>
-                        ) : (
-                            <Image
-                                radius="md"
-                                src={account.url}
-                                height="20vw"
-                                alt="image create"
-                                styles={{
-                                    root: { marginTop: "6vh" },
-                                }}
-                            />
-                        )}
-
-                        <input
-                            id="file-input"
-                            type="file"
-                            onChange={async (event) => {
-                                const u = await uploadPhoto(event);
-                                if (u) {
-                                    setAccount({
-                                        ...account,
-                                        url: u,
-                                    });
-                                }
+                    {account.url.length === 0 ? (
+                        <div className={`${styles.image} ${styles.margin}`}>
+                            <Center>
+                                <HiOutlinePhotograph size="80px" />
+                            </Center>
+                        </div>
+                    ) : (
+                        <Image
+                            radius="md"
+                            src={account.url}
+                            height="20vw"
+                            alt="image create"
+                            styles={{
+                                root: { marginTop: "6vh" },
                             }}
                         />
-                    </div>
+                    )}
+
+                    <input
+                        id="file-input"
+                        type="file"
+                        onChange={async (event) => {
+                            const u = await uploadPhoto(event);
+                            if (u) {
+                                setAccount({
+                                    ...account,
+                                    url: u,
+                                });
+                            }
+                        }}
+                    />
+                </div>
                 <div className={styles.edit_field} title="email">
                     <InputWithValidation
                         required

@@ -93,7 +93,7 @@ export const ResetPasswordModal = ({
                         <div className={style.button_wrapper}>
                             <ActionButton
                                 title="Przypomnij hasło"
-                                color="purple"
+                                color="orange"
                                 onClick={handleResetPassword}
                                 isDisabled={!isLoginValid}
                                 isLoading={isLoading}

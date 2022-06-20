@@ -8,7 +8,7 @@
     color: white;
     flex-direction: column;
     background-color: $primary-color;
-    overflow-x: hidden;
+    overflow: hidden;
 
     .create_user_page_header {
         width: 100%;
@@ -27,6 +27,7 @@
         justify-content: space-evenly;
         width: 85%;
         margin-bottom: 3rem;
+        animation: 0.5s fadeInFromBottom ease-in-out;
 
         .create_data_account_wrapper {
             display: flex;
@@ -92,5 +93,16 @@
                 }
             }
         }
+    }
+}
+
+@keyframes fadeInFromBottom {
+    0% {
+        opacity: 0;
+        transform: translateY(10rem);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
     }
 }
