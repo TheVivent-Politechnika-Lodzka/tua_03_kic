@@ -76,7 +76,6 @@ public class RefreshTokenFacade extends AbstractFacade<RefreshToken> {
         } catch (PersistenceException e) {
             throw new DatabaseException(e);
         }
-
     }
 
     /**
@@ -96,18 +95,5 @@ public class RefreshTokenFacade extends AbstractFacade<RefreshToken> {
         } catch (PersistenceException e) {
             throw new DatabaseException(e);
         }
-
-    }
-
-    /**
-     * metoda zwraca tokeny przed podaną datą
-     *
-     * @return
-     */
-    @PermitAll
-    public List<RefreshToken> findExpiredTokens() {
-        TypedQuery<RefreshToken> typedQuery = entityManager.createNamedQuery("RefreshToken.findExpired", RefreshToken.class);
-        typedQuery.setParameter("now", Instant.now());
-        return typedQuery.getResultList();
     }
 }

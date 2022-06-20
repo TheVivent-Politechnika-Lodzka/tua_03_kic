@@ -77,17 +77,4 @@ public class AccountConfirmationFacade extends AbstractFacade<AccountConfirmatio
     }
 
 
-    /**
-     * Metoda szuka wygasłe tokeny
-     *
-     * @return Lista wygasłych tokenów
-     */
-    @PermitAll
-    public List<AccountConfirmationToken> findExpiredTokens(){
-        TypedQuery<AccountConfirmationToken> typedQuery = entityManager
-                .createNamedQuery("AccountConfirmationToken.findExpired", AccountConfirmationToken.class);
-        typedQuery.setParameter("now", Instant.now());
-        return typedQuery.getResultList();
-    }
-
 }
