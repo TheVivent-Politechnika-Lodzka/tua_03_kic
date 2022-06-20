@@ -4,7 +4,6 @@ import { useContext, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import {
     changeOwnPassword,
-    ChangeOwnPasswordRequest,
     GetAccountResponse,
     getOwnAccount,
 } from "../../../../api";
@@ -24,7 +23,6 @@ import {
     GoogleReCaptchaProvider,
     useGoogleReCaptcha,
 } from "react-google-recaptcha-v3";
-import { display, style } from "@mui/system";
 
 interface ChangeOwnPasswordPageProps {
     isOpen: boolean;
@@ -127,7 +125,7 @@ const ChangeOwnPasswordInternal = ({
                             <div className={styles.change_password_wrapper}>
                                 <div className={styles.input_wrapper}>
                                     <InputWithValidation
-                                        title="Stare hasło: "
+                                        title="Stare hasło"
                                         validationType="VALIDATE_OLD_PASSWORD"
                                         isValid={isOldPasswordValid}
                                         value={password.oldPassword}
@@ -137,10 +135,11 @@ const ChangeOwnPasswordInternal = ({
                                                 oldPassword: e.target.value,
                                             })
                                         }
-                                        type="password"
+                                        type="new-password"
+                                        required
                                     />
                                     <InputWithValidation
-                                        title="Nowe hasło: "
+                                        title="Nowe hasło"
                                         validationType="VALIDATE_NEW_PASSWORD"
                                         isValid={isNewPasswordValid}
                                         value={password.newPassword}
@@ -150,7 +149,8 @@ const ChangeOwnPasswordInternal = ({
                                                 newPassword: e.target.value,
                                             })
                                         }
-                                        type="password"
+                                        type="new-password"
+                                        required
                                     />
                                 </div>
                                 <div className={styles.action_buttons_wrapper}>

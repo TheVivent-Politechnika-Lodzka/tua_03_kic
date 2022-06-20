@@ -13,6 +13,7 @@
     z-index: 90;
     box-shadow: 0 0.9rem 1.3rem rgba(34, 33, 33, 0.7);
     transition: 0.2s background-color ease-in-out;
+    
 
     .language_select {
         color: #121218;
@@ -115,3 +116,4 @@
 .client {
     background: $client-gradient;
 }
+

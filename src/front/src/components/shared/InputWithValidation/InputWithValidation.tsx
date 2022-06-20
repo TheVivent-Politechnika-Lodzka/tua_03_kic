@@ -27,7 +27,7 @@ const InputWithValidation = ({
     required,
     styleWidth,
     onChange,
-    type = "text"
+    type = "text",
 }: InputWithValidationProps) => {
     const [input, setInput] = useState<string | undefined>(value);
     const { state, dispatch } = useContext(validationContext);
@@ -57,8 +57,14 @@ const InputWithValidation = ({
                 {required && <span style={{ color: "red" }}> *</span>}
             </p>
 
-            <div className={styles.input_wrapper} style={styleWidth}>
+            <form
+                className={styles.input_wrapper}
+                style={styleWidth}
+                autoComplete="off"
+
+            >
                 <input
+                    autoComplete="off"
                     type={type}
                     value={input}
                     onChange={handleChange}
@@ -73,7 +79,7 @@ const InputWithValidation = ({
                     icon={isValid ? faCheck : faClose}
                     color="#00FF66"
                 />
-            </div>
+            </form>
         </div>
     );
 };

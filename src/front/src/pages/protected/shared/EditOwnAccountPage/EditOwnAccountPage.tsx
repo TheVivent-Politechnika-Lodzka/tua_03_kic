@@ -118,6 +118,7 @@ const EditOwnAccountPageInternal = () => {
                     color="#fff"
                     width="10rem"
                     height="10rem"
+                    className={style.loading}
                 />
             ) : (
                 <>
