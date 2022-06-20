@@ -154,7 +154,7 @@ public class StartupConfig {
 
     public void createImplant() {
         Implant implant = new Implant();
-        implant.setName("implant");
+        implant.setName("implant pierwszy");
         implant.setDescription("testowy implant zwiększający siłę przebicia przez ściany amerykańskie (z kartonu) o 10% maksymalnego zdrowia");
         implant.setManufacturer("Janusz Nowak");
         implant.setPrice(1000);
@@ -204,7 +204,7 @@ public class StartupConfig {
         Account specialist = em.createNamedQuery("Account.findByLogin", Account.class).setParameter("login", "spec").getSingleResult();
 
         Implant implant = new Implant();
-        implant.setName("Implant tak fajny ze wszystkich stron");
+        implant.setName("Implant drugi");
         implant.setDescription("""
                 Na pierwszym planie obrazu widać wzgórze,
                 na którym oracz orze ziemie.Ten fragment płótna przyciąga uwagę,
@@ -243,7 +243,7 @@ public class StartupConfig {
 
         Implant implant = new Implant();
 
-        implant.setName("Implant tak fajny ze wszystkich stron xD");
+        implant.setName("Implant trzeci");
         implant.setDescription("""
                 Na pierwszym planie obrazu widać wzgórze,
                 na którym oracz orze ziemie.Ten fragment płótna przyciąga uwagę,

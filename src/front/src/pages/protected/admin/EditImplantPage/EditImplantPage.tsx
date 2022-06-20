@@ -1,8 +1,8 @@
-import style from "./createImplantPage.module.scss";
+import style from "./editImplantPage.module.scss";
 import { faCancel, faCheck } from "@fortawesome/free-solid-svg-icons";
 import { showNotification } from "@mantine/notifications";
-import { useContext, useState } from "react";
-import { useNavigate } from "react-router";
+import { useContext, useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router";
 import ActionButton from "../../../../components/shared/ActionButton/ActionButton";
 import InputWithValidation from "../../../../components/shared/InputWithValidation/InputWithValidation";
 import ValidationMessage from "../../../../components/shared/ValidationMessage/ValidationMessage";
@@ -15,26 +15,20 @@ import { useTranslation } from "react-i18next";
 import { Center, Image } from "@mantine/core";
 import { HiOutlinePhotograph } from "react-icons/hi";
 import { uploadPhoto } from "../../../../utils/upload";
-import { createImplant } from "../../../../api/mop";
+import { editImplant, EditImplantResponse, getImplant, GetImplantResponse } from "../../../../api/mop";
+
 import ConfirmActionModal from "../../../../components/shared/ConfirmActionModal/ConfirmActionModal";
 
-export const CreateImplantPage = () => {
+export const EditImplantPage = () => {
     const { t } = useTranslation();
     const [loading, setLoading] = useState<Loading>({
         pageLoading: true,
         actionLoading: false,
     });
 
-    const [error, setError] = useState<ApiError>();
     const [opened, setOpened] = useState<boolean>(false);
-    const [implant, setImplant] = useState({
-        name: "",
-        description: "",
-        manufacturer: "",
-        price: "",
-        duration: "",
-        url: "",
-    });
+    const [implant, setImplant] = useState<GetImplantResponse>();
+    const { id } = useParams();
 
     const {
         state,
@@ -48,6 +42,10 @@ export const CreateImplantPage = () => {
         dispatch,
     } = useContext(validationContext);
 
+    useEffect(() => {
+        handleGetImplant();
+    }, []);
+
     const navigate = useNavigate();
 
     const isEveryFieldValid =
@@ -57,34 +55,43 @@ export const CreateImplantPage = () => {
         isDurationValid &&
         isDescriptionValid;
 
+    const handleGetImplant = async () => {
+        if (!id) return;
+        setLoading({ ...loading, pageLoading: true });
+        const response = await getImplant(id);
+        if ("errorMessage" in response) {
+            showNotification(failureNotificationItems(response.errorMessage));
+            setLoading({ ...loading, pageLoading: false });
+            return;
+        }
+        setImplant({...response, duration: Math.round(response.duration /60)});
+        setLoading({ ...loading, pageLoading: false });
+
+    };
+
     const handleSubmit = async () => {
-        const response = await createImplant({
-            name: implant.name,
-            description: implant.description,
-            manufacturer: implant.manufacturer,
-            price: parseInt(implant.price),
-            duration: parseInt(implant.duration) * 60,
-            url: implant.url,
-        });
+        if (!implant || !id) return;
+        const response = await editImplant(id, {...implant, duration: implant.duration*60});
         if ("errorMessage" in response) {
             showNotification(failureNotificationItems(response.errorMessage));
             return;
         }
         showNotification(
-            successNotficiationItems(t("createImplantPage.implantCreated"))
+            successNotficiationItems(t("editImplantPage.implantEdited"))
         );
         navigate("/implants");
     };
 
     return (
-        <section className={style.create_implant_page}>
-            <div className={style.create_implant_page_header}>
-                <h2> {t("createImplantPage.addImplant")}</h2>
+        <section className={style.edit_implant_page}>
+            <div className={style.edit_implant_page_header}>
+                <h2> {t("editImplantPage.addImplant")}</h2>
             </div>
-            <div className={style.create_implant_page_content}>
-                <div className={style.create_data_account_wrapper}>
+            <div className={style.edit_implant_page_content}>
+                <div className={style.edit_data_account_wrapper}>
                     <div className={style.edit_fields_wrapper}>
-                        {implant.url.length === 0 ? (
+                        
+                        { implant?.image.length === 0 ? (
                             <div className={`${style.image} ${style.margin}`}>
                                 <Center>
                                     <HiOutlinePhotograph size="80px" />
@@ -93,7 +100,7 @@ export const CreateImplantPage = () => {
                         ) : (
                             <Image
                                 radius="md"
-                                src={implant.url}
+                                src={implant?.image}
                                 height="20vw"
                                 alt="image create"
                                 styles={{
@@ -108,9 +115,10 @@ export const CreateImplantPage = () => {
                             onChange={async (event) => {
                                 const u = await uploadPhoto(event);
                                 if (u) {
+                                    if (implant)
                                     setImplant({
                                         ...implant,
-                                        url: u,
+                                        image: u,
                                     });
                                 }
                             }}
@@ -119,11 +127,12 @@ export const CreateImplantPage = () => {
                     <div className={style.edit_fields_wrapper}>
                         <div className={style.edit_field}>
                             <InputWithValidation
-                                title={t("createImplantPage.name")}
+                                title={t("editImplantPage.name")}
                                 value={implant?.name}
                                 validationType="VALIDATE_IMPLANT_NAME"
                                 isValid={isImplantNameValid}
                                 onChange={(e) => {
+                                    if (e.target.value && implant)
                                     setImplant({
                                         ...implant,
                                         name: e.target.value,
@@ -133,18 +142,19 @@ export const CreateImplantPage = () => {
                             />
                             <ValidationMessage
                                 isValid={isImplantNameValid}
-                                message={t("createImplantPage.nameMsg")}
+                                message={t("editImplantPage.nameMsg")}
                             />
                         </div>
                     </div>
                     <div className={style.edit_fields_wrapper}>
                         <div className={style.edit_field}>
                             <InputWithValidation
-                                title={t("createImplantPage.manufacturer")}
+                                title={t("editImplantPage.manufacturer")}
                                 value={implant?.manufacturer}
                                 validationType="VALIDATE_MANUFACTURER"
                                 isValid={isManufacturerValid}
                                 onChange={(e) => {
+                                    if (e.target.value && implant)
                                     setImplant({
                                         ...implant,
                                         manufacturer: e.target.value,
@@ -154,7 +164,7 @@ export const CreateImplantPage = () => {
                             />
                             <ValidationMessage
                                 isValid={isManufacturerValid}
-                                message={t("createImplantPage.manufacturerMsg")}
+                                message={t("editImplantPage.manufacturerMsg")}
                             />
                         </div>
                     </div>
@@ -162,21 +172,22 @@ export const CreateImplantPage = () => {
                     <div className={style.edit_fields_wrapper}>
                         <div className={style.edit_field}>
                             <InputWithValidation
-                                title={t("createImplantPage.price")}
-                                value={implant?.price}
+                                title={t("editImplantPage.price")}
+                                value={implant?.price.toString() }
                                 validationType="VALIDATE_PRICE"
                                 isValid={isPriceValid}
                                 onChange={(e) => {
+                                    if (e.target.value && implant)
                                     setImplant({
                                         ...implant,
-                                        price: e.target.value,
+                                        price: parseInt(e.target.value),
                                     });
                                 }}
                                 required
                             />
                             <ValidationMessage
                                 isValid={isPriceValid}
-                                message={t("createImplantPage.priceMsg")}
+                                message={t("editImplantPage.priceMsg")}
                             />
                         </div>
                     </div>
@@ -184,21 +195,22 @@ export const CreateImplantPage = () => {
                     <div className={style.edit_fields_wrapper}>
                         <div className={style.edit_field}>
                             <InputWithValidation
-                                title={t("createImplantPage.duration")}
-                                value={implant?.duration}
+                                title={t("editImplantPage.duration")}
+                                value={implant?.duration.toString()}
                                 validationType="VALIDATE_DURATION"
                                 isValid={isDurationValid}
                                 onChange={(e) => {
+                                    if (e.target.value && implant)
                                     setImplant({
                                         ...implant,
-                                        duration: e.target.value,
+                                        duration: parseInt(e.target.value),
                                     });
                                 }}
                                 required
                             />
                             <ValidationMessage
                                 isValid={isDurationValid}
-                                message={t("createImplantPage.durationMsg")}
+                                message={t("editImplantPage.durationMsg")}
                             />
                         </div>
                     </div>
@@ -206,11 +218,12 @@ export const CreateImplantPage = () => {
                     <div className={style.edit_fields_wrapper}>
                         <div className={style.edit_field}>
                             <InputWithValidation
-                                title={t("createImplantPage.description")}
+                                title={t("editImplantPage.description")}
                                 value={implant?.description}
                                 validationType="VALIDATE_DESCRIPTION"
                                 isValid={isDescriptionValid}
                                 onChange={(e) => {
+                                    if (e.target.value && implant)
                                     setImplant({
                                         ...implant,
                                         description: e.target.value,
@@ -220,12 +233,12 @@ export const CreateImplantPage = () => {
                             />
                             <ValidationMessage
                                 isValid={isDescriptionValid}
-                                message={t("createImplantPage.descriptionMsg")}
+                                message={t("editImplantPage.descriptionMsg")}
                             />
                         </div>
                     </div>
 
-                    <div className={style.create_implant_buttons_wrapper}>
+                    <div className={style.edit_implant_buttons_wrapper}>
                         <ActionButton
                             onClick={() => {
                                 setOpened(true);
@@ -233,7 +246,7 @@ export const CreateImplantPage = () => {
                             isDisabled={!isEveryFieldValid}
                             icon={faCheck}
                             color="green"
-                            title="Zatwierdź"
+                            title={t("editImplantPage.confirm")}
                         />
                         <ActionButton
                             onClick={() => {
@@ -241,7 +254,7 @@ export const CreateImplantPage = () => {
                             }}
                             icon={faCancel}
                             color="red"
-                            title="Anuluj"
+                            title={t("editImplantPage.cancel")}
                         />
                     </div>
                 </div>
@@ -257,9 +270,9 @@ export const CreateImplantPage = () => {
                     handleSubmit();
                 }}
                 isLoading={loading.actionLoading as boolean}
-                title={t("createImplantPage.modalTitle")}
+                title={t("editImplantPage.modalTitle")}
             >
-                {t("createImplantPage.confirmMsg")}
+                {t("editImplantPage.confirmMsg")}
             </ConfirmActionModal>
         </section>
     );
