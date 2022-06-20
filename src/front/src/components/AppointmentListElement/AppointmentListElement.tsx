@@ -17,10 +17,10 @@ export const AppointmentListElement = (props: { element: AppointmentListElementD
             <SimpleGrid cols={3}>
                 <SimpleGrid cols={3}>
                     <div className={styles.image_top}>
-                        <img src={props.element.client.url} height="40px" alt="img"/>
+                        <img src={props.element.client.url} height="170px" alt="img"/>
                     </div>
                     <div className={styles.image_bottom}>
-                        <img src={props.element.specialist.url} height="40px" alt="img"/>
+                        <img src={props.element.specialist.url} height="130px" alt="img"/>
                     </div>
                     <div/>
                 </SimpleGrid>
