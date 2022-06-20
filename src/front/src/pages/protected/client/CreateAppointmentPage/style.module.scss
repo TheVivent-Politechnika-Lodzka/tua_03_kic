@@ -33,7 +33,6 @@
 .implant_display{
     display: flex;
     flex-direction: column;
-    // justify-content: space-evenly;
     align-items: center;
     width: 90%;
     padding: 0.4rem;
@@ -86,8 +85,6 @@
                 align-items: center;
                 width: 100%;
                 background-color: rgba(0,0,0,0.2);
-                border-radius: 1.2rem;
-                -webkit-box-shadow: 4px 4px 16px 6px rgba(0,0,0,0.5); 
                 box-shadow: 4px 4px 16px 6px rgba(0,0,0,0.5);
                 height: 75%;
                 overflow-y: scroll;
@@ -111,8 +108,43 @@
     }
 }
 
+.specialist_card {
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    margin-top: 0.8rem;
+    width: 80%;
+    padding: 0.2rem;
+    border-radius: 5rem;
+    box-shadow: 8px 8px 24px 0px rgb(92, 92, 92);
+    
+    &:hover {
+        box-shadow: 8px 8px 24px 0px $white;
+        cursor: pointer;
+    }
+
+    .specialist_image {
+        border-radius: 100%;
+        float: left;
+        height: 4rem;
+        width: 4rem;
+    }
+
+    .specialist_name {
+        width: 100%;
+        text-align: center;
+        font-size: 1.2rem;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+}
+
 .implant {
     position: relative;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
     width: 100%;
 
     .implant_image {
@@ -123,18 +155,23 @@
     }
 
     .implant_title {
-        position: absolute;
         width: 100%;
-        margin-top: 1.2rem;
         text-align: center;
         font-size: 2rem;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
     }
 
     .implant_price_tag {
         position: absolute;
+        background-color: $green;
+        padding: 0.2rem 0.4rem;
+        border-radius: 0.2rem;
         top: 1rem;
         right: 1rem;
         font-size: 1.2rem;
+        font-weight: bold;
     }
 
 }

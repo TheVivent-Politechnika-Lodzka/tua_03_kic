@@ -1,4 +1,7 @@
-import { faShoppingCart } from "@fortawesome/free-solid-svg-icons";
+import {
+    faArrowAltCircleRight,
+    faShoppingCart,
+} from "@fortawesome/free-solid-svg-icons";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router";
 import style from "./style.module.scss";
@@ -12,25 +15,34 @@ import {
     SpecialistListResponse,
 } from "../../../../api/mop";
 import { showNotification } from "@mantine/notifications";
-import {
-    failureNotificationItems,
-    successNotficiationItems,
-} from "../../../../utils/showNotificationsItems";
+import { failureNotificationItems } from "../../../../utils/showNotificationsItems";
 
 const CreateAppointmentPage = () => {
     const { implantId } = useParams();
     const navigate = useNavigate();
-    const [specialistList, setSpecialistList] =
-        useState<SpecialistListElementDto[]>(); // TODO zmienić na GetSpecialistListResponse
-    const [specialist, setSpecialist] = useState<any>(); // TODO zmienić na GetSpecialistResponse
+    const [specialistList, setSpecialistList] = useState<
+        SpecialistListElementDto[]
+    >([]);
+    const [specialist, setSpecialist] = useState<SpecialistListElementDto>();
+    const [currentPage, setCurrentPage] = useState(0);
+    const [totalPages, setTotalPages] = useState(1);
 
     const handleLoadSpecialistList = async () => {
-        const response = await listSpecialist({ size: 5, page: 1, phrase: "" });
+        const response = await listSpecialist({
+            size: 1,
+            page: currentPage + 1,
+            phrase: "",
+        });
         if ("errorMessage" in response) {
             showNotification(failureNotificationItems(response.errorMessage));
             return;
         }
-        setSpecialistList(response.data);
+        setCurrentPage(response.currentPage);
+        setSpecialistList(specialistList.concat(response.data));
+        setTotalPages(response.totalPages);
+        if (specialistList.length === 0) {
+            setSpecialist(response.data[0]);
+        }
     };
 
     useEffect(() => {
@@ -46,13 +58,27 @@ const CreateAppointmentPage = () => {
                 </div>
                 <div className={style.bottom_wrapper}>
                     <div className={style.specialist_display}>
-                        {specialistList?.map((spec: any) => (
-                            <SpecialistItem
-                                key={spec.id}
-                                specialist={spec}
-                                onClick={setSpecialist}
-                            />
-                        ))}
+                        {specialistList?.map(
+                            (spec: SpecialistListElementDto) => (
+                                <SpecialistItem
+                                    key={spec.id}
+                                    specialist={spec}
+                                    onClick={setSpecialist}
+                                    isGreen={specialist?.id === spec.id}
+                                />
+                            )
+                        )}
+                        {totalPages !== currentPage && (
+                            <>
+                                <div style={{ marginTop: "1rem" }}></div>
+                                <ActionButton
+                                    title="załaduj więcej"
+                                    icon={faArrowAltCircleRight}
+                                    color="green"
+                                    onClick={handleLoadSpecialistList}
+                                />
+                            </>
+                        )}
                     </div>
                     <div className={style.date_display}>
                         <Calendar size="xl" className={style.calendar} />
@@ -94,7 +120,6 @@ const ImplantItem = ({ implantId }: ImplantItemProps) => {
             showNotification(failureNotificationItems(response.errorMessage));
             return;
         }
-        console.log(response);
         setImplant(response);
     };
 
@@ -106,22 +131,29 @@ const ImplantItem = ({ implantId }: ImplantItemProps) => {
         <div className={style.implant}>
             <img
                 className={style.implant_image}
-                src={implant?.image}
+                src={implant?.image ?? "https://picsum.photos/200"}
                 alt="implant"
             />
             <div className={style.implant_title}>
                 <h2>{implant?.name}</h2>
-                <div className={style.implant_price_tag}>{implant?.price}</div>
+                <div className={style.implant_price_tag}>
+                    {implant?.price} zł
+                </div>
             </div>
         </div>
     );
 };
 
 interface SpecialistItemInterface {
-    specialist: any;
-    onClick: (specialist: any) => void;
+    specialist: SpecialistListElementDto;
+    onClick: (specialist: SpecialistListElementDto) => void;
+    isGreen?: boolean;
 }
-const SpecialistItem = ({ onClick, specialist }: SpecialistItemInterface) => {
+const SpecialistItem = ({
+    onClick,
+    specialist,
+    isGreen = false,
+}: SpecialistItemInterface) => {
     const spec = specialist;
 
     const handleClick = () => {
@@ -129,15 +161,25 @@ const SpecialistItem = ({ onClick, specialist }: SpecialistItemInterface) => {
     };
 
     return (
-        <div className={style.specialist_item} onClick={handleClick}>
-            <div>
-                <img src={spec.imageUrl} alt="specialist" />
-            </div>
-            <div>
-                <h3>
-                    {spec.firstName} {spec.lastName}
-                </h3>
-            </div>
+        <div
+            className={style.specialist_card}
+            style={
+                isGreen
+                    ? {
+                          boxShadow: "8px 8px 24px 0px rgb(0, 176, 70)",
+                      }
+                    : {}
+            }
+            onClick={handleClick}
+        >
+            <img
+                className={style.specialist_image}
+                src="https://picsum.photos/200"
+                alt="specialist"
+            />
+            <h3 className={style.specialist_name}>
+                {spec.name} {spec.surname}
+            </h3>
         </div>
     );
 };
