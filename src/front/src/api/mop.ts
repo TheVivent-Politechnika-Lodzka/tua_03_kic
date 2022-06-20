@@ -273,6 +273,8 @@ export async function listSpecialist(params: SpecialistListRequest) {
 }
 //------------------------------------------------- KONIEC MOP 6 ----------------------------------------------------//
 
+//----------------------------------------------------- MOP 9 -------------------------------------------------------//
+
 export async function getSpecialistAvailability(
     specialistId: string,
     month: Instant,
@@ -284,7 +286,8 @@ export async function getSpecialistAvailability(
         );
 
         const availability = data.map((day) => {
-            return Instant.parse(day);
+            const tmp = Instant.parse(day);
+            return tmp;
         });
 
         return availability;
@@ -298,3 +301,33 @@ export async function getSpecialistAvailability(
         throw error;
     }
 }
+
+interface CreateAppointmentRequest {
+    specialistId: string;
+    implantId: string;
+    startDate: string;
+}
+
+interface CreateAppointmentResponse extends AppointmentDto, Etag {}
+
+export async function createAppointment(request: CreateAppointmentRequest) {
+    try {
+        const { data, headers } = await axios.post<AppointmentDto>(
+            `/mop/visit/create`,
+            request
+        );
+
+        const etag = headers["etag"];
+        return { ...data, etag } as CreateAppointmentResponse;
+    } catch (error) {
+        if (axios.isAxiosError(error) && error.response) {
+            return {
+                errorMessage: error.response.data as string,
+                status: error.response.status,
+            } as ApiError;
+        }
+        throw error;
+    }
+}
+
+//------------------------------------------------- KONIEC MOP 6 ----------------------------------------------------//
