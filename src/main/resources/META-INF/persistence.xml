@@ -10,7 +10,8 @@
         <properties>
             <property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQLDialect"/>
             <property name="hibernate.connection.driver_class" value="org.postgresql.Driver"/>
-            <property name="hibernate.transaction.jta.platform" value="org.hibernate.service.jta.platform.internal.SunOneJtaPlatform" />
+            <property name="hibernate.transaction.jta.platform"
+                      value="org.hibernate.service.jta.platform.internal.SunOneJtaPlatform"/>
             <property name="hibernate.hbm2ddl.auto" value="create-drop"/>
 
             <property name="javax.persistence.sql-load-script-source" value="init.sql"/>
@@ -32,13 +33,15 @@
         <class>pl.lodz.p.it.ssbd2022.ssbd03.entities.tokens.AccountConfirmationToken</class>
 
         <class>pl.lodz.p.it.ssbd2022.ssbd03.entities.Appointment</class>
+        <class>pl.lodz.p.it.ssbd2022.ssbd03.entities.ImplantPopularityAggregate</class>
         <class>pl.lodz.p.it.ssbd2022.ssbd03.entities.Implant</class>
         <class>pl.lodz.p.it.ssbd2022.ssbd03.entities.ImplantReview</class>
         <exclude-unlisted-classes>true</exclude-unlisted-classes>
         <properties>
             <property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQLDialect"/>
             <property name="hibernate.connection.driver_class" value="org.postgresql.Driver"/>
-            <property name="hibernate.transaction.jta.platform" value="org.hibernate.service.jta.platform.internal.SunOneJtaPlatform" />
+            <property name="hibernate.transaction.jta.platform"
+                      value="org.hibernate.service.jta.platform.internal.SunOneJtaPlatform"/>
 
             <property name="hibernate.show_sql" value="true"/>
             <property name="hibernate.format_sql" value="true"/>
@@ -48,6 +51,7 @@
         <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
         <jta-data-source>java:app/jdbc/ssbd03mop</jta-data-source>
         <class>pl.lodz.p.it.ssbd2022.ssbd03.entities.Appointment</class>
+        <class>pl.lodz.p.it.ssbd2022.ssbd03.entities.ImplantPopularityAggregate</class>
         <class>pl.lodz.p.it.ssbd2022.ssbd03.entities.Implant</class>
         <class>pl.lodz.p.it.ssbd2022.ssbd03.entities.ImplantReview</class>
 
@@ -60,7 +64,8 @@
         <properties>
             <property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQLDialect"/>
             <property name="hibernate.connection.driver_class" value="org.postgresql.Driver"/>
-            <property name="hibernate.transaction.jta.platform" value="org.hibernate.service.jta.platform.internal.SunOneJtaPlatform" />
+            <property name="hibernate.transaction.jta.platform"
+                      value="org.hibernate.service.jta.platform.internal.SunOneJtaPlatform"/>
 
             <property name="hibernate.show_sql" value="true"/>
             <property name="hibernate.format_sql" value="true"/>

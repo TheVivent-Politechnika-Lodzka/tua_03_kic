@@ -222,7 +222,7 @@ export interface ChangeOwnPasswordResponse extends AccountDetails, Etag {}
  * @returns @example ChangeOwnPasswordResponse | {errorMessage, status}
  */
 export async function changeOwnPassword(
-  passwordData: ChangeAnyPasswordRequest
+  passwordData: ChangeOwnPasswordRequest
 ) {
   try {
     const { etag, ...password } = passwordData;

@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 import pl.lodz.p.it.ssbd2022.ssbd03.mop.dto.AppointmentDto;
+import pl.lodz.p.it.ssbd2022.ssbd03.mop.dto.AppointmentOwnEditDto;
 
 public class AppointmentMapper {
 
@@ -35,6 +36,8 @@ public class AppointmentMapper {
     public AppointmentEditDto createEditDtoFromAppointment(Appointment appointment) {
         AppointmentEditDto appointmentEditDto = new AppointmentEditDto();
         appointmentEditDto.setDescription(appointment.getDescription());
+        appointmentEditDto.setId(appointment.getId());
+        appointmentEditDto.setVersion(appointment.getVersion());
         appointmentEditDto.setStatus(appointment.getStatus());
         return appointmentEditDto;
     }
@@ -97,4 +100,17 @@ public class AppointmentMapper {
         );
         return appointmentDto;
     }
+    /**
+     * Metoda mapująca dane z DTO z danymi do edycji wizyty na wizytę
+     *
+     * @param appointmentOwnEditDto DTO z danymi do edycji wizyty
+     * @return wizyta ze zmianami
+     */
+    public Appointment createAppointmentFromAppointmentOwnEditDto(AppointmentOwnEditDto appointmentOwnEditDto){
+        Appointment appointment = new Appointment();
+        appointment.setDescription(appointmentOwnEditDto.getDescription());
+        appointment.setStatus(appointmentOwnEditDto.getStatus());
+        appointment.setStartDate(appointmentOwnEditDto.getStartDate());
+        return appointment;
+    };
 }

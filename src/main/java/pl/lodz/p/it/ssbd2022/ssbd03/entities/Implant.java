@@ -65,10 +65,9 @@ public class Implant extends AbstractEntity implements Serializable {
     @Getter @Setter
     private boolean archived = false;
 
-    @Basic(optional = false)
-    @Column(name = "popularity", nullable = false)
-    @Getter @Setter
-    private int popularity;
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "popularity", referencedColumnName = "id")
+    private ImplantPopularityAggregate popularity = new ImplantPopularityAggregate();
 
     @Basic(optional = false)
     @Column(name = "duration", nullable = false)
@@ -80,8 +79,12 @@ public class Implant extends AbstractEntity implements Serializable {
     @Url
     private String image;
 
+    public int getPopularity() {
+        return this.popularity.getPopularity();
+    }
 
-//    @OneToMany(cascade = {CascadeType.REMOVE, CascadeType.PERSIST}, mappedBy = "implant", fetch = FetchType.LAZY)
-//    @Getter
-//    private Collection<Review> reviewCollection = new ArrayList<>();
+    public void setPopularity(int popularity) {
+        this.popularity.setPopularity(popularity);
+    }
+
 }

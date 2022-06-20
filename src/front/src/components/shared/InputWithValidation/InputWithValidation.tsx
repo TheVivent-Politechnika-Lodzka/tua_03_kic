@@ -26,8 +26,8 @@ const InputWithValidation = ({
     isValid,
     required,
     styleWidth,
-    type,
     onChange,
+    type = "text",
 }: InputWithValidationProps) => {
     const [input, setInput] = useState<string | undefined>(value);
     const { state, dispatch } = useContext(validationContext);
@@ -52,22 +52,23 @@ const InputWithValidation = ({
 
     return (
         <div className={styles.edit_field_wrapper}>
-            {required ? (
-                <>
-                    <p className={styles.title}>
-                        {title} <span style={{ color: "red" }}>*</span>
-                    </p>
-                </>
-            ) : (
-                <>
-                    <p className={styles.title}>{title}</p>
-                </>
-            )}
-
+            <p className={styles.title}>{title}</p>
             <div className={styles.input_wrapper} style={styleWidth}>
+                {required ? (
+                    <>
+                        <p className={styles.title}>
+                            {title} <span style={{ color: "red" }}>*</span>
+                        </p>
+                    </>
+                ) : (
+                    <>
+                        <p className={styles.title}>{title}</p>
+                    </>
+                )}
+
                 <input
-                    value={input}
                     type={type}
+                    value={input}
                     onChange={handleChange}
                     className={`${styles.input} ${
                         isValid ? styles.valid : styles.invalid
@@ -84,7 +85,5 @@ const InputWithValidation = ({
         </div>
     );
 };
-InputWithValidation.defaultProps = {
-    type: "text",
-};
+
 export default InputWithValidation;
