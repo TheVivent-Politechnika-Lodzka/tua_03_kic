@@ -172,6 +172,7 @@
         "descriptionMsg": "Conajmniej 100 do 1000 znaków",
         "addImplantUpper": "DODAJ IMPLANT",
         "modalTitle": "Dodaj nowy implant",
-        "confirmMsg": "Czy jesteś pewny?"
+        "confirmMsg": "Czy jesteś pewny?",
+        "implantCreated": "Pomyślnie utworzono implant"
     }
 }

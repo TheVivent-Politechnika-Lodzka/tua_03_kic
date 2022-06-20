@@ -4,7 +4,7 @@ import { showNotification } from "@mantine/notifications";
 import { useContext, useState, useTransition } from "react";
 import { useNavigate } from "react-router";
 import { createAccount, CreateAccountRequest } from "../../../../api";
-import ConfirmActionModal from "../../../../components/ConfirmActionModal/ConfirmActionModal";
+
 import ActionButton from "../../../../components/shared/ActionButton/ActionButton";
 import InputWithValidation from "../../../../components/shared/InputWithValidation/InputWithValidation";
 import ValidationMessage from "../../../../components/shared/ValidationMessage/ValidationMessage";
@@ -18,6 +18,7 @@ import { Center, Image } from "@mantine/core";
 import { HiOutlinePhotograph } from "react-icons/hi";
 import { uploadPhoto } from "../../../../utils/upload";
 import { createImplant } from "../../../../api/mop";
+import ConfirmActionModal from "../../../../components/shared/ConfirmActionModal/ConfirmActionModal";
 
 export const CreateImplantPage = () => {
     const { t } = useTranslation();
@@ -71,6 +72,9 @@ export const CreateImplantPage = () => {
             showNotification(failureNotificationItems(response.errorMessage));
             return;
         }
+        showNotification(
+            successNotficiationItems(t("createImplantPage.implantCreated"))
+        );
         navigate("/implants");
     };
 

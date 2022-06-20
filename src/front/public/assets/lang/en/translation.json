@@ -174,7 +174,7 @@
         "description": "Description",
         "descriptionMsg": "At least 100 to 1000 characters",
         "modalTitle": "Create new implant",
-        "confirmMsg":"Are you sure to create new implant"
-
+        "confirmMsg":"Are you sure to create new implant",
+        "implantCreated": "Implant created successfully"
     }
 }
