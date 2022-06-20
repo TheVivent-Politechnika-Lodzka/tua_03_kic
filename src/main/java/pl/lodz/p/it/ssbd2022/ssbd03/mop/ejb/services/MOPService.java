@@ -293,8 +293,17 @@ public class MOPService extends AbstractService implements MOPServiceInterface, 
     }
     @Override
     @PermitAll
-    public Appointment findVisit(UUID uuid){ //TODO:Podzielić metodę dla administratora (może wziąć szczegóły każdej wizyty) a reszta użytkowników tylko swoich
-        return appointmentFacade.findById(uuid);
+    public Appointment findVisit(UUID uuid, String clientLogin){
+        Account account = accountFacade.findByLogin(clientLogin);
+        Appointment appointment = appointmentFacade.findById(uuid);
+        if (!account.isInRole(Roles.ADMINISTRATOR)) {
+            if(!(appointment.getClient().getLogin().equals(clientLogin)
+                    || appointment.getSpecialist().getLogin().equals(clientLogin))) {
+                throw new UserNotPartOfAppointment();
+            }
+            return appointment;
+        }
+        return appointment;
     }
     /**
      * Metoda zwracająca edytowaną wizytę

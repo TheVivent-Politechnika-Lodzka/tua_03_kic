@@ -200,7 +200,7 @@ public class StartupConfig {
 
     public void createAppointment() {
 
-        Account client = em.createNamedQuery("Account.findByLogin", Account.class).setParameter("login", "client").getSingleResult();
+        Account clientAdmin = em.createNamedQuery("Account.findByLogin", Account.class).setParameter("login", "clientAdmin").getSingleResult(); // zmieniac - testy
         Account specialist = em.createNamedQuery("Account.findByLogin", Account.class).setParameter("login", "spec").getSingleResult();
 
         Implant implant = new Implant();
@@ -224,7 +224,7 @@ public class StartupConfig {
         em.persist(implant);
 
         Appointment appointment = new Appointment();
-        appointment.setClient(client);
+        appointment.setClient(clientAdmin); // TUTAJ ZMIENIAĆ DO TESTÓW
         appointment.setSpecialist(specialist);
         appointment.setImplant(implant);
         appointment.setStartDate(Instant.now());
