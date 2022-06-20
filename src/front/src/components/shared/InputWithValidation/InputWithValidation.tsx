@@ -52,7 +52,6 @@ const InputWithValidation = ({
 
     return (
         <div className={styles.edit_field_wrapper}>
-            <p className={styles.title}>{title}</p>
             <div className={styles.input_wrapper} style={styleWidth}>
                 {required ? (
                     <>

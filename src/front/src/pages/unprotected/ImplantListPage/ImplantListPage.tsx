@@ -1,12 +1,4 @@
-import {
-    Center,
-    Container,
-    Grid,
-    Input,
-    Pagination,
-    Select,
-    SimpleGrid,
-} from "@mantine/core";
+import { Center, Container, Grid, Input, Select } from "@mantine/core";
 import { useEffect, useState } from "react";
 import {
     ListImplantResponse,
@@ -18,7 +10,8 @@ import { ListElement } from "../../../components/ListElement";
 import { FaSearch } from "react-icons/fa";
 import { useTranslation } from "react-i18next";
 import { useStoreSelector } from "../../../redux/reduxHooks";
-import styles from "./implantListPage.module.scss";
+import { useNavigate } from "react-router";
+import Pagination from "../../../components/Pagination/Pagination";
 
 export const ImplantListPage = () => {
     const [phrase, setPhrase] = useState<string>("");
@@ -30,9 +23,15 @@ export const ImplantListPage = () => {
         currentPage: 0,
         data: [],
     });
-    const [page, setPage] = useState<number>(1);
     const { t } = useTranslation();
     const user = useStoreSelector((state) => state.user.cur);
+    const navigate = useNavigate();
+
+    const [pagination, setPagination] = useState<Pagination>({
+        currentPage: 1,
+        pageSize: 1,
+        totalPages: 1,
+    });
 
     const statusSelectList = [
         {
@@ -60,9 +59,12 @@ export const ImplantListPage = () => {
     const fetchData = async () => {
         let data;
         try {
-            if (amountElement !== null) {
+            if (
+                amountElement !== null &&
+                pagination.currentPage !== undefined
+            ) {
                 data = await listImplants({
-                    page: page,
+                    page: pagination.currentPage,
                     size: JSON.parse(amountElement),
                     phrase: phrase,
                     archived: status === "true",
@@ -76,12 +78,19 @@ export const ImplantListPage = () => {
             return true;
         };
 
-        if (check(data)) setImplantList(data);
+        if (check(data)) {
+            setImplantList(data);
+            setPagination({
+                currentPage: data.currentPage,
+                pageSize: data.totalCounts,
+                totalPages: data.totalPages,
+            });
+        }
     };
 
     useEffect(() => {
         fetchData();
-    }, [page, amountElement, status]);
+    }, [amountElement, status,pagination.currentPage]);
 
     useEffect(() => {
         const delayDebounceFn = setTimeout(() => {
@@ -91,15 +100,13 @@ export const ImplantListPage = () => {
         return () => clearTimeout(delayDebounceFn);
     }, [phrase]);
 
-    const goto = () => {};
-
     return (
         <Container fluid={true} mt={40}>
             <Grid>
                 <Grid.Col span={2}>
                     {user === "ADMINISTRATOR" ? (
                         <GreenGradientButton
-                            onClick={goto}
+                            onClick={() => navigate("/create-implant")}
                             label={t("implantListPage.addImplant")}
                         />
                     ) : (
@@ -206,9 +213,8 @@ export const ImplantListPage = () => {
                     }}
                 >
                     <Pagination
-                        total={implantList.totalPages}
-                        page={page}
-                        onChange={setPage}
+                        pagination={pagination}
+                        handleFunction={setPagination}
                     />
                 </Center>
             </Container>
