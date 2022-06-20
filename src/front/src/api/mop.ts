@@ -29,6 +29,8 @@ export interface AppointmentListElementDto {
     implant: ImplantDetails;
     status: Status;
     startDate: string;
+    endDate:string;
+    price:number;
     description: string;
 }
 
