@@ -13,7 +13,6 @@ import pl.lodz.p.it.ssbd2022.ssbd03.common.AbstractService;
 import pl.lodz.p.it.ssbd2022.ssbd03.common.Roles;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.*;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.InvalidParametersException;
-import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.MethodNotImplementedException;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.appointment.*;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.implant.ImplantArchivedException;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.implant.ImplantStatusException;
@@ -26,9 +25,10 @@ import pl.lodz.p.it.ssbd2022.ssbd03.mop.ejb.facades.ImplantReviewFacade;
 import pl.lodz.p.it.ssbd2022.ssbd03.security.AuthContext;
 import pl.lodz.p.it.ssbd2022.ssbd03.utils.PaginationData;
 
-import java.time.Instant;
-import java.time.LocalDate;
-import java.time.ZoneId;
+import java.time.*;
+import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 import java.util.logging.Logger;
 
@@ -444,11 +444,38 @@ public class MOPService extends AbstractService implements MOPServiceInterface, 
      * @param specialistId - id specjalisty
      * @param month        - miesiąc
      * @return lista dostępności
-     * @throws MethodNotImplementedException w przypadku braku implementacji metody
      */
     @Override
-    public String getSpecialistAvailabilityInMonth(UUID specialistId, Instant month) {
-        return "hello";
+    @RolesAllowed(Roles.CLIENT)
+    public List<Instant> getSpecialistAvailabilityInMonth(UUID specialistId, Instant month, Duration duration) {
+        // wyciągnięcie ilości dni w danym miesiącu (trzeba tak, bo trzeba pamiętać, że każdy miesiąc ma inną ilość dni)
+        // oraz istnieją lata przestępne
+        int daysInMonth = YearMonth.from(month.atZone(ZoneId.systemDefault()).toLocalDate()).lengthOfMonth();
+        // wyciągnięcie pierwszego dnia miesiąca
+        LocalDate startLocalDate = YearMonth.from(month.atZone(ZoneId.systemDefault())).atDay(1);
+        Instant startDate = startLocalDate.atStartOfDay(ZoneId.systemDefault()).toInstant();
+
+        List<Instant> availableDates = new ArrayList<>();
+
+        // Założenie jest takie, że wszystkie dni miesiąca, są pracujące.
+        // Przeszukiwane są godziny od 8:00 do 15:00 każdego dnia
+        // reguła biznesowa: jeżeli zabieg zaczyna się przed 16:00, to może trwać nawet dłużej niż do 16:00
+        int i = 0;
+        for (; i < daysInMonth; i++) {
+            Instant day = startDate.plus(i, ChronoUnit.DAYS);
+
+            for (int j = 0; j < 7; j++) {
+                Instant start = day.plus(j + 8, ChronoUnit.HOURS);
+                Instant end = start.plus(duration);
+                try {
+                    checkDateAvailabilityForAppointment(specialistId, start, end);
+                    availableDates.add(start);
+                } catch (SpecialistHasNoTimeException e) {
+                    // do nothing
+                }
+            }
+        }
+        return availableDates;
     }
 
     /**
@@ -478,6 +505,7 @@ public class MOPService extends AbstractService implements MOPServiceInterface, 
      * @throws SpecialistHasNoTimeException w przypadku, gdy specjalista nie ma czasu na wizytę (appBase)
      */
     @TransactionAttribute(TransactionAttributeType.MANDATORY)
+    @RolesAllowed(Roles.AUTHENTICATED)
     private void checkDateAvailabilityForAppointment(UUID specialistId, Instant startDate, Instant endDate) {
         PaginationData appointments = appointmentFacade.findSpecialistAppointmentsInGivenPeriod(specialistId, startDate, endDate, 1, 1);
         if (appointments.getData().size() > 0) {

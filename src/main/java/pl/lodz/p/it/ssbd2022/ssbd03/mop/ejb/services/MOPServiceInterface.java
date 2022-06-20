@@ -8,6 +8,7 @@ import pl.lodz.p.it.ssbd2022.ssbd03.entities.ImplantReview;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.MethodNotImplementedException;
 import pl.lodz.p.it.ssbd2022.ssbd03.utils.PaginationData;
 
+import java.time.Duration;
 import java.time.Instant;
 import java.util.List;
 import java.util.UUID;
@@ -155,7 +156,7 @@ public interface MOPServiceInterface extends ServiceLocalInterface {
      * @return lista dostępności
      * @throws MethodNotImplementedException w przypadku braku implementacji metody
      */
-    default String getSpecialistAvailabilityInMonth(UUID specialistId, Instant month) {
+    default List<Instant> getSpecialistAvailabilityInMonth(UUID specialistId, Instant month, Duration duration) {
         throw new MethodNotImplementedException();
     }
 
