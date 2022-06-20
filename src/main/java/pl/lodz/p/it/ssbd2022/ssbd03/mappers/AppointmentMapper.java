@@ -62,6 +62,8 @@ public class AppointmentMapper {
         );
         appointmentListElementDto.setStartDate(appointment.getStartDate());
         appointmentListElementDto.setDescription(appointment.getDescription());
+        appointmentListElementDto.setEndDate(appointment.getEndDate());
+        appointmentListElementDto.setPrice(appointment.getPrice());
         appointmentListElementDto.setStatus(appointment.getStatus());
         return appointmentListElementDto;
     }

@@ -7,6 +7,9 @@ import { OwnAppointmentsList } from "../pages/protected/shared/OwnAppointmentsLi
 import { AppointmentListPage } from "../pages/protected/admin/AppointmentList";
 import { CreateImplantPage } from "../pages/protected/admin/CreateImplantPage";
 import CreateAppointmentPage from "../pages/protected/client/CreateAppointmentPage";
+import { EditOwnAppointment } from "../pages/protected/shared/EditOwnAppointment";
+import { EditImplantPage } from "../pages/protected/admin/EditImplantPage";
+
 
 const authorizedRoutes = (accessLevel: AccessLevelType) => {
     switch (accessLevel) {
@@ -27,6 +30,10 @@ const authorizedRoutes = (accessLevel: AccessLevelType) => {
                         path="/create-implant"
                         element={<CreateImplantPage />}
                     />
+                    <Route
+                        path="/implant/:id"
+                        element={<EditImplantPage />}
+                    />
                 </>
             );
         }
@@ -34,6 +41,7 @@ const authorizedRoutes = (accessLevel: AccessLevelType) => {
             return (
                 <>
                     <Route path="/visits" element={<OwnAppointmentsList />} />
+                    <Route path="/visit/edit/:id" element={<EditOwnAppointment />} />
                 </>
             );
         }
@@ -41,6 +49,7 @@ const authorizedRoutes = (accessLevel: AccessLevelType) => {
             return (
                 <>
                     <Route path="/visits" element={<OwnAppointmentsList />} />
+                    <Route path="/visit/edit/:id" element={<EditOwnAppointment />} />
                     <Route
                         path="/implants/:implantId/create-appointment"
                         element={<CreateAppointmentPage />}

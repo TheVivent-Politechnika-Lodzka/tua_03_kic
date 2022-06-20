@@ -119,7 +119,7 @@ public interface MOPServiceInterface extends ServiceLocalInterface {
      * @return szczegóły wizyty
      * @throws MethodNotImplementedException w przypadku niezaimplementowanej metody
      */
-    default Appointment findVisit(UUID uuid){
+    default Appointment findVisit(UUID uuid, String clientLogin){
         throw new MethodNotImplementedException();
     }
     /**

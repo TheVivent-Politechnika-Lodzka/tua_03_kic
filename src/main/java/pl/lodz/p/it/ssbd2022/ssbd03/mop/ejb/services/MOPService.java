@@ -216,8 +216,13 @@ public class MOPService extends AbstractService implements MOPServiceInterface, 
         if (appointment.getEndDate().isAfter(Instant.now())) throw new AppointmentFinishAttemptBeforeEndDateException();
 
         appointment.setStatus(FINISHED);
+
+        Implant implant = appointment.getImplant();
+        implant.setPopularity(implant.getPopularity() + 1);
+
         appointmentFacade.edit(appointment);
-        return appointmentFacade.findById(appointment.getId());
+
+        return appointment;
     }
 
     @Override
@@ -272,8 +277,17 @@ public class MOPService extends AbstractService implements MOPServiceInterface, 
 
     @Override
     @PermitAll
-    public Appointment findVisit(UUID uuid) { //TODO:Podzielić metodę dla administratora (może wziąć szczegóły każdej wizyty) a reszta użytkowników tylko swoich
-        return appointmentFacade.findById(uuid);
+    public Appointment findVisit(UUID uuid, String clientLogin){
+        Account account = accountFacade.findByLogin(clientLogin);
+        Appointment appointment = appointmentFacade.findById(uuid);
+        if (!account.isInRole(Roles.ADMINISTRATOR)) {
+            if(!(appointment.getClient().getLogin().equals(clientLogin)
+                    || appointment.getSpecialist().getLogin().equals(clientLogin))) {
+                throw new UserNotPartOfAppointment();
+            }
+            return appointment;
+        }
+        return appointment;
     }
 
     /**
@@ -300,12 +314,12 @@ public class MOPService extends AbstractService implements MOPServiceInterface, 
         if (appointmentFromDb.getStatus().equals(REJECTED)) {
             throw AppointmentStatusException.appointmentStatusAlreadyCancelled();
         }
-        if (!update.getStartDate().equals(appointmentFromDb.getStartDate())) {
-            Instant endDate = update.getStartDate().plus(appointmentFromDb.getImplant().getDuration());
-            checkDateAvailabilityForAppointment(appointmentFromDb.getSpecialist().getId(), update.getStartDate(), endDate);
-            appointmentFromDb.setStartDate(update.getStartDate());
-            appointmentFromDb.setEndDate(endDate);
-            didStartDateChange = true;
+        if(!update.getStartDate().equals(appointmentFromDb.getStartDate())){
+        Instant endDate = update.getStartDate().plus(appointmentFromDb.getImplantDuration());
+        checkDateAvailabilityForAppointment(appointmentFromDb.getSpecialist().getId(),update.getStartDate(),endDate);
+        appointmentFromDb.setStartDate(update.getStartDate());
+        appointmentFromDb.setEndDate(endDate);
+        didStartDateChange = true;
         }
         if (appointmentFromDb.getClient().getLogin().equals(login) && didStartDateChange) {
             appointmentFromDb.setStatus(PENDING);
