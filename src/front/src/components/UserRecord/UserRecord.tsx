@@ -22,6 +22,7 @@ const UserRecord = ({ user, handleChange }: UserRecordProps) => {
 
     useEffect(() => {
         handleChange(true);
+        console.log(user);
     }, [modal]);
 
     return (
