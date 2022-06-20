@@ -149,6 +149,17 @@ public interface MOPServiceInterface extends ServiceLocalInterface {
     }
 
     /**
+     * MOP.9 - Zarezerwuj wizytę, dostępność specjalisty
+     * @param specialistId  - id specjalisty
+     * @param month         - miesiąc
+     * @return lista dostępności
+     * @throws MethodNotImplementedException w przypadku braku implementacji metody
+     */
+    default String getSpecialistAvailabilityInMonth(UUID specialistId, Instant month) {
+        throw new MethodNotImplementedException();
+    }
+
+    /**
      * Metoda pozwalająca na edycję wizyty przez administratora
      *
      * @param id          UUID edytowanej wizyty
