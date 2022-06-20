@@ -143,6 +143,7 @@ public class AccountMapper {
                 account.getId(),
                 account.getFirstName(),
                 account.getLastName(),
+                account.getUrl(),
                 dataspecialist.getContactEmail(),
                 dataspecialist.getPhoneNumber()
         );
