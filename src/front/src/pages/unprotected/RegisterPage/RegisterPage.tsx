@@ -41,7 +41,6 @@ const RegisterPageInternal = () => {
     const [opened, setOpened] = useState<boolean>(false);
     const navigate = useNavigate();
     const {
-        state,
         state: {
             isFirstNameValid,
             isLastNameValid,
@@ -51,7 +50,6 @@ const RegisterPageInternal = () => {
             isLoginValid,
             isPasswordValid,
         },
-        dispatch,
     } = useContext(validationContext);
 
     const handleSubmit = async () => {
@@ -100,10 +98,11 @@ const RegisterPageInternal = () => {
             <div className={styles.background} />
             <div className={styles.form_wrapper}>
                 <div className={styles.register_page_header}>
-                    {t("sign_in")}
+                    {/* {t("sign_in")} */}
+                    Zarejestruj się
                 </div>
                 <div className={styles.edit_fields_wrapper}>
-                    {account.url.length === 0 ? (
+                    {/* {account.url.length === 0 ? (
                         <div className={`${styles.image} ${styles.margin}`}>
                             <Center>
                                 <HiOutlinePhotograph size="80px" />
@@ -133,7 +132,7 @@ const RegisterPageInternal = () => {
                                 });
                             }
                         }}
-                    />
+                    /> */}
                 </div>
                 <div className={styles.edit_field} title="email">
                     <InputWithValidation
