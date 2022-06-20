@@ -1,113 +1,113 @@
-$blue: #15628d;
-$green: #15628d;
-$white: #fff;
-$gray: #ffffff;
+@import "/src/variables.scss";
 
-.container {
-    width: 80vw;
-    height: 78vh;
-    background-color: #262633;
-    border-radius: 1.5rem;
-    margin-top: 1rem;
-
-    .image {
-        width: 30vw;
-        height: 20vw;
-        background-color: #ffffff;
-        opacity: 0.3;
-        border-radius: 1vw;
-    }
-
-    .margin {
-        margin-top: 6vh;
-    }
-    .inputMargin {
-        margin-bottom: 1.5vh;
-    }
-
-    .formfield {
-        font-family: inherit;
-        height: 4vh;
-        border: 0;
-        border-bottom: 0.25vh solid $gray;
-        outline: 0;
-        font-size: 2vh;
-        color: $white;
-        padding: 7px 0;
-        background: transparent;
-        transition: border-color 0.2s;
-        color: transparent;
-        cursor: text;
-        color: #ffffff;
-    }
-
-    .formlabel {
-        display: block;
-        font-size: 1.5vh;
-        color: $gray;
-    }
-
-    .formfield:focus {
-        border-width: 0.25vh;
-        border-image: linear-gradient(to right, $blue, $green);
-        border-image-slice: 1;
-    }
-
-    .descriptionfield {
-        font-family: inherit;
-        width: 100%;
-        min-height: 10vw;
-        border: 0;
-        border: 0.25vh solid $gray;
-        border-radius: 1vw;
-        outline: 0;
-        font-size: 2vh;
-        overflow-wrap: break-word;
-        color: $white;
-        padding: 7px 0;
-        background: transparent;
-        transition: border-color 0.2s;
-        color: transparent;
-
-        cursor: text;
-        color: #ffffff;
-    }
-    .descriptionfield:focus {
-        border-width: 0.25vh;
-
-        border-image: linear-gradient(to right, $blue, $green);
-        border-image-slice: 1;
-        border-radius: 1vw;
-    }
-
-    .numberfield {
-        font-family: inherit;
-        height: 4vh;
-        width: 50%;
-        padding-right: 10vw;
-        border: 0.25vh solid $gray;
-        border-radius: 1vh;
-        outline: 0;
-        font-size: 2vh;
-        overflow-wrap: break-word;
-        color: $white;
-        padding: 7px 0;
-        background: transparent;
-        transition: border-color 0.2s;
-        color: transparent;
-        cursor: text;
-        color: #ffffff;
-    }
-    .numberfield:focus {
-        border-image: linear-gradient(to right, $blue, $green);
-        border-image-slice: 1;
-        border-width: 0.25vh;
-        border-radius: 1vh;
-    }
+.image {
+    width: 30vw;
+    height: 20vw;
+    background-color: #ffffff;
+    opacity: 0.3;
+    border-radius: 1vw;
 }
-.text {
-    margin-top: 1vh;
-    font-size: 2vw;
-    font-weight: 800;
-    color: #ffffff;
+
+.margin {
+    margin-top: 6vh;
+}
+
+.create_implant_page {
+    width: 100%;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    color: white;
+    flex-direction: column;
+    background-color: $primary-color;
+    overflow-x: hidden;
+
+    .create_implant_page_header {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 1.75rem;
+        font-weight: bold;
+        padding: 2rem;
+        color: white;
+    }
+
+    .create_implant_page_content {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-evenly;
+        width: 80%;
+        margin-block: 3rem;
+
+        .create_data_account_wrapper {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            background-color: $secondary-color;
+            width: 70%;
+            border-radius: 2.4rem;
+
+            .create_implant_buttons_wrapper {
+                display: flex;
+                justify-content: flex-start;
+                flex-direction: row;
+                margin-bottom: 3rem;
+
+                & > * {
+                    width: 13rem;
+                    padding: 0.15rem 1.5rem;
+                    margin: 1.5rem;
+                }
+            }
+
+            .edit_fields_wrapper {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                width: 90%;
+                margin-top: 3rem;
+
+                .edit_field {
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                    flex-direction: row;
+                    width: 90%;
+                    height: 7rem;
+                    margin-bottom: 2.5rem;
+                }
+
+                .edit_field_validation {
+                    // display: flex;
+                    // align-items: flex-start;
+                    // flex-direction: row;
+                    color: white;
+                    padding-left: 5rem;
+                    padding-top: 3rem;
+                }
+                .option {
+                    background: $secondary-color;
+                }
+                .select {
+                    width: 30rem;
+                    background-color: transparent;
+                    border: none;
+                    border-radius: 1rem;
+                    // textAlign: "center",
+
+                    padding: 0.5rem;
+                    height: 4rem;
+                    font-size: 1.75rem;
+                    color: #cccccc;
+                    border-bottom: 1px solid $light-green;
+                }
+                .p {
+                    font-weight: bold;
+                    font-size: 1.25rem;
+                }
+            }
+        }
+    }
 }

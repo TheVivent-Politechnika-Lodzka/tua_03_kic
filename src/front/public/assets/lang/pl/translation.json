@@ -148,23 +148,6 @@
             "details": "Szczegóły"
         }
     },
-    "createImplantPage": {
-        "addImplant": "Dodaj wszczep",
-        "choosePhoto": "WYBIERZ ZDJĘCIE",
-        "name": "Nazwa",
-        "manufacturer": "Producent",
-        "price": "Cena (ZŁ)",
-        "duration": "Czas zabiegu (min)",
-        "description": "Opis",
-        "addImplantUpper": "DODAJ IMPLANT",
-        "tooShort": "Za krótki tekst",
-        "tooLong": "Za długi tekst",
-        "priceReq": "Cena jest wymagana",
-        "pricePos": "Cena musi być liczbą dodatnią",
-        "durationReq": "Czas zabiegu jest wymagany",
-        "durationPos": "Czas zabiegu musi być liczbą dodatnią "
-    },
-
     "appointmentListPage": {
         "addImplant": "DODAJ WIZYTĘ",
         "search": "Szukaj ...",
@@ -173,6 +156,22 @@
         "listElement": {
             "details": "Szczegóły"
         }
+    },
+    "createImplantPage": {
+        "addImplant": "Dodaj wszczep",
+        "choosePhoto": "WYBIERZ ZDJĘCIE",
+        "name": "Nazwa",
+        "nameMsg": "Conajmniej od 4 do 50 znaków",
+        "manufacturerMsg": "Conajmniej od 10 do 50 znaków",
+        "manufacturer": "Producent",
+        "price": "Cena (ZŁ)",
+        "priceMsg": "Cena musi być liczbą dodatnią",
+        "duration": "Czas zabiegu (min)",
+        "durationMsg": "Czas zabiegu musi być liczbą dodatnią",
+        "description": "Opis",
+        "descriptionMsg": "Conajmniej 100 do 1000 znaków",
+        "addImplantUpper": "DODAJ IMPLANT",
+        "modalTitle": "Dodaj nowy implant",
+        "confirmMsg": "Czy jesteś pewny?"
     }
-
 }

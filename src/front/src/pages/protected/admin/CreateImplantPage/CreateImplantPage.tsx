@@ -1,292 +1,264 @@
-import styles from "./createImplantPage.module.scss";
-import {
-    Button,
-    Center,
-    Grid,
-    Group,
-    Image,
-    Input,
-    NumberInput,
-    Textarea,
-    TextInput,
-} from "@mantine/core";
-import { Container } from "react-bootstrap";
-import { Box } from "@mui/material";
-import { useForm } from "@mantine/form";
-import { useTranslation } from "react-i18next";
-import { createImplant } from "../../../../api/mop";
-import { uploadPhoto } from "./upload";
-import { useState } from "react";
-import { HiOutlinePhotograph } from "react-icons/hi";
+import style from "./createImplantPage.module.scss";
+import { faCancel, faCheck } from "@fortawesome/free-solid-svg-icons";
 import { showNotification } from "@mantine/notifications";
+import { useContext, useState, useTransition } from "react";
+import { useNavigate } from "react-router";
+import { createAccount, CreateAccountRequest } from "../../../../api";
+import ConfirmActionModal from "../../../../components/ConfirmActionModal/ConfirmActionModal";
+import ActionButton from "../../../../components/shared/ActionButton/ActionButton";
+import InputWithValidation from "../../../../components/shared/InputWithValidation/InputWithValidation";
+import ValidationMessage from "../../../../components/shared/ValidationMessage/ValidationMessage";
+import { validationContext } from "../../../../context/validationContext";
 import {
     failureNotificationItems,
     successNotficiationItems,
 } from "../../../../utils/showNotificationsItems";
+import { useTranslation } from "react-i18next";
+import { Center, Image } from "@mantine/core";
+import { HiOutlinePhotograph } from "react-icons/hi";
+import { uploadPhoto } from "../../../../utils/upload";
+import { createImplant } from "../../../../api/mop";
 
 export const CreateImplantPage = () => {
     const { t } = useTranslation();
-    const [url, setUrl] = useState(``);
-    const form = useForm<{
-        name: string;
-        manufacturer: string;
-        price: number | undefined;
-        duration: number | undefined;
-        description: string;
-    }>({
-        initialValues: {
-            name: "",
-            manufacturer: "",
-            price: undefined,
-            duration: undefined,
-            description: "",
-        },
-        validate: (values) => ({
-            name:
-                values.name.length < 4
-                    ? `${t("createImplantPage.tooShort")}`
-                    : values.name.length > 50
-                    ? `${t("createImplantPage.tooLong")}`
-                    : null,
-            manufacturer:
-                values.manufacturer.length < 10
-                    ? `${t("createImplantPage.tooShort")}`
-                    : values.manufacturer.length > 50
-                    ? `${t("createImplantPage.tooLong")}`
-                    : null,
-            price:
-                values.price === undefined
-                    ? `${t("createImplantPage.priceReq")}`
-                    : values.price <= 0
-                    ? `${t("createImplantPage.pricePos")}`
-                    : null,
-            duration:
-                values.duration === undefined
-                    ? `${t("createImplantPage.durationReq")}`
-                    : values.duration <= 0
-                    ? `${t("createImplantPage.durationPos")}`
-                    : null,
-            description:
-                values.description.length < 100
-                    ? `${t("createImplantPage.tooShort")}`
-                    : values.description.length > 1000
-                    ? `${t("createImplantPage.tooLong")}`
-                    : null,
-        }),
+    const [loading, setLoading] = useState<Loading>({
+        pageLoading: true,
+        actionLoading: false,
     });
 
-    const putImplant = (values: any) => {
-        try {
-            createImplant({
-                name: values.name,
-                description: values.description,
-                manufacturer: values.manufacturer,
-                price: values.price,
-                duration: values.duration,
-                url: url,
-            });
-            showNotification(successNotficiationItems(""));
-        } catch (error: ApiError | any) {
-            showNotification(failureNotificationItems(error?.errorMessage));
+    const [error, setError] = useState<ApiError>();
+    const [opened, setOpened] = useState<boolean>(false);
+    const [implant, setImplant] = useState({
+        name: "",
+        description: "",
+        manufacturer: "",
+        price: "",
+        duration: "",
+        url: "",
+    });
+
+    const {
+        state,
+        state: {
+            isImplantNameValid,
+            isManufacturerValid,
+            isPriceValid,
+            isDurationValid,
+            isDescriptionValid,
+        },
+        dispatch,
+    } = useContext(validationContext);
+
+    const navigate = useNavigate();
+
+    const isEveryFieldValid =
+        isImplantNameValid &&
+        isManufacturerValid &&
+        isPriceValid &&
+        isDurationValid &&
+        isDescriptionValid;
+
+    const handleSubmit = async () => {
+        const response = await createImplant({
+            name: implant.name,
+            description: implant.description,
+            manufacturer: implant.manufacturer,
+            price: parseInt(implant.price),
+            duration: parseInt(implant.duration) * 60000,
+            url: implant.url,
+        });
+        if ("errorMessage" in response) {
+            showNotification(failureNotificationItems(response.errorMessage));
+            return;
         }
+        navigate("/implants");
     };
 
     return (
-        <div>
-            <Center>
-                <div className={styles.text}>
-                    {t("createImplantPage.addImplant")}
-                </div>
-            </Center>
-            <Center>
-                <div className={styles.container}>
-                    <Container fluid={true}>
-                        <Grid>
-                            <Grid.Col
-                                span={6}
-                                sx={{ width: "35vw", height: "60vh" }}
-                            >
+        <section className={style.create_implant_page}>
+            <div className={style.create_implant_page_header}>
+                <h2> {t("createImplantPage.addImplant")}</h2>
+            </div>
+            <div className={style.create_implant_page_content}>
+                <div className={style.create_data_account_wrapper}>
+                    <div className={style.edit_fields_wrapper}>
+                        {implant.url.length === 0 ? (
+                            <div className={`${style.image} ${style.margin}`}>
                                 <Center>
-                                    {url.length === 0 ? (
-                                        <div
-                                            className={`${styles.image} ${styles.margin}`}
-                                        >
-                                            <Center>
-                                                <HiOutlinePhotograph size="80px" />
-                                            </Center>
-                                        </div>
-                                    ) : (
-                                        <Image
-                                            radius="md"
-                                            src={url}
-                                            height="20vw"
-                                            alt="image create"
-                                            styles={{
-                                                root: { marginTop: "6vh" },
-                                            }}
-                                        />
-                                    )}
+                                    <HiOutlinePhotograph size="80px" />
                                 </Center>
-                                <Center>
-                                    <input
-                                        id="file-input"
-                                        type="file"
-                                        onChange={async (event) => {
-                                            const u = await uploadPhoto(event);
-                                            if (u) {
-                                                setUrl(u);
-                                            }
-                                        }}
-                                    />
-                                </Center>
-                            </Grid.Col>
-                            <Grid.Col
-                                span={6}
-                                sx={{ width: "35vw", height: "60vh" }}
-                            >
-                                <Center>
-                                    <div className={styles.margin}>
-                                        <Box
-                                            sx={{
-                                                width: "35vw",
-                                                height: "50vh",
-                                            }}
-                                            mx="auto"
-                                        >
-                                            <form
-                                                onSubmit={form.onSubmit(
-                                                    (values) => {
-                                                        putImplant(values);
-                                                    }
-                                                )}
-                                            >
-                                                <TextInput
-                                                    label={t(
-                                                        "createImplantPage.name"
-                                                    )}
-                                                    classNames={{
-                                                        wrapper: `${styles.inputMargin}`,
-                                                        input: `${styles.formfield}`,
-                                                        label: `${styles.formlabel}`,
-                                                    }}
-                                                    placeholder={t(
-                                                        "createImplantPage.name"
-                                                    )}
-                                                    {...form.getInputProps(
-                                                        "name"
-                                                    )}
-                                                    variant="unstyled"
-                                                    required
-                                                />
-                                                <TextInput
-                                                    label={t(
-                                                        "createImplantPage.manufacturer"
-                                                    )}
-                                                    placeholder={t(
-                                                        "createImplantPage.manufacturer"
-                                                    )}
-                                                    classNames={{
-                                                        wrapper: `${styles.inputMargin}`,
-                                                        input: `${styles.formfield}`,
-                                                        label: `${styles.formlabel}`,
-                                                    }}
-                                                    {...form.getInputProps(
-                                                        "manufacturer"
-                                                    )}
-                                                    variant="unstyled"
-                                                    required
-                                                />
-                                                <Center inline>
-                                                    <Center inline>
-                                                        <NumberInput
-                                                            mt="sm"
-                                                            label={t(
-                                                                "createImplantPage.price"
-                                                            )}
-                                                            placeholder="000 ZŁ"
-                                                            classNames={{
-                                                                wrapper: `${styles.inputMargin}`,
-                                                                input: `${styles.numberfield}`,
-                                                                label: `${styles.formlabel}`,
-                                                            }}
-                                                            {...form.getInputProps(
-                                                                "price"
-                                                            )}
-                                                            variant="unstyled"
-                                                            required
-                                                        />
-                                                    </Center>
+                            </div>
+                        ) : (
+                            <Image
+                                radius="md"
+                                src={implant.url}
+                                height="20vw"
+                                alt="image create"
+                                styles={{
+                                    root: { marginTop: "6vh" },
+                                }}
+                            />
+                        )}
 
-                                                    <NumberInput
-                                                        mt="sm"
-                                                        label={t(
-                                                            "createImplantPage.duration"
-                                                        )}
-                                                        placeholder="000 MIN"
-                                                        classNames={{
-                                                            wrapper: `${styles.inputMargin}`,
-                                                            input: `${styles.numberfield}`,
-                                                            label: `${styles.formlabel}`,
-                                                        }}
-                                                        {...form.getInputProps(
-                                                            "duration"
-                                                        )}
-                                                        variant="unstyled"
-                                                        required
-                                                    />
-                                                </Center>
+                        <input
+                            id="file-input"
+                            type="file"
+                            onChange={async (event) => {
+                                const u = await uploadPhoto(event);
+                                if (u) {
+                                    setImplant({
+                                        ...implant,
+                                        url: u,
+                                    });
+                                }
+                            }}
+                        />
+                    </div>
+                    <div className={style.edit_fields_wrapper}>
+                        <div className={style.edit_field}>
+                            <InputWithValidation
+                                title={t("createImplantPage.name")}
+                                value={implant?.name}
+                                validationType="VALIDATE_IMPLANT_NAME"
+                                isValid={isImplantNameValid}
+                                onChange={(e) => {
+                                    setImplant({
+                                        ...implant,
+                                        name: e.target.value,
+                                    });
+                                }}
+                                required
+                            />
+                            <ValidationMessage
+                                isValid={isImplantNameValid}
+                                message={t("createImplantPage.nameMsg")}
+                            />
+                        </div>
+                    </div>
+                    <div className={style.edit_fields_wrapper}>
+                        <div className={style.edit_field}>
+                            <InputWithValidation
+                                title={t("createImplantPage.manufacturer")}
+                                value={implant?.manufacturer}
+                                validationType="VALIDATE_MANUFACTURER"
+                                isValid={isManufacturerValid}
+                                onChange={(e) => {
+                                    setImplant({
+                                        ...implant,
+                                        manufacturer: e.target.value,
+                                    });
+                                }}
+                                required
+                            />
+                            <ValidationMessage
+                                isValid={isManufacturerValid}
+                                message={t("createImplantPage.manufacturerMsg")}
+                            />
+                        </div>
+                    </div>
 
-                                                <Textarea
-                                                    label={t(
-                                                        "createImplantPage.description"
-                                                    )}
-                                                    placeholder={t(
-                                                        "createImplantPage.description"
-                                                    )}
-                                                    {...form.getInputProps(
-                                                        "description"
-                                                    )}
-                                                    classNames={{
-                                                        wrapper: `${styles.inputMargin}`,
-                                                        input: `${styles.descriptionfield}`,
-                                                        label: `${styles.formlabel}`,
-                                                    }}
-                                                    variant="unstyled"
-                                                    required
-                                                />
-                                                <Group position="left" mt="md">
-                                                    <Button
-                                                        type="submit"
-                                                        variant="gradient"
-                                                        gradient={{
-                                                            from: "teal",
-                                                            to: "lime",
-                                                            deg: 105,
-                                                        }}
-                                                        styles={{
-                                                            root: {
-                                                                marginTop:
-                                                                    "2vh",
-                                                                minWidth:
-                                                                    "15vw",
-                                                                height: "5vh",
-                                                            },
-                                                        }}
-                                                    >
-                                                        {t(
-                                                            "createImplantPage.addImplantUpper"
-                                                        )}
-                                                    </Button>
-                                                </Group>
-                                            </form>
-                                        </Box>
-                                    </div>
-                                </Center>
-                            </Grid.Col>
-                        </Grid>
-                    </Container>
+                    <div className={style.edit_fields_wrapper}>
+                        <div className={style.edit_field}>
+                            <InputWithValidation
+                                title={t("createImplantPage.price")}
+                                value={implant?.price}
+                                validationType="VALIDATE_PRICE"
+                                isValid={isPriceValid}
+                                onChange={(e) => {
+                                    setImplant({
+                                        ...implant,
+                                        price: e.target.value,
+                                    });
+                                }}
+                                required
+                            />
+                            <ValidationMessage
+                                isValid={isPriceValid}
+                                message={t("createImplantPage.priceMsg")}
+                            />
+                        </div>
+                    </div>
+
+                    <div className={style.edit_fields_wrapper}>
+                        <div className={style.edit_field}>
+                            <InputWithValidation
+                                title={t("createImplantPage.duration")}
+                                value={implant?.duration}
+                                validationType="VALIDATE_DURATION"
+                                isValid={isDurationValid}
+                                onChange={(e) => {
+                                    setImplant({
+                                        ...implant,
+                                        duration: e.target.value,
+                                    });
+                                }}
+                                required
+                            />
+                            <ValidationMessage
+                                isValid={isDurationValid}
+                                message={t("createImplantPage.durationMsg")}
+                            />
+                        </div>
+                    </div>
+
+                    <div className={style.edit_fields_wrapper}>
+                        <div className={style.edit_field}>
+                            <InputWithValidation
+                                title={t("createImplantPage.description")}
+                                value={implant?.description}
+                                validationType="VALIDATE_DESCRIPTION"
+                                isValid={isDescriptionValid}
+                                onChange={(e) => {
+                                    setImplant({
+                                        ...implant,
+                                        description: e.target.value,
+                                    });
+                                }}
+                                required
+                            />
+                            <ValidationMessage
+                                isValid={isDescriptionValid}
+                                message={t("createImplantPage.descriptionMsg")}
+                            />
+                        </div>
+                    </div>
+
+                    <div className={style.create_implant_buttons_wrapper}>
+                        <ActionButton
+                            onClick={() => {
+                                setOpened(true);
+                            }}
+                            isDisabled={!isEveryFieldValid}
+                            icon={faCheck}
+                            color="green"
+                            title="Zatwierdź"
+                        />
+                        <ActionButton
+                            onClick={() => {
+                                navigate("/implants");
+                            }}
+                            icon={faCancel}
+                            color="red"
+                            title="Anuluj"
+                        />
+                    </div>
                 </div>
-            </Center>
-        </div>
+            </div>
+
+            <ConfirmActionModal
+                isOpened={opened}
+                onClose={() => {
+                    setOpened(false);
+                }}
+                handleFunction={async () => {
+                    setOpened(false);
+                    handleSubmit();
+                }}
+                isLoading={loading.actionLoading as boolean}
+                title={t("createImplantPage.modalTitle")}
+            >
+                {t("createImplantPage.confirmMsg")}
+            </ConfirmActionModal>
+        </section>
     );
 };
