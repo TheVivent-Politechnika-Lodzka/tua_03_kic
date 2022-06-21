@@ -5,28 +5,23 @@ import { Button } from "react-bootstrap";
 
 interface ActivateProps {
     login: string;
-    ETag : string;
+    ETag: string;
 }
 
-const ActivateButton = ({ETag, login}: ActivateProps) => {
+const ActivateButton = ({ ETag, login }: ActivateProps) => {
     const [change, { isLoading }] = useActivateAccountMutation();
 
-    const {t} = useTranslation();
+    const { t } = useTranslation();
 
     const handleSubmit = async (event: any) => {
         event.preventDefault();
         const res = await change({
             login,
-            tag: {ETag}
+            tag: { ETag },
         });
     };
 
-    return (
-        <Button onClick = {handleSubmit}>
-            {t("active")}
-        </Button>
-    );
+    return <Button onClick={handleSubmit}>{t("active")}</Button>;
 };
-
 
 export default ActivateButton;

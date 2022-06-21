@@ -73,7 +73,9 @@ const EditAnyAccountPage = () => {
             setLoading({ ...loading, actionLoading: false });
             return;
         }
-        showNotification(successNotficiationItems(t("account.edit.success")));
+        showNotification(
+            successNotficiationItems(t("editAnyAccountPage.updateSuccessfully"))
+        );
         setAccount(response);
         setLoading({ ...loading, actionLoading: false });
         navigate("/accounts");
@@ -104,7 +106,9 @@ const EditAnyAccountPage = () => {
             ) : (
                 <>
                     <div className={styles.edit_own_account_header}>
-                        <h2>Edytuj dane konta użytkownika {login}</h2>
+                        <h2>
+                            {t("editAnyAccountPage.editAccount")} {login}
+                        </h2>
                     </div>
                     <div className={styles.edit_own_account_content}>
                         <div className={styles.edit_data_account_wrapper}>
@@ -114,7 +118,9 @@ const EditAnyAccountPage = () => {
                                     alt="User avatar"
                                     className={styles.change_avatar}
                                 />
-                                <div className={styles.edit_avatar_icon_wrapper}>
+                                <div
+                                    className={styles.edit_avatar_icon_wrapper}
+                                >
                                     <FontAwesomeIcon
                                         icon={faEdit}
                                         className={styles.edit_avatar_icon}
@@ -124,7 +130,9 @@ const EditAnyAccountPage = () => {
                             <div className={styles.edit_fields_wrapper}>
                                 <div className={styles.edit_field}>
                                     <InputWithValidation
-                                        title="Imię"
+                                        title={t(
+                                            "editAnyAccountPage.editAccount"
+                                        )}
                                         value={account?.firstName}
                                         validationType="VALIDATE_FIRSTNAME"
                                         isValid={isFirstNameValid}
@@ -138,12 +146,14 @@ const EditAnyAccountPage = () => {
                                     />
                                     <ValidationMessage
                                         isValid={isFirstNameValid}
-                                        message="Imię musi składać się z co najmniej 3 liter."
+                                        message={t(
+                                            "editAnyAccountPage.firstNameMsg"
+                                        )}
                                     />
                                 </div>
                                 <div className={styles.edit_field}>
                                     <InputWithValidation
-                                        title="Nazwisko"
+                                        title={t("editAnyAccountPage.lastName")}
                                         value={account?.lastName}
                                         validationType="VALIDATE_LASTNAME"
                                         isValid={isLastNameValid}
@@ -157,7 +167,9 @@ const EditAnyAccountPage = () => {
                                     />
                                     <ValidationMessage
                                         isValid={isLastNameValid}
-                                        message="Nazwisko musi składać się z co najmniej 3 liter."
+                                        message={t(
+                                            "editAnyAccountPage.lastNameMsg"
+                                        )}
                                     />
                                 </div>
 
@@ -168,12 +180,13 @@ const EditAnyAccountPage = () => {
                                                 styles.access_level_name_header
                                             }
                                         >
-                                            Edytuj dane dla poziomu dostępu
-                                            klienta
+                                            {t(
+                                                "editAnyAccountPage.editForClient"
+                                            )}
                                         </p>
                                         <div className={styles.edit_field}>
                                             <InputWithValidation
-                                                title="Numer PESEL"
+                                                title="Pesel"
                                                 value={
                                                     account?.accessLevels
                                                         .filter(
@@ -212,12 +225,16 @@ const EditAnyAccountPage = () => {
                                             />
                                             <ValidationMessage
                                                 isValid={isPESELValid}
-                                                message="Numer pesel musi składać się z 11 cyfr."
+                                                message={t(
+                                                    "editAnyAccountPage.peselMsg"
+                                                )}
                                             />
                                         </div>
                                         <div className={styles.edit_field}>
                                             <InputWithValidation
-                                                title="Numer telefonu"
+                                                title={t(
+                                                    "editAnyAccountPage.phoneNumber"
+                                                )}
                                                 value={
                                                     account?.accessLevels
                                                         .filter(
@@ -259,7 +276,9 @@ const EditAnyAccountPage = () => {
                                                 isValid={
                                                     isPhoneNumberValidClient
                                                 }
-                                                message="Numer telefonu musi składać się z 9 cyfr."
+                                                message={t(
+                                                    "editAnyAccountPage.phoneNumberMsg"
+                                                )}
                                             />
                                         </div>
                                     </>
@@ -274,12 +293,15 @@ const EditAnyAccountPage = () => {
                                                 styles.access_level_name_header
                                             }
                                         >
-                                            Edytuj dane dla poziomu dostępu
-                                            administratora
+                                            {t(
+                                                "editAnyAccountPage.editForAdmin"
+                                            )}
                                         </p>
                                         <div className={styles.edit_field}>
                                             <InputWithValidation
-                                                title="Numer telefonu"
+                                                title={t(
+                                                    "editAnyAccountPage.phoneNumber"
+                                                )}
                                                 value={
                                                     account?.accessLevels
                                                         .filter(
@@ -321,12 +343,16 @@ const EditAnyAccountPage = () => {
                                                 isValid={
                                                     isPhoneNumberValidAdministrator
                                                 }
-                                                message="Numer telefonu musi składać się z 9 cyfr."
+                                                message={t(
+                                                    "editAnyAccountPage.phoneNumber"
+                                                )}
                                             />
                                         </div>
                                         <div className={styles.edit_field}>
                                             <InputWithValidation
-                                                title="Email kontaktowy"
+                                                title={t(
+                                                    "editAnyAccountPage.email"
+                                                )}
                                                 value={
                                                     account?.accessLevels
                                                         .filter(
@@ -368,7 +394,9 @@ const EditAnyAccountPage = () => {
                                                 isValid={
                                                     isEmailValidAdministrator
                                                 }
-                                                message="Email musi być poprawny."
+                                                message={t(
+                                                    "editAnyAccountPage.emailMsg"
+                                                )}
                                             />
                                         </div>
                                     </>
@@ -383,12 +411,15 @@ const EditAnyAccountPage = () => {
                                                 styles.access_level_name_header
                                             }
                                         >
-                                            Edytuj dane dla poziomu dostępu
-                                            specjalisty
+                                            {t(
+                                                "editAnyAccountPage.editForSpec"
+                                            )}
                                         </p>
                                         <div className={styles.edit_field}>
                                             <InputWithValidation
-                                                title="Numer telefonu"
+                                                title={t(
+                                                    "editAnyAccountPage.phoneNumber"
+                                                )}
                                                 value={
                                                     account?.accessLevels
                                                         .filter(
@@ -430,12 +461,16 @@ const EditAnyAccountPage = () => {
                                                 isValid={
                                                     isPhoneNumberValidSpecialist
                                                 }
-                                                message="Numer telefonu musi składać się z 9 cyfr."
+                                                message={t(
+                                                    "editAnyAccountPage.phoneNumberMsg"
+                                                )}
                                             />
                                         </div>
                                         <div className={styles.edit_field}>
                                             <InputWithValidation
-                                                title="Email kontaktowy"
+                                                title={t(
+                                                    "editAnyAccountPage.email"
+                                                )}
                                                 value={
                                                     account?.accessLevels
                                                         .filter(
@@ -473,7 +508,9 @@ const EditAnyAccountPage = () => {
                                             />
                                             <ValidationMessage
                                                 isValid={isEmailValidSpecialist}
-                                                message="Email musi być poprawny."
+                                                message={t(
+                                                    "editAnyAccountPage.emailMsg"
+                                                )}
                                             />
                                         </div>
                                     </>
@@ -487,7 +524,7 @@ const EditAnyAccountPage = () => {
                                     isDisabled={!isEveryFieldValid}
                                     icon={faCheck}
                                     color="green"
-                                    title="Zatwierdź"
+                                    title={t("editAnyAccountPage.confirm")}
                                 />
                                 <ActionButton
                                     onClick={() => {
@@ -495,7 +532,7 @@ const EditAnyAccountPage = () => {
                                     }}
                                     icon={faCancel}
                                     color="red"
-                                    title="Anuluj"
+                                    title={t("editAnyAccountPage.cancel")}
                                 />
                             </div>
                         </div>
@@ -512,10 +549,9 @@ const EditAnyAccountPage = () => {
                     setOpened(false);
                 }}
                 isLoading={loading.actionLoading ?? false}
-                title="Edycja danych innego konta"
+                title={t("editAnyAccountPage.editAccount")}
             >
-                Czy na pewno chcesz zmienić dane tego konta? Operacja jest
-                nieodwracalna
+                {t("editAnyAccountPage.editAccount")}
             </ConfirmActionModal>
         </section>
     );

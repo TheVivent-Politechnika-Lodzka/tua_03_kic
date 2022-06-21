@@ -77,7 +77,7 @@ const Sidebar = () => {
                 <div className="logout-wrapper">
                     <SideBarRoute
                         expanded={expanded}
-                        title={"Wyloguj się"}
+                        title={t("sidebar.logout")}
                         icon={faSignOut}
                         onClick={handleLogout}
                     />

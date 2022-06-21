@@ -12,15 +12,17 @@ const ErrorPage = () => {
             <div className={styles.errorbox_wrapper}>
                 <img className={styles.robot} src={robot} alt="robot" />
                 <div className={styles.errortext_wrapper}>
-                    <div className={styles.errortext}>{t("error_page")}</div>
+                    <div className={styles.errortext}>
+                        {t("errorPage.errorPage")}
+                    </div>
                     <div className={styles.linkerror}>
-                        {t("invite_main_page")}
+                        {t("errorPage.inviteMainPage")}
                     </div>
                     <div
                         className={styles.button}
                         onClick={() => navigate("/")}
                     >
-                        {t("main_page")}
+                        {t("errorPage.mainPage")}
                     </div>
                 </div>
             </div>

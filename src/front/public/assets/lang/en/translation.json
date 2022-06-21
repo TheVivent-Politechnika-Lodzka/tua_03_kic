@@ -11,12 +11,12 @@
     "edit_account_data_confirm": "Confirm editing account data",
 
     "language": "Language",
-    "accessLevel": "Access level",
     "contact": "Contact",
     "social_media": "Social media",
     "more_inf": "Find out more",
     "log_in": "LOG IN",
     "log_out": "LOG OUT",
+    "log_outdown": "LOG OUT",
     "sign_in": "SIGN IN",
     "cyber": "CYBER IMPLANT",
     "account_service": "ACCOUNTS",
@@ -122,7 +122,11 @@
         "input_placeholder": "Type new password",
         "change_password_button": "Change",
         "go_back_button": "Return to user page",
-        "too_short_password_error": "Password is too short!"
+        "too_short_password_error": "Password is too short!",
+        "successNotficiationItems": {
+            "first": "User password",
+            "second": "has been successfully changed"
+        }
     },
 
     "email_send": "Check your email",
@@ -198,6 +202,7 @@
     },
 
     "registerPage": {
+        "register": "Register",
         "email": "Email",
         "emailMsg": "Enter correct e-mail address",
         "firstName": "Firstname",
@@ -220,8 +225,352 @@
         "english": "english",
         "send_email": "We send you an email with confirmation link"
     },
+
     "clocker": {
         "refresh": "Refresh session",
         "logInAgain": "Sorry, log in again"
+    },
+
+    "specialistCard": {
+        "alt": "zdjęcie specjalisty",
+        "tel": "telefon:"
+    },
+
+    "accessLevel": {
+        "client": "Klient",
+        "specialist": "Specjalista",
+        "administrator": "Administrator"
+    },
+
+    "userRecord": {
+        "alt": "użytkownik",
+        "approved": "Zatwierdzone",
+        "unapproved": "Niezatwierdzone",
+        "active": "Aktywny",
+        "inactive": "Nieaktywny"
+    },
+
+    "accountDetailsPage": {
+        "successNotficiationItemsRemove": "Poziom dostępu został usunięty",
+        "successNotficiationItemsDeactivateAccount": "Konto zostało deaktywowane",
+        "successNotficiationItemsActivateAccount": "Konto zostało aktywowane",
+        "alt": "Ogólne konto: Avatar",
+        "title": "Poziomy dostępu:",
+        "editAccountTitle": "Edytuj konto",
+        "changePasswordTitle": "Edytuj konto",
+        "deactivateAccountTitle": "Deaktywuj konto",
+        "activateAccountTitle": "Aktywuj konto",
+        "accountDetailsTitle": "Dane szczegółowe",
+        "name": "Imię:",
+        "surname": "Nazwisko:",
+        "email": "Email:",
+        "pesel": "Numer PESEL:",
+        "telephone": "Numer telefonu:",
+        "language": "Język:",
+        "confirmActionModal": {
+            "deactivateAccount": "Zablokuj konto",
+            "activateAccount": "Odblokuj konto",
+            "firstPart": "Czy na pewno chcesz",
+            "secondPart": "konto? Operacja jest nieodwracalna.",
+            "activated": "odblokować",
+            "deactivated": "zablokować"
+        },
+        "confirmActionModalDeleteAccessLevel": {
+            "title": "Usuń poziom dostępu",
+            "text": "Czy na pewno chcesz usunąć poziom dostępu ? Operacja jest nieodwracalna."
+        }
+    },
+
+    "resetPasswordPage": {
+        "successNotficiationItems": "Pomyślnie zmieniono hasło",
+        "header": "Zresetuj hasło",
+        "password": "Hasło",
+        "repeatPassword": "Powtórz hasło",
+        "button": "Zmień hasło",
+        "error": {
+            "password": "Hasło musi zawierać co najmniej 8 znaków, w tym jeden znak specjalny, jedną dużą literę, jedną małą literę oraz jedną cyfrę",
+            "repeatPassword": "Hasła muszą być takie same"
+        }
+    },
+
+    "loginPage": {
+        "header": "Zaloguj się",
+        "login": {
+            "title": "Login",
+            "placeholder": "Wpisz swój login"
+        },
+        "password": {
+            "title": "Hasło",
+            "placeholder": "Wpisz swoje hasło"
+        },
+        "button": "Zaloguj się",
+        "buttonText": "Zapomniałem hasła",
+        "failureNotificationItems": "Dane uwierzytelniające nie mogą być puste!"
+    },
+
+    "resetPasswordModal": {
+        "failureNotificationItems": "Login nie może być krótszy niż 3 znaki",
+        "successNotficiationItems": "Wysłano link z kodem do resetu hasła. Sprawdź maila",
+        "title": "Zresetuj hasło",
+        "login": {
+            "title": "Login",
+            "placeholder": "Wpisz login konta"
+        },
+        "button": "Przypomnij hasło"
+    },
+
+    "homePage": {
+        "title": "WHY CHOOSE US?",
+        "secondTitle": "there are many reasons",
+        "ownLab": "Own laboratory",
+        "loremIpsum": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book",
+        "bestSpecialist": "The best of the best specialist",
+        "satisfiedClients": "Thousands of satisfied clients ",
+        "ourClinic": "OUR CLINIC",
+        "goodLocation": "three clinic in good locations",
+        "kicOne": {
+            "city": "KIC Badlandy",
+            "street": "ul. Oak Lawn 204"
+        },
+        "kicTwo": {
+            "city": "KIC Pacifica",
+            "street": "ul. Racine Avenue 23"
+        },
+        "kicThree": {
+            "city": "KIC Westbrook",
+            "street": "ul. Paul 342"
+        }
+    },
+
+    "slider": {
+        "firmName": "Cyber Implant Installation Clinic",
+        "loremIpsum": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book",
+        "moreInf": "Find out more"
+    },
+
+    "contentBar": {
+        "contact": "Contact",
+        "tel": "+48 303 030 300",
+        "email": "KIC@kic.agency",
+        "socialMedia": "Social media",
+        "kic": "KIC",
+        "kicTwo": "@KIC"
+    },
+
+    "errorPage": {
+        "errorPage": "Sorry, page doesn't exist",
+        "inviteMainPage": "Go to Home Page",
+        "mainPage": "HOME"
+    },
+
+    "activeAccountPage": {
+        "insertToken": "Insert token from e-mail",
+        "activeAccount": "Active account",
+        "confirmedAccount": "Account confirmed",
+        "navLog": "Go to Login Page"
+    },
+
+    "ownAppointmentListPage": {
+        "cell": {
+            "clientName": "Imię i nazwisko klienta",
+            "specialistName": "Imie i nazwisko specjalisty",
+            "name": "Nazwa implantu",
+            "status": "Status wizyty",
+            "date": "Data wizyty",
+            "details": "Szczegóły"
+        }
+    },
+
+    "appointmentDetails": {
+        "title": "Szczegóły wizyty",
+        "clientName": "Imię i nazwisko klienta",
+        "specialistName": "Imie i nazwisko specjalisty",
+        "email": "Email kontaktowy:",
+        "status": "Status wizyty:",
+        "price": "Cena wizyty:",
+        "dateStart": "Data rozpoczęcia wizyty:",
+        "dateEnd": "Data zakończenia wizyty:",
+        "implant": "Obecnie wybrany implant:",
+        "button": "Wyświetl",
+        "description": "Opis:",
+        "buttonCancel": "Odwołaj wizytę",
+        "buttonEdit": "Edytuj wizytę"
+    },
+
+    "implantDetails": {
+        "successNotficiationItems": "Edycja powiodła się",
+        "title": "Dane szczegółowe",
+        "alt": "Zdjęcie implantu",
+        "name": "Nazwa:",
+        "price": "Cena:",
+        "producer": "Producent:",
+        "time": "Czas instalacji:",
+        "applied": "Zastosowano:",
+        "times": "razy",
+        "state": "Stan:",
+        "available": "Dostępny",
+        "notAvailable": "Niedostępny",
+        "edit": "Edytuj",
+        "archive": "Archiwizuj",
+        "confirmActionModal": {
+            "title": "Archiwizacja implantu",
+            "message": "Czy na pewno chcesz zarchiwizować implant? Operacja jest nieodwracalna!"
+        }
+    },
+
+    "ownAccountDetailsPage": {
+        "alt": "Ogólne konto: Avatar",
+        "accessLevel": "Poziomy dostępu:",
+        "edit": "Edytuj konto",
+        "change": "Zmień hasło",
+        "title": "Dane szczegółowe",
+        "name": "Imię:",
+        "surname": "Nazwisko:",
+        "email": "Email:",
+        "phone": "Numer telefon:",
+        "pesel": "Numer PESEL:",
+        "language": "Język:",
+        "altLanguage": "Szczegółowy opis: język"
+    },
+
+    "changeOwnPasswordInternal": {
+        "successNotficiationItems": "Hasło zostało pomyślnie zmienione",
+        "titleWrapper": "Zmień swoje hasło",
+        "oldPassword": "Stare hasło",
+        "newPassword": "Nowe hasło",
+        "confirm": "Zatwierdź",
+        "cancel": "Anuluj",
+        "error": {
+            "valid": "Oba hasła muszą być dłuższe niż 8 znaków oraz muszą zawierać jedną dużą literę, jedną cyfrę i jeden znak specjalny",
+            "same": "Hasła nie mogą być takie same"
+        },
+        "confirmActionModal": {
+            "title": "Zmiana swojego hasła",
+            "message": "Czy na pewno chcesz zmienić hasło? Operacja jest nieodwracalna!"
+        }
+    },
+
+    "editOwnAppointment": {
+        "title": "Edytuj wizytę",
+        "clientName": "Imię i nazwisko klienta:",
+        "specialistName": "Imie i nazwisko specjalisty:",
+        "email": "Email kontaktowy:",
+        "status": "Status wizyty:",
+        "accept": "Akceptuj wizytę",
+        "cancel": "Anuluj wizytę",
+        "price": "Cena wizyty:",
+        "dateStart": "Data rozpoczęcia wizyty:",
+        "dateEnd": "Data zakończenia wizyty:",
+        "description": "Opis:",
+        "button": "Prześlij zmianę"
+    },
+
+    "editOwnAccountPage": {
+        "updateSuccessfully": "Konto zostało zaktualizowane",
+        "editOwnAccount": "Edytuj dane własnego konta",
+        "firstName": "Imie",
+        "firstNameMsg": "Wymagane od 3 do 30 znaków",
+        "lastName": "Nazwisko",
+        "lastNameMsg": "Wymagane od 3 do 30 znaków",
+        "peselMsg": "PESEL składa się z 11 liczb",
+        "phoneNumber": "Numer telefonu",
+        "phoneNumberMsg": "Numer telefonu składa sie z 9 liczb",
+        "confirm": "Zatwierdź",
+        "cancel": "Anuluj",
+        "email": "Mail",
+        "emailMsg": "Podaj poprawny adres mailowy",
+        "confirmation": "Czy na pewno chcesz zmienić swoje własne dane? Operacja jest nieodwracalna"
+    },
+
+    "usersManagmentPage": {
+        "searchPlaceholder": "Wyszukaj użytkowników...",
+        "cell": {
+            "login": "Login",
+            "name": "Imię",
+            "surname": "Nazwisko",
+            "approved": "Czy zatwierdzony",
+            "active": "Czy aktywne",
+            "more": "Więcej"
+        }
+    },
+
+    "editAnyAccountPage": {
+        "updateSuccessfully": "Konto zostało zaktualizowane",
+        "editAccount": "Edytuj dane konta ",
+        "firstName": "Imie",
+        "firstNameMsg": "Wymagane od 3 do 30 znaków",
+        "lastName": "Nazwisko",
+        "lastNameMsg": "Wymagane od 3 do 30 znaków",
+        "peselMsg": "PESEL składa się z 11 liczb",
+
+        "email": "Mail",
+        "emailMsg": "Podaj poprawny adres mailowy",
+
+        "login": "Login",
+        "loginMsg": "Wymagane od 3 do 30 znaków",
+        "phoneNumber": "Numer telefonu",
+        "phoneNumberMsg": "Numer telefonu składa sie z 9 liczb",
+        "password": "Password",
+        "passwordMsg": "Wymagane 8 znaków, duża i mała litera,liczba",
+        "cancel": "Anuluj",
+        "confirm": "Potwierdz",
+        "polish": "polski",
+        "english": "angielski",
+        "send_email": "Wysłaliśmy Ci maila z linkiem powierdzającym",
+        "confirmation": "Czy na pewno chcesz zmienić swoje własne dane? Operacja jest nieodwracalna",
+        "editForAdmin": " Edytuj dane dla poziomu dostępu Administrator",
+        "editForSpec": " Edytuj dane dla poziomu dostępu Specjalista",
+        "editForClient": " Edytuj dane dla poziomu dostępu Klient"
+    },
+
+    "createUserPage": {
+        "successNotficiationItems": "Konto zostało utworzone",
+        "header": "Utwórz nowe konto użytkownika",
+        "email": "Email ",
+        "emailTitle": "email",
+        "emailMsg": "Należy podać poprawny email (powinien zawierać znak @).",
+        "name": "Imię ",
+        "nameTitle": "imię",
+        "nameMsg": "Imię powinno skłądać się z minimum 3 i maksymalnie 30 znaków.",
+        "surname": "Nazwisko ",
+        "surnameTitle": "nazwisko",
+        "surnameMsg": "Nazwisko powinno skłądać się z minimum 3 i maksymalnie 30 znaków.",
+        "id": "Identyfikator ",
+        "idTitle": "identyfikator",
+        "idMsg": "Identyfikator powinien skłądać się z minimum 3 i maksymalnie 30 znaków.",
+        "password": "Hasło ",
+        "passwordTitle": "hasło",
+        "passwordMsg": "Hasło powinno zawierać co najmniej jedną dużą literę, jedną małą literę, jedną cyfrę i jedną znak specjalny.",
+        "languageTitle": "język",
+        "language": "Język ",
+        "languagePL": "polski",
+        "lenguageToCreate": "językDoTworzenia",
+        "languageEN": "angielski",
+        "accept": "Zatwierdź",
+        "cancel": "Anuluj",
+        "confirmActionModal": {
+            "title": "Utwórz nowego użytkownika",
+            "message": "Czy na pewno chcesz utworzyć nowego użytkownika? Operacja jest nieodwracalna!"
+        }
+    },
+    "navbar": {
+        "avatar_alt": "Avatar użytkownika",
+        "register": "Zarejestruj się"
+    },
+
+    "addAccessLevelPage": {
+        "admin": "administrator",
+        "spec": "specjalisty",
+        "client": "klienta",
+        "added": "Poziom dostępu został dodany",
+        "addAccess": "Dodaj poziom dostępu",
+        "peselMsg": "PESEL składa się z 11 liczb",
+        "phoneNumber": "Numer telefonu",
+        "phoneNumberMsg": "Numer telefonu składa sie z 9 liczb",
+        "email": "Mail",
+        "emailMsg": "Podaj poprawny adres mailowy"
+    },
+    "sidebar": {
+        "logout": "Wyloguj się"
     }
 }

@@ -13,6 +13,7 @@ import {
     successNotficiationItems,
 } from "../../../../utils/showNotificationsItems";
 import ConfirmActionModal from "../../../../components/shared/ConfirmActionModal/ConfirmActionModal";
+import { useTranslation } from "react-i18next";
 
 const CreateUserPage = () => {
     const [account, setAccount] = useState<CreateAccountRequest>({
@@ -29,6 +30,8 @@ const CreateUserPage = () => {
         pageLoading: true,
         actionLoading: false,
     });
+
+    const { t } = useTranslation();
 
     const [error, setError] = useState<ApiError>();
     const [opened, setOpened] = useState<boolean>(false);
@@ -71,22 +74,29 @@ const CreateUserPage = () => {
         }
         navigate("/accounts");
         setLoading({ ...loading, actionLoading: false });
-        showNotification(successNotficiationItems("Konto zostało utworzone"));
+        showNotification(
+            successNotficiationItems(
+                t("createUserPage.successNotficiationItems")
+            )
+        );
     };
 
     return (
         <section className={style.create_user_page}>
             <div className={style.create_user_page_header}>
-                <h2>Utwórz nowe konto użytkownika</h2>
+                <h2>{t("createUserPage.header")}</h2>
             </div>
             <div className={style.create_user_page_content}>
                 <div className={style.create_data_account_wrapper}>
                     <div className={style.edit_fields_wrapper}>
-                        <div className={style.edit_field} title="email">
+                        <div
+                            className={style.edit_field}
+                            title={t("createUserPage.email")}
+                        >
                             <InputWithValidation
                                 required
                                 styleWidth={{ width: "30rem" }}
-                                title="Email "
+                                title={t("createUserPage.email")}
                                 value={account.email}
                                 validationType="VALIDATE_EMAIL_ADMINISTRATOR"
                                 isValid={isEmailValidAdministrator}
@@ -101,15 +111,18 @@ const CreateUserPage = () => {
                             <div className={style.edit_field_validation}>
                                 <ValidationMessage
                                     isValid={isEmailValidAdministrator}
-                                    message="Należy podać poprawny email (powinien zawierać znak @)."
+                                    message={t("createUserPage.emailMsg")}
                                 />
                             </div>
                         </div>
-                        <div className={style.edit_field} title="firstName">
+                        <div
+                            className={style.edit_field}
+                            title={t("createUserPage.nameTitle")}
+                        >
                             <InputWithValidation
                                 required
                                 styleWidth={{ width: "30rem" }}
-                                title="Imię "
+                                title={t("createUserPage.name")}
                                 value={account.firstName}
                                 validationType="VALIDATE_FIRSTNAME"
                                 isValid={isFirstNameValid}
@@ -123,15 +136,18 @@ const CreateUserPage = () => {
                             <div className={style.edit_field_validation}>
                                 <ValidationMessage
                                     isValid={isFirstNameValid}
-                                    message="Imię powinno skłądać się z minimum 3 i maksymalnie 30 znaków."
+                                    message={t("createUserPage.nameMsg")}
                                 />
                             </div>
                         </div>
-                        <div className={style.edit_field} title="lastName">
+                        <div
+                            className={style.edit_field}
+                            title={t("createUserPage.surnameTitle")}
+                        >
                             <InputWithValidation
                                 required
                                 styleWidth={{ width: "30rem" }}
-                                title="Nazwisko "
+                                title={t("createUserPage.surname")}
                                 value={account.lastName}
                                 validationType="VALIDATE_LASTNAME"
                                 isValid={isLastNameValid}
@@ -146,15 +162,18 @@ const CreateUserPage = () => {
                             <div className={style.edit_field_validation}>
                                 <ValidationMessage
                                     isValid={isLastNameValid}
-                                    message="Nazwisko powinno skłądać się z minimum 3 i maksymalnie 30 znaków."
+                                    message={t("createUserPage.surnameMsg")}
                                 />
                             </div>
                         </div>
-                        <div className={style.edit_field} title="login">
+                        <div
+                            className={style.edit_field}
+                            title={t("createUserPage.idTitle")}
+                        >
                             <InputWithValidation
                                 required
                                 styleWidth={{ width: "30rem" }}
-                                title="Identyfikator "
+                                title={t("createUserPage.id")}
                                 value={account.login}
                                 validationType="VALIDATE_LOGIN"
                                 isValid={isLoginValid}
@@ -169,15 +188,18 @@ const CreateUserPage = () => {
                             <div className={style.edit_field_validation}>
                                 <ValidationMessage
                                     isValid={isLoginValid}
-                                    message="Identyfikator powinien skłądać się z minimum 3 i maksymalnie 30 znaków."
+                                    message={t("createUserPage.idMsg")}
                                 />
                             </div>
                         </div>
-                        <div className={style.edit_field} title="password">
+                        <div
+                            className={style.edit_field}
+                            title={t("createUserPage.passwordTitle")}
+                        >
                             <InputWithValidation
                                 required
                                 styleWidth={{ width: "30rem" }}
-                                title="Hasło "
+                                title={t("createUserPage.password")}
                                 type="password"
                                 value={account.password}
                                 validationType="VALIDATE_PASSWORD"
@@ -193,21 +215,22 @@ const CreateUserPage = () => {
                             <div className={style.edit_field_validation}>
                                 <ValidationMessage
                                     isValid={isPasswordValid}
-                                    message="Hasło powinno zawierać co najmniej jedną dużą literę, jedną małą literę, jedną cyfrę i jedną znak specjalny."
+                                    message={t("createUserPage.passwordMsg")}
                                 />
                             </div>
                         </div>
                         <div
                             className={style.edit_field}
-                            title="lenguage"
+                            title={t("createUserPage.languageTitle")}
                             style={{ display: "block" }}
                         >
                             <p className={style.p}>
-                                Język <span style={{ color: "red" }}>*</span>
+                                {t("createUserPage.language")}{" "}
+                                <span style={{ color: "red" }}>*</span>
                             </p>
                             <select
-                                id="lenguageToCreate"
-                                name="lenguageToCreate"
+                                id={t("createUserPage.languageToCreate")}
+                                name={t("createUserPage.languageToCreate")}
                                 required
                                 className={style.select}
                                 onChange={(e: any) =>
@@ -222,14 +245,14 @@ const CreateUserPage = () => {
                                     value="pl"
                                     id="pl"
                                 >
-                                    polski
+                                    {t("createUserPage.languagePL")}
                                 </option>
                                 <option
                                     className={style.option}
                                     value="en"
                                     id="en"
                                 >
-                                    angielski
+                                    {t("createUserPage.languageEN")}
                                 </option>
                             </select>
                         </div>
@@ -242,7 +265,7 @@ const CreateUserPage = () => {
                             isDisabled={!isEveryFieldValid}
                             icon={faCheck}
                             color="green"
-                            title="Zatwierdź"
+                            title={t("createUserPage.accept")}
                         />
                         <ActionButton
                             onClick={() => {
@@ -250,7 +273,7 @@ const CreateUserPage = () => {
                             }}
                             icon={faCancel}
                             color="red"
-                            title="Anuluj"
+                            title={t("createUserPage.cancel")}
                         />
                     </div>
                 </div>
@@ -266,10 +289,9 @@ const CreateUserPage = () => {
                     setOpened(false);
                 }}
                 isLoading={loading.actionLoading as boolean}
-                title="Utwórz nowego użytkownika"
+                title={t("createUserPage.confirmActionModal.title")}
             >
-                Czy na pewno chcesz utworzyć nowego użytkownika? Operacja jest
-                nieodwracalna
+                {t("createUserPage.confirmActionModal.message")}
             </ConfirmActionModal>
         </section>
     );

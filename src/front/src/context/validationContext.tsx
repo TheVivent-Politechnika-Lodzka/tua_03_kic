@@ -201,7 +201,6 @@ const validationReducer = (state: ContextState, action: ValidationAction) => {
                 isImplantNameValid: validate(
                     action.payload.input,
                     /^[a-zA-Z \u00C0-\u017F']{3,50}$/
-                    
                 ),
             };
         }

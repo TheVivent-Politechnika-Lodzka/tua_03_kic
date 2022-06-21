@@ -51,8 +51,8 @@ const InputWithValidation = ({
     }, [input]);
 
     useEffect(() => {
-        setInput(value)
-    }, [value])
+        setInput(value);
+    }, [value]);
 
     return (
         <div className={styles.edit_field_wrapper}>
@@ -65,7 +65,6 @@ const InputWithValidation = ({
                 className={styles.input_wrapper}
                 style={styleWidth}
                 autoComplete="off"
-
             >
                 <input
                     autoComplete="off"

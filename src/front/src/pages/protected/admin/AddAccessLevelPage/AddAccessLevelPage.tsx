@@ -14,23 +14,7 @@ import {
     successNotficiationItems,
 } from "../../../../utils/showNotificationsItems";
 import styles from "./style.module.scss";
-
-const getAccessLevel = (accessLevel: AccessLevelType) => {
-    switch (accessLevel) {
-        case "ADMINISTRATOR": {
-            return "administratora";
-        }
-        case "SPECIALIST": {
-            return "specjalisty";
-        }
-        case "CLIENT": {
-            return "klienta";
-        }
-        default: {
-            return "";
-        }
-    }
-};
+import { useTranslation } from "react-i18next";
 
 const AddAccessLevelPage = ({
     isLoading,
@@ -54,6 +38,7 @@ const AddAccessLevelPage = ({
         contactEmail: "",
     });
 
+    const { t } = useTranslation();
     const {
         state: {
             isPhoneNumberValidAdministrator,
@@ -62,6 +47,23 @@ const AddAccessLevelPage = ({
             isEmailValidAdministrator,
         },
     } = useContext(validationContext);
+
+    const getAccessLevel = (accessLevel: AccessLevelType) => {
+        switch (accessLevel) {
+            case "ADMINISTRATOR": {
+                return t("addAccessLevelPage.admin");
+            }
+            case "SPECIALIST": {
+                return t("addAccessLevelPage.spec");
+            }
+            case "CLIENT": {
+                return t("addAccessLevelPage.client");
+            }
+            default: {
+                return "";
+            }
+        }
+    };
 
     const handleSubmit = async () => {
         if (!account) return;
@@ -75,7 +77,7 @@ const AddAccessLevelPage = ({
             return;
         }
         showNotification(
-            successNotficiationItems("Poziom dostępu został dodany")
+            successNotficiationItems(t("addAccessLevelPage.added"))
         );
         setAccount(response);
         onClose();
@@ -83,7 +85,9 @@ const AddAccessLevelPage = ({
 
     return (
         <ConfirmActionModal
-            title={`Dodaj poziom dostępu ${getAccessLevel(accessLevel)}`}
+            title={`${t("addAccessLevelPage.addAccess")} ${getAccessLevel(
+                accessLevel
+            )}`}
             isLoading={isLoading}
             isOpened={isOpened}
             handleFunction={handleSubmit}
@@ -95,7 +99,7 @@ const AddAccessLevelPage = ({
                     <>
                         <div className={styles.edit_field}>
                             <InputWithValidation
-                                title="Numer PESEL"
+                                title="PESEL"
                                 value={accessLevelToAdd.pesel}
                                 validationType="VALIDATE_PESEL"
                                 isValid={isPESELValid}
@@ -111,12 +115,12 @@ const AddAccessLevelPage = ({
                             <div />
                             <ValidationMessage
                                 isValid={isPESELValid}
-                                message="Numer pesel musi składać się z 11 cyfr."
+                                message={t("addAccessLevelPage.peselMsg")}
                             />
                         </div>
                         <div className={styles.edit_field}>
                             <InputWithValidation
-                                title="Numer telefonu"
+                                title={t("addAccessLevelPage.phoneNumber")}
                                 value={accessLevelToAdd.phoneNumber}
                                 validationType="VALIDATE_PHONENUMBER_CLIENT"
                                 isValid={isPhoneNumberValidClient}
@@ -132,7 +136,9 @@ const AddAccessLevelPage = ({
                             <div />
                             <ValidationMessage
                                 isValid={isPhoneNumberValidClient}
-                                message="Numer telefonu musi składać się z 9 cyfr."
+                                message={t(
+                                    "addAccessLevelPage..phoneNumberMsg"
+                                )}
                             />
                         </div>
                     </>
@@ -142,7 +148,7 @@ const AddAccessLevelPage = ({
                     <>
                         <div className={styles.edit_field}>
                             <InputWithValidation
-                                title="Numer telefonu"
+                                title={t("addAccessLevelPage.phoneNumber")}
                                 value={accessLevelToAdd.phoneNumber}
                                 validationType="VALIDATE_PHONENUMBER_ADMINISTRATOR"
                                 isValid={isPhoneNumberValidAdministrator}
@@ -156,12 +162,12 @@ const AddAccessLevelPage = ({
                             />
                             <ValidationMessage
                                 isValid={isPhoneNumberValidAdministrator}
-                                message="Numer telefonu musi składać się z 9 cyfr."
+                                message={t("addAccessLevelPage.phoneNumberMsg")}
                             />
                         </div>
                         <div className={styles.edit_field}>
                             <InputWithValidation
-                                title="Email kontaktowy"
+                                title={t("addAccessLevelPage.email")}
                                 value={accessLevelToAdd.contactEmail}
                                 validationType="VALIDATE_EMAIL_ADMINISTRATOR"
                                 isValid={isEmailValidAdministrator}
@@ -175,7 +181,7 @@ const AddAccessLevelPage = ({
                             />
                             <ValidationMessage
                                 isValid={isEmailValidAdministrator}
-                                message="Email musi być poprawny."
+                                message={t("addAccessLevelPage.emailMsg")}
                             />
                         </div>
                     </>

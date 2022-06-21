@@ -41,7 +41,7 @@ const LoginPage = () => {
             setLoading({ ...loading, actionLoading: false });
             showNotification(
                 failureNotificationItems(
-                    "Dane uwierzytelniające nie mogą być puste!"
+                    t("loginPage.failureNotificationItems")
                 )
             );
             return;
@@ -64,11 +64,11 @@ const LoginPage = () => {
         <section className={styles.login_page}>
             <div className={styles.background} />
             <div className={styles.form_wrapper}>
-                <h2 className={styles.header}>Zaloguj się</h2>
+                <h2 className={styles.header}>{t("loginPage.header")}</h2>
                 <div className={styles.input_wrapper}>
                     <Input
-                        title="Login"
-                        placeholder="Wpisz swój login"
+                        title={t("loginPage.login.title")}
+                        placeholder={t("loginPage.login.placeholder")}
                         type="text"
                         value={credentials.login}
                         onChange={(e) =>
@@ -80,8 +80,8 @@ const LoginPage = () => {
                         required={true}
                     />
                     <Input
-                        title={t("password")}
-                        placeholder="Wpisz swoje hasło"
+                        title={t("loginPage.password.title")}
+                        placeholder={t("loginPage.password.placeholder")}
                         type="password"
                         value={credentials.password}
                         onChange={(e) =>
@@ -96,7 +96,7 @@ const LoginPage = () => {
                 <div className={styles.action_button_wrapper}>
                     <ActionButton
                         isLoading={loading.actionLoading}
-                        title="Zaloguj się"
+                        title={t("loginPage.button")}
                         onClick={handleLogin}
                         icon={faSignIn}
                         color="purple"
@@ -107,7 +107,7 @@ const LoginPage = () => {
                         }}
                         className={styles.forgot_password}
                     >
-                        Zapomniałem hasła
+                        {t("loginPage.buttonText")}
                     </p>
                 </div>
             </div>

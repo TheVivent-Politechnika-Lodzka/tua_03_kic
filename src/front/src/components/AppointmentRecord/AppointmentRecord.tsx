@@ -5,7 +5,7 @@ import { useStoreSelector } from "../../redux/reduxHooks";
 import styles from "./style.module.scss";
 import { LocalDateTime, Instant, ChronoUnit } from "@js-joda/core";
 import { useState } from "react";
-import {AppointmentDetails} from '../../pages/protected/shared/AppointmentDetails/AppointmentDetails'
+import { AppointmentDetails } from "../../pages/protected/shared/AppointmentDetails/AppointmentDetails";
 interface AppointmentRecordProps {
     appointment: AppointmentListElementDto;
 }

@@ -15,6 +15,7 @@ import { useStoreSelector } from "../../../../redux/reduxHooks";
 import { failureNotificationItems } from "../../../../utils/showNotificationsItems";
 import styles from "./style.module.scss";
 import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 interface AccountDetailsProps {
     isOpened: boolean;
     appointmentId: string;
@@ -30,11 +31,11 @@ export const AppointmentDetails = ({
         pageLoading: true,
         actionLoading: false,
     });
-    let navigate = useNavigate(); 
-    const routeChange = (id:string) =>{ 
-      let path = `/visit/edit/${id}`; 
-      navigate(path);
-    }
+    let navigate = useNavigate();
+    const routeChange = (id: string) => {
+        let path = `/visit/edit/${id}`;
+        navigate(path);
+    };
     const [implantModal, setImplantModal] = useState<boolean>(false);
     const [appointment, setAppointment] = useState<AppointmentListElementDto>();
     const [startDate, setStartDate] = useState<string>("");
@@ -50,6 +51,9 @@ export const AppointmentDetails = ({
         setImplantId(data.data.implant.id);
         setLoading({ pageLoading: false, actionLoading: false });
     };
+
+    const { t } = useTranslation();
+
     useEffect(() => {
         if (!appointment) return;
         const startDate = Instant.parse(appointment.startDate);
@@ -93,14 +97,16 @@ export const AppointmentDetails = ({
                         />
                         <div className={styles.account_details}>
                             <p className={styles.account_details_title}>
-                                Szczegóły wizyty
+                                {t("appointmentDetails.title")}
                             </p>
                             <div className={styles.details_wrapper}>
                                 <div className={styles.detail_wrapper}>
                                     <p className={styles.title}>
                                         {aLevel === "SPECIALIST"
-                                            ? "Imię i nazwisko klienta:"
-                                            : "Imie i nazwisko specjalisty:"}
+                                            ? t("appointmentDetails.clientName")
+                                            : t(
+                                                  "appointmentDetails.specialistName"
+                                              )}
                                     </p>
                                     <p className={styles.description}>
                                         {aLevel === "SPECIALIST"
@@ -115,7 +121,7 @@ export const AppointmentDetails = ({
                                 </div>
                                 <div className={styles.detail_wrapper}>
                                     <p className={styles.title}>
-                                        Email kontaktowy:
+                                        {t("appointmentDetails.email")}
                                     </p>
                                     <p className={styles.description}>
                                         {appointment?.specialist.email}
@@ -123,21 +129,24 @@ export const AppointmentDetails = ({
                                 </div>
                                 <div className={styles.detail_wrapper}>
                                     <p className={styles.title}>
-                                        Status wizyty:
+                                        {t("appointmentDetails.status")}{" "}
                                     </p>
                                     <p className={styles.description}>
                                         {appointment?.status}
                                     </p>
                                 </div>
                                 <div className={styles.detail_wrapper}>
-                                    <p className={styles.title}>Cena wizyty:</p>
+                                    <p className={styles.title}>
+                                        {" "}
+                                        {t("appointmentDetails.price")}
+                                    </p>
                                     <p className={styles.description}>
                                         {appointment?.price + "zł"}
                                     </p>
                                 </div>
                                 <div className={styles.detail_wrapper}>
                                     <p className={styles.title}>
-                                        Data rozpoczęcia wizyty:
+                                        {t("appointmentDetails.dateStart")}{" "}
                                     </p>
                                     <p className={styles.description}>
                                         {startDate}
@@ -145,7 +154,7 @@ export const AppointmentDetails = ({
                                 </div>
                                 <div className={styles.detail_wrapper}>
                                     <p className={styles.title}>
-                                        Data zakończenia wizyty:
+                                        {t("appointmentDetails.dateEnd")}{" "}
                                     </p>
                                     <p className={styles.description}>
                                         {endDate}
@@ -153,11 +162,13 @@ export const AppointmentDetails = ({
                                 </div>
                                 <div className={styles.detail_wrapper}>
                                     <p className={styles.title}>
-                                        Obecnie wybrany implant:
+                                        {t("appointmentDetails.implant")}{" "}
                                     </p>
                                     <div className={styles.description}>
                                         <ActionButton
-                                            title="Wyświetl"
+                                            title={t(
+                                                "appointmentDetails.button"
+                                            )}
                                             color="cyan"
                                             icon={faInfoCircle}
                                             onClick={() =>
@@ -167,21 +178,24 @@ export const AppointmentDetails = ({
                                     </div>
                                 </div>
                                 <div className={styles.detail_wrapper}>
-                                    <p className={styles.title}>Opis:</p>
+                                    <p className={styles.title}>
+                                        {" "}
+                                        {t("appointmentDetails.description")}
+                                    </p>
                                     <p className={styles.description}>
                                         {appointment?.description}
                                     </p>
                                 </div>
                             </div>
                             <div className={styles.button_holder}>
-                                <ActionButton //TODO dodać implementacje takowych przycisków, przyciski są w celu ustalenia stylowania
-                                    title="Odwołaj wizytę"
+                                <ActionButton
+                                    title={t("appointmentDetails.buttonCancel")}
                                     color="cyan"
                                     icon={faInfoCircle}
                                     onClick={() => console.log("essa")}
                                 ></ActionButton>
                                 <ActionButton
-                                    title="Edytuj wizytę"
+                                    title={t("appointmentDetails.buttonEdit")}
                                     color="cyan"
                                     icon={faInfoCircle}
                                     onClick={() => routeChange(appointmentId)}

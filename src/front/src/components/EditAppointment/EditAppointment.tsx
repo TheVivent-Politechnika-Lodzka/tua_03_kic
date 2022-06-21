@@ -11,20 +11,23 @@ import { useEffect, useState } from "react";
 import ReactLoading from "react-loading";
 import { useNavigate, useParams } from "react-router";
 import {
-    AppointmentListElementDto, editAppointmentByAdmin,
+    AppointmentListElementDto,
+    editAppointmentByAdmin,
     editOwnAppointment,
     getAppointmentDetails,
 } from "../../api/mop";
 import ActionButton from "../../components/shared/ActionButton/ActionButton";
 import { useStoreSelector } from "../../redux/reduxHooks";
 import { failureNotificationItems } from "../../utils/showNotificationsItems";
+import { useTranslation } from "react-i18next";
 import styles from "./style.module.scss";
 
 export const EditAppointment = () => {
+    const { t } = useTranslation();
     const aLevel = useStoreSelector((state) => state.user.cur);
     const [appointment, setAppointment] = useState<AppointmentListElementDto>();
     const [etag, setEtag] = useState<string>("");
-    const [inputStatus, setInputStatus] = useState<string>('')
+    const [inputStatus, setInputStatus] = useState<string>("");
     const [loading, setLoading] = useState<Loading>({
         pageLoading: true,
         actionLoading: false,
@@ -43,7 +46,7 @@ export const EditAppointment = () => {
             return;
         }
         setEtag(data.etag);
-        setInputStatus(data.data.status)
+        setInputStatus(data.data.status);
         setInputDescription(data.data.description);
         setAppointment(data.data);
         setLoading({ pageLoading: false, actionLoading: false });
@@ -61,13 +64,13 @@ export const EditAppointment = () => {
             etag,
             status,
             version,
-            description
+            description,
         });
         if ("errorMessage" in data) {
             showNotification(failureNotificationItems(data.errorMessage));
             return;
         }
-        navigate('/visits')
+        navigate("/visits");
     };
     useEffect(() => {
         if (!appointment) return;
@@ -91,90 +94,95 @@ export const EditAppointment = () => {
             ) : (
                 <div className={styles.account_details}>
                     <p className={styles.account_details_title}>
-                        Edytuj wizytę
+                        {t("editOwnAppointment.title")}
                     </p>
                     <div className={styles.details_wrapper}>
                         <div className={styles.detail_wrapper}>
                             <p className={styles.title}>
-                                Imię i nazwisko klienta:
+                                {t("editOwnAppointment.clientName")}
                             </p>
                             <p className={styles.description}>
-                                {
-                                    appointment?.client.firstName +
+                                {appointment?.client.firstName +
                                     " " +
-                                    appointment?.client.lastName
-                                }
+                                    appointment?.client.lastName}
                             </p>
                         </div>
                         <div className={styles.detail_wrapper}>
                             <p className={styles.title}>
-                                Imie i nazwisko specjalisty:
+                                {t("editOwnAppointment.specialistName")}
                             </p>
                             <p className={styles.description}>
-                                {
-                                    appointment?.specialist.firstName +
+                                {appointment?.specialist.firstName +
                                     " " +
-                                    appointment?.specialist.lastName
-                                }
+                                    appointment?.specialist.lastName}
                             </p>
                         </div>
                         <div className={styles.detail_wrapper}>
-                            <p className={styles.title}>Email kontaktowy:</p>
+                            <p className={styles.title}>
+                                {t("editOwnAppointment.email")}
+                            </p>
                             <p className={styles.description}>
                                 {appointment?.specialist.email}
                             </p>
                         </div>
                         <div className={styles.detail_wrapper}>
-                            <p className={styles.title}>Opis:</p>
+                            <p className={styles.title}>
+                                {t("editOwnAppointment.description")}
+                            </p>
                             <p className={styles.description}>
                                 {appointment?.description}
                             </p>
-                            <input className={styles.description_input}
-                                       type="text"
-                                       value={inputDescription}
-                                       onChange={(e) =>
-                                           setInputDescription(e.target.value)
-                                       }
+                            <input
+                                className={styles.description_input}
+                                type="text"
+                                value={inputDescription}
+                                onChange={(e) =>
+                                    setInputDescription(e.target.value)
+                                }
                             />
                         </div>
                         <div className={styles.detail_wrapper}>
-                            <p className={styles.title}>Cena wizyty:</p>
+                            <p className={styles.title}>
+                                {t("editOwnAppointment.price")}
+                            </p>
                             <p className={styles.description}>
                                 {appointment?.price + "zł"}
                             </p>
                         </div>
                         <div className={styles.detail_wrapper}>
                             <p className={styles.title}>
-                                Data rozpoczęcia wizyty:
+                                {t("editOwnAppointment.dateStart")}
                             </p>
                             <p className={styles.description}>{startDate}</p>
                         </div>
                         <div className={styles.detail_wrapper}>
                             <p className={styles.title}>
-                                Data zakończenia wizyty:
+                                {t("editOwnAppointment.dateEnd")}
                             </p>
                             <p className={styles.description}>{endDate}</p>
                         </div>
                         <div className={styles.detail_wrapper}>
-                            <p className={styles.title}>Status wizyty:</p>
+                            <p className={styles.title}>
+                                {t("editOwnAppointment.status")}
+                            </p>
                             <p className={styles.description}>
                                 {appointment?.status}
                             </p>
                             <input
                                 type="checkbox"
                                 value={inputDescription}
-                                onChange={(e) =>
-                                    {
-                                        if(e.target.value) setInputStatus('PENDING')
-                                    }
-                                }
+                                onChange={(e) => {
+                                    if (e.target.value)
+                                        setInputStatus("PENDING");
+                                }}
                             />
-                            <p className={styles.title}>Anuluj wizytę</p>
-
+                            <p className={styles.title}>
+                                {t("editOwnAppointment.cancel")}
+                            </p>
                         </div>
                         <div className={styles.detail_wrapper}>
                             <ActionButton
-                                title="Prześlij zmianę"
+                                title={t("editOwnAppointment.button")}
                                 color="purple"
                                 icon={faInfoCircle}
                                 onClick={() => handleEditAppointment()}

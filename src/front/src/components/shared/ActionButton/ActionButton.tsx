@@ -21,7 +21,6 @@ const ActionButton = ({
     isDisabled,
     isLoading,
 }: ActionButtonProps) => {
-    
     useEffect(() => {}, [isLoading]);
 
     return (

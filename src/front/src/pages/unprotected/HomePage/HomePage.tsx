@@ -11,8 +11,10 @@ const HomePage = () => {
             <Slider />
 
             <section className={styles.section_content}>
-                <div className={styles.title}>{t("why_us")}</div>
-                <div className={styles.second_title}>{t("many_reason")}"</div>
+                <div className={styles.title}>{t("homePage.title")}</div>
+                <div className={styles.second_title}>
+                    {t("homePage.secondTitle")}"
+                </div>
                 <div className={styles.items_list}>
                     <div className={styles.single_item_circle}>
                         <div className={styles.item_image}>
@@ -20,15 +22,10 @@ const HomePage = () => {
                         </div>
                         <div className={styles.text_box}>
                             <div className={styles.text_square_title}>
-                                {t("own_lab")}
+                                {t("homePage.ownLab")}
                             </div>
                             <div className={styles.text_square}>
-                                Lorem Ipsum is simply dummy text of the printing
-                                and typesetting industry. Lorem Ipsum has been
-                                the industry's standard dummy text ever since
-                                the 1500s, when an unknown printer took a galley
-                                of type and scrambled it to make a type specimen
-                                book
+                                {t("homePage.loremIpsum")}
                             </div>
                         </div>
                     </div>
@@ -38,15 +35,10 @@ const HomePage = () => {
                         </div>
                         <div className={styles.text_box}>
                             <div className={styles.text_square_title}>
-                                {t("best_specialist")}
+                                {t("homePage.bestSpecialist")}
                             </div>
                             <div className={styles.text_square}>
-                                Lorem Ipsum is simply dummy text of the printing
-                                and typesetting industry. Lorem Ipsum has been
-                                the industry's standard dummy text ever since
-                                the 1500s, when an unknown printer took a galley
-                                of type and scrambled it to make a type specimen
-                                book
+                                {t("homePage.loremIpsum")}
                             </div>
                         </div>
                     </div>
@@ -56,15 +48,10 @@ const HomePage = () => {
                         </div>
                         <div className={styles.text_box}>
                             <div className={styles.text_square_title}>
-                                {t("satisfied_clients")}
+                                {t("homePage.satisfiedClients")}
                             </div>
                             <div className={styles.text_square}>
-                                Lorem Ipsum is simply dummy text of the printing
-                                and typesetting industry. Lorem Ipsum has been
-                                the industry's standard dummy text ever since
-                                the 1500s, when an unknown printer took a galley
-                                of type and scrambled it to make a type specimen
-                                book
+                                {t("homePage.loremIpsum")}
                             </div>
                         </div>
                     </div>
@@ -72,24 +59,30 @@ const HomePage = () => {
             </section>
 
             <section className={styles.section_content}>
-                <div className={styles.title}> {t("our_clinic")}</div>
-                <div className={styles.second_title}>{t("good_location")}</div>
+                <div className={styles.title}> {t("homePage.ourClinic")}</div>
+                <div className={styles.second_title}>
+                    {t("homePage.goodLocation")}
+                </div>
                 <div className={styles.items_list}>
                     <div className={styles.card}>
                         <div className={styles.item_wrapper}>
                             <img src="klinika1.jpg" alt="klinika1" />
-                            <div className={styles.city_name}>KIC Badlandy</div>
+                            <div className={styles.city_name}>
+                                {t("homePage.kicOne.city")}
+                            </div>
                             <div className={styles.street_name}>
-                                ul. Oak Lawn 204{" "}
+                                {t("homePage.kicOne.street")}{" "}
                             </div>
                         </div>
                     </div>
                     <div className={styles.card}>
                         <div className={styles.item_wrapper}>
                             <img src="klinika2.jpg" alt="klinika2" />
-                            <div className={styles.city_name}>KIC Pacifica</div>
+                            <div className={styles.city_name}>
+                                {t("homePage.kicTwo.city")}
+                            </div>
                             <div className={styles.street_name}>
-                                ul. Racine Avenue 23{" "}
+                                {t("homePage.kicTwo.street")}{" "}
                             </div>
                         </div>
                     </div>
@@ -97,10 +90,10 @@ const HomePage = () => {
                         <div className={styles.item_wrapper}>
                             <img src="klinika3.jpg" alt="klinika3" />
                             <div className={styles.city_name}>
-                                KIC Westbrook
+                                {t("homePage.kicThree.city")}
                             </div>
                             <div className={styles.street_name}>
-                                ul. Paul 342
+                                {t("homePage.kicThree.street")}
                             </div>
                         </div>
                     </div>

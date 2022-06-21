@@ -12,6 +12,7 @@ import { validationContext } from "../../../context/validationContext";
 import ValidationMessage from "../../../components/shared/ValidationMessage/ValidationMessage";
 import ActionButton from "../../../components/shared/ActionButton/ActionButton";
 import { faPaperPlane } from "@fortawesome/free-solid-svg-icons";
+import { useTranslation } from "react-i18next";
 
 const ResetPasswordPage = () => {
     const { token } = useParams();
@@ -31,6 +32,8 @@ const ResetPasswordPage = () => {
         setPasswordAreTheSame(newPassword === newPasswordRepeat);
     }, [newPassword, newPasswordRepeat]);
 
+    const { t } = useTranslation();
+
     const handleSubmit = async () => {
         if (!token) {
             navigate("/");
@@ -43,7 +46,11 @@ const ResetPasswordPage = () => {
             showNotification(failureNotificationItems(response.errorMessage));
             return;
         }
-        showNotification(successNotficiationItems("Pomyślnie zmieniono hasło"));
+        showNotification(
+            successNotficiationItems(
+                t("resetPasswordPage.successNotficiationItems")
+            )
+        );
         navigate("/login");
         return;
     };
@@ -54,12 +61,12 @@ const ResetPasswordPage = () => {
             <div className={style.content}>
                 <div className={style.wrapper}>
                     <div className={style.header}>
-                        <h2>Zresetuj hasło</h2>
+                        <h2>{t("resetPasswordPage.header")}</h2>
                     </div>
                     <div className={style.edit_fields_wrapper}>
                         <div className={style.edit_field}>
                             <InputWithValidation
-                                title="Hasło"
+                                title={t("resetPasswordPage.password")}
                                 required={true}
                                 value={newPassword}
                                 validationType="VALIDATE_PASSWORD"
@@ -72,7 +79,7 @@ const ResetPasswordPage = () => {
                         </div>
                         <div className={style.edit_field}>
                             <InputWithValidation
-                                title="Powtórz hasło"
+                                title={t("resetPasswordPage.repeatPassword")}
                                 required={true}
                                 value={newPasswordRepeat}
                                 validationType="VALIDATE_PASSWORD"
@@ -89,7 +96,7 @@ const ResetPasswordPage = () => {
                             isDisabled={
                                 !(isPasswordValid && passwordsAreTheSame)
                             }
-                            title="Zmień hasło"
+                            title={t("resetPasswordPage.button")}
                             color="green"
                             onClick={handleSubmit}
                             icon={faPaperPlane}
@@ -99,11 +106,11 @@ const ResetPasswordPage = () => {
                 <div className={style.messages_wrapper}>
                     <ValidationMessage
                         isValid={isPasswordValid}
-                        message={`Hasło musi zawierać co najmniej 8 znaków, w tym jeden znak specjalny, jedną dużą literę, jedną małą literę oraz jedną cyfrę`}
+                        message={t("resetPasswordPage.error.password")}
                     />
                     <ValidationMessage
                         isValid={passwordsAreTheSame}
-                        message="Hasła muszą być takie same"
+                        message={t("resetPasswordPage.error.repeatPassword")}
                     />
                 </div>
             </div>

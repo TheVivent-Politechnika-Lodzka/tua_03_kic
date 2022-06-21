@@ -1,28 +1,37 @@
-import {SimpleGrid, Grid} from "@mantine/core";
-import {useTranslation} from "react-i18next";
-import {AppointmentListElementDto} from "../../api/mop"
-import {BlueGradientButton} from "../Button/BlueGradientButton";
+import { SimpleGrid, Grid } from "@mantine/core";
+import { useTranslation } from "react-i18next";
+import { AppointmentListElementDto } from "../../api/mop";
+import { BlueGradientButton } from "../Button/BlueGradientButton";
 
 import styles from "./listElement.module.scss";
-import {AppointmentDetails} from "../../pages/protected/shared/AppointmentDetails";
-import {useState} from "react";
+import { AppointmentDetails } from "../../pages/protected/shared/AppointmentDetails";
+import { useState } from "react";
 
-export const AppointmentListElement = (props: { element: AppointmentListElementDto }) => {
-
+export const AppointmentListElement = (props: {
+    element: AppointmentListElementDto;
+}) => {
     const [modal, setModal] = useState<boolean>(false);
-    const {t} = useTranslation();
+    const { t } = useTranslation();
 
     return (
         <div className={styles.container}>
             <SimpleGrid cols={3}>
                 <SimpleGrid cols={3}>
                     <div className={styles.image_top}>
-                        <img src={props.element.client.url} height="170px" alt="img"/>
+                        <img
+                            src={props.element.client.url}
+                            height="170px"
+                            alt="img"
+                        />
                     </div>
                     <div className={styles.image_bottom}>
-                        <img src={props.element.specialist.url} height="130px" alt="img"/>
+                        <img
+                            src={props.element.specialist.url}
+                            height="130px"
+                            alt="img"
+                        />
                     </div>
-                    <div/>
+                    <div />
                 </SimpleGrid>
 
                 <div className={styles.text}>
@@ -36,12 +45,10 @@ export const AppointmentListElement = (props: { element: AppointmentListElementD
                     <div className={styles.button}>
                         <BlueGradientButton
                             label={t("appointmentListPage.listElement.details")}
-                            onClick={
-                                () => {
-                                    console.log(props.element.id)
-                                    setModal(true);
-                                }
-                            }
+                            onClick={() => {
+                                console.log(props.element.id);
+                                setModal(true);
+                            }}
                         />
                     </div>
                 </div>
@@ -49,7 +56,7 @@ export const AppointmentListElement = (props: { element: AppointmentListElementD
             <AppointmentDetails
                 isOpened={modal}
                 appointmentId={props.element.id}
-                onClose={ () => {
+                onClose={() => {
                     setModal(false);
                 }}
             />
