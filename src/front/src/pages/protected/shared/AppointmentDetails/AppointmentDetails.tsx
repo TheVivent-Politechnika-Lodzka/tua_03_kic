@@ -208,7 +208,7 @@ export const AppointmentDetails = ({
                                 aLevel === "SPECIALIST" ? (
                                     <ActionButton
                                         title="Zakończ wizytę"
-                                        color="purple"
+                                        color="cyan"
                                         icon={faInfoCircle}
                                         onClick={() => {
                                             setFinishVisitModalOpen(true);
@@ -217,7 +217,7 @@ export const AppointmentDetails = ({
                                 ) : null}
                                 <ActionButton
                                     title="Odwołaj wizyte"
-                                    color="purple"
+                                    color="cyan"
                                     icon={faInfoCircle}
                                     onClick={() => console.log("essa")}
                                 ></ActionButton>

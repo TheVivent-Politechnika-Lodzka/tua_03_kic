@@ -254,15 +254,12 @@ interface EditOwnAppointmentRequest {
     status: string;
 }
 
-
 interface EditOwnAppointmentRespone {
     appointment: AppointmentListElementDto;
     etag: string;
 }
 
-
 export async function createImplant(params: CreateImplantRequest) {
-
     try {
         const { data } = await axios.put<CreateImplantResponse>(
             "/mop/implant/create",
@@ -306,10 +303,18 @@ export async function editOwnAppointment(params: EditOwnAppointmentRequest) {
     }
 }
 
+interface EditAppointmentRequest {
+    id: string;
+    version: number;
+    description: string;
+    etag: string;
+    status: string;
+}
+
 export async function editAppointmentByAdmin(params: EditAppointmentRequest) {
     try {
-        const {etag, ...body} = params
-        const { data, headers } = await axios.put<EditAppointmentRespone>(
+        const { etag, ...body } = params;
+        const { data, headers } = await axios.put<EditOwnAppointmentRespone>(
             `/mop/edit/visit/${body.id}`,
             body,
             {
@@ -319,7 +324,7 @@ export async function editAppointmentByAdmin(params: EditAppointmentRequest) {
             }
         );
         const newEtag = headers["etag"];
-        return {...data, etag:newEtag };
+        return { ...data, etag: newEtag };
     } catch (error) {
         if (axios.isAxiosError(error) && error.response) {
             return {
