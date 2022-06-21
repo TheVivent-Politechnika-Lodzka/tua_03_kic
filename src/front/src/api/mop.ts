@@ -293,7 +293,7 @@ export async function createImplant(params: CreateImplantRequest) {
 
 export async function editOwnAppointment(params: EditOwnAppointmentRequest) {
     try {
-        const {etag, ...body} = params
+        const { etag, ...body } = params;
         const { data, headers } = await axios.put<EditOwnAppointmentRespone>(
             `/mop/edit/visit/my/${body.id}`,
             body,
@@ -304,7 +304,7 @@ export async function editOwnAppointment(params: EditOwnAppointmentRequest) {
             }
         );
         const newEtag = headers["etag"];
-        return {...data, etag:newEtag };
+        return { ...data, etag: newEtag };
     } catch (error) {
         if (axios.isAxiosError(error) && error.response) {
             return {
@@ -318,7 +318,7 @@ export async function editOwnAppointment(params: EditOwnAppointmentRequest) {
 
 export async function editAppointmentByAdmin(params: EditAppointmentRequest) {
     try {
-        const {etag, ...body} = params
+        const { etag, ...body } = params;
         const { data, headers } = await axios.put<EditAppointmentRespone>(
             `/mop/edit/visit/${body.id}`,
             body,
@@ -329,7 +329,7 @@ export async function editAppointmentByAdmin(params: EditAppointmentRequest) {
             }
         );
         const newEtag = headers["etag"];
-        return {...data, etag:newEtag };
+        return { ...data, etag: newEtag };
     } catch (error) {
         if (axios.isAxiosError(error) && error.response) {
             return {
@@ -415,3 +415,39 @@ export async function archiveImplant(id: string, implantEtag: string) {
     }
 }
 //------------------------------------------------- KONIEC MOP 2 ----------------------------------------------------//
+
+//------------------------------------------------- MOP 13 ----------------------------------------------------//
+
+export interface GetAppointmentResponse
+    extends AppointmentListElementDto,
+        Etag {}
+
+/**
+ * Odwołaj dowolną wizytę
+ *
+ * @param id identyfikator wizyty
+ * @returns GetAppointmentResponse | {errorMessage, status}
+ */
+export async function cancelAnyVisit(id: string, etag: string) {
+    try {
+        const { data, headers } = await axios.delete(
+            `/mop/cancel/visit/${id}`,
+            {
+                headers: {
+                    "If-Match": etag,
+                },
+            }
+        );
+        const newEtag = headers["etag"];
+        return { ...data, etag: newEtag } as GetAppointmentResponse;
+    } catch (error) {
+        if (axios.isAxiosError(error) && error.response) {
+            return {
+                errorMessage: error.response.data as string,
+                status: error.response.status,
+            } as ApiError;
+        }
+        throw error;
+    }
+}
+//------------------------------------------------- KONIEC MOP 13 ----------------------------------------------------//
