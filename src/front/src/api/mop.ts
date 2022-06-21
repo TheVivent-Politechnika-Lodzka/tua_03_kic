@@ -24,6 +24,13 @@ export interface ListImplantResponse {
     data: ImplantListElementDto[];
 }
 
+export interface ListImplantReviewsResponse {
+    totalCounts: number;
+    totalPages: number;
+    currentPage: number;
+    data: ImplantReview[];
+}
+
 export interface AppointmentListElementDto {
     id: string;
     client: AccountDetails;
@@ -475,3 +482,24 @@ export async function createAppointment(request: CreateAppointmentRequest) {
 }
 
 //------------------------------------------------- KONIEC MOP 6 ----------------------------------------------------//
+
+
+
+
+
+export async function getImplantsReviews(implantId: string, page: number, size: number) {
+    try {
+        const { data } = await axios.get<ListImplantReviewsResponse>(
+            `/mop/implant/${implantId}/reviews?page=${page}&size=${size}`,
+        );
+        return data;
+    } catch (error) {
+        if (axios.isAxiosError(error) && error.response) {
+            return {
+                errorMessage: error.response.data as string,
+                status: error.response.status,
+            } as ApiError;
+        }
+        throw error;
+    }
+}
