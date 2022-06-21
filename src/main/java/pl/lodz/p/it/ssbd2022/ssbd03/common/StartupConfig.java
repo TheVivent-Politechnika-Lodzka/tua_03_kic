@@ -15,11 +15,15 @@ import pl.lodz.p.it.ssbd2022.ssbd03.utils.HashAlgorithm;
 import java.time.Duration;
 import java.time.Instant;
 import java.time.LocalTime;
+import java.time.temporal.ChronoUnit;
 import java.util.Locale;
+import java.util.logging.Logger;
 
 @Startup
 @Singleton
 public class StartupConfig {
+
+    private static final Logger logger = Logger.getLogger(StartupConfig.class.toString());
 
     @PersistenceContext(unitName = "ssbd03adminPU")
     private EntityManager em;
@@ -30,22 +34,39 @@ public class StartupConfig {
     @PostConstruct
     public void init() {
 
-        createImplant();
-        createImplantSecond();
-        em.flush();
+        try {
+            createImplant();
+            createImplantSecond();
+            em.flush();
+        } catch (Exception e) {
+            logger.info("Error during startup config: " + e.getMessage());
+        }
 
-        createAdmin();
-        createSpecialistAdmin();
-        createClientAdmin();
-        createClient();
-        createSpecialist();
-        em.flush();
+        try{
+            createAdmin();
+            createSpecialistAdmin();
+            createClientAdmin();
+            createClient();
+            createSpecialist();
+            em.flush();
+        } catch (Exception e) {
+            logger.info("Error during startup config: " + e.getMessage());
+        }
 
-        createAppointment();
-        em.flush();
+        try {
+            createAppointment();
+            em.flush();
+        } catch (Exception e) {
+            logger.info("Error during startup config: " + e.getMessage());
+        }
 
-        createImplantReview();
-        em.flush();
+        try {
+            createImplantReview();
+            em.flush();
+        }
+        catch (Exception e) {
+            logger.info("Error during startup config: " + e.getMessage());
+        }
     }
 
     public void createImplant() {
@@ -178,43 +199,6 @@ public class StartupConfig {
         em.persist(specialist);
     }
 
-
-//
-//    public void createAppointment() {
-//
-//        Account accountClient = em.createNamedQuery("Account.findByLogin", Account.class)
-//                .setParameter("login", "client").getSingleResult();
-//        Account accountSpecialist = em.createNamedQuery("Account.findByLogin", Account.class)
-//                .setParameter("login", "spec").getSingleResult();
-//        List<Implant> implants = em.createNamedQuery("Implant.findAll", Implant.class).getResultList();
-//
-//
-//        Appointment appointment = new Appointment();
-//        Date dateStart = null;
-//        try {
-//            dateStart = new SimpleDateFormat("dd/MM/yyyy").parse("31/12/2021");
-//        } catch (ParseException e) {
-//            e.printStackTrace();
-//        }
-//        Date dateEnd = null;
-//        try {
-//            dateEnd = new SimpleDateFormat("dd/MM/yyyy").parse("31/12/2021");
-//        } catch (ParseException e) {
-//            e.printStackTrace();
-//        }
-//
-//        appointment.setStartDate(dateStart);
-//        appointment.setEndDate(dateEnd);
-//        appointment.setPrice(100);
-//        appointment.setStatus(Status.PENDING);
-//        appointment.setDescription("Przykladowa wizyta");
-//        appointment.setSpecialist(accountSpecialist);
-//        appointment.setClient(accountClient);
-//        appointment.setImplant(implants.get(0));
-//
-//        em.persist(appointment);
-//    }
-
     public void createAppointment() {
 
         Account clientAdmin = em.createNamedQuery("Account.findByLogin", Account.class).setParameter("login", "clientAdmin").getSingleResult();
@@ -232,17 +216,20 @@ public class StartupConfig {
 
         em.persist(implant);
 
-        Appointment appointment = new Appointment();
-        appointment.setClient(clientAdmin); // TUTAJ ZMIENIAĆ DO TESTÓW
-        appointment.setSpecialist(specialist);
-        appointment.setImplant(implant);
-        appointment.setStartDate(Instant.now());
-        appointment.setEndDate(Instant.now().plusSeconds(100000)); // zmieniono do testow
-        appointment.setStatus(Status.ACCEPTED); // TUTAJ ZMIENIAĆ DO TESTÓW
-        appointment.setPrice(100);
-        appointment.setDescription("8 godzin przed zabiegiem nie można nic spożywać. Na rekonwalenstecje należy przeznaczyć 10 dni. ");
+        for (int i=0; i<20;i++) {
+            Instant now = Instant.now().minus(i+1, ChronoUnit.DAYS);
+            Appointment appointment = new Appointment();
+            appointment.setClient(clientAdmin); // TUTAJ ZMIENIAĆ DO TESTÓW
+            appointment.setSpecialist(specialist);
+            appointment.setImplant(implant);
+            appointment.setStartDate(now);
+            appointment.setEndDate(now.plus(2, ChronoUnit.HOURS)); // zmieniono do testow
+            appointment.setStatus(Status.ACCEPTED); // TUTAJ ZMIENIAĆ DO TESTÓW
+            appointment.setPrice(100);
+            appointment.setDescription("8 godzin przed zabiegiem nie można nic spożywać. Na rekonwalenscencje należy przeznaczyć 10 dni. ");
 
-        em.persist(appointment);
+            em.persist(appointment);
+        }
     }
 
     public void createImplantReview() {
