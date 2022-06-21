@@ -193,7 +193,9 @@ const ImplantDetails = ({ id, isOpened, onClose }: ImplantDetailsProps) => {
                                 <div className={styles.action_wrapper}>
                                     <div className={styles.button}>
                                         <ActionButton
-                                            title="Rezerwuj"
+                                            title={t(
+                                                "implantDetails.reserveButton"
+                                            )}
                                             icon={faShoppingCart}
                                             onClick={() => {
                                                 navigate(

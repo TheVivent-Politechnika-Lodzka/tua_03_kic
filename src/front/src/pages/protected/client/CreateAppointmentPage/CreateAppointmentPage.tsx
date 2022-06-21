@@ -26,6 +26,7 @@ import {
 import { ChronoUnit, Instant, LocalDateTime } from "@js-joda/core";
 import { Indicator, Modal } from "@mantine/core";
 import ReactModal from "react-modal";
+import { useTranslation } from "react-i18next";
 
 interface HourInterface {
     text: string;
@@ -34,7 +35,7 @@ interface HourInterface {
 
 const CreateAppointmentPage = () => {
     const { implantId } = useParams();
-    const navigate = useNavigate();
+    const { t } = useTranslation();
     const [specialistList, setSpecialistList] = useState<
         SpecialistListElementDto[]
     >([]);
@@ -108,7 +109,7 @@ const CreateAppointmentPage = () => {
 
     return (
         <section className={style.create_appointment_page}>
-            <h1>Zarezerwuj wizytę</h1>
+            <h1>{t("createAppointmentPage.title")}</h1>
             <div className={style.appointment_container}>
                 <div className={style.implant_display}>
                     <ImplantItem
@@ -132,7 +133,9 @@ const CreateAppointmentPage = () => {
                             <>
                                 <div style={{ marginTop: "1rem" }}></div>
                                 <ActionButton
-                                    title="załaduj więcej"
+                                    title={t(
+                                        "createAppointmentPage.loadMoreButton"
+                                    )}
                                     icon={faArrowAltCircleRight}
                                     color="green"
                                     onClick={handleLoadSpecialistList}
@@ -195,7 +198,9 @@ const CreateAppointmentPage = () => {
                                         setShowSummaryModal(true);
                                     }}
                                     isDisabled={!selectedHour}
-                                    title="Przejdź do podsumowania"
+                                    title={t(
+                                        "createAppointmentPage.summaryButton"
+                                    )}
                                     color="green"
                                     icon={faShoppingCart}
                                 />
@@ -238,6 +243,7 @@ const SummaryModal = ({
 }: SummaryModalInterface) => {
     const [dateString, setDateString] = useState("");
     const navigate = useNavigate();
+    const { t } = useTranslation();
 
     const handleSubmit = async () => {
         if (!choosenDate || !choosenSpecialist || !choosenImplant) return;
@@ -250,7 +256,11 @@ const SummaryModal = ({
             showNotification(failureNotificationItems(response.errorMessage));
             return;
         }
-        showNotification(successNotficiationItems("Zarezerwowano wizytę"));
+        showNotification(
+            successNotficiationItems(
+                t("createAppointmentPage.successNotficiationItems")
+            )
+        );
         onClose();
         navigate("/visits");
     };
@@ -287,10 +297,12 @@ const SummaryModal = ({
         <ReactModal isOpen={show} style={customStyles} onAfterClose={onClose}>
             <div className={style.modal_content}>
                 <div className={style.date_title}>
-                    <h4>Wybrana data rezerwacji: {dateString}</h4>
+                    <h4>
+                        {t("createAppointmentPage.choosenDate")} {dateString}
+                    </h4>
                 </div>
                 <div className={style.choosen_implant}>
-                    <h4>Wybrany implant:</h4>
+                    <h4>{t("createAppointmentPage.choosenImplant")}</h4>
                     <div>
                         <img
                             className={style.implant_image}
@@ -305,13 +317,13 @@ const SummaryModal = ({
                 </div>
                 <div className={style.choosen_specialist}>
                     <h2>
-                        Wybrany specjalista: {choosenSpecialist?.name}{" "}
-                        {choosenSpecialist?.surname}
+                        {t("createAppointmentPage.choosenSpecialist")}:{" "}
+                        {choosenSpecialist?.name} {choosenSpecialist?.surname}
                     </h2>
                 </div>
                 <div style={{ width: "20rem" }}>
                     <ActionButton
-                        title="Zarezerwuj"
+                        title={t("createAppointmentPage.reserveButton")}
                         color="green"
                         icon={faShoppingCart}
                         onClick={() => {

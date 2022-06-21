@@ -394,7 +394,14 @@
         "button": "Display",
         "description": "Description:",
         "buttonCancel": "Cancel visit",
-        "buttonEdit": "Edit visit"
+        "buttonEdit": "Edit visit",
+        "buttonFinish": "Finish visit",
+        "modal": {
+            "cancel.title": "Cancel visit",
+            "cancel.text": "Are you sure, you want to cancel this visit?",
+            "finish.title": "Finish visit",
+            "finish.text": "Are you sure, you want to finish this visit?"
+        }
     },
 
     "implantDetails": {
@@ -415,7 +422,8 @@
         "confirmActionModal": {
             "title": "Archieve an implant",
             "message": "Are you sure you want to archive the implant? The operation is irreversible!"
-        }
+        },
+        "reserveButton": "Zarezerwuj"
     },
 
     "ownAccountDetailsPage": {
@@ -576,5 +584,16 @@
 
     "activateAccountPage": {
         "accountActivated": "Account activated successfully"
+    },
+
+    "createAppointmentPage": {
+        "title": "Request visit",
+        "successNotficiationItems": "Visit has been added",
+        "summaryButton": "Summary",
+        "loadMoreButton": "Load more",
+        "choosenDate": "Date:",
+        "choosenImplant": "Implant:",
+        "choosenSpecialist": "Specialist:",
+        "reserveButton": "Reserve"
     }
 }

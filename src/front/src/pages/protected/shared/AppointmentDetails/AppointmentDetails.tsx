@@ -71,7 +71,6 @@ export const AppointmentDetails = ({
 
     const { t } = useTranslation();
 
-
     const handleCancelVisit = async () => {
         setLoading({ ...loading, actionLoading: true });
         const response = await cancelAnyVisit(
@@ -263,7 +262,9 @@ export const AppointmentDetails = ({
                                         aLevel
                                     ) && (
                                         <ActionButton
-                                            title={t("appointmentDetails.buttonCancel")}
+                                            title={t(
+                                                "appointmentDetails.buttonCancel"
+                                            )}
                                             color="cyan"
                                             icon={faInfoCircle}
                                             onClick={() => {
@@ -277,7 +278,9 @@ export const AppointmentDetails = ({
                                 appointment?.status !== "FINISHED" &&
                                 aLevel === "SPECIALIST" ? (
                                     <ActionButton
-                                        title="Zakończ wizytę"
+                                        title={t(
+                                            "appointmentDetails.buttonFinish"
+                                        )}
                                         color="cyan"
                                         icon={faInfoCircle}
                                         onClick={() => {
@@ -289,7 +292,9 @@ export const AppointmentDetails = ({
                                 appointment?.status !== "FINISHED" &&
                                 aLevel === "ADMINISTRATOR" ? (
                                     <ActionButton
-                                        title={t("appointmentDetails.buttonCancel")}
+                                        title={t(
+                                            "appointmentDetails.buttonCancel"
+                                        )}
                                         color="purple"
                                         icon={faInfoCircle}
                                         onClick={() => {
@@ -304,7 +309,9 @@ export const AppointmentDetails = ({
                                     onClick={() => routeChange(appointmentId)}
                                 ></ActionButton>
                                 <ConfirmActionModal
-                                    title={"Odwołaj wizytę"}
+                                    title={t(
+                                        "appointmentDetails.modal.cancel.title"
+                                    )}
                                     isLoading={loading.actionLoading as boolean}
                                     isOpened={isFinishOwnVisitModalOpen}
                                     handleFunction={async () => {
@@ -316,10 +323,12 @@ export const AppointmentDetails = ({
                                         setFinishOwnVisitModalOpen(false);
                                     }}
                                 >
-                                    {"Czy na pewno chcesz anulować wizytę?"}
+                                    {t("appointmentDetails.modal.cancel.text")}
                                 </ConfirmActionModal>
                                 <ConfirmActionModal
-                                    title={"Odwołaj wizytę"}
+                                    title={t(
+                                        "appointmentDetails.modal.cancel.title"
+                                    )}
                                     isLoading={loading.actionLoading as boolean}
                                     isOpened={appointmentBlockModalOpen}
                                     handleFunction={async () => {
@@ -331,10 +340,12 @@ export const AppointmentDetails = ({
                                         setAppointmentBlockModalOpen(false);
                                     }}
                                 >
-                                    {"Czy na pewno chcesz anulować wizytę?"}
+                                    {t("appointmentDetails.modal.cancel.text")}
                                 </ConfirmActionModal>
                                 <ConfirmActionModal
-                                    title={"Oznacz wizytę jako zakończoną"}
+                                    title={t(
+                                        "appointmentDetails.modal.finish.title"
+                                    )}
                                     isLoading={loading.actionLoading as boolean}
                                     isOpened={isFinishVisitModalOpen}
                                     handleFunction={async () => {
@@ -346,7 +357,7 @@ export const AppointmentDetails = ({
                                         setFinishVisitModalOpen(false);
                                     }}
                                 >
-                                    {"Czy na pewno chcesz zakończyć wizytę?"}
+                                    {t("appointmentDetails.modal.finish.text")}
                                 </ConfirmActionModal>
                             </div>
                         </div>

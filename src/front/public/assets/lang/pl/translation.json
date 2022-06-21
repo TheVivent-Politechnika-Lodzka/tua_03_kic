@@ -387,7 +387,14 @@
         "button": "Wyświetl",
         "description": "Opis:",
         "buttonCancel": "Odwołaj wizytę",
-        "buttonEdit": "Edytuj wizytę"
+        "buttonEdit": "Edytuj wizytę",
+        "buttonFinish": "Zakończ wizytę",
+        "modal": {
+            "cancel.title": "Odwołaj wizytę",
+            "cancel.text": "Czy na pewno chcesz odwołać wizytę?",
+            "finish.title": "Zakończ wizytę",
+            "finish.text": "Czy na pewno chcesz zakończyć wizytę?"
+        }
     },
 
     "implantDetails": {
@@ -408,7 +415,8 @@
         "confirmActionModal": {
             "title": "Archiwizacja implantu",
             "message": "Czy na pewno chcesz zarchiwizować implant? Operacja jest nieodwracalna!"
-        }
+        },
+        "reserveButton": "Zarezerwuj"
     },
 
     "ownAccountDetailsPage": {
@@ -569,5 +577,16 @@
 
     "activateAccountPage": {
         "accountActivated": "Konto zostało aktywowane"
+    },
+
+    "createAppointmentPage": {
+        "title": "Zarezerwuj wizytę",
+        "successNotficiationItems": "Wizyta została zarezerwowana",
+        "summaryButton": "Podsumowanie",
+        "loadMoreButton": "Załaduj więcej",
+        "choosenDate": "Wybrana data:",
+        "choosenImplant": "Wybrany implant:",
+        "choosenSpecialist": "Wybrany specjalista:",
+        "reserveButton": "Zarezerwuj"
     }
 }
