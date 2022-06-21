@@ -1,7 +1,6 @@
 package pl.lodz.p.it.ssbd2022.ssbd03.mop.cdi.endpoints;
 
 import jakarta.annotation.security.DenyAll;
-import jakarta.annotation.security.PermitAll;
 import jakarta.annotation.security.RolesAllowed;
 import jakarta.validation.Valid;
 import jakarta.ws.rs.*;
@@ -14,10 +13,6 @@ import pl.lodz.p.it.ssbd2022.ssbd03.mop.dto.AppointmentEditDto;
 import pl.lodz.p.it.ssbd2022.ssbd03.mop.dto.CreateImplantDto;
 import pl.lodz.p.it.ssbd2022.ssbd03.mop.dto.CreateImplantReviewDto;
 import pl.lodz.p.it.ssbd2022.ssbd03.mop.dto.ImplantDto;
-
-import java.util.UUID;
-
-import java.util.UUID;
 
 import java.util.UUID;
 
@@ -39,6 +34,13 @@ public interface MOPEndpointInterface {
         throw new MethodNotImplementedException();
     }
 
+    /**
+     * MOP.2 - Archiwizuj wszczep
+     *
+     * @param id - id wszczepu
+     * @return - wszczep i odpowiedz HTTP
+     * @throws MethodNotImplementedException - w przypadku braku implementacji metody
+     */
     // MOP.2 - Archiwizuj wszczep
     @PATCH
     @RolesAllowed(Roles.ADMINISTRATOR)
@@ -51,7 +53,7 @@ public interface MOPEndpointInterface {
     /**
      * MOP.3 - Edytuj wszczep
      *
-     * @param id uuid wszczepu do edycji
+     * @param id         uuid wszczepu do edycji
      * @param implantDto dane do modyfikacji implantu
      * @return Response - zawierająca status HTTP
      * @throws MethodNotImplementedException - w przypadku braku implementacji metody
@@ -60,7 +62,7 @@ public interface MOPEndpointInterface {
     @RolesAllowed(Roles.ADMINISTRATOR)
     @Consumes(MediaType.APPLICATION_JSON)
     @Path("/implant/edit/{id}")
-    default Response editImplant(@PathParam("id") UUID id , @Valid ImplantDto implantDto) {
+    default Response editImplant(@PathParam("id") UUID id, @Valid ImplantDto implantDto) {
         throw new MethodNotImplementedException();
     }
 
@@ -72,7 +74,7 @@ public interface MOPEndpointInterface {
      * @throws MethodNotImplementedException w momencie, gdy metoda jest niezaimplementowana
      */
     @GET
-    @PermitAll
+    @RolesAllowed({Roles.ANONYMOUS, Roles.AUTHENTICATED})
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/implant/details/{id}")
     default Response getImplant(@PathParam("id") UUID id) {
@@ -90,7 +92,7 @@ public interface MOPEndpointInterface {
      * @throws MethodNotImplementedException - w przypadku braku implementacji metody
      */
     @GET
-    @RolesAllowed(Roles.ADMINISTRATOR)
+    @RolesAllowed({Roles.ANONYMOUS, Roles.AUTHENTICATED})
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/implant/list")
     default Response listImplants(@QueryParam("page") int page, @QueryParam("size") int size, @QueryParam("phrase") @DefaultValue("") String phrase, @QueryParam("archived") @DefaultValue("false") boolean archived) {
@@ -108,7 +110,7 @@ public interface MOPEndpointInterface {
      * @throws MethodNotImplementedException - w przypadku braku implementacji metody
      */
     @GET
-    @PermitAll
+    @RolesAllowed({Roles.ANONYMOUS, Roles.AUTHENTICATED})
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/specialist/list")
     default Response listSpecialists(@QueryParam("page") int page, @QueryParam("size") int size, @QueryParam("phrase") @DefaultValue("") String phrase) {
@@ -132,6 +134,14 @@ public interface MOPEndpointInterface {
         throw new MethodNotImplementedException();
     }
 
+    /**
+     * MOP.8 - przeglądaj swoje wizyty
+     *
+     * @param page - strona
+     * @param size - ilośc elementów na stronie
+     * @return - lista wizyt wraz z odpowiedzią HTTP
+     * @throws MethodNotImplementedException w przypadku braku implementacji metody
+     */
     // MOP.8 - przeglądaj swoje wizyty
     @GET
     @RolesAllowed({Roles.CLIENT, Roles.SPECIALIST})
@@ -143,6 +153,7 @@ public interface MOPEndpointInterface {
 
     /**
      * MOP.9 - Zarezerwuj wizytę
+     *
      * @param dto - dane nowej wizyty
      * @return status HTTP i utworzoną wizytę
      * @throws MethodNotImplementedException w przypadku braku implementacji metody
@@ -158,16 +169,16 @@ public interface MOPEndpointInterface {
     /**
      * MOP.10- Edytuj swoją wizytę
      *
-     * @param id                 id konkretnej wizyty
+     * @param id                    id konkretnej wizyty
      * @param appointmentOwnEditDto obiekt dto edytowanej wizyty
      * @return odpowiedź serwera (wizyta)
      * @throws MethodNotImplementedException w przypadku braku implementacji metody
      */
     @PUT
-    @RolesAllowed({Roles.CLIENT,Roles.SPECIALIST})
+    @RolesAllowed({Roles.CLIENT, Roles.SPECIALIST})
     @Consumes(MediaType.APPLICATION_JSON)
     @Path("/edit/visit/my/{id}")
-    default Response editOwnVisit(@PathParam("id") UUID id,@Valid AppointmentOwnEditDto appointmentOwnEditDto) {
+    default Response editOwnVisit(@PathParam("id") UUID id, @Valid AppointmentOwnEditDto appointmentOwnEditDto) {
         throw new MethodNotImplementedException();
     }
 
@@ -187,7 +198,8 @@ public interface MOPEndpointInterface {
         throw new MethodNotImplementedException();
     }
 
-    /** MOP.12 - Odwołaj swoją wizytę
+    /**
+     * MOP.12 - Odwołaj swoją wizytę
      * Endpoint pozwalający odwołać wizytę (REJECTED)
      *
      * @param id - id wizyty
@@ -262,6 +274,7 @@ public interface MOPEndpointInterface {
     default Response deleteImplantsReview(@PathParam("id") UUID id) {
         throw new MethodNotImplementedException();
     }
+
     /**
      * MOP.17 - Pobierz szczegóły wizyty
      *
@@ -273,18 +286,21 @@ public interface MOPEndpointInterface {
     @RolesAllowed(Roles.AUTHENTICATED)
     @Consumes(MediaType.APPLICATION_JSON)
     @Path("/visit/{id}")
-    default Response getVisitDetails(@PathParam("id") UUID uuid){throw new MethodNotImplementedException();}
+    default Response getVisitDetails(@PathParam("id") UUID uuid) {
+        throw new MethodNotImplementedException();
+    }
 
     /**
      * MOP.18 - Wyświetl recenzje dla danego wszczepu
+     *
      * @param size Ilość recenzji do wyświetlenia na jednej stronie
      * @param page Numer strony
-     * @param id Identyfikator wszczepu
+     * @param id   Identyfikator wszczepu
      * @return Lista recenzji wszczepu
      * @throws MethodNotImplementedException - w przypadku braku implementacji metody
      */
     @GET
-    @PermitAll
+    @RolesAllowed({Roles.ANONYMOUS, Roles.AUTHENTICATED})
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
     @Path("/implant/{id}/reviews")
