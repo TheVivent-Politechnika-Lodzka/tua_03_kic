@@ -73,7 +73,7 @@ public class StartupConfig {
         admin.setLastName("specjalny");
         admin.setEmail("szurySSBD2@gmail.com");
         admin.setLanguage(new Locale("en"));
-        admin.setUrl("https://assets.reedpopcdn.com/cyberpunk-2077-wyciekl-dodatek-headline.jpg/BROK/resize/1920x1920%3E/format/jpg/quality/80/cyberpunk-2077-wyciekl-dodatek-headline.jpg");
+        admin.setUrl("https://media.discordapp.net/attachments/948268830222848183/988127000336138280/dgTUsgBf_400x400.jpg");
 
         DataAdministrator dataAdministrator = new DataAdministrator();
         dataAdministrator.setPhoneNumber("111111111");
@@ -142,7 +142,7 @@ public class StartupConfig {
         specialist.setLastName("specjalista");
         specialist.setEmail("szurySSBDspec@gmail.com");
         specialist.setLanguage(new Locale("pl"));
-        specialist.setUrl("https://assets.reedpopcdn.com/cyberpunk-2077-wyciekl-dodatek-headline.jpg/BROK/resize/1920x1920%3E/format/jpg/quality/80/cyberpunk-2077-wyciekl-dodatek-headline.jpg");
+        specialist.setUrl("https://cdn.discordapp.com/attachments/331877513456386060/988611908804415488/unknown.png");
 
         DataSpecialist dataSpecialist = new DataSpecialist();
         dataSpecialist.setPhoneNumber("222222222");
