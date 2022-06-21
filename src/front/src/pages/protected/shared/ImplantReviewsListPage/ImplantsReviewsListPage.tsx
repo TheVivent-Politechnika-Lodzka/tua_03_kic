@@ -19,6 +19,7 @@ import { Api } from "@reduxjs/toolkit/dist/query";
 import { useStoreSelector } from "../../../../redux/reduxHooks";
 import ActionButton from "../../../../components/shared/ActionButton/ActionButton";
 import AddImplantReviewPage from "../../client/AddImplantReviewPage/AddImplantReviewPage";
+import { useTranslation } from "react-i18next";
 
 interface ImplantReviewsListPageProps {
     isOpened: boolean;
@@ -63,6 +64,8 @@ const ImplantReviewsListPage = ({
         setLoading({ ...loading, pageLoading: false });
     };
 
+    const { t } = useTranslation();
+
     useEffect(() => {
         handleGetImplantReviews();
     }, [isOpened, pagination]);
@@ -99,13 +102,15 @@ const ImplantReviewsListPage = ({
                         )}
                         {reviews?.data.length === 0 && (
                             <p className={styles.no_reviews}>
-                                Implant nie posiada żadnych recenzji
+                                {t("addImplantReviewPage.noReviews")}
                             </p>
                         )}
                         {accessLevel === "CLIENT" && (
                             <ActionButton
-                                onClick={() => {setAddReviewModal(true)}}
-                                title="Dodaj recenzję"
+                                onClick={() => {
+                                    setAddReviewModal(true);
+                                }}
+                                title={t("addImplantReview.addReview")}
                                 icon={faPlus}
                                 color="purple"
                             />

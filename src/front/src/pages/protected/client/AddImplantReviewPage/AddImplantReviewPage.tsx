@@ -1,7 +1,9 @@
 import { faCancel, faCheck } from "@fortawesome/free-solid-svg-icons";
 import { showNotification } from "@mantine/notifications";
 import { Rating } from "@mui/material";
+import { t } from "i18next";
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { addImplantReview } from "../../../../api";
 import ActionButton from "../../../../components/shared/ActionButton/ActionButton";
 import Modal from "../../../../components/shared/Modal/Modal";
@@ -29,6 +31,8 @@ const AddImplantReviewPage = ({
 
     const login = useStoreSelector((state) => state.user.sub);
 
+    const { t } = useTranslation();
+
     const handleAddReview = async () => {
         if (!implantId) return;
         setLoading(true);
@@ -44,14 +48,16 @@ const AddImplantReviewPage = ({
             return;
         }
         setLoading(false);
-        showNotification(successNotficiationItems("Review added successfully"));
+        showNotification(
+            successNotficiationItems(t("addImplantReview.reviewAdded"))
+        );
         onClose();
     };
 
     return (
         <Modal isOpen={isOpen}>
             <div className={styles.add_implant_review_page}>
-                <h1>Add Implant Review</h1>
+                <h1>{t("addImplantReviewPage.addImplentReview")}</h1>
                 <Rating
                     value={rate}
                     precision={0.5}
@@ -69,7 +75,7 @@ const AddImplantReviewPage = ({
                 />
                 <div className={styles.action_wrapper}>
                     <ActionButton
-                        title="Confirm"
+                        title={t("addImplantReview.confirm")}
                         color="green"
                         icon={faCheck}
                         isLoading={loading}
@@ -77,7 +83,7 @@ const AddImplantReviewPage = ({
                     />
                     <ActionButton
                         onClick={onClose}
-                        title="Cancel"
+                        title={t("addImplantReview.cancel")}
                         color="red"
                         icon={faCancel}
                     />

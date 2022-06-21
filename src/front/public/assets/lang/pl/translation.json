@@ -219,6 +219,17 @@
         "english": "english",
         "send_email": "Wysłaliśmy Ci maila z linkiem powierdzającym"
     },
+
+    "addImplantReviewPage": {
+        "addImplantReview": "Dodaj recenzję",
+        "confirm": "Zatwierdź",
+        "cancel": "Anuluj",
+        "addReview": "Dodaj recenzję",
+        "confirmMsg": "Czy na pewno chcesz dodać recenzję?",
+        "reviewAdded": "Pomyślnie dodano recenzję",
+        "reviewsNotFound": "Implant nie posiada żadnych recenzji"
+    },
+
     "clocker" : {
         "refresh": "Odśwież sesje",
         "logInAgain" : "Zaloguj sie ponownie"

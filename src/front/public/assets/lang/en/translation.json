@@ -160,6 +160,16 @@
         }
     },
 
+    "addImplantReviewPage": {
+        "addImplantReview": "Add a review",
+        "confirm": "Confirm",
+        "cancel": "Cancel",
+        "addReview": "Add a review",
+        "confirmMsg": "Are you sure you want to add a review?",
+        "reviewAdded": "Review added successfully",
+        "reviewsNotFound": "Implant has no reviews"
+    },
+
     "createImplantPage": {
         "addImplant": "Add implant",
         "choosePhoto": "CHOOOSE PHOTO",
