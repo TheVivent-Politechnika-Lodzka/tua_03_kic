@@ -1,6 +1,7 @@
 @import "../../variables.scss";
 
 .implant_review {
+    position: relative;
     background-color: $secondary-color;
     display: flex;
     justify-content: space-between;
@@ -71,6 +72,25 @@
                 color: $white;
                 font-size: 1.1rem;
             }
+        }
+    }
+
+    .delete_button {
+        position: absolute;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: $red;
+        border-radius: 1rem;
+        width: 3.5rem;
+        height: 3.5rem;
+        top: 2rem;
+        right: 3rem;
+        cursor: pointer;
+
+        .icon {
+            font-size: 2rem;
+            color: $white;
         }
     }
 }

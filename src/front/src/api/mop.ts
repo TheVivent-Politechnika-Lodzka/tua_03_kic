@@ -280,7 +280,6 @@ interface EditAppointmentRespone {
 }
 
 export async function createImplant(params: CreateImplantRequest) {
-
     try {
         const { data } = await axios.put<CreateImplantResponse>(
             "/mop/implant/create",
@@ -301,7 +300,7 @@ export async function createImplant(params: CreateImplantRequest) {
 
 export async function editOwnAppointment(params: EditOwnAppointmentRequest) {
     try {
-        const {etag, ...body} = params
+        const { etag, ...body } = params;
         const { data, headers } = await axios.put<EditOwnAppointmentRespone>(
             `/mop/edit/visit/my/${body.id}`,
             body,
@@ -312,7 +311,7 @@ export async function editOwnAppointment(params: EditOwnAppointmentRequest) {
             }
         );
         const newEtag = headers["etag"];
-        return {...data, etag:newEtag };
+        return { ...data, etag: newEtag };
     } catch (error) {
         if (axios.isAxiosError(error) && error.response) {
             return {
@@ -326,7 +325,7 @@ export async function editOwnAppointment(params: EditOwnAppointmentRequest) {
 
 export async function editAppointmentByAdmin(params: EditAppointmentRequest) {
     try {
-        const {etag, ...body} = params
+        const { etag, ...body } = params;
         const { data, headers } = await axios.put<EditAppointmentRespone>(
             `/mop/edit/visit/${body.id}`,
             body,
@@ -337,7 +336,7 @@ export async function editAppointmentByAdmin(params: EditAppointmentRequest) {
             }
         );
         const newEtag = headers["etag"];
-        return {...data, etag:newEtag };
+        return { ...data, etag: newEtag };
     } catch (error) {
         if (axios.isAxiosError(error) && error.response) {
             return {
@@ -483,15 +482,34 @@ export async function createAppointment(request: CreateAppointmentRequest) {
 
 //------------------------------------------------- KONIEC MOP 6 ----------------------------------------------------//
 
-
-
-
-
-export async function getImplantsReviews(implantId: string, page: number, size: number) {
+export async function getImplantsReviews(
+    implantId: string,
+    page: number,
+    size: number
+) {
     try {
         const { data } = await axios.get<ListImplantReviewsResponse>(
-            `/mop/implant/${implantId}/reviews?page=${page}&size=${size}`,
+            `/mop/implant/${implantId}/reviews?page=${page}&size=${size}`
         );
+        return data;
+    } catch (error) {
+        if (axios.isAxiosError(error) && error.response) {
+            return {
+                errorMessage: error.response.data as string,
+                status: error.response.status,
+            } as ApiError;
+        }
+        throw error;
+    }
+}
+
+interface GetResponse {
+    data: ImplantReview[];
+}
+
+export async function deleteImplantReview(implantId: string) {
+    try {
+        const {data} = await axios.delete<GetResponse>(`/mop/implant/review/${implantId}`);
         return data;
     } catch (error) {
         if (axios.isAxiosError(error) && error.response) {
