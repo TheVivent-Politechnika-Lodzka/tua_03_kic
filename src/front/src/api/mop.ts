@@ -207,7 +207,6 @@ export interface CreateImplantResponse {
 }
 
 export async function createImplant(params: CreateImplantRequest) {
-    console.log(params);
 
     try {
         const { data } = await axios.put<CreateImplantResponse>(

@@ -59,6 +59,7 @@ const CreateUserPage = () => {
 
         const request = {
             ...account,
+            url: "https://i1.sndcdn.com/artworks-OIPArbJVhHXzsGol-TmbtyQ-t500x500.jpg",
         };
 
         const response = await createAccount(request);

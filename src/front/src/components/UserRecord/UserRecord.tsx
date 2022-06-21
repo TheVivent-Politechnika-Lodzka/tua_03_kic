@@ -22,7 +22,6 @@ const UserRecord = ({ user, handleChange }: UserRecordProps) => {
 
     useEffect(() => {
         handleChange(true);
-        console.log(user);
     }, [modal]);
 
     return (
@@ -49,7 +48,7 @@ const UserRecord = ({ user, handleChange }: UserRecordProps) => {
             </div>
             <div className={styles.detail_wrapper}>
                 <FontAwesomeIcon
-                    className={styles.icon}
+                    className={user?.confirmed ? styles.icon_confirmed : styles.icon_not_confirmed}
                     icon={user?.confirmed ? faCheck : faCancel}
                 />
                 <p className={styles.detail}>

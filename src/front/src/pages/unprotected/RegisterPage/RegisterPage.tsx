@@ -39,6 +39,8 @@ const RegisterPageInternal = () => {
     const { t } = useTranslation();
     const { executeRecaptcha } = useGoogleReCaptcha();
     const [opened, setOpened] = useState<boolean>(false);
+    const [loading, setLoading] = useState<boolean>(false);
+
     const navigate = useNavigate();
     const {
         state: {
@@ -56,17 +58,21 @@ const RegisterPageInternal = () => {
         if (executeRecaptcha === undefined) {
             return;
         }
+        setLoading(true);
         const captcha = await executeRecaptcha("register");
         const request = {
             ...account,
+            url: "https://t2.tudocdn.net/543326?w=1920&h=1440",
             captcha: captcha,
         };
 
         const response = await register(request);
         if ("errorMessage" in response) {
             showNotification(failureNotificationItems(response.errorMessage));
+            setLoading(false);
             return;
         } else {
+            setLoading(false);
             setOpened(true);
         }
     };
@@ -354,6 +360,7 @@ const RegisterPageInternal = () => {
                         icon={faCheck}
                         color="green"
                         title={t("registerPage.sign_in")}
+                        isLoading={loading}
                     />
                     <ActionButton
                         onClick={() => {

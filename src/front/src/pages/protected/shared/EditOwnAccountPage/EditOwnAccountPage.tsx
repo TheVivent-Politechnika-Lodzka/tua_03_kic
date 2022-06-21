@@ -83,10 +83,8 @@ const EditOwnAccountPageInternal = () => {
         };
         const response = await editOwnAccount(request);
         if ("errorMessage" in response) {
-            setError(response);
-            console.error(`${response.status} ${response.errorMessage}`);
-            alert(response.errorMessage);
             setLoading({ ...loading, actionLoading: false });
+            showNotification(failureNotificationItems(response.errorMessage));
             return;
         }
         setAccount(response);
