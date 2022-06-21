@@ -44,7 +44,5 @@ public class CreateAccountDto {
     @JsonbTypeSerializer(LocaleSerializerDeserializer.class)
     private Locale language;
 
-    @Url
-    private String url;
 
 }
