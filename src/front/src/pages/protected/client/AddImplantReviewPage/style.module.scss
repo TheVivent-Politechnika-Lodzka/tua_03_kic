@@ -13,13 +13,14 @@
     color: $white;
 
     .text_area {
-        width: 50%;
-        height: 30%;
+        width: 60%;
+        height: 35%;
         background-color: $secondary-color;
         outline: none;
         padding: 1rem;
         font-size: 1.1rem;
         color: $white;
+        border: 2px solid $light-gray;
         border-radius: 0.5rem;
     }
 

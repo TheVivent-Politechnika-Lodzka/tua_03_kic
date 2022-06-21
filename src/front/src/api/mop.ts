@@ -521,3 +521,27 @@ export async function deleteImplantReview(implantId: string) {
         throw error;
     }
 }
+
+interface CreateImplantReviewRequest {
+    implantId: string;
+    clientLogin: string;
+    rating: number;
+    review: string;
+}
+
+interface CreateImplantReviewResponse extends ImplantReview {}
+
+export async function addImplantReview(request: CreateImplantReviewRequest) {
+    try {
+        const {data} = await axios.put<CreateImplantReviewResponse>(`/mop/implant/review`, request);
+        return data as CreateImplantReviewResponse;
+    } catch (error) {
+        if (axios.isAxiosError(error) && error.response) {
+            return {
+                errorMessage: error.response.data as string,
+                status: error.response.status,
+            } as ApiError;
+        }
+        throw error;
+    }
+}

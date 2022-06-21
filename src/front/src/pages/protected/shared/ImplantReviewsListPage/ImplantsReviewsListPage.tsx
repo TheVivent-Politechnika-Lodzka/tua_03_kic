@@ -116,6 +116,7 @@ const ImplantReviewsListPage = ({
                         onClose={() => {
                             setAddReviewModal(false);
                         }}
+                        implantId={implantId}
                     />
                 </div>
             )}
