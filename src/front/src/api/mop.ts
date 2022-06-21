@@ -319,10 +319,18 @@ interface EditAppointmentRequest {
     status: string;
 }
 
+interface EditAppointmentResponse extends Etag {
+    id: string;
+    version: number;
+    description: string;
+    etag: string;
+    status: string;
+}
+
 export async function editAppointmentByAdmin(params: EditAppointmentRequest) {
     try {
         const { etag, ...body } = params;
-        const { data, headers } = await axios.put<EditAppointmentRespone>(
+        const { data, headers } = await axios.put<EditAppointmentResponse>(
             `/mop/edit/visit/${body.id}`,
             body,
             {
