@@ -4,7 +4,7 @@ import Countdown from "react-countdown";
 import ActionButton from "../shared/ActionButton/ActionButton";
 import { faCheck } from "@fortawesome/free-solid-svg-icons";
 import { refreshToken } from "../../api";
-import { login as loginDispatch } from "../../redux/userSlice";
+import { login as loginDispatch, logout } from "../../redux/userSlice";
 import { useDispatch } from "react-redux";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router";
@@ -33,7 +33,11 @@ const Clocker = () => {
                 showNotification(
                     failureNotificationItems(t("clocker.logInAgain"))
                 );
+                localStorage.removeItem(accessJWT);
+                localStorage.removeItem(refreshJWT);
+                dispatch(logout());
                 navigate("/");
+                window.location.reload();
                 return;
             }
 
