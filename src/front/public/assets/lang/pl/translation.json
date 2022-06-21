@@ -1,4 +1,9 @@
 {
+    "confirmationModal": {
+        "yes": "Tak",
+        "no": "Nie"
+    },
+
     "firm_name": "Klinika Instalacji Cyberwszczepów",
     "why_us": "DLACZEGO MY?",
     "many_reason": "jest wiele powodów a to tylko parę z nich",
