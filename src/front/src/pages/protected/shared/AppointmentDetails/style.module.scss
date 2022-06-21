@@ -47,6 +47,9 @@
                 margin-left: 10px;
                 max-height: 5rem;
             }
+            .description::-webkit-scrollbar{
+                display: none;
+            }
         }
     }
 }

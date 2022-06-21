@@ -122,9 +122,11 @@ export const AppointmentDetails = ({
                                     </p>
                                 </div>
                                 <div className={styles.detail_wrapper}>
-                                    <p className={styles.title}>Opis:</p>
+                                    <p className={styles.title}>
+                                        Status wizyty:
+                                    </p>
                                     <p className={styles.description}>
-                                        {appointment?.description}
+                                        {appointment?.status}
                                     </p>
                                 </div>
                                 <div className={styles.detail_wrapper}>
@@ -156,7 +158,7 @@ export const AppointmentDetails = ({
                                     <div className={styles.description}>
                                         <ActionButton
                                             title="Wyświetl"
-                                            color="purple"
+                                            color="cyan"
                                             icon={faInfoCircle}
                                             onClick={() =>
                                                 setImplantModal(true)
@@ -165,24 +167,22 @@ export const AppointmentDetails = ({
                                     </div>
                                 </div>
                                 <div className={styles.detail_wrapper}>
-                                    <p className={styles.title}>
-                                        Status wizyty:
-                                    </p>
+                                    <p className={styles.title}>Opis:</p>
                                     <p className={styles.description}>
-                                        {appointment?.status}
+                                        {appointment?.description}
                                     </p>
                                 </div>
                             </div>
                             <div className={styles.button_holder}>
                                 <ActionButton //TODO dodać implementacje takowych przycisków, przyciski są w celu ustalenia stylowania
-                                    title="Odwołaj wizyte"
-                                    color="purple"
+                                    title="Odwołaj wizytę"
+                                    color="cyan"
                                     icon={faInfoCircle}
                                     onClick={() => console.log("essa")}
                                 ></ActionButton>
                                 <ActionButton
-                                    title="Edytuj wizyte"
-                                    color="purple"
+                                    title="Edytuj wizytę"
+                                    color="cyan"
                                     icon={faInfoCircle}
                                     onClick={() => routeChange(appointmentId)}
                                 ></ActionButton>
