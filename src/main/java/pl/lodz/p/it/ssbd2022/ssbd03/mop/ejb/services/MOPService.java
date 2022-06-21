@@ -92,11 +92,15 @@ public class MOPService extends AbstractService implements MOPServiceInterface, 
     @Override
     @RolesAllowed(Roles.ADMINISTRATOR)
     public Appointment cancelAnyAppointment(UUID id) {
+
         Appointment appointment = appointmentFacade.findById(id);
         if (appointment.getStatus().equals(REJECTED))
             throw AppointmentStatusException.appointmentStatusAlreadyCancelled();
         if (appointment.getStatus().equals(FINISHED))
             throw AppointmentStatusException.appointmentStatusAlreadyFinished();
+        if(Instant.now().isAfter(appointment.getEndDate())) {
+            throw new AppointmentCannotBeCancelledAnymoreException();
+        }
 
         appointment.setStatus(REJECTED);
         appointmentFacade.edit(appointment);
@@ -331,6 +335,12 @@ public class MOPService extends AbstractService implements MOPServiceInterface, 
         if(appointmentFromDb.getStatus().equals(REJECTED)){
             throw AppointmentStatusException.appointmentStatusAlreadyCancelled();
         }
+        // sprawdzenie czy mozna edytować (musi być więcej niż jeden dzień)
+        LocalDate today = LocalDate.now();
+        LocalDate appointmentDate = LocalDate.ofInstant(appointmentFromDb.getStartDate(), ZoneId.systemDefault());
+        if (today.getDayOfYear() >= appointmentDate.getDayOfYear())
+            throw new AppointmentCannotBeChangedAnymoreException();
+
         if(!update.getStartDate().equals(appointmentFromDb.getStartDate())){
         Instant endDate = update.getStartDate().plus(appointmentFromDb.getImplantDuration());
         checkDateAvailabilityForAppointment(appointmentFromDb.getSpecialist().getId(),update.getStartDate(),endDate);
@@ -382,6 +392,9 @@ public class MOPService extends AbstractService implements MOPServiceInterface, 
     @RolesAllowed(Roles.ADMINISTRATOR)
     public Appointment editAppointmentByAdministrator(UUID uuid, Appointment appointment) {
         Appointment appointmentFromDb = appointmentFacade.findById(uuid);
+        if(Instant.now().isAfter(appointmentFromDb.getEndDate())) {
+        throw new AppointmentCannotBeChangedAnymoreException();
+        }
         appointmentFromDb.setDescription(appointment.getDescription());
         if (appointmentFromDb.getStatus() == Status.ACCEPTED) {
             appointmentFromDb.setStatus(appointment.getStatus());
