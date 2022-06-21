@@ -79,10 +79,10 @@ public class MOKEndpoint implements MOKEndpointInterface {
 
         title.append(provider.getMessage("account.register.email.title"));
 
-        content.append(provider.getMessage("account.register.email.content.localAddress"))
-                .append(" https://localhost:8181/active?token=").append(token.getToken()).append(" ")
-                .append(provider.getMessage("account.register.email.content.remoteAddress"))
-                .append(" https://kic.agency:8403/active?token=").append(token.getToken()).append(" ");
+        content.append(provider.getMessage("account.register.email.content.localAddress")
+                .replace("{baseUrl}", Config.WEBSITE_URL)
+                .replace("{token}", token.getToken())
+        );
 
         emailService.sendEmail(
                 token.getAccount().getEmail(),
