@@ -36,10 +36,8 @@ export const RegisterModal = ({
                         icon={faCheck}
                         onClick={onClose}
                     />
-                    
                 </div>
             </div>
         </Modal>
     );
 };
-

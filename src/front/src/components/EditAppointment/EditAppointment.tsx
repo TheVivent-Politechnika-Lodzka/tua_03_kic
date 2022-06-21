@@ -19,9 +19,11 @@ import {
 import ActionButton from "../../components/shared/ActionButton/ActionButton";
 import { useStoreSelector } from "../../redux/reduxHooks";
 import { failureNotificationItems } from "../../utils/showNotificationsItems";
+import { useTranslation } from "react-i18next";
 import styles from "./style.module.scss";
 
 export const EditAppointment = () => {
+    const { t } = useTranslation();
     const aLevel = useStoreSelector((state) => state.user.cur);
     const [appointment, setAppointment] = useState<AppointmentListElementDto>();
     const [etag, setEtag] = useState<string>("");
@@ -53,7 +55,7 @@ export const EditAppointment = () => {
         handleGetAppointmentDetails();
     }, []);
     const handleEditAppointment = async () => {
-        if (!id || !etag || !appointment!) return;
+        if (!id || !etag || !appointment) return;
         let status = inputStatus;
         const version = appointment.version;
         let description = inputDescription;
@@ -92,12 +94,12 @@ export const EditAppointment = () => {
             ) : (
                 <div className={styles.account_details}>
                     <p className={styles.account_details_title}>
-                        Edytuj wizytę
+                        {t("editOwnAppointment.title")}
                     </p>
                     <div className={styles.details_wrapper}>
                         <div className={styles.detail_wrapper}>
                             <p className={styles.title}>
-                                Imię i nazwisko klienta:
+                                {t("editOwnAppointment.clientName")}
                             </p>
                             <p className={styles.description}>
                                 {appointment?.client.firstName +
@@ -107,7 +109,7 @@ export const EditAppointment = () => {
                         </div>
                         <div className={styles.detail_wrapper}>
                             <p className={styles.title}>
-                                Imie i nazwisko specjalisty:
+                                {t("editOwnAppointment.specialistName")}
                             </p>
                             <p className={styles.description}>
                                 {appointment?.specialist.firstName +
@@ -116,13 +118,17 @@ export const EditAppointment = () => {
                             </p>
                         </div>
                         <div className={styles.detail_wrapper}>
-                            <p className={styles.title}>Email kontaktowy:</p>
+                            <p className={styles.title}>
+                                {t("editOwnAppointment.email")}
+                            </p>
                             <p className={styles.description}>
                                 {appointment?.specialist.email}
                             </p>
                         </div>
                         <div className={styles.detail_wrapper}>
-                            <p className={styles.title}>Opis:</p>
+                            <p className={styles.title}>
+                                {t("editOwnAppointment.description")}
+                            </p>
                             <p className={styles.description}>
                                 {appointment?.description}
                             </p>
@@ -136,25 +142,29 @@ export const EditAppointment = () => {
                             />
                         </div>
                         <div className={styles.detail_wrapper}>
-                            <p className={styles.title}>Cena wizyty:</p>
+                            <p className={styles.title}>
+                                {t("editOwnAppointment.price")}
+                            </p>
                             <p className={styles.description}>
                                 {appointment?.price + "zł"}
                             </p>
                         </div>
                         <div className={styles.detail_wrapper}>
                             <p className={styles.title}>
-                                Data rozpoczęcia wizyty:
+                                {t("editOwnAppointment.dateStart")}
                             </p>
                             <p className={styles.description}>{startDate}</p>
                         </div>
                         <div className={styles.detail_wrapper}>
                             <p className={styles.title}>
-                                Data zakończenia wizyty:
+                                {t("editOwnAppointment.dateEnd")}
                             </p>
                             <p className={styles.description}>{endDate}</p>
                         </div>
                         <div className={styles.detail_wrapper}>
-                            <p className={styles.title}>Status wizyty:</p>
+                            <p className={styles.title}>
+                                {t("editOwnAppointment.status")}
+                            </p>
                             <p className={styles.description}>
                                 {appointment?.status}
                             </p>
@@ -166,11 +176,13 @@ export const EditAppointment = () => {
                                         setInputStatus("PENDING");
                                 }}
                             />
-                            <p className={styles.title}>Anuluj wizytę</p>
+                            <p className={styles.title}>
+                                {t("editOwnAppointment.cancel")}
+                            </p>
                         </div>
                         <div className={styles.detail_wrapper}>
                             <ActionButton
-                                title="Prześlij zmianę"
+                                title={t("editOwnAppointment.button")}
                                 color="purple"
                                 icon={faInfoCircle}
                                 onClick={() => handleEditAppointment()}

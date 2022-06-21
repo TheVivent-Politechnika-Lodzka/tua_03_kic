@@ -1,4 +1,5 @@
 import { Image, Table } from "@mantine/core";
+import { useTranslation } from "react-i18next";
 import { Url } from "url";
 import AccessLevel from "../shared/AccessLevel/AccessLevel";
 import style from "./style.module.scss";
@@ -14,12 +15,17 @@ interface SpecialistCardProps {
 const SpecialistCard = (props: SpecialistCardProps) => {
     const { firstName, lastName, email, tel, img } = props;
 
+    const { t } = useTranslation();
+
     return (
         <div className={style.specialist_card}>
             <div className={style.image}>
-                {/* <div className={style.test}> */}
                 {img ? (
-                    <Image radius={100} src={img} alt="sadasdasd" />
+                    <Image
+                        radius={100}
+                        src={img}
+                        alt={t("specialistCard.alt")}
+                    />
                 ) : (
                     <div className={style.svg}>
                         <svg
@@ -38,7 +44,6 @@ const SpecialistCard = (props: SpecialistCardProps) => {
                 <Table>
                     <tbody>
                         <tr>
-                            {/* <td style={{ height: "5px" }}>Imię i nazwisko:</td> */}
                             <th colSpan={2}>
                                 <span className={style.span}>
                                     {firstName} {lastName}
@@ -50,7 +55,7 @@ const SpecialistCard = (props: SpecialistCardProps) => {
                             <td>{email}</td>
                         </tr>
                         <tr>
-                            <td>telefon:</td>
+                            <td>{t("specialistCard.tel")}</td>
                             <td>{tel}</td>
                         </tr>
                     </tbody>

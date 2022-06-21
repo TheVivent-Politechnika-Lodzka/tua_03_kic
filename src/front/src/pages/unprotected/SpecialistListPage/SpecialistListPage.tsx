@@ -5,10 +5,13 @@ import SpecialistCard from "../../../components/SpecialistCard/SpecialistCard";
 import ReactLoading from "react-loading";
 
 import style from "./style.module.scss";
+import { useTranslation } from "react-i18next";
 
 const SpecialistListPage = () => {
     const [specialists, setSpecialists] =
         useState<SpecialistListElementDto[]>();
+
+    const { t } = useTranslation();
 
     const [loading, setLoading] = useState<Loading>({
         pageLoading: true,

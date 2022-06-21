@@ -21,6 +21,7 @@ import {
 } from "../../../../utils/showNotificationsItems";
 import styles from "./style.module.scss";
 import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import ConfirmActionModal from "../../../../components/shared/ConfirmActionModal/ConfirmActionModal";
 
 interface AccountDetailsProps {
@@ -67,6 +68,8 @@ export const AppointmentDetails = ({
         setEtag(data.etag);
         setLoading({ pageLoading: false, actionLoading: false });
     };
+
+    const { t } = useTranslation();
 
     const handleCancelVisit = async () => {
         setLoading({ ...loading, actionLoading: true });
@@ -162,14 +165,16 @@ export const AppointmentDetails = ({
                         />
                         <div className={styles.account_details}>
                             <p className={styles.account_details_title}>
-                                Szczegóły wizyty
+                                {t("appointmentDetails.title")}
                             </p>
                             <div className={styles.details_wrapper}>
                                 <div className={styles.detail_wrapper}>
                                     <p className={styles.title}>
                                         {aLevel === "SPECIALIST"
-                                            ? "Imię i nazwisko klienta:"
-                                            : "Imie i nazwisko specjalisty:"}
+                                            ? t("appointmentDetails.clientName")
+                                            : t(
+                                                  "appointmentDetails.specialistName"
+                                              )}
                                     </p>
                                     <p className={styles.description}>
                                         {aLevel === "SPECIALIST"
@@ -184,7 +189,7 @@ export const AppointmentDetails = ({
                                 </div>
                                 <div className={styles.detail_wrapper}>
                                     <p className={styles.title}>
-                                        Email kontaktowy:
+                                        {t("appointmentDetails.email")}
                                     </p>
                                     <p className={styles.description}>
                                         {appointment?.specialist.email}
@@ -192,21 +197,24 @@ export const AppointmentDetails = ({
                                 </div>
                                 <div className={styles.detail_wrapper}>
                                     <p className={styles.title}>
-                                        Status wizyty:
+                                        {t("appointmentDetails.status")}{" "}
                                     </p>
                                     <p className={styles.description}>
                                         {appointment?.status}
                                     </p>
                                 </div>
                                 <div className={styles.detail_wrapper}>
-                                    <p className={styles.title}>Cena wizyty:</p>
+                                    <p className={styles.title}>
+                                        {" "}
+                                        {t("appointmentDetails.price")}
+                                    </p>
                                     <p className={styles.description}>
                                         {appointment?.price + "zł"}
                                     </p>
                                 </div>
                                 <div className={styles.detail_wrapper}>
                                     <p className={styles.title}>
-                                        Data rozpoczęcia wizyty:
+                                        {t("appointmentDetails.dateStart")}{" "}
                                     </p>
                                     <p className={styles.description}>
                                         {startDate}
@@ -214,7 +222,7 @@ export const AppointmentDetails = ({
                                 </div>
                                 <div className={styles.detail_wrapper}>
                                     <p className={styles.title}>
-                                        Data zakończenia wizyty:
+                                        {t("appointmentDetails.dateEnd")}{" "}
                                     </p>
                                     <p className={styles.description}>
                                         {endDate}
@@ -222,11 +230,13 @@ export const AppointmentDetails = ({
                                 </div>
                                 <div className={styles.detail_wrapper}>
                                     <p className={styles.title}>
-                                        Obecnie wybrany implant:
+                                        {t("appointmentDetails.implant")}{" "}
                                     </p>
                                     <div className={styles.description}>
                                         <ActionButton
-                                            title="Wyświetl"
+                                            title={t(
+                                                "appointmentDetails.button"
+                                            )}
                                             color="cyan"
                                             icon={faInfoCircle}
                                             onClick={() =>
@@ -236,7 +246,10 @@ export const AppointmentDetails = ({
                                     </div>
                                 </div>
                                 <div className={styles.detail_wrapper}>
-                                    <p className={styles.title}>Opis:</p>
+                                    <p className={styles.title}>
+                                        {" "}
+                                        {t("appointmentDetails.description")}
+                                    </p>
                                     <p className={styles.description}>
                                         {appointment?.description}
                                     </p>
@@ -249,7 +262,9 @@ export const AppointmentDetails = ({
                                         aLevel
                                     ) && (
                                         <ActionButton
-                                            title="Odwołaj wizytę"
+                                            title={t(
+                                                "appointmentDetails.buttonCancel"
+                                            )}
                                             color="cyan"
                                             icon={faInfoCircle}
                                             onClick={() => {
@@ -263,7 +278,9 @@ export const AppointmentDetails = ({
                                 appointment?.status !== "FINISHED" &&
                                 aLevel === "SPECIALIST" ? (
                                     <ActionButton
-                                        title="Zakończ wizytę"
+                                        title={t(
+                                            "appointmentDetails.buttonFinish"
+                                        )}
                                         color="cyan"
                                         icon={faInfoCircle}
                                         onClick={() => {
@@ -275,7 +292,9 @@ export const AppointmentDetails = ({
                                 appointment?.status !== "FINISHED" &&
                                 aLevel === "ADMINISTRATOR" ? (
                                     <ActionButton
-                                        title="Odwołaj wizyte"
+                                        title={t(
+                                            "appointmentDetails.buttonCancel"
+                                        )}
                                         color="purple"
                                         icon={faInfoCircle}
                                         onClick={() => {
@@ -284,13 +303,15 @@ export const AppointmentDetails = ({
                                     ></ActionButton>
                                 ) : null}
                                 <ActionButton
-                                    title="Edytuj wizytę"
+                                    title={t("appointmentDetails.buttonEdit")}
                                     color="cyan"
                                     icon={faInfoCircle}
                                     onClick={() => routeChange(appointmentId)}
                                 ></ActionButton>
                                 <ConfirmActionModal
-                                    title={"Odwołaj wizytę"}
+                                    title={t(
+                                        "appointmentDetails.modal.cancel.title"
+                                    )}
                                     isLoading={loading.actionLoading as boolean}
                                     isOpened={isFinishOwnVisitModalOpen}
                                     handleFunction={async () => {
@@ -302,10 +323,12 @@ export const AppointmentDetails = ({
                                         setFinishOwnVisitModalOpen(false);
                                     }}
                                 >
-                                    {"Czy na pewno chcesz anulować wizytę?"}
+                                    {t("appointmentDetails.modal.cancel.text")}
                                 </ConfirmActionModal>
                                 <ConfirmActionModal
-                                    title={"Odwołaj wizytę"}
+                                    title={t(
+                                        "appointmentDetails.modal.cancel.title"
+                                    )}
                                     isLoading={loading.actionLoading as boolean}
                                     isOpened={appointmentBlockModalOpen}
                                     handleFunction={async () => {
@@ -317,10 +340,12 @@ export const AppointmentDetails = ({
                                         setAppointmentBlockModalOpen(false);
                                     }}
                                 >
-                                    {"Czy na pewno chcesz anulować wizytę?"}
+                                    {t("appointmentDetails.modal.cancel.text")}
                                 </ConfirmActionModal>
                                 <ConfirmActionModal
-                                    title={"Oznacz wizytę jako zakończoną"}
+                                    title={t(
+                                        "appointmentDetails.modal.finish.title"
+                                    )}
                                     isLoading={loading.actionLoading as boolean}
                                     isOpened={isFinishVisitModalOpen}
                                     handleFunction={async () => {
@@ -332,7 +357,7 @@ export const AppointmentDetails = ({
                                         setFinishVisitModalOpen(false);
                                     }}
                                 >
-                                    {"Czy na pewno chcesz zakończyć wizytę?"}
+                                    {t("appointmentDetails.modal.finish.text")}
                                 </ConfirmActionModal>
                             </div>
                         </div>

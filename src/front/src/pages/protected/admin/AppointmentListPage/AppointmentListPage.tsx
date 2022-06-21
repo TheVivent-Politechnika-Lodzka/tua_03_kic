@@ -9,7 +9,8 @@ import {
 import { useEffect, useState } from "react";
 import {
     AppointmentListResponse,
-    AppointmentListElementDto, listAppointments
+    AppointmentListElementDto,
+    listAppointments,
 } from "../../../../api/mop";
 import { AppointmentListElement } from "../../../../components/AppointmentListElement";
 import { FaSearch } from "react-icons/fa";
@@ -19,12 +20,13 @@ import { useStoreSelector } from "../../../../redux/reduxHooks";
 export const AppointmentListPage = () => {
     const [phrase, setPhrase] = useState<string>("");
     const [amountElement, setAmountElement] = useState<string | null>("1");
-    const [appointmentList, setAppointmentList] = useState<AppointmentListResponse>({
-        totalCounts: 0,
-        totalPages: 0,
-        currentPage: 0,
-        data: [],
-    });
+    const [appointmentList, setAppointmentList] =
+        useState<AppointmentListResponse>({
+            totalCounts: 0,
+            totalPages: 0,
+            currentPage: 0,
+            data: [],
+        });
     const [page, setPage] = useState<number>(1);
     const { t } = useTranslation();
     const user = useStoreSelector((state) => state.user.cur);
@@ -76,7 +78,6 @@ export const AppointmentListPage = () => {
 
     return (
         <Container fluid={true} mt={40}>
-
             <Grid mt="xs">
                 <Grid.Col span={6} offset={3}>
                     <Input

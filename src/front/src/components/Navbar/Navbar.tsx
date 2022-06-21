@@ -4,13 +4,13 @@ import UserAccessLevel from "./UserAccessLevel";
 import { useNavigate } from "react-router";
 import styles from "./style.module.scss";
 import Clocker from "./Clocker";
-
+import { useTranslation } from "react-i18next";
 
 const Navbar = () => {
     const login = useStoreSelector((state) => state.user.sub);
     const accessLevel = useStoreSelector((state) => state.user.cur);
     const navigate = useNavigate();
-
+    const { t } = useTranslation();
     return (
         <nav
             className={`${styles.navbar} ${styles[accessLevel.toLowerCase()]}`}
@@ -27,7 +27,7 @@ const Navbar = () => {
                     </div>
                     <img
                         src={avatar}
-                        alt="Avatar użytkownika"
+                        alt={t("navbar.avatar_alt")}
                         className={styles.avatar}
                     />
                 </div>
@@ -47,7 +47,7 @@ const Navbar = () => {
                         }}
                         className={styles.register}
                     >
-                        Zarejestruj się
+                        {t("navbar.register")}
                     </div>
                 </div>
             )}

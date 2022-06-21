@@ -36,6 +36,7 @@ import InputWithValidation from "../../../../components/shared/InputWithValidati
 import ValidationMessage from "../../../../components/shared/ValidationMessage/ValidationMessage";
 import { validationContext } from "../../../../context/validationContext";
 import AddAccessLevelPage from "../AddAccessLevelPage/AddAccessLevelPage";
+import { useTranslation } from "react-i18next";
 
 interface AccountDetailsPageProps {
     login: string;
@@ -70,6 +71,8 @@ const AccountDetailsPage = ({
         account?.accessLevels.map((level) => level.level) ?? [];
     const navigate = useNavigate();
 
+    const { t } = useTranslation();
+
     const handleAccessLevelClick = async (
         level: AccessLevelType,
         alreadyHas: boolean
@@ -96,7 +99,9 @@ const AccountDetailsPage = ({
             return;
         }
         showNotification(
-            successNotficiationItems("Poziom dostępu został usunięty")
+            successNotficiationItems(
+                t("accountDetailsPage.successNotficiationItemsRemove")
+            )
         );
         setAccount(response);
         setLoading({ ...loading, actionLoading: false });
@@ -130,7 +135,11 @@ const AccountDetailsPage = ({
                 return;
             }
             showNotification(
-                successNotficiationItems("Konto zostało deaktywowane")
+                successNotficiationItems(
+                    t(
+                        "accountDetailsPage.successNotficiationItemsDeactivateAccount"
+                    )
+                )
             );
             onClose();
             return;
@@ -146,7 +155,11 @@ const AccountDetailsPage = ({
             }
             setLoading({ ...loading, actionLoading: false });
             showNotification(
-                successNotficiationItems("Konto zostało aktywowane")
+                successNotficiationItems(
+                    t(
+                        "accountDetailsPage.successNotficiationItemsActivateAccount"
+                    )
+                )
             );
             onClose();
             setLoading({ pageLoading: false });
@@ -177,11 +190,13 @@ const AccountDetailsPage = ({
                             <img
                                 className={styles.avatar}
                                 src={avatar}
-                                alt="Account general: Avatar"
+                                alt={t("accountDetailsPage.alt")}
                             />
                             <p className={styles.login}>{account?.login}</p>
                             <div className={styles.access_levels_wrapper}>
-                                <p className={styles.title}>Poziomy dostępu:</p>
+                                <p className={styles.title}>
+                                    {t("accountDetailsPage.title")}
+                                </p>
 
                                 {["ADMINISTRATOR", "CLIENT", "SPECIALIST"].map(
                                     (entry) => (
@@ -215,7 +230,9 @@ const AccountDetailsPage = ({
                                     onClick={() => {
                                         navigate(`/accounts/${login}`);
                                     }}
-                                    title="Edytuj konto"
+                                    title={t(
+                                        "accountDetailsPage.editAccountTitle"
+                                    )}
                                     color="green"
                                     icon={faEdit}
                                 />
@@ -224,7 +241,9 @@ const AccountDetailsPage = ({
                                     onClick={() => {
                                         setChangePasswordModal(true);
                                     }}
-                                    title="Zmień hasło"
+                                    title={t(
+                                        "accountDetailsPage.changePasswordTitle"
+                                    )}
                                     color="purple"
                                     icon={faKey}
                                 />
@@ -232,8 +251,12 @@ const AccountDetailsPage = ({
                                     isDisabled={isAdmin}
                                     title={
                                         account?.active
-                                            ? "Zablokuj konto"
-                                            : "Odblokuj konto"
+                                            ? t(
+                                                  "accountDetailsPage.deactivateAccountTitle"
+                                              )
+                                            : t(
+                                                  "accountDetailsPage.activateAccountTitle"
+                                              )
                                     }
                                     color="orange"
                                     icon={
@@ -247,23 +270,29 @@ const AccountDetailsPage = ({
                         </div>
                         <div className={styles.account_details}>
                             <p className={styles.account_details_title}>
-                                Dane szczegółowe
+                                {t("accountDetailsPage.accountDetailsTitle")}
                             </p>
                             <div className={styles.details_wrapper}>
                                 <div className={styles.detail_wrapper}>
-                                    <p className={styles.title}>Imię:</p>
+                                    <p className={styles.title}>
+                                        {t("accountDetailsPage.name")}
+                                    </p>
                                     <p className={styles.description}>
                                         {account?.firstName}
                                     </p>
                                 </div>
                                 <div className={styles.detail_wrapper}>
-                                    <p className={styles.title}>Nazwisko:</p>
+                                    <p className={styles.title}>
+                                        {t("accountDetailsPage.surname")}
+                                    </p>
                                     <p className={styles.description}>
                                         {account?.lastName}
                                     </p>
                                 </div>
                                 <div className={styles.detail_wrapper}>
-                                    <p className={styles.title}>Email:</p>
+                                    <p className={styles.title}>
+                                        {t("accountDetailsPage.email")}
+                                    </p>
                                     <p className={styles.description}>
                                         {account?.email}
                                     </p>
@@ -273,7 +302,7 @@ const AccountDetailsPage = ({
                                 }) && (
                                     <div className={styles.detail_wrapper}>
                                         <p className={styles.title}>
-                                            Numer PESEL:
+                                            {t("accountDetailsPage.pesel")}
                                         </p>
                                         <p className={styles.description}>
                                             {account?.accessLevels
@@ -293,7 +322,7 @@ const AccountDetailsPage = ({
                                 }) && (
                                     <div className={styles.detail_wrapper}>
                                         <p className={styles.title}>
-                                            Numer telefonu:
+                                            {t("accountDetailsPage.telephone")}
                                         </p>
                                         <p className={styles.description}>
                                             {account?.accessLevels
@@ -310,7 +339,9 @@ const AccountDetailsPage = ({
                                     </div>
                                 )}
                                 <div className={styles.detail_wrapper}>
-                                    <p className={styles.title}>Język:</p>
+                                    <p className={styles.title}>
+                                        {t("accountDetailsPage.language")}
+                                    </p>
                                     <img
                                         src={
                                             account?.language?.language === "pl"
@@ -333,8 +364,12 @@ const AccountDetailsPage = ({
                         <ConfirmActionModal
                             title={
                                 account?.active
-                                    ? "Zablokuj konto"
-                                    : "Odblokuj konto"
+                                    ? t(
+                                          "accountDetailsPage.confirmActionModal.deactivateAccount"
+                                      )
+                                    : t(
+                                          "accountDetailsPage.confirmActionModal.activateAccount"
+                                      )
                             }
                             isLoading={loading.actionLoading as boolean}
                             isOpened={isAccountBlockModalOpen}
@@ -348,12 +383,24 @@ const AccountDetailsPage = ({
                                 setAccountBlockModalOpen(false);
                             }}
                         >
-                            Czy na pewno chcesz{" "}
-                            {account?.active ? "zablokować" : "odblokować"}{" "}
-                            konto? Operacja jest nieodwracalna.
+                            {t(
+                                "accountDetailsPage.confirmActionModal.firstPart"
+                            )}{" "}
+                            {account?.active
+                                ? t(
+                                      "accountDetailsPage.confirmActionModal.deactivated"
+                                  )
+                                : t(
+                                      "accountDetailsPage.confirmActionModal.activated"
+                                  )}{" "}
+                            {t(
+                                "accountDetailsPage.confirmActionModal.secondPart"
+                            )}
                         </ConfirmActionModal>
                         <ConfirmActionModal
-                            title="Usuń poziom dostępu"
+                            title={t(
+                                "accountDetailsPage.confirmActionModalDeleteAccessLevel.title"
+                            )}
                             isLoading={loading.actionLoading as boolean}
                             isOpened={isAccountRemoveAccessLevelOpen}
                             handleFunction={async () => {
@@ -364,8 +411,9 @@ const AccountDetailsPage = ({
                                 setAccountRemoveAccessLevelOpen(false);
                             }}
                         >
-                            Czy na pewno chcesz usunąć poziom dostępu ? Operacja
-                            jest nieodwracalna.
+                            {t(
+                                "accountDetailsPage.confirmActionModalDeleteAccessLevel.text"
+                            )}{" "}
                         </ConfirmActionModal>
                         <AddAccessLevelPage
                             isLoading={loading.actionLoading as boolean}

@@ -10,31 +10,31 @@ const ContactBar = () => {
         <div className={styles.contact_section}>
             <div className={styles.contact}>
                 <div className={styles.contact_section_title1}>
-                    {t("contact")}
+                    {t("contentBar.contact")}
                 </div>
                 <div className={styles.contact_section_items}>
                     <div className={styles.contact_section_item}>
                         <FaPhoneAlt className={styles.contact_icon} />
-                        <p>+48 303 030 300</p>
+                        <p>{t("contentBar.tel")}</p>
                     </div>
                     <div className={styles.contact_section_item}>
                         <HiOutlineMailOpen className={styles.contact_icon} />
-                        <p>KIC@kic.agency</p>
+                        <p>{t("contentBar.email")}</p>
                     </div>
                 </div>
             </div>
             <div className={styles.social_media}>
                 <div className={styles.contact_section_title2}>
-                    {t("social_media")}
+                    {t("contentBar.socialMedia")}
                 </div>
                 <div className={styles.contact_section_items}>
                     <div className={styles.contact_section_item}>
                         <FaFacebook className={styles.contact_icon} />
-                        <p>KIC</p>
+                        <p>{t("contentBar.kic")}</p>
                     </div>
                     <div className={styles.contact_section_item}>
                         <FaInstagram className={styles.contact_icon} />
-                        <p>@KIC</p>
+                        <p>@{t("contentBar.kicTwo")}</p>
                     </div>
                 </div>
             </div>

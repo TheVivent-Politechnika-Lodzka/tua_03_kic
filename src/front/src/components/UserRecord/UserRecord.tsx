@@ -9,6 +9,7 @@ import { useStoreSelector } from "../../redux/reduxHooks";
 import AccountDetails from "../../pages/protected/admin/AccountDetailsPage/AccountDetailsPage";
 import AccessLevel from "../shared/AccessLevel/AccessLevel";
 import styles from "./style.module.scss";
+import { useTranslation } from "react-i18next";
 
 interface UserRecordProps {
     user: AccountDetails;
@@ -20,6 +21,8 @@ const UserRecord = ({ user, handleChange }: UserRecordProps) => {
     const login = useStoreSelector((state) => state.user.sub);
     const accessLevel = useStoreSelector((state) => state.user.cur);
 
+    const { t } = useTranslation();
+
     useEffect(() => {
         handleChange(true);
     }, [modal]);
@@ -27,7 +30,11 @@ const UserRecord = ({ user, handleChange }: UserRecordProps) => {
     return (
         <div className={styles.user_record_wrapper}>
             <div className={styles.avatar_wrapper}>
-                <img className={styles.avatar} src={user?.url} alt="user" />
+                <img
+                    className={styles.avatar}
+                    src={user?.url}
+                    alt={t("userRecord.alt")}
+                />
                 <div className={styles.access_levels_wrapper}>
                     {user?.accessLevels.map((accessLevel, index) => (
                         <AccessLevel
@@ -48,11 +55,17 @@ const UserRecord = ({ user, handleChange }: UserRecordProps) => {
             </div>
             <div className={styles.detail_wrapper}>
                 <FontAwesomeIcon
-                    className={user?.confirmed ? styles.icon_confirmed : styles.icon_not_confirmed}
+                    className={
+                        user?.confirmed
+                            ? styles.icon_confirmed
+                            : styles.icon_not_confirmed
+                    }
                     icon={user?.confirmed ? faCheck : faCancel}
                 />
                 <p className={styles.detail}>
-                    {user?.confirmed ? "Zatwierdzone" : "Niezatwierdzone"}
+                    {user?.confirmed
+                        ? t("userRecord.approved")
+                        : t("userRecord.unapproved")}
                 </p>
             </div>
             <div className={styles.detail_wrapper}>
@@ -62,7 +75,9 @@ const UserRecord = ({ user, handleChange }: UserRecordProps) => {
                     } `}
                 />
                 <p className={styles.detail}>
-                    {user?.active ? "Aktywne" : "Nieaktywne"}
+                    {user?.active
+                        ? t("userRecord.active")
+                        : t("userRecord.inactive")}
                 </p>
             </div>
             <div className={styles.detail_wrapper}>

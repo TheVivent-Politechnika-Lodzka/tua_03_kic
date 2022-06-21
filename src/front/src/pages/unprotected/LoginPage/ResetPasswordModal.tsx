@@ -12,6 +12,7 @@ import {
 } from "../../../utils/showNotificationsItems";
 import style from "./style.module.scss";
 import Input from "../../../components/shared/Input/Input";
+import { useTranslation } from "react-i18next";
 
 interface ResetPasswordModalInterface {
     isOpen: boolean;
@@ -28,11 +29,13 @@ export const ResetPasswordModal = ({
         state: { isLoginValid },
     } = useContext(validationContext);
 
+    const { t } = useTranslation();
+
     const handleResetPassword = async () => {
         if (login === "" || login.length < 3) {
             showNotification(
                 failureNotificationItems(
-                    "Login nie może być krótszy niż 3 znaki"
+                    t("resetPasswordModal.failureNotificationItems")
                 )
             );
             return;
@@ -46,7 +49,7 @@ export const ResetPasswordModal = ({
         }
         showNotification(
             successNotficiationItems(
-                "Wysłano link z kodem do resetu hasła. Sprawdź maila"
+                t("resetPasswordModal.successNotificationItems")
             )
         );
         setLoading(false);
@@ -79,11 +82,15 @@ export const ResetPasswordModal = ({
                         onClick={onClose}
                     />
                     <div className={style.reset_password_content}>
-                        <p className={style.title}>Zresetuj hasło</p>
+                        <p className={style.title}>
+                            {t("resetPasswordModal.title")}
+                        </p>
                         <div className={style.edit_fields_wrapper}>
                             <Input
-                                title="Login"
-                                placeholder="Wpisz login konta"
+                                title={t("resetPasswordModal.login.title")}
+                                placeholder={t(
+                                    "resetPasswordModal.login.placeholder"
+                                )}
                                 type="text"
                                 value={login}
                                 onChange={(e) => setLogin(e.target.value)}
@@ -92,7 +99,7 @@ export const ResetPasswordModal = ({
                         </div>
                         <div className={style.button_wrapper}>
                             <ActionButton
-                                title="Przypomnij hasło"
+                                title={t("resetPasswordModal.button")}
                                 color="orange"
                                 onClick={handleResetPassword}
                                 isDisabled={!isLoginValid}
