@@ -8,6 +8,8 @@ import { login as loginDispatch } from "../../redux/userSlice";
 import { useDispatch } from "react-redux";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router";
+import { failureNotificationItems } from "../../utils/showNotificationsItems";
+import { showNotification } from "@mantine/notifications";
 
 interface jwt {
     sub: string;
@@ -28,8 +30,9 @@ const Clocker = () => {
                 localStorage.getItem(refreshJWT) as string
             );
             if ("errorMessage" in response) {
-                console.log(`${response.status} ${response.errorMessage}`);
-                alert(response.errorMessage);
+                showNotification(
+                    failureNotificationItems(t("clocker.logInAgain"))
+                );
                 navigate("/");
                 return;
             }
@@ -66,7 +69,7 @@ const Clocker = () => {
                             onClick={handleSubmit}
                             icon={faCheck}
                             color="purple"
-                            title={t("refresh")}
+                            title={t("clocker.refresh")}
                         />
                     );
                 } else {

@@ -219,5 +219,9 @@
         "english": "english",
         "send_email": "Wysłaliśmy Ci maila z linkiem powierdzającym"
     },
-    "refresh": "Odśwież sesje"
+    "clocker" : {
+        "refresh": "Odśwież sesje",
+        "logInAgain" : "Zaloguj sie ponownie"
+    }
+    
 }

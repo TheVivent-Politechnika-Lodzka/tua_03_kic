@@ -220,5 +220,8 @@
         "english": "english",
         "send_email": "We send you an email with confirmation link"
     },
-    "refresh": "Refresh session"
+    "clocker": {
+        "refresh": "Refresh session",
+        "logInAgain": "Sorry, log in again"
+    }
 }
