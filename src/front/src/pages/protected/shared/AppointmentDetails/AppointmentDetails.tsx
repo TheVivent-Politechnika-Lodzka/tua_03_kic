@@ -228,6 +228,7 @@ export const AppointmentDetails = ({
                                     handleFunction={async () => {
                                         await handleCancelVisit();
                                         setAppointmentBlockModalOpen(false);
+                                        window.location.reload();
                                     }}
                                     onClose={() => {
                                         setAppointmentBlockModalOpen(false);
