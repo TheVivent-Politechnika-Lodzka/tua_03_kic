@@ -29,12 +29,16 @@ public class StartupConfig {
 
     @PostConstruct
     public void init() {
+
+        createImplant();
+        createImplantSecond();
+        em.flush();
+
         createAdmin();
         createSpecialistAdmin();
         createClientAdmin();
         createClient();
         createSpecialist();
-        createImplant();
         em.flush();
 
         createAppointment();
@@ -44,19 +48,43 @@ public class StartupConfig {
         em.flush();
     }
 
+    public void createImplant() {
+        Implant implant = new Implant();
+        implant.setName("Zestaw słuchowy");
+        implant.setDescription("Implant słuchowy montowany po obu skroniach pozwala usłyszeć na odległość do 300m. Dodatkowo w zestawie naprowadzacz laserowy do precyzyjnego określenia źródła dźwięku. Zabieg nieinwazyjny wykonany w znieczuleniu miejscowym, nie jest wymagana opieka pozabiegowa.");
+        implant.setManufacturer("HearMeOUT SP.Z.O.O.");
+        implant.setPrice(820);
+        implant.setPopularity(0);
+        implant.setDuration(Duration.between(LocalTime.NOON, LocalTime.MAX));
+        implant.setImage("https://cdn3.whatculture.com/images/2020/06/f9c87f9aba31102e-600x338.jpg");
+        em.persist(implant);
+    }
+
+    public void createImplantSecond() {
+        Implant implant = new Implant();
+        implant.setName("Ręka z tytanu");
+        implant.setDescription("Ręka wykonana z tytanu z 4 siłownikami klasy AB pozwalającymi wygenerować siłę 1582J czyli 3 razy wiekszą niż MAG-08. Zabieg wykonany na pełnym znieczuleniu, zabieg można wykonać zrówno mając rekę, jak również już z amputowaną ręką.");
+        implant.setManufacturer("NiceHands SP.Z.O.O.");
+        implant.setPrice(750);
+        implant.setPopularity(0);
+        implant.setDuration(Duration.between(LocalTime.NOON, LocalTime.MAX));
+        implant.setImage("https://i.wpimg.pl/c/646x/m.gadzetomania.pl/joihnny-720x405-ec53e56439bdc8de.png");
+        em.persist(implant);
+    }
+
     private void createAdmin() {
         Account admin = new Account();
         admin.setLogin("administrator");
         admin.setPassword(hashAlgorithm.generate("Password123!".toCharArray()));
         admin.setActive(true);
         admin.setConfirmed(true);
-        admin.setFirstName("admin");
-        admin.setLastName("administracyjny");
+        admin.setFirstName("Rache");
+        admin.setLastName("Bartmoss");
         admin.setEmail("szurySSBD3@gmail.com");
         admin.setLanguage(new Locale("pl"));
-        admin.setUrl("https://assets.reedpopcdn.com/cyberpunk-2077-wyciekl-dodatek-headline.jpg/BROK/resize/1920x1920%3E/format/jpg/quality/80/cyberpunk-2077-wyciekl-dodatek-headline.jpg");
+        admin.setUrl("https://i0.wp.com/grynieznane.pl/wp-content/uploads/2020/12/a1-19.jpg?resize=350%2C393&ssl=1");
         DataAdministrator dataAdministrator = new DataAdministrator();
-        dataAdministrator.setPhoneNumber("000000000");
+        dataAdministrator.setPhoneNumber("596468753");
         dataAdministrator.setContactEmail("administrator@kic.agency");
 
         admin.addAccessLevel(dataAdministrator);
@@ -69,17 +97,16 @@ public class StartupConfig {
         admin.setPassword(hashAlgorithm.generate("Password123!".toCharArray()));
         admin.setActive(true);
         admin.setConfirmed(true);
-        admin.setFirstName("admin");
-        admin.setLastName("specjalny");
+        admin.setFirstName("Yui");
+        admin.setLastName("Arasaka");
         admin.setEmail("szurySSBD2@gmail.com");
         admin.setLanguage(new Locale("en"));
-        admin.setUrl("https://media.discordapp.net/attachments/948268830222848183/988127000336138280/dgTUsgBf_400x400.jpg");
-
+        admin.setUrl("https://cdnb.artstation.com/p/assets/images/images/028/593/729/large/katerina-argonskaya-cyberplague-doc-5-774.jpg?1594914723");
         DataAdministrator dataAdministrator = new DataAdministrator();
-        dataAdministrator.setPhoneNumber("111111111");
+        dataAdministrator.setPhoneNumber("846548753");
         dataAdministrator.setContactEmail("specadmin@kic.agency");
         DataSpecialist dataSpecialist = new DataSpecialist();
-        dataSpecialist.setPhoneNumber("111111111");
+        dataSpecialist.setPhoneNumber("846548753");
         dataSpecialist.setContactEmail("specadmin@kic.agency");
 
         admin.addAccessLevel(dataAdministrator);
@@ -93,19 +120,19 @@ public class StartupConfig {
         admin.setPassword(hashAlgorithm.generate("Password123!".toCharArray()));
         admin.setActive(true);
         admin.setConfirmed(true);
-        admin.setFirstName("admin");
-        admin.setLastName("kliencki");
+        admin.setFirstName("Adam");
+        admin.setLastName("Smasher");
         admin.setEmail("szurySSBD@gmail.com");
         admin.setLanguage(new Locale("pl"));
-        admin.setUrl("https://assets.reedpopcdn.com/cyberpunk-2077-wyciekl-dodatek-headline.jpg/BROK/resize/1920x1920%3E/format/jpg/quality/80/cyberpunk-2077-wyciekl-dodatek-headline.jpg");
+        admin.setUrl("https://cdnb.artstation.com/p/assets/images/images/027/342/675/large/ekaterina-ladanuk-sithh-s.jpg?1591263812");
 
         DataAdministrator dataAdministrator = new DataAdministrator();
-        dataAdministrator.setPhoneNumber("222222222");
+        dataAdministrator.setPhoneNumber("556615151");
         dataAdministrator.setContactEmail("klientadmin@kic.agency");
 
         DataClient dataClient = new DataClient();
-        dataClient.setPesel("22222222222");
-        dataClient.setPhoneNumber("222222222");
+        dataClient.setPesel("51611516115");
+        dataClient.setPhoneNumber("556615151");
 
         admin.addAccessLevel(dataAdministrator);
         admin.addAccessLevel(dataClient);
@@ -118,15 +145,15 @@ public class StartupConfig {
         client.setPassword(hashAlgorithm.generate("Password123!".toCharArray()));
         client.setActive(true);
         client.setConfirmed(true);
-        client.setFirstName("client");
-        client.setLastName("klient");
+        client.setFirstName("Sasai");
+        client.setLastName("Arasaka");
         client.setEmail("szurySSBDclient@gmail.com");
         client.setLanguage(new Locale("pl"));
-        client.setUrl("https://assets.reedpopcdn.com/cyberpunk-2077-wyciekl-dodatek-headline.jpg/BROK/resize/1920x1920%3E/format/jpg/quality/80/cyberpunk-2077-wyciekl-dodatek-headline.jpg");
+        client.setUrl("https://i.pinimg.com/originals/53/a2/86/53a286fffffddc37fda5e209723039ce.jpg");
 
         DataClient dataClient = new DataClient();
-        dataClient.setPesel("11111111111");
-        dataClient.setPhoneNumber("111111111");
+        dataClient.setPesel("51651615556");
+        dataClient.setPhoneNumber("956456465");
 
         client.addAccessLevel(dataClient);
         em.persist(client);
@@ -138,32 +165,21 @@ public class StartupConfig {
         specialist.setPassword(hashAlgorithm.generate("Password123!".toCharArray()));
         specialist.setActive(true);
         specialist.setConfirmed(true);
-        specialist.setFirstName("spec");
-        specialist.setLastName("specjalista");
+        specialist.setFirstName("Johnny");
+        specialist.setLastName("Silverhand");
         specialist.setEmail("szurySSBDspec@gmail.com");
         specialist.setLanguage(new Locale("pl"));
-        specialist.setUrl("https://cdn.discordapp.com/attachments/331877513456386060/988611908804415488/unknown.png");
-
+        specialist.setUrl("https://i.pinimg.com/originals/12/da/11/12da11fad537e03c4b40af7d2e12bfce.jpg");
         DataSpecialist dataSpecialist = new DataSpecialist();
-        dataSpecialist.setPhoneNumber("222222222");
-        dataSpecialist.setContactEmail("email@email.com");
+        dataSpecialist.setPhoneNumber("895111554");
+        dataSpecialist.setContactEmail("specjalista@gmail.com");
 
         specialist.addAccessLevel(dataSpecialist);
         em.persist(specialist);
     }
 
-    public void createImplant() {
-        Implant implant = new Implant();
-        implant.setName("implant pierwszy");
-        implant.setDescription("testowy implant zwiększający siłę przebicia przez ściany amerykańskie (z kartonu) o 10% maksymalnego zdrowia");
-        implant.setManufacturer("Janusz Nowak");
-        implant.setPrice(1000);
-        implant.setPopularity(0);
-        implant.setDuration(Duration.between(LocalTime.NOON, LocalTime.MAX));
-        implant.setImage("https://assets.reedpopcdn.com/cyberpunk-2077-wyciekl-dodatek-headline.jpg/BROK/resize/1920x1920%3E/format/jpg/quality/80/cyberpunk-2077-wyciekl-dodatek-headline.jpg");
-        em.persist(implant);
-    }
 
+//
 //    public void createAppointment() {
 //
 //        Account accountClient = em.createNamedQuery("Account.findByLogin", Account.class)
@@ -171,6 +187,7 @@ public class StartupConfig {
 //        Account accountSpecialist = em.createNamedQuery("Account.findByLogin", Account.class)
 //                .setParameter("login", "spec").getSingleResult();
 //        List<Implant> implants = em.createNamedQuery("Implant.findAll", Implant.class).getResultList();
+//
 //
 //        Appointment appointment = new Appointment();
 //        Date dateStart = null;
@@ -200,25 +217,17 @@ public class StartupConfig {
 
     public void createAppointment() {
 
-        Account clientAdmin = em.createNamedQuery("Account.findByLogin", Account.class).setParameter("login", "clientAdmin").getSingleResult(); // zmieniac - testy
+        Account clientAdmin = em.createNamedQuery("Account.findByLogin", Account.class).setParameter("login", "clientAdmin").getSingleResult();
         Account specialist = em.createNamedQuery("Account.findByLogin", Account.class).setParameter("login", "spec").getSingleResult();
 
         Implant implant = new Implant();
-        implant.setName("Implant drugi");
-        implant.setDescription("""
-                Na pierwszym planie obrazu widać wzgórze,
-                na którym oracz orze ziemie.Ten fragment płótna przyciąga uwagę,
-                gdyż wzgórze przedstawione jest w jasnych kolorach.
-                Chłop ma na sobie czerwony kubrak przykuwający wzrok na tle
-                brązów i zieleni.Na dalszym planie widać pasterza i psa pilnującego
-                stado owiec.Oraz rybaka zarzucającego sieć, statek, miasto i
-                zachodzące słońce
-                """);
+        implant.setName("Noktowizor");
+        implant.setDescription("Pierwszą przełomową innowacją jest nasza funkcja „powiększania według własnego uznania”. Korzystając z unikalnego podwójnego FOV i 2-krotnego zoomu optycznego, użytkownik może szybko ręcznie przełączać podwójne FOV. Większe FOV o ogniskowej 25 mm jest używane do wyszukiwania celu, a mniejsze FOV o ogniskowej 50 mm do identyfikacji celu. Spełnij potrzebę patrzenia daleko, dokładnie i wyraźnie.");
         implant.setPrice(100);
-        implant.setManufacturer("Manufacturer kox");
+        implant.setManufacturer("Nokto S.A.");
         implant.setPopularity(0);
         implant.setDuration(Duration.ofMinutes(30));
-        implant.setImage("https://assets.reedpopcdn.com/cyberpunk-2077-wyciekl-dodatek-headline.jpg/BROK/resize/1920x1920%3E/format/jpg/quality/80/cyberpunk-2077-wyciekl-dodatek-headline.jpg");
+        implant.setImage("https://api.culture.pl/sites/default/files/styles/440_auto/public/2020-11/cyberpunk2077-outnumbered_but_not_outgunned-rgb-en.jpg?itok=ktGxus53");
 
 
         em.persist(implant);
@@ -228,36 +237,28 @@ public class StartupConfig {
         appointment.setSpecialist(specialist);
         appointment.setImplant(implant);
         appointment.setStartDate(Instant.now());
-        appointment.setEndDate(Instant.now().plusSeconds(10)); // zmieniono do testow
+        appointment.setEndDate(Instant.now().plusSeconds(100000)); // zmieniono do testow
         appointment.setStatus(Status.ACCEPTED); // TUTAJ ZMIENIAĆ DO TESTÓW
         appointment.setPrice(100);
-        appointment.setDescription("Appointment description");
+        appointment.setDescription("8 godzin przed zabiegiem nie można nic spożywać. Na rekonwalenstecje należy przeznaczyć 10 dni. ");
 
         em.persist(appointment);
     }
 
     public void createImplantReview() {
         ImplantReview review = new ImplantReview();
-        review.setReview("Testowy review");
+        review.setReview("Wszystko sprawnie, Pani wykonująca zabieg bardzo miła, przyjemna. Polecam");
         review.setRating(5);
 
         Implant implant = new Implant();
 
-        implant.setName("Implant trzeci");
-        implant.setDescription("""
-                Na pierwszym planie obrazu widać wzgórze,
-                na którym oracz orze ziemie.Ten fragment płótna przyciąga uwagę,
-                gdyż wzgórze przedstawione jest w jasnych kolorach.
-                Chłop ma na sobie czerwony kubrak przykuwający wzrok na tle
-                brązów i zieleni.Na dalszym planie widać pasterza i psa pilnującego
-                stado owiec.Oraz rybaka zarzucającego sieć, statek, miasto i
-                zachodzące słońce
-                """);
+        implant.setName("Ostrze automatyczne");
+        implant.setDescription("Głownia o wyraźnie zaznaczonej krzywiźnie (o wyraźnym łuku) brzucha ostrza i ostrym, lekko wklęsłym spadku grzbietu w kierunku czubka. Często wklęsły odcinek grzbietu przy czubku jest zaostrzony, lub posiada możliwość naostrzenia. Ze względu na bardzo dobre właściwości tnące przy równocześnie wysokiej zdolności do przebijania profil ten jest powszechnie wykorzystywany w nożach bojowych i roboczych ogólnego przeznaczenia.  Wadą głowni typu bowie jest stosunkowo niska wytrzymałość czubka.");
         implant.setPrice(100);
-        implant.setManufacturer("Manufacturer super gut");
+        implant.setManufacturer("Factory knifes sharp");
         implant.setPopularity(0);
         implant.setDuration(Duration.ofMinutes(120));
-        implant.setImage("https://assets.reedpopcdn.com/cyberpunk-2077-wyciekl-dodatek-headline.jpg/BROK/resize/1920x1920%3E/format/jpg/quality/80/cyberpunk-2077-wyciekl-dodatek-headline.jpg");
+        implant.setImage("https://assets.reedpopcdn.com/cyberpunk-2077-ostrza-modliszkowe-jak-zdobyc-1607957173057.jpg/BROK/thumbnail/1600x900/quality/100/cyberpunk-2077-ostrza-modliszkowe-jak-zdobyc-1607957173057.jpg");
 
         em.persist(implant);
 
