@@ -71,7 +71,6 @@ export const AppointmentDetails = ({
         setLoading({ ...loading, actionLoading: false });
         if ("errorMessage" in response) {
             showNotification(failureNotificationItems(response.errorMessage));
-            console.log(etag);
             onClose();
             return;
         }
@@ -235,6 +234,7 @@ export const AppointmentDetails = ({
                                     handleFunction={async () => {
                                         await handleFinishVisit();
                                         setFinishVisitModalOpen(false);
+                                        window.location.reload();
                                     }}
                                     onClose={() => {
                                         setFinishVisitModalOpen(false);
