@@ -174,24 +174,27 @@ const ImplantDetails = ({ id, isOpened, onClose }: ImplantDetailsProps) => {
                                             : "Dostępny"}
                                     </p>
                                 </div>
-                                <ActionButton
-                                    title="Rezerwuj"
-                                    icon={faShoppingCart}
-                                    onClick={() => {
-                                        navigate(
-                                            `/implants/${implant?.id}/create-appointment`
-                                        );
-                                    }}
-                                    color="green"
-                                />
-                                <ActionButton
-                                    title="Recenzje"
-                                    icon={faStar}
-                                    onClick={() => {
-                                        setReviewsModal(true);
-                                    }}
-                                    color="orange"
-                                />
+                                <div className={styles.action_wrapper}>
+                                    <ActionButton
+                                        title="Rezerwuj"
+                                        icon={faShoppingCart}
+                                        onClick={() => {
+                                            navigate(
+                                                `/implants/${implant?.id}/create-appointment`
+                                            );
+                                        }}
+                                        color="green"
+                                    />
+
+                                    <ActionButton
+                                        title="Recenzje"
+                                        icon={faStar}
+                                        onClick={() => {
+                                            setReviewsModal(true);
+                                        }}
+                                        color="orange"
+                                    />
+                                </div>
                             </div>
                             {accessLevel === "ADMINISTRATOR" && (
                                 <div className={styles.action_wrapper}>

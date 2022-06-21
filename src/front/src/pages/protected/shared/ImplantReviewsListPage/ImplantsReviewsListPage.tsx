@@ -13,10 +13,12 @@ import {
 import { showNotification } from "@mantine/notifications";
 import { failureNotificationItems } from "../../../../utils/showNotificationsItems";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faClose } from "@fortawesome/free-solid-svg-icons";
+import { faClose, faPlus } from "@fortawesome/free-solid-svg-icons";
 import Pagination from "../../../../components/Pagination/Pagination";
 import { Api } from "@reduxjs/toolkit/dist/query";
 import { useStoreSelector } from "../../../../redux/reduxHooks";
+import ActionButton from "../../../../components/shared/ActionButton/ActionButton";
+import AddImplantReviewPage from "../../client/AddImplantReviewPage/AddImplantReviewPage";
 
 interface ImplantReviewsListPageProps {
     isOpened: boolean;
@@ -39,6 +41,10 @@ const ImplantReviewsListPage = ({
         pageSize: 1,
         totalPages: 1,
     });
+
+    const [addReviewModal, setAddReviewModal] = useState<boolean>(false);
+
+    const accessLevel = useStoreSelector((state) => state.user.cur);
 
     const handleGetImplantReviews = async () => {
         if (!implantId) return;
@@ -79,7 +85,11 @@ const ImplantReviewsListPage = ({
                     />
                     <div className={styles.reviews_wrapper}>
                         {reviews?.data.map((review) => (
-                            <ImplantReview key={review?.id} review={review} />
+                            <ImplantReview
+                                key={review?.id}
+                                review={review}
+                                onClose={onClose}
+                            />
                         ))}
                         {reviews?.data.length !== 0 && (
                             <Pagination
@@ -92,7 +102,21 @@ const ImplantReviewsListPage = ({
                                 Implant nie posiada żadnych recenzji
                             </p>
                         )}
+                        {accessLevel === "CLIENT" && (
+                            <ActionButton
+                                onClick={() => {setAddReviewModal(true)}}
+                                title="Dodaj recenzję"
+                                icon={faPlus}
+                                color="purple"
+                            />
+                        )}
                     </div>
+                    <AddImplantReviewPage
+                        isOpen={addReviewModal}
+                        onClose={() => {
+                            setAddReviewModal(false);
+                        }}
+                    />
                 </div>
             )}
         </Modal>

@@ -19,9 +19,10 @@ import styles from "./style.module.scss";
 
 interface ImplantReviewProps {
     review: ImplantReview;
+    onClose: () => void;
 }
 
-const ImplantReview = ({ review }: ImplantReviewProps) => {
+const ImplantReview = ({ review, onClose }: ImplantReviewProps) => {
     const [modal, setModal] = useState<boolean>(false);
     const [loading, setLoading] = useState<boolean>(false);
 
@@ -32,14 +33,9 @@ const ImplantReview = ({ review }: ImplantReviewProps) => {
         if (!review.id) return;
         setLoading(true);
         const data = await deleteImplantReview(review.id);
-        if ("errorMessage" in data) {
-            setLoading(false);
-            setModal(false);
-            showNotification(failureNotificationItems(data.errorMessage));
-            return;
-        }
         setLoading(false);
         setModal(false);
+        onClose();
         showNotification(
             successNotficiationItems("Implant review deleted successfully")
         );
