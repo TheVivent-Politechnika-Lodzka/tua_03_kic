@@ -214,10 +214,10 @@
         "repaet_password": "Powtórz hasło",
         "repaet_passwordMsg": "Hasła muszą pasować",
         "language": "Język",
-        "sign_in": "Sign in",
-        "cancel": "Cancel",
-        "polish": "polish",
-        "english": "english",
+        "sign_in": "Zaloguj się",
+        "cancel": "Anuluj",
+        "polish": "polski",
+        "english": "angielski",
         "send_email": "Wysłaliśmy Ci maila z linkiem powierdzającym"
     },
     "clocker": {
@@ -313,14 +313,14 @@
     },
 
     "homePage": {
-        "title": "WHY CHOOSE US?",
-        "secondTitle": "there are many reasons",
-        "ownLab": "Own laboratory",
+        "title": "DLACZEGO WŁAŚNIE MY?",
+        "secondTitle": "jest wiele powodów",
+        "ownLab": "Własne laboratorium",
         "loremIpsum": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book",
-        "bestSpecialist": "The best of the best specialist",
-        "satisfiedClients": "Thousands of satisfied clients ",
-        "ourClinic": "OUR CLINIC",
-        "goodLocation": "three clinic in good locations",
+        "bestSpecialist": "Nasi najlepsi specjaliści",
+        "satisfiedClients": "Tysiące zadowolonych klientów",
+        "ourClinic": "NASZE KLINIKI",
+        "goodLocation": "trzy kliniki w wybornych lokalizacjach ",
         "kicOne": {
             "city": "KIC Badlandy",
             "street": "ul. Oak Lawn 204"
@@ -336,31 +336,31 @@
     },
 
     "slider": {
-        "firmName": "Cyber Implant Installation Clinic",
+        "firmName": "Klinika Instalacji Cyberwszczepów",
         "loremIpsum": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book",
-        "moreInf": "Find out more"
+        "moreInf": "Dowiedz się więcej"
     },
 
     "contentBar": {
-        "contact": "Contact",
+        "contact": "Konrakt",
         "tel": "+48 303 030 300",
         "email": "KIC@kic.agency",
-        "socialMedia": "Social media",
+        "socialMedia": "Media społecznościowe",
         "kic": "KIC",
         "kicTwo": "@KIC"
     },
 
     "errorPage": {
-        "errorPage": "Sorry, page doesn't exist",
-        "inviteMainPage": "Go to Home Page",
-        "mainPage": "HOME"
+        "errorPage": "Przepraszamy, strona nie istnieje",
+        "inviteMainPage": "Idź na stronę główną",
+        "mainPage": "STRONA GŁÓWNA"
     },
 
     "activeAccountPage": {
-        "insertToken": "Insert token from e-mail",
-        "activeAccount": "Active account",
-        "confirmedAccount": "Account confirmed",
-        "navLog": "Go to Login Page"
+        "insertToken": "Wstaw token z maila",
+        "activeAccount": "Aktywuj konto",
+        "confirmedAccount": "Konto potwierdzone",
+        "navLog": "Przejdź do strony logowania"
     },
 
     "ownAppointmentListPage": {

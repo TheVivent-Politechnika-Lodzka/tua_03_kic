@@ -215,7 +215,7 @@
         "phoneNumber": "Phone Number",
         "phoneNumberMsg": "Phone Number consist of 9 numbers",
         "password": "Password",
-        "passwordMsg": "At least 8 characters, uppercase",
+        "passwordMsg": "At least 8 characters, uppercase, lowercase and number",
         "repaet_password": "Reapet password",
         "repaet_passwordMsg": "Passwords have to match",
         "language": "Language",
@@ -232,91 +232,91 @@
     },
 
     "specialistCard": {
-        "alt": "zdjęcie specjalisty",
-        "tel": "telefon:"
+        "alt": "specialist image",
+        "tel": "phone:"
     },
 
     "accessLevel": {
-        "client": "Klient",
-        "specialist": "Specjalista",
+        "client": "Client",
+        "specialist": "Specialist",
         "administrator": "Administrator"
     },
 
     "userRecord": {
-        "alt": "użytkownik",
-        "approved": "Zatwierdzone",
-        "unapproved": "Niezatwierdzone",
-        "active": "Aktywny",
-        "inactive": "Nieaktywny"
+        "alt": "user",
+        "approved": "approved",
+        "unapproved": "unapproved",
+        "active": "Active",
+        "inactive": "Inactive"
     },
 
     "accountDetailsPage": {
-        "successNotficiationItemsRemove": "Poziom dostępu został usunięty",
-        "successNotficiationItemsDeactivateAccount": "Konto zostało deaktywowane",
-        "successNotficiationItemsActivateAccount": "Konto zostało aktywowane",
-        "alt": "Ogólne konto: Avatar",
-        "title": "Poziomy dostępu:",
-        "editAccountTitle": "Edytuj konto",
-        "changePasswordTitle": "Edytuj konto",
-        "deactivateAccountTitle": "Deaktywuj konto",
-        "activateAccountTitle": "Aktywuj konto",
-        "accountDetailsTitle": "Dane szczegółowe",
-        "name": "Imię:",
-        "surname": "Nazwisko:",
+        "successNotficiationItemsRemove": "Access level has been deleted",
+        "successNotficiationItemsDeactivateAccount": "Account has been deactivated",
+        "successNotficiationItemsActivateAccount": "Account has been activated",
+        "alt": "General accoount: Avatar",
+        "title": "Access level",
+        "editAccountTitle": "Edit account",
+        "changePasswordTitle": "Edit account",
+        "deactivateAccountTitle": "Deactive account",
+        "activateAccountTitle": "Active account",
+        "accountDetailsTitle": "Details",
+        "name": "Firstname:",
+        "surname": "Lastname:",
         "email": "Email:",
-        "pesel": "Numer PESEL:",
-        "telephone": "Numer telefonu:",
-        "language": "Język:",
+        "pesel": "PESEL:",
+        "telephone": "Phone number:",
+        "language": "Language:",
         "confirmActionModal": {
-            "deactivateAccount": "Zablokuj konto",
-            "activateAccount": "Odblokuj konto",
-            "firstPart": "Czy na pewno chcesz",
-            "secondPart": "konto? Operacja jest nieodwracalna.",
-            "activated": "odblokować",
-            "deactivated": "zablokować"
+            "deactivateAccount": "Block account",
+            "activateAccount": "Unblock account",
+            "firstPart": "Are you sure to ",
+            "secondPart": "account?",
+            "activated": "unblock",
+            "deactivated": "block"
         },
         "confirmActionModalDeleteAccessLevel": {
-            "title": "Usuń poziom dostępu",
-            "text": "Czy na pewno chcesz usunąć poziom dostępu ? Operacja jest nieodwracalna."
+            "title": "Delete access level",
+            "text": "Are you sure?"
         }
     },
 
     "resetPasswordPage": {
-        "successNotficiationItems": "Pomyślnie zmieniono hasło",
-        "header": "Zresetuj hasło",
-        "password": "Hasło",
-        "repeatPassword": "Powtórz hasło",
-        "button": "Zmień hasło",
+        "successNotficiationItems": "Password changed",
+        "header": "Reset password",
+        "password": "Password",
+        "repeatPassword": "Repeat password",
+        "button": "Change password",
         "error": {
-            "password": "Hasło musi zawierać co najmniej 8 znaków, w tym jeden znak specjalny, jedną dużą literę, jedną małą literę oraz jedną cyfrę",
-            "repeatPassword": "Hasła muszą być takie same"
+            "password": "At least 8 characters, uppercase, lowercase and number",
+            "repeatPassword": "Passwords have to match"
         }
     },
 
     "loginPage": {
-        "header": "Zaloguj się",
+        "header": "Log in",
         "login": {
             "title": "Login",
-            "placeholder": "Wpisz swój login"
+            "placeholder": "Enter login"
         },
         "password": {
-            "title": "Hasło",
-            "placeholder": "Wpisz swoje hasło"
+            "title": "Password",
+            "placeholder": "Enter password"
         },
-        "button": "Zaloguj się",
-        "buttonText": "Zapomniałem hasła",
-        "failureNotificationItems": "Dane uwierzytelniające nie mogą być puste!"
+        "button": "Log in",
+        "buttonText": "Forgot password",
+        "failureNotificationItems": "Credentials cannot be empty!"
     },
 
     "resetPasswordModal": {
-        "failureNotificationItems": "Login nie może być krótszy niż 3 znaki",
-        "successNotficiationItems": "Wysłano link z kodem do resetu hasła. Sprawdź maila",
-        "title": "Zresetuj hasło",
+        "failureNotificationItems": "Login cannot be smaller than 3 characters",
+        "successNotficiationItems": "Sent reset password link. Check e-mail",
+        "title": "Reset password",
         "login": {
             "title": "Login",
-            "placeholder": "Wpisz login konta"
+            "placeholder": "Enter account login"
         },
-        "button": "Przypomnij hasło"
+        "button": "Restore password"
     },
 
     "homePage": {
@@ -372,205 +372,205 @@
 
     "ownAppointmentListPage": {
         "cell": {
-            "clientName": "Imię i nazwisko klienta",
-            "specialistName": "Imie i nazwisko specjalisty",
-            "name": "Nazwa implantu",
-            "status": "Status wizyty",
-            "date": "Data wizyty",
-            "details": "Szczegóły"
+            "clientName": "ClientNam",
+            "specialistName": "Specialist name",
+            "name": "Implant name",
+            "status": "Visit status",
+            "date": "Visit date",
+            "details": "Details"
         }
     },
 
     "appointmentDetails": {
-        "title": "Szczegóły wizyty",
-        "clientName": "Imię i nazwisko klienta",
-        "specialistName": "Imie i nazwisko specjalisty",
-        "email": "Email kontaktowy:",
-        "status": "Status wizyty:",
-        "price": "Cena wizyty:",
-        "dateStart": "Data rozpoczęcia wizyty:",
-        "dateEnd": "Data zakończenia wizyty:",
-        "implant": "Obecnie wybrany implant:",
-        "button": "Wyświetl",
-        "description": "Opis:",
-        "buttonCancel": "Odwołaj wizytę",
-        "buttonEdit": "Edytuj wizytę"
+        "title": "Visit details",
+        "clientName": "Client name",
+        "specialistName": "Specialist name",
+        "email": "Contact email:",
+        "status": "Visit status:",
+        "price": "Price:",
+        "dateStart": "Visit start date:",
+        "dateEnd": "Visit end date:",
+        "implant": "Current selected implant:",
+        "button": "Display",
+        "description": "Description:",
+        "buttonCancel": "Cancel visit",
+        "buttonEdit": "Edit visit"
     },
 
     "implantDetails": {
-        "successNotficiationItems": "Edycja powiodła się",
-        "title": "Dane szczegółowe",
-        "alt": "Zdjęcie implantu",
-        "name": "Nazwa:",
-        "price": "Cena:",
-        "producer": "Producent:",
-        "time": "Czas instalacji:",
-        "applied": "Zastosowano:",
-        "times": "razy",
-        "state": "Stan:",
-        "available": "Dostępny",
-        "notAvailable": "Niedostępny",
-        "edit": "Edytuj",
-        "archive": "Archiwizuj",
+        "successNotficiationItems": "Edited successfully",
+        "title": "Speciication",
+        "alt": "Implant image",
+        "name": "Name:",
+        "price": "Price:",
+        "producer": "Producer:",
+        "time": "Installation time:",
+        "applied": "A:plied",
+        "times": "times",
+        "state": "State:",
+        "available": "Available",
+        "notAvailable": "Not available",
+        "edit": "Edit",
+        "archive": "Archieve",
         "confirmActionModal": {
-            "title": "Archiwizacja implantu",
-            "message": "Czy na pewno chcesz zarchiwizować implant? Operacja jest nieodwracalna!"
+            "title": "Archieve an implant",
+            "message": "Are you sure you want to archive the implant? The operation is irreversible!"
         }
     },
 
     "ownAccountDetailsPage": {
-        "alt": "Ogólne konto: Avatar",
-        "accessLevel": "Poziomy dostępu:",
-        "edit": "Edytuj konto",
-        "change": "Zmień hasło",
-        "title": "Dane szczegółowe",
-        "name": "Imię:",
-        "surname": "Nazwisko:",
+        "alt": "General account: Avatar",
+        "accessLevel": "Access levels:",
+        "edit": "Edit account",
+        "change": "Change password",
+        "title": "Details",
+        "name": "Name:",
+        "surname": "Surname:",
         "email": "Email:",
-        "phone": "Numer telefon:",
-        "pesel": "Numer PESEL:",
-        "language": "Język:",
-        "altLanguage": "Szczegółowy opis: język"
+        "phone": "Phone number:",
+        "pesel": "Pesel number:",
+        "language": "Language:",
+        "altLanguage": "Details: language"
     },
 
     "changeOwnPasswordInternal": {
-        "successNotficiationItems": "Hasło zostało pomyślnie zmienione",
-        "titleWrapper": "Zmień swoje hasło",
-        "oldPassword": "Stare hasło",
-        "newPassword": "Nowe hasło",
-        "confirm": "Zatwierdź",
-        "cancel": "Anuluj",
+        "successNotficiationItems": "Your password has changed",
+        "titleWrapper": "Change your password",
+        "oldPassword": "Old password",
+        "newPassword": "New password",
+        "confirm": "Confirm",
+        "cancel": "Cancel",
         "error": {
-            "valid": "Oba hasła muszą być dłuższe niż 8 znaków oraz muszą zawierać jedną dużą literę, jedną cyfrę i jeden znak specjalny",
-            "same": "Hasła nie mogą być takie same"
+            "valid": "Both passwords must be longer than 8 characters and must contain one uppercase letter, one number and one special character",
+            "same": "Passwords cannot be the same"
         },
         "confirmActionModal": {
-            "title": "Zmiana swojego hasła",
-            "message": "Czy na pewno chcesz zmienić hasło? Operacja jest nieodwracalna!"
+            "title": "Changing own password",
+            "message": "Are you sure you want to change your password? The operation is irreversible!"
         }
     },
 
     "editOwnAppointment": {
-        "title": "Edytuj wizytę",
-        "clientName": "Imię i nazwisko klienta:",
-        "specialistName": "Imie i nazwisko specjalisty:",
-        "email": "Email kontaktowy:",
-        "status": "Status wizyty:",
-        "accept": "Akceptuj wizytę",
-        "cancel": "Anuluj wizytę",
-        "price": "Cena wizyty:",
-        "dateStart": "Data rozpoczęcia wizyty:",
-        "dateEnd": "Data zakończenia wizyty:",
-        "description": "Opis:",
-        "button": "Prześlij zmianę"
+        "title": "Edit visit",
+        "clientName": "Client name:",
+        "specialistName": "Specialist name:",
+        "email": "Contact email:",
+        "status": "Visit status:",
+        "accept": "Accept visit",
+        "cancel": "Cancel visit",
+        "price": "Price:",
+        "dateStart": "Visit start date:",
+        "dateEnd": "Visit end date:",
+        "description": "Description:",
+        "button": "Submit your change"
     },
 
     "editOwnAccountPage": {
-        "updateSuccessfully": "Konto zostało zaktualizowane",
-        "editOwnAccount": "Edytuj dane własnego konta",
-        "firstName": "Imie",
-        "firstNameMsg": "Wymagane od 3 do 30 znaków",
-        "lastName": "Nazwisko",
-        "lastNameMsg": "Wymagane od 3 do 30 znaków",
-        "peselMsg": "PESEL składa się z 11 liczb",
-        "phoneNumber": "Numer telefonu",
-        "phoneNumberMsg": "Numer telefonu składa sie z 9 liczb",
-        "confirm": "Zatwierdź",
-        "cancel": "Anuluj",
+        "updateSuccessfully": "The account has been updated",
+        "editOwnAccount": "Edit account details",
+        "firstName": "Name",
+        "firstNameMsg": "3 to 30 characters required",
+        "lastName": "Surname",
+        "lastNameMsg": "3 to 30 characters required",
+        "peselMsg": "Pesel consist of 11 numbers",
+        "phoneNumber": "Phone number",
+        "phoneNumberMsg": "Phone Number consist of 9 numbers",
+        "confirm": "Confirm",
+        "cancel": "Cancel",
         "email": "Mail",
-        "emailMsg": "Podaj poprawny adres mailowy",
-        "confirmation": "Czy na pewno chcesz zmienić swoje własne dane? Operacja jest nieodwracalna"
+        "emailMsg": "Enter correct e-mail address",
+        "confirmation": "Are you sure you want to change your own details? The operation is irreversible!"
     },
 
     "usersManagmentPage": {
-        "searchPlaceholder": "Wyszukaj użytkowników...",
+        "searchPlaceholder": "Search for users ...",
         "cell": {
             "login": "Login",
-            "name": "Imię",
-            "surname": "Nazwisko",
-            "approved": "Czy zatwierdzony",
-            "active": "Czy aktywne",
-            "more": "Więcej"
+            "name": "Name",
+            "surname": "Surname",
+            "approved": "Is approved",
+            "active": "Is active",
+            "more": "More"
         }
     },
 
     "editAnyAccountPage": {
-        "updateSuccessfully": "Konto zostało zaktualizowane",
-        "editAccount": "Edytuj dane konta ",
-        "firstName": "Imie",
-        "firstNameMsg": "Wymagane od 3 do 30 znaków",
+        "updateSuccessfully": "Account has been updated",
+        "editAccount": "Edit account details",
+        "firstName": "Name",
+        "firstNameMsg": "At least 3 to 30 characters",
         "lastName": "Nazwisko",
-        "lastNameMsg": "Wymagane od 3 do 30 znaków",
-        "peselMsg": "PESEL składa się z 11 liczb",
+        "lastNameMsg": "At least 3 to 30 characters",
+        "peselMsg": "PESEL consist of 11 numbers",
 
         "email": "Mail",
-        "emailMsg": "Podaj poprawny adres mailowy",
+        "emailMsg": "Enter correct e-mail address",
 
         "login": "Login",
-        "loginMsg": "Wymagane od 3 do 30 znaków",
+        "loginMsg": "At least 3 to 30 characters",
         "phoneNumber": "Numer telefonu",
-        "phoneNumberMsg": "Numer telefonu składa sie z 9 liczb",
+        "phoneNumberMsg": "Phone Number consist of 9 numbers",
         "password": "Password",
-        "passwordMsg": "Wymagane 8 znaków, duża i mała litera,liczba",
-        "cancel": "Anuluj",
-        "confirm": "Potwierdz",
-        "polish": "polski",
-        "english": "angielski",
-        "send_email": "Wysłaliśmy Ci maila z linkiem powierdzającym",
-        "confirmation": "Czy na pewno chcesz zmienić swoje własne dane? Operacja jest nieodwracalna",
-        "editForAdmin": " Edytuj dane dla poziomu dostępu Administrator",
-        "editForSpec": " Edytuj dane dla poziomu dostępu Specjalista",
-        "editForClient": " Edytuj dane dla poziomu dostępu Klient"
+        "passwordMsg": "At least 8 characters, uppercase, lowercase and number",
+        "cancel": "Cancel",
+        "confirm": "Confirm",
+        "polish": "polish",
+        "english": "english",
+        "send_email": "We send you an email with confirmation link",
+        "confirmation": "Are you sure? Operation is permanent",
+        "editForAdmin": "Edit details for Administrator",
+        "editForSpec": "Edit details for Specialist",
+        "editForClient": " Edit details for Client"
     },
 
     "createUserPage": {
-        "successNotficiationItems": "Konto zostało utworzone",
-        "header": "Utwórz nowe konto użytkownika",
+        "successNotficiationItems": "account have been added",
+        "header": "Create new account",
         "email": "Email ",
         "emailTitle": "email",
-        "emailMsg": "Należy podać poprawny email (powinien zawierać znak @).",
-        "name": "Imię ",
-        "nameTitle": "imię",
-        "nameMsg": "Imię powinno skłądać się z minimum 3 i maksymalnie 30 znaków.",
-        "surname": "Nazwisko ",
-        "surnameTitle": "nazwisko",
-        "surnameMsg": "Nazwisko powinno skłądać się z minimum 3 i maksymalnie 30 znaków.",
-        "id": "Identyfikator ",
-        "idTitle": "identyfikator",
-        "idMsg": "Identyfikator powinien skłądać się z minimum 3 i maksymalnie 30 znaków.",
-        "password": "Hasło ",
-        "passwordTitle": "hasło",
-        "passwordMsg": "Hasło powinno zawierać co najmniej jedną dużą literę, jedną małą literę, jedną cyfrę i jedną znak specjalny.",
-        "languageTitle": "język",
-        "language": "Język ",
-        "languagePL": "polski",
-        "lenguageToCreate": "językDoTworzenia",
-        "languageEN": "angielski",
-        "accept": "Zatwierdź",
-        "cancel": "Anuluj",
+        "emailMsg": "Enter correct e-mail address",
+        "name": "Firstname ",
+        "nameTitle": "firstname",
+        "nameMsg": "At least 3 to 30 characters",
+        "surname": "Lastname ",
+        "surnameTitle": "Lastname",
+        "surnameMsg": "At least 3 to 30 characters",
+        "id": "ID",
+        "idTitle": "ID",
+        "idMsg": "At least 3 to 30 characters",
+        "password": "Password ",
+        "passwordTitle": "password",
+        "passwordMsg": "At least 8 characters, uppercase, lowercase and number",
+        "languageTitle": "language",
+        "language": "Language ",
+        "languagePL": "polish",
+        "lenguageToCreate": "languageToCreate",
+        "languageEN": "english",
+        "accept": "Confirm",
+        "cancel": "Cancel",
         "confirmActionModal": {
-            "title": "Utwórz nowego użytkownika",
-            "message": "Czy na pewno chcesz utworzyć nowego użytkownika? Operacja jest nieodwracalna!"
+            "title": "Create new user",
+            "message": "Are you sure?"
         }
     },
     "navbar": {
-        "avatar_alt": "Avatar użytkownika",
-        "register": "Zarejestruj się"
+        "avatar_alt": "User's Avatar",
+        "register": "Sign In"
     },
 
     "addAccessLevelPage": {
         "admin": "administrator",
-        "spec": "specjalisty",
-        "client": "klienta",
-        "added": "Poziom dostępu został dodany",
-        "addAccess": "Dodaj poziom dostępu",
-        "peselMsg": "PESEL składa się z 11 liczb",
-        "phoneNumber": "Numer telefonu",
-        "phoneNumberMsg": "Numer telefonu składa sie z 9 liczb",
-        "email": "Mail",
-        "emailMsg": "Podaj poprawny adres mailowy"
+        "spec": "specialist",
+        "client": "client",
+        "added": "Access level was added",
+        "addAccess": "Add access level",
+        "peselMsg": "PESEL consist of 11 numbers",
+        "phoneNumber": "Phone Number",
+        "phoneNumberMsg": "Phone Number consist of 9 numbers",
+        "email": "Email",
+        "emailMsg": "Enter correct e-mail address"
     },
     "sidebar": {
-        "logout": "Wyloguj się"
+        "logout": "Sign out"
     }
 }
