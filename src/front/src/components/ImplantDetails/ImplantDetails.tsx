@@ -19,6 +19,7 @@ import { archiveImplant, getImplant, GetImplantResponse } from "../../api/mop";
 import { useStoreSelector } from "../../redux/reduxHooks";
 import ConfirmActionModal from "../shared/ConfirmActionModal/ConfirmActionModal";
 import { useNavigate } from "react-router";
+import ImplantReview from "../ImplantReview/ImplantReview";
 
 interface ImplantDetailsProps {
     id: string;
@@ -47,6 +48,7 @@ const ImplantDetails = ({ id, isOpened, onClose }: ImplantDetailsProps) => {
     };
 
     const [opened, setOpened] = useState<boolean>(false);
+    const [reviewsModal, setReviewsModal] = useState<boolean>(false);
 
     const customStyles = {
         overlay: {
@@ -179,6 +181,16 @@ const ImplantDetails = ({ id, isOpened, onClose }: ImplantDetailsProps) => {
                                     }}
                                     color="green"
                                 />
+                                <ActionButton
+                                    title="Recenzje"
+                                    icon={faShoppingCart}
+                                    onClick={() => {
+                                        navigate(
+                                            `/implants/${implant?.id}/create-appointment`
+                                        );
+                                    }}
+                                    color="green"
+                                />
                             </div>
                             {accessLevel === "ADMINISTRATOR" && (
                                 <div className={styles.action_wrapper}>
@@ -205,6 +217,7 @@ const ImplantDetails = ({ id, isOpened, onClose }: ImplantDetailsProps) => {
                         </div>
                     </div>
                 )}
+                <ImplantReview />
                 <ConfirmActionModal
                     isOpened={opened}
                     onClose={() => {
