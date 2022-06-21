@@ -3,13 +3,13 @@ import { Route } from "react-router-dom";
 import CreateUserPage from "../pages/protected/admin/CreateUserPage";
 import EditAnyAccountPage from "../pages/protected/admin/EditAnyAccountPage/EditAnyAccountPage";
 import UserManagment from "../pages/protected/admin/UsersManagmentPage/UsersManagmentPage";
-import { OwnAppointmentsList } from "../pages/protected/shared/OwnAppointmentsList/OwnAppointmentsList";
-import { AppointmentListPage } from "../pages/protected/admin/AppointmentList";
+import { AppointmentListPage } from "../pages/protected/admin/AppointmentListPage";
 import { CreateImplantPage } from "../pages/protected/admin/CreateImplantPage";
 import CreateAppointmentPage from "../pages/protected/client/CreateAppointmentPage";
+import OwnAppointmentsListPage from "../pages/protected/shared/OwnAppointmentsListPage/OwnAppointmentsListPage";
 import { EditOwnAppointment } from "../pages/protected/shared/EditOwnAppointment";
 import { EditImplantPage } from "../pages/protected/admin/EditImplantPage";
-
+import { EditAppointment } from "../components/EditAppointment";
 
 const authorizedRoutes = (accessLevel: AccessLevelType) => {
     switch (accessLevel) {
@@ -30,9 +30,10 @@ const authorizedRoutes = (accessLevel: AccessLevelType) => {
                         path="/create-implant"
                         element={<CreateImplantPage />}
                     />
+                    <Route path="/implant/:id" element={<EditImplantPage />} />
                     <Route
-                        path="/implant/:id"
-                        element={<EditImplantPage />}
+                        path="/visit/edit/:id"
+                        element={<EditAppointment />}
                     />
                 </>
             );
@@ -40,14 +41,28 @@ const authorizedRoutes = (accessLevel: AccessLevelType) => {
         case "SPECIALIST": {
             return (
                 <>
-                    <Route path="/visits" element={<OwnAppointmentsList />} />
-                    <Route path="/visit/edit/:id" element={<EditOwnAppointment />} />
+                    <Route
+                        path="/visit/edit/:id"
+                        element={<EditOwnAppointment />}
+                    />
+                    <Route
+                        path="/visits"
+                        element={<OwnAppointmentsListPage />}
+                    />
                 </>
             );
         }
         case "CLIENT": {
             return (
                 <>
+                    <Route
+                        path="/visit/edit/:id"
+                        element={<EditOwnAppointment />}
+                    />
+                    <Route
+                        path="/visits"
+                        element={<OwnAppointmentsListPage />}
+                    />
                     <Route path="/visits" element={<OwnAppointmentsList />} />
                     <Route path="/visit/edit/:id" element={<EditOwnAppointment />} />
                     <Route

@@ -1,7 +1,6 @@
 package pl.lodz.p.it.ssbd2022.ssbd03.mop.cdi.endpoints;
 
 import jakarta.annotation.security.DenyAll;
-import jakarta.annotation.security.PermitAll;
 import jakarta.annotation.security.RolesAllowed;
 import jakarta.validation.Valid;
 import jakarta.ws.rs.*;
@@ -10,6 +9,13 @@ import jakarta.ws.rs.core.Response;
 import pl.lodz.p.it.ssbd2022.ssbd03.common.Roles;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.MethodNotImplementedException;
 import pl.lodz.p.it.ssbd2022.ssbd03.mop.dto.*;
+import pl.lodz.p.it.ssbd2022.ssbd03.mop.dto.AppointmentEditDto;
+import pl.lodz.p.it.ssbd2022.ssbd03.mop.dto.CreateImplantDto;
+import pl.lodz.p.it.ssbd2022.ssbd03.mop.dto.CreateImplantReviewDto;
+import pl.lodz.p.it.ssbd2022.ssbd03.mop.dto.ImplantDto;
+
+import java.util.UUID;
+
 import pl.lodz.p.it.ssbd2022.ssbd03.validation.DurationValue;
 
 import java.util.UUID;
@@ -32,6 +38,13 @@ public interface MOPEndpointInterface {
         throw new MethodNotImplementedException();
     }
 
+    /**
+     * MOP.2 - Archiwizuj wszczep
+     *
+     * @param id - id wszczepu
+     * @return - wszczep i odpowiedz HTTP
+     * @throws MethodNotImplementedException - w przypadku braku implementacji metody
+     */
     // MOP.2 - Archiwizuj wszczep
     @PATCH
     @RolesAllowed(Roles.ADMINISTRATOR)
@@ -65,7 +78,7 @@ public interface MOPEndpointInterface {
      * @throws MethodNotImplementedException w momencie, gdy metoda jest niezaimplementowana
      */
     @GET
-    @PermitAll
+    @RolesAllowed({Roles.ANONYMOUS, Roles.AUTHENTICATED})
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/implant/details/{id}")
     default Response getImplant(@PathParam("id") UUID id) {
@@ -83,7 +96,7 @@ public interface MOPEndpointInterface {
      * @throws MethodNotImplementedException - w przypadku braku implementacji metody
      */
     @GET
-    @RolesAllowed(Roles.ADMINISTRATOR)
+    @RolesAllowed({Roles.ANONYMOUS, Roles.AUTHENTICATED})
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/implant/list")
     default Response listImplants(@QueryParam("page") int page, @QueryParam("size") int size, @QueryParam("phrase") @DefaultValue("") String phrase, @QueryParam("archived") @DefaultValue("false") boolean archived) {
@@ -101,7 +114,7 @@ public interface MOPEndpointInterface {
      * @throws MethodNotImplementedException - w przypadku braku implementacji metody
      */
     @GET
-    @PermitAll
+    @RolesAllowed({Roles.ANONYMOUS, Roles.AUTHENTICATED})
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/specialist/list")
     default Response listSpecialists(@QueryParam("page") int page, @QueryParam("size") int size, @QueryParam("phrase") @DefaultValue("") String phrase) {
@@ -125,6 +138,14 @@ public interface MOPEndpointInterface {
         throw new MethodNotImplementedException();
     }
 
+    /**
+     * MOP.8 - przeglądaj swoje wizyty
+     *
+     * @param page - strona
+     * @param size - ilośc elementów na stronie
+     * @return - lista wizyt wraz z odpowiedzią HTTP
+     * @throws MethodNotImplementedException w przypadku braku implementacji metody
+     */
     // MOP.8 - przeglądaj swoje wizyty
     @GET
     @RolesAllowed({Roles.CLIENT, Roles.SPECIALIST})
@@ -304,7 +325,7 @@ public interface MOPEndpointInterface {
      * @throws MethodNotImplementedException - w przypadku braku implementacji metody
      */
     @GET
-    @PermitAll
+    @RolesAllowed({Roles.ANONYMOUS, Roles.AUTHENTICATED})
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
     @Path("/implant/{id}/reviews")

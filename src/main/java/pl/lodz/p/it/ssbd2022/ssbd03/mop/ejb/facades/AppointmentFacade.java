@@ -1,6 +1,5 @@
 package pl.lodz.p.it.ssbd2022.ssbd03.mop.ejb.facades;
 
-import jakarta.annotation.security.PermitAll;
 import jakarta.annotation.security.RolesAllowed;
 import jakarta.ejb.Stateless;
 import jakarta.ejb.TransactionAttribute;
@@ -46,6 +45,7 @@ public class AppointmentFacade extends AbstractFacade<Appointment> {
      * @param login Login użytkownika
      * @return Lista wizyt użytkownika o podanym loginie
      */
+    @RolesAllowed(Roles.CLIENT)
     public List<Appointment> findByClientLogin(String login) {
         TypedQuery<Appointment> typedQuery = entityManager.createNamedQuery("Appointment.findByClientLogin", Appointment.class);
         typedQuery.setParameter("login", login);
@@ -73,7 +73,7 @@ public class AppointmentFacade extends AbstractFacade<Appointment> {
      * @param perPage      - ilość wyników na stronę
      * @return wynik
      */
-    @RolesAllowed(Roles.AUTHENTICATED)
+    @RolesAllowed({Roles.SPECIALIST, Roles.CLIENT})
     public PaginationData findSpecialistAppointmentsInGivenPeriod(UUID specialistId, Instant startDate, Instant endDate, int pageNumber, int perPage) {
         TypedQuery<Appointment> typedQuery = entityManager.createNamedQuery("Appointment.findSpecialistAppointmentsInGivenPeriod", Appointment.class);
         typedQuery.setParameter("specialistId", specialistId);
@@ -115,7 +115,7 @@ public class AppointmentFacade extends AbstractFacade<Appointment> {
      * @throws ResourceNotFoundException,  gdy nie znaleziono wizyty
      * @throws DatabaseException,          gdy wystąpi błąd związany z bazą danych
      */
-    @PermitAll
+    @RolesAllowed(Roles.AUTHENTICATED)
     public Appointment findById(UUID id) {
         try {
             TypedQuery<Appointment> typedQuery = entityManager.createNamedQuery("Appointment.findById", Appointment.class);
@@ -141,7 +141,7 @@ public class AppointmentFacade extends AbstractFacade<Appointment> {
      * @throws InvalidParametersException, w przypadku podania nieprawidłowych parametrów
      * @throws DatabaseException,          w przypadku wystąpienia błędu bazy danych
      */
-    @PermitAll
+    @RolesAllowed(Roles.ADMINISTRATOR)
     public PaginationData findInRangeWithPhrase(int pageNumber, int perPage, String phrase) {
         try {
             TypedQuery<Appointment> typedQuery = entityManager.createNamedQuery("Appointment.searchByPhrase", Appointment.class);
@@ -175,7 +175,8 @@ public class AppointmentFacade extends AbstractFacade<Appointment> {
      * @throws InvalidParametersException w przypadku podania nieprawidłowych parametrów
      * @throws DatabaseException          w przypadku wystąpienia błędu bazy danych
      */
-    public PaginationData findByClientLoginInRange(int pageNumber, int perPage, String login) {
+    @RolesAllowed({Roles.CLIENT, Roles.SPECIALIST})
+    public PaginationData findByClientLoginInRange(int pageNumber, int perPage,String login) {
         try {
             TypedQuery<Appointment> typedQuery = entityManager.createNamedQuery("Appointment.findByLogin", Appointment.class);
 

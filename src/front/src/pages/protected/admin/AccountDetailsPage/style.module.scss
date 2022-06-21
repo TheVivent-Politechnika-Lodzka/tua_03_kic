@@ -1,22 +1,5 @@
 @import "src/variables";
 
-
-.edit_fields_wrapper {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    width: 90%;
-
-    .edit_field {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      flex-direction: row;
-      width: 90%;
-      margin-bottom: 2.5rem;
-    }
-}
-
 .account_details_page {
     width: 70%;
     height: 100%;
@@ -42,6 +25,7 @@
             flex-direction: column;
             align-items: center;
             position: relative;
+            animation: 0.25s zoomIn ease-in-out;
 
             .avatar {
                 width: 14.4rem;
@@ -57,7 +41,7 @@
             }
 
             .access_levels_wrapper {
-                width: 80%;
+                width: 95%;
                 display: flex;
                 justify-content: space-evenly;
                 flex-direction: row;
@@ -91,6 +75,7 @@
             border-radius: 30.8px;
             padding: 2.21rem 2.6rem;
             background-color: $secondary-color;
+            animation: 0.25s zoomIn ease-in-out;
 
             .account_details_title {
                 font-size: 2rem;
@@ -138,5 +123,16 @@
             top: -9rem;
             right: -12.5rem;
         }
+    }
+}
+
+@keyframes zoomIn {
+    from {
+        opacity: 0;
+        transform: scale(0.85);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
     }
 }

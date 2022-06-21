@@ -174,12 +174,6 @@ export async function getImplant(id: string) {
         throw error;
     }
 }
-export interface AppointmentListElementDto {
-    id: string;
-    description: string;
-    client_url: string;
-    specialist_url: string;
-}
 
 export interface AppointmentListResponse {
     totalCounts: number;
@@ -193,6 +187,13 @@ export interface AppointmentsListRequest {
     size: number;
     phrase?: string;
 }
+
+interface AppointmentDetails extends Taggable {
+    description: string;
+    status: Status;
+}
+
+export interface GetAppointmentResponse extends AppointmentDetails, Etag {}
 
 export async function listAppointments(params: AppointmentsListRequest) {
     try {
@@ -253,12 +254,26 @@ interface EditOwnAppointmentRequest {
     status: string;
 }
 
+interface EditAppointmentRequest {
+    id: string;
+    version: number;
+    description: string;
+    etag: string;
+    status: string;
+}
+
 interface EditOwnAppointmentRespone {
     appointment: AppointmentListElementDto;
     etag: string;
 }
 
+interface EditAppointmentRespone {
+    appointment: AppointmentListElementDto;
+    etag: string;
+}
+
 export async function createImplant(params: CreateImplantRequest) {
+
     try {
         const { data } = await axios.put<CreateImplantResponse>(
             "/mop/implant/create",
@@ -282,6 +297,31 @@ export async function editOwnAppointment(params: EditOwnAppointmentRequest) {
         const {etag, ...body} = params
         const { data, headers } = await axios.put<EditOwnAppointmentRespone>(
             `/mop/edit/visit/my/${body.id}`,
+            body,
+            {
+                headers: {
+                    "If-Match": etag,
+                },
+            }
+        );
+        const newEtag = headers["etag"];
+        return {...data, etag:newEtag };
+    } catch (error) {
+        if (axios.isAxiosError(error) && error.response) {
+            return {
+                errorMessage: error.response.data as string,
+                status: error.response.status,
+            } as ApiError;
+        }
+        throw error;
+    }
+}
+
+export async function editAppointmentByAdmin(params: EditAppointmentRequest) {
+    try {
+        const {etag, ...body} = params
+        const { data, headers } = await axios.put<EditAppointmentRespone>(
+            `/mop/edit/visit/${body.id}`,
             body,
             {
                 headers: {

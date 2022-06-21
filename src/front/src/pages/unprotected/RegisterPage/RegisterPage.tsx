@@ -6,7 +6,6 @@ import { useNavigate } from "react-router";
 import { register, RegisterRequest } from "../../../api";
 import ActionButton from "../../../components/shared/ActionButton/ActionButton";
 import { failureNotificationItems } from "../../../utils/showNotificationsItems";
-import styles from "./registerPage.module.scss";
 import { GoogleReCaptchaProvider } from "react-google-recaptcha-v3";
 import { useGoogleReCaptcha } from "react-google-recaptcha-v3";
 import { validationContext } from "../../../context/validationContext";
@@ -16,6 +15,7 @@ import { RegisterModal } from "../../../components/RegisterModal";
 import { Center, Image } from "@mantine/core";
 import { uploadPhoto } from "../../../utils/upload";
 import { HiOutlinePhotograph } from "react-icons/hi";
+import styles from "./style.module.scss";
 
 const RegisterPageInternal = () => {
     const [account, setAccount] = useState<RegisterRequest>({
@@ -26,7 +26,7 @@ const RegisterPageInternal = () => {
         email: "",
         phoneNumber: "",
         pesel: "",
-        url:"",
+        url: "",
         language: {
             language: "pl",
         },
@@ -39,9 +39,10 @@ const RegisterPageInternal = () => {
     const { t } = useTranslation();
     const { executeRecaptcha } = useGoogleReCaptcha();
     const [opened, setOpened] = useState<boolean>(false);
+    const [loading, setLoading] = useState<boolean>(false);
+
     const navigate = useNavigate();
     const {
-        state,
         state: {
             isFirstNameValid,
             isLastNameValid,
@@ -51,24 +52,27 @@ const RegisterPageInternal = () => {
             isLoginValid,
             isPasswordValid,
         },
-        dispatch,
     } = useContext(validationContext);
 
     const handleSubmit = async () => {
         if (executeRecaptcha === undefined) {
             return;
         }
+        setLoading(true);
         const captcha = await executeRecaptcha("register");
         const request = {
             ...account,
+            url: "https://t2.tudocdn.net/543326?w=1920&h=1440",
             captcha: captcha,
         };
 
         const response = await register(request);
         if ("errorMessage" in response) {
             showNotification(failureNotificationItems(response.errorMessage));
+            setLoading(false);
             return;
         } else {
+            setLoading(false);
             setOpened(true);
         }
     };
@@ -100,41 +104,42 @@ const RegisterPageInternal = () => {
             <div className={styles.background} />
             <div className={styles.form_wrapper}>
                 <div className={styles.register_page_header}>
-                    {t("sign_in")}
+                    {/* {t("sign_in")} */}
+                    Zarejestruj się
                 </div>
                 <div className={styles.edit_fields_wrapper}>
-                        {account.url.length === 0 ? (
-                            <div className={`${styles.image} ${styles.margin}`}>
-                                <Center>
-                                    <HiOutlinePhotograph size="80px" />
-                                </Center>
-                            </div>
-                        ) : (
-                            <Image
-                                radius="md"
-                                src={account.url}
-                                height="20vw"
-                                alt="image create"
-                                styles={{
-                                    root: { marginTop: "6vh" },
-                                }}
-                            />
-                        )}
-
-                        <input
-                            id="file-input"
-                            type="file"
-                            onChange={async (event) => {
-                                const u = await uploadPhoto(event);
-                                if (u) {
-                                    setAccount({
-                                        ...account,
-                                        url: u,
-                                    });
-                                }
+                    {/* {account.url.length === 0 ? (
+                        <div className={`${styles.image} ${styles.margin}`}>
+                            <Center>
+                                <HiOutlinePhotograph size="80px" />
+                            </Center>
+                        </div>
+                    ) : (
+                        <Image
+                            radius="md"
+                            src={account.url}
+                            height="20vw"
+                            alt="image create"
+                            styles={{
+                                root: { marginTop: "6vh" },
                             }}
                         />
-                    </div>
+                    )}
+
+                    <input
+                        id="file-input"
+                        type="file"
+                        onChange={async (event) => {
+                            const u = await uploadPhoto(event);
+                            if (u) {
+                                setAccount({
+                                    ...account,
+                                    url: u,
+                                });
+                            }
+                        }}
+                    /> */}
+                </div>
                 <div className={styles.edit_field} title="email">
                     <InputWithValidation
                         required
@@ -355,6 +360,7 @@ const RegisterPageInternal = () => {
                         icon={faCheck}
                         color="green"
                         title={t("registerPage.sign_in")}
+                        isLoading={loading}
                     />
                     <ActionButton
                         onClick={() => {

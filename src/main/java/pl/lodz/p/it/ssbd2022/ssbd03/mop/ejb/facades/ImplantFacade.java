@@ -1,6 +1,5 @@
 package pl.lodz.p.it.ssbd2022.ssbd03.mop.ejb.facades;
 
-import jakarta.annotation.security.PermitAll;
 import jakarta.annotation.security.RolesAllowed;
 import jakarta.ejb.Stateless;
 import jakarta.ejb.TransactionAttribute;
@@ -12,7 +11,6 @@ import lombok.Getter;
 import org.hibernate.exception.ConstraintViolationException;
 import pl.lodz.p.it.ssbd2022.ssbd03.common.AbstractFacade;
 import pl.lodz.p.it.ssbd2022.ssbd03.common.Roles;
-import pl.lodz.p.it.ssbd2022.ssbd03.entities.Account;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.Implant;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.InvalidParametersException;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.ResourceNotFoundException;
@@ -26,7 +24,6 @@ import java.util.UUID;
 import pl.lodz.p.it.ssbd2022.ssbd03.utils.PaginationData;
 
 import java.util.List;
-import java.util.UUID;
 
 @Interceptors(TrackerInterceptor.class)
 @Stateless
@@ -93,7 +90,7 @@ public class ImplantFacade extends AbstractFacade<Implant> {
      * @throws InvalidParametersException, gdy podano niepoprawną wartość parametru
      * @throws DatabaseException, gdy wystąpi błąd związany z bazą danych
      */
-    @PermitAll
+    @RolesAllowed({Roles.ANONYMOUS, Roles.AUTHENTICATED})
     public Implant findByUUID(UUID uuid) {
         try {
             TypedQuery<Implant> typedQuery = entityManager.createNamedQuery("Implant.findById", Implant.class);
@@ -119,7 +116,7 @@ public class ImplantFacade extends AbstractFacade<Implant> {
      * @throws InvalidParametersException jeśli podano nieprawidłowe parametry
      * @throws DatabaseException jeśli wystąpił błąd z bazą danych
      */
-    @PermitAll
+    @RolesAllowed({Roles.ANONYMOUS, Roles.AUTHENTICATED})
     public PaginationData findInRangeWithPhrase(int pageNumber, int perPage, String phrase, boolean archived) {
         try {
             TypedQuery<Implant> typedQuery = entityManager.createNamedQuery("Implant.searchByPhrase", Implant.class);

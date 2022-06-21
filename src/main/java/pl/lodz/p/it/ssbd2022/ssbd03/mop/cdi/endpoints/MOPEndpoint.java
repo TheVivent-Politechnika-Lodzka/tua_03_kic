@@ -1,13 +1,13 @@
 package pl.lodz.p.it.ssbd2022.ssbd03.mop.cdi.endpoints;
 
 import jakarta.annotation.security.DenyAll;
-import jakarta.annotation.security.PermitAll;
-import jakarta.annotation.security.RolesAllowed;
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.core.Response;
 import pl.lodz.p.it.ssbd2022.ssbd03.common.Config;
+import pl.lodz.p.it.ssbd2022.ssbd03.entities.Appointment;
+import pl.lodz.p.it.ssbd2022.ssbd03.entities.*;
 import pl.lodz.p.it.ssbd2022.ssbd03.common.Roles;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.Account;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.Appointment;
@@ -24,6 +24,9 @@ import pl.lodz.p.it.ssbd2022.ssbd03.mop.dto.*;
 import pl.lodz.p.it.ssbd2022.ssbd03.mop.ejb.services.MOPServiceInterface;
 import pl.lodz.p.it.ssbd2022.ssbd03.security.AuthContext;
 import pl.lodz.p.it.ssbd2022.ssbd03.security.Tagger;
+
+import java.util.UUID;
+
 import pl.lodz.p.it.ssbd2022.ssbd03.utils.PaginationData;
 
 import java.time.Duration;
@@ -114,6 +117,7 @@ public class MOPEndpoint implements MOPEndpointInterface {
     }
 
     //MOP.3 -Edytuj wszczep
+    @Override
     public Response editImplant(UUID id, ImplantDto implantDto) {
         tagger.verifyTag(implantDto);
 
@@ -164,7 +168,6 @@ public class MOPEndpoint implements MOPEndpointInterface {
      * @return lista wszczepów
      * @throws TransactionException jeśli transakcja nie została zatwierdzona
      */
-    @PermitAll
     @Override
     public Response listImplants(int page, int size, String phrase, boolean archived) {
         PaginationData paginationData;
@@ -195,7 +198,6 @@ public class MOPEndpoint implements MOPEndpointInterface {
      * @return zwraca odpowiedz zawierającą listę specialistów
      * @throws TransactionException błąd transakcji
      */
-    @PermitAll
     @Override
     public Response listSpecialists(int page, int size, String phrase) {
         PaginationData paginationData;
@@ -254,7 +256,6 @@ public class MOPEndpoint implements MOPEndpointInterface {
      * @return lista wizyt
      * @throws TransactionException w przypadku braku zatwierdzenia transakcji
      */
-    @RolesAllowed({Roles.CLIENT, Roles.SPECIALIST})
     @Override
     public Response listMyVisits(int page, int size) {
         PaginationData paginationData;
@@ -377,7 +378,6 @@ public class MOPEndpoint implements MOPEndpointInterface {
      * @return odpowiedz HTTP
      */
     @Override
-    @RolesAllowed(Roles.ADMINISTRATOR)
     public Response editVisit(UUID id, AppointmentEditDto appointmentEditDto) {
         tagger.verifyTag(appointmentEditDto);
 
@@ -387,7 +387,7 @@ public class MOPEndpoint implements MOPEndpointInterface {
         int TXCounter = Config.MAX_TX_RETRIES;
         boolean commitedTX;
         do {
-            editedAppointment = mopService.editAppointment(id, update);
+            editedAppointment = mopService.editAppointmentByAdministrator(id, update);
             commitedTX = mopService.isLastTransactionCommited();
         } while (!commitedTX && --TXCounter > 0);
 
@@ -494,7 +494,7 @@ public class MOPEndpoint implements MOPEndpointInterface {
     }
 
     /**
-     * MOK.15 - Dodaj recenzję wszczepu
+     * MOP.15 - Dodaj recenzję wszczepu
      *
      * @param createImplantReviewDto - Nowo napisana recenzja
      * @return nowo utworzona recenzja
@@ -545,7 +545,7 @@ public class MOPEndpoint implements MOPEndpointInterface {
     }
 
     @Override
-    public Response getVisitDetails (UUID uuid){
+    public Response getVisitDetails(UUID uuid) {
         String login = authContext.getCurrentUserLogin();
         Appointment appointment;
         int TXCounter = Config.MAX_TX_RETRIES;

@@ -10,6 +10,12 @@
         font-weight: bold;
         font-size: 1.15rem;
         color: $white;
+
+        .star {
+            color: $red;
+            font-size: 1.1rem;
+            margin-right: 0.5rem;
+        }
     }
     .input {
         outline: none;
@@ -17,7 +23,7 @@
         font-size: 1.25rem;
         padding-block: 1rem;
         background: none;
-        color: white;
+        color: $white;
         width: 15rem;
         transition: 0.15s border-bottom ease-in;
         border-bottom: 2px solid $white;
@@ -30,10 +36,13 @@
         &:-webkit-autofill,
         &:-webkit-autofill:hover,
         &:-webkit-autofill:focus,
-        &:-webkit-autofill:active {
+        &:-webkit-autofill:active,
+        &:-webkit-autofill:valid {
             box-shadow: 0 0 0 30px $secondary-color inset !important;
             font-family: $font-family;
             font-size: 1.25rem;
+            color: $white;
+            -webkit-text-fill-color: $white;
         }
     }
 }
