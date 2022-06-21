@@ -64,10 +64,6 @@ const authorizedRoutes = (accessLevel: AccessLevelType) => {
                         element={<OwnAppointmentsListPage />}
                     />
                     <Route
-                        path="/visit/edit/:id"
-                        element={<EditOwnAppointment />}
-                    />
-                    <Route
                         path="/implants/:implantId/create-appointment"
                         element={<CreateAppointmentPage />}
                     />

@@ -79,7 +79,7 @@ const SpecialistListPage = () => {
                                     lastName={specialist.surname}
                                     email={specialist.email}
                                     tel={specialist.phoneNumber}
-                                    img="https://media.discordapp.net/attachments/948268830222848183/988127000336138280/dgTUsgBf_400x400.jpg"
+                                    img={specialist.url}
                                 />
                             </div>
                         ))}

@@ -2,7 +2,7 @@ import {
     faClose,
     faEdit,
     faShoppingCart,
-    faFolder
+    faFolder,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useEffect, useState } from "react";
@@ -116,7 +116,7 @@ const ImplantDetails = ({ id, isOpened, onClose }: ImplantDetailsProps) => {
                                     <img
                                         className={styles.image}
                                         src={implant?.image}
-                                        alt="Implant image"
+                                        alt="Implant"
                                     />
                                 </div>
                             </div>
@@ -169,17 +169,23 @@ const ImplantDetails = ({ id, isOpened, onClose }: ImplantDetailsProps) => {
                                             : "Dostępny"}
                                     </p>
                                 </div>
-                                <ActionButton
-                                    title="Rezerwuj"
-                                    icon={faShoppingCart}
-                                    onClick={() => {
-                                        navigate(
-                                            `/implants/${implant?.id}/create-appointment`
-                                        );
-                                    }}
-                                    color="green"
-                                />
                             </div>
+                            {accessLevel === "CLIENT" && (
+                                <div className={styles.action_wrapper}>
+                                    <div className={styles.button}>
+                                        <ActionButton
+                                            title="Rezerwuj"
+                                            icon={faShoppingCart}
+                                            onClick={() => {
+                                                navigate(
+                                                    `/implants/${implant?.id}/create-appointment`
+                                                );
+                                            }}
+                                            color="green"
+                                        />
+                                    </div>
+                                </div>
+                            )}
                             {accessLevel === "ADMINISTRATOR" && (
                                 <div className={styles.action_wrapper}>
                                     <div className={styles.button}>
@@ -187,7 +193,11 @@ const ImplantDetails = ({ id, isOpened, onClose }: ImplantDetailsProps) => {
                                             title="Edytuj"
                                             icon={faEdit}
                                             color="green"
-                                            onClick={() => navigate(`/implant/${implant?.id}`)}
+                                            onClick={() =>
+                                                navigate(
+                                                    `/implant/${implant?.id}`
+                                                )
+                                            }
                                         />
                                     </div>
                                     <div className={styles.button}>
