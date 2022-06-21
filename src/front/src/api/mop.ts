@@ -293,7 +293,7 @@ export async function createImplant(params: CreateImplantRequest) {
 
 export async function editOwnAppointment(params: EditOwnAppointmentRequest) {
     try {
-        const {etag, ...body} = params
+        const { etag, ...body } = params;
         const { data, headers } = await axios.put<EditOwnAppointmentRespone>(
             `/mop/edit/visit/my/${body.id}`,
             body,
@@ -304,7 +304,7 @@ export async function editOwnAppointment(params: EditOwnAppointmentRequest) {
             }
         );
         const newEtag = headers["etag"];
-        return {...data, etag:newEtag };
+        return { ...data, etag: newEtag };
     } catch (error) {
         if (axios.isAxiosError(error) && error.response) {
             return {
@@ -318,7 +318,7 @@ export async function editOwnAppointment(params: EditOwnAppointmentRequest) {
 
 export async function editAppointmentByAdmin(params: EditAppointmentRequest) {
     try {
-        const {etag, ...body} = params
+        const { etag, ...body } = params;
         const { data, headers } = await axios.put<EditAppointmentRespone>(
             `/mop/edit/visit/${body.id}`,
             body,
@@ -329,7 +329,7 @@ export async function editAppointmentByAdmin(params: EditAppointmentRequest) {
             }
         );
         const newEtag = headers["etag"];
-        return {...data, etag:newEtag };
+        return { ...data, etag: newEtag };
     } catch (error) {
         if (axios.isAxiosError(error) && error.response) {
             return {
@@ -348,6 +348,7 @@ export interface SpecialistListElementDto {
     surname: string;
     email: string;
     phoneNumber: string;
+    url: string;
 }
 
 export interface SpecialistListResponse {
