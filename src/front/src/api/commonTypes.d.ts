@@ -83,3 +83,14 @@ interface ConfirmActionModal {
     title: string;
     message: string;
 }
+
+interface AppointmentDto extends Taggable {
+    client: AccountDetails;
+    specialist: AccountDetails;
+    implant: ImplantDetails;
+    startDate: string;
+    endDate: string;
+    price: number;
+    description: string;
+    status: Status;
+}
