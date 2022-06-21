@@ -331,6 +331,9 @@ public class MOPService extends AbstractService implements MOPServiceInterface, 
         if(appointmentFromDb.getStatus().equals(REJECTED)){
             throw AppointmentStatusException.appointmentStatusAlreadyCancelled();
         }
+        if(update.getStartDate().isBefore(Instant.now())){
+            throw new StartDateIsInPast();
+        }
         if(!update.getStartDate().equals(appointmentFromDb.getStartDate())){
         Instant endDate = update.getStartDate().plus(appointmentFromDb.getImplantDuration());
         checkDateAvailabilityForAppointment(appointmentFromDb.getSpecialist().getId(),update.getStartDate(),endDate);
