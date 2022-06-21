@@ -218,6 +218,7 @@ public class MOKService extends AbstractService implements MOKServiceInterface, 
     }
 
     // NIE ROZŁĄCZAJ MNIE OD FUNKCJI WYŻEJ (ಥ_ಥ)
+    @RolesAllowed(Roles.AUTHENTICATED)
     private AccessLevel findAccessLevelByName(Collection<AccessLevel> list, Class<? extends AccessLevel> clazz) {
         for (AccessLevel accessLevel : list)
             if (accessLevel.getClass().equals(clazz))

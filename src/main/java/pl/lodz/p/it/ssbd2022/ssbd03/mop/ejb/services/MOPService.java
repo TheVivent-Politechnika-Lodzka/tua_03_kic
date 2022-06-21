@@ -14,27 +14,22 @@ import pl.lodz.p.it.ssbd2022.ssbd03.common.Roles;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.*;
  import pl.lodz.p.it.ssbd2022.ssbd03.entities.Appointment;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.InvalidParametersException;
-import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.MethodNotImplementedException;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.appointment.*;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.Implant;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.appointment.AppointmentFinishAttemptBeforeEndDateException;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.appointment.AppointmentFinishAttemptByInvalidSpecialistException;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.appointment.AppointmentStatusException;
-import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.account.AccountStatusException;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.implant.ImplantStatusException;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.appointment.AppointmentNotFinishedException;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.appointment.AppointmentNotFoundException;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.implant.ImplantArchivedException;
-import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.appointment.AppointmentStatusException;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.implant_review.ClientRemovesOtherReviewsException;
 import pl.lodz.p.it.ssbd2022.ssbd03.interceptors.TrackerInterceptor;
 import pl.lodz.p.it.ssbd2022.ssbd03.mop.ejb.facades.AppointmentFacade;
 import pl.lodz.p.it.ssbd2022.ssbd03.mop.ejb.facades.AccountFacade;
-import pl.lodz.p.it.ssbd2022.ssbd03.mop.ejb.facades.AppointmentFacade;
 import pl.lodz.p.it.ssbd2022.ssbd03.mop.ejb.facades.ImplantFacade;
 import pl.lodz.p.it.ssbd2022.ssbd03.mop.ejb.facades.ImplantReviewFacade;
 import pl.lodz.p.it.ssbd2022.ssbd03.security.AuthContext;
-import pl.lodz.p.it.ssbd2022.ssbd03.mop.ejb.facades.*;
 import pl.lodz.p.it.ssbd2022.ssbd03.utils.PaginationData;
 
 import java.util.Date;
@@ -42,6 +37,8 @@ import java.util.List;
 import java.util.UUID;
 
 import pl.lodz.p.it.ssbd2022.ssbd03.mop.ejb.facades.AppointmentFacade;
+
+import javax.management.relation.Role;
 
 import static pl.lodz.p.it.ssbd2022.ssbd03.entities.Status.FINISHED;
 import static pl.lodz.p.it.ssbd2022.ssbd03.entities.Status.REJECTED;
@@ -211,7 +208,7 @@ public class MOPService extends AbstractService implements MOPServiceInterface, 
      * @throws InvalidParametersException jeśli podano nieprawidłowe parametry
      */
     @Override
-    @PermitAll
+    @RolesAllowed({Roles.ANONYMOUS, Roles.AUTHENTICATED})
     public PaginationData findImplants(int page, int pageSize, String phrase, boolean archived) {
         if (page == 0 || pageSize == 0) {
             throw new InvalidParametersException();
@@ -248,7 +245,7 @@ public class MOPService extends AbstractService implements MOPServiceInterface, 
     }
 
     @Override
-    @PermitAll
+    @RolesAllowed({Roles.ANONYMOUS, Roles.AUTHENTICATED})
     public Implant findImplantByUuid(UUID uuid) {
         return implantFacade.findByUUID(uuid);
     }
@@ -289,7 +286,7 @@ public class MOPService extends AbstractService implements MOPServiceInterface, 
      * @throws InvalidParametersException w przypadku podania nieprawidłowych parametrów
      */
     @Override
-    @PermitAll
+    @RolesAllowed(Roles.ADMINISTRATOR)
     public PaginationData findVisits(int page, int pageSize, String phrase) {
         if (page == 0 || pageSize == 0) {
             throw new InvalidParametersException();
@@ -297,7 +294,7 @@ public class MOPService extends AbstractService implements MOPServiceInterface, 
         return appointmentFacade.findInRangeWithPhrase(page, pageSize, phrase);
     }
     @Override
-    @PermitAll
+    @RolesAllowed(Roles.AUTHENTICATED)
     public Appointment findVisit(UUID uuid, String clientLogin){
         Account account = accountFacade.findByLogin(clientLogin);
         Appointment appointment = appointmentFacade.findById(uuid);
@@ -321,7 +318,7 @@ public class MOPService extends AbstractService implements MOPServiceInterface, 
      * @throws AppointmentStatusException w przypadku gdy użytkownik chce edytować zakończoną lub odrzuconą wizytę
      */
     @Override
-    @PermitAll
+    @RolesAllowed({Roles.CLIENT, Roles.SPECIALIST})
     public Appointment editOwnAppointment(UUID id, Appointment update,String login){
         Appointment appointmentFromDb = appointmentFacade.findById(id);
         boolean didStartDateChange = false;
@@ -354,7 +351,7 @@ public class MOPService extends AbstractService implements MOPServiceInterface, 
         return appointmentFromDb;
     }
     @Override
-    @PermitAll
+    @RolesAllowed({Roles.CLIENT, Roles.SPECIALIST})
     public PaginationData findVisitsByLogin(int page, int pageSize, String login) {
         if(page == 0 || pageSize == 0) {
             throw new InvalidParametersException();
@@ -373,7 +370,7 @@ public class MOPService extends AbstractService implements MOPServiceInterface, 
      * @throws InvalidParametersException przy podaniu błędnych parametrów
      */
     @Override
-    @PermitAll
+    @RolesAllowed({Roles.ANONYMOUS, Roles.AUTHENTICATED})
     public PaginationData findSpecialists(int page, int pageSize, String phrase) {
         if (page == 0 || pageSize == 0) {
             throw new InvalidParametersException();
@@ -482,7 +479,7 @@ public class MOPService extends AbstractService implements MOPServiceInterface, 
      *
      */
     @Override
-    @PermitAll
+    @RolesAllowed({Roles.ANONYMOUS, Roles.AUTHENTICATED})
     public PaginationData getAllImplantReviews(int page, int pageSize, UUID id) {
         if(page == 0 || pageSize == 0) {
             throw new InvalidParametersException();
@@ -498,6 +495,7 @@ public class MOPService extends AbstractService implements MOPServiceInterface, 
      * @throws SpecialistHasNoTimeException w przypadku, gdy specjalista nie ma czasu na wizytę (appBase)
      */
     @TransactionAttribute(TransactionAttributeType.MANDATORY)
+    @RolesAllowed({Roles.CLIENT, Roles.SPECIALIST})
     private void checkDateAvailabilityForAppointment(UUID specialistId, Instant startDate, Instant endDate) {
         PaginationData appointments = appointmentFacade.findSpecialistAppointmentsInGivenPeriod(specialistId, startDate, endDate, 1, 1);
         if (appointments.getData().size() > 0) {
