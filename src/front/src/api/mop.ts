@@ -274,11 +274,6 @@ interface EditOwnAppointmentRespone {
     etag: string;
 }
 
-interface EditAppointmentRespone {
-    appointment: AppointmentListElementDto;
-    etag: string;
-}
-
 export async function createImplant(params: CreateImplantRequest) {
     try {
         const { data } = await axios.put<CreateImplantResponse>(
@@ -323,10 +318,26 @@ export async function editOwnAppointment(params: EditOwnAppointmentRequest) {
     }
 }
 
+interface EditAppointmentRequest {
+    id: string;
+    version: number;
+    description: string;
+    etag: string;
+    status: string;
+}
+
+interface EditAppointmentResponse extends Etag {
+    id: string;
+    version: number;
+    description: string;
+    etag: string;
+    status: string;
+}
+
 export async function editAppointmentByAdmin(params: EditAppointmentRequest) {
     try {
         const { etag, ...body } = params;
-        const { data, headers } = await axios.put<EditAppointmentRespone>(
+        const { data, headers } = await axios.put<EditAppointmentResponse>(
             `/mop/edit/visit/${body.id}`,
             body,
             {
@@ -355,6 +366,7 @@ export interface SpecialistListElementDto {
     surname: string;
     email: string;
     phoneNumber: string;
+    url: string;
 }
 
 export interface SpecialistListResponse {
@@ -422,6 +434,42 @@ export async function archiveImplant(id: string, implantEtag: string) {
     }
 }
 //------------------------------------------------- KONIEC MOP 2 ----------------------------------------------------//
+
+//------------------------------------------------- MOP 13 ----------------------------------------------------//
+
+export interface GetAppointmentResponse
+    extends AppointmentListElementDto,
+        Etag {}
+
+/**
+ * Odwołaj dowolną wizytę
+ *
+ * @param id identyfikator wizyty
+ * @returns GetAppointmentResponse | {errorMessage, status}
+ */
+export async function cancelAnyVisit(id: string, etag: string) {
+    try {
+        const { data, headers } = await axios.delete(
+            `/mop/cancel/visit/${id}`,
+            {
+                headers: {
+                    "If-Match": etag,
+                },
+            }
+        );
+        const newEtag = headers["etag"];
+        return { ...data, etag: newEtag } as GetAppointmentResponse;
+    } catch (error) {
+        if (axios.isAxiosError(error) && error.response) {
+            return {
+                errorMessage: error.response.data as string,
+                status: error.response.status,
+            } as ApiError;
+        }
+        throw error;
+    }
+}
+//------------------------------------------------- KONIEC MOP 13 ----------------------------------------------------//
 
 //----------------------------------------------------- MOP 9 -------------------------------------------------------//
 
@@ -535,6 +583,67 @@ export async function addImplantReview(request: CreateImplantReviewRequest) {
     try {
         const {data} = await axios.put<CreateImplantReviewResponse>(`/mop/implant/review`, request);
         return data as CreateImplantReviewResponse;
+    } catch (error) {
+        if (axios.isAxiosError(error) && error.response) {
+            return {
+                errorMessage: error.response.data as string,
+                status: error.response.status,
+            } as ApiError;
+        }
+        throw error;
+    }
+}
+
+//------------------------------------------------- MOP 14 ----------------------------------------------------//
+
+export interface GetAppointmentResponse
+    extends AppointmentListElementDto,
+        Etag {}
+
+/**
+ * Odwołaj dowolną wizytę
+ *
+ * @param id identyfikator wizyty
+ * @returns GetAppointmentResponse | {errorMessage, status}
+ */
+export async function finishVisit(id: string, etag: string) {
+    try {
+        const { data, headers } = await axios.patch(
+            `/mop/finish/visit/${id}`,
+            {},
+            {
+                headers: {
+                    "If-Match": etag,
+                },
+            }
+        );
+        const newEtag = headers["etag"];
+        return { ...data, etag: newEtag } as GetAppointmentResponse;
+    } catch (error) {
+        if (axios.isAxiosError(error) && error.response) {
+            return {
+                errorMessage: error.response.data as string,
+                status: error.response.status,
+            } as ApiError;
+        }
+        throw error;
+    }
+}
+//------------------------------------------------- KONIEC MOP 14 ----------------------------------------------------//
+
+export async function cancelOwnVisit(appointmentId: string, etag: string) {
+    try {
+        const { data, headers } = await axios.patch(
+            `/mop/visit/cancel/my/${appointmentId}`,
+            {},
+            {
+                headers: {
+                    "If-Match": etag,
+                },
+            }
+        );
+        const newEtag = headers["etag"];
+        return { ...data, etag: newEtag } as GetAppointmentResponse;
     } catch (error) {
         if (axios.isAxiosError(error) && error.response) {
             return {

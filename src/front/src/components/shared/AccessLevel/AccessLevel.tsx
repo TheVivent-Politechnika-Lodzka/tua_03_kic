@@ -1,4 +1,5 @@
 import { useEffect } from "react";
+import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { useStoreSelector } from "../../../redux/reduxHooks";
 import { changeLevel } from "../../../redux/userSlice";
@@ -15,13 +16,13 @@ interface AccessLevelProps {
 const getAccessLevel = (accessLevel: string) => {
     switch (accessLevel) {
         case "ADMINISTRATOR": {
-            return "Administrator";
+            return "accessLevel.administrator";
         }
         case "SPECIALIST": {
-            return "Specialista";
+            return "accessLevel.specialist";
         }
         case "CLIENT": {
-            return "Klient";
+            return "accessLevel.client";
         }
         default: {
             return "";
@@ -39,6 +40,8 @@ const AccessLevel = ({
     const user = useStoreSelector((state) => state.user);
     const level = useStoreSelector((state) => state.user.cur);
     const dispatch = useDispatch();
+
+    const { t } = useTranslation();
 
     const handleClick = () => {
         if (!clickable) return;
@@ -79,7 +82,7 @@ const AccessLevel = ({
                         : null
                 }`}
             >
-                {getAccessLevel(accessLevel)}
+                {t(getAccessLevel(accessLevel))}
             </p>
         </div>
     );

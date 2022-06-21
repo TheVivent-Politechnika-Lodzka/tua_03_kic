@@ -15,7 +15,12 @@ import { useTranslation } from "react-i18next";
 import { Center, Image } from "@mantine/core";
 import { HiOutlinePhotograph } from "react-icons/hi";
 import { uploadPhoto } from "../../../../utils/upload";
-import { editImplant, EditImplantResponse, getImplant, GetImplantResponse } from "../../../../api/mop";
+import {
+    editImplant,
+    EditImplantResponse,
+    getImplant,
+    GetImplantResponse,
+} from "../../../../api/mop";
 
 import ConfirmActionModal from "../../../../components/shared/ConfirmActionModal/ConfirmActionModal";
 
@@ -64,14 +69,19 @@ export const EditImplantPage = () => {
             setLoading({ ...loading, pageLoading: false });
             return;
         }
-        setImplant({...response, duration: Math.round(response.duration /60)});
+        setImplant({
+            ...response,
+            duration: Math.round(response.duration / 60),
+        });
         setLoading({ ...loading, pageLoading: false });
-
     };
 
     const handleSubmit = async () => {
         if (!implant || !id) return;
-        const response = await editImplant(id, {...implant, duration: implant.duration*60});
+        const response = await editImplant(id, {
+            ...implant,
+            duration: implant.duration * 60,
+        });
         if ("errorMessage" in response) {
             showNotification(failureNotificationItems(response.errorMessage));
             return;
@@ -90,8 +100,7 @@ export const EditImplantPage = () => {
             <div className={style.edit_implant_page_content}>
                 <div className={style.edit_data_account_wrapper}>
                     <div className={style.edit_fields_wrapper}>
-                        
-                        { implant?.image.length === 0 ? (
+                        {implant?.image.length === 0 ? (
                             <div className={`${style.image} ${style.margin}`}>
                                 <Center>
                                     <HiOutlinePhotograph size="80px" />
@@ -116,10 +125,10 @@ export const EditImplantPage = () => {
                                 const u = await uploadPhoto(event);
                                 if (u) {
                                     if (implant)
-                                    setImplant({
-                                        ...implant,
-                                        image: u,
-                                    });
+                                        setImplant({
+                                            ...implant,
+                                            image: u,
+                                        });
                                 }
                             }}
                         />
@@ -133,10 +142,10 @@ export const EditImplantPage = () => {
                                 isValid={isImplantNameValid}
                                 onChange={(e) => {
                                     if (implant)
-                                    setImplant({
-                                        ...implant,
-                                        name: e.target.value,
-                                    });
+                                        setImplant({
+                                            ...implant,
+                                            name: e.target.value,
+                                        });
                                 }}
                                 required
                             />
@@ -155,10 +164,10 @@ export const EditImplantPage = () => {
                                 isValid={isManufacturerValid}
                                 onChange={(e) => {
                                     if (implant)
-                                    setImplant({
-                                        ...implant,
-                                        manufacturer: e.target.value,
-                                    });
+                                        setImplant({
+                                            ...implant,
+                                            manufacturer: e.target.value,
+                                        });
                                 }}
                                 required
                             />
@@ -173,16 +182,16 @@ export const EditImplantPage = () => {
                         <div className={style.edit_field}>
                             <InputWithValidation
                                 title={t("editImplantPage.price")}
-                                value={implant?.price.toString() }
+                                value={implant?.price.toString()}
                                 validationType="VALIDATE_PRICE"
                                 isValid={isPriceValid}
                                 type="number"
                                 onChange={(e) => {
                                     if (implant)
-                                    setImplant({
-                                        ...implant,
-                                        price: parseInt(e.target.value),
-                                    });
+                                        setImplant({
+                                            ...implant,
+                                            price: parseInt(e.target.value),
+                                        });
                                 }}
                                 required
                             />
@@ -203,10 +212,10 @@ export const EditImplantPage = () => {
                                 type="number"
                                 onChange={(e) => {
                                     if (implant)
-                                    setImplant({
-                                        ...implant,
-                                        duration: parseInt(e.target.value),
-                                    });
+                                        setImplant({
+                                            ...implant,
+                                            duration: parseInt(e.target.value),
+                                        });
                                 }}
                                 required
                             />
@@ -226,10 +235,10 @@ export const EditImplantPage = () => {
                                 isValid={isDescriptionValid}
                                 onChange={(e) => {
                                     if (implant)
-                                    setImplant({
-                                        ...implant,
-                                        description: e.target.value,
-                                    });
+                                        setImplant({
+                                            ...implant,
+                                            description: e.target.value,
+                                        });
                                 }}
                                 required
                             />

@@ -11,6 +11,7 @@ import { useStoreSelector } from "../../../../redux/reduxHooks";
 import { getOwnAccount } from "../../../../api";
 import styles from "./style.module.scss";
 import ChangeOwnPasswordPage from "../ChangeOwnPasswordPage/ChangeOwnPasswordPage";
+import { useTranslation } from "react-i18next";
 
 const OwnAccountDetailsPage = () => {
     const [account, setAccount] = useState<AccountDetails>();
@@ -20,6 +21,8 @@ const OwnAccountDetailsPage = () => {
 
     const accessLevel = useStoreSelector((state) => state.user.cur);
     const navigate = useNavigate();
+
+    const { t } = useTranslation();
 
     const handleGetOwnAccount = async () => {
         try {
@@ -55,14 +58,14 @@ const OwnAccountDetailsPage = () => {
                             <img
                                 className={styles.avatar}
                                 src={avatar}
-                                alt="Account general: Avatar"
+                                alt={t("ownAccountDetailsPage.alt")}
                             />
                             <p className={styles.login}>{account?.login}</p>
                             <div
                                 className={styles.account_access_levels_wrapper}
                             >
                                 <p className={styles.title}>
-                                    Poziomy dostępu:{" "}
+                                    {t("ownAccountDetailsPage.accessLevel")}{" "}
                                 </p>
                                 {account?.accessLevels.map((accessLevel) => (
                                     <AccessLevel
@@ -78,7 +81,7 @@ const OwnAccountDetailsPage = () => {
                                     onClick={() => {
                                         navigate("/account/edit");
                                     }}
-                                    title="Edytuj konto"
+                                    title={t("ownAccountDetailsPage.edit")}
                                     color="green"
                                     icon={faEdit}
                                 />
@@ -86,31 +89,37 @@ const OwnAccountDetailsPage = () => {
                                     onClick={() => {
                                         setOpened(true);
                                     }}
-                                    title="Zmień hasło"
+                                    title={t("ownAccountDetailsPage.change")}
                                     color="purple"
                                     icon={faKey}
                                 />
                             </div>
                         </div>
                         <div className={styles.account_details}>
-                            <p className={styles.title}>Dane szczegółowe</p>
+                            <p className={styles.title}>
+                                {t("ownAccountDetailsPage.title")}
+                            </p>
                             <div className={styles.details_wrapper}>
                                 <div className={styles.detail_wrapper}>
-                                    <p className={styles.field_title}>Imię:</p>
+                                    <p className={styles.field_title}>
+                                        {t("ownAccountDetailsPage.name")}
+                                    </p>
                                     <p className={styles.field_description}>
                                         {account?.firstName}
                                     </p>
                                 </div>
                                 <div className={styles.detail_wrapper}>
                                     <p className={styles.field_title}>
-                                        Nazwisko:
+                                        {t("ownAccountDetailsPage.surname")}
                                     </p>
                                     <p className={styles.field_description}>
                                         {account?.lastName}
                                     </p>
                                 </div>
                                 <div className={styles.detail_wrapper}>
-                                    <p className={styles.field_title}>Email:</p>
+                                    <p className={styles.field_title}>
+                                        {t("ownAccountDetailsPage.email")}
+                                    </p>
                                     <p className={styles.field_description}>
                                         {account?.email}
                                     </p>
@@ -118,7 +127,7 @@ const OwnAccountDetailsPage = () => {
                                 {accessLevel === "CLIENT" ? (
                                     <div className={styles.detail_wrapper}>
                                         <p className={styles.field_title}>
-                                            Numer PESEL:
+                                            {t("ownAccountDetailsPage.pesel")}
                                         </p>
                                         <p className={styles.field_description}>
                                             {account?.accessLevels
@@ -132,7 +141,7 @@ const OwnAccountDetailsPage = () => {
                                 ) : (
                                     <div className={styles.detail_wrapper}>
                                         <p className={styles.field_title}>
-                                            Numer telefonu:
+                                            {t("ownAccountDetailsPage.phone")}
                                         </p>
                                         <p className={styles.field_description}>
                                             {account?.accessLevels
@@ -148,14 +157,18 @@ const OwnAccountDetailsPage = () => {
                                     </div>
                                 )}
                                 <div className={styles.detail_wrapper}>
-                                    <p className={styles.field_title}>Język:</p>
+                                    <p className={styles.field_title}>
+                                        {t("ownAccountDetailsPage.language")}
+                                    </p>
                                     <img
                                         src={
                                             account?.language?.language === "pl"
                                                 ? flagPL
                                                 : flagEN
                                         }
-                                        alt="Detail description: language"
+                                        alt={t(
+                                            "ownAccountDetailsPage.altLanguage"
+                                        )}
                                         className={styles.flag}
                                     />
                                 </div>

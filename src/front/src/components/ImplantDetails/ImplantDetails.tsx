@@ -23,6 +23,7 @@ import { useNavigate } from "react-router";
 import ImplantReview from "../ImplantReview/ImplantReview";
 import { ImplantListPage } from "../../pages/unprotected/ImplantListPage";
 import ImplantReviewsListPage from "../../pages/protected/shared/ImplantReviewsListPage/ImplantsReviewsListPage";
+import { useTranslation } from "react-i18next";
 
 interface ImplantDetailsProps {
     id: string;
@@ -37,6 +38,7 @@ const ImplantDetails = ({ id, isOpened, onClose }: ImplantDetailsProps) => {
         pageLoading: true,
         actionLoading: false,
     });
+
     const navigate = useNavigate();
 
     const handleGetImplant = async () => {
@@ -49,6 +51,8 @@ const ImplantDetails = ({ id, isOpened, onClose }: ImplantDetailsProps) => {
         setImplant(response);
         setLoading({ pageLoading: false });
     };
+
+    const { t } = useTranslation();
 
     const [opened, setOpened] = useState<boolean>(false);
     const [reviewsModal, setReviewsModal] = useState<boolean>(false);
@@ -79,7 +83,11 @@ const ImplantDetails = ({ id, isOpened, onClose }: ImplantDetailsProps) => {
             setLoading({ ...loading, actionLoading: false });
             return;
         }
-        showNotification(successNotficiationItems("account.edit.success"));
+        showNotification(
+            successNotficiationItems(
+                t("implantDetails.successNotficiationItems")
+            )
+        );
         setImplant(response);
 
         setLoading({ ...loading, actionLoading: false });
@@ -111,7 +119,7 @@ const ImplantDetails = ({ id, isOpened, onClose }: ImplantDetailsProps) => {
                             <div className={styles.top_wrapper}>
                                 <div className={styles.detail_top_wrapper}>
                                     <p className={styles.implant_details_title}>
-                                        Dane szczegółowe
+                                        {t("implantDetails.title")}
                                     </p>
                                     <p className={styles.description}>
                                         {implant?.description}
@@ -121,32 +129,38 @@ const ImplantDetails = ({ id, isOpened, onClose }: ImplantDetailsProps) => {
                                     <img
                                         className={styles.image}
                                         src={implant?.image}
-                                        alt="Implant image"
+                                        alt={t("implantDetails.alt")}
                                     />
                                 </div>
                             </div>
                             <div className={styles.details_wrapper}>
                                 <div className={styles.detail_wrapper}>
-                                    <p className={styles.title}>Nazwa:</p>
+                                    <p className={styles.title}>
+                                        {t("implantDetails.name")}
+                                    </p>
                                     <p className={styles.description}>
                                         {implant?.name}
                                     </p>
                                 </div>
                                 <div className={styles.detail_wrapper}>
-                                    <p className={styles.title}>Cena:</p>
+                                    <p className={styles.title}>
+                                        {t("implantDetails.price")}
+                                    </p>
                                     <p className={styles.description}>
                                         {implant?.price} zl
                                     </p>
                                 </div>
                                 <div className={styles.detail_wrapper}>
-                                    <p className={styles.title}>Producent:</p>
+                                    <p className={styles.title}>
+                                        {t("implantDetails.producer")}
+                                    </p>
                                     <p className={styles.description}>
                                         {implant?.manufacturer}
                                     </p>
                                 </div>
                                 <div className={styles.detail_wrapper}>
                                     <p className={styles.title}>
-                                        Czas instalacji:
+                                        {t("implantDetails.time")}
                                     </p>
                                     <p className={styles.description}>
                                         {implant?.duration &&
@@ -155,13 +169,18 @@ const ImplantDetails = ({ id, isOpened, onClose }: ImplantDetailsProps) => {
                                     </p>
                                 </div>
                                 <div className={styles.detail_wrapper}>
-                                    <p className={styles.title}>Zastosowano:</p>
+                                    <p className={styles.title}>
+                                        {t("implantDetails.applied")}
+                                    </p>
                                     <p className={styles.description}>
-                                        {implant?.popularity} razy
+                                        {implant?.popularity}{" "}
+                                        {t("implantDetails.times")}
                                     </p>
                                 </div>
                                 <div className={styles.detail_wrapper}>
-                                    <p className={styles.title}>Stan: </p>
+                                    <p className={styles.title}>
+                                        {t("implantDetails.state")}{" "}
+                                    </p>
                                     <p
                                         className={
                                             implant?.archived
@@ -170,37 +189,34 @@ const ImplantDetails = ({ id, isOpened, onClose }: ImplantDetailsProps) => {
                                         }
                                     >
                                         {implant?.archived
-                                            ? "Niedostępny"
-                                            : "Dostępny"}
+                                            ? t("implantDetails.available")
+                                            : t("implantDetails.notAvailable")}
                                     </p>
                                 </div>
-                                <div className={styles.action_wrapper}>
-                                    <ActionButton
-                                        title="Rezerwuj"
-                                        icon={faShoppingCart}
-                                        onClick={() => {
-                                            navigate(
-                                                `/implants/${implant?.id}/create-appointment`
-                                            );
-                                        }}
-                                        color="green"
-                                    />
-
-                                    <ActionButton
-                                        title="Recenzje"
-                                        icon={faStar}
-                                        onClick={() => {
-                                            setReviewsModal(true);
-                                        }}
-                                        color="orange"
-                                    />
-                                </div>
                             </div>
+                            {accessLevel === "CLIENT" && (
+                                <div className={styles.action_wrapper}>
+                                    <div className={styles.button}>
+                                        <ActionButton
+                                            title={t(
+                                                "implantDetails.reserveButton"
+                                            )}
+                                            icon={faShoppingCart}
+                                            onClick={() => {
+                                                navigate(
+                                                    `/implants/${implant?.id}/create-appointment`
+                                                );
+                                            }}
+                                            color="green"
+                                        />
+                                    </div>
+                                </div>
+                            )}
                             {accessLevel === "ADMINISTRATOR" && (
                                 <div className={styles.action_wrapper}>
                                     <div className={styles.button}>
                                         <ActionButton
-                                            title="Edytuj"
+                                            title={t("implantDetails.edit")}
                                             icon={faEdit}
                                             color="green"
                                             onClick={() =>
@@ -212,7 +228,7 @@ const ImplantDetails = ({ id, isOpened, onClose }: ImplantDetailsProps) => {
                                     </div>
                                     <div className={styles.button}>
                                         <ActionButton
-                                            title="Archiwizuj"
+                                            title={t("implantDetails.archive")}
                                             icon={faFolder}
                                             color="purple"
                                             onClick={() => {
@@ -240,10 +256,9 @@ const ImplantDetails = ({ id, isOpened, onClose }: ImplantDetailsProps) => {
                         setOpened(false);
                     }}
                     isLoading={loading.actionLoading as boolean}
-                    title="Archiwizacja implantu"
+                    title={t("implantDetails.confirmActionModal.title")}
                 >
-                    Czy na pewno chcesz zarchiwizować implant? Operacja jest
-                    nieodwracalna!
+                    {t("implantDetails.confirmActionModal.message")}
                 </ConfirmActionModal>
             </section>
         </ReactModal>

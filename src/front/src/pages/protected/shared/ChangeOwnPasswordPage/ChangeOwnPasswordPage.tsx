@@ -90,7 +90,9 @@ const ChangeOwnPasswordInternal = ({
         setPassword({ oldPassword: "", newPassword: "" });
         dispatch({ type: "RESET_VALIDATION", payload: { ...state } });
         showNotification(
-            successNotficiationItems(`Hasło zostało pomyślnie zmienione`)
+            successNotficiationItems(
+                t("changeOwnPasswordInternal.successNotficiationItems")
+            )
         );
     };
 
@@ -119,13 +121,17 @@ const ChangeOwnPasswordInternal = ({
                 ) : (
                     <>
                         <div className={styles.title_wrapper}>
-                            <h2>Zmień swoje hasło</h2>
+                            <h2>
+                                {t("changeOwnPasswordInternal.titleWrapper")}
+                            </h2>
                         </div>
                         <div className={styles.content}>
                             <div className={styles.change_password_wrapper}>
                                 <div className={styles.input_wrapper}>
                                     <InputWithValidation
-                                        title="Stare hasło"
+                                        title={t(
+                                            "changeOwnPasswordInternal.oldPassword"
+                                        )}
                                         validationType="VALIDATE_OLD_PASSWORD"
                                         isValid={isOldPasswordValid}
                                         value={password.oldPassword}
@@ -139,7 +145,9 @@ const ChangeOwnPasswordInternal = ({
                                         required
                                     />
                                     <InputWithValidation
-                                        title="Nowe hasło"
+                                        title={t(
+                                            "changeOwnPasswordInternal.newPassword"
+                                        )}
                                         validationType="VALIDATE_NEW_PASSWORD"
                                         isValid={isNewPasswordValid}
                                         value={password.newPassword}
@@ -164,24 +172,32 @@ const ChangeOwnPasswordInternal = ({
                                         }
                                         icon={faCheck}
                                         color="green"
-                                        title="Zatwierdź"
+                                        title={t(
+                                            "changeOwnPasswordInternal.confirm"
+                                        )}
                                     />
                                     <ActionButton
                                         onClick={onClose}
                                         icon={faCancel}
                                         color="red"
-                                        title="Anuluj"
+                                        title={t(
+                                            "changeOwnPasswordInternal.cancel"
+                                        )}
                                     />
                                 </div>
                             </div>
                             <div className={styles.validation_status_wrapper}>
                                 <ValidationMessage
                                     isValid={arePasswordsValid}
-                                    message="Oba hasła muszą być dłuższe niż 8 znaków oraz muszą zawierać jedną dużą literę, jedną cyfrę i jeden znak specjalny"
+                                    message={t(
+                                        "changeOwnPasswordInternal.error.valid"
+                                    )}
                                 />
                                 <ValidationMessage
                                     isValid={!arePasswordsSame}
-                                    message="Hasła nie mogą być takie same"
+                                    message={t(
+                                        "changeOwnPasswordInternal.error.same"
+                                    )}
                                 />
                             </div>
                         </div>
@@ -196,10 +212,14 @@ const ChangeOwnPasswordInternal = ({
                                 setOpened(false);
                             }}
                             isLoading={loading.actionLoading as boolean}
-                            title={`Zmiana swojego hasła`}
+                            title={t(
+                                "changeOwnPasswordInternal.confirmActionModal.title"
+                            )}
                         >
-                            Czy na pewno chcesz zmienić hasło? Operacja jest
-                            nieodwracalna
+                            title=
+                            {t(
+                                "changeOwnPasswordInternal.confirmActionModal.message"
+                            )}
                         </ConfirmActionModal>
                     </>
                 )}

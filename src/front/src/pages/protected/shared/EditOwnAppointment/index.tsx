@@ -1,1 +1,1 @@
-export * from './EditOwnAppointment'
+export * from "./EditOwnAppointment";

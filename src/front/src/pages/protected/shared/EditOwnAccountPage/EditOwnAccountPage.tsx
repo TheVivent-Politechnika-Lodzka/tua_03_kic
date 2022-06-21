@@ -1,11 +1,7 @@
 import { useContext, useEffect, useState } from "react";
 import avatar from "../../../../assets/images/avatar.jpg";
 import style from "./style.module.scss";
-import {
-    faCancel,
-    faCheck,
-    faEdit,
-} from "@fortawesome/free-solid-svg-icons";
+import { faCancel, faCheck, faEdit } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useNavigate } from "react-router-dom";
 import InputWithValidation from "../../../../components/shared/InputWithValidation/InputWithValidation";
@@ -29,6 +25,7 @@ import {
     failureNotificationItems,
     successNotficiationItems,
 } from "../../../../utils/showNotificationsItems";
+import { useTranslation } from "react-i18next";
 
 const EditOwnAccountPageInternal = () => {
     const [account, setAccount] = useState<GetAccountResponse>();
@@ -39,6 +36,8 @@ const EditOwnAccountPageInternal = () => {
     const [error, setError] = useState<ApiError>();
     const [opened, setOpened] = useState<boolean>(false);
     const { executeRecaptcha } = useGoogleReCaptcha();
+
+    const { t } = useTranslation();
 
     const accessLevel = useStoreSelector((state) => state.user.cur);
 
@@ -91,7 +90,7 @@ const EditOwnAccountPageInternal = () => {
         navigate("/account");
         setLoading({ ...loading, actionLoading: false });
         showNotification(
-            successNotficiationItems("Konto zostało zaktualizowane")
+            successNotficiationItems(t("editOwnAccountPage.updateSuccessfully"))
         );
     };
 
@@ -121,7 +120,7 @@ const EditOwnAccountPageInternal = () => {
             ) : (
                 <>
                     <div className={style.edit_own_account_header}>
-                        <h2>Edytuj dane własnego konta</h2>
+                        <h2>{t("editOwnAccountPage.editOwnAccount")}</h2>
                     </div>
                     <div className={style.edit_own_account_content}>
                         <div className={style.edit_data_account_wrapper}>
@@ -141,7 +140,9 @@ const EditOwnAccountPageInternal = () => {
                             <div className={style.edit_fields_wrapper}>
                                 <div className={style.edit_field}>
                                     <InputWithValidation
-                                        title="Imię"
+                                        title={t(
+                                            "editOwnAccountPage.firstName"
+                                        )}
                                         value={account?.firstName}
                                         validationType="VALIDATE_FIRSTNAME"
                                         isValid={isFirstNameValid}
@@ -155,12 +156,14 @@ const EditOwnAccountPageInternal = () => {
                                     />
                                     <ValidationMessage
                                         isValid={isFirstNameValid}
-                                        message="Imię musi składać się z co najmniej 3 liter."
+                                        message={t(
+                                            "editOwnAccountPage.firstNameMsg"
+                                        )}
                                     />
                                 </div>
                                 <div className={style.edit_field}>
                                     <InputWithValidation
-                                        title="Nazwisko"
+                                        title={t("editOwnAccountPage.lastName")}
                                         value={account?.lastName}
                                         validationType="VALIDATE_LASTNAME"
                                         isValid={isLastNameValid}
@@ -174,7 +177,9 @@ const EditOwnAccountPageInternal = () => {
                                     />
                                     <ValidationMessage
                                         isValid={isLastNameValid}
-                                        message="Nazwisko musi składać się z co najmniej 3 liter."
+                                        message={t(
+                                            "editOwnAccountPage.lastNameMsg"
+                                        )}
                                     />
                                 </div>
 
@@ -182,7 +187,7 @@ const EditOwnAccountPageInternal = () => {
                                     <>
                                         <div className={style.edit_field}>
                                             <InputWithValidation
-                                                title="Numer PESEL"
+                                                title="PESEL"
                                                 value={
                                                     account?.accessLevels
                                                         .filter(
@@ -221,12 +226,16 @@ const EditOwnAccountPageInternal = () => {
                                             />
                                             <ValidationMessage
                                                 isValid={isPESELValid}
-                                                message="Numer pesel musi składać się z 11 cyfr."
+                                                message={t(
+                                                    "editOwnAccountPage.peselMsg"
+                                                )}
                                             />
                                         </div>
                                         <div className={style.edit_field}>
                                             <InputWithValidation
-                                                title="Numer telefonu"
+                                                title={t(
+                                                    "editOwnAccountPage.phoneNumber"
+                                                )}
                                                 value={
                                                     account?.accessLevels
                                                         .filter(
@@ -268,7 +277,9 @@ const EditOwnAccountPageInternal = () => {
                                                 isValid={
                                                     isPhoneNumberValidClient
                                                 }
-                                                message="Numer telefonu musi składać się z 9 cyfr."
+                                                message={t(
+                                                    "editOwnAccountPage.phoneNumberMsg"
+                                                )}
                                             />
                                         </div>
                                     </>
@@ -280,7 +291,9 @@ const EditOwnAccountPageInternal = () => {
                                     <>
                                         <div className={style.edit_field}>
                                             <InputWithValidation
-                                                title="Numer telefonu"
+                                                title={t(
+                                                    "editOwnAccountPage.phoneNumber"
+                                                )}
                                                 value={
                                                     account?.accessLevels
                                                         .filter(
@@ -322,12 +335,16 @@ const EditOwnAccountPageInternal = () => {
                                                 isValid={
                                                     isPhoneNumberValidAdministrator
                                                 }
-                                                message="Numer telefonu musi składać się z 9 cyfr."
+                                                message={t(
+                                                    "editOwnAccountPage.phoneNumberMsg"
+                                                )}
                                             />
                                         </div>
                                         <div className={style.edit_field}>
                                             <InputWithValidation
-                                                title="Email kontaktowy: "
+                                                title={t(
+                                                    "editOwnAccountPage.email"
+                                                )}
                                                 value={
                                                     account?.accessLevels
                                                         .filter(
@@ -369,7 +386,9 @@ const EditOwnAccountPageInternal = () => {
                                                 isValid={
                                                     isEmailValidAdministrator
                                                 }
-                                                message="Email musi być poprawny."
+                                                message={t(
+                                                    "editOwnAccountPage.emailMsg"
+                                                )}
                                             />
                                         </div>
                                     </>
@@ -383,7 +402,7 @@ const EditOwnAccountPageInternal = () => {
                                     isDisabled={!isEveryFieldValid}
                                     icon={faCheck}
                                     color="green"
-                                    title="Zatwierdź"
+                                    title={t("editOwnAccountPage.confirm")}
                                 />
                                 <ActionButton
                                     onClick={() => {
@@ -391,7 +410,7 @@ const EditOwnAccountPageInternal = () => {
                                     }}
                                     icon={faCancel}
                                     color="red"
-                                    title="Anuluj"
+                                    title={t("editOwnAccountPage.cancel")}
                                 />
                             </div>
                         </div>
@@ -408,10 +427,9 @@ const EditOwnAccountPageInternal = () => {
                     setOpened(false);
                 }}
                 isLoading={loading.actionLoading as boolean}
-                title="Edycja swoich własnych danych"
+                title={t("editOwnAccountPage.editOwnAccount")}
             >
-                Czy na pewno chcesz zmienić swoje własne dane? Operacja jest
-                nieodwracalna
+                {t("editOwnAccountPage.confirmation")}
             </ConfirmActionModal>
         </section>
     );

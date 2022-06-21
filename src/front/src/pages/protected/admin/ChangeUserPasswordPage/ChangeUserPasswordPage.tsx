@@ -78,7 +78,9 @@ const ChangeUserPasswordPage = ({
         setNewPassword("");
         showNotification(
             successNotficiationItems(
-                `Hasło użytkownika ${login} zostało pomyślnie zmienione`
+                `${t("ChangeAccountPassword.first")} ${login} ${t(
+                    "ChangeAccountPassword.second"
+                )}`
             )
         );
     };

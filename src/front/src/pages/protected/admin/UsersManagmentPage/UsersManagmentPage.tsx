@@ -73,7 +73,7 @@ const UsersManagmentPage = () => {
             <div className={styles.input_container}>
                 <SearchInput
                     onChange={setPhrase}
-                    placeholder="Wyszukaj użytkowników..."
+                    placeholder={t("usersManagmentPage.searchPlaceholder")}
                 />
 
                 <Button
@@ -104,12 +104,24 @@ const UsersManagmentPage = () => {
                         <div className={styles.table_header}>
                             <div className={styles.cell_wrapper}>
                                 <p className={styles.cell}> </p>
-                                <p className={styles.cell}>Login</p>
-                                <p className={styles.cell}>Imię</p>
-                                <p className={styles.cell}>Nazwisko</p>
-                                <p className={styles.cell}>Czy zatwierdzone</p>
-                                <p className={styles.cell}>Czy aktywne</p>
-                                <p className={styles.cell}>Więcej</p>
+                                <p className={styles.cell}>
+                                    {t("usersManagmentPage.cell.login")}
+                                </p>
+                                <p className={styles.cell}>
+                                    {t("usersManagmentPage.cell.name")}
+                                </p>
+                                <p className={styles.cell}>
+                                    {t("usersManagmentPage.cell.surname")}
+                                </p>
+                                <p className={styles.cell}>
+                                    {t("usersManagmentPage.cell.approved")}
+                                </p>
+                                <p className={styles.cell}>
+                                    {t("usersManagmentPage.cell.active")}
+                                </p>
+                                <p className={styles.cell}>
+                                    {t("usersManagmentPage.cell.more")}
+                                </p>
                             </div>
                         </div>
                         <div className={styles.table_body}>

@@ -90,7 +90,7 @@ export const ImplantListPage = () => {
 
     useEffect(() => {
         fetchData();
-    }, [amountElement, status,pagination.currentPage]);
+    }, [amountElement, status, pagination.currentPage]);
 
     useEffect(() => {
         const delayDebounceFn = setTimeout(() => {
