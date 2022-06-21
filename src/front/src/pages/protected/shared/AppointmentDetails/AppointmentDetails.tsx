@@ -205,7 +205,8 @@ export const AppointmentDetails = ({
                             </div>
                             <div className={styles.button_holder}>
                                 {appointment?.status !== "REJECTED" &&
-                                appointment?.status !== "FINISHED" ? (
+                                appointment?.status !== "FINISHED" &&
+                                aLevel === "SPECIALIST" ? (
                                     <ActionButton
                                         title="Zakończ wizytę"
                                         color="purple"
