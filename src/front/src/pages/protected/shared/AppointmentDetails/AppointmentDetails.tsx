@@ -8,6 +8,7 @@ import {
     AppointmentListElementDto,
     getAppointmentDetails,
     cancelAnyVisit,
+    finishVisit,
 } from "../../../../api/mop";
 import ImplantDetails from "../../../../components/ImplantDetails/ImplantDetails";
 import ActionButton from "../../../../components/shared/ActionButton/ActionButton";
@@ -49,6 +50,8 @@ export const AppointmentDetails = ({
     const [etag, setEtag] = useState<string>("");
     const [appointmentBlockModalOpen, setAppointmentBlockModalOpen] =
         useState<boolean>(false);
+    const [isFinishVisitModalOpen, setFinishVisitModalOpen] =
+        useState<boolean>(false);
 
     const handleGetAppointmentDetails = async () => {
         const data = await getAppointmentDetails(appointmentId);
@@ -75,6 +78,24 @@ export const AppointmentDetails = ({
             return;
         }
         showNotification(successNotficiationItems("Wizyta została anulowana"));
+        onClose();
+        return;
+    };
+
+
+    const handleFinishVisit = async () => {
+        setLoading({ ...loading, actionLoading: true });
+        const response = await finishVisit(
+            appointmentId as string,
+            etag as string
+        );
+        setLoading({ ...loading, actionLoading: false });
+        if ("errorMessage" in response) {
+            showNotification(failureNotificationItems(response.errorMessage));
+            onClose();
+            return;
+        }
+        showNotification(successNotficiationItems("Wizyta została zakończona"));
         onClose();
         return;
     };
@@ -151,9 +172,11 @@ export const AppointmentDetails = ({
                                     </p>
                                 </div>
                                 <div className={styles.detail_wrapper}>
-                                    <p className={styles.title}>Opis:</p>
+                                    <p className={styles.title}>
+                                        Status wizyty:
+                                    </p>
                                     <p className={styles.description}>
-                                        {appointment?.description}
+                                        {appointment?.status}
                                     </p>
                                 </div>
                                 <div className={styles.detail_wrapper}>
@@ -185,7 +208,7 @@ export const AppointmentDetails = ({
                                     <div className={styles.description}>
                                         <ActionButton
                                             title="Wyświetl"
-                                            color="purple"
+                                            color="cyan"
                                             icon={faInfoCircle}
                                             onClick={() =>
                                                 setImplantModal(true)
@@ -194,15 +217,25 @@ export const AppointmentDetails = ({
                                     </div>
                                 </div>
                                 <div className={styles.detail_wrapper}>
-                                    <p className={styles.title}>
-                                        Status wizyty:
-                                    </p>
+                                    <p className={styles.title}>Opis:</p>
                                     <p className={styles.description}>
-                                        {appointment?.status}
+                                        {appointment?.description}
                                     </p>
                                 </div>
                             </div>
                             <div className={styles.button_holder}>
+                                {appointment?.status !== "REJECTED" &&
+                                appointment?.status !== "FINISHED" &&
+                                aLevel === "SPECIALIST" ? (
+                                    <ActionButton
+                                        title="Zakończ wizytę"
+                                        color="cyan"
+                                        icon={faInfoCircle}
+                                        onClick={() => {
+                                            setFinishVisitModalOpen(true);
+                                        }}
+                                    ></ActionButton>
+                                ) : null}
                                 {appointment?.status !== "REJECTED" &&
                                 appointment?.status !== "FINISHED" &&
                                 aLevel === "ADMINISTRATOR" ? (
@@ -216,8 +249,8 @@ export const AppointmentDetails = ({
                                     ></ActionButton>
                                 ) : null}
                                 <ActionButton
-                                    title="Edytuj wizyte"
-                                    color="purple"
+                                    title="Edytuj wizytę"
+                                    color="cyan"
                                     icon={faInfoCircle}
                                     onClick={() => routeChange(appointmentId)}
                                 ></ActionButton>
@@ -235,6 +268,21 @@ export const AppointmentDetails = ({
                                     }}
                                 >
                                     {"Czy na pewno chcesz anulować wizytę?"}
+                                </ConfirmActionModal>
+                                <ConfirmActionModal
+                                    title={"Oznacz wizytę jako zakończoną"}
+                                    isLoading={loading.actionLoading as boolean}
+                                    isOpened={isFinishVisitModalOpen}
+                                    handleFunction={async () => {
+                                        await handleFinishVisit();
+                                        setFinishVisitModalOpen(false);
+                                        window.location.reload();
+                                    }}
+                                    onClose={() => {
+                                        setFinishVisitModalOpen(false);
+                                    }}
+                                >
+                                    {"Czy na pewno chcesz zakończyć wizytę?"}
                                 </ConfirmActionModal>
                             </div>
                         </div>

@@ -56,20 +56,19 @@ const InputWithValidation = ({
 
     return (
         <div className={styles.edit_field_wrapper}>
-            <div className={styles.input_wrapper} style={styleWidth}>
-                {required ? (
-                    <>
-                        <p className={styles.title}>
-                            {title} <span style={{ color: "red" }}>*</span>
-                        </p>
-                    </>
-                ) : (
-                    <>
-                        <p className={styles.title}>{title}</p>
-                    </>
-                )}
+            <p className={styles.title}>
+                {title}
+                {required && <span style={{ color: "red" }}> *</span>}
+            </p>
 
+            <form
+                className={styles.input_wrapper}
+                style={styleWidth}
+                autoComplete="off"
+
+            >
                 <input
+                    autoComplete="off"
                     type={type}
                     value={input}
                     onChange={handleChange}
@@ -84,7 +83,7 @@ const InputWithValidation = ({
                     icon={isValid ? faCheck : faClose}
                     color="#00FF66"
                 />
-            </div>
+            </form>
         </div>
     );
 };

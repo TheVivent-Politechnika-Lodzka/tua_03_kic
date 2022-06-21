@@ -267,11 +267,6 @@ interface EditOwnAppointmentRespone {
     etag: string;
 }
 
-interface EditAppointmentRespone {
-    appointment: AppointmentListElementDto;
-    etag: string;
-}
-
 export async function createImplant(params: CreateImplantRequest) {
     try {
         const { data } = await axios.put<CreateImplantResponse>(
@@ -316,6 +311,22 @@ export async function editOwnAppointment(params: EditOwnAppointmentRequest) {
     }
 }
 
+interface EditAppointmentRequest {
+    id: string;
+    version: number;
+    description: string;
+    etag: string;
+    status: string;
+}
+
+interface EditAppointmentResponse extends Etag {
+    id: string;
+    version: number;
+    description: string;
+    etag: string;
+    status: string;
+}
+
 export async function editAppointmentByAdmin(params: EditAppointmentRequest) {
     try {
         const { etag, ...body } = params;
@@ -348,6 +359,7 @@ export interface SpecialistListElementDto {
     surname: string;
     email: string;
     phoneNumber: string;
+    url: string;
 }
 
 export interface SpecialistListResponse {
@@ -451,3 +463,99 @@ export async function cancelAnyVisit(id: string, etag: string) {
     }
 }
 //------------------------------------------------- KONIEC MOP 13 ----------------------------------------------------//
+
+//----------------------------------------------------- MOP 9 -------------------------------------------------------//
+
+export async function getSpecialistAvailability(
+    specialistId: string,
+    month: Instant,
+    duration: number
+) {
+    try {
+        const { data } = await axios.get<string[]>(
+            `/mop/specialists/${specialistId}/availability/${month.toString()}/${duration}`
+        );
+
+        const availability = data.map((day) => {
+            const tmp = Instant.parse(day);
+            return tmp;
+        });
+
+        return availability;
+    } catch (error) {
+        if (axios.isAxiosError(error) && error.response) {
+            return {
+                errorMessage: error.response.data as string,
+                status: error.response.status,
+            } as ApiError;
+        }
+        throw error;
+    }
+}
+
+interface CreateAppointmentRequest {
+    specialistId: string;
+    implantId: string;
+    startDate: string;
+}
+
+interface CreateAppointmentResponse extends AppointmentDto, Etag {}
+
+export async function createAppointment(request: CreateAppointmentRequest) {
+    try {
+        const { data, headers } = await axios.post<AppointmentDto>(
+            `/mop/visit/create`,
+            request
+        );
+
+        const etag = headers["etag"];
+        return { ...data, etag } as CreateAppointmentResponse;
+    } catch (error) {
+        if (axios.isAxiosError(error) && error.response) {
+            return {
+                errorMessage: error.response.data as string,
+                status: error.response.status,
+            } as ApiError;
+        }
+        throw error;
+    }
+}
+
+//------------------------------------------------- KONIEC MOP 6 ----------------------------------------------------//
+
+//------------------------------------------------- MOP 14 ----------------------------------------------------//
+
+export interface GetAppointmentResponse
+    extends AppointmentListElementDto,
+        Etag {}
+
+/**
+ * Odwołaj dowolną wizytę
+ *
+ * @param id identyfikator wizyty
+ * @returns GetAppointmentResponse | {errorMessage, status}
+ */
+export async function finishVisit(id: string, etag: string) {
+    try {
+        const { data, headers } = await axios.patch(
+            `/mop/finish/visit/${id}`,
+            {},
+            {
+                headers: {
+                    "If-Match": etag,
+                },
+            }
+        );
+        const newEtag = headers["etag"];
+        return { ...data, etag: newEtag } as GetAppointmentResponse;
+    } catch (error) {
+        if (axios.isAxiosError(error) && error.response) {
+            return {
+                errorMessage: error.response.data as string,
+                status: error.response.status,
+            } as ApiError;
+        }
+        throw error;
+    }
+}
+//------------------------------------------------- KONIEC MOP 14 ----------------------------------------------------//

@@ -16,6 +16,10 @@ import pl.lodz.p.it.ssbd2022.ssbd03.mop.dto.ImplantDto;
 
 import java.util.UUID;
 
+import pl.lodz.p.it.ssbd2022.ssbd03.validation.DurationValue;
+
+import java.util.UUID;
+
 @DenyAll
 public interface MOPEndpointInterface {
 
@@ -163,6 +167,27 @@ public interface MOPEndpointInterface {
     @Consumes(MediaType.APPLICATION_JSON)
     @Path("/visit/create")
     default Response createAppointment(@Valid CreateAppointmentDto dto) {
+        throw new MethodNotImplementedException();
+    }
+
+    /**
+     * MOP.9 - Zarezerwuj wizytę, dostępność specjalisty
+     *
+     * @param specialistId - id specjalisty
+     * @param month         - miesiąc wizyty (Instant)
+     * @param duration      - długość wizyty
+     * @return lista dostępności
+     * @throws MethodNotImplementedException w przypadku braku implementacji metody
+     */
+    @GET
+    @RolesAllowed(Roles.CLIENT)
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Path("/specialists/{id}/availability/{month}/{duration}")
+    default Response getSpecialistAvailability(
+            @PathParam("id") UUID specialistId,
+            @PathParam("month") String month,
+            @DurationValue @PathParam("duration") int duration) {
         throw new MethodNotImplementedException();
     }
 

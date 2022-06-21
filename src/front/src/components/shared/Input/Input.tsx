@@ -7,6 +7,7 @@ interface InputProps {
     type: string;
     onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
     style?: React.CSSProperties;
+    required?: boolean;
 }
 
 const Input = ({
@@ -16,10 +17,14 @@ const Input = ({
     type,
     onChange,
     style,
+    required = false,
 }: InputProps) => {
     return (
         <div className={styles.input_wrapper} style={style}>
-            <p className={styles.title}>{title}</p>
+            <p className={styles.title}>
+                {title}
+                {required && <span className={styles.star}> *</span>}
+            </p>
             <input
                 className={styles.input}
                 value={value}

@@ -1,0 +1,138 @@
+@import "/src/variables.scss";
+
+.access_level_name_header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: $white;
+    font-size: 2rem;
+    font-weight: bold;
+    padding: 3rem;
+    margin-bottom: 0.6rem;
+    width: 100%;
+    text-align: start;
+    border-top: 2px solid $light-gray;
+}
+
+.edit_own_account_page {
+    width: 100%;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    color: white;
+    flex-direction: column;
+    background-color: $primary-color;
+    overflow: hidden;
+
+    .edit_own_account_header {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 1.75rem;
+        font-weight: bold;
+        padding: 2rem;
+        color: $white;
+    }
+
+    .edit_own_account_content {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-evenly;
+        width: 85%;
+        margin-block: 3rem;
+
+        .edit_data_account_wrapper {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            background-color: $secondary-color;
+            border-radius: 2rem;
+            width: 80%;
+            animation: 0.5s fadeInFromBottom ease-in-out;
+
+            .avatar_wrapper {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                position: relative;
+                cursor: pointer;
+                align-self: flex-start;
+                left: 4rem;
+                top: -3rem;
+                margin-bottom: 2rem;
+                border: 10px solid $secondary-color;
+                border-radius: 100%;
+
+                .change_avatar {
+                    width: 15rem;
+                    height: 15rem;
+                    border-radius: 100%;
+                }
+
+                .edit_avatar_icon_wrapper {
+                    position: absolute;
+                    top: 11rem;
+                    left: 11rem;
+                    padding: 1rem;
+                    border-radius: 100%;
+                    background-color: $light-gray;
+
+                    .edit_avatar_icon {
+                        font-size: 1.5rem;
+                    }
+                }
+            }
+
+            .edit_fields_wrapper {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                width: 90%;
+                
+
+                .edit_field {
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                    flex-direction: row;
+                    width: 90%;
+                    margin-bottom: 2.5rem;
+                }
+
+                .edit_data_validation_wrapper {
+                    display: flex;
+                    justify-content: center;
+                    align-items: flex-start;
+                    flex-direction: column;
+                    width: 100%;
+                    height: 28rem;
+                }
+            }
+
+            .edit_data_buttons_wrapper {
+                display: flex;
+                justify-content: flex-start;
+                flex-direction: row;
+
+                & > * {
+                    width: 13rem;
+                    padding: 0.15rem 1.5rem;
+                    margin: 1.5rem;
+                }
+            }
+        }
+    }
+}
+
+@keyframes fadeInFromBottom {
+    0% {
+        opacity: 0;
+        transform: translateY(10rem);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
