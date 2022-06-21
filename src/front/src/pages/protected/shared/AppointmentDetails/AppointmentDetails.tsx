@@ -9,6 +9,7 @@ import {
     getAppointmentDetails,
     cancelAnyVisit,
     finishVisit,
+    cancelOwnVisit,
 } from "../../../../api/mop";
 import ImplantDetails from "../../../../components/ImplantDetails/ImplantDetails";
 import ActionButton from "../../../../components/shared/ActionButton/ActionButton";
@@ -52,6 +53,8 @@ export const AppointmentDetails = ({
         useState<boolean>(false);
     const [isFinishVisitModalOpen, setFinishVisitModalOpen] =
         useState<boolean>(false);
+    const [isFinishOwnVisitModalOpen, setFinishOwnVisitModalOpen] =
+        useState<boolean>(false);
 
     const handleGetAppointmentDetails = async () => {
         const data = await getAppointmentDetails(appointmentId);
@@ -82,6 +85,22 @@ export const AppointmentDetails = ({
         return;
     };
 
+    const handleCancelOwnVisit = async () => {
+        setLoading({ ...loading, actionLoading: true });
+        const response = await cancelOwnVisit(
+            appointmentId as string,
+            etag as string
+        );
+        setLoading({ ...loading, actionLoading: false });
+        if ("errorMessage" in response) {
+            showNotification(failureNotificationItems(response.errorMessage));
+            onClose();
+            return;
+        }
+        showNotification(successNotficiationItems("Wizyta została anulowana"));
+        onClose();
+        return;
+    };
 
     const handleFinishVisit = async () => {
         setLoading({ ...loading, actionLoading: true });
@@ -225,6 +244,23 @@ export const AppointmentDetails = ({
                             </div>
                             <div className={styles.button_holder}>
                                 {appointment?.status !== "REJECTED" &&
+                                    appointment?.status !== "FINISHED" &&
+                                    ["SPECIALIST", "CLIENT"].includes(
+                                        aLevel
+                                    ) && (
+                                        <ActionButton
+                                            title="Odwołaj wizytę"
+                                            color="cyan"
+                                            icon={faInfoCircle}
+                                            onClick={() => {
+                                                setFinishOwnVisitModalOpen(
+                                                    true
+                                                );
+                                                window.location.reload();
+                                            }}
+                                        ></ActionButton>
+                                    )}
+                                {appointment?.status !== "REJECTED" &&
                                 appointment?.status !== "FINISHED" &&
                                 aLevel === "SPECIALIST" ? (
                                     <ActionButton
@@ -254,6 +290,20 @@ export const AppointmentDetails = ({
                                     icon={faInfoCircle}
                                     onClick={() => routeChange(appointmentId)}
                                 ></ActionButton>
+                                <ConfirmActionModal
+                                    title={"Odwołaj wizytę"}
+                                    isLoading={loading.actionLoading as boolean}
+                                    isOpened={isFinishOwnVisitModalOpen}
+                                    handleFunction={async () => {
+                                        await handleCancelOwnVisit();
+                                        setFinishOwnVisitModalOpen(false);
+                                    }}
+                                    onClose={() => {
+                                        setFinishOwnVisitModalOpen(false);
+                                    }}
+                                >
+                                    {"Czy na pewno chcesz anulować wizytę?"}
+                                </ConfirmActionModal>
                                 <ConfirmActionModal
                                     title={"Odwołaj wizytę"}
                                     isLoading={loading.actionLoading as boolean}
