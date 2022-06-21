@@ -256,7 +256,6 @@ export const AppointmentDetails = ({
                                                 setFinishOwnVisitModalOpen(
                                                     true
                                                 );
-                                                window.location.reload();
                                             }}
                                         ></ActionButton>
                                     )}
@@ -297,6 +296,7 @@ export const AppointmentDetails = ({
                                     handleFunction={async () => {
                                         await handleCancelOwnVisit();
                                         setFinishOwnVisitModalOpen(false);
+                                        window.location.reload();
                                     }}
                                     onClose={() => {
                                         setFinishOwnVisitModalOpen(false);
