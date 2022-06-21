@@ -211,7 +211,7 @@
     border-radius: 2.2rem;
     color: $white;
 
-    div {
+    &>div {
         display: block;
         width: 100%;
         text-align: center;
@@ -229,7 +229,7 @@
             font-weight: bold;
         }
 
-        div {
+        &>div {
             display: flex;
             justify-content: space-evenly;
 
@@ -239,7 +239,7 @@
                 border-radius: 100%;
             }
     
-            div {
+            &>div {
                 display: flex;
                 flex-direction: column;
                 justify-content: space-evenly;

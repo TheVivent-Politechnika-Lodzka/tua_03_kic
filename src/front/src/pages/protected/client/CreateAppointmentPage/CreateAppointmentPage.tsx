@@ -309,7 +309,7 @@ const SummaryModal = ({
                         {choosenSpecialist?.surname}
                     </h2>
                 </div>
-                <div>
+                <div style={{ width: "20rem" }}>
                     <ActionButton
                         title="Zarezerwuj"
                         color="green"
