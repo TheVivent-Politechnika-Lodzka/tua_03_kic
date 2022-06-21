@@ -7,6 +7,7 @@ import pl.lodz.p.it.ssbd2022.ssbd03.entities.ImplantReview;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.MethodNotImplementedException;
 import pl.lodz.p.it.ssbd2022.ssbd03.utils.PaginationData;
 
+import java.time.Duration;
 import java.time.Instant;
 import java.util.List;
 import java.util.UUID;
@@ -144,6 +145,17 @@ public interface MOPServiceInterface extends ServiceLocalInterface {
      * @throws MethodNotImplementedException w przypadku niezaimplementowanej metody
      */
     default Appointment createAppointment(String clientLogin, UUID specialistId, UUID implantId, Instant startDate) {
+        throw new MethodNotImplementedException();
+    }
+
+    /**
+     * MOP.9 - Zarezerwuj wizytę, dostępność specjalisty
+     * @param specialistId  - id specjalisty
+     * @param month         - miesiąc
+     * @return lista dostępności
+     * @throws MethodNotImplementedException w przypadku braku implementacji metody
+     */
+    default List<Instant> getSpecialistAvailabilityInMonth(UUID specialistId, Instant month, Duration duration) {
         throw new MethodNotImplementedException();
     }
 
