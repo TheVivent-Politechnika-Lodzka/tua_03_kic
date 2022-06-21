@@ -559,3 +559,27 @@ export async function finishVisit(id: string, etag: string) {
     }
 }
 //------------------------------------------------- KONIEC MOP 14 ----------------------------------------------------//
+
+export async function cancelOwnVisit(appointmentId: string, etag: string) {
+    try {
+        const { data, headers } = await axios.patch(
+            `/mop/visit/cancel/my/${appointmentId}`,
+            {},
+            {
+                headers: {
+                    "If-Match": etag,
+                },
+            }
+        );
+        const newEtag = headers["etag"];
+        return { ...data, etag: newEtag } as GetAppointmentResponse;
+    } catch (error) {
+        if (axios.isAxiosError(error) && error.response) {
+            return {
+                errorMessage: error.response.data as string,
+                status: error.response.status,
+            } as ApiError;
+        }
+        throw error;
+    }
+}

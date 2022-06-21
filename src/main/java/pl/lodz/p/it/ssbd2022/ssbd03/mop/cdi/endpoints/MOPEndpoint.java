@@ -6,17 +6,13 @@ import jakarta.inject.Inject;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.core.Response;
 import pl.lodz.p.it.ssbd2022.ssbd03.common.Config;
-import pl.lodz.p.it.ssbd2022.ssbd03.entities.Appointment;
-import pl.lodz.p.it.ssbd2022.ssbd03.entities.*;
-import pl.lodz.p.it.ssbd2022.ssbd03.common.Roles;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.Account;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.Appointment;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.Implant;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.ImplantReview;
-import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.MethodNotImplementedException;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.TransactionException;
-import pl.lodz.p.it.ssbd2022.ssbd03.mappers.AccountMapper;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.database.InAppOptimisticLockException;
+import pl.lodz.p.it.ssbd2022.ssbd03.mappers.AccountMapper;
 import pl.lodz.p.it.ssbd2022.ssbd03.mappers.AppointmentMapper;
 import pl.lodz.p.it.ssbd2022.ssbd03.mappers.ImplantMapper;
 import pl.lodz.p.it.ssbd2022.ssbd03.mappers.ImplantReviewMapper;
@@ -24,9 +20,6 @@ import pl.lodz.p.it.ssbd2022.ssbd03.mop.dto.*;
 import pl.lodz.p.it.ssbd2022.ssbd03.mop.ejb.services.MOPServiceInterface;
 import pl.lodz.p.it.ssbd2022.ssbd03.security.AuthContext;
 import pl.lodz.p.it.ssbd2022.ssbd03.security.Tagger;
-
-import java.util.UUID;
-
 import pl.lodz.p.it.ssbd2022.ssbd03.utils.PaginationData;
 
 import java.time.Duration;
@@ -317,8 +310,8 @@ public class MOPEndpoint implements MOPEndpointInterface {
      * MOP.9 - Zarezerwuj wizytę, dostępność specjalisty
      *
      * @param specialistId - id specjalisty
-     * @param month         - miesiąc wizyty (Instant)
-     * @param duration      - długość wizyty
+     * @param month        - miesiąc wizyty (Instant)
+     * @param duration     - długość wizyty
      * @return lista dostępności
      * @throws TransactionException w przypadku braku zatwierdzenia transakcji
      */
