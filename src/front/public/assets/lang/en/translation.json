@@ -428,13 +428,13 @@
         "price": "Price:",
         "producer": "Producer:",
         "time": "Installation time:",
-        "applied": "A:plied",
+        "applied": "Aplied",
         "times": "times",
         "state": "State:",
         "available": "Available",
         "notAvailable": "Not available",
         "edit": "Edit",
-        "archive": "Archieve",
+        "archive": "Archive",
         "confirmActionModal": {
             "title": "Archieve an implant",
             "message": "Are you sure you want to archive the implant? The operation is irreversible!"

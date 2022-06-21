@@ -189,8 +189,8 @@ const ImplantDetails = ({ id, isOpened, onClose }: ImplantDetailsProps) => {
                                         }
                                     >
                                         {implant?.archived
-                                            ? t("implantDetails.available")
-                                            : t("implantDetails.notAvailable")}
+                                            ? t("implantDetails.notAvailable")
+                                            : t("implantDetails.available")}
                                     </p>
                                 </div>
                             </div>
