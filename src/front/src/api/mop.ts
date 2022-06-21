@@ -504,13 +504,13 @@ export async function getImplantsReviews(
 }
 
 interface GetResponse {
-    data: ImplantReview[];
+    data: any;
 }
 
 export async function deleteImplantReview(implantId: string) {
     try {
         const {data} = await axios.delete<GetResponse>(`/mop/implant/review/${implantId}`);
-        return data;
+        return data as GetResponse;
     } catch (error) {
         if (axios.isAxiosError(error) && error.response) {
             return {

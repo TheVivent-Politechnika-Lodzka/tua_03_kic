@@ -3,6 +3,7 @@ import {
     faEdit,
     faShoppingCart,
     faFolder,
+    faStar,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useEffect, useState } from "react";
@@ -185,11 +186,11 @@ const ImplantDetails = ({ id, isOpened, onClose }: ImplantDetailsProps) => {
                                 />
                                 <ActionButton
                                     title="Recenzje"
-                                    icon={faShoppingCart}
+                                    icon={faStar}
                                     onClick={() => {
                                         setReviewsModal(true);
                                     }}
-                                    color="green"
+                                    color="orange"
                                 />
                             </div>
                             {accessLevel === "ADMINISTRATOR" && (

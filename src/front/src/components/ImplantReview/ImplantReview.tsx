@@ -9,6 +9,7 @@ import { Rating } from "@mui/material";
 import { Api } from "@reduxjs/toolkit/dist/query";
 import { useState } from "react";
 import { deleteImplantReview } from "../../api";
+import { useStoreSelector } from "../../redux/reduxHooks";
 import {
     failureNotificationItems,
     successNotficiationItems,
@@ -24,13 +25,18 @@ const ImplantReview = ({ review }: ImplantReviewProps) => {
     const [modal, setModal] = useState<boolean>(false);
     const [loading, setLoading] = useState<boolean>(false);
 
+    const accessLevel = useStoreSelector((state) => state.user.cur);
+    const login = useStoreSelector((state) => state.user.sub);
+
     const handleDeleteImplantReview = async () => {
         if (!review.id) return;
         setLoading(true);
         const data = await deleteImplantReview(review.id);
         if ("errorMessage" in data) {
             setLoading(false);
+            setModal(false);
             showNotification(failureNotificationItems(data.errorMessage));
+            return;
         }
         setLoading(false);
         setModal(false);
@@ -61,22 +67,25 @@ const ImplantReview = ({ review }: ImplantReviewProps) => {
                     <p className={styles.description}>{review?.review}</p>
                 </div>
             </div>
-            <div className={styles.delete_button}>
-                <FontAwesomeIcon
-                    icon={faTrashAlt}
-                    className={styles.icon}
-                    onClick={() => {
-                        setModal(true);
-                    }}
-                />
-            </div>
+            {(accessLevel === "ADMINISTRATOR" ||
+                review.clientLogin === login) && (
+                <div className={styles.delete_button}>
+                    <FontAwesomeIcon
+                        icon={faTrashAlt}
+                        className={styles.icon}
+                        onClick={() => {
+                            setModal(true);
+                        }}
+                    />
+                </div>
+            )}
             <ConfirmActionModal
                 isOpened={modal}
                 onClose={() => {
                     setModal(false);
                 }}
                 handleFunction={async () => {
-                    await deleteImplantReview(review?.id);
+                    await handleDeleteImplantReview();
                 }}
                 title="Usuń recenzję"
                 isLoading={loading}
