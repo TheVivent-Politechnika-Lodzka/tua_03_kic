@@ -2,7 +2,7 @@ import {
     faClose,
     faEdit,
     faShoppingCart,
-    faFolder
+    faFolder,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useEffect, useState } from "react";
@@ -20,6 +20,8 @@ import { useStoreSelector } from "../../redux/reduxHooks";
 import ConfirmActionModal from "../shared/ConfirmActionModal/ConfirmActionModal";
 import { useNavigate } from "react-router";
 import ImplantReview from "../ImplantReview/ImplantReview";
+import { ImplantListPage } from "../../pages/unprotected/ImplantListPage";
+import ImplantReviewsListPage from "../../pages/protected/shared/ImplantReviewsListPage/ImplantsReviewsListPage";
 
 interface ImplantDetailsProps {
     id: string;
@@ -185,9 +187,7 @@ const ImplantDetails = ({ id, isOpened, onClose }: ImplantDetailsProps) => {
                                     title="Recenzje"
                                     icon={faShoppingCart}
                                     onClick={() => {
-                                        navigate(
-                                            `/implants/${implant?.id}/create-appointment`
-                                        );
+                                        setReviewsModal(true);
                                     }}
                                     color="green"
                                 />
@@ -199,7 +199,11 @@ const ImplantDetails = ({ id, isOpened, onClose }: ImplantDetailsProps) => {
                                             title="Edytuj"
                                             icon={faEdit}
                                             color="green"
-                                            onClick={() => navigate(`/implant/${implant?.id}`)}
+                                            onClick={() =>
+                                                navigate(
+                                                    `/implant/${implant?.id}`
+                                                )
+                                            }
                                         />
                                     </div>
                                     <div className={styles.button}>
@@ -217,7 +221,10 @@ const ImplantDetails = ({ id, isOpened, onClose }: ImplantDetailsProps) => {
                         </div>
                     </div>
                 )}
-                <ImplantReview />
+                <ImplantReviewsListPage
+                    isOpened={reviewsModal}
+                    onClose={() => setReviewsModal(false)}
+                />
                 <ConfirmActionModal
                     isOpened={opened}
                     onClose={() => {
