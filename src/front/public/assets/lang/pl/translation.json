@@ -219,9 +219,12 @@
         "english": "english",
         "send_email": "Wysłaliśmy Ci maila z linkiem powierdzającym"
     },
-    "clocker" : {
+    "clocker": {
         "refresh": "Odśwież sesje",
-        "logInAgain" : "Zaloguj sie ponownie"
+        "logInAgain": "Zaloguj sie ponownie"
+    },
+
+    "activateAccountPage": {
+        "accountActivated": "Konto zostało aktywowane"
     }
-    
 }
