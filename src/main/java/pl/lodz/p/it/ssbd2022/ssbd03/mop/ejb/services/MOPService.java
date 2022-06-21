@@ -12,36 +12,34 @@ import jakarta.interceptor.Interceptors;
 import pl.lodz.p.it.ssbd2022.ssbd03.common.AbstractService;
 import pl.lodz.p.it.ssbd2022.ssbd03.common.Roles;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.*;
- import pl.lodz.p.it.ssbd2022.ssbd03.entities.Appointment;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.InvalidParametersException;
-import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.MethodNotImplementedException;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.appointment.*;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.Implant;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.appointment.AppointmentFinishAttemptBeforeEndDateException;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.appointment.AppointmentFinishAttemptByInvalidSpecialistException;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.appointment.AppointmentStatusException;
-import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.account.AccountStatusException;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.implant.ImplantStatusException;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.appointment.AppointmentNotFinishedException;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.appointment.AppointmentNotFoundException;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.implant.ImplantArchivedException;
-import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.appointment.AppointmentStatusException;
+import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.implant.ImplantStatusException;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.implant_review.ClientRemovesOtherReviewsException;
 import pl.lodz.p.it.ssbd2022.ssbd03.interceptors.TrackerInterceptor;
-import pl.lodz.p.it.ssbd2022.ssbd03.mop.ejb.facades.AppointmentFacade;
 import pl.lodz.p.it.ssbd2022.ssbd03.mop.ejb.facades.AccountFacade;
-import pl.lodz.p.it.ssbd2022.ssbd03.mop.ejb.facades.AppointmentFacade;
 import pl.lodz.p.it.ssbd2022.ssbd03.mop.ejb.facades.ImplantFacade;
 import pl.lodz.p.it.ssbd2022.ssbd03.mop.ejb.facades.ImplantReviewFacade;
 import pl.lodz.p.it.ssbd2022.ssbd03.security.AuthContext;
-import pl.lodz.p.it.ssbd2022.ssbd03.mop.ejb.facades.*;
 import pl.lodz.p.it.ssbd2022.ssbd03.utils.PaginationData;
 
-import java.util.Date;
+import java.time.*;
+import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
 import pl.lodz.p.it.ssbd2022.ssbd03.mop.ejb.facades.AppointmentFacade;
+
+import javax.management.relation.Role;
 
 import static pl.lodz.p.it.ssbd2022.ssbd03.entities.Status.FINISHED;
 import static pl.lodz.p.it.ssbd2022.ssbd03.entities.Status.REJECTED;
@@ -53,12 +51,7 @@ import java.util.UUID;
 
 import java.util.logging.Logger;
 
-import java.util.UUID;
-
 import static pl.lodz.p.it.ssbd2022.ssbd03.entities.Status.*;
-
-import static pl.lodz.p.it.ssbd2022.ssbd03.entities.Status.FINISHED;
-import static pl.lodz.p.it.ssbd2022.ssbd03.entities.Status.REJECTED;
 
 @Stateful
 @DenyAll
@@ -113,8 +106,8 @@ public class MOPService extends AbstractService implements MOPServiceInterface, 
      *
      * @param id identyfikator wizyty, która ma zostać odwołana
      * @return Wizyta, która została odwołana
-     * @throws AppointmentStatusException, gdy wizyta jest już zakończona (wykonana/odwołana)
-     * @throws AppointmentDoesNotBelongToYouException, gdy wizyta nie należy do Ciebie
+     * @throws AppointmentStatusException,                   gdy wizyta jest już zakończona (wykonana/odwołana)
+     * @throws AppointmentDoesNotBelongToYouException,       gdy wizyta nie należy do Ciebie
      * @throws AppointmentCannotBeCancelledAnymoreException, gdy wizyta nie może zostać odwołana
      */
     @Override
@@ -132,7 +125,7 @@ public class MOPService extends AbstractService implements MOPServiceInterface, 
         // sprawdzenie czy wizyta należy do tego konta
         if (!(
                 appointment.getClient().getId().equals(thisAccount.getId())
-                || appointment.getSpecialist().getId().equals(thisAccount.getId())
+                        || appointment.getSpecialist().getId().equals(thisAccount.getId())
         ))
             throw new AppointmentDoesNotBelongToYouException();
 
@@ -182,10 +175,10 @@ public class MOPService extends AbstractService implements MOPServiceInterface, 
 
     @Override
     @RolesAllowed(Roles.ADMINISTRATOR)
-    public Implant editImplant(UUID uuid, Implant implant){
+    public Implant editImplant(UUID uuid, Implant implant) {
         Implant implantFromDB = implantFacade.findByUUID(uuid);
 
-        if(implantFromDB.isArchived()){
+        if (implantFromDB.isArchived()) {
             throw ImplantArchivedException.editArchivedImplant();
         }
 
@@ -211,7 +204,7 @@ public class MOPService extends AbstractService implements MOPServiceInterface, 
      * @throws InvalidParametersException jeśli podano nieprawidłowe parametry
      */
     @Override
-    @PermitAll
+    @RolesAllowed({Roles.ANONYMOUS, Roles.AUTHENTICATED})
     public PaginationData findImplants(int page, int pageSize, String phrase, boolean archived) {
         if (page == 0 || pageSize == 0) {
             throw new InvalidParametersException();
@@ -221,20 +214,24 @@ public class MOPService extends AbstractService implements MOPServiceInterface, 
 
     /**
      * Metoda zapewniająca możliwość oznaczenia wizyty jako zakończonej
-     * @param id identyfikator wizyty
+     *
+     * @param id    identyfikator wizyty
      * @param login login specjalisty oznaczającego wizytę jako zakończoną
      * @return wizyta oznaczona jako zakończona
      * @throws AppointmentFinishAttemptByInvalidSpecialistException gdy specjalista próbuje zakończyć wizytę inną niż własna
-     * @throws AppointmentStatusException gdy wizyta jest już odwołana bądź oznaczona jako zakończona
-     * @throws AppointmentFinishAttemptBeforeEndDateException gdy specjalista próbuje oznaczyc wizytę jako zakończoną przed datą zakończenia
+     * @throws AppointmentStatusException                           gdy wizyta jest już odwołana bądź oznaczona jako zakończona
+     * @throws AppointmentFinishAttemptBeforeEndDateException       gdy specjalista próbuje oznaczyc wizytę jako zakończoną przed datą zakończenia
      */
     @RolesAllowed(Roles.SPECIALIST)
     @Override
     public Appointment finishAppointment(UUID id, String login) {
         Appointment appointment = appointmentFacade.findById(id);
-        if (!appointment.getSpecialist().getLogin().equals(login)) throw new AppointmentFinishAttemptByInvalidSpecialistException();
-        if (appointment.getStatus().equals(REJECTED)) throw AppointmentStatusException.appointmentStatusAlreadyCancelled();
-        if (appointment.getStatus().equals(FINISHED)) throw AppointmentStatusException.appointmentStatusAlreadyFinished();
+        if (!appointment.getSpecialist().getLogin().equals(login))
+            throw new AppointmentFinishAttemptByInvalidSpecialistException();
+        if (appointment.getStatus().equals(REJECTED))
+            throw AppointmentStatusException.appointmentStatusAlreadyCancelled();
+        if (appointment.getStatus().equals(FINISHED))
+            throw AppointmentStatusException.appointmentStatusAlreadyFinished();
         if (appointment.getEndDate().isAfter(Instant.now())) throw new AppointmentFinishAttemptBeforeEndDateException();
 
         appointment.setStatus(FINISHED);
@@ -248,7 +245,7 @@ public class MOPService extends AbstractService implements MOPServiceInterface, 
     }
 
     @Override
-    @PermitAll
+    @RolesAllowed({Roles.ANONYMOUS, Roles.AUTHENTICATED})
     public Implant findImplantByUuid(UUID uuid) {
         return implantFacade.findByUUID(uuid);
     }
@@ -289,15 +286,16 @@ public class MOPService extends AbstractService implements MOPServiceInterface, 
      * @throws InvalidParametersException w przypadku podania nieprawidłowych parametrów
      */
     @Override
-    @PermitAll
+    @RolesAllowed(Roles.ADMINISTRATOR)
     public PaginationData findVisits(int page, int pageSize, String phrase) {
         if (page == 0 || pageSize == 0) {
             throw new InvalidParametersException();
         }
         return appointmentFacade.findInRangeWithPhrase(page, pageSize, phrase);
     }
+
     @Override
-    @PermitAll
+    @RolesAllowed(Roles.AUTHENTICATED)
     public Appointment findVisit(UUID uuid, String clientLogin){
         Account account = accountFacade.findByLogin(clientLogin);
         Appointment appointment = appointmentFacade.findById(uuid);
@@ -310,29 +308,33 @@ public class MOPService extends AbstractService implements MOPServiceInterface, 
         }
         return appointment;
     }
+
     /**
      * Metoda zwracająca edytowaną wizytę
      *
      * @param id     id wizyty
      * @param update wartości które mają zostać zaktualizowane
-     * @param login   nazwa uzytkownika który bierze udział w wizycie
-     * @return  Edytowana wizyta
-     * @throws UserNotPartOfAppointment w przypadku gdy użytkownik edytuje nie swoja wizytę
+     * @param login  nazwa uzytkownika który bierze udział w wizycie
+     * @return Edytowana wizyta
+     * @throws UserNotPartOfAppointment   w przypadku gdy użytkownik edytuje nie swoja wizytę
      * @throws AppointmentStatusException w przypadku gdy użytkownik chce edytować zakończoną lub odrzuconą wizytę
      */
     @Override
-    @PermitAll
+    @RolesAllowed({Roles.CLIENT, Roles.SPECIALIST})
     public Appointment editOwnAppointment(UUID id, Appointment update,String login){
         Appointment appointmentFromDb = appointmentFacade.findById(id);
         boolean didStartDateChange = false;
-        if(!(appointmentFromDb.getClient().getLogin().equals(login) || appointmentFromDb.getSpecialist().getLogin().equals(login))) {
+        if (!(appointmentFromDb.getClient().getLogin().equals(login) || appointmentFromDb.getSpecialist().getLogin().equals(login))) {
             throw new UserNotPartOfAppointment();
         }
-        if(appointmentFromDb.getStatus().equals(FINISHED)){
+        if (appointmentFromDb.getStatus().equals(FINISHED)) {
             throw AppointmentStatusException.appointmentStatusAlreadyFinished();
         }
-        if(appointmentFromDb.getStatus().equals(REJECTED)){
+        if (appointmentFromDb.getStatus().equals(REJECTED)) {
             throw AppointmentStatusException.appointmentStatusAlreadyCancelled();
+        }
+        if(update.getStartDate().isBefore(Instant.now())){
+            throw new StartDateIsInPast();
         }
         if(!update.getStartDate().equals(appointmentFromDb.getStartDate())){
         Instant endDate = update.getStartDate().plus(appointmentFromDb.getImplantDuration());
@@ -341,22 +343,22 @@ public class MOPService extends AbstractService implements MOPServiceInterface, 
         appointmentFromDb.setEndDate(endDate);
         didStartDateChange = true;
         }
-        if(appointmentFromDb.getClient().getLogin().equals(login) && didStartDateChange){
+        if (appointmentFromDb.getClient().getLogin().equals(login) && didStartDateChange) {
             appointmentFromDb.setStatus(PENDING);
-        }
-        else{
+        } else {
             appointmentFromDb.setDescription(update.getDescription());
-            if(update.getStatus().equals(ACCEPTED)){
+            if (update.getStatus().equals(ACCEPTED)) {
                 appointmentFromDb.setStatus(ACCEPTED);
             }
         }
         appointmentFacade.edit(appointmentFromDb);
         return appointmentFromDb;
     }
+
     @Override
-    @PermitAll
+    @RolesAllowed({Roles.CLIENT, Roles.SPECIALIST})
     public PaginationData findVisitsByLogin(int page, int pageSize, String login) {
-        if(page == 0 || pageSize == 0) {
+        if (page == 0 || pageSize == 0) {
             throw new InvalidParametersException();
         }
         return appointmentFacade.findByClientLoginInRange(page, pageSize, login);
@@ -373,7 +375,7 @@ public class MOPService extends AbstractService implements MOPServiceInterface, 
      * @throws InvalidParametersException przy podaniu błędnych parametrów
      */
     @Override
-    @PermitAll
+    @RolesAllowed({Roles.ANONYMOUS, Roles.AUTHENTICATED})
     public PaginationData findSpecialists(int page, int pageSize, String phrase) {
         if (page == 0 || pageSize == 0) {
             throw new InvalidParametersException();
@@ -408,7 +410,7 @@ public class MOPService extends AbstractService implements MOPServiceInterface, 
                 .stream()
                 .anyMatch(accessLevel -> accessLevel.getLevel().equals(Roles.ADMINISTRATOR));
 
-        if(!review.getClient().getLogin().equals(login) && !isAdmin) {
+        if (!review.getClient().getLogin().equals(login) && !isAdmin) {
             throw new ClientRemovesOtherReviewsException();
         }
         implantReviewFacade.remove(review);
@@ -424,8 +426,8 @@ public class MOPService extends AbstractService implements MOPServiceInterface, 
      * @param startDate    - data rozpoczęcia wizyty
      * @return nowa wizyta
      * @throws ImproperAccessLevelException - w przypadku próby przypisanie użytkownika do złej roli w wizycie
-     * @throws CantInstallArchivedImplant - w przypadku kiedy wszczep jest zarchiwizowany
-     * @throws StartDateIsInPast - w przypadku gdy podana data jest datą z przeszłości
+     * @throws CantInstallArchivedImplant   - w przypadku kiedy wszczep jest zarchiwizowany
+     * @throws StartDateIsInPast            - w przypadku gdy podana data jest datą z przeszłości
      */
     @Override
     @RolesAllowed(Roles.CLIENT)
@@ -473,18 +475,58 @@ public class MOPService extends AbstractService implements MOPServiceInterface, 
     }
 
     /**
-     * Metoda zwracająca listę wszystkich recenzji dla danego wszczepu
-     * @param page Aktualny numer strony
-     * @param pageSize Ilość recenzji na pojedynczej stronie
-     * @param id Identyfikator wszczepu
-     * @return Lista recenzji dla wszczepu
-     * @throws InvalidParametersException przy podaniu błędnych parametrów
+     * MOP.9 - Zarezerwuj wizytę, dostępność specjalisty
      *
+     * @param specialistId - id specjalisty
+     * @param month        - miesiąc
+     * @return lista dostępności
      */
     @Override
-    @PermitAll
+    @RolesAllowed(Roles.CLIENT)
+    public List<Instant> getSpecialistAvailabilityInMonth(UUID specialistId, Instant month, Duration duration) {
+        // wyciągnięcie ilości dni w danym miesiącu (trzeba tak, bo trzeba pamiętać, że każdy miesiąc ma inną ilość dni)
+        // oraz istnieją lata przestępne
+        int daysInMonth = YearMonth.from(month.atZone(ZoneId.systemDefault())).lengthOfMonth();
+        // wyciągnięcie pierwszego dnia miesiąca
+        LocalDate startLocalDate = YearMonth.from(month.atZone(ZoneId.systemDefault())).atDay(1);
+        Instant startDate = startLocalDate.atStartOfDay(ZoneId.systemDefault()).toInstant();
+
+        List<Instant> availableDates = new ArrayList<>();
+
+        // Założenie jest takie, że wszystkie dni miesiąca, są pracujące.
+        // Przeszukiwane są godziny od 8:00 do 15:00 każdego dnia
+        // reguła biznesowa: jeżeli zabieg zaczyna się przed 16:00, to może trwać nawet dłużej niż do 16:00
+        int i = 0;
+        for (; i < daysInMonth; i++) {
+            Instant day = startDate.plus(i, ChronoUnit.DAYS);
+
+            for (int j = 0; j < 8; j++) {
+                Instant start = day.plus(j + 8, ChronoUnit.HOURS);
+                Instant end = start.plus(duration);
+                try {
+                    checkDateAvailabilityForAppointment(specialistId, start, end);
+                    availableDates.add(start);
+                } catch (SpecialistHasNoTimeException e) {
+                    // do nothing
+                }
+            }
+        }
+        return availableDates;
+    }
+
+    /**
+     * Metoda zwracająca listę wszystkich recenzji dla danego wszczepu
+     *
+     * @param page     Aktualny numer strony
+     * @param pageSize Ilość recenzji na pojedynczej stronie
+     * @param id       Identyfikator wszczepu
+     * @return Lista recenzji dla wszczepu
+     * @throws InvalidParametersException przy podaniu błędnych parametrów
+     */
+    @Override
+    @RolesAllowed({Roles.ANONYMOUS, Roles.AUTHENTICATED})
     public PaginationData getAllImplantReviews(int page, int pageSize, UUID id) {
-        if(page == 0 || pageSize == 0) {
+        if (page == 0 || pageSize == 0) {
             throw new InvalidParametersException();
         }
         return implantReviewFacade.findInRangeWithPhrase(page, pageSize, id);
@@ -492,12 +534,14 @@ public class MOPService extends AbstractService implements MOPServiceInterface, 
 
     /**
      * Metoda weryfikująca, czy specjalista ma czas na wizytę w danym terminie
+     *
      * @param specialistId - identyfikator specjalisty
      * @param startDate    - data rozpoczęcia wizyty
      * @param endDate      - data zakończenia wizyty
      * @throws SpecialistHasNoTimeException w przypadku, gdy specjalista nie ma czasu na wizytę (appBase)
      */
     @TransactionAttribute(TransactionAttributeType.MANDATORY)
+    @RolesAllowed({Roles.CLIENT, Roles.SPECIALIST})
     private void checkDateAvailabilityForAppointment(UUID specialistId, Instant startDate, Instant endDate) {
         PaginationData appointments = appointmentFacade.findSpecialistAppointmentsInGivenPeriod(specialistId, startDate, endDate, 1, 1);
         if (appointments.getData().size() > 0) {

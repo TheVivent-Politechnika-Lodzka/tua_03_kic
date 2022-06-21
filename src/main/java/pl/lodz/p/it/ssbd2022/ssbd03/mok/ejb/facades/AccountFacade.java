@@ -83,7 +83,7 @@ public class AccountFacade extends AbstractFacade<Account> {
      * Wymaga podania encji w stanie zarządzalnym
      * @param account
      */
-    @RolesAllowed(Roles.ADMINISTRATOR)
+    @RolesAllowed(Roles.AUTHENTICATED)
     public void forceVersionIncrement(Account account) {
         entityManager.lock(account, LockModeType.OPTIMISTIC_FORCE_INCREMENT);
     }

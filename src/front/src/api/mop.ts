@@ -174,12 +174,6 @@ export async function getImplant(id: string) {
         throw error;
     }
 }
-export interface AppointmentListElementDto {
-    id: string;
-    description: string;
-    client_url: string;
-    specialist_url: string;
-}
 
 export interface AppointmentListResponse {
     totalCounts: number;
@@ -193,6 +187,13 @@ export interface AppointmentsListRequest {
     size: number;
     phrase?: string;
 }
+
+interface AppointmentDetails extends Taggable {
+    description: string;
+    status: Status;
+}
+
+export interface GetAppointmentResponse extends AppointmentDetails, Etag {}
 
 export async function listAppointments(params: AppointmentsListRequest) {
     try {
@@ -253,12 +254,15 @@ interface EditOwnAppointmentRequest {
     status: string;
 }
 
+
 interface EditOwnAppointmentRespone {
     appointment: AppointmentListElementDto;
     etag: string;
 }
 
+
 export async function createImplant(params: CreateImplantRequest) {
+
     try {
         const { data } = await axios.put<CreateImplantResponse>(
             "/mop/implant/create",
@@ -291,6 +295,31 @@ export async function editOwnAppointment(params: EditOwnAppointmentRequest) {
         );
         const newEtag = headers["etag"];
         return { ...data, etag: newEtag };
+    } catch (error) {
+        if (axios.isAxiosError(error) && error.response) {
+            return {
+                errorMessage: error.response.data as string,
+                status: error.response.status,
+            } as ApiError;
+        }
+        throw error;
+    }
+}
+
+export async function editAppointmentByAdmin(params: EditAppointmentRequest) {
+    try {
+        const {etag, ...body} = params
+        const { data, headers } = await axios.put<EditAppointmentRespone>(
+            `/mop/edit/visit/${body.id}`,
+            body,
+            {
+                headers: {
+                    "If-Match": etag,
+                },
+            }
+        );
+        const newEtag = headers["etag"];
+        return {...data, etag:newEtag };
     } catch (error) {
         if (axios.isAxiosError(error) && error.response) {
             return {
@@ -376,6 +405,65 @@ export async function archiveImplant(id: string, implantEtag: string) {
     }
 }
 //------------------------------------------------- KONIEC MOP 2 ----------------------------------------------------//
+
+//----------------------------------------------------- MOP 9 -------------------------------------------------------//
+
+export async function getSpecialistAvailability(
+    specialistId: string,
+    month: Instant,
+    duration: number
+) {
+    try {
+        const { data } = await axios.get<string[]>(
+            `/mop/specialists/${specialistId}/availability/${month.toString()}/${duration}`
+        );
+
+        const availability = data.map((day) => {
+            const tmp = Instant.parse(day);
+            return tmp;
+        });
+
+        return availability;
+    } catch (error) {
+        if (axios.isAxiosError(error) && error.response) {
+            return {
+                errorMessage: error.response.data as string,
+                status: error.response.status,
+            } as ApiError;
+        }
+        throw error;
+    }
+}
+
+interface CreateAppointmentRequest {
+    specialistId: string;
+    implantId: string;
+    startDate: string;
+}
+
+interface CreateAppointmentResponse extends AppointmentDto, Etag {}
+
+export async function createAppointment(request: CreateAppointmentRequest) {
+    try {
+        const { data, headers } = await axios.post<AppointmentDto>(
+            `/mop/visit/create`,
+            request
+        );
+
+        const etag = headers["etag"];
+        return { ...data, etag } as CreateAppointmentResponse;
+    } catch (error) {
+        if (axios.isAxiosError(error) && error.response) {
+            return {
+                errorMessage: error.response.data as string,
+                status: error.response.status,
+            } as ApiError;
+        }
+        throw error;
+    }
+}
+
+//------------------------------------------------- KONIEC MOP 6 ----------------------------------------------------//
 
 //------------------------------------------------- MOP 14 ----------------------------------------------------//
 

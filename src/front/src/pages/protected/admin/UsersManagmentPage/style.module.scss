@@ -5,6 +5,8 @@
     height: 100%;
     display: flex;
     flex-direction: column;
+    overflow-y: hidden;
+    
 
     .input_container {
         display: flex;
@@ -40,6 +42,7 @@
         align-items: center;
         flex-direction: column;
         margin-top: 2rem;
+        animation: 0.5s fadeInFromBottom ease-in-out;
 
         .table_header {
             display: flex;
@@ -77,5 +80,16 @@
         .loading {
             margin-top: 14rem;
         }
+    }
+}
+
+@keyframes fadeInFromBottom {
+    from {
+        opacity: 0;
+        transform: translateY(2.5rem);                
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
     }
 }

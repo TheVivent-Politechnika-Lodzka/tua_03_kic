@@ -4,7 +4,6 @@ import style from "./style.module.scss";
 import {
     faCancel,
     faCheck,
-    faCheckCircle,
     faEdit,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -84,10 +83,8 @@ const EditOwnAccountPageInternal = () => {
         };
         const response = await editOwnAccount(request);
         if ("errorMessage" in response) {
-            setError(response);
-            console.error(`${response.status} ${response.errorMessage}`);
-            alert(response.errorMessage);
             setLoading({ ...loading, actionLoading: false });
+            showNotification(failureNotificationItems(response.errorMessage));
             return;
         }
         setAccount(response);
@@ -99,7 +96,6 @@ const EditOwnAccountPageInternal = () => {
     };
 
     useEffect(() => {
-        // Gdyby uzywac przy rejestracji to trzeba dodac nową akcję w reducerze albo idk nowy initialState
         dispatch({ type: "RESET_VALIDATION", payload: { ...state } });
         handleGetOwnAccount();
     }, []);
@@ -120,6 +116,7 @@ const EditOwnAccountPageInternal = () => {
                     color="#fff"
                     width="10rem"
                     height="10rem"
+                    className={style.loading}
                 />
             ) : (
                 <>
@@ -144,7 +141,7 @@ const EditOwnAccountPageInternal = () => {
                             <div className={style.edit_fields_wrapper}>
                                 <div className={style.edit_field}>
                                     <InputWithValidation
-                                        title="Imię: "
+                                        title="Imię"
                                         value={account?.firstName}
                                         validationType="VALIDATE_FIRSTNAME"
                                         isValid={isFirstNameValid}
@@ -163,7 +160,7 @@ const EditOwnAccountPageInternal = () => {
                                 </div>
                                 <div className={style.edit_field}>
                                     <InputWithValidation
-                                        title="Nazwisko: "
+                                        title="Nazwisko"
                                         value={account?.lastName}
                                         validationType="VALIDATE_LASTNAME"
                                         isValid={isLastNameValid}
@@ -185,7 +182,7 @@ const EditOwnAccountPageInternal = () => {
                                     <>
                                         <div className={style.edit_field}>
                                             <InputWithValidation
-                                                title="Numer PESEL: "
+                                                title="Numer PESEL"
                                                 value={
                                                     account?.accessLevels
                                                         .filter(
@@ -229,7 +226,7 @@ const EditOwnAccountPageInternal = () => {
                                         </div>
                                         <div className={style.edit_field}>
                                             <InputWithValidation
-                                                title="Numer telefonu: "
+                                                title="Numer telefonu"
                                                 value={
                                                     account?.accessLevels
                                                         .filter(
@@ -283,7 +280,7 @@ const EditOwnAccountPageInternal = () => {
                                     <>
                                         <div className={style.edit_field}>
                                             <InputWithValidation
-                                                title="Numer telefonu: "
+                                                title="Numer telefonu"
                                                 value={
                                                     account?.accessLevels
                                                         .filter(

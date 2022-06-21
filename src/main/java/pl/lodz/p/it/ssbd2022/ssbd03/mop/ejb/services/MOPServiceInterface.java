@@ -1,13 +1,13 @@
 package pl.lodz.p.it.ssbd2022.ssbd03.mop.ejb.services;
 
 import pl.lodz.p.it.ssbd2022.ssbd03.common.ServiceLocalInterface;
-import pl.lodz.p.it.ssbd2022.ssbd03.entities.Account;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.Appointment;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.Implant;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.ImplantReview;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.MethodNotImplementedException;
 import pl.lodz.p.it.ssbd2022.ssbd03.utils.PaginationData;
 
+import java.time.Duration;
 import java.time.Instant;
 import java.util.List;
 import java.util.UUID;
@@ -149,6 +149,17 @@ public interface MOPServiceInterface extends ServiceLocalInterface {
     }
 
     /**
+     * MOP.9 - Zarezerwuj wizytę, dostępność specjalisty
+     * @param specialistId  - id specjalisty
+     * @param month         - miesiąc
+     * @return lista dostępności
+     * @throws MethodNotImplementedException w przypadku braku implementacji metody
+     */
+    default List<Instant> getSpecialistAvailabilityInMonth(UUID specialistId, Instant month, Duration duration) {
+        throw new MethodNotImplementedException();
+    }
+
+    /**
      * Metoda pozwalająca na edycję wizyty przez administratora
      *
      * @param id          UUID edytowanej wizyty
@@ -160,9 +171,9 @@ public interface MOPServiceInterface extends ServiceLocalInterface {
         throw new MethodNotImplementedException();
     }
 
-    default Appointment editAppointment(UUID id, Appointment appointment) {
-        throw new MethodNotImplementedException();
-    }
+//    default Appointment editAppointment(UUID id, Appointment appointment) {
+//        throw new MethodNotImplementedException();
+//    }
     default Appointment editOwnAppointment(UUID id, Appointment appointment,String login) {
         throw new MethodNotImplementedException();
     }

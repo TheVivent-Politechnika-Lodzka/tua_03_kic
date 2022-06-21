@@ -1,42 +1,38 @@
 package pl.lodz.p.it.ssbd2022.ssbd03.mop.cdi.endpoints;
 
 import jakarta.annotation.security.DenyAll;
-import jakarta.annotation.security.PermitAll;
-import jakarta.annotation.security.RolesAllowed;
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.core.Response;
 import pl.lodz.p.it.ssbd2022.ssbd03.common.Config;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.Appointment;
-import pl.lodz.p.it.ssbd2022.ssbd03.common.Roles;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.*;
+import pl.lodz.p.it.ssbd2022.ssbd03.common.Roles;
+import pl.lodz.p.it.ssbd2022.ssbd03.entities.Account;
+import pl.lodz.p.it.ssbd2022.ssbd03.entities.Appointment;
+import pl.lodz.p.it.ssbd2022.ssbd03.entities.Implant;
+import pl.lodz.p.it.ssbd2022.ssbd03.entities.ImplantReview;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.MethodNotImplementedException;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.TransactionException;
+import pl.lodz.p.it.ssbd2022.ssbd03.mappers.AccountMapper;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.database.InAppOptimisticLockException;
 import pl.lodz.p.it.ssbd2022.ssbd03.mappers.AppointmentMapper;
 import pl.lodz.p.it.ssbd2022.ssbd03.mappers.ImplantMapper;
-import pl.lodz.p.it.ssbd2022.ssbd03.mop.dto.AppointmentDto;
-import pl.lodz.p.it.ssbd2022.ssbd03.mop.dto.CreateImplantDto;
-import pl.lodz.p.it.ssbd2022.ssbd03.mop.dto.ImplantListElementDto;
 import pl.lodz.p.it.ssbd2022.ssbd03.mappers.ImplantReviewMapper;
-import pl.lodz.p.it.ssbd2022.ssbd03.mappers.*;
 import pl.lodz.p.it.ssbd2022.ssbd03.mop.dto.*;
 import pl.lodz.p.it.ssbd2022.ssbd03.mop.ejb.services.MOPServiceInterface;
 import pl.lodz.p.it.ssbd2022.ssbd03.security.AuthContext;
 import pl.lodz.p.it.ssbd2022.ssbd03.security.Tagger;
-import pl.lodz.p.it.ssbd2022.ssbd03.security.AuthContext;
 
-import java.util.UUID;
-
-import pl.lodz.p.it.ssbd2022.ssbd03.security.Tagger;
-
-import java.time.Instant;
 import java.util.UUID;
 
 import pl.lodz.p.it.ssbd2022.ssbd03.utils.PaginationData;
 
+import java.time.Duration;
+import java.time.Instant;
 import java.util.List;
+import java.util.UUID;
 
 @RequestScoped
 @DenyAll
@@ -44,11 +40,9 @@ import java.util.List;
 public class MOPEndpoint implements MOPEndpointInterface {
 
     @Inject
-    private MOPServiceInterface mopService;
-
-    @Inject
     AuthContext authContext;
-
+    @Inject
+    private MOPServiceInterface mopService;
     @Inject
     private AppointmentMapper appointmentMapper;
 
@@ -63,7 +57,6 @@ public class MOPEndpoint implements MOPEndpointInterface {
 
     @Inject
     private Tagger tagger;
-
 
 
     /**
@@ -124,6 +117,7 @@ public class MOPEndpoint implements MOPEndpointInterface {
     }
 
     //MOP.3 -Edytuj wszczep
+    @Override
     public Response editImplant(UUID id, ImplantDto implantDto) {
         tagger.verifyTag(implantDto);
 
@@ -174,7 +168,6 @@ public class MOPEndpoint implements MOPEndpointInterface {
      * @return lista wszczepów
      * @throws TransactionException jeśli transakcja nie została zatwierdzona
      */
-    @PermitAll
     @Override
     public Response listImplants(int page, int size, String phrase, boolean archived) {
         PaginationData paginationData;
@@ -205,7 +198,6 @@ public class MOPEndpoint implements MOPEndpointInterface {
      * @return zwraca odpowiedz zawierającą listę specialistów
      * @throws TransactionException błąd transakcji
      */
-    @PermitAll
     @Override
     public Response listSpecialists(int page, int size, String phrase) {
         PaginationData paginationData;
@@ -255,6 +247,7 @@ public class MOPEndpoint implements MOPEndpointInterface {
         paginationData.setData(appointmentDtos);
         return Response.ok().entity(paginationData).build();
     }
+
     /**
      * MOP.8 - Przeglądaj swoje wizyty
      *
@@ -263,7 +256,6 @@ public class MOPEndpoint implements MOPEndpointInterface {
      * @return lista wizyt
      * @throws TransactionException w przypadku braku zatwierdzenia transakcji
      */
-    @RolesAllowed({Roles.CLIENT, Roles.SPECIALIST})
     @Override
     public Response listMyVisits(int page, int size) {
         PaginationData paginationData;
@@ -284,8 +276,10 @@ public class MOPEndpoint implements MOPEndpointInterface {
         paginationData.setData(appointmentDtos);
         return Response.ok().entity(paginationData).build();
     }
+
     /**
      * MOP.9 - Zarezerwuj wizytę
+     *
      * @param createAppointmentDto - dane nowej wizyty
      * @return status HTTP i utworzoną wizytę
      * @throws TransactionException, w przypadku odrzucenia transakcji z nieznanego powodu
@@ -318,10 +312,41 @@ public class MOPEndpoint implements MOPEndpointInterface {
 
         return Response.ok(appointmentDto).tag(tagger.tag(appointmentDto)).build();
     }
+
+    /**
+     * MOP.9 - Zarezerwuj wizytę, dostępność specjalisty
+     *
+     * @param specialistId - id specjalisty
+     * @param month         - miesiąc wizyty (Instant)
+     * @param duration      - długość wizyty
+     * @return lista dostępności
+     * @throws TransactionException w przypadku braku zatwierdzenia transakcji
+     */
+    @Override
+    public Response getSpecialistAvailability(UUID specialistId, String month, int duration) {
+
+        List<Instant> availability;
+        Duration durationObj = Duration.ofSeconds(duration);
+        Instant monthObj = Instant.parse(month);
+
+        int TXCounter = Config.MAX_TX_RETRIES;
+        boolean commitedTX;
+        do {
+            availability = mopService.getSpecialistAvailabilityInMonth(specialistId, monthObj, durationObj);
+            commitedTX = mopService.isLastTransactionCommited();
+        } while (!commitedTX && TXCounter-- > 0);
+
+        if (!commitedTX) {
+            throw new TransactionException();
+        }
+
+        return Response.ok(availability).build();
+    }
+
     /**
      * MOP.10 - Edytuj swoją wizytę
      *
-     * @param id                 id konkretnej wizyty
+     * @param id                    id konkretnej wizyty
      * @param appointmentOwnEditDto obiekt dto edycji naniesionych do wizyty
      * @return odpowiedz HTTP
      * @throws TransactionException jeśli transakcja nie została zatwierdzona
@@ -344,6 +369,7 @@ public class MOPEndpoint implements MOPEndpointInterface {
         AppointmentDto app = appointmentMapper.createAppointmentDtoFromAppointment(editedAppointment);
         return Response.ok(app).tag(tagger.tag(app)).build();
     }
+
     /**
      * MOP.11 - Edytuj dowolną wizytę
      *
@@ -352,7 +378,6 @@ public class MOPEndpoint implements MOPEndpointInterface {
      * @return odpowiedz HTTP
      */
     @Override
-    @RolesAllowed(Roles.ADMINISTRATOR)
     public Response editVisit(UUID id, AppointmentEditDto appointmentEditDto) {
         tagger.verifyTag(appointmentEditDto);
 
@@ -362,7 +387,7 @@ public class MOPEndpoint implements MOPEndpointInterface {
         int TXCounter = Config.MAX_TX_RETRIES;
         boolean commitedTX;
         do {
-            editedAppointment = mopService.editAppointment(id, update);
+            editedAppointment = mopService.editAppointmentByAdministrator(id, update);
             commitedTX = mopService.isLastTransactionCommited();
         } while (!commitedTX && --TXCounter > 0);
 
@@ -375,7 +400,8 @@ public class MOPEndpoint implements MOPEndpointInterface {
         return Response.ok(app).tag(tagger.tag(app)).build();
     }
 
-    /** MOP.12 - Odwołaj swoją wizytę
+    /**
+     * MOP.12 - Odwołaj swoją wizytę
      * Endpoint pozwalający odwołać wizytę (REJECTED)
      *
      * @param id - id wizyty
@@ -431,6 +457,7 @@ public class MOPEndpoint implements MOPEndpointInterface {
 
         return Response.ok(appointmentDto).tag(tagger.tag(appointmentDto)).build();
     }
+
     /**
      * MOP.14 - Oznacz wizytę jako zakończoną
      *
@@ -467,7 +494,7 @@ public class MOPEndpoint implements MOPEndpointInterface {
     }
 
     /**
-     * MOK.15 - Dodaj recenzję wszczepu
+     * MOP.15 - Dodaj recenzję wszczepu
      *
      * @param createImplantReviewDto - Nowo napisana recenzja
      * @return nowo utworzona recenzja
@@ -516,8 +543,9 @@ public class MOPEndpoint implements MOPEndpointInterface {
 
         return Response.ok().build();
     }
+
     @Override
-    public Response getVisitDetails (UUID uuid){
+    public Response getVisitDetails(UUID uuid) {
         String login = authContext.getCurrentUserLogin();
         Appointment appointment;
         int TXCounter = Config.MAX_TX_RETRIES;
@@ -536,9 +564,10 @@ public class MOPEndpoint implements MOPEndpointInterface {
 
     /**
      * MOP.18 - Wyświetl recenzje dla danego wszczepu
+     *
      * @param size Ilość recenzji do wyświetlenia na jednej stronie
      * @param page Numer strony
-     * @param id Identyfikator wszczepu
+     * @param id   Identyfikator wszczepu
      * @return Lista recenzji wszczepu
      * @throws TransactionException jeśli transakcja nie została zatwierdzona
      */
