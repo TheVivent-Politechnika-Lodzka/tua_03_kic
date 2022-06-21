@@ -1,10 +1,10 @@
 import { faSignIn } from "@fortawesome/free-solid-svg-icons";
 import { showNotification } from "@mantine/notifications";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router";
-import { login, resetPassword } from "../../../api";
+import { login } from "../../../api";
 import { login as loginDispatch } from "../../../redux/userSlice";
 import ActionButton from "../../../components/shared/ActionButton/ActionButton";
 import Input from "../../../components/shared/Input/Input";
@@ -67,7 +67,7 @@ const LoginPage = () => {
                 <h2 className={styles.header}>Zaloguj się</h2>
                 <div className={styles.input_wrapper}>
                     <Input
-                        title="Login*"
+                        title="Login"
                         placeholder="Wpisz swój login"
                         type="text"
                         value={credentials.login}
@@ -77,9 +77,10 @@ const LoginPage = () => {
                                 login: e.target.value,
                             })
                         }
+                        required={true}
                     />
                     <Input
-                        title={t("password*")}
+                        title={t("password")}
                         placeholder="Wpisz swoje hasło"
                         type="password"
                         value={credentials.password}
@@ -89,6 +90,7 @@ const LoginPage = () => {
                                 password: e.target.value,
                             })
                         }
+                        required={true}
                     />
                 </div>
                 <div className={styles.action_button_wrapper}>

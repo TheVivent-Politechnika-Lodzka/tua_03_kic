@@ -32,6 +32,7 @@
             width: 35rem;
             border-radius: 2rem;
             background-color: $secondary-color;
+            animation: 0.4s zoomIn ease-in-out;
 
             .input_wrapper {
                 position: relative;
@@ -48,6 +49,7 @@
 
                 & > * {
                     width: 12rem;
+                    padding: 0.3rem;
                 }
             }
         }
@@ -60,19 +62,27 @@
             margin-left: 4rem;
             border-radius: 2rem;
             width: 35%;
-            // background-color: $secondary-color;
+            animation: 0.4s fadeIn ease-in-out;
         }
     }
 }
 
-.submit_button {
-    background: #00c9ff;
-    background: -webkit-linear-gradient(to right, #92fe9d, #00c9ff);
-    background: linear-gradient(to right, #92fe9d, #00c9ff);
-    font-size: 1.25rem;
-    border: none;
-    color: black;
-    border-radius: 1rem;
-    padding: 0.5rem;
-    cursor: pointer;
+@keyframes zoomIn {
+  from {
+    opacity: 0;
+    transform: scale(0.85);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
 }
