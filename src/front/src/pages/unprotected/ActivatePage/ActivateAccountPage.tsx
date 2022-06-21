@@ -1,5 +1,6 @@
 import { showNotification } from "@mantine/notifications";
 import { useEffect } from "react";
+import { useTranslation } from "react-i18next";
 import ReactLoading from "react-loading";
 import { useNavigate, useParams } from "react-router-dom";
 import { activateAccount, confirmRegistration } from "../../../api";
@@ -12,6 +13,7 @@ import style from "./activeAccountPage.module.scss";
 const ActivateAccountPage = () => {
     const { token } = useParams();
     const navigate = useNavigate();
+    const { t } = useTranslation();
 
     const handleSubmit = async () => {
         if (!token) return;
@@ -22,7 +24,7 @@ const ActivateAccountPage = () => {
             return;
         }
         showNotification(
-            successNotficiationItems("Account activated successfully")
+            successNotficiationItems(t("activateAccountPage.accountActivated"))
         );
         navigate("/login");
     };

@@ -223,5 +223,9 @@
     "clocker": {
         "refresh": "Refresh session",
         "logInAgain": "Sorry, log in again"
+    },
+
+    "activateAccountPage": {
+        "accountActivated": "Account activated successfully"
     }
 }
