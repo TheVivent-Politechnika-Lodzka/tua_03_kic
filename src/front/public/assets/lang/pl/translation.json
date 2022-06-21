@@ -565,5 +565,9 @@
     },
     "sidebar": {
         "logout": "Wyloguj się"
+    },
+
+    "activateAccountPage": {
+        "accountActivated": "Konto zostało aktywowane"
     }
 }

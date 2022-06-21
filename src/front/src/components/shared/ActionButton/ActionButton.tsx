@@ -3,6 +3,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import styles from "./style.module.scss";
 import ReactLoading from "react-loading";
 import { useEffect } from "react";
+import { style } from "@mui/system";
 
 interface ActionButtonProps {
     title: string;
@@ -40,7 +41,7 @@ const ActionButton = ({
                 />
             ) : (
                 <>
-                    <FontAwesomeIcon icon={icon} />
+                    <FontAwesomeIcon icon={icon} className={styles.icon} />
                     <p className={styles.title}>{title}</p>
                 </>
             )}

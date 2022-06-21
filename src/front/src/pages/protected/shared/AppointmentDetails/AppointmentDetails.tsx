@@ -7,15 +7,23 @@ import ReactLoading from "react-loading";
 import {
     AppointmentListElementDto,
     getAppointmentDetails,
+    cancelAnyVisit,
+    finishVisit,
+    cancelOwnVisit,
 } from "../../../../api/mop";
 import ImplantDetails from "../../../../components/ImplantDetails/ImplantDetails";
 import ActionButton from "../../../../components/shared/ActionButton/ActionButton";
 import Modal from "../../../../components/shared/Modal/Modal";
 import { useStoreSelector } from "../../../../redux/reduxHooks";
-import { failureNotificationItems } from "../../../../utils/showNotificationsItems";
+import {
+    failureNotificationItems,
+    successNotficiationItems,
+} from "../../../../utils/showNotificationsItems";
 import styles from "./style.module.scss";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
+import ConfirmActionModal from "../../../../components/shared/ConfirmActionModal/ConfirmActionModal";
+
 interface AccountDetailsProps {
     isOpened: boolean;
     appointmentId: string;
@@ -41,6 +49,14 @@ export const AppointmentDetails = ({
     const [startDate, setStartDate] = useState<string>("");
     const [endDate, setEndDate] = useState<string>("");
     const [implantId, setImplantId] = useState<string>("");
+    const [etag, setEtag] = useState<string>("");
+    const [appointmentBlockModalOpen, setAppointmentBlockModalOpen] =
+        useState<boolean>(false);
+    const [isFinishVisitModalOpen, setFinishVisitModalOpen] =
+        useState<boolean>(false);
+    const [isFinishOwnVisitModalOpen, setFinishOwnVisitModalOpen] =
+        useState<boolean>(false);
+
     const handleGetAppointmentDetails = async () => {
         const data = await getAppointmentDetails(appointmentId);
         if ("errorMessage" in data) {
@@ -49,10 +65,63 @@ export const AppointmentDetails = ({
         }
         setAppointment(data.data);
         setImplantId(data.data.implant.id);
+        setEtag(data.etag);
         setLoading({ pageLoading: false, actionLoading: false });
     };
 
     const { t } = useTranslation();
+
+
+    const handleCancelVisit = async () => {
+        setLoading({ ...loading, actionLoading: true });
+        const response = await cancelAnyVisit(
+            appointmentId as string,
+            etag as string
+        );
+        setLoading({ ...loading, actionLoading: false });
+        if ("errorMessage" in response) {
+            showNotification(failureNotificationItems(response.errorMessage));
+            onClose();
+            return;
+        }
+        showNotification(successNotficiationItems("Wizyta została anulowana"));
+        onClose();
+        return;
+    };
+
+    const handleCancelOwnVisit = async () => {
+        setLoading({ ...loading, actionLoading: true });
+        const response = await cancelOwnVisit(
+            appointmentId as string,
+            etag as string
+        );
+        setLoading({ ...loading, actionLoading: false });
+        if ("errorMessage" in response) {
+            showNotification(failureNotificationItems(response.errorMessage));
+            onClose();
+            return;
+        }
+        showNotification(successNotficiationItems("Wizyta została anulowana"));
+        onClose();
+        return;
+    };
+
+    const handleFinishVisit = async () => {
+        setLoading({ ...loading, actionLoading: true });
+        const response = await finishVisit(
+            appointmentId as string,
+            etag as string
+        );
+        setLoading({ ...loading, actionLoading: false });
+        if ("errorMessage" in response) {
+            showNotification(failureNotificationItems(response.errorMessage));
+            onClose();
+            return;
+        }
+        showNotification(successNotficiationItems("Wizyta została zakończona"));
+        onClose();
+        return;
+    };
 
     useEffect(() => {
         if (!appointment) return;
@@ -188,18 +257,97 @@ export const AppointmentDetails = ({
                                 </div>
                             </div>
                             <div className={styles.button_holder}>
-                                <ActionButton
-                                    title={t("appointmentDetails.buttonCancel")}
-                                    color="cyan"
-                                    icon={faInfoCircle}
-                                    onClick={() => console.log("essa")}
-                                ></ActionButton>
+                                {appointment?.status !== "REJECTED" &&
+                                    appointment?.status !== "FINISHED" &&
+                                    ["SPECIALIST", "CLIENT"].includes(
+                                        aLevel
+                                    ) && (
+                                        <ActionButton
+                                            title={t("appointmentDetails.buttonCancel")}
+                                            color="cyan"
+                                            icon={faInfoCircle}
+                                            onClick={() => {
+                                                setFinishOwnVisitModalOpen(
+                                                    true
+                                                );
+                                            }}
+                                        ></ActionButton>
+                                    )}
+                                {appointment?.status !== "REJECTED" &&
+                                appointment?.status !== "FINISHED" &&
+                                aLevel === "SPECIALIST" ? (
+                                    <ActionButton
+                                        title="Zakończ wizytę"
+                                        color="cyan"
+                                        icon={faInfoCircle}
+                                        onClick={() => {
+                                            setFinishVisitModalOpen(true);
+                                        }}
+                                    ></ActionButton>
+                                ) : null}
+                                {appointment?.status !== "REJECTED" &&
+                                appointment?.status !== "FINISHED" &&
+                                aLevel === "ADMINISTRATOR" ? (
+                                    <ActionButton
+                                        title={t("appointmentDetails.buttonCancel")}
+                                        color="purple"
+                                        icon={faInfoCircle}
+                                        onClick={() => {
+                                            setAppointmentBlockModalOpen(true);
+                                        }}
+                                    ></ActionButton>
+                                ) : null}
                                 <ActionButton
                                     title={t("appointmentDetails.buttonEdit")}
                                     color="cyan"
                                     icon={faInfoCircle}
                                     onClick={() => routeChange(appointmentId)}
                                 ></ActionButton>
+                                <ConfirmActionModal
+                                    title={"Odwołaj wizytę"}
+                                    isLoading={loading.actionLoading as boolean}
+                                    isOpened={isFinishOwnVisitModalOpen}
+                                    handleFunction={async () => {
+                                        await handleCancelOwnVisit();
+                                        setFinishOwnVisitModalOpen(false);
+                                        window.location.reload();
+                                    }}
+                                    onClose={() => {
+                                        setFinishOwnVisitModalOpen(false);
+                                    }}
+                                >
+                                    {"Czy na pewno chcesz anulować wizytę?"}
+                                </ConfirmActionModal>
+                                <ConfirmActionModal
+                                    title={"Odwołaj wizytę"}
+                                    isLoading={loading.actionLoading as boolean}
+                                    isOpened={appointmentBlockModalOpen}
+                                    handleFunction={async () => {
+                                        await handleCancelVisit();
+                                        setAppointmentBlockModalOpen(false);
+                                        window.location.reload();
+                                    }}
+                                    onClose={() => {
+                                        setAppointmentBlockModalOpen(false);
+                                    }}
+                                >
+                                    {"Czy na pewno chcesz anulować wizytę?"}
+                                </ConfirmActionModal>
+                                <ConfirmActionModal
+                                    title={"Oznacz wizytę jako zakończoną"}
+                                    isLoading={loading.actionLoading as boolean}
+                                    isOpened={isFinishVisitModalOpen}
+                                    handleFunction={async () => {
+                                        await handleFinishVisit();
+                                        setFinishVisitModalOpen(false);
+                                        window.location.reload();
+                                    }}
+                                    onClose={() => {
+                                        setFinishVisitModalOpen(false);
+                                    }}
+                                >
+                                    {"Czy na pewno chcesz zakończyć wizytę?"}
+                                </ConfirmActionModal>
                             </div>
                         </div>
                         <ImplantDetails

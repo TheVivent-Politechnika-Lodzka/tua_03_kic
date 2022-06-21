@@ -1,65 +1,46 @@
-import { useState } from "react";
+import { showNotification } from "@mantine/notifications";
+import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
-import { useNavigate, useLocation } from "react-router-dom";
-import { useConfirmRegistrationMutation } from "../../../api/api";
-import styles from "./activeAccountPage.module.scss";
+import ReactLoading from "react-loading";
+import { useNavigate, useParams } from "react-router-dom";
+import { activateAccount, confirmRegistration } from "../../../api";
+import {
+    failureNotificationItems,
+    successNotficiationItems,
+} from "../../../utils/showNotificationsItems";
+import style from "./activeAccountPage.module.scss";
+
 const ActivateAccountPage = () => {
-    const search = useLocation().search;
-    const querytoken = new URLSearchParams(search).get("token");
-
-    const [token, setToken] = useState(querytoken);
-    const [confirm, { isLoading }] = useConfirmRegistrationMutation();
-    const [confirmed, setConfirmed] = useState(false);
-
-    const { t } = useTranslation();
+    const { token } = useParams();
     const navigate = useNavigate();
+    const { t } = useTranslation();
 
     const handleSubmit = async () => {
-        if (token !== null) {
-            await confirm({ token });
+        if (!token) return;
+        const response = await confirmRegistration(token);
+        if ("errorMessage" in response) {
+            showNotification(failureNotificationItems(response.errorMessage));
+            navigate("/");
+            return;
         }
-        setConfirmed(true);
+        showNotification(
+            successNotficiationItems(t("activateAccountPage.accountActivated"))
+        );
+        navigate("/login");
     };
 
-    return (
-        <div>
-            <div className={styles.text}>
-                {t("activeAccountPage.insertToken")}
-            </div>
-            {token !== null ? (
-                <>
-                    <input
-                        className={styles.token_input}
-                        value={token}
-                        onChange={(e) => setToken(e.target.value)}
-                    ></input>
-                    <div
-                        className={styles.confirm_button}
-                        onClick={handleSubmit}
-                    >
-                        {t("activeAccountPage.activeAccount")}
-                    </div>
-                </>
-            ) : (
-                <></>
-            )}
+    useEffect(() => {
+        handleSubmit();
+    }, [token]);
 
-            {confirmed ? (
-                <div>
-                    <div className={styles.text}>
-                        {" "}
-                        {t("activeAccountPage.confirmedAccount")}
-                    </div>
-                    <div
-                        className={styles.confirm_button}
-                        onClick={() => navigate("/login")}
-                    >
-                        {t("activeAccountPage.navLog")}
-                    </div>
-                </div>
-            ) : (
-                <></>
-            )}
+    return (
+        <div className={style.loader}>
+            <ReactLoading
+                type="cylon"
+                color="#fff"
+                width="10rem"
+                height="10rem"
+            />
         </div>
     );
 };

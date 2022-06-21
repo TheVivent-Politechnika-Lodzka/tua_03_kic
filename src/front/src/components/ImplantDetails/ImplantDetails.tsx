@@ -1,4 +1,9 @@
-import { faClose, faEdit, faFolder } from "@fortawesome/free-solid-svg-icons";
+import {
+    faClose,
+    faEdit,
+    faShoppingCart,
+    faFolder,
+} from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useEffect, useState } from "react";
 import ReactModal from "react-modal";
@@ -184,6 +189,22 @@ const ImplantDetails = ({ id, isOpened, onClose }: ImplantDetailsProps) => {
                                     </p>
                                 </div>
                             </div>
+                            {accessLevel === "CLIENT" && (
+                                <div className={styles.action_wrapper}>
+                                    <div className={styles.button}>
+                                        <ActionButton
+                                            title="Rezerwuj"
+                                            icon={faShoppingCart}
+                                            onClick={() => {
+                                                navigate(
+                                                    `/implants/${implant?.id}/create-appointment`
+                                                );
+                                            }}
+                                            color="green"
+                                        />
+                                    </div>
+                                </div>
+                            )}
                             {accessLevel === "ADMINISTRATOR" && (
                                 <div className={styles.action_wrapper}>
                                     <div className={styles.button}>
