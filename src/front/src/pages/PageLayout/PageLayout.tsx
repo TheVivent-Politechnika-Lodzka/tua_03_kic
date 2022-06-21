@@ -35,7 +35,7 @@ const PageLayout = () => {
                 <Navbar />
                 <Outlet />
             </div>
-        </div> 
+        </div>
     );
 };
 
