@@ -49,6 +49,7 @@ interface AccountDetails extends Taggable {
     };
     active: boolean;
     confirmed: boolean;
+    url?: string;
     accessLevels: AccessLevel[];
 }
 

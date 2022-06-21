@@ -1,7 +1,6 @@
 package pl.lodz.p.it.ssbd2022.ssbd03.mop.ejb.services;
 
 import pl.lodz.p.it.ssbd2022.ssbd03.common.ServiceLocalInterface;
-import pl.lodz.p.it.ssbd2022.ssbd03.entities.Account;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.Appointment;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.Implant;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.ImplantReview;
@@ -160,9 +159,9 @@ public interface MOPServiceInterface extends ServiceLocalInterface {
         throw new MethodNotImplementedException();
     }
 
-    default Appointment editAppointment(UUID id, Appointment appointment) {
-        throw new MethodNotImplementedException();
-    }
+//    default Appointment editAppointment(UUID id, Appointment appointment) {
+//        throw new MethodNotImplementedException();
+//    }
     default Appointment editOwnAppointment(UUID id, Appointment appointment,String login) {
         throw new MethodNotImplementedException();
     }

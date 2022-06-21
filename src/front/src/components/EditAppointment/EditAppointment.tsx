@@ -11,21 +11,20 @@ import { useEffect, useState } from "react";
 import ReactLoading from "react-loading";
 import { useNavigate, useParams } from "react-router";
 import {
-    AppointmentListElementDto,
+    AppointmentListElementDto, editAppointmentByAdmin,
     editOwnAppointment,
     getAppointmentDetails,
-} from "../../../../api/mop";
-import ActionButton from "../../../../components/shared/ActionButton/ActionButton";
-import { useStoreSelector } from "../../../../redux/reduxHooks";
-import { failureNotificationItems } from "../../../../utils/showNotificationsItems";
+} from "../../api/mop";
+import ActionButton from "../../components/shared/ActionButton/ActionButton";
+import { useStoreSelector } from "../../redux/reduxHooks";
+import { failureNotificationItems } from "../../utils/showNotificationsItems";
 import styles from "./style.module.scss";
 
-export const EditOwnAppointment = () => {
+export const EditAppointment = () => {
     const aLevel = useStoreSelector((state) => state.user.cur);
-    const [count,setCount] = useState<number>(0);
     const [appointment, setAppointment] = useState<AppointmentListElementDto>();
     const [etag, setEtag] = useState<string>("");
-    const [inputStatus, setInputStatus] = useState<string>("");
+    const [inputStatus, setInputStatus] = useState<string>('')
     const [loading, setLoading] = useState<Loading>({
         pageLoading: true,
         actionLoading: false,
@@ -44,41 +43,31 @@ export const EditOwnAppointment = () => {
             return;
         }
         setEtag(data.etag);
-        setInputStatus(data.data.status);
+        setInputStatus(data.data.status)
         setInputDescription(data.data.description);
         setAppointment(data.data);
-        setCount(data.data.description.length)
         setLoading({ pageLoading: false, actionLoading: false });
     };
     useEffect(() => {
         handleGetAppointmentDetails();
     }, []);
-    const handleEditOwnAppointment = async () => {
+    const handleEditAppointment = async () => {
         if (!id || !etag || !appointment) return;
-        let status;
-        if (aLevel === "SPECIALIST") status = inputStatus;
-        else status = appointment.status;
+        let status = inputStatus;
         const version = appointment.version;
-        let description;
-        if (aLevel === "SPECIALIST") description = inputDescription;
-        else description = appointment.description;
-        let editedDate = LocalDateTime.parse(startDate).toInstant(
-            ZoneOffset.of(ZoneId.UTC.id())
-        );
-        editedDate = editedDate.minus(2, ChronoUnit.HOURS);
-        const data = await editOwnAppointment({
+        let description = inputDescription;
+        const data = await editAppointmentByAdmin({
             id,
             etag,
             status,
             version,
-            description,
-            startDate: editedDate,
+            description
         });
         if ("errorMessage" in data) {
             showNotification(failureNotificationItems(data.errorMessage));
             return;
         }
-        navigate("/visits");
+        navigate('/visits')
     };
     useEffect(() => {
         if (!appointment) return;
@@ -107,18 +96,26 @@ export const EditOwnAppointment = () => {
                     <div className={styles.details_wrapper}>
                         <div className={styles.detail_wrapper}>
                             <p className={styles.title}>
-                                {aLevel === "SPECIALIST"
-                                    ? "Imię i nazwisko klienta:"
-                                    : "Imie i nazwisko specjalisty:"}
+                                Imię i nazwisko klienta:
                             </p>
                             <p className={styles.description}>
-                                {aLevel === "SPECIALIST"
-                                    ? appointment?.client.firstName +
-                                      " " +
-                                      appointment?.client.lastName
-                                    : appointment?.specialist.firstName +
-                                      " " +
-                                      appointment?.specialist.lastName}
+                                {
+                                    appointment?.client.firstName +
+                                    " " +
+                                    appointment?.client.lastName
+                                }
+                            </p>
+                        </div>
+                        <div className={styles.detail_wrapper}>
+                            <p className={styles.title}>
+                                Imie i nazwisko specjalisty:
+                            </p>
+                            <p className={styles.description}>
+                                {
+                                    appointment?.specialist.firstName +
+                                    " " +
+                                    appointment?.specialist.lastName
+                                }
                             </p>
                         </div>
                         <div className={styles.detail_wrapper}>
@@ -128,30 +125,17 @@ export const EditOwnAppointment = () => {
                             </p>
                         </div>
                         <div className={styles.detail_wrapper}>
-                            <p className={styles.title}>Status wizyty:</p>
+                            <p className={styles.title}>Opis:</p>
                             <p className={styles.description}>
-                                {appointment?.status}
+                                {appointment?.description}
                             </p>
-                            {aLevel === "SPECIALIST" &&
-                                appointment?.status !== "ACCEPTED" && (
-                                    <>
-                                        <input
-                                            className={styles.input_checkbox}
-                                            type="checkbox"
-                                            value={inputDescription}
-                                            onChange={(e) => {
-                                                if (e.target.value)
-                                                    setInputStatus("ACCEPTED");
-                                                else {
-                                                    setInputStatus("PENDIG");
-                                                }
-                                            }}
-                                        />
-                                        <p className={styles.title}>
-                                            Akceptuj wizytę
-                                        </p>
-                                    </>
-                                )}
+                            <input className={styles.description_input}
+                                       type="text"
+                                       value={inputDescription}
+                                       onChange={(e) =>
+                                           setInputDescription(e.target.value)
+                                       }
+                            />
                         </div>
                         <div className={styles.detail_wrapper}>
                             <p className={styles.title}>Cena wizyty:</p>
@@ -164,13 +148,6 @@ export const EditOwnAppointment = () => {
                                 Data rozpoczęcia wizyty:
                             </p>
                             <p className={styles.description}>{startDate}</p>
-                            <input
-                                className={styles.input_checkbox}
-                                type="datetime-local"
-                                onChange={(e) => {
-                                    setStartDate(e.target.value);
-                                }}
-                            />
                         </div>
                         <div className={styles.detail_wrapper}>
                             <p className={styles.title}>
@@ -179,34 +156,29 @@ export const EditOwnAppointment = () => {
                             <p className={styles.description}>{endDate}</p>
                         </div>
                         <div className={styles.detail_wrapper}>
-                            <p className={styles.title}>Opis:</p>
+                            <p className={styles.title}>Status wizyty:</p>
                             <p className={styles.description}>
-                                {aLevel === "CLIENT" && appointment?.description}
+                                {appointment?.status}
                             </p>
-                            {aLevel === "SPECIALIST" && (
-                                <>
-                                <textarea
-                                    className={styles.description_input}
-                                    value={inputDescription}
-                                    maxLength={950}
-                                    onChange={(e) =>{
-                                        setInputDescription(e.target.value)
-                                        setCount(e.target.value.length)}
+                            <input
+                                type="checkbox"
+                                value={inputDescription}
+                                onChange={(e) =>
+                                    {
+                                        if(e.target.value) setInputStatus('PENDING')
                                     }
-                                />
-                                <div className={styles.description_length}>{count}/950</div>
-                                </>
-                            )}
+                                }
+                            />
+                            <p className={styles.title}>Anuluj wizytę</p>
+
                         </div>
                         <div className={styles.detail_wrapper}>
-                            {
-                                <ActionButton
-                                    title="Prześlij zmianę"
-                                    color="cyan"
-                                    icon={faInfoCircle}
-                                    onClick={() => handleEditOwnAppointment()}
-                                ></ActionButton>
-                            }
+                            <ActionButton
+                                title="Prześlij zmianę"
+                                color="purple"
+                                icon={faInfoCircle}
+                                onClick={() => handleEditAppointment()}
+                            />
                         </div>
                     </div>
                 </div>

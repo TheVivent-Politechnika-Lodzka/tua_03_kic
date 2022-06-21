@@ -8,7 +8,7 @@ import { AppointmentListPage } from "../pages/protected/admin/AppointmentList";
 import { CreateImplantPage } from "../pages/protected/admin/CreateImplantPage";
 import { EditOwnAppointment } from "../pages/protected/shared/EditOwnAppointment";
 import { EditImplantPage } from "../pages/protected/admin/EditImplantPage";
-
+import {EditAppointment} from "../components/EditAppointment";
 
 const authorizedRoutes = (accessLevel: AccessLevelType) => {
     switch (accessLevel) {
@@ -33,6 +33,7 @@ const authorizedRoutes = (accessLevel: AccessLevelType) => {
                         path="/implant/:id"
                         element={<EditImplantPage />}
                     />
+                    <Route path="/visit/edit/:id" element={<EditAppointment />} />
                 </>
             );
         }

@@ -1,5 +1,6 @@
 package pl.lodz.p.it.ssbd2022.ssbd03.mop.ejb.facades;
 
+import jakarta.annotation.security.RolesAllowed;
 import jakarta.ejb.Stateless;
 import jakarta.ejb.TransactionAttribute;
 import jakarta.ejb.TransactionAttributeType;
@@ -7,6 +8,7 @@ import jakarta.interceptor.Interceptors;
 import jakarta.persistence.*;
 import lombok.Getter;
 import pl.lodz.p.it.ssbd2022.ssbd03.common.AbstractFacade;
+import pl.lodz.p.it.ssbd2022.ssbd03.common.Roles;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.access_levels.DataClient;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.InvalidParametersException;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.account.AccountNotFoundException;
@@ -41,6 +43,7 @@ public class DataClientFacade extends AbstractFacade<DataClient> {
      * @throws InvalidParametersException jeśli podano niepoprawny identyfikator
      * @throws DatabaseException          jeśli wystąpił błąd w bazie danych
      */
+    @RolesAllowed(Roles.ADMINISTRATOR)
     public String getLoginFromId(UUID id) throws AccountNotFoundException {
         try {
             TypedQuery<String> typedQuery = entityManager.createNamedQuery("DataClient.getLoginFromId", String.class);
@@ -64,6 +67,7 @@ public class DataClientFacade extends AbstractFacade<DataClient> {
      * @throws InvalidParametersException jeśli podany login jest niepoprawny
      * @throws DatabaseException          jeśli wystąpił błąd z bazą danych
      */
+    @RolesAllowed(Roles.ADMINISTRATOR)
     public DataClient findByLogin(String login) {
         try {
             TypedQuery<DataClient> typedQuery = entityManager.createNamedQuery("DataClient.findByLogin", DataClient.class);
