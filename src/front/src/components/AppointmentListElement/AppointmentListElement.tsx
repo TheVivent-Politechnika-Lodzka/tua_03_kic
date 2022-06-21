@@ -32,7 +32,7 @@ export const AppointmentListElement = (props: { element: AppointmentListElementD
                     <div className={styles.button}>
                         <BlueGradientButton
                             label={t("appointmentListPage.listElement.details")}
-                            onClick={() => console.log(props.element.id)}
+                            onClick={() => {}}
                         />
                     </div>
                 </div>

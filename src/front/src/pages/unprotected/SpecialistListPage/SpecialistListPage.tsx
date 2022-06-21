@@ -33,7 +33,6 @@ const SpecialistListPage = () => {
             });
             if ("errorMessage" in data) return;
             setSpecialists(data.data);
-            console.log(specialists);
             setPagination({ ...pagination, totalPages: data.totalPages });
             setLoading({ pageLoading: false, actionLoading: false });
             setRerender(false);
