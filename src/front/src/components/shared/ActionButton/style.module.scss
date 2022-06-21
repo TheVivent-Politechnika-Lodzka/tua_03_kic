@@ -3,14 +3,14 @@
 .action_button {
   width: 17rem;
   padding: 0.67rem 2.48rem;
-  // height: 2.93rem;
-  padding-top: 0.17rem;
-  padding-top: 0.14rem;
+  height: 2.93rem;
+  // padding-top: 0.17rem;
+  // padding-top: 0.14rem;
   display: flex;
   justify-content: space-around;
   align-items: center;
   font-size: 1.22rem;
-  color: white;
+  color: $white;
   user-select: none;
   border-radius: 0.67rem;
   text-align: center;

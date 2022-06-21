@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { listAccounts } from "../../../api";
 import { listSpecialist, SpecialistListElementDto } from "../../../api/mop";
 import Pagination from "../../../components/Pagination/Pagination";
 import SpecialistCard from "../../../components/SpecialistCard/SpecialistCard";
@@ -7,7 +6,7 @@ import ReactLoading from "react-loading";
 
 import style from "./style.module.scss";
 
-const SpecialistList = () => {
+const SpecialistListPage = () => {
     const [specialists, setSpecialists] =
         useState<SpecialistListElementDto[]>();
 
@@ -34,7 +33,6 @@ const SpecialistList = () => {
             });
             if ("errorMessage" in data) return;
             setSpecialists(data.data);
-            console.log(specialists);
             setPagination({ ...pagination, totalPages: data.totalPages });
             setLoading({ pageLoading: false, actionLoading: false });
             setRerender(false);
@@ -71,7 +69,6 @@ const SpecialistList = () => {
                         color="#fff"
                         width="10rem"
                         height="10rem"
-                        // className={style.loading}
                     />
                 ) : (
                     <>
@@ -82,7 +79,7 @@ const SpecialistList = () => {
                                     lastName={specialist.surname}
                                     email={specialist.email}
                                     tel={specialist.phoneNumber}
-                                    // img="https://media.discordapp.net/attachments/948268830222848183/988127000336138280/dgTUsgBf_400x400.jpg"
+                                    img="https://media.discordapp.net/attachments/948268830222848183/988127000336138280/dgTUsgBf_400x400.jpg"
                                 />
                             </div>
                         ))}
@@ -97,4 +94,4 @@ const SpecialistList = () => {
     );
 };
 
-export default SpecialistList;
+export default SpecialistListPage;

@@ -109,7 +109,7 @@ const ChangeUserPasswordPage = ({
                             <div className={styles.change_password_wrapper}>
                                 <div className={styles.input_wrapper}>
                                     <InputWithValidation
-                                        title="Nowe hasło: "
+                                        title="Nowe hasło"
                                         validationType="VALIDATE_NEW_PASSWORD"
                                         isValid={isNewPasswordValid}
                                         value={newPassword}
@@ -117,6 +117,7 @@ const ChangeUserPasswordPage = ({
                                             setNewPassword(e.target.value)
                                         }
                                         type="password"
+                                        required
                                     />
                                 </div>
                                 <div className={styles.action_buttons_wrapper}>

@@ -2,7 +2,6 @@ import { showNotification } from "@mantine/notifications";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import ReactLoading from "react-loading";
-import { useNavigate } from "react-router";
 import {
     AppointmentListElementDto,
     listOwnAppointments,
@@ -13,7 +12,7 @@ import { useStoreSelector } from "../../../../redux/reduxHooks";
 import { failureNotificationItems } from "../../../../utils/showNotificationsItems";
 import styles from "./style.module.scss";
 
-export const OwnAppointmentsList = () => {
+const OwnAppointmentsListPage = () => {
     const aLevel = useStoreSelector((state) => state.user.cur);
     const [appointments, setAppointments] =
         useState<AppointmentListElementDto[]>();
@@ -90,3 +89,5 @@ export const OwnAppointmentsList = () => {
         </section>
     );
 };
+
+export default OwnAppointmentsListPage;

@@ -5,19 +5,16 @@ import {
     Input,
     Pagination,
     Select,
-    SimpleGrid,
 } from "@mantine/core";
 import { useEffect, useState } from "react";
 import {
     AppointmentListResponse,
     AppointmentListElementDto, listAppointments
 } from "../../../../api/mop";
-import { GreenGradientButton } from "../../../../components/Button/GreenGradientButton";
 import { AppointmentListElement } from "../../../../components/AppointmentListElement";
 import { FaSearch } from "react-icons/fa";
 import { useTranslation } from "react-i18next";
 import { useStoreSelector } from "../../../../redux/reduxHooks";
-import styles from "./implantListPage.module.scss";
 
 export const AppointmentListPage = () => {
     const [phrase, setPhrase] = useState<string>("");

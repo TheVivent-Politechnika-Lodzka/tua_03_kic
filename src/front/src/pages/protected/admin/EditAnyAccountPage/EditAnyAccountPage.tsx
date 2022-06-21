@@ -1,6 +1,5 @@
 import { useState, useEffect, useContext } from "react";
 import { useNavigate, useParams } from "react-router";
-import style from "./userDetails.module.scss";
 import { useTranslation } from "react-i18next";
 import {
     editAnyAccount,
@@ -19,12 +18,14 @@ import { validationContext } from "../../../../context/validationContext";
 import { showNotification } from "@mantine/notifications";
 import { successNotficiationItems } from "../../../../utils/showNotificationsItems";
 import ConfirmActionModal from "../../../../components/shared/ConfirmActionModal/ConfirmActionModal";
+import styles from "./style.module.scss";
 
 const EditAnyAccountPage = () => {
     const [account, setAccount] = useState<GetAccountResponse>();
     const accountAccessLevels = account?.accessLevels.map(
         (level) => level.level
     );
+
     const [opened, setOpened] = useState(false);
     const [loading, setLoading] = useState<Loading>({
         pageLoading: true,
@@ -34,7 +35,6 @@ const EditAnyAccountPage = () => {
     const { login } = useParams();
     const { t } = useTranslation();
     const {
-        state,
         state: {
             isFirstNameValid,
             isLastNameValid,
@@ -45,7 +45,6 @@ const EditAnyAccountPage = () => {
             isEmailValidAdministrator,
             isEmailValidSpecialist,
         },
-        dispatch,
     } = useContext(validationContext);
 
     useEffect(() => {
@@ -94,7 +93,7 @@ const EditAnyAccountPage = () => {
             : true);
 
     return (
-        <section className={style.edit_own_account_page}>
+        <section className={styles.edit_own_account_page}>
             {loading.pageLoading ? (
                 <ReactLoading
                     type="cylon"
@@ -104,28 +103,28 @@ const EditAnyAccountPage = () => {
                 />
             ) : (
                 <>
-                    <div className={style.edit_own_account_header}>
-                        <h2>Edytuj dane własnego konta</h2>
+                    <div className={styles.edit_own_account_header}>
+                        <h2>Edytuj dane konta użytkownika {login}</h2>
                     </div>
-                    <div className={style.edit_own_account_content}>
-                        <div className={style.edit_data_account_wrapper}>
-                            <div className={style.avatar_wrapper}>
+                    <div className={styles.edit_own_account_content}>
+                        <div className={styles.edit_data_account_wrapper}>
+                            <div className={styles.avatar_wrapper}>
                                 <img
                                     src={avatar}
                                     alt="User avatar"
-                                    className={style.change_avatar}
+                                    className={styles.change_avatar}
                                 />
-                                <div className={style.edit_avatar_icon_wrapper}>
+                                <div className={styles.edit_avatar_icon_wrapper}>
                                     <FontAwesomeIcon
                                         icon={faEdit}
-                                        className={style.edit_avatar_icon}
+                                        className={styles.edit_avatar_icon}
                                     />
                                 </div>
                             </div>
-                            <div className={style.edit_fields_wrapper}>
-                                <div className={style.edit_field}>
+                            <div className={styles.edit_fields_wrapper}>
+                                <div className={styles.edit_field}>
                                     <InputWithValidation
-                                        title="Imię: "
+                                        title="Imię"
                                         value={account?.firstName}
                                         validationType="VALIDATE_FIRSTNAME"
                                         isValid={isFirstNameValid}
@@ -142,9 +141,9 @@ const EditAnyAccountPage = () => {
                                         message="Imię musi składać się z co najmniej 3 liter."
                                     />
                                 </div>
-                                <div className={style.edit_field}>
+                                <div className={styles.edit_field}>
                                     <InputWithValidation
-                                        title="Nazwisko: "
+                                        title="Nazwisko"
                                         value={account?.lastName}
                                         validationType="VALIDATE_LASTNAME"
                                         isValid={isLastNameValid}
@@ -162,18 +161,19 @@ const EditAnyAccountPage = () => {
                                     />
                                 </div>
 
-                                {accountAccessLevels?.includes("CLIENT") ? (
+                                {accountAccessLevels?.includes("CLIENT") && (
                                     <>
-                                        <div
+                                        <p
                                             className={
-                                                style.access_level_name_header
+                                                styles.access_level_name_header
                                             }
                                         >
-                                            CLIENT
-                                        </div>
-                                        <div className={style.edit_field}>
+                                            Edytuj dane dla poziomu dostępu
+                                            klienta
+                                        </p>
+                                        <div className={styles.edit_field}>
                                             <InputWithValidation
-                                                title="Numer PESEL: "
+                                                title="Numer PESEL"
                                                 value={
                                                     account?.accessLevels
                                                         .filter(
@@ -215,9 +215,9 @@ const EditAnyAccountPage = () => {
                                                 message="Numer pesel musi składać się z 11 cyfr."
                                             />
                                         </div>
-                                        <div className={style.edit_field}>
+                                        <div className={styles.edit_field}>
                                             <InputWithValidation
-                                                title="Numer telefonu: "
+                                                title="Numer telefonu"
                                                 value={
                                                     account?.accessLevels
                                                         .filter(
@@ -263,22 +263,23 @@ const EditAnyAccountPage = () => {
                                             />
                                         </div>
                                     </>
-                                ) : null}
+                                )}
 
                                 {accountAccessLevels?.includes(
                                     "ADMINISTRATOR"
-                                ) ? (
+                                ) && (
                                     <>
-                                        <div
+                                        <p
                                             className={
-                                                style.access_level_name_header
+                                                styles.access_level_name_header
                                             }
                                         >
-                                            ADMINISTRATOR
-                                        </div>
-                                        <div className={style.edit_field}>
+                                            Edytuj dane dla poziomu dostępu
+                                            administratora
+                                        </p>
+                                        <div className={styles.edit_field}>
                                             <InputWithValidation
-                                                title="Numer telefonu: "
+                                                title="Numer telefonu"
                                                 value={
                                                     account?.accessLevels
                                                         .filter(
@@ -323,9 +324,9 @@ const EditAnyAccountPage = () => {
                                                 message="Numer telefonu musi składać się z 9 cyfr."
                                             />
                                         </div>
-                                        <div className={style.edit_field}>
+                                        <div className={styles.edit_field}>
                                             <InputWithValidation
-                                                title="Email kontaktowy: "
+                                                title="Email kontaktowy"
                                                 value={
                                                     account?.accessLevels
                                                         .filter(
@@ -371,20 +372,23 @@ const EditAnyAccountPage = () => {
                                             />
                                         </div>
                                     </>
-                                ) : null}
+                                )}
 
-                                {accountAccessLevels?.includes("SPECIALIST") ? (
+                                {accountAccessLevels?.includes(
+                                    "SPECIALIST"
+                                ) && (
                                     <>
-                                        <div
+                                        <p
                                             className={
-                                                style.access_level_name_header
+                                                styles.access_level_name_header
                                             }
                                         >
-                                            SPECIALIST
-                                        </div>
-                                        <div className={style.edit_field}>
+                                            Edytuj dane dla poziomu dostępu
+                                            specjalisty
+                                        </p>
+                                        <div className={styles.edit_field}>
                                             <InputWithValidation
-                                                title="Numer telefonu: "
+                                                title="Numer telefonu"
                                                 value={
                                                     account?.accessLevels
                                                         .filter(
@@ -429,9 +433,9 @@ const EditAnyAccountPage = () => {
                                                 message="Numer telefonu musi składać się z 9 cyfr."
                                             />
                                         </div>
-                                        <div className={style.edit_field}>
+                                        <div className={styles.edit_field}>
                                             <InputWithValidation
-                                                title="Email kontaktowy: "
+                                                title="Email kontaktowy"
                                                 value={
                                                     account?.accessLevels
                                                         .filter(
@@ -473,9 +477,9 @@ const EditAnyAccountPage = () => {
                                             />
                                         </div>
                                     </>
-                                ) : null}
+                                )}
                             </div>
-                            <div className={style.edit_data_buttons_wrapper}>
+                            <div className={styles.edit_data_buttons_wrapper}>
                                 <ActionButton
                                     onClick={() => {
                                         setOpened(true);
