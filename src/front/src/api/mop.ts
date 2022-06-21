@@ -24,6 +24,13 @@ export interface ListImplantResponse {
     data: ImplantListElementDto[];
 }
 
+export interface ListImplantReviewsResponse {
+    totalCounts: number;
+    totalPages: number;
+    currentPage: number;
+    data: ImplantReview[];
+}
+
 export interface AppointmentListElementDto {
     id: string;
     client: AccountDetails;
@@ -522,6 +529,70 @@ export async function createAppointment(request: CreateAppointmentRequest) {
 }
 
 //------------------------------------------------- KONIEC MOP 6 ----------------------------------------------------//
+
+export async function getImplantsReviews(
+    implantId: string,
+    page: number,
+    size: number
+) {
+    try {
+        const { data } = await axios.get<ListImplantReviewsResponse>(
+            `/mop/implant/${implantId}/reviews?page=${page}&size=${size}`
+        );
+        return data;
+    } catch (error) {
+        if (axios.isAxiosError(error) && error.response) {
+            return {
+                errorMessage: error.response.data as string,
+                status: error.response.status,
+            } as ApiError;
+        }
+        throw error;
+    }
+}
+
+interface GetResponse {
+    data: any;
+}
+
+export async function deleteImplantReview(implantId: string) {
+    try {
+        const {data} = await axios.delete<GetResponse>(`/mop/implant/review/${implantId}`);
+        return data as GetResponse;
+    } catch (error) {
+        if (axios.isAxiosError(error) && error.response) {
+            return {
+                errorMessage: error.response.data as string,
+                status: error.response.status,
+            } as ApiError;
+        }
+        throw error;
+    }
+}
+
+interface CreateImplantReviewRequest {
+    implantId: string;
+    clientLogin: string;
+    rating: number;
+    review: string;
+}
+
+interface CreateImplantReviewResponse extends ImplantReview {}
+
+export async function addImplantReview(request: CreateImplantReviewRequest) {
+    try {
+        const {data} = await axios.put<CreateImplantReviewResponse>(`/mop/implant/review`, request);
+        return data as CreateImplantReviewResponse;
+    } catch (error) {
+        if (axios.isAxiosError(error) && error.response) {
+            return {
+                errorMessage: error.response.data as string,
+                status: error.response.status,
+            } as ApiError;
+        }
+        throw error;
+    }
+}
 
 //------------------------------------------------- MOP 14 ----------------------------------------------------//
 

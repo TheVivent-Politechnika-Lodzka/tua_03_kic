@@ -1,6 +1,7 @@
 import { faCancel, faCheck } from "@fortawesome/free-solid-svg-icons";
 import { Modal } from "@mantine/core";
 import { Children } from "react";
+import { useTranslation } from "react-i18next";
 import ActionButton from "../ActionButton/ActionButton";
 import styles from "./style.module.scss";
 
@@ -23,6 +24,8 @@ const ConfirmActionModal = ({
     children,
     size = "lg",
 }: ConfirmActionModalProps) => {
+    const { t } = useTranslation();
+
     return (
         <Modal
             styles={{ modal: { backgroundColor: "#262633" } }}
@@ -42,13 +45,13 @@ const ConfirmActionModal = ({
                 <div className={styles.action_buttons_wrapper}>
                     <ActionButton
                         isLoading={isLoading}
-                        title="Tak"
+                        title={t("confirmationModal.yes")}
                         color="green"
                         icon={faCheck}
                         onClick={handleFunction}
                     />
                     <ActionButton
-                        title="Nie"
+                        title={t("confirmationModal.no")}
                         color="red"
                         icon={faCancel}
                         onClick={onClose}

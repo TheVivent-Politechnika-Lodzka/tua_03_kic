@@ -209,7 +209,7 @@ const validationReducer = (state: ContextState, action: ValidationAction) => {
                 ...state,
                 isManufacturerValid: validate(
                     action.payload.input,
-                    /^[a-zA-Z \u00C0-\u017F']{10,50}$/
+                    /^[a-zA-Z .\u00C0-\u017F']{10,50}$/
                 ),
             };
         }

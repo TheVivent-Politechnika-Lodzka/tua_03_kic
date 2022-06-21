@@ -1,4 +1,9 @@
 {
+    "confirmationModal": {
+        "yes": "Yes",
+        "no": "No"
+    },
+
     "firm_name": "Cyber Implant Installation Clinic",
     "why_us": "WHY CHOOSE US?",
     "many_reason": "there are many reasons",
@@ -162,6 +167,17 @@
         "listElement": {
             "details": "Details"
         }
+    },
+
+    "addImplantReviewPage": {
+        "addImplantReview": "Add a review",
+        "confirm": "Confirm",
+        "cancel": "Cancel",
+        "addReview": "Add a review",
+        "confirmMsg": "Are you sure you want to add a review?",
+        "reviewAdded": "Review added successfully",
+        "reviewsNotFound": "Implant has no reviews",
+        "reviewDeleted": "Review deleted successfully"
     },
 
     "createImplantPage": {
@@ -412,13 +428,13 @@
         "price": "Price:",
         "producer": "Producer:",
         "time": "Installation time:",
-        "applied": "A:plied",
+        "applied": "Aplied",
         "times": "times",
         "state": "State:",
         "available": "Available",
         "notAvailable": "Not available",
         "edit": "Edit",
-        "archive": "Archieve",
+        "archive": "Archive",
         "confirmActionModal": {
             "title": "Archieve an implant",
             "message": "Are you sure you want to archive the implant? The operation is irreversible!"

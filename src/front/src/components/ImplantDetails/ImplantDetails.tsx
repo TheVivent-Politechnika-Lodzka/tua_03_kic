@@ -3,6 +3,7 @@ import {
     faEdit,
     faShoppingCart,
     faFolder,
+    faStar,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useEffect, useState } from "react";
@@ -19,6 +20,9 @@ import { archiveImplant, getImplant, GetImplantResponse } from "../../api/mop";
 import { useStoreSelector } from "../../redux/reduxHooks";
 import ConfirmActionModal from "../shared/ConfirmActionModal/ConfirmActionModal";
 import { useNavigate } from "react-router";
+import ImplantReview from "../ImplantReview/ImplantReview";
+import { ImplantListPage } from "../../pages/unprotected/ImplantListPage";
+import ImplantReviewsListPage from "../../pages/protected/shared/ImplantReviewsListPage/ImplantsReviewsListPage";
 import { useTranslation } from "react-i18next";
 
 interface ImplantDetailsProps {
@@ -51,6 +55,7 @@ const ImplantDetails = ({ id, isOpened, onClose }: ImplantDetailsProps) => {
     const { t } = useTranslation();
 
     const [opened, setOpened] = useState<boolean>(false);
+    const [reviewsModal, setReviewsModal] = useState<boolean>(false);
 
     const customStyles = {
         overlay: {
@@ -184,8 +189,8 @@ const ImplantDetails = ({ id, isOpened, onClose }: ImplantDetailsProps) => {
                                         }
                                     >
                                         {implant?.archived
-                                            ? t("implantDetails.available")
-                                            : t("implantDetails.notAvailable")}
+                                            ? t("implantDetails.notAvailable")
+                                            : t("implantDetails.available")}
                                     </p>
                                 </div>
                             </div>
@@ -236,6 +241,11 @@ const ImplantDetails = ({ id, isOpened, onClose }: ImplantDetailsProps) => {
                         </div>
                     </div>
                 )}
+                <ImplantReviewsListPage
+                    isOpened={reviewsModal}
+                    onClose={() => setReviewsModal(false)}
+                    implantId={implant?.id as string}
+                />
                 <ConfirmActionModal
                     isOpened={opened}
                     onClose={() => {

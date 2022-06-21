@@ -1,4 +1,9 @@
 {
+    "confirmationModal": {
+        "yes": "Tak",
+        "no": "Nie"
+    },
+
     "firm_name": "Klinika Instalacji Cyberwszczepów",
     "why_us": "DLACZEGO MY?",
     "many_reason": "jest wiele powodów a to tylko parę z nich",
@@ -224,6 +229,17 @@
         "refresh": "Odśwież sesje",
         "logInAgain": "Zaloguj sie ponownie"
     },
+
+    "addImplantReviewPage": {
+        "addImplantReview": "Dodaj recenzję",
+        "confirm": "Zatwierdź",
+        "cancel": "Anuluj",
+        "addReview": "Dodaj recenzję",
+        "confirmMsg": "Czy na pewno chcesz dodać recenzję?",
+        "reviewAdded": "Pomyślnie dodano recenzję",
+        "reviewsNotFound": "Implant nie posiada żadnych recenzji"
+    },
+
     "specialistCard": {
         "alt": "zdjęcie specjalisty",
         "tel": "telefon:"
