@@ -3,10 +3,11 @@ import Rater from "react-rater";
 import styles from "./style.module.scss";
 
 interface ImplantReviewProps {
-    user: AccountDetails;
+    implantId: string;
 }
 
 const ImplantReview = () => {
+
     return (
         <div className={styles.implant_review}>
             <div className={styles.general_info_wrapper}>
@@ -39,19 +40,7 @@ const ImplantReview = () => {
                         quisquam quidem corrupti officiis eaque cupiditate optio
                         deserunt accusantium magni reiciendis pariatur a ex
                         earum, ipsam, adipisci cumque, voluptate necessitatibus
-                        aliquam. Voluptatibus assumenda adipisci at voluptas
-                        nihil maiores, quam aliquid iste eius! Consectetur quod
-                        maiores doloremque, repellat voluptatem dolore accusamus
-                        possimus quidem? Eos laboriosam necessitatibus eligendi
-                        ipsam unde commodi itaque similique modi qui quis
-                        dolorem corrupti nesciunt atque aliquam magnam
-                        voluptatibus laborum iure ratione, autem dolorum
-                        nostrum, exercitationem sit cumque. Natus dolore nobis
-                        porro culpa earum laborum ipsum quibusdam debitis,
-                        deserunt animi quis amet veniam facilis quasi obcaecati
-                        dolorem? Doloremque beatae omnis possimus repudiandae
-                        temporibus praesentium, est, quod vel vitae accusantium
-                        odit aliquam sequi. Non, quam.
+                        aliquam. 
                     </p>
                 </div>
             </div>

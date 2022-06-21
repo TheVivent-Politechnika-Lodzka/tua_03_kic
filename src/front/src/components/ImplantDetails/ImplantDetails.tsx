@@ -224,6 +224,7 @@ const ImplantDetails = ({ id, isOpened, onClose }: ImplantDetailsProps) => {
                 <ImplantReviewsListPage
                     isOpened={reviewsModal}
                     onClose={() => setReviewsModal(false)}
+                    implantId={implant?.id as string}
                 />
                 <ConfirmActionModal
                     isOpened={opened}

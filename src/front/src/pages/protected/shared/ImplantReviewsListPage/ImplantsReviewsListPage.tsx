@@ -5,11 +5,13 @@ import styles from "./style.module.scss";
 interface ImplantReviewsListPageProps {
     isOpened: boolean;
     onClose: () => void;
+    implantId: string;
 }
 
 const ImplantReviewsListPage = ({
     isOpened,
     onClose,
+    implantId
 }: ImplantReviewsListPageProps) => {
     return (
         <Modal isOpen={isOpened}>

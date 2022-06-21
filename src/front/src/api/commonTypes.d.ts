@@ -54,6 +54,15 @@ interface AccountDetails extends Taggable {
     url: string;
 }
 
+interface ImplantReview extends Taggable {
+    clientLogin: string;
+    createdAt: string;
+    implantId: string;
+    rating: number;
+    review: string;
+
+}
+
 interface Etag {
     etag: string;
 }
