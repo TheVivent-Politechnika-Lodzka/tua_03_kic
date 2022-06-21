@@ -192,10 +192,8 @@
         "modalTitle": "Edytuj nowy implant",
         "confirmMsg": "Czy jesteś pewny?",
         "implantEdited": "Pomyślnie utworzono implant",
-        "cancel":"Anuluj",
-        "confirm":"Potwierdź"
-    },
-
+        "cancel": "Anuluj",
+        "confirm": "Potwierdź"
     },
 
     "registerPage": {
@@ -219,6 +217,7 @@
         "cancel": "Cancel",
         "polish": "polish",
         "english": "english",
-        "send_email":"Wysłaliśmy Ci maila z linkiem powierdzającym"
-    }
+        "send_email": "Wysłaliśmy Ci maila z linkiem powierdzającym"
+    },
+    "refresh": "Odśwież sesje"
 }

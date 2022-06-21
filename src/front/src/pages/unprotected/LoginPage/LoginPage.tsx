@@ -15,6 +15,7 @@ import { ResetPasswordModal } from "./ResetPasswordModal";
 
 const LoginPage = () => {
     const accessToken = "ACCESS_TOKEN";
+    const refreshToken = "REFRESH_TOKEN";
 
     const [credentials, setCredentials] = useState<Credentials>({
         login: "",
@@ -55,6 +56,7 @@ const LoginPage = () => {
         const decodedJWT = jwtDecode(response.accessToken) as string;
         dispatch(loginDispatch(decodedJWT));
         localStorage.setItem(accessToken, response.accessToken);
+        localStorage.setItem(refreshToken, response.refreshToken);
         setLoading({ ...loading, actionLoading: false });
         navigate("/");
     };

@@ -3,6 +3,8 @@ import { useStoreSelector } from "../../redux/reduxHooks";
 import UserAccessLevel from "./UserAccessLevel";
 import { useNavigate } from "react-router";
 import styles from "./style.module.scss";
+import Clocker from "./Clocker";
+
 
 const Navbar = () => {
     const login = useStoreSelector((state) => state.user.sub);
@@ -15,6 +17,10 @@ const Navbar = () => {
         >
             {accessLevel ? (
                 <div className={styles.user_info_wrapper}>
+                    <div className={styles.time_wrapper}>
+                        <Clocker />
+                    </div>
+
                     <div className={styles.user_text_wrapper}>
                         <p className={styles.login}>{login}</p>
                         <UserAccessLevel accessLevel={accessLevel} />
