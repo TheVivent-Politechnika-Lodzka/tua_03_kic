@@ -1,6 +1,7 @@
 package pl.lodz.p.it.ssbd2022.ssbd03.mok.ejb.facades;
 
 import jakarta.annotation.security.PermitAll;
+import jakarta.annotation.security.RolesAllowed;
 import jakarta.ejb.Stateless;
 import jakarta.ejb.TransactionAttribute;
 import jakarta.ejb.TransactionAttributeType;
@@ -9,6 +10,7 @@ import jakarta.interceptor.Interceptors;
 import jakarta.persistence.*;
 import lombok.Getter;
 import pl.lodz.p.it.ssbd2022.ssbd03.common.AbstractFacade;
+import pl.lodz.p.it.ssbd2022.ssbd03.common.Roles;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.tokens.RefreshToken;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.ResourceNotFoundException;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.database.DatabaseException;
@@ -43,7 +45,7 @@ public class RefreshTokenFacade extends AbstractFacade<RefreshToken> {
      * @param entity
      */
     @Override
-    @PermitAll
+    @RolesAllowed({Roles.ANONYMOUS, Roles.AUTHENTICATED})
     public void create(RefreshToken entity) {
         super.create(entity);
     }
@@ -54,7 +56,7 @@ public class RefreshTokenFacade extends AbstractFacade<RefreshToken> {
      * @param refreshToken
      */
     @Override
-    @PermitAll
+    @RolesAllowed(Roles.ANONYMOUS)
     public void unsafeRemove(RefreshToken refreshToken) {
         super.unsafeRemove(refreshToken);
     }
@@ -65,7 +67,8 @@ public class RefreshTokenFacade extends AbstractFacade<RefreshToken> {
      * @param login
      * @return refreshToken
      */
-    @PermitAll
+    @RolesAllowed(Roles.ADMINISTRATOR)
+    //TODO jako, że nie jest stosowana to proponuję to usunąć
     public RefreshToken findToken(String login) {
         try {
             TypedQuery<RefreshToken> typedQuery = entityManager.createNamedQuery("RefreshToken.findByLogin", RefreshToken.class);
@@ -76,7 +79,6 @@ public class RefreshTokenFacade extends AbstractFacade<RefreshToken> {
         } catch (PersistenceException e) {
             throw new DatabaseException(e);
         }
-
     }
 
     /**
@@ -85,7 +87,7 @@ public class RefreshTokenFacade extends AbstractFacade<RefreshToken> {
      * @param token
      * @return resetPasswordToken
      */
-    @PermitAll
+    @RolesAllowed({Roles.ANONYMOUS, Roles.AUTHENTICATED})
     public RefreshToken findByToken(String token) {
         try {
             TypedQuery<RefreshToken> typedQuery = entityManager.createNamedQuery("RefreshToken.findByToken", RefreshToken.class);
@@ -96,18 +98,5 @@ public class RefreshTokenFacade extends AbstractFacade<RefreshToken> {
         } catch (PersistenceException e) {
             throw new DatabaseException(e);
         }
-
-    }
-
-    /**
-     * metoda zwraca tokeny przed podaną datą
-     *
-     * @return
-     */
-    @PermitAll
-    public List<RefreshToken> findExpiredTokens() {
-        TypedQuery<RefreshToken> typedQuery = entityManager.createNamedQuery("RefreshToken.findExpired", RefreshToken.class);
-        typedQuery.setParameter("now", Instant.now());
-        return typedQuery.getResultList();
     }
 }

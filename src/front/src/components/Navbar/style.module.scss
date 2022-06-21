@@ -29,6 +29,11 @@
         width: 16.7rem;
         height: 100%;
 
+        .time_wrapper {
+            padding-right: 1rem;
+            font-size: 1.5rem;
+        }
+
         .user_text_wrapper {
             display: flex;
             flex-direction: column;

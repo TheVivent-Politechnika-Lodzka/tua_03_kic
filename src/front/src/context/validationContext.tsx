@@ -200,7 +200,8 @@ const validationReducer = (state: ContextState, action: ValidationAction) => {
                 ...state,
                 isImplantNameValid: validate(
                     action.payload.input,
-                    /^[a-zA-Z-' '-\u00C0-\u017F']{4,50}$/
+                    /^[a-zA-Z \u00C0-\u017F']{3,50}$/
+                    
                 ),
             };
         }
@@ -209,7 +210,7 @@ const validationReducer = (state: ContextState, action: ValidationAction) => {
                 ...state,
                 isManufacturerValid: validate(
                     action.payload.input,
-                    /^[a-zA-Z-' '-\u00C0-\u017F']{10,50}$/
+                    /^[a-zA-Z \u00C0-\u017F']{10,50}$/
                 ),
             };
         }
@@ -230,7 +231,7 @@ const validationReducer = (state: ContextState, action: ValidationAction) => {
                 ...state,
                 isDescriptionValid: validate(
                     action.payload.input,
-                    /^[a-zA-Z-' '-\u00C0-\u017F']{100,1000}$/
+                    /^[a-zA-Z0-9 ,.%!()\-/\n\u00C0-\u017F']{100,1000}$/
                 ),
             };
         }

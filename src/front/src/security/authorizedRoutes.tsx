@@ -6,6 +6,9 @@ import UserManagment from "../pages/protected/admin/UsersManagmentPage/UsersMana
 import { AppointmentListPage } from "../pages/protected/admin/AppointmentListPage";
 import { CreateImplantPage } from "../pages/protected/admin/CreateImplantPage";
 import OwnAppointmentsListPage from "../pages/protected/shared/OwnAppointmentsListPage/OwnAppointmentsListPage";
+import { EditOwnAppointment } from "../pages/protected/shared/EditOwnAppointment";
+import { EditImplantPage } from "../pages/protected/admin/EditImplantPage";
+import {EditAppointment} from "../components/EditAppointment";
 
 const authorizedRoutes = (accessLevel: AccessLevelType) => {
     switch (accessLevel) {
@@ -26,12 +29,19 @@ const authorizedRoutes = (accessLevel: AccessLevelType) => {
                         path="/create-implant"
                         element={<CreateImplantPage />}
                     />
+                    <Route
+                        path="/implant/:id"
+                        element={<EditImplantPage />}
+                    />
+                    <Route path="/visit/edit/:id" element={<EditAppointment />} />
                 </>
             );
         }
         case "SPECIALIST": {
             return (
                 <>
+                    <Route path="/visits" element={<OwnAppointmentsList />} />
+                    <Route path="/visit/edit/:id" element={<EditOwnAppointment />} />
                     <Route
                         path="/visits"
                         element={<OwnAppointmentsListPage />}
@@ -42,6 +52,8 @@ const authorizedRoutes = (accessLevel: AccessLevelType) => {
         case "CLIENT": {
             return (
                 <>
+                    <Route path="/visits" element={<OwnAppointmentsList />} />
+                    <Route path="/visit/edit/:id" element={<EditOwnAppointment />} />
                     <Route
                         path="/visits"
                         element={<OwnAppointmentsListPage />}

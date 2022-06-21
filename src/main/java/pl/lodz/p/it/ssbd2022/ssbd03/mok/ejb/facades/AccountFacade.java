@@ -22,6 +22,7 @@ import pl.lodz.p.it.ssbd2022.ssbd03.security.Tagger;
 import pl.lodz.p.it.ssbd2022.ssbd03.utils.HashAlgorithm;
 import pl.lodz.p.it.ssbd2022.ssbd03.utils.PaginationData;
 
+import javax.management.relation.Role;
 import java.util.List;
 
 @Interceptors(TrackerInterceptor.class)
@@ -48,7 +49,8 @@ public class AccountFacade extends AbstractFacade<Account> {
      * @param entity
      */
     @Override
-    @PermitAll
+    @RolesAllowed(Roles.ADMINISTRATOR)
+    //TODO na 90% jest to do wyrzucenia
     public void unsafeRemove(Account entity) {
         super.unsafeRemove(entity);
     }
@@ -71,7 +73,7 @@ public class AccountFacade extends AbstractFacade<Account> {
      * @param entity
      */
     @Override
-    @PermitAll
+    @RolesAllowed(Roles.ANONYMOUS)
     public void unsafeEdit(Account entity) {
         super.unsafeEdit(entity);
     }
@@ -81,7 +83,7 @@ public class AccountFacade extends AbstractFacade<Account> {
      * Wymaga podania encji w stanie zarządzalnym
      * @param account
      */
-    @RolesAllowed(Roles.ADMINISTRATOR)
+    @RolesAllowed(Roles.AUTHENTICATED)
     public void forceVersionIncrement(Account account) {
         entityManager.lock(account, LockModeType.OPTIMISTIC_FORCE_INCREMENT);
     }
@@ -94,7 +96,7 @@ public class AccountFacade extends AbstractFacade<Account> {
      * @throws InvalidParametersException, gdy podano niepoprawną wartość parametru
      * @throws DatabaseException,          gdy wystąpi błąd związany z bazą danych
      */
-    @PermitAll
+    @RolesAllowed({Roles.ANONYMOUS, Roles.AUTHENTICATED})
     public Account findByLogin(String login) {
         try {
             TypedQuery<Account> typedQuery = entityManager.createNamedQuery("Account.findByLogin", Account.class);
@@ -149,8 +151,9 @@ public class AccountFacade extends AbstractFacade<Account> {
      * @param entity konto użytkownika
      * @throws AccountAlreadyExistsException gdy użytkownik o podanym loginie lub emailu już istnieje
      */
-    @PermitAll
+
     @Override
+    @RolesAllowed({Roles.ANONYMOUS, Roles.ADMINISTRATOR})
     public void create(Account entity) {
         try {
             super.create(entity);

@@ -174,7 +174,26 @@
         "modalTitle": "Dodaj nowy implant",
         "confirmMsg": "Czy jesteś pewny?",
         "implantCreated": "Pomyślnie utworzono implant"
-    }
+    },
+    "editImplantPage": {
+        "editImplant": "Edytuj wszczep",
+        "choosePhoto": "WYBIERZ ZDJĘCIE",
+        "name": "Nazwa",
+        "nameMsg": "Conajmniej od 4 do 50 znaków",
+        "manufacturerMsg": "Conajmniej od 10 do 50 znaków",
+        "manufacturer": "Producent",
+        "price": "Cena (ZŁ)",
+        "priceMsg": "Cena musi być liczbą dodatnią",
+        "duration": "Czas zabiegu (min)",
+        "durationMsg": "Czas zabiegu musi być liczbą dodatnią",
+        "description": "Opis",
+        "descriptionMsg": "Conajmniej 100 do 1000 znaków",
+        "editImplantUpper": "EDYTUJ IMPLANT",
+        "modalTitle": "Edytuj nowy implant",
+        "confirmMsg": "Czy jesteś pewny?",
+        "implantEdited": "Pomyślnie utworzono implant",
+        "cancel": "Anuluj",
+        "confirm": "Potwierdź"
     },
 
     "registerPage": {
@@ -198,6 +217,11 @@
         "cancel": "Cancel",
         "polish": "polish",
         "english": "english",
-        "send_email":"Wysłaliśmy Ci maila z linkiem powierdzającym"
+        "send_email": "Wysłaliśmy Ci maila z linkiem powierdzającym"
+    },
+    "clocker" : {
+        "refresh": "Odśwież sesje",
+        "logInAgain" : "Zaloguj sie ponownie"
     }
+    
 }

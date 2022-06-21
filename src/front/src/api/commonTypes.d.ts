@@ -26,6 +26,17 @@ interface AccessLevel {
     pesel?: string;
 }
 
+interface ImplantDto extends Taggable {
+    name: string;
+    description: string;
+    manufacturer: string;
+    price: number;
+    archived: boolean;
+    popularity: number;
+    duration: number;
+    image: string;
+}
+
 interface AccountDetails extends Taggable {
     login: string;
     firstName: string;
@@ -38,6 +49,7 @@ interface AccountDetails extends Taggable {
     };
     active: boolean;
     confirmed: boolean;
+    url?: string;
     accessLevels: AccessLevel[];
     url: string;
 }

@@ -63,7 +63,7 @@ export const CreateImplantPage = () => {
             description: implant.description,
             manufacturer: implant.manufacturer,
             price: parseInt(implant.price),
-            duration: parseInt(implant.duration) * 60000,
+            duration: parseInt(implant.duration) * 60,
             url: implant.url,
         });
         if ("errorMessage" in response) {
