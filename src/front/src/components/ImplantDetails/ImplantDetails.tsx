@@ -1,4 +1,9 @@
-import { faClose, faEdit, faFolder } from "@fortawesome/free-solid-svg-icons";
+import {
+    faClose,
+    faEdit,
+    faShoppingCart,
+    faFolder,
+} from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useEffect, useState } from "react";
 import ReactModal from "react-modal";
@@ -28,8 +33,7 @@ const ImplantDetails = ({ id, isOpened, onClose }: ImplantDetailsProps) => {
         pageLoading: true,
         actionLoading: false,
     });
-
-const navigate = useNavigate();
+    const navigate = useNavigate();
 
     const handleGetImplant = async () => {
         const response = await getImplant(id);
@@ -112,7 +116,7 @@ const navigate = useNavigate();
                                     <img
                                         className={styles.image}
                                         src={implant?.image}
-                                        alt="Implant image"
+                                        alt="Implant"
                                     />
                                 </div>
                             </div>
@@ -166,6 +170,22 @@ const navigate = useNavigate();
                                     </p>
                                 </div>
                             </div>
+                            {accessLevel === "CLIENT" && (
+                                <div className={styles.action_wrapper}>
+                                    <div className={styles.button}>
+                                        <ActionButton
+                                            title="Rezerwuj"
+                                            icon={faShoppingCart}
+                                            onClick={() => {
+                                                navigate(
+                                                    `/implants/${implant?.id}/create-appointment`
+                                                );
+                                            }}
+                                            color="green"
+                                        />
+                                    </div>
+                                </div>
+                            )}
                             {accessLevel === "ADMINISTRATOR" && (
                                 <div className={styles.action_wrapper}>
                                     <div className={styles.button}>
@@ -173,7 +193,11 @@ const navigate = useNavigate();
                                             title="Edytuj"
                                             icon={faEdit}
                                             color="green"
-                                            onClick={() => navigate(`/implant/${implant?.id}`)}
+                                            onClick={() =>
+                                                navigate(
+                                                    `/implant/${implant?.id}`
+                                                )
+                                            }
                                         />
                                     </div>
                                     <div className={styles.button}>

@@ -11,7 +11,8 @@ import { useEffect, useState } from "react";
 import ReactLoading from "react-loading";
 import { useNavigate, useParams } from "react-router";
 import {
-    AppointmentListElementDto, editAppointmentByAdmin,
+    AppointmentListElementDto,
+    editAppointmentByAdmin,
     editOwnAppointment,
     getAppointmentDetails,
 } from "../../api/mop";
@@ -24,7 +25,7 @@ export const EditAppointment = () => {
     const aLevel = useStoreSelector((state) => state.user.cur);
     const [appointment, setAppointment] = useState<AppointmentListElementDto>();
     const [etag, setEtag] = useState<string>("");
-    const [inputStatus, setInputStatus] = useState<string>('')
+    const [inputStatus, setInputStatus] = useState<string>("");
     const [loading, setLoading] = useState<Loading>({
         pageLoading: true,
         actionLoading: false,
@@ -43,7 +44,7 @@ export const EditAppointment = () => {
             return;
         }
         setEtag(data.etag);
-        setInputStatus(data.data.status)
+        setInputStatus(data.data.status);
         setInputDescription(data.data.description);
         setAppointment(data.data);
         setLoading({ pageLoading: false, actionLoading: false });
@@ -52,7 +53,7 @@ export const EditAppointment = () => {
         handleGetAppointmentDetails();
     }, []);
     const handleEditAppointment = async () => {
-        if (!id || !etag || !appointment) return;
+        if (!id || !etag || !appointment!) return;
         let status = inputStatus;
         const version = appointment.version;
         let description = inputDescription;
@@ -61,13 +62,13 @@ export const EditAppointment = () => {
             etag,
             status,
             version,
-            description
+            description,
         });
         if ("errorMessage" in data) {
             showNotification(failureNotificationItems(data.errorMessage));
             return;
         }
-        navigate('/visits')
+        navigate("/visits");
     };
     useEffect(() => {
         if (!appointment) return;
@@ -99,11 +100,9 @@ export const EditAppointment = () => {
                                 Imię i nazwisko klienta:
                             </p>
                             <p className={styles.description}>
-                                {
-                                    appointment?.client.firstName +
+                                {appointment?.client.firstName +
                                     " " +
-                                    appointment?.client.lastName
-                                }
+                                    appointment?.client.lastName}
                             </p>
                         </div>
                         <div className={styles.detail_wrapper}>
@@ -111,11 +110,9 @@ export const EditAppointment = () => {
                                 Imie i nazwisko specjalisty:
                             </p>
                             <p className={styles.description}>
-                                {
-                                    appointment?.specialist.firstName +
+                                {appointment?.specialist.firstName +
                                     " " +
-                                    appointment?.specialist.lastName
-                                }
+                                    appointment?.specialist.lastName}
                             </p>
                         </div>
                         <div className={styles.detail_wrapper}>
@@ -129,12 +126,13 @@ export const EditAppointment = () => {
                             <p className={styles.description}>
                                 {appointment?.description}
                             </p>
-                            <input className={styles.description_input}
-                                       type="text"
-                                       value={inputDescription}
-                                       onChange={(e) =>
-                                           setInputDescription(e.target.value)
-                                       }
+                            <input
+                                className={styles.description_input}
+                                type="text"
+                                value={inputDescription}
+                                onChange={(e) =>
+                                    setInputDescription(e.target.value)
+                                }
                             />
                         </div>
                         <div className={styles.detail_wrapper}>
@@ -163,14 +161,12 @@ export const EditAppointment = () => {
                             <input
                                 type="checkbox"
                                 value={inputDescription}
-                                onChange={(e) =>
-                                    {
-                                        if(e.target.value) setInputStatus('PENDING')
-                                    }
-                                }
+                                onChange={(e) => {
+                                    if (e.target.value)
+                                        setInputStatus("PENDING");
+                                }}
                             />
                             <p className={styles.title}>Anuluj wizytę</p>
-
                         </div>
                         <div className={styles.detail_wrapper}>
                             <ActionButton

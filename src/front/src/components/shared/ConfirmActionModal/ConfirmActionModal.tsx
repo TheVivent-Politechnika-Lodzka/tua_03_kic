@@ -11,6 +11,7 @@ interface ConfirmActionModalProps {
     handleFunction: () => void;
     onClose: () => void;
     children?: React.ReactNode[] | React.ReactNode;
+    size?: string | number;
 }
 
 const ConfirmActionModal = ({
@@ -20,11 +21,12 @@ const ConfirmActionModal = ({
     isLoading,
     onClose,
     children,
+    size = "lg",
 }: ConfirmActionModalProps) => {
     return (
         <Modal
             styles={{ modal: { backgroundColor: "#262633" } }}
-            size="lg"
+            size={size}
             centered
             overflow="outside"
             radius="lg"

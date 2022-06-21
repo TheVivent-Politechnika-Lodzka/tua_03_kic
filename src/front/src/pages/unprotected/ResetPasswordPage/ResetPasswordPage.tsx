@@ -50,15 +50,16 @@ const ResetPasswordPage = () => {
 
     return (
         <section className={style.edit_own_account_page}>
-            <div className={style.edit_own_account_header}>
-                <h2>Zresetuj hasło</h2>
-            </div>
-            <div className={style.edit_own_account_content}>
-                <div className={style.edit_data_account_wrapper}>
+            <div className={style.background} />
+            <div className={style.content}>
+                <div className={style.wrapper}>
+                    <div className={style.header}>
+                        <h2>Zresetuj hasło</h2>
+                    </div>
                     <div className={style.edit_fields_wrapper}>
                         <div className={style.edit_field}>
                             <InputWithValidation
-                                title="Hasło: "
+                                title="Hasło"
                                 required={true}
                                 value={newPassword}
                                 validationType="VALIDATE_PASSWORD"
@@ -66,15 +67,12 @@ const ResetPasswordPage = () => {
                                 onChange={(e) => {
                                     setNewPassword(e.target.value);
                                 }}
-                            />
-                            <ValidationMessage
-                                isValid={isPasswordValid}
-                                message="Hasło musi być magiczne"
+                                type="password"
                             />
                         </div>
                         <div className={style.edit_field}>
                             <InputWithValidation
-                                title="Powtórz hasło: "
+                                title="Powtórz hasło"
                                 required={true}
                                 value={newPasswordRepeat}
                                 validationType="VALIDATE_PASSWORD"
@@ -82,14 +80,11 @@ const ResetPasswordPage = () => {
                                 onChange={(e) => {
                                     setNewPasswordRepeat(e.target.value);
                                 }}
-                            />
-                            <ValidationMessage
-                                isValid={passwordsAreTheSame}
-                                message="Hasła muszą być takie same"
+                                type="password"
                             />
                         </div>
                     </div>
-                    <div style={{ marginBottom: "2rem" }}>
+                    <div style={{ marginTop: "2rem", marginBottom: "2rem" }}>
                         <ActionButton
                             isDisabled={
                                 !(isPasswordValid && passwordsAreTheSame)
@@ -100,6 +95,16 @@ const ResetPasswordPage = () => {
                             icon={faPaperPlane}
                         />
                     </div>
+                </div>
+                <div className={style.messages_wrapper}>
+                    <ValidationMessage
+                        isValid={isPasswordValid}
+                        message={`Hasło musi zawierać co najmniej 8 znaków, w tym jeden znak specjalny, jedną dużą literę, jedną małą literę oraz jedną cyfrę`}
+                    />
+                    <ValidationMessage
+                        isValid={passwordsAreTheSame}
+                        message="Hasła muszą być takie same"
+                    />
                 </div>
             </div>
         </section>
