@@ -428,6 +428,42 @@ export async function archiveImplant(id: string, implantEtag: string) {
 }
 //------------------------------------------------- KONIEC MOP 2 ----------------------------------------------------//
 
+//------------------------------------------------- MOP 13 ----------------------------------------------------//
+
+export interface GetAppointmentResponse
+    extends AppointmentListElementDto,
+        Etag {}
+
+/**
+ * Odwołaj dowolną wizytę
+ *
+ * @param id identyfikator wizyty
+ * @returns GetAppointmentResponse | {errorMessage, status}
+ */
+export async function cancelAnyVisit(id: string, etag: string) {
+    try {
+        const { data, headers } = await axios.delete(
+            `/mop/cancel/visit/${id}`,
+            {
+                headers: {
+                    "If-Match": etag,
+                },
+            }
+        );
+        const newEtag = headers["etag"];
+        return { ...data, etag: newEtag } as GetAppointmentResponse;
+    } catch (error) {
+        if (axios.isAxiosError(error) && error.response) {
+            return {
+                errorMessage: error.response.data as string,
+                status: error.response.status,
+            } as ApiError;
+        }
+        throw error;
+    }
+}
+//------------------------------------------------- KONIEC MOP 13 ----------------------------------------------------//
+
 //----------------------------------------------------- MOP 9 -------------------------------------------------------//
 
 export async function getSpecialistAvailability(
