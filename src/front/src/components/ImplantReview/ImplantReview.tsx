@@ -7,6 +7,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { showNotification } from "@mantine/notifications";
 import { Rating } from "@mui/material";
 import { Api } from "@reduxjs/toolkit/dist/query";
+import { t } from "i18next";
 import { useState } from "react";
 import { deleteImplantReview } from "../../api";
 import { useStoreSelector } from "../../redux/reduxHooks";
@@ -37,7 +38,7 @@ const ImplantReview = ({ review, onClose }: ImplantReviewProps) => {
         setModal(false);
         onClose();
         showNotification(
-            successNotficiationItems("Implant review deleted successfully")
+            successNotficiationItems(t("addImplantReviewPage.reviewDeleted"))
         );
     };
 
@@ -83,9 +84,9 @@ const ImplantReview = ({ review, onClose }: ImplantReviewProps) => {
                 handleFunction={async () => {
                     await handleDeleteImplantReview();
                 }}
-                title="Usuń recenzję"
+                title={t("addImplantReviewPage.addImplantReview")}
                 isLoading={loading}
-                children="Czy na pewno chcesz usunąć tą recenzję?"
+                children={"addImplantReviewPage.confirmMsg"}
             />
         </div>
     );
