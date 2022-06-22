@@ -84,13 +84,6 @@ const ImplantReviewsListPage = ({
                                 onClose={onClose}
                             />
                         ))}
-                        {reviews?.data.map((review) => (
-                            <ImplantReview
-                                key={review?.id}
-                                review={review}
-                                onClose={onClose}
-                            />
-                        ))}
 
                         {reviews?.data.length === 0 && (
                             <p className={styles.no_reviews}>

@@ -177,7 +177,9 @@
         "confirmMsg": "Are you sure you want to add a review?",
         "reviewAdded": "Review added successfully",
         "reviewsNotFound": "Implant has no reviews",
-        "reviewDeleted": "Review deleted successfully"
+        "reviewDeleted": "Review deleted successfully",
+        "removeReviewTitle": "Delete review",
+        "removeConfirmMsg": "Are you sure?"
     },
 
     "createImplantPage": {
@@ -614,4 +616,5 @@
         "choosenSpecialist": "Specialist:",
         "reserveButton": "Reserve"
     }
+
 }

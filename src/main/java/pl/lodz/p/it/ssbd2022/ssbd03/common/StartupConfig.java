@@ -224,7 +224,7 @@ public class StartupConfig {
             appointment.setImplant(implant);
             appointment.setStartDate(now);
             appointment.setEndDate(now.plus(2, ChronoUnit.HOURS)); // zmieniono do testow
-            appointment.setStatus(Status.ACCEPTED); // TUTAJ ZMIENIAĆ DO TESTÓW
+            appointment.setStatus(Status.FINISHED); // TUTAJ ZMIENIAĆ DO TESTÓW
             appointment.setPrice(100);
             appointment.setDescription("8 godzin przed zabiegiem nie można nic spożywać. Na rekonwalenscencje należy przeznaczyć 10 dni. ");
 

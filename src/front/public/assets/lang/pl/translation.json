@@ -237,7 +237,9 @@
         "addReview": "Dodaj recenzję",
         "confirmMsg": "Czy na pewno chcesz dodać recenzję?",
         "reviewAdded": "Pomyślnie dodano recenzję",
-        "reviewsNotFound": "Implant nie posiada żadnych recenzji"
+        "reviewsNotFound": "Implant nie posiada żadnych recenzji",
+        "removeReviewTitle": "Usunięcie recenzji",
+        "removeConfirmMsg": "Czy chcesz potwierdzić operację?"
     },
 
     "specialistCard": {
