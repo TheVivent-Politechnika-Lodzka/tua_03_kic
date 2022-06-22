@@ -163,6 +163,7 @@ export const ImplantListPage = () => {
                             icon: {
                                 marginLeft: "1rem",
                                 height: "80%",
+                                zIndex: 0,
                             },
                             wrapper: { height: "100%" },
                         }}

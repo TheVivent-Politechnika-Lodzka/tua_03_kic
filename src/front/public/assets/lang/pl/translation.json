@@ -432,7 +432,9 @@
             "title": "Archiwizacja implantu",
             "message": "Czy na pewno chcesz zarchiwizować implant? Operacja jest nieodwracalna!"
         },
-        "reserveButton": "Zarezerwuj"
+        "reserveButton": "Zarezerwuj",
+        "reviews": "Recenzje",
+        "addReview": "Dodaj recenzję"
     },
 
     "ownAccountDetailsPage": {
