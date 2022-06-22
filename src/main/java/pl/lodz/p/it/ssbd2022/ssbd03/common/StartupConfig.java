@@ -42,7 +42,7 @@ public class StartupConfig {
             logger.info("Error during startup config: " + e.getMessage());
         }
 
-        try{
+        try {
             createAdmin();
             createSpecialistAdmin();
             createClientAdmin();
@@ -63,8 +63,7 @@ public class StartupConfig {
         try {
             createImplantReview();
             em.flush();
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             logger.info("Error during startup config: " + e.getMessage());
         }
     }
@@ -216,8 +215,8 @@ public class StartupConfig {
 
         em.persist(implant);
 
-        for (int i=0; i<20;i++) {
-            Instant now = Instant.now().minus(i+1, ChronoUnit.DAYS);
+        for (int i = 0; i < 20; i++) {
+            Instant now = Instant.now().minus(i + 1, ChronoUnit.DAYS);
             Appointment appointment = new Appointment();
             appointment.setClient(clientAdmin); // TUTAJ ZMIENIAĆ DO TESTÓW
             appointment.setSpecialist(specialist);

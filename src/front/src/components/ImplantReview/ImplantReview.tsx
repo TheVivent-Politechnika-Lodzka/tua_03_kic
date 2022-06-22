@@ -33,7 +33,7 @@ const ImplantReview = ({ review, onClose }: ImplantReviewProps) => {
     const handleDeleteImplantReview = async () => {
         if (!review.id) return;
         setLoading(true);
-        const data = await deleteImplantReview(review.id);
+        await deleteImplantReview(review.id);
         setLoading(false);
         setModal(false);
         onClose();
@@ -81,9 +81,7 @@ const ImplantReview = ({ review, onClose }: ImplantReviewProps) => {
                 onClose={() => {
                     setModal(false);
                 }}
-                handleFunction={async () => {
-                    await handleDeleteImplantReview();
-                }}
+                handleFunction={handleDeleteImplantReview}
                 title={t("addImplantReviewPage.addImplantReview")}
                 isLoading={loading}
                 children={"addImplantReviewPage.confirmMsg"}

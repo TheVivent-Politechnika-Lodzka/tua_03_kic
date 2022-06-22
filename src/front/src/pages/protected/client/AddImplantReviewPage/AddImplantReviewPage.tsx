@@ -51,13 +51,14 @@ const AddImplantReviewPage = ({
         showNotification(
             successNotficiationItems(t("addImplantReview.reviewAdded"))
         );
+        setRate(0);
         onClose();
     };
 
     return (
         <Modal isOpen={isOpen}>
             <div className={styles.add_implant_review_page}>
-                <h1>{t("addImplantReviewPage.addImplentReview")}</h1>
+                <h1>{t("addImplantReviewPage.addImplantReview")}</h1>
                 <Rating
                     value={rate}
                     precision={0.5}
@@ -75,7 +76,7 @@ const AddImplantReviewPage = ({
                 />
                 <div className={styles.action_wrapper}>
                     <ActionButton
-                        title={t("addImplantReview.confirm")}
+                        title={t("addImplantReviewPage.confirm")}
                         color="green"
                         icon={faCheck}
                         isLoading={loading}
@@ -83,7 +84,7 @@ const AddImplantReviewPage = ({
                     />
                     <ActionButton
                         onClick={onClose}
-                        title={t("addImplantReview.cancel")}
+                        title={t("addImplantReviewPage.cancel")}
                         color="red"
                         icon={faCancel}
                     />

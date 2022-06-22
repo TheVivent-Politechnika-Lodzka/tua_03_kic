@@ -4,6 +4,8 @@ import {
     faShoppingCart,
     faFolder,
     faStar,
+    faBook,
+    faPlus,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useEffect, useState } from "react";
@@ -20,10 +22,9 @@ import { archiveImplant, getImplant, GetImplantResponse } from "../../api/mop";
 import { useStoreSelector } from "../../redux/reduxHooks";
 import ConfirmActionModal from "../shared/ConfirmActionModal/ConfirmActionModal";
 import { useNavigate } from "react-router";
-import ImplantReview from "../ImplantReview/ImplantReview";
-import { ImplantListPage } from "../../pages/unprotected/ImplantListPage";
 import ImplantReviewsListPage from "../../pages/protected/shared/ImplantReviewsListPage/ImplantsReviewsListPage";
 import { useTranslation } from "react-i18next";
+import AddImplantReviewPage from "../../pages/protected/client/AddImplantReviewPage/AddImplantReviewPage";
 
 interface ImplantDetailsProps {
     id: string;
@@ -41,21 +42,11 @@ const ImplantDetails = ({ id, isOpened, onClose }: ImplantDetailsProps) => {
 
     const navigate = useNavigate();
 
-    const handleGetImplant = async () => {
-        const response = await getImplant(id);
-        if ("errorMessage" in response) {
-            setLoading({ pageLoading: false });
-            showNotification(failureNotificationItems(response?.errorMessage));
-            return;
-        }
-        setImplant(response);
-        setLoading({ pageLoading: false });
-    };
-
     const { t } = useTranslation();
 
     const [opened, setOpened] = useState<boolean>(false);
     const [reviewsModal, setReviewsModal] = useState<boolean>(false);
+    const [addReviewModal, setAddReviewModal] = useState<boolean>(false);
 
     const customStyles = {
         overlay: {
@@ -71,7 +62,16 @@ const ImplantDetails = ({ id, isOpened, onClose }: ImplantDetailsProps) => {
             border: "none",
         },
     };
-
+    const handleGetImplant = async () => {
+        const response = await getImplant(id);
+        if ("errorMessage" in response) {
+            setLoading({ pageLoading: false });
+            showNotification(failureNotificationItems(response?.errorMessage));
+            return;
+        }
+        setImplant(response);
+        setLoading({ pageLoading: false });
+    };
     const handleArchiveImpland = async () => {
         if (!implant) return;
         setLoading({ ...loading, actionLoading: true });
@@ -89,7 +89,6 @@ const ImplantDetails = ({ id, isOpened, onClose }: ImplantDetailsProps) => {
             )
         );
         setImplant(response);
-
         setLoading({ ...loading, actionLoading: false });
     };
 
@@ -194,9 +193,9 @@ const ImplantDetails = ({ id, isOpened, onClose }: ImplantDetailsProps) => {
                                     </p>
                                 </div>
                             </div>
-                            {accessLevel === "CLIENT" && (
-                                <div className={styles.action_wrapper}>
-                                    <div className={styles.button}>
+                            <div className={styles.action_wrapper}>
+                                {accessLevel === "CLIENT" && (
+                                    <>
                                         <ActionButton
                                             title={t(
                                                 "implantDetails.reserveButton"
@@ -209,12 +208,21 @@ const ImplantDetails = ({ id, isOpened, onClose }: ImplantDetailsProps) => {
                                             }}
                                             color="green"
                                         />
-                                    </div>
-                                </div>
-                            )}
-                            {accessLevel === "ADMINISTRATOR" && (
-                                <div className={styles.action_wrapper}>
-                                    <div className={styles.button}>
+
+                                        <ActionButton
+                                            onClick={() => {
+                                                setAddReviewModal(true);
+                                            }}
+                                            title={t(
+                                                "implantDetails.addReview"
+                                            )}
+                                            icon={faPlus}
+                                            color="purple"
+                                        />
+                                    </>
+                                )}
+                                {accessLevel === "ADMINISTRATOR" && (
+                                    <>
                                         <ActionButton
                                             title={t("implantDetails.edit")}
                                             icon={faEdit}
@@ -225,8 +233,6 @@ const ImplantDetails = ({ id, isOpened, onClose }: ImplantDetailsProps) => {
                                                 )
                                             }
                                         />
-                                    </div>
-                                    <div className={styles.button}>
                                         <ActionButton
                                             title={t("implantDetails.archive")}
                                             icon={faFolder}
@@ -235,15 +241,30 @@ const ImplantDetails = ({ id, isOpened, onClose }: ImplantDetailsProps) => {
                                                 setOpened(true);
                                             }}
                                         />
-                                    </div>
-                                </div>
-                            )}
+                                    </>
+                                )}
+                                <ActionButton
+                                    title={t("implantDetails.reviews")}
+                                    icon={faStar}
+                                    color="orange"
+                                    onClick={() => {
+                                        setReviewsModal(true);
+                                    }}
+                                />
+                            </div>
                         </div>
                     </div>
                 )}
                 <ImplantReviewsListPage
                     isOpened={reviewsModal}
                     onClose={() => setReviewsModal(false)}
+                    implantId={implant?.id as string}
+                />
+                <AddImplantReviewPage
+                    isOpen={addReviewModal}
+                    onClose={() => {
+                        setAddReviewModal(false);
+                    }}
                     implantId={implant?.id as string}
                 />
                 <ConfirmActionModal
