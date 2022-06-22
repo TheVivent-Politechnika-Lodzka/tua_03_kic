@@ -141,9 +141,10 @@ export const AppointmentDetails = ({
                 .replace("T", " ")
         );
     }, [appointment]);
+    
     useEffect(() => {
         handleGetAppointmentDetails();
-    }, []);
+    }, [isOpened]);
 
     return (
         <Modal isOpen={isOpened}>
