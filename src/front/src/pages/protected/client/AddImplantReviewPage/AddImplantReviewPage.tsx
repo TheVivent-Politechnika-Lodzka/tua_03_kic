@@ -51,6 +51,7 @@ const AddImplantReviewPage = ({
         showNotification(
             successNotficiationItems(t("addImplantReview.reviewAdded"))
         );
+        setRate(0);
         onClose();
     };
 
