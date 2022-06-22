@@ -42,7 +42,7 @@ public class StartupConfig {
             logger.info("Error during startup config: " + e.getMessage());
         }
 
-        try{
+        try {
             createAdmin();
             createSpecialistAdmin();
             createClientAdmin();
@@ -63,8 +63,7 @@ public class StartupConfig {
         try {
             createImplantReview();
             em.flush();
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             logger.info("Error during startup config: " + e.getMessage());
         }
     }
@@ -216,15 +215,15 @@ public class StartupConfig {
 
         em.persist(implant);
 
-        for (int i=0; i<20;i++) {
-            Instant now = Instant.now().minus(i+1, ChronoUnit.DAYS);
+        for (int i = 0; i < 20; i++) {
+            Instant now = Instant.now().minus(i + 1, ChronoUnit.DAYS);
             Appointment appointment = new Appointment();
             appointment.setClient(clientAdmin); // TUTAJ ZMIENIAĆ DO TESTÓW
             appointment.setSpecialist(specialist);
             appointment.setImplant(implant);
             appointment.setStartDate(now);
             appointment.setEndDate(now.plus(2, ChronoUnit.HOURS)); // zmieniono do testow
-            appointment.setStatus(Status.FINISHED); // TUTAJ ZMIENIAĆ DO TESTÓW
+            appointment.setStatus(Status.ACCEPTED); // TUTAJ ZMIENIAĆ DO TESTÓW
             appointment.setPrice(100);
             appointment.setDescription("8 godzin przed zabiegiem nie można nic spożywać. Na rekonwalenscencje należy przeznaczyć 10 dni. ");
 
