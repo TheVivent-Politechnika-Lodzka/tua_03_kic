@@ -287,9 +287,16 @@
         "accountDetailsTitle": "Dane szczegółowe",
         "name": "Imię:",
         "surname": "Nazwisko:",
-        "email": "Email:",
+        "email": {
+            "regularEmail": "Email: ",
+            "adminEmail": "Email administratora: ",
+            "specEmail": "Email specjalisty: "
+        },
         "pesel": "Numer PESEL:",
-        "telephone": "Numer telefonu:",
+        "telephone": {
+            "adminPhone": "Numer telefonu administratora:",
+            "specPhone": "Numer telefonu specjalisty:"
+        },
         "language": "Język:",
         "confirmActionModal": {
             "deactivateAccount": "Zablokuj konto",

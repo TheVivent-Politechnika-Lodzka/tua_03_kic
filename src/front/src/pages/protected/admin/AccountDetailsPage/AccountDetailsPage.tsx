@@ -291,7 +291,9 @@ const AccountDetailsPage = ({
                                 </div>
                                 <div className={styles.detail_wrapper}>
                                     <p className={styles.title}>
-                                        {t("accountDetailsPage.email")}
+                                        {t(
+                                            "accountDetailsPage.email.regularEmail"
+                                        )}
                                     </p>
                                     <p className={styles.description}>
                                         {account?.email}
@@ -315,28 +317,92 @@ const AccountDetailsPage = ({
                                     </div>
                                 )}
                                 {account?.accessLevels.some((level) => {
-                                    return (
-                                        level.level === "ADMINISTRATOR" ||
-                                        level.level === "SPECIALIST"
-                                    );
+                                    return level.level === "ADMINISTRATOR";
                                 }) && (
-                                    <div className={styles.detail_wrapper}>
-                                        <p className={styles.title}>
-                                            {t("accountDetailsPage.telephone")}
-                                        </p>
-                                        <p className={styles.description}>
-                                            {account?.accessLevels
-                                                .filter(
-                                                    (level) =>
-                                                        level.level ===
-                                                            "ADMINISTRATOR" ||
-                                                        "SPECIALIST"
-                                                )
-                                                .map(
-                                                    (level) => level.phoneNumber
+                                    <>
+                                        <div className={styles.detail_wrapper}>
+                                            <p className={styles.title}>
+                                                {t(
+                                                    "accountDetailsPage.email.adminEmail"
                                                 )}
-                                        </p>
-                                    </div>
+                                            </p>
+                                            <p className={styles.description}>
+                                                {account?.accessLevels
+                                                    .filter(
+                                                        (level) =>
+                                                            level.level ===
+                                                            "ADMINISTRATOR"
+                                                    )
+                                                    .map(
+                                                        (level) =>
+                                                            level.contactEmail
+                                                    )}
+                                            </p>
+                                        </div>
+                                        <div className={styles.detail_wrapper}>
+                                            <p className={styles.title}>
+                                                {t(
+                                                    "accountDetailsPage.telephone.adminPhone"
+                                                )}
+                                            </p>
+                                            <p className={styles.description}>
+                                                {account?.accessLevels
+                                                    .filter(
+                                                        (level) =>
+                                                            level.level ===
+                                                            "ADMINISTRATOR"
+                                                    )
+                                                    .map(
+                                                        (level) =>
+                                                            level.phoneNumber
+                                                    )}
+                                            </p>
+                                        </div>
+                                    </>
+                                )}
+                                {account?.accessLevels.some((level) => {
+                                    return level.level === "SPECIALIST";
+                                }) && (
+                                    <>
+                                        <div className={styles.detail_wrapper}>
+                                            <p className={styles.title}>
+                                                {t(
+                                                    "accountDetailsPage.email.specEmail"
+                                                )}
+                                            </p>
+                                            <p className={styles.description}>
+                                                {account?.accessLevels
+                                                    .filter(
+                                                        (level) =>
+                                                            level.level ===
+                                                            "SPECIALIST"
+                                                    )
+                                                    .map(
+                                                        (level) =>
+                                                            level.contactEmail
+                                                    )}
+                                            </p>
+                                        </div>
+                                        <div className={styles.detail_wrapper}>
+                                            <p className={styles.title}>
+                                                {t(
+                                                    "accountDetailsPage.telephone.specPhone"
+                                                )}
+                                            </p>
+                                            <p className={styles.description}>
+                                                {account?.accessLevels
+                                                    .filter(
+                                                        (level) =>
+                                                            level.level ===
+                                                            "SPECIALIST"
+                                                    )
+                                                    .map(
+                                                        (level) =>
+                                                            level.phoneNumber
+                                                    )}
+                                            </p>
+                                        </div>
+                                    </>
                                 )}
                                 <div className={styles.detail_wrapper}>
                                     <p className={styles.title}>

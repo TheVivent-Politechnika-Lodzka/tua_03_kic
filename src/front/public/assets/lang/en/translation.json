@@ -294,9 +294,16 @@
         "accountDetailsTitle": "Details",
         "name": "Firstname:",
         "surname": "Lastname:",
-        "email": "Email:",
+        "email": {
+            "regularEmail": "Email: ",
+            "adminEmail": "Administrator email: ",
+            "specEmail": "Specialist email: "
+        },
         "pesel": "PESEL:",
-        "telephone": "Phone number:",
+        "telephone": {
+            "adminPhone": "Administrator phone number:",
+            "specPhone": "Specialist phone number:"
+        },
         "language": "Language:",
         "confirmActionModal": {
             "deactivateAccount": "Block account",
@@ -630,5 +637,4 @@
         "choosenSpecialist": "Specialist:",
         "reserveButton": "Reserve"
     }
-
 }
