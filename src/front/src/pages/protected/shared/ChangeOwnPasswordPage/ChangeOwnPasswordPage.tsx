@@ -216,7 +216,6 @@ const ChangeOwnPasswordInternal = ({
                                 "changeOwnPasswordInternal.confirmActionModal.title"
                             )}
                         >
-                            title=
                             {t(
                                 "changeOwnPasswordInternal.confirmActionModal.message"
                             )}
