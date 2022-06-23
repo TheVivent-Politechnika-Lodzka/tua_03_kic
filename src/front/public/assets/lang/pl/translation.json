@@ -396,6 +396,8 @@
 
     "ownAppointmentListPage": {
         "cell": {
+            "clientLogin": "Login klienta",
+            "specialistLogin": "Login specjalisty",
             "clientName": "Imię i nazwisko klienta",
             "specialistName": "Imie i nazwisko specjalisty",
             "name": "Nazwa implantu",
@@ -485,6 +487,10 @@
     },
 
     "editOwnAppointment": {
+        "implantName":  "Nazwa implantu:",
+        "implantDuration": "Długość wizyty:",
+        "implantPrice": "Cena implantu:",
+        "implantManufacturer": "Producent implantu:",
         "title": "Edytuj wizytę",
         "clientName": "Imię i nazwisko klienta:",
         "specialistName": "Imie i nazwisko specjalisty:",

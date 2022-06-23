@@ -1,86 +1,77 @@
-import {
-    Center,
-    Container,
-    Grid,
-    Input,
-    Pagination,
-    Select,
-} from "@mantine/core";
+import { showNotification } from "@mantine/notifications";
+import { Input} from "@mantine/core";
 import { useEffect, useState } from "react";
-
-import { AppointmentListElement } from "../../../../components/AppointmentListElement";
-import { FaSearch } from "react-icons/fa";
 import { useTranslation } from "react-i18next";
+import ReactLoading from "react-loading";
+import { listAppointments, listMyAppointments } from "../../../../api";
+import { AppointmentRecord } from "../../../../components/AppointmentRecord";
+import Pagination from "../../../../components/Pagination/Pagination";
 import { useStoreSelector } from "../../../../redux/reduxHooks";
-import { AppointmentListResponse, listAppointments } from "../../../../api";
+import { failureNotificationItems } from "../../../../utils/showNotificationsItems";
+import styles from "./style.module.scss";
 
 export const AppointmentListPage = () => {
     const [phrase, setPhrase] = useState<string>("");
-    const [amountElement, setAmountElement] = useState<string | null>("1");
-    const [appointmentList, setAppointmentList] =
-        useState<AppointmentListResponse>({
-            pageSize: 0,
-            totalPages: 0,
-            currentPage: 0,
-            data: [],
-        });
-    const [page, setPage] = useState<number>(1);
+    const [appointments, setAppointments] =
+        useState<AppointmentListElementDto[]>();
+    const [loading, setLoading] = useState<Loading>({
+        pageLoading: true,
+        actionLoading: false,
+    });
+    const [rerender, setRerender] = useState<boolean>(false);
+
+    const [pagination, setPagination] = useState<Pagination>({
+        currentPage: 1,
+        pageSize: 7,
+        totalPages: 0,
+    });
+
     const { t } = useTranslation();
-    const user = useStoreSelector((state) => state.user.cur);
-
-    const amountSelectList = [
-        {
-            label: `1 ${t("appointmentListPage.items")}`,
-            value: "1",
-        },
-        {
-            label: `2 ${t("appointmentListPage.items")}`,
-            value: "2",
-        },
-        { label: `3 ${t("appointmentListPage.items")}`, value: "3" },
-    ];
-
-    const fetchData = async () => {
-        let data;
-        try {
-            if (amountElement !== null) {
-                data = await listAppointments({
-                    page: page,
-                    size: JSON.parse(amountElement),
-                    phrase: phrase,
-                });
-            }
-        } catch (err) {
-            alert(err);
+    const handleGetAppointments = async () => {
+        setLoading({ ...loading, actionLoading: true });
+        const data = await listAppointments({
+            page: pagination?.currentPage as number,
+            size: pagination?.pageSize as number,
+            phrase: phrase,
+        });
+        if ("errorMessage" in data) {
+            showNotification(failureNotificationItems(data.errorMessage));
+            return;
         }
-
-        const check = (value: any): value is AppointmentListResponse => {
-            return true;
-        };
-
-        if (check(data)) setAppointmentList(data);
+        setAppointments(data.data);
+        setPagination({ ...pagination, totalPages: data.totalPages });
+        setLoading({ pageLoading: false, actionLoading: false });
+        setRerender(false);
     };
-
-    useEffect(() => {
-        fetchData();
-    }, [page, amountElement]);
-
     useEffect(() => {
         const delayDebounceFn = setTimeout(() => {
-            fetchData();
+            handleGetAppointments();
         }, 600);
 
         return () => clearTimeout(delayDebounceFn);
     }, [phrase]);
 
+    useEffect(() => {
+        handleGetAppointments();
+    }, [pagination.currentPage]);
+
     return (
-        <Container fluid={true} mt={40}>
-            <Grid mt="xs">
-                <Grid.Col span={6} offset={3}>
+        <section className={styles.appointment_managment_page}>
+            <div className={styles.table_container}>
+                {loading.pageLoading ? (
+                    <ReactLoading
+                        type="cylon"
+                        color="#fff"
+                        width="10rem"
+                        height="10rem"
+                        className={styles.loading}
+                    />
+                ) : (
+                    <>
                     <Input
                         className="search"
-                        icon={<FaSearch size={"26px"} />}
-                        placeholder={t("appointmentListPage.search")}
+                        // icon={<FaSearch size={"26px"} />}
+                        placeholder={t("implantListPage.search")}
                         value={phrase}
                         onChange={(e: any) => setPhrase(e.target.value)}
                         styles={{
@@ -100,62 +91,54 @@ export const AppointmentListPage = () => {
                             icon: {
                                 marginLeft: "1rem",
                                 height: "80%",
+                                zIndex: 0,
                             },
                             wrapper: { height: "100%" },
                         }}
                     />
-                </Grid.Col>
-                <Grid.Col span={2} offset={1}>
-                    <Select
-                        label={t("appointmentListPage.amount")}
-                        data={amountSelectList}
-                        value={amountElement}
-                        onChange={setAmountElement}
-                        styles={{
-                            defaultVariant: {
-                                backgroundColor: "#262633",
-                                borderRadius: "10px",
-                                color: "#737373",
-                                fontSize: "1.5vw",
-                            },
-
-                            label: { color: "#737373", fontSize: "13px" },
-                            input: {
-                                color: "#737373",
-                                fontSize: "1.5vw",
-                                height: "100%",
-                            },
-                        }}
-                    />
-                </Grid.Col>
-            </Grid>
-
-            <Grid mt={40}>
-                {appointmentList?.data.map(
-                    (item: AppointmentListElementDto, index: number) => (
-                        <Grid.Col key={index} span={10} offset={1}>
-                            <AppointmentListElement element={item} />
-                        </Grid.Col>
-                    )
+                        <div className={styles.table_header}>
+                            <div className={styles.cell_wrapper}>
+                                <p className={styles.cell}>
+                                    {t(
+                                              "ownAppointmentListPage.cell.specialistLogin"
+                                          )}
+                                </p>
+                                <p className={styles.cell}>
+                                    {t(
+                                        "ownAppointmentListPage.cell.clientLogin"
+                                    )}
+                                </p>
+                                <p className={styles.cell}>
+                                    {t("ownAppointmentListPage.cell.name")}
+                                </p>
+                                <p className={styles.cell}>
+                                    {t("ownAppointmentListPage.cell.status")}
+                                </p>
+                                <p className={styles.cell}>
+                                    {t("ownAppointmentListPage.cell.date")}
+                                </p>
+                                <p className={styles.cell}>
+                                    {t("ownAppointmentListPage.cell.details")}
+                                </p>
+                            </div>
+                        </div>
+                        <div className={styles.table_body}>
+                            {appointments?.map((appointment) => (
+                                <AppointmentRecord
+                                    appointment={appointment}
+                                    key={appointment?.id}
+                                />
+                            ))}
+                        </div>
+                        <Pagination
+                            pagination={pagination}
+                            handleFunction={setPagination}
+                        />
+                    </>
                 )}
-            </Grid>
-            <Container fluid={true}>
-                <Center
-                    inline
-                    style={{
-                        marginTop: "5vh",
-                        marginLeft: "auto",
-                        marginRight: "auto",
-                        width: "100%",
-                    }}
-                >
-                    <Pagination
-                        total={appointmentList.totalPages}
-                        page={page}
-                        onChange={setPage}
-                    />
-                </Center>
-            </Container>
-        </Container>
+            </div>
+        </section>
     );
 };
+
+export default AppointmentListPage;

@@ -403,7 +403,9 @@
 
     "ownAppointmentListPage": {
         "cell": {
-            "clientName": "ClientNam",
+            "clientLogin": "Client login",
+            "specialistLogin": "Specialist login",
+            "clientName": "Client name",
             "specialistName": "Specialist name",
             "name": "Implant name",
             "status": "Visit status",
@@ -492,6 +494,10 @@
     },
 
     "editOwnAppointment": {
+        "implantName":  "Implant name:",
+        "implantDuration": "Implant duration:",
+        "implantPrice": "Implant price:",
+        "implantManufacturer": "Implant manufacturer:",
         "title": "Edit visit",
         "clientName": "Client name:",
         "specialistName": "Specialist name:",

@@ -92,6 +92,13 @@
     overflow: scroll;
     resize: none;
     margin-left:10px;
+    background-color: $secondary-color;
+    outline: none;
+    padding: 1rem;
+    font-size: 1.1rem;
+    color: $white;
+    border: 2px solid $light-gray;
+    border-radius: 0.5rem;
 }
 .description_input::-webkit-scrollbar{
     display: none;

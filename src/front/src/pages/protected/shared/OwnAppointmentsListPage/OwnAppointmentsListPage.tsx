@@ -11,6 +11,7 @@ import styles from "./style.module.scss";
 
 const OwnAppointmentsListPage = () => {
     const aLevel = useStoreSelector((state) => state.user.cur);
+    const [phrase, setPhrase] = useState<string>("");
     const [appointments, setAppointments] =
         useState<AppointmentListElementDto[]>();
     const [loading, setLoading] = useState<Loading>({
@@ -26,12 +27,11 @@ const OwnAppointmentsListPage = () => {
     });
 
     useEffect(() => {
-        handleGetOwnAppointments();
+        handleGetAppointments();
     }, [rerender, pagination.currentPage]);
 
     const { t } = useTranslation();
-
-    const handleGetOwnAppointments = async () => {
+    const handleGetAppointments = async () => {
         setLoading({ ...loading, actionLoading: true });
         const data = await listMyAppointments({
             page: pagination?.currentPage as number,
@@ -46,6 +46,7 @@ const OwnAppointmentsListPage = () => {
         setLoading({ pageLoading: false, actionLoading: false });
         setRerender(false);
     };
+
     return (
         <section className={styles.appointment_managment_page}>
             <div className={styles.table_container}>

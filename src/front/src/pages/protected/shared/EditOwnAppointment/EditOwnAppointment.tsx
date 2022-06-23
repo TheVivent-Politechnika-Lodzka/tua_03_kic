@@ -188,6 +188,38 @@ export const EditOwnAppointment = () => {
                         </div>
                         <div className={styles.detail_wrapper}>
                             <p className={styles.title}>
+                                {t("editOwnAppointment.implantName")}
+                            </p>
+                            <p className={styles.description}>
+                                {appointment?.appointmentImplant.name}
+                            </p>
+                        </div>
+                        <div className={styles.detail_wrapper}>
+                            <p className={styles.title}>
+                                {t("editOwnAppointment.implantPrice")}
+                            </p>
+                            <p className={styles.description}>
+                                {appointment?.appointmentImplant.price + "zł"}
+                            </p>
+                        </div>
+                        <div className={styles.detail_wrapper}>
+                            <p className={styles.title}>
+                                {t("editOwnAppointment.implantDuration")}
+                            </p>
+                            <p className={styles.description}>
+                                {appointment!.appointmentImplant.duration/60 + ' min'}
+                            </p>
+                        </div>
+                        <div className={styles.detail_wrapper}>
+                            <p className={styles.title}>
+                                {t("editOwnAppointment.implantManufacturer")}
+                            </p>
+                            <p className={styles.description}>
+                                {appointment?.appointmentImplant.manufacturer + "zł"}
+                            </p>
+                        </div>
+                        <div className={styles.detail_wrapper}>
+                            <p className={styles.title}>
                                 {t("editOwnAppointment.description")}
                             </p>
                             <p className={styles.description}>
