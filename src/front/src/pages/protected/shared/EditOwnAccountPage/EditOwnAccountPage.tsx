@@ -126,7 +126,7 @@ const EditOwnAccountPageInternal = () => {
                         <div className={style.edit_data_account_wrapper}>
                             <div className={style.avatar_wrapper}>
                                 <img
-                                    src={avatar}
+                                    src={account?.url}
                                     alt="User avatar"
                                     className={style.change_avatar}
                                 />
