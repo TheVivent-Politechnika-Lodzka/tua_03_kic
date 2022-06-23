@@ -137,7 +137,7 @@ const AddAccessLevelPage = ({
                             <ValidationMessage
                                 isValid={isPhoneNumberValidClient}
                                 message={t(
-                                    "addAccessLevelPage..phoneNumberMsg"
+                                    "addAccessLevelPage.phoneNumberMsg"
                                 )}
                             />
                         </div>

@@ -6,7 +6,7 @@ import { useTranslation } from "react-i18next";
 import { useStoreSelector } from "../../../redux/reduxHooks";
 import { useNavigate } from "react-router";
 import ActionButton from "../../../components/shared/ActionButton/ActionButton";
-import { faCheck } from "@fortawesome/free-solid-svg-icons";
+import { faCheck, faPlus } from "@fortawesome/free-solid-svg-icons";
 import { ListImplantResponse, listImplants } from "../../../api";
 import Pagination from "../../../components/Pagination/Pagination";
 
@@ -106,7 +106,7 @@ export const ImplantListPage = () => {
                             onClick={() => navigate("/create-implant")}
                             title={t("implantListPage.addImplant")}
                             color="green"
-                            icon={faCheck}
+                            icon={faPlus}
                         />
                     ) : (
                         <></>

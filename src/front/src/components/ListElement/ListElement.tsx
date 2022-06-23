@@ -1,4 +1,4 @@
-import { faCheck } from "@fortawesome/free-solid-svg-icons";
+import { faCheck, faInfo } from "@fortawesome/free-solid-svg-icons";
 import { SimpleGrid, Container, Center, Image } from "@mantine/core";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -72,7 +72,7 @@ export const ListElement = (props: { element: ImplantDto }) => {
                             onClick={() => setModal(true)}
                             title={t("implantListPage.listElement.details")}
                             color="blue"
-                            icon={faCheck}
+                            icon={faInfo}
                         />
                     </div>
                     <ImplantDetails

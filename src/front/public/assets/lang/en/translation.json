@@ -275,8 +275,8 @@
 
     "userRecord": {
         "alt": "user",
-        "approved": "approved",
-        "unapproved": "unapproved",
+        "approved": "Approved",
+        "unapproved": "Unapproved",
         "active": "Active",
         "inactive": "Inactive"
     },
@@ -288,15 +288,22 @@
         "alt": "General accoount: Avatar",
         "title": "Access level",
         "editAccountTitle": "Edit account",
-        "changePasswordTitle": "Edit account",
+        "changePasswordTitle": "Change password",
         "deactivateAccountTitle": "Deactive account",
         "activateAccountTitle": "Active account",
         "accountDetailsTitle": "Details",
         "name": "Firstname:",
         "surname": "Lastname:",
-        "email": "Email:",
+        "email": {
+            "regularEmail": "Email: ",
+            "adminEmail": "Administrator email: ",
+            "specEmail": "Specialist email: "
+        },
         "pesel": "PESEL:",
-        "telephone": "Phone number:",
+        "telephone": {
+            "adminPhone": "Administrator phone number:",
+            "specPhone": "Specialist phone number:"
+        },
         "language": "Language:",
         "confirmActionModal": {
             "deactivateAccount": "Block account",
@@ -571,7 +578,7 @@
     },
 
     "createUserPage": {
-        "successNotficiationItems": "account have been added",
+        "successNotficiationItems": "Account has been added",
         "header": "Create new account",
         "email": "Email ",
         "emailTitle": "email",
@@ -582,8 +589,8 @@
         "surname": "Lastname ",
         "surnameTitle": "Lastname",
         "surnameMsg": "At least 3 to 30 characters",
-        "id": "ID",
-        "idTitle": "ID",
+        "id": "Login",
+        "idTitle": "Login",
         "idMsg": "At least 3 to 30 characters",
         "password": "Password ",
         "passwordTitle": "password",
@@ -636,5 +643,4 @@
         "choosenSpecialist": "Specialist:",
         "reserveButton": "Reserve"
     }
-
 }
