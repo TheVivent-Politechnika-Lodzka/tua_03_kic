@@ -118,7 +118,7 @@ const ImplantDetails = ({ id, isOpened, onClose }: ImplantDetailsProps) => {
                             <div className={styles.top_wrapper}>
                                 <div className={styles.detail_top_wrapper}>
                                     <p className={styles.implant_details_title}>
-                                        {t("implantDetails.title")}
+                                        {implant?.name}
                                     </p>
                                     <p className={styles.description}>
                                         {implant?.description}
