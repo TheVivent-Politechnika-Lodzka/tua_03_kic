@@ -49,6 +49,9 @@ export const EditImplantPage = () => {
 
     useEffect(() => {
         handleGetImplant();
+        if (implant) {
+            setCount(implant.description.length);
+        }
     }, []);
 
     const navigate = useNavigate();

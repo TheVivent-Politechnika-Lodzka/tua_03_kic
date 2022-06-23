@@ -236,7 +236,7 @@ const validationReducer = (state: ContextState, action: ValidationAction) => {
                 ...state,
                 isDescriptionValid: validate(
                     action.payload.input,
-                    /^[a-zA-Z0-9 ,.%!()\-/\n\u00C0-\u017F']{100,1000}$/
+                    new RegExp("^(?=.{100,1000})")
                 ),
             };
         }
