@@ -56,7 +56,7 @@ import static pl.lodz.p.it.ssbd2022.ssbd03.entities.Status.*;
 @Stateful
 @DenyAll
 @Interceptors(TrackerInterceptor.class)
-@TransactionAttribute(TransactionAttributeType.REQUIRED)
+@TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
 public class MOPService extends AbstractService implements MOPServiceInterface, SessionSynchronization {
 
     private static final long serialVersionUID = 1L;

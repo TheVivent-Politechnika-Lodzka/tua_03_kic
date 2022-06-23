@@ -38,4 +38,6 @@ public class ImplantReviewDto {
     @Rating
     private double rating;
 
+    private String clientImage;
+
 }
