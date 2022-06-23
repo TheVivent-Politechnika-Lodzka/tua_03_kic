@@ -8,6 +8,9 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 public class LoginResponseDto {
+
+    private static final long serialVersionUID = 1L;
+
     private String accessToken;
     private String refreshToken;
 }

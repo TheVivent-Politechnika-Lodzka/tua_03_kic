@@ -9,6 +9,9 @@ import java.util.UUID;
 
 @ApplicationScoped
 public class HashAlgorithm implements PasswordHash {
+
+    private static final long serialVersionUID = 1L;
+
     @Override
     public void initialize(Map<String, String> parameters) {
         PasswordHash.super.initialize(parameters);

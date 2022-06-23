@@ -11,5 +11,7 @@ import lombok.Setter;
 @AllArgsConstructor
 public class RefreshTokenDto {
 
+    private static final long serialVersionUID = 1L;
+
     private String refreshToken;
 }

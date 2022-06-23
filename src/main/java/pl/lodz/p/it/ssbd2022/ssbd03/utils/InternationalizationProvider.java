@@ -13,13 +13,15 @@ import java.util.ResourceBundle;
 @RequestScoped
 public class InternationalizationProvider {
 
+    private static final long serialVersionUID = 1L;
+
     private ResourceBundle resourceBundle;
 
     @Inject
     HttpServletRequest request;
 
-    @Inject
-    AccountFacade accountFacade;
+//    @Inject
+//    AccountFacade accountFacade;
 
     /**
      * Metoda tłumacząca komunikaty na wybrany język

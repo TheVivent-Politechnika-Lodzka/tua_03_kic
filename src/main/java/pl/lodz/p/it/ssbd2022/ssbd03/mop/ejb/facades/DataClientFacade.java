@@ -23,6 +23,8 @@ import java.util.UUID;
 @TransactionAttribute(TransactionAttributeType.MANDATORY)
 public class DataClientFacade extends AbstractFacade<DataClient> {
 
+    private static final long serialVersionUID = 1L;
+
     @PersistenceContext(unitName = "ssbd03mopPU")
     @Getter
     private EntityManager entityManager;

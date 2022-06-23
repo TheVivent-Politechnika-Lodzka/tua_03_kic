@@ -12,6 +12,8 @@ import pl.lodz.p.it.ssbd2022.ssbd03.validation.Password;
 @AllArgsConstructor
 public class LoginCredentialsDto {
 
+    private static final long serialVersionUID = 1L;
+
     @Login
     private String login;
 

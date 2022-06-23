@@ -17,6 +17,8 @@ import pl.lodz.p.it.ssbd2022.ssbd03.interceptors.TrackerInterceptor;
 @RequestScoped
 public class ReCaptchaService {
 
+    private static final long serialVersionUID = 1L;
+
     @Inject
     private Config config;
 

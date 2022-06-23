@@ -10,6 +10,8 @@ import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.AppBaseException;
 @ApplicationException(rollback = true)
 public class AppointmentStatusException extends AppBaseException {
 
+    private static final long serialVersionUID = 1L;
+
     private static final String APPOINTMENT_STATUS_ALREADY_CANCELLED = "server.error.appBase.appointmentAlreadyCancelled";
     private static final String APPOINTMENT_STATUS_ALREADY_FINISHED = "server.error.appBase.appointmentAlreadyFinished";
 

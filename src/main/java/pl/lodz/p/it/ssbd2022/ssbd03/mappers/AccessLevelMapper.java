@@ -20,6 +20,8 @@ import java.util.stream.Collectors;
 @Stateless
 public class AccessLevelMapper {
 
+    private static final long serialVersionUID = 1L;
+
 
     /**
      * Metoda tworząca obiekt typu DataClientDto na podstawie encji klienta

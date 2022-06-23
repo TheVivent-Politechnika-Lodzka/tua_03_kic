@@ -30,6 +30,8 @@ import java.util.List;
 @TransactionAttribute(TransactionAttributeType.MANDATORY)
 public class AccountFacade extends AbstractFacade<Account> {
 
+    private static final long serialVersionUID = 1L;
+
     @PersistenceContext(unitName = "ssbd03mokPU")
     @Getter
     private EntityManager entityManager;

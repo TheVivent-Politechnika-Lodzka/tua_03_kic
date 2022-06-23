@@ -19,6 +19,8 @@ import pl.lodz.p.it.ssbd2022.ssbd03.security.Tagger;
 @TransactionAttribute(TransactionAttributeType.MANDATORY)
 public class AccountFacade extends AbstractFacade<Account> {
 
+    private static final long serialVersionUID = 1L;
+
     @PersistenceContext(unitName = "ssbd03mokPU")
     @Getter
     private EntityManager entityManager;

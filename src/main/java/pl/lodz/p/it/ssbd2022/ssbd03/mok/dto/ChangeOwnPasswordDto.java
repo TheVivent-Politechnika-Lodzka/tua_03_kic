@@ -16,6 +16,8 @@ import java.util.UUID;
 @AllArgsConstructor
 public class ChangeOwnPasswordDto implements Taggable {
 
+    private static final long serialVersionUID = 1L;
+
     private UUID id;
     private Long version;
 

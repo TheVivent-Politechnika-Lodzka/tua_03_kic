@@ -30,6 +30,8 @@ import java.util.List;
 @TransactionAttribute(TransactionAttributeType.MANDATORY)
 public class ImplantFacade extends AbstractFacade<Implant> {
 
+    private static final long serialVersionUID = 1L;
+
     @PersistenceContext(unitName = "ssbd03mopPU")
     @Getter
     private EntityManager entityManager;

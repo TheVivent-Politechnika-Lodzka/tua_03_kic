@@ -10,6 +10,8 @@ import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.AppBaseException;
 @ApplicationException(rollback = true)
 public class AccountNotFoundException extends AppBaseException {
 
+    private static final long serialVersionUID = 1L;
+
     private static final String ACCOUNT_NOT_FOUND = "server.error.appBase.accountNotFound";
     private static final String ACCOUNT_NOT_FOUND_BY_LOGIN = "server.error.appBase.accountNotFoundByLogin";
     private static final String ACCOUNT_NOT_FOUND_BY_ID= "server.error.appBase.accountNotFoundById";

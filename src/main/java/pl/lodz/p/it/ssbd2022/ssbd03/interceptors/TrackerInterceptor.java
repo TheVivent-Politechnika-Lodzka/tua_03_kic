@@ -14,6 +14,8 @@ import java.util.Arrays;
 @Log
 public class TrackerInterceptor {
 
+    private static final long serialVersionUID = 1L;
+
     @Resource
     private SessionContext sessionContext;
 

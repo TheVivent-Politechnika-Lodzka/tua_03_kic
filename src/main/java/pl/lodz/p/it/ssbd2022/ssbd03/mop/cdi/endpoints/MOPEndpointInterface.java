@@ -18,8 +18,6 @@ import java.util.UUID;
 
 import pl.lodz.p.it.ssbd2022.ssbd03.validation.DurationValue;
 
-import java.util.UUID;
-
 @DenyAll
 public interface MOPEndpointInterface {
 
@@ -134,7 +132,7 @@ public interface MOPEndpointInterface {
     @RolesAllowed(Roles.ADMINISTRATOR)
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/list/visits")
-    default Response listVisits(@QueryParam("page") int page, @QueryParam("size") int size, @QueryParam("phrase") @DefaultValue("") String phrase) {
+    default Response listAppointments(@QueryParam("page") int page, @QueryParam("size") int size, @QueryParam("phrase") @DefaultValue("") String phrase) {
         throw new MethodNotImplementedException();
     }
 
@@ -151,7 +149,7 @@ public interface MOPEndpointInterface {
     @RolesAllowed({Roles.CLIENT, Roles.SPECIALIST})
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/list/visits/my")
-    default Response listMyVisits(@QueryParam("page") int page, @QueryParam("size") int size) {
+    default Response listMyAppointments(@QueryParam("page") int page, @QueryParam("size") int size) {
         throw new MethodNotImplementedException();
     }
 
@@ -203,7 +201,7 @@ public interface MOPEndpointInterface {
     @RolesAllowed({Roles.CLIENT, Roles.SPECIALIST})
     @Consumes(MediaType.APPLICATION_JSON)
     @Path("/edit/visit/my/{id}")
-    default Response editOwnVisit(@PathParam("id") UUID id, @Valid AppointmentOwnEditDto appointmentOwnEditDto) {
+    default Response editOwnAppointment(@PathParam("id") UUID id, @Valid AppointmentOwnEditDto appointmentOwnEditDto) {
         throw new MethodNotImplementedException();
     }
 
@@ -219,7 +217,7 @@ public interface MOPEndpointInterface {
     @RolesAllowed(Roles.ADMINISTRATOR)
     @Consumes(MediaType.APPLICATION_JSON)
     @Path("/edit/visit/{id}")
-    default Response editVisit(@PathParam("id") UUID id, AppointmentEditDto appointmentEditDto) {
+    default Response editAppointment(@PathParam("id") UUID id, AppointmentEditDto appointmentEditDto) {
         throw new MethodNotImplementedException();
     }
 
@@ -235,7 +233,7 @@ public interface MOPEndpointInterface {
     @RolesAllowed({Roles.CLIENT, Roles.SPECIALIST})
     @Consumes(MediaType.APPLICATION_JSON)
     @Path("/visit/cancel/my/{id}")
-    default Response cancelOwnVisit(@PathParam("id") UUID id) {
+    default Response cancelOwnAppointment(@PathParam("id") UUID id) {
         throw new MethodNotImplementedException();
     }
 
@@ -251,7 +249,7 @@ public interface MOPEndpointInterface {
     @RolesAllowed(Roles.ADMINISTRATOR)
     @Consumes(MediaType.APPLICATION_JSON)
     @Path("/cancel/visit/{id}")
-    default Response cancelAnyVisit(@PathParam("id") UUID id) {
+    default Response cancelAnyAppointment(@PathParam("id") UUID id) {
         throw new MethodNotImplementedException();
     }
 
@@ -311,7 +309,7 @@ public interface MOPEndpointInterface {
     @RolesAllowed(Roles.AUTHENTICATED)
     @Consumes(MediaType.APPLICATION_JSON)
     @Path("/visit/{id}")
-    default Response getVisitDetails(@PathParam("id") UUID uuid) {
+    default Response getAppointmentDetails(@PathParam("id") UUID uuid) {
         throw new MethodNotImplementedException();
     }
 

@@ -8,6 +8,8 @@ import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.AppBaseException;
  */
 public class ClientRemovesOtherReviewsException extends AppBaseException {
 
+    private static final long serialVersionUID = 1L;
+
     private final static String MESSAGE = "server.error.appBase.clientRemovesOtherReviews";
 
     public ClientRemovesOtherReviewsException() {
