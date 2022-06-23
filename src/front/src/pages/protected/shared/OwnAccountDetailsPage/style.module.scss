@@ -59,6 +59,10 @@
                 flex-direction: column;
                 justify-content: space-between;
                 height: 7.5rem;
+
+                & > * {
+                    width: 19rem;
+                }
             }
         }
 

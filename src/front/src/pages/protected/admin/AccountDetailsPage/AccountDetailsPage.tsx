@@ -14,8 +14,6 @@ import flagPL from "../../../../assets/images/PL.png";
 import flagEN from "../../../../assets/images/EN.png";
 import {
     activateAccount,
-    addAccesLevel,
-    AddAccessLevelResponse,
     deactivateAccount,
     getAccount,
     GetAccountResponse,
