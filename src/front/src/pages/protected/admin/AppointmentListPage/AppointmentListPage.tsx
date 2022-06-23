@@ -7,22 +7,19 @@ import {
     Select,
 } from "@mantine/core";
 import { useEffect, useState } from "react";
-import {
-    AppointmentListResponse,
-    AppointmentListElementDto,
-    listAppointments,
-} from "../../../../api/mop";
+
 import { AppointmentListElement } from "../../../../components/AppointmentListElement";
 import { FaSearch } from "react-icons/fa";
 import { useTranslation } from "react-i18next";
 import { useStoreSelector } from "../../../../redux/reduxHooks";
+import { AppointmentListResponse, listAppointments } from "../../../../api";
 
 export const AppointmentListPage = () => {
     const [phrase, setPhrase] = useState<string>("");
     const [amountElement, setAmountElement] = useState<string | null>("1");
     const [appointmentList, setAppointmentList] =
         useState<AppointmentListResponse>({
-            totalCounts: 0,
+            pageSize: 0,
             totalPages: 0,
             currentPage: 0,
             data: [],

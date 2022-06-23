@@ -1,6 +1,5 @@
 import { faInfoCircle } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { AppointmentListElementDto } from "../../api/mop";
 import { useStoreSelector } from "../../redux/reduxHooks";
 import styles from "./style.module.scss";
 import { LocalDateTime, Instant, ChronoUnit } from "@js-joda/core";

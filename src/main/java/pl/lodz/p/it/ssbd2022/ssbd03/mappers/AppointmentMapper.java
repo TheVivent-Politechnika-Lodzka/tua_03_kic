@@ -110,6 +110,15 @@ public class AppointmentMapper {
         appointmentDto.setImplant(
                 implantMapper.createImplantDtoFromImplant(appointment.getImplant())
         );
+        ImplantDto appointmentImplantDto = new ImplantDto();
+        appointmentImplantDto.setDescription(appointment.getImplantDescription());
+        appointmentImplantDto.setName(appointment.getImplantName());
+        appointmentImplantDto.setManufacturer(appointment.getImplantManufacturer());
+        appointmentImplantDto.setDuration(appointment.getImplantDuration().toSeconds());
+        appointmentImplantDto.setPrice(appointment.getImplantPrice());
+
+
+        appointmentDto.setAppointmentImplant(appointmentImplantDto);
         return appointmentDto;
     }
     /**

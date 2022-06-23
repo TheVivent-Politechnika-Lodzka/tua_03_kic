@@ -2,13 +2,12 @@ import { faCheck } from "@fortawesome/free-solid-svg-icons";
 import { SimpleGrid, Container, Center, Image } from "@mantine/core";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { ImplantListElementDto } from "../../api/mop";
 import ImplantDetails from "../ImplantDetails/ImplantDetails";
 import ActionButton from "../shared/ActionButton/ActionButton";
 
 import styles from "./listElement.module.scss";
 
-export const ListElement = (props: { element: ImplantListElementDto }) => {
+export const ListElement = (props: { element: ImplantDto }) => {
     const { t } = useTranslation();
 
     const [modal, setModal] = useState<boolean>(false);
@@ -19,10 +18,10 @@ export const ListElement = (props: { element: ImplantListElementDto }) => {
             <SimpleGrid cols={3}>
                 <div>
                     <Center>
-                        {props.element.url ? (
+                        {props.element.image ? (
                             <Image
                                 radius="md"
-                                src={props.element.url}
+                                src={props.element.image}
                                 alt="img"
                                 height="18vh"
                                 width="35vh"

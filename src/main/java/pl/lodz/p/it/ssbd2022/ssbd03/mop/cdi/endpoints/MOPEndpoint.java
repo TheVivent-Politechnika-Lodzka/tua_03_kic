@@ -82,7 +82,7 @@ public class MOPEndpoint extends AbstractEndpoint implements MOPEndpointInterfac
 //        }
         ImplantDto implantDto = implantMapper.createImplantDtoFromImplant(createdImplant);
 
-        return Response.ok(implantDto).build();
+        return Response.ok(implantDto).tag(tagger.tag(implantDto)).build();
     }
 
     /**
@@ -482,7 +482,7 @@ public class MOPEndpoint extends AbstractEndpoint implements MOPEndpointInterfac
      * @return zakończona wizyta
      */
     @Override
-    public Response finishVisit(UUID id) {
+    public Response finishAppointment(UUID id) {
         tagger.verifyTag();
 
         String login = authContext.getCurrentUserLogin();

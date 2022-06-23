@@ -1,20 +1,12 @@
-import {
-    faDeleteLeft,
-    faRemove,
-    faTrashAlt,
-} from "@fortawesome/free-solid-svg-icons";
+import { faTrashAlt } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { showNotification } from "@mantine/notifications";
 import { Rating } from "@mui/material";
-import { Api } from "@reduxjs/toolkit/dist/query";
 import { t } from "i18next";
 import { useState } from "react";
-import { deleteImplantReview } from "../../api";
+import { deleteImplantsReview } from "../../api";
 import { useStoreSelector } from "../../redux/reduxHooks";
-import {
-    failureNotificationItems,
-    successNotficiationItems,
-} from "../../utils/showNotificationsItems";
+import { successNotficiationItems } from "../../utils/showNotificationsItems";
 import ConfirmActionModal from "../shared/ConfirmActionModal/ConfirmActionModal";
 import styles from "./style.module.scss";
 
@@ -33,7 +25,7 @@ const ImplantReview = ({ review, onClose }: ImplantReviewProps) => {
     const handleDeleteImplantReview = async () => {
         if (!review.id) return;
         setLoading(true);
-        await deleteImplantReview(review.id);
+        await deleteImplantsReview(review.id);
         setLoading(false);
         setModal(false);
         onClose();

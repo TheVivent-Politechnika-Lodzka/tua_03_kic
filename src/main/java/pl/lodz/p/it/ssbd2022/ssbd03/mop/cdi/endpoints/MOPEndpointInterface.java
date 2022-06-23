@@ -264,7 +264,7 @@ public interface MOPEndpointInterface {
     @RolesAllowed(Roles.SPECIALIST)
     @Consumes(MediaType.APPLICATION_JSON)
     @Path("/finish/visit/{id}")
-    default Response finishVisit(@PathParam("id") UUID id) {
+    default Response finishAppointment(@PathParam("id") UUID id) {
         throw new MethodNotImplementedException();
     }
 

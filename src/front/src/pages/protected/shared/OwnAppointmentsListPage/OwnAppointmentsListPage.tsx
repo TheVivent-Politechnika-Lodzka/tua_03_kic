@@ -2,10 +2,7 @@ import { showNotification } from "@mantine/notifications";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import ReactLoading from "react-loading";
-import {
-    AppointmentListElementDto,
-    listOwnAppointments,
-} from "../../../../api/mop";
+import { listMyAppointments } from "../../../../api";
 import { AppointmentRecord } from "../../../../components/AppointmentRecord";
 import Pagination from "../../../../components/Pagination/Pagination";
 import { useStoreSelector } from "../../../../redux/reduxHooks";
@@ -36,7 +33,7 @@ const OwnAppointmentsListPage = () => {
 
     const handleGetOwnAppointments = async () => {
         setLoading({ ...loading, actionLoading: true });
-        const data = await listOwnAppointments({
+        const data = await listMyAppointments({
             page: pagination?.currentPage as number,
             size: pagination?.pageSize as number,
         });

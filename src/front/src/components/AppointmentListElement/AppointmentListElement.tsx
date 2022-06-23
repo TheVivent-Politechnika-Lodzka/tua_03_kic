@@ -1,6 +1,5 @@
 import { SimpleGrid, Grid } from "@mantine/core";
 import { useTranslation } from "react-i18next";
-import { AppointmentListElementDto } from "../../api/mop";
 import styles from "./listElement.module.scss";
 import { AppointmentDetails } from "../../pages/protected/shared/AppointmentDetails";
 import { useState } from "react";

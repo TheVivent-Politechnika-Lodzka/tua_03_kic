@@ -1,25 +1,21 @@
 import { Center, Container, Grid, Input, Select } from "@mantine/core";
 import { useEffect, useState } from "react";
-import {
-    ListImplantResponse,
-    ImplantListElementDto,
-    listImplants,
-} from "../../../api/mop";
 import { ListElement } from "../../../components/ListElement";
 import { FaSearch } from "react-icons/fa";
 import { useTranslation } from "react-i18next";
 import { useStoreSelector } from "../../../redux/reduxHooks";
 import { useNavigate } from "react-router";
-import Pagination from "../../../components/Pagination/Pagination";
 import ActionButton from "../../../components/shared/ActionButton/ActionButton";
 import { faCheck } from "@fortawesome/free-solid-svg-icons";
+import { ListImplantResponse, listImplants } from "../../../api";
+import Pagination from "../../../components/Pagination/Pagination";
 
 export const ImplantListPage = () => {
     const [phrase, setPhrase] = useState<string>("");
     const [amountElement, setAmountElement] = useState<string | null>("5");
     const [status, setStatus] = useState<string | null>("false");
     const [implantList, setImplantList] = useState<ListImplantResponse>({
-        totalCounts: 0,
+        pageSize: 0,
         totalPages: 0,
         currentPage: 0,
         data: [],
@@ -83,7 +79,7 @@ export const ImplantListPage = () => {
             setImplantList(data);
             setPagination({
                 currentPage: data.currentPage,
-                pageSize: data.totalCounts,
+                pageSize: data.pageSize,
                 totalPages: data.totalPages,
             });
         }
@@ -145,7 +141,7 @@ export const ImplantListPage = () => {
                 <Grid.Col span={6} offset={3}>
                     <Input
                         className="search"
-                       // icon={<FaSearch size={"26px"} />}
+                        // icon={<FaSearch size={"26px"} />}
                         placeholder={t("implantListPage.search")}
                         value={phrase}
                         onChange={(e: any) => setPhrase(e.target.value)}
@@ -198,13 +194,11 @@ export const ImplantListPage = () => {
             </Grid>
 
             <Grid mt={40}>
-                {implantList?.data.map(
-                    (item: ImplantListElementDto, index: number) => (
-                        <Grid.Col key={index} span={10} offset={1}>
-                            <ListElement element={item} />
-                        </Grid.Col>
-                    )
-                )}
+                {implantList?.data.map((item: ImplantDto, index: number) => (
+                    <Grid.Col key={index} span={10} offset={1}>
+                        <ListElement element={item} />
+                    </Grid.Col>
+                ))}
             </Grid>
             <Container fluid={true}>
                 <Center

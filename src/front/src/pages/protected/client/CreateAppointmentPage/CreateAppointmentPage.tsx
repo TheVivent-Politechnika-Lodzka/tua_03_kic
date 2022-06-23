@@ -318,7 +318,8 @@ const SummaryModal = ({
                 <div className={style.choosen_specialist}>
                     <h2>
                         {t("createAppointmentPage.choosenSpecialist")}:{" "}
-                        {choosenSpecialist?.name} {choosenSpecialist?.surname}
+                        {choosenSpecialist?.firstName}{" "}
+                        {choosenSpecialist?.lastName}
                     </h2>
                 </div>
                 <div style={{ width: "20rem" }}>
@@ -435,7 +436,7 @@ const SpecialistItem = ({
                 alt="specialist"
             />
             <h3 className={style.specialist_name}>
-                {spec.name} {spec.surname}
+                {spec.firstName} {spec.lastName}
             </h3>
         </div>
     );

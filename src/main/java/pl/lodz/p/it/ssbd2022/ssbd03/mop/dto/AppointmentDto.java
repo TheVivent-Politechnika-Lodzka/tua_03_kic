@@ -54,4 +54,6 @@ public class AppointmentDto implements Taggable {
     @NotNull
     private Status status;
 
+    private ImplantDto appointmentImplant;
+
 }
