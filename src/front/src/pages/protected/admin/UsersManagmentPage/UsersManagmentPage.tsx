@@ -9,7 +9,6 @@ import styles from "./style.module.scss";
 import Pagination from "../../../../components/Pagination/Pagination";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUserPlus } from "@fortawesome/free-solid-svg-icons";
-import ActionButton from "../../../../components/shared/ActionButton/ActionButton";
 import { Button } from "react-bootstrap";
 
 const UsersManagmentPage = () => {
