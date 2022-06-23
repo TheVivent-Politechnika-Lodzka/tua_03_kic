@@ -80,6 +80,12 @@ const AddAccessLevelPage = ({
             successNotficiationItems(t("addAccessLevelPage.added"))
         );
         setAccount(response);
+        setAccessLevelToAdd({
+            level: accessLevel,
+            pesel: "",
+            phoneNumber: "",
+            contactEmail: "",
+        });
         onClose();
     };
 
@@ -136,9 +142,7 @@ const AddAccessLevelPage = ({
                             <div />
                             <ValidationMessage
                                 isValid={isPhoneNumberValidClient}
-                                message={t(
-                                    "addAccessLevelPage.phoneNumberMsg"
-                                )}
+                                message={t("addAccessLevelPage.phoneNumberMsg")}
                             />
                         </div>
                     </>

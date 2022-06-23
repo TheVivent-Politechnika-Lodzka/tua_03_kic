@@ -22,7 +22,7 @@ export const AppointmentListPage = () => {
 
     const [pagination, setPagination] = useState<Pagination>({
         currentPage: 1,
-        pageSize: 7,
+        pageSize: 6,
         totalPages: 0,
     });
 
@@ -93,7 +93,7 @@ export const AppointmentListPage = () => {
                                 height: "80%",
                                 zIndex: 0,
                             },
-                            wrapper: { height: "100%" },
+                            wrapper: { height: "100%", padding: "2rem" },
                         }}
                     />
                         <div className={styles.table_header}>
