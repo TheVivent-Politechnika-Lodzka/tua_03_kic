@@ -1,11 +1,11 @@
 import { SimpleGrid, Grid } from "@mantine/core";
 import { useTranslation } from "react-i18next";
 import { AppointmentListElementDto } from "../../api/mop";
-import { BlueGradientButton } from "../Button/BlueGradientButton";
-
 import styles from "./listElement.module.scss";
 import { AppointmentDetails } from "../../pages/protected/shared/AppointmentDetails";
 import { useState } from "react";
+import ActionButton from "../shared/ActionButton/ActionButton";
+import { faCheck } from "@fortawesome/free-solid-svg-icons";
 
 export const AppointmentListElement = (props: {
     element: AppointmentListElementDto;
@@ -43,12 +43,11 @@ export const AppointmentListElement = (props: {
                 </div>
                 <div className={styles.buttons}>
                     <div className={styles.button}>
-                        <BlueGradientButton
-                            label={t("appointmentListPage.listElement.details")}
-                            onClick={() => {
-                                console.log(props.element.id);
-                                setModal(true);
-                            }}
+                        <ActionButton
+                            onClick={() => setModal(true)}
+                            title={t("appointmentListPage.listElement.details")}
+                            color="blue"
+                            icon={faCheck}
                         />
                     </div>
                 </div>
