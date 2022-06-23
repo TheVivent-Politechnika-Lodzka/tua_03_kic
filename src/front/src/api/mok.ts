@@ -41,6 +41,7 @@ export interface CreateAccountRequest {
     email: string;
     firstName: string;
     lastName: string;
+    url:string;
     language: {
         language: string;
     };
