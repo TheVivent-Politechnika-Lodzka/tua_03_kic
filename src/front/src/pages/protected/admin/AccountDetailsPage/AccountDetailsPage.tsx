@@ -187,7 +187,7 @@ const AccountDetailsPage = ({
                         <div className={styles.account_general_details}>
                             <img
                                 className={styles.avatar}
-                                src={avatar}
+                                src={account?.url}
                                 alt={t("accountDetailsPage.alt")}
                             />
                             <p className={styles.login}>{account?.login}</p>
