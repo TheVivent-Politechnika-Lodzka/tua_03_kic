@@ -54,7 +54,7 @@ import java.util.logging.Logger;
 @Stateful
 @DenyAll
 @Interceptors(TrackerInterceptor.class)
-@TransactionAttribute(TransactionAttributeType.REQUIRED)
+@TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
 public class MOKService extends AbstractService implements MOKServiceInterface, SessionSynchronization {
 
     private static final long serialVersionUID = 1L;

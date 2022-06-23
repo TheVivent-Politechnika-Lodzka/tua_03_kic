@@ -61,6 +61,7 @@ interface ImplantReview {
     implantId: string;
     rating: number;
     review: string;
+    clientImage: string;
 }
 
 interface Etag {

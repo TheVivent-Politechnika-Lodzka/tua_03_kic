@@ -60,6 +60,7 @@ public class ImplantReviewMapper {
         implantReviewDto.setReview(review.getReview());
         implantReviewDto.setCreatedAt(review.getCreatedAt());
         implantReviewDto.setRating(review.getRating());
+        implantReviewDto.setClientImage(review.getClient().getUrl());
 
         return implantReviewDto;
     }
