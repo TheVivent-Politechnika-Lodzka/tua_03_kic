@@ -95,8 +95,8 @@ const CreateUserPage = () => {
                             <Image
                                 withPlaceholder
                                 radius={100}
-                                width={"8rem"}
-                                height={"8rem"}
+                                width={"13rem"}
+                                height={"13rem"}
                                 styles={{
                                     root: { marginTop: "2vh" },
                                 }}
@@ -105,8 +105,8 @@ const CreateUserPage = () => {
                             <Image
                                 src={account.url}
                                 radius={100}
-                                width={"8rem"}
-                                height={"8rem"}
+                                width={"13rem"}
+                                height={"13rem"}
                                 alt="image create"
                                 styles={{
                                     root: { marginTop: "2vh" },
@@ -115,7 +115,7 @@ const CreateUserPage = () => {
                         )}
 
                         <input
-                            id="file-input"
+                            id={style.file_input}
                             type="file"
                             onChange={async (event) => {
                                 const u = await uploadPhoto(event);
