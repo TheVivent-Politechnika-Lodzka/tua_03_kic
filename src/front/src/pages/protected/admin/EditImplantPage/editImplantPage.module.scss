@@ -49,6 +49,30 @@
             width: 70%;
             border-radius: 2.4rem;
 
+            .description_input {
+                width: 70%;
+                height: 100%;
+                overflow: scroll;
+                resize: none;
+
+                background-color: $secondary-color;
+                outline: none;
+
+                font-size: 1rem;
+                color: $white;
+                border: 2px solid $light-gray;
+                border-radius: 0.5rem;
+            }
+            .description_input::-webkit-scrollbar {
+                display: none;
+            }
+
+            .description_length {
+                font-size: 1rem;
+                color: white;
+                align-self: flex-end;
+            }
+
             .edit_implant_buttons_wrapper {
                 display: flex;
                 justify-content: flex-start;

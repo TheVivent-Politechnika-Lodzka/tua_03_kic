@@ -24,7 +24,7 @@ export const CreateImplantPage = () => {
         pageLoading: true,
         actionLoading: false,
     });
-
+    const [count, setCount] = useState(0);
     const [error, setError] = useState<ApiError>();
     const [opened, setOpened] = useState<boolean>(false);
     const [implant, setImplant] = useState({
@@ -88,8 +88,8 @@ export const CreateImplantPage = () => {
                             <Image
                                 radius="md"
                                 withPlaceholder
-                                height="15vw"
-                                width="20vw"
+                                height="15rem"
+                                width="25rem"
                                 styles={{
                                     root: { marginTop: "2vh" },
                                 }}
@@ -98,8 +98,8 @@ export const CreateImplantPage = () => {
                             <Image
                                 radius="md"
                                 src={implant.url}
-                                height="15vw"
-                                width="20vw"
+                                height="15rem"
+                                width="25rem"
                                 alt="image create"
                                 styles={{
                                     root: { marginTop: "2vh" },
@@ -128,6 +128,7 @@ export const CreateImplantPage = () => {
                                 value={implant?.name}
                                 validationType="VALIDATE_IMPLANT_NAME"
                                 isValid={isImplantNameValid}
+                                styleWidth={{ width: "20rem" }}
                                 onChange={(e) => {
                                     setImplant({
                                         ...implant,
@@ -149,6 +150,7 @@ export const CreateImplantPage = () => {
                                 value={implant?.manufacturer}
                                 validationType="VALIDATE_MANUFACTURER"
                                 isValid={isManufacturerValid}
+                                styleWidth={{ width: "20rem" }}
                                 onChange={(e) => {
                                     setImplant({
                                         ...implant,
@@ -171,6 +173,7 @@ export const CreateImplantPage = () => {
                                 value={implant?.price}
                                 validationType="VALIDATE_PRICE"
                                 isValid={isPriceValid}
+                                styleWidth={{ width: "20rem" }}
                                 onChange={(e) => {
                                     setImplant({
                                         ...implant,
@@ -193,6 +196,7 @@ export const CreateImplantPage = () => {
                                 value={implant?.duration}
                                 validationType="VALIDATE_DURATION"
                                 isValid={isDurationValid}
+                                styleWidth={{ width: "20rem" }}
                                 onChange={(e) => {
                                     setImplant({
                                         ...implant,
@@ -210,21 +214,25 @@ export const CreateImplantPage = () => {
 
                     <div className={style.edit_fields_wrapper}>
                         <div className={style.edit_field}>
-                            <InputWithValidation
-                                title={t("createImplantPage.description")}
+                            <textarea
+                                className={style.description_input}
                                 value={implant?.description}
-                                validationType="VALIDATE_DESCRIPTION"
-                                isValid={isDescriptionValid}
+                                maxLength={950}
                                 onChange={(e) => {
                                     setImplant({
                                         ...implant,
                                         description: e.target.value,
                                     });
+                                    setCount(e.target.value.length);
                                 }}
-                                required
                             />
+
+                            <div className={style.description_length}>
+                                {count}/1000
+                            </div>
+
                             <ValidationMessage
-                                isValid={isDescriptionValid}
+                                isValid={count > 100}
                                 message={t("createImplantPage.descriptionMsg")}
                             />
                         </div>

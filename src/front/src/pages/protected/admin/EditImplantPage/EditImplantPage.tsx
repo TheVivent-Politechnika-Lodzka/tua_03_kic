@@ -34,7 +34,7 @@ export const EditImplantPage = () => {
     const [opened, setOpened] = useState<boolean>(false);
     const [implant, setImplant] = useState<GetImplantResponse>();
     const { id } = useParams();
-
+    const [count, setCount] = useState(0);
     const {
         state,
         state: {
@@ -228,23 +228,27 @@ export const EditImplantPage = () => {
 
                     <div className={style.edit_fields_wrapper}>
                         <div className={style.edit_field}>
-                            <InputWithValidation
-                                title={t("editImplantPage.description")}
+                            <textarea
+                                className={style.description_input}
                                 value={implant?.description}
-                                validationType="VALIDATE_DESCRIPTION"
-                                isValid={isDescriptionValid}
+                                maxLength={950}
                                 onChange={(e) => {
                                     if (implant)
                                         setImplant({
                                             ...implant,
                                             description: e.target.value,
                                         });
+                                    setCount(e.target.value.length);
                                 }}
-                                required
                             />
+
+                            <div className={style.description_length}>
+                                {count}/1000
+                            </div>
+
                             <ValidationMessage
-                                isValid={isDescriptionValid}
-                                message={t("editImplantPage.descriptionMsg")}
+                                isValid={count > 100}
+                                message={t("createImplantPage.descriptionMsg")}
                             />
                         </div>
                     </div>

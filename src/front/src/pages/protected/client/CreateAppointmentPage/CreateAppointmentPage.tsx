@@ -33,7 +33,7 @@ interface HourInterface {
     value: Instant;
 }
 
-const CreateAppointmentPage = () => {
+export const CreateAppointmentPage = () => {
     const { implantId } = useParams();
     const { t } = useTranslation();
     const [specialistList, setSpecialistList] = useState<

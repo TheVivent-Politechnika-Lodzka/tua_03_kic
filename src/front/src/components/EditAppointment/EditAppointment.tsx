@@ -160,17 +160,17 @@ export const EditAppointment = () => {
                                 {t("editOwnAppointment.description")}
                             </p>
                             <textarea
-                                        className={styles.description_input}
-                                        value={inputDescription}
-                                        maxLength={950}
-                                        onChange={(e) => {
-                                            setInputDescription(e.target.value);
-                                            setCount(e.target.value.length);
-                                        }}
-                                    />
-                                     <div className={styles.description_length}>
-                                        {count}/950
-                                    </div>
+                                className={styles.description_input}
+                                value={inputDescription}
+                                maxLength={950}
+                                onChange={(e) => {
+                                    setInputDescription(e.target.value);
+                                    setCount(e.target.value.length);
+                                }}
+                            />
+                            <div className={styles.description_length}>
+                                {count}/950
+                            </div>
                         </div>
                         <div className={styles.detail_wrapper}>
                             <ActionButton
