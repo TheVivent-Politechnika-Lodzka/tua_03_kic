@@ -163,7 +163,7 @@ const validationReducer = (state: ContextState, action: ValidationAction) => {
                 ...state,
                 isLoginValid: validate(
                     action.payload.input,
-                    /^[a-zA-Z\u00C0-\u017F']{3,30}$/
+                    new RegExp("^[A-Za-z][A-Za-z0-9_]{3,30}$")
                 ),
             };
         }
@@ -172,7 +172,9 @@ const validationReducer = (state: ContextState, action: ValidationAction) => {
                 ...state,
                 isPasswordValid: validate(
                     action.payload.input,
-                    /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,128}$/
+                    new RegExp(
+                        "^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])(?=.{8,})"
+                    )
                 ),
             };
         }
@@ -181,7 +183,9 @@ const validationReducer = (state: ContextState, action: ValidationAction) => {
                 ...state,
                 isOldPasswordValid: validate(
                     action.payload.input,
-                    /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,128}$/
+                    new RegExp(
+                        "^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])(?=.{8,})"
+                    )
                 ),
             };
         }
@@ -190,7 +194,9 @@ const validationReducer = (state: ContextState, action: ValidationAction) => {
                 ...state,
                 isNewPasswordValid: validate(
                     action.payload.input,
-                    /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,128}$/
+                    new RegExp(
+                        "^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])(?=.{8,})"
+                    )
                 ),
             };
         }

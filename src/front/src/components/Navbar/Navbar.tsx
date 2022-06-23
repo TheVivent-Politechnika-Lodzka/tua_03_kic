@@ -39,7 +39,7 @@ const Navbar = () => {
                         }}
                         className={styles.login}
                     >
-                        Zaloguj
+                        {t("navbar.log")}
                     </div>
                     <div
                         onClick={() => {

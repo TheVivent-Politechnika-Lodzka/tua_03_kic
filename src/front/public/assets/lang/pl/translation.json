@@ -4,6 +4,19 @@
         "no": "Nie"
     },
 
+    "title": {
+        "main_page": "Strona główna",
+        "specialist": "Specjaliści",
+        "implants": "Cyberwszczepy",
+        "visits": "Wizyty",
+        "profile": "Profil użytkownika",
+        "manage": {
+            "implants": "Zarządzaj cyberwszczepami",
+            "visits": "Zarządaj wizytami",
+            "profile": "Zarządzaj użytkownikami"
+        }
+    },
+
     "firm_name": "Klinika Instalacji Cyberwszczepów",
     "why_us": "DLACZEGO MY?",
     "many_reason": "jest wiele powodów a to tylko parę z nich",
@@ -576,7 +589,8 @@
     },
     "navbar": {
         "avatar_alt": "Avatar użytkownika",
-        "register": "Zarejestruj się"
+        "register": "Zarejestruj się",
+        "log": "Zaloguj się"
     },
 
     "addAccessLevelPage": {

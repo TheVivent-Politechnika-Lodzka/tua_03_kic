@@ -233,7 +233,7 @@ export const CreateImplantPage = () => {
                             isDisabled={!isEveryFieldValid}
                             icon={faCheck}
                             color="green"
-                            title="Zatwierdź"
+                            title={t("addImplantReviewPage.confirm")}
                         />
                         <ActionButton
                             onClick={() => {
@@ -241,7 +241,7 @@ export const CreateImplantPage = () => {
                             }}
                             icon={faCancel}
                             color="red"
-                            title="Anuluj"
+                            title={t("addImplantReviewPage.cancel")}
                         />
                     </div>
                 </div>

@@ -1,9 +1,10 @@
+import { faCheck } from "@fortawesome/free-solid-svg-icons";
 import { SimpleGrid, Container, Center, Image } from "@mantine/core";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { ImplantListElementDto } from "../../api/mop";
-import { BlueGradientButton } from "../Button/BlueGradientButton";
 import ImplantDetails from "../ImplantDetails/ImplantDetails";
+import ActionButton from "../shared/ActionButton/ActionButton";
 
 import styles from "./listElement.module.scss";
 
@@ -68,11 +69,11 @@ export const ListElement = (props: { element: ImplantListElementDto }) => {
                     </div>
 
                     <div className={styles.button}>
-                        <BlueGradientButton
-                            label={t("implantListPage.listElement.details")}
-                            onClick={() => {
-                                setModal(true);
-                            }}
+                        <ActionButton
+                            onClick={() => setModal(true)}
+                            title={t("implantListPage.listElement.details")}
+                            color="blue"
+                            icon={faCheck}
                         />
                     </div>
                     <ImplantDetails

@@ -177,6 +177,7 @@ const RegisterPageInternal = () => {
                         required
                         styleWidth={{ width: "20rem" }}
                         title="PESEL "
+                        type="number"
                         value={account.pesel}
                         validationType="VALIDATE_PESEL"
                         isValid={isPESELValid}
@@ -224,6 +225,7 @@ const RegisterPageInternal = () => {
                         styleWidth={{ width: "20rem" }}
                         title={t("registerPage.phoneNumber")}
                         value={account.phoneNumber}
+                        type="number"
                         validationType="VALIDATE_PHONENUMBER_CLIENT"
                         isValid={isPhoneNumberValidClient}
                         onChange={(e: any) =>
