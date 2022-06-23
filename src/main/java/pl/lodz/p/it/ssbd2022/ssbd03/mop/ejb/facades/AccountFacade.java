@@ -77,18 +77,21 @@ public class AccountFacade extends AbstractFacade<Account> {
     @RolesAllowed({Roles.ANONYMOUS, Roles.AUTHENTICATED})
     public PaginationData findInRangeWithPhrase(int pageNumber, int perPage, String phrase) {
         try {
-            TypedQuery<Account> typedQuery = entityManager.createNamedQuery("DataSpecialist.searchSpecialistByPhrase", Account.class);
-            pageNumber--;
-            List<Account> data = typedQuery.setParameter("phrase", "%" + phrase + "%")
+            List<Account> data = entityManager
+                    .createNamedQuery("DataSpecialist.searchSpecialistByPhrase", Account.class)
+                    .setParameter("phrase", "%" + phrase + "%")
                     .setMaxResults(perPage)
-                    .setFirstResult(pageNumber * perPage)
+                    .setFirstResult((pageNumber-1) * perPage)
                     .getResultList();
-            pageNumber++;
 
-            int totalCount = this.count();
+            Long totalCount = entityManager
+                    .createNamedQuery("DataSpecialist.searchSpecialistByPhrase.count", Long.class)
+                    .setParameter("phrase", "%" + phrase + "%")
+                    .getSingleResult();
+
             int totalPages = (int) Math.ceil((double) totalCount / perPage);
 
-            return new PaginationData(totalCount, totalPages, pageNumber, data);
+            return new PaginationData(totalCount.intValue(), totalPages, pageNumber, data);
         } catch (IllegalArgumentException e) {
             throw new InvalidParametersException(e.getCause());
         } catch (PersistenceException e) {

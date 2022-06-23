@@ -121,21 +121,23 @@ public class ImplantFacade extends AbstractFacade<Implant> {
     @RolesAllowed({Roles.ANONYMOUS, Roles.AUTHENTICATED})
     public PaginationData findInRangeWithPhrase(int pageNumber, int perPage, String phrase, boolean archived) {
         try {
-            TypedQuery<Implant> typedQuery = entityManager.createNamedQuery("Implant.searchByPhrase", Implant.class);
-
-            pageNumber--;
-
-            List<Implant> data = typedQuery.setParameter("phrase", "%" + phrase + "%")
+            List<Implant> data = entityManager
+                    .createNamedQuery("Implant.searchByPhrase", Implant.class)
+                    .setParameter("phrase", "%" + phrase + "%")
                     .setParameter("archived", archived)
                     .setMaxResults(perPage)
-                    .setFirstResult(pageNumber * perPage)
+                    .setFirstResult((pageNumber - 1) * perPage)
                     .getResultList();
 
-            pageNumber++;
-            int totalCount = this.count();
+            Long totalCount = entityManager
+                    .createNamedQuery("Implant.searchByPhrase.count", Long.class)
+                    .setParameter("phrase", "%" + phrase + "%")
+                    .setParameter("archived", archived)
+                    .getSingleResult();
+
             int totalPages = (int) Math.ceil((double) totalCount / perPage);
 
-            return new PaginationData(totalCount, totalPages, pageNumber, data);
+            return new PaginationData(totalCount.intValue(), totalPages, pageNumber, data);
         } catch (IllegalArgumentException e) {
             throw new InvalidParametersException(e.getCause());
         } catch (PersistenceException e) {

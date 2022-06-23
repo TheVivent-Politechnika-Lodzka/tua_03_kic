@@ -26,8 +26,8 @@ import static pl.lodz.p.it.ssbd2022.ssbd03.entities.Implant.CONSTRAINT_NAME_UNIQ
 @NamedQueries({
         @NamedQuery(name = "Implant.findAll", query = "select a from Implant a"),
         @NamedQuery(name = "Implant.findById", query = "select a from Implant a where a.id = :id"),
-        @NamedQuery(name = "Implant.searchByPhrase", query = "select a from Implant a where lower(a.name) like lower(:phrase) and a.archived = :archived"),
-
+        @NamedQuery(name = "Implant.searchByPhrase", query = "select a from Implant a where lower(a.name) like lower(:phrase) and a.archived = :archived order by a.name asc"),
+        @NamedQuery(name = "Implant.searchByPhrase.count", query = "select count(a) from Implant a where lower(a.name) like lower(:phrase) and a.archived = :archived"),
 })
 @ToString
 @NoArgsConstructor
@@ -43,7 +43,7 @@ public class Implant extends AbstractEntity implements Serializable {
     private String name;
 
     @Basic(optional = false)
-    @Column(name = "description", nullable = false, length = 1000)
+    @Column(name = "description", nullable = false, columnDefinition = "TEXT", length = 1000)
     @Getter @Setter
     @Description
     private String description;

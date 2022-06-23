@@ -41,7 +41,8 @@ import static pl.lodz.p.it.ssbd2022.ssbd03.entities.Account.CONSTRAINT_LOGIN_UNI
         @NamedQuery(name = "Account.findByLogin", query = "select a from Account a where a.login = :login"),
         @NamedQuery(name = "Account.findByConfirmed", query = "select a from Account a order by a.confirmed"),
         @NamedQuery(name = "Account.findByActive", query = "select a from Account a order by a.active"),
-        @NamedQuery(name = "Account.searchByPhrase", query = "select a from Account a where lower(concat(a.firstName, ' ', a.lastName)) like lower(:phrase)"),
+        @NamedQuery(name = "Account.searchByPhrase", query = "select a from Account a where lower(concat(a.firstName, ' ', a.lastName)) like lower(:phrase) order by a.lastName, a.firstName asc"),
+        @NamedQuery(name = "Account.searchByPhrase.count", query = "select count(a) from Account a where lower(concat(a.firstName, ' ', a.lastName)) like lower(:phrase)"),
 })
 
 @ToString
@@ -81,12 +82,7 @@ public class Account extends AbstractEntity implements Serializable {
     @NotNull
     private boolean active;
 
-    @Column(name = "url",length = 2000)
-    @Size(min = 8, max = 2000)
-    @Getter
-    @Setter
-    @NotNull
-    private String url;
+
 
     @OneToMany(fetch = FetchType.EAGER, cascade = {CascadeType.REMOVE, CascadeType.ALL}, mappedBy = "account", orphanRemoval = true)
     @Getter
@@ -122,6 +118,13 @@ public class Account extends AbstractEntity implements Serializable {
     @Setter
     @NotNull
     private Locale language;
+
+    @Column(name = "url", table = "account_details", length = 2000)
+    @Size(min = 8, max = 2000)
+    @Getter
+    @Setter
+    @NotNull
+    private String url;
 
     public void setEmail(String email) {
         this.email = email.toLowerCase();

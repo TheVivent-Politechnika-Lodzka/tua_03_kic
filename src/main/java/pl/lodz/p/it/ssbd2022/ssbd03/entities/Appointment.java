@@ -37,10 +37,19 @@ import java.time.Instant;
                     (a.startDate >= :startDate and a.startDate < :endDate) or
                     (a.endDate > :startDate and a.endDate <= :endDate)
                 )
+                order by a.startDate, a.endDate asc
+                """), // nie mogę użyć BETWEEN, ponieważ JPA nie wspiera BETWEEN na Instant
+        @NamedQuery(name = "Appointment.findSpecialistAppointmentsInGivenPeriod.count", query = """
+                select count(a) from Appointment a where
+                a.specialist.id = :specialistId and (
+                    (a.startDate >= :startDate and a.startDate < :endDate) or
+                    (a.endDate > :startDate and a.endDate <= :endDate)
+                )
                 """), // nie mogę użyć BETWEEN, ponieważ JPA nie wspiera BETWEEN na Instant
         @NamedQuery(name = "Appointment.findByLogin", query = "select a from Appointment a where a.client.login = :login or a.specialist.login = :login"),
         @NamedQuery(name = "Appointment.findBetweenDates", query = "select a from Appointment a where a.startDate >= :startDate and a.startDate <= :endDate"),
-        @NamedQuery(name = "Appointment.searchByPhrase", query = "select a from Appointment a where a.client.login like concat('%', :phrase, '%') or a.specialist.login like concat('%', :phrase, '%')"),
+        @NamedQuery(name = "Appointment.searchByPhrase", query = "select a from Appointment a where a.client.login like concat('%', :phrase, '%') or a.specialist.login like concat('%', :phrase, '%') order by a.startDate, a.endDate asc"),
+        @NamedQuery(name = "Appointment.searchByPhrase.count", query = "select count(a) from Appointment a where a.client.login like concat('%', :phrase, '%') or a.specialist.login like concat('%', :phrase, '%')"),
 })
 @ToString
 @NoArgsConstructor
@@ -105,7 +114,7 @@ public class Appointment extends AbstractEntity implements Serializable {
     private String implantName;
 
     @Basic(optional = false)
-    @Column(name = "description", nullable = false, table = "implant_backup_in_appointment", updatable = false)
+    @Column(name = "description", nullable = false, table = "implant_backup_in_appointment", updatable = false, columnDefinition = "TEXT")
     @Getter
     @Description
     private String implantDescription;
