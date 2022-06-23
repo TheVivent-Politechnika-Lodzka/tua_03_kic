@@ -107,6 +107,10 @@ export const CreateAppointmentPage = () => {
         setSelectedHour(undefined);
     }, [specialist, implant, currentMonth]);
 
+    useEffect(() => {
+        console.log(selectedDate);
+    }, [selectedDate]);
+
     return (
         <section className={style.create_appointment_page}>
             <h1>{t("createAppointmentPage.title")}</h1>
@@ -432,7 +436,7 @@ const SpecialistItem = ({
         >
             <img
                 className={style.specialist_image}
-                src="https://picsum.photos/200"
+                src={spec.url}
                 alt="specialist"
             />
             <h3 className={style.specialist_name}>

@@ -12,8 +12,7 @@ import {
     successNotficiationItems,
 } from "../../../../utils/showNotificationsItems";
 import { useTranslation } from "react-i18next";
-import { Center, Image } from "@mantine/core";
-import { HiOutlinePhotograph } from "react-icons/hi";
+import {  Image } from "@mantine/core";
 import { uploadPhoto } from "../../../../utils/upload";
 import { createImplant } from "../../../../api/mop";
 import ConfirmActionModal from "../../../../components/shared/ConfirmActionModal/ConfirmActionModal";
@@ -24,8 +23,6 @@ export const CreateImplantPage = () => {
         pageLoading: true,
         actionLoading: false,
     });
-    const [count, setCount] = useState(0);
-    const [error, setError] = useState<ApiError>();
     const [opened, setOpened] = useState<boolean>(false);
     const [implant, setImplant] = useState({
         name: "",
@@ -35,7 +32,7 @@ export const CreateImplantPage = () => {
         duration: "",
         url: "",
     });
-
+    const [count, setCount] = useState(implant.description.length);
     const {
         state,
         state: {
