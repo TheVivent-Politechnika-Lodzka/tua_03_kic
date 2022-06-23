@@ -33,6 +33,7 @@ const ChangeUserPasswordPage = ({
 }: ChangeUserPasswordPageProps) => {
     const [account, setAccount] = useState<GetAccountResponse>();
     const [newPassword, setNewPassword] = useState<string>("");
+    const [repeatPassowrd, setRepeatPassword] = useState<string>("");
     const [opened, setOpened] = useState<boolean>(false);
     const [loading, setLoading] = useState<Loading>({
         pageLoading: true,
@@ -41,7 +42,7 @@ const ChangeUserPasswordPage = ({
 
     const {
         state,
-        state: { isNewPasswordValid },
+        state: { isNewPasswordValid, isPasswordValid },
         dispatch,
     } = useContext(validationContext);
 
@@ -76,10 +77,13 @@ const ChangeUserPasswordPage = ({
         setOpened(false);
         onClose();
         setNewPassword("");
+        setRepeatPassword("");
         showNotification(
             successNotficiationItems(
-                `${t("ChangeAccountPassword.first")} ${login} ${t(
-                    "ChangeAccountPassword.second"
+                `${t(
+                    "changeUserPasswordPage.successNotficiationItems.first"
+                )} ${login} ${t(
+                    "changeUserPasswordPage.successNotficiationItems.second"
                 )}`
             )
         );
@@ -89,6 +93,9 @@ const ChangeUserPasswordPage = ({
         handleGetOwnAccount();
         dispatch({ type: "RESET_VALIDATION", payload: { ...state } });
     }, []);
+
+    const isRepeatPasswordValid =
+        isPasswordValid && newPassword === repeatPassowrd;
 
     return (
         <Modal isOpen={isOpen}>
@@ -104,14 +111,16 @@ const ChangeUserPasswordPage = ({
                     <>
                         <div className={styles.title_wrapper}>
                             <h2>
-                                {t("ChangeAccountPassword.title")} {login}
+                                {t("changeUserPasswordPage.title")} {login}
                             </h2>
                         </div>
                         <div className={styles.content}>
                             <div className={styles.change_password_wrapper}>
                                 <div className={styles.input_wrapper}>
                                     <InputWithValidation
-                                        title="Nowe hasło"
+                                        title={t(
+                                            "changeUserPasswordPage.labelPassword"
+                                        )}
                                         validationType="VALIDATE_NEW_PASSWORD"
                                         isValid={isNewPasswordValid}
                                         value={newPassword}
@@ -122,28 +131,58 @@ const ChangeUserPasswordPage = ({
                                         required
                                     />
                                 </div>
+                                <div className={styles.input_wrapper}>
+                                    <InputWithValidation
+                                        title={t(
+                                            "changeUserPasswordPage.repeatPassword"
+                                        )}
+                                        validationType="VALIDATE_PASSWORD"
+                                        isValid={isRepeatPasswordValid}
+                                        value={repeatPassowrd}
+                                        onChange={(e) =>
+                                            setRepeatPassword(e.target.value)
+                                        }
+                                        type="password"
+                                        required
+                                    />
+                                </div>
                                 <div className={styles.action_buttons_wrapper}>
                                     <ActionButton
                                         onClick={() => {
                                             setOpened(true);
                                         }}
-                                        isDisabled={!isNewPasswordValid}
+                                        isDisabled={
+                                            !isNewPasswordValid ||
+                                            !isRepeatPasswordValid
+                                        }
                                         icon={faCheck}
                                         color="green"
-                                        title="Zatwierdź"
+                                        title={t(
+                                            "changeUserPasswordPage.confirm"
+                                        )}
                                     />
                                     <ActionButton
                                         onClick={onClose}
                                         icon={faCancel}
                                         color="red"
-                                        title="Anuluj"
+                                        title={t(
+                                            "changeUserPasswordPage.cancel"
+                                        )}
                                     />
                                 </div>
                             </div>
                             <div className={styles.validation_status_wrapper}>
                                 <ValidationMessage
                                     isValid={isNewPasswordValid}
-                                    message="Hasło musi być dłuższe niż 8 znaków oraz musi zawierać jedną dużą literę, jedną cyfrę i jeden znak specjalny"
+                                    message={t(
+                                        "changeUserPasswordPage.validationMessage"
+                                    )}
+                                />
+                                <ValidationMessage
+                                    isValid={isRepeatPasswordValid}
+                                    message={t(
+                                        "changeUserPasswordPage.validationMessageRepeat"
+                                    )}
                                 />
                             </div>
                         </div>
@@ -158,9 +197,9 @@ const ChangeUserPasswordPage = ({
                                 setOpened(false);
                             }}
                             isLoading={loading.actionLoading as boolean}
-                            title={`Zmiana hasła użytkownika`}
+                            title={t("changeUserPasswordPage.modalTitle")}
                         >
-                            {`Czy na pewno chcesz zmienić hasło użytkownika ${login}? Operacja jest nieodwracalna`}
+                            {t("changeUserPasswordPage.modalDescription")}
                         </ConfirmActionModal>
                     </>
                 )}

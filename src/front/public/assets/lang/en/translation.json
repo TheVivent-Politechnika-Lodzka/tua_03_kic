@@ -135,16 +135,22 @@
         }
     },
 
-    "ChangeAccountPassword": {
+    "changeUserPasswordPage": {
         "title": "Change password for user",
-        "input_placeholder": "Type new password",
-        "change_password_button": "Change",
-        "go_back_button": "Return to user page",
-        "too_short_password_error": "Password is too short!",
+        "labelPassword": "Password",
+        "repeatPassword": "Repeat password",
+        "validationMessage": "The password must be longer than 8 characters and must contain one uppercase letter, one number and one special character",
+        "validationMessageRepeat": "Both passwords must be the same",
         "successNotficiationItems": {
             "first": "User password",
             "second": "has been successfully changed"
-        }
+        },
+        "confirm": "Confirm",
+        "cancel": "Cancel",
+        "modalTitle": "Change user password",
+        "modalDescription": "Are you sure you want to change user password?",
+        "modalConfirm": "Yes",
+        "modalCancel": "No"
     },
 
     "email_send": "Check your email",

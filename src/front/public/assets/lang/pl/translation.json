@@ -146,12 +146,23 @@
     "createAccount": "Stwórz konto",
     "detailsAccount": "Moje konto",
     "editAccount": "Edytuj moje konto",
-    "ChangeAccountPassword": {
-        "title": "Zmiana hasła dla użytkownika",
-        "input_placeholder": "Wpisz nowe hasło",
-        "change_password_button": "Zmień",
-        "go_back_button": "Powrót do strony użytkowników",
-        "too_short_password_error": "Haslo jest za krótkie!"
+
+    "changeUserPasswordPage": {
+        "title": "Zmień hasło użytkownika",
+        "labelPassword": "Hasło",
+        "repeatPassword": "Powtórz hasło",
+        "validationMessage": "Hasło musi być dłuższe niż 8 znaków oraz musi zawierać jedną dużą literę, jedną cyfrę i jeden znak specjalny",
+        "validationMessageRepeat": "Both passwords must be the same",
+        "successNotficiationItems": {
+            "first": "Hasło użytkownika",
+            "second": "zostało zmienione"
+        },
+        "confirm": "Zatwierdź",
+        "cancel": "Anuluj",
+        "modalTitle": "Zmień hasło użytkownika",
+        "modalDescription": "Czy na pewno chcesz zmienić hasło użytkownika?",
+        "modalConfirm": "Tak",
+        "modalCancel": "Nie"
     },
 
     "implantListPage": {
