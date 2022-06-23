@@ -414,7 +414,7 @@ public class MOPService extends AbstractService implements MOPServiceInterface, 
      */
     @Override
     @RolesAllowed({Roles.ADMINISTRATOR, Roles.CLIENT})
-    public void deleteReview(UUID id, String login) {
+    public boolean deleteReview(UUID id, String login) {
 
         ImplantReview review = implantReviewFacade.findByUUID(id);
         Account account = accountFacade.findByLogin(login);
@@ -426,6 +426,7 @@ public class MOPService extends AbstractService implements MOPServiceInterface, 
             throw new ClientRemovesOtherReviewsException();
         }
         implantReviewFacade.remove(review);
+        return true;
     }
 
 

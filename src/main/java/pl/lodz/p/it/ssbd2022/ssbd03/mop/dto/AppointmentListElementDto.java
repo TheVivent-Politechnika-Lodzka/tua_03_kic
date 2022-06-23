@@ -34,11 +34,13 @@ public class AppointmentListElementDto {
     private Status status;
 
     private Instant startDate;
+    private Instant endDate;
 
     @Description
     private String description;
 
     private int price;
 
-    private Instant endDate;
+    private ImplantDto appointmentImplant;
+
 }

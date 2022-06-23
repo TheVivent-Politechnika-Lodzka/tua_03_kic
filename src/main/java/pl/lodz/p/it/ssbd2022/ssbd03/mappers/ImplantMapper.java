@@ -76,10 +76,10 @@ public class ImplantMapper {
      * @param implants Lista obiektów Implant
      * @return List<ImplantListElementDto> - Lista obiektów ImplantListElementDto
      */
-    public List<ImplantListElementDto> getListFromImplantListElementDtoFromImplant(Collection<Implant> implants) {
+    public List<ImplantDto> getListFromImplantListElementDtoFromImplant(Collection<Implant> implants) {
         return null == implants ? null : implants.stream()
                 .filter(Objects::nonNull)
-                .map(this::implantListElementDtoFromImplant)
+                .map(this::createImplantDtoFromImplant)
                 .collect(Collectors.toList());
     }
 

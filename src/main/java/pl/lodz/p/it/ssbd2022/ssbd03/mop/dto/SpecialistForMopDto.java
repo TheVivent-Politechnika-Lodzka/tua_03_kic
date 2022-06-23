@@ -24,10 +24,10 @@ public class SpecialistForMopDto {
     private UUID id;
 
     @Name
-    private String name;
+    private String firstName;
 
     @LastName
-    private String surname;
+    private String lastName;
 
     @Url
     private String url;
