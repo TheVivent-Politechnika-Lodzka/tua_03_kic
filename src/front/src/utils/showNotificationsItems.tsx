@@ -1,10 +1,15 @@
-import { faCheckCircle, faExclamationCircle, faPersonCircleExclamation } from "@fortawesome/free-solid-svg-icons";
+import {
+    faCheckCircle,
+    faExclamationCircle,
+} from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { NotificationProps } from "@mantine/notifications";
 
 const successNotficiationItems = (message: string): NotificationProps => {
+    const language = localStorage.getItem("i18nextLng") as string;
+
     return {
-        title: `Powodzenie`,
+        title: `${language === "pl" ? "Powodzenie" : "Success"}`,
         message: `${message}`,
         autoClose: 5000,
         color: "green",
@@ -22,8 +27,10 @@ const successNotficiationItems = (message: string): NotificationProps => {
 };
 
 const failureNotificationItems = (message: string): NotificationProps => {
+    const language = localStorage.getItem("i18nextLng") as string;
+
     return {
-        title: `Błąd`,
+        title: `${language === "pl" ? "Błąd" : "Error"}`,
         message: `${message}`,
         autoClose: 5000,
         color: "red",
