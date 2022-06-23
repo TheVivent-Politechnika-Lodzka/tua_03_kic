@@ -85,19 +85,24 @@ export const CreateImplantPage = () => {
                 <div className={style.create_data_account_wrapper}>
                     <div className={style.edit_fields_wrapper}>
                         {implant.url.length === 0 ? (
-                            <div className={`${style.image} ${style.margin}`}>
-                                <Center>
-                                    <HiOutlinePhotograph size="80px" />
-                                </Center>
-                            </div>
+                            <Image
+                                radius="md"
+                                withPlaceholder
+                                height="15vw"
+                                width="20vw"
+                                styles={{
+                                    root: { marginTop: "2vh" },
+                                }}
+                            />
                         ) : (
                             <Image
                                 radius="md"
                                 src={implant.url}
-                                height="20vw"
+                                height="15vw"
+                                width="20vw"
                                 alt="image create"
                                 styles={{
-                                    root: { marginTop: "6vh" },
+                                    root: { marginTop: "2vh" },
                                 }}
                             />
                         )}

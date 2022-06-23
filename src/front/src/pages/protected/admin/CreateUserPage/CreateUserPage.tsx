@@ -14,6 +14,8 @@ import {
 } from "../../../../utils/showNotificationsItems";
 import ConfirmActionModal from "../../../../components/shared/ConfirmActionModal/ConfirmActionModal";
 import { useTranslation } from "react-i18next";
+import { Image } from "@mantine/core";
+import { uploadPhoto } from "../../../../utils/upload";
 
 const CreateUserPage = () => {
     const [account, setAccount] = useState<CreateAccountRequest>({
@@ -22,6 +24,7 @@ const CreateUserPage = () => {
         lastName: "",
         login: "",
         password: "",
+        url: "",
         language: {
             language: "pl",
         },
@@ -89,13 +92,51 @@ const CreateUserPage = () => {
             <div className={style.create_user_page_content}>
                 <div className={style.create_data_account_wrapper}>
                     <div className={style.edit_fields_wrapper}>
+                        {account.url.length === 0 ? (
+                            <Image
+                                withPlaceholder
+                                radius={100}
+                                width={"8rem"}
+                                height={"8rem"}
+                                styles={{
+                                    root: { marginTop: "2vh" },
+                                }}
+                            />
+                        ) : (
+                            <Image
+                                src={account.url}
+                                radius={100}
+                                width={"8rem"}
+                                height={"8rem"}
+                                alt="image create"
+                                styles={{
+                                    root: { marginTop: "2vh" },
+                                }}
+                            />
+                        )}
+
+                        <input
+                            id="file-input"
+                            type="file"
+                            onChange={async (event) => {
+                                const u = await uploadPhoto(event);
+                                if (u) {
+                                    setAccount({
+                                        ...account,
+                                        url: u,
+                                    });
+                                }
+                            }}
+                        />
+                    </div>
+                    <div className={style.edit_fields_wrapper}>
                         <div
                             className={style.edit_field}
                             title={t("createUserPage.email")}
                         >
                             <InputWithValidation
                                 required
-                                styleWidth={{ width: "30rem" }}
+                                styleWidth={{ width: "20rem" }}
                                 title={t("createUserPage.email")}
                                 value={account.email}
                                 validationType="VALIDATE_EMAIL_ADMINISTRATOR"
@@ -121,7 +162,7 @@ const CreateUserPage = () => {
                         >
                             <InputWithValidation
                                 required
-                                styleWidth={{ width: "30rem" }}
+                                styleWidth={{ width: "20rem" }}
                                 title={t("createUserPage.name")}
                                 value={account.firstName}
                                 validationType="VALIDATE_FIRSTNAME"
@@ -146,7 +187,7 @@ const CreateUserPage = () => {
                         >
                             <InputWithValidation
                                 required
-                                styleWidth={{ width: "30rem" }}
+                                styleWidth={{ width: "20rem" }}
                                 title={t("createUserPage.surname")}
                                 value={account.lastName}
                                 validationType="VALIDATE_LASTNAME"
@@ -172,7 +213,7 @@ const CreateUserPage = () => {
                         >
                             <InputWithValidation
                                 required
-                                styleWidth={{ width: "30rem" }}
+                                styleWidth={{ width: "20rem" }}
                                 title={t("createUserPage.id")}
                                 value={account.login}
                                 validationType="VALIDATE_LOGIN"
@@ -198,7 +239,7 @@ const CreateUserPage = () => {
                         >
                             <InputWithValidation
                                 required
-                                styleWidth={{ width: "30rem" }}
+                                styleWidth={{ width: "20rem" }}
                                 title={t("createUserPage.password")}
                                 type="password"
                                 value={account.password}
