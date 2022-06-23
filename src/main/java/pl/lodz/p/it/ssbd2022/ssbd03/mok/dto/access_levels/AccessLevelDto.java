@@ -12,6 +12,8 @@ import pl.lodz.p.it.ssbd2022.ssbd03.mappers.json.AccessLevelDeserializer;
 @JsonbTypeDeserializer(AccessLevelDeserializer.class)
 public abstract class AccessLevelDto {
 
+    private static final long serialVersionUID = 1L;
+
     private final String level;
 
     public AccessLevelDto() {

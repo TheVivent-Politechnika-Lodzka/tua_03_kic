@@ -10,6 +10,8 @@ import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.AppBaseException;
 @ApplicationException(rollback = true)
 public class AccountStatusException extends AppBaseException {
 
+    private static final long serialVersionUID = 1L;
+
     private static final String ACCOUNT_STATUS_ALREADY_ACTIVE = "server.error.appBase.accountAlreadyActive";
     private static final String ACCOUNT_STATUS_ALREADY_INACTIVE = "server.error.appBase.accountAlreadyInactive";
 

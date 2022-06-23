@@ -16,6 +16,8 @@ import java.util.List;
 @Stateless
 public class ImplantReviewMapper {
 
+    private static final long serialVersionUID = 1L;
+
     @Inject
     private ImplantFacade implantFacade;
 

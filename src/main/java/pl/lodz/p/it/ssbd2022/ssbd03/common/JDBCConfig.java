@@ -53,6 +53,9 @@ import java.sql.Connection;
 
 @Stateless
 public class JDBCConfig {
+
+    private static final long serialVersionUID = 1L;
+
     @PersistenceContext(unitName = "ssbd03adminPU")
     private EntityManager em;
 }

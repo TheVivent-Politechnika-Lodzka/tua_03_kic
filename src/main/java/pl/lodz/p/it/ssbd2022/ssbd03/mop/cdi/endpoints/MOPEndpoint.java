@@ -32,6 +32,8 @@ import java.util.UUID;
 @Path("/mop")
 public class MOPEndpoint implements MOPEndpointInterface {
 
+    private static final long serialVersionUID = 1L;
+
     @Inject
     AuthContext authContext;
     @Inject

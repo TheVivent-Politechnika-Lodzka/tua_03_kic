@@ -14,6 +14,8 @@ import java.util.UUID;
 @AllArgsConstructor
 public class CreateAppointmentDto {
 
+    private static final long serialVersionUID = 1L;
+
     @NotNull(message = "server.error.validation.constraints.notNull.createAppointment.specialist")
     private UUID specialistId;
 

@@ -26,6 +26,8 @@ import java.util.UUID;
 @TransactionAttribute(TransactionAttributeType.MANDATORY)
 public class AccountFacade extends AbstractFacade<Account> {
 
+    private static final long serialVersionUID = 1L;
+
     @PersistenceContext(unitName = "ssbd03mopPU")
     @Getter
     private EntityManager entityManager;

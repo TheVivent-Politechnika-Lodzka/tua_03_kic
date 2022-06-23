@@ -13,6 +13,8 @@ import static jakarta.ejb.TransactionAttributeType.NOT_SUPPORTED;
 
 public abstract class AbstractService {
 
+    private static final long serialVersionUID = 1L;
+
     @Resource
     SessionContext sessionContext;
 

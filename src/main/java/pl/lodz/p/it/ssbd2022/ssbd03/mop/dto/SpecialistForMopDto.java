@@ -19,6 +19,8 @@ import java.util.UUID;
 @AllArgsConstructor
 public class SpecialistForMopDto {
 
+    private static final long serialVersionUID = 1L;
+
     private UUID id;
 
     @Name

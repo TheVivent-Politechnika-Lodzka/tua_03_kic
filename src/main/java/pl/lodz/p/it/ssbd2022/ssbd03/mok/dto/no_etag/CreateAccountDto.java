@@ -20,6 +20,8 @@ import java.util.Locale;
 @AllArgsConstructor
 public class CreateAccountDto {
 
+    private static final long serialVersionUID = 1L;
+
     @Password
     private String password;
 

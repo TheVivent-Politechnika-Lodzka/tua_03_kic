@@ -16,6 +16,8 @@ import java.util.HashSet;
 
 public class AuthenticationMechanism implements HttpAuthenticationMechanism {
 
+    private static final long serialVersionUID = 1L;
+
     @Inject
     JWTGenerator jwtGenerator;
 

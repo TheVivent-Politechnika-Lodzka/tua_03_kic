@@ -18,6 +18,8 @@ import java.util.UUID;
 @NoArgsConstructor
 public class ImplantReviewDto {
 
+    private static final long serialVersionUID = 1L;
+
     @NotNull
     private UUID id;
 

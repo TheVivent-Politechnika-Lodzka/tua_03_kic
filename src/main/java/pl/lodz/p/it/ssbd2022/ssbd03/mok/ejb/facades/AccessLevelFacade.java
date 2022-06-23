@@ -26,6 +26,8 @@ import pl.lodz.p.it.ssbd2022.ssbd03.utils.HashAlgorithm;
 @TransactionAttribute(TransactionAttributeType.MANDATORY)
 public class AccessLevelFacade extends AbstractFacade<AccessLevel> {
 
+    private static final long serialVersionUID = 1L;
+
     @PersistenceContext(unitName = "ssbd03mokPU")
     @Getter
     private EntityManager entityManager;

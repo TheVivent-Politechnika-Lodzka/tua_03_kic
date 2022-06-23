@@ -10,8 +10,10 @@ import pl.lodz.p.it.ssbd2022.ssbd03.mok.ejb.services.MOKService;
 import pl.lodz.p.it.ssbd2022.ssbd03.mok.ejb.services.MOKServiceInterface;
 
 @Stateful
-@TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
+@TransactionAttribute(TransactionAttributeType.NEVER)
 public class AuthContext {
+
+    private static final long serialVersionUID = 1L;
 
     @Inject
     private SecurityContext securityContext;
@@ -19,7 +21,7 @@ public class AuthContext {
     @Inject
     private MOKServiceInterface mokService;
 
-
+    @TransactionAttribute(TransactionAttributeType.MANDATORY)
     public Account getCurrentUser() {
         if (securityContext.getCallerPrincipal() == null) {
             return null;

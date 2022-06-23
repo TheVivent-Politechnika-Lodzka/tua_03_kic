@@ -14,6 +14,8 @@ import pl.lodz.p.it.ssbd2022.ssbd03.mop.dto.AppointmentOwnEditDto;
 
 public class AppointmentMapper {
 
+    private static final long serialVersionUID = 1L;
+
     @Inject
     private AccountMapper accountMapper;
 

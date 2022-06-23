@@ -28,6 +28,8 @@ import java.util.UUID;
 @TransactionAttribute(TransactionAttributeType.MANDATORY)
 public class ImplantReviewFacade extends AbstractFacade<ImplantReview> {
 
+    private static final long serialVersionUID = 1L;
+
     public ImplantReviewFacade() {
         super(ImplantReview.class);
     }

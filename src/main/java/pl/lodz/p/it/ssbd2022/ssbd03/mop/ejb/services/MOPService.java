@@ -59,6 +59,8 @@ import static pl.lodz.p.it.ssbd2022.ssbd03.entities.Status.*;
 @TransactionAttribute(TransactionAttributeType.REQUIRED)
 public class MOPService extends AbstractService implements MOPServiceInterface, SessionSynchronization {
 
+    private static final long serialVersionUID = 1L;
+
     protected static final Logger LOGGER = Logger.getGlobal();
 
     @Inject

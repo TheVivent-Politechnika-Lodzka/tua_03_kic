@@ -21,6 +21,8 @@ import java.util.UUID;
 @AllArgsConstructor
 public class AppointmentListElementDto {
 
+    private static final long serialVersionUID = 1L;
+
     private UUID id;
 
     private AccountWithAccessLevelsDto client;

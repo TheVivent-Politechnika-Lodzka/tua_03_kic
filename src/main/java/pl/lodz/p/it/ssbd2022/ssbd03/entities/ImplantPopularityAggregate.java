@@ -13,6 +13,8 @@ import pl.lodz.p.it.ssbd2022.ssbd03.common.AbstractEntity;
 @NoArgsConstructor
 public class ImplantPopularityAggregate extends AbstractEntity {
 
+    private static final long serialVersionUID = 1L;
+
     @Basic(optional = false)
     @Column(name = "popularity", columnDefinition = "INTEGER DEFAULT 0", nullable = false)
     @Getter

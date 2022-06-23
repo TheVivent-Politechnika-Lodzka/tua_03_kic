@@ -13,6 +13,8 @@ import java.util.stream.Collectors;
 
 public class ImplantMapper {
 
+    private static final long serialVersionUID = 1L;
+
 
     /**
      * Mapuje dane z obiektu CreateImplantDto na obiekt Implant
