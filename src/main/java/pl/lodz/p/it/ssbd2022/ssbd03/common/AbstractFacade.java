@@ -13,6 +13,8 @@ import pl.lodz.p.it.ssbd2022.ssbd03.security.Tagger;
 
 public abstract class AbstractFacade<T> {
 
+    private static final long serialVersionUID = 1L;
+
     private final Class<T> entityClass;
 
     public AbstractFacade(Class<T> entityClass) {

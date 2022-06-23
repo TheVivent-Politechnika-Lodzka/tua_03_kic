@@ -20,6 +20,8 @@ import java.util.stream.Collectors;
 @Stateless
 public class AccountMapper {
 
+    private static final long serialVersionUID = 1L;
+
     @Inject
     private HashAlgorithm hashAlgorithm;
 

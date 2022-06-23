@@ -12,6 +12,8 @@ import pl.lodz.p.it.ssbd2022.ssbd03.validation.*;
 @AllArgsConstructor
 public class CreateImplantDto {
 
+    private static final long serialVersionUID = 1L;
+
     @Name
     private String name;
 

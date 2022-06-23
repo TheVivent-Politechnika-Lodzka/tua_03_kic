@@ -27,6 +27,8 @@ import java.util.UUID;
 @TransactionAttribute(TransactionAttributeType.MANDATORY)
 public class AppointmentFacade extends AbstractFacade<Appointment> {
 
+    private static final long serialVersionUID = 1L;
+
     @PersistenceContext(unitName = "ssbd03mopPU")
     @Getter
     private EntityManager entityManager;

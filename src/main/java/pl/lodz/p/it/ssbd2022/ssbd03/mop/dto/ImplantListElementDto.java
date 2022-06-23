@@ -14,6 +14,8 @@ import java.util.UUID;
 @AllArgsConstructor
 public class ImplantListElementDto {
 
+    private static final long serialVersionUID = 1L;
+
     private UUID id;
 
     @Name

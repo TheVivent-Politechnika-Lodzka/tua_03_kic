@@ -11,6 +11,8 @@ import jakarta.ws.rs.ext.Provider;
 @Provider
 public class EJBAccessExceptionMapper implements ExceptionMapper<EJBAccessException> {
 
+    private static final long serialVersionUID = 1L;
+
 
     /**
      * Metoda zwracająca odpowiedź w przypadku wyrzuconego wyjątku typu EJBAccessException

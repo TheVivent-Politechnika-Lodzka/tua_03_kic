@@ -19,13 +19,15 @@ import java.util.UUID;
 @AllArgsConstructor
 public class SpecialistForMopDto {
 
+    private static final long serialVersionUID = 1L;
+
     private UUID id;
 
     @Name
-    private String name;
+    private String firstName;
 
     @LastName
-    private String surname;
+    private String lastName;
 
     @Url
     private String url;

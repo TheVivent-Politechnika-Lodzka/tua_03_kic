@@ -57,6 +57,8 @@ import java.util.logging.Logger;
 @TransactionAttribute(TransactionAttributeType.REQUIRED)
 public class MOKService extends AbstractService implements MOKServiceInterface, SessionSynchronization {
 
+    private static final long serialVersionUID = 1L;
+
     protected static final Logger LOGGER = Logger.getGlobal();
     @Inject
     private IdentityStoreHandler identityStoreHandler;

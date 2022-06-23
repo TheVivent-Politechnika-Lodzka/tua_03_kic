@@ -10,6 +10,8 @@ import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.AppBaseException;
 @ApplicationException(rollback = true)
 public class AccessLevelViolationException extends AppBaseException {
 
+    private static final long serialVersionUID = 1L;
+
     private final static String CLIENT_CANT_BE_SPECIALIST = "server.error.clientCantBeSpecialist";
     private final static String SPECIALIST_CANT_BE_CLIENT = "server.error.specialistCantBeClient";
 

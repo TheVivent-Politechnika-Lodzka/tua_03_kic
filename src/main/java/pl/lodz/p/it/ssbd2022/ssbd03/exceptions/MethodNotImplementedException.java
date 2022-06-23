@@ -9,6 +9,8 @@ import jakarta.ws.rs.core.Response;
 @ApplicationException(rollback = true)
 public class MethodNotImplementedException extends AppBaseException{
 
+    private static final long serialVersionUID = 1L;
+
     public static final String MESSAGE = "server.error.appBase.methodNotImplemented";
 
     public MethodNotImplementedException() {

@@ -23,6 +23,8 @@ import java.util.logging.Logger;
 @Singleton
 public class StartupConfig {
 
+    private static final long serialVersionUID = 1L;
+
     private static final Logger logger = Logger.getLogger(StartupConfig.class.toString());
 
     @PersistenceContext(unitName = "ssbd03adminPU")

@@ -21,6 +21,8 @@ import java.util.UUID;
 @AllArgsConstructor
 public class AppointmentListElementDto {
 
+    private static final long serialVersionUID = 1L;
+
     private UUID id;
 
     private AccountWithAccessLevelsDto client;
@@ -32,11 +34,13 @@ public class AppointmentListElementDto {
     private Status status;
 
     private Instant startDate;
+    private Instant endDate;
 
     @Description
     private String description;
 
     private int price;
 
-    private Instant endDate;
+    private ImplantDto appointmentImplant;
+
 }

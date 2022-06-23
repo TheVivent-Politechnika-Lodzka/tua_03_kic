@@ -16,6 +16,8 @@ import java.io.IOException;
 @Priority(Priorities.HEADER_DECORATOR)
 public class CORSFilter implements ContainerResponseFilter {
 
+    private static final long serialVersionUID = 1L;
+
     /**
      * Metoda służąca do dodawania nagłówków w odpowiedziach
      * @param containerRequestContext Kontekst żądań kontenera

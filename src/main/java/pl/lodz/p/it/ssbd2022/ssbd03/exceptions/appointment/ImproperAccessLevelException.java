@@ -11,6 +11,8 @@ import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.AppBaseException;
 @ApplicationException(rollback = true)
 public class ImproperAccessLevelException extends AppBaseException {
 
+    private static final long serialVersionUID = 1L;
+
     private static final String ACCOUNT_NOT_SPECIALIST = "server.error.appBase.improperAccessLevel.accountNotSpecialist";
     private static final String ACCOUNT_NOT_CLIENT = "server.error.appBase.improperAccessLevel.accountNotClient";
 

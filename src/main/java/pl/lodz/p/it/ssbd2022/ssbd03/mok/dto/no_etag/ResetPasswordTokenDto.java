@@ -9,6 +9,8 @@ import pl.lodz.p.it.ssbd2022.ssbd03.validation.Password;
 @NoArgsConstructor
 public class ResetPasswordTokenDto {
 
+    private static final long serialVersionUID = 1L;
+
     @NotNull(message = "server.error.validation.constraints.notNull.token")
     private String token;
 
