@@ -20,8 +20,7 @@ public class Config {
 //    public static final String serverName = "studdev.it.p.lodz.pl";
 
     // Do SPA
-//    public static final String WEBSITE_URL = "http://localhost:3000";
-    public static final String WEBSITE_URL = "http://minecraft.thevivent.com:3000/";
+    public static final String WEBSITE_URL = "http://localhost:3000";
 //    public static final String WEBSITE_URL = "https://kic.agency:8403";
 
     // Dla EmailConfig
