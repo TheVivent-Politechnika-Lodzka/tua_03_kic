@@ -4,6 +4,19 @@
         "no": "No"
     },
 
+    "title": {
+        "main_page": "Main Page",
+        "specialist": "Specialists",
+        "implants": "Implants",
+        "visits": "Visits",
+        "profile": "My profile",
+        "manage": {
+            "implants": "Manage implants",
+            "visits": "Manage visits",
+            "profile": "Manage users"
+        }
+    },
+
     "firm_name": "Cyber Implant Installation Clinic",
     "why_us": "WHY CHOOSE US?",
     "many_reason": "there are many reasons",
@@ -424,7 +437,7 @@
 
     "implantDetails": {
         "successNotficiationItems": "Edited successfully",
-        "title": "Speciication",
+        "title": "Specification",
         "alt": "Implant image",
         "name": "Name:",
         "price": "Price:",
@@ -583,7 +596,8 @@
     },
     "navbar": {
         "avatar_alt": "User's Avatar",
-        "register": "Sign In"
+        "register": "Sign In",
+        "log": "Log in"
     },
 
     "addAccessLevelPage": {
