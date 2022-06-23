@@ -77,18 +77,25 @@ public class AppointmentFacade extends AbstractFacade<Appointment> {
      */
     @RolesAllowed({Roles.SPECIALIST, Roles.CLIENT})
     public PaginationData findSpecialistAppointmentsInGivenPeriod(UUID specialistId, Instant startDate, Instant endDate, int pageNumber, int perPage) {
-        TypedQuery<Appointment> typedQuery = entityManager.createNamedQuery("Appointment.findSpecialistAppointmentsInGivenPeriod", Appointment.class);
-        typedQuery.setParameter("specialistId", specialistId);
-        typedQuery.setParameter("startDate", startDate);
-        typedQuery.setParameter("endDate", endDate);
-        typedQuery.setFirstResult((pageNumber - 1) * perPage);
-        typedQuery.setMaxResults(perPage);
+        List<Appointment> data = entityManager
+                        .createNamedQuery("Appointment.findSpecialistAppointmentsInGivenPeriod", Appointment.class)
+                        .setParameter("specialistId", specialistId)
+                        .setParameter("startDate", startDate)
+                        .setParameter("endDate", endDate)
+                        .setFirstResult((pageNumber - 1) * perPage)
+                        .setMaxResults(perPage)
+                        .getResultList();
 
-        List<Appointment> data = typedQuery.getResultList();
-        int totalCount = this.count();
+        Long totalCount = entityManager
+                .createNamedQuery("Appointment.findSpecialistAppointmentsInGivenPeriod.count", Long.class)
+                .setParameter("specialistId", specialistId)
+                .setParameter("startDate", startDate)
+                .setParameter("endDate", endDate)
+                .getSingleResult();
+
         int totalPages = (int) Math.ceil(totalCount / (double) perPage);
         PaginationData paginationData = new PaginationData(
-                totalCount,
+                totalCount.intValue(),
                 totalPages,
                 perPage,
                 data
@@ -146,24 +153,26 @@ public class AppointmentFacade extends AbstractFacade<Appointment> {
     @RolesAllowed(Roles.ADMINISTRATOR)
     public PaginationData findInRangeWithPhrase(int pageNumber, int perPage, String phrase) {
         try {
-            TypedQuery<Appointment> typedQuery = entityManager.createNamedQuery("Appointment.searchByPhrase", Appointment.class);
-
-            pageNumber--;
-
-            List<Appointment> data = typedQuery.setParameter("phrase", "%" + phrase + "%")
+            List<Appointment> data = entityManager
+                    .createNamedQuery("Appointment.searchByPhrase", Appointment.class)
+                    .setParameter("phrase", "%" + phrase + "%")
                     .setMaxResults(perPage)
-                    .setFirstResult(pageNumber * perPage)
+                    .setFirstResult((pageNumber-1) * perPage)
                     .getResultList();
 
-            pageNumber++;
-            int totalCount = this.count();
+            Long totalCount = entityManager
+                    .createNamedQuery("Appointment.searchByPhrase.count", Long.class)
+                    .setParameter("phrase", "%" + phrase + "%")
+                    .getSingleResult();
+
             int totalPages = (int) Math.ceil((double) totalCount / perPage);
 
-            return new PaginationData(totalCount, totalPages, pageNumber, data);
+            return new PaginationData(totalCount.intValue(), totalPages, pageNumber, data);
         } catch (IllegalArgumentException e) {
-            throw new InvalidParametersException(e.getCause());
+            throw new InvalidParametersException(e);
         } catch (PersistenceException e) {
-            throw new DatabaseException(e.getCause());
+            e.printStackTrace();
+            throw new DatabaseException(e);
         }
     }
 
@@ -180,17 +189,19 @@ public class AppointmentFacade extends AbstractFacade<Appointment> {
     @RolesAllowed({Roles.CLIENT, Roles.SPECIALIST})
     public PaginationData findByClientLoginInRange(int pageNumber, int perPage,String login) {
         try {
-            TypedQuery<Appointment> typedQuery = entityManager.createNamedQuery("Appointment.findByLogin", Appointment.class);
-
-            pageNumber--;
-
-            List<Appointment> data = typedQuery.setParameter("login", login)
+            List<Appointment> data = entityManager
+                    .createNamedQuery("Appointment.findByLogin", Appointment.class)
+                    .setParameter("login", login)
                     .setMaxResults(perPage)
-                    .setFirstResult(pageNumber * perPage)
+                    .setFirstResult((pageNumber-1) * perPage)
                     .getResultList();
 
-            pageNumber++;
-            int totalCount = this.count();
+            int totalCount = entityManager
+                    .createNamedQuery("Appointment.findByLogin", Appointment.class)
+                    .setParameter("login", login)
+                    .getResultList()
+                    .size();
+
             int totalPages = (int) Math.ceil((double) totalCount / perPage);
 
             return new PaginationData(totalCount, totalPages, pageNumber, data);

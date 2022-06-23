@@ -3,6 +3,7 @@ package pl.lodz.p.it.ssbd2022.ssbd03.common;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.OptimisticLockException;
 import jakarta.persistence.PersistenceException;
+import jakarta.persistence.TypedQuery;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
 import org.hibernate.exception.ConstraintViolationException;
@@ -10,6 +11,9 @@ import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.database.DatabaseException;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.database.InAppOptimisticLockException;
 import pl.lodz.p.it.ssbd2022.ssbd03.security.Taggable;
 import pl.lodz.p.it.ssbd2022.ssbd03.security.Tagger;
+
+import java.util.List;
+import java.util.Map;
 
 public abstract class AbstractFacade<T> {
 
@@ -59,7 +63,7 @@ public abstract class AbstractFacade<T> {
     /**
      * Metoda EDYTUJĄCA podaną encję z bazy danych. Uwzględnia sprawdzenie wersji.
      *
-     * @param entity     Obiekt encji
+     * @param entity Obiekt encji
      * @throws InAppOptimisticLockException
      * @throws DatabaseException
      * @throws ConstraintViolationException
@@ -142,16 +146,15 @@ public abstract class AbstractFacade<T> {
      * @return liczbę wszystkich encji danego typu
      * @throws DatabaseException, gdy wystąpi błąd związany z bazą danych
      */
-    protected int count() {
-        try {
-            CriteriaBuilder qb = getEntityManager().getCriteriaBuilder();
-            CriteriaQuery<Long> cq = qb.createQuery(Long.class);
-            cq.select(qb.count(cq.from(entityClass)));
-            return getEntityManager().createQuery(cq).getSingleResult().intValue();
-        } catch (PersistenceException e) {
-            throw new DatabaseException(e.getCause());
-        }
-
-    }
+//    protected int count(String namedQuery, Map<String, String> params, Class clazz) {
+//        try {
+//            CriteriaBuilder qb = getEntityManager().getCriteriaBuilder();
+//            CriteriaQuery<Long> cq = qb.createQuery(Long.class);
+//            cq.select(qb.count(cq.from(entityClass)));
+//            return getEntityManager().createQuery(cq).getSingleResult().intValue();
+//        } catch (PersistenceException e) {
+//            throw new DatabaseException(e.getCause());
+//        }
+//    }
 
 }
