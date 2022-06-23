@@ -34,7 +34,7 @@ const ContactBar = () => {
                     </div>
                     <div className={styles.contact_section_item}>
                         <FaInstagram className={styles.contact_icon} />
-                        <p>@{t("contentBar.kicTwo")}</p>
+                        <p>{t("contentBar.kicTwo")}</p>
                     </div>
                 </div>
             </div>

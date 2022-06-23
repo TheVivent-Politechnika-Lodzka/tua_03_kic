@@ -24,6 +24,8 @@ const SpecialistCard = (props: SpecialistCardProps) => {
                     <Image
                         radius={100}
                         src={img}
+                        width={"8rem"}
+                        height={"8rem"}
                         alt={t("specialistCard.alt")}
                     />
                 ) : (
