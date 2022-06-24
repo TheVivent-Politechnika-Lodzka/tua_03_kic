@@ -10,7 +10,7 @@ import pl.lodz.p.it.ssbd2022.ssbd03.mok.ejb.services.MOKService;
 import pl.lodz.p.it.ssbd2022.ssbd03.mok.ejb.services.MOKServiceInterface;
 
 @Stateful
-@TransactionAttribute(TransactionAttributeType.NEVER)
+@TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
 public class AuthContext {
 
     private static final long serialVersionUID = 1L;

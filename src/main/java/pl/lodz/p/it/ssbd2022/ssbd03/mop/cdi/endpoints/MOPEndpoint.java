@@ -1,6 +1,8 @@
 package pl.lodz.p.it.ssbd2022.ssbd03.mop.cdi.endpoints;
 
 import jakarta.annotation.security.DenyAll;
+import jakarta.ejb.TransactionAttribute;
+import jakarta.ejb.TransactionAttributeType;
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.Path;
@@ -31,6 +33,7 @@ import java.util.UUID;
 @RequestScoped
 @DenyAll
 @Path("/mop")
+@TransactionAttribute(TransactionAttributeType.NEVER)
 public class MOPEndpoint extends AbstractEndpoint implements MOPEndpointInterface {
 
     private static final long serialVersionUID = 1L;

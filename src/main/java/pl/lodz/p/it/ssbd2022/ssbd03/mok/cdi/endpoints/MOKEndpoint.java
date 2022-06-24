@@ -1,6 +1,8 @@
 package pl.lodz.p.it.ssbd2022.ssbd03.mok.cdi.endpoints;
 
 import jakarta.annotation.security.DenyAll;
+import jakarta.ejb.TransactionAttribute;
+import jakarta.ejb.TransactionAttributeType;
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.Path;
@@ -32,6 +34,7 @@ import java.util.List;
 @RequestScoped
 @DenyAll
 @Path("/mok")
+@TransactionAttribute(TransactionAttributeType.NEVER)
 public class MOKEndpoint extends AbstractEndpoint implements MOKEndpointInterface {
 
     private static final long serialVersionUID = 1L;
