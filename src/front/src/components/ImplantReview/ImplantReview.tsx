@@ -2,13 +2,13 @@ import { faTrashAlt } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { showNotification } from "@mantine/notifications";
 import { Rating } from "@mui/material";
-import { t } from "i18next";
 import { useState } from "react";
 import { deleteImplantsReview } from "../../api";
 import { useStoreSelector } from "../../redux/reduxHooks";
 import { successNotficiationItems } from "../../utils/showNotificationsItems";
 import ConfirmActionModal from "../shared/ConfirmActionModal/ConfirmActionModal";
 import styles from "./style.module.scss";
+import {useTranslation} from "react-i18next";
 
 interface ImplantReviewProps {
     review: ImplantReview;
@@ -16,6 +16,8 @@ interface ImplantReviewProps {
 }
 
 const ImplantReview = ({ review, onClose }: ImplantReviewProps) => {
+
+    const {t} = useTranslation();
     const [modal, setModal] = useState<boolean>(false);
     const [loading, setLoading] = useState<boolean>(false);
 
@@ -74,10 +76,11 @@ const ImplantReview = ({ review, onClose }: ImplantReviewProps) => {
                     setModal(false);
                 }}
                 handleFunction={handleDeleteImplantReview}
-                title={t("addImplantReviewPage.addImplantReview")}
+                title={t("addImplantReviewPage.removeReviewTitle")}
                 isLoading={loading}
-                children={"addImplantReviewPage.confirmMsg"}
-            />
+            >
+                {t("addImplantReviewPage.confirmMsg2")}
+            </ConfirmActionModal>
         </div>
     );
 };
