@@ -40,7 +40,6 @@ export const CreateImplantPage = () => {
             isManufacturerValid,
             isPriceValid,
             isDurationValid,
-            isDescriptionValid,
         },
         dispatch,
     } = useContext(validationContext);
@@ -52,7 +51,7 @@ export const CreateImplantPage = () => {
         isManufacturerValid &&
         isPriceValid &&
         isDurationValid &&
-        isDescriptionValid;
+        count > 100;
 
     const handleSubmit = async () => {
         const response = await createImplant({
@@ -170,6 +169,7 @@ export const CreateImplantPage = () => {
                                 value={implant?.price}
                                 validationType="VALIDATE_PRICE"
                                 isValid={isPriceValid}
+                                type="number"
                                 styleWidth={{ width: "20rem" }}
                                 onChange={(e) => {
                                     setImplant({
@@ -192,6 +192,7 @@ export const CreateImplantPage = () => {
                                 title={t("createImplantPage.duration")}
                                 value={implant?.duration}
                                 validationType="VALIDATE_DURATION"
+                                type="number"
                                 isValid={isDurationValid}
                                 styleWidth={{ width: "20rem" }}
                                 onChange={(e) => {
