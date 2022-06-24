@@ -1,4 +1,9 @@
-import { faCancel, faClose, faEdit, faInfoCircle } from "@fortawesome/free-solid-svg-icons";
+import {
+    faCancel,
+    faClose,
+    faEdit,
+    faInfoCircle,
+} from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { ChronoUnit, Instant, LocalDateTime } from "@js-joda/core";
 import { showNotification } from "@mantine/notifications";
@@ -288,6 +293,12 @@ export const AppointmentDetails = ({
                                         }}
                                     ></ActionButton>
                                 ) : null}
+                                <ActionButton
+                                    title={t("appointmentDetails.buttonEdit")}
+                                    color="green"
+                                    icon={faEdit}
+                                    onClick={() => routeChange(appointmentId)}
+                                ></ActionButton>
                                 {appointment?.status !== "REJECTED" &&
                                 appointment?.status !== "FINISHED" &&
                                 aLevel === "ADMINISTRATOR" ? (
@@ -302,12 +313,7 @@ export const AppointmentDetails = ({
                                         }}
                                     ></ActionButton>
                                 ) : null}
-                                <ActionButton
-                                    title={t("appointmentDetails.buttonEdit")}
-                                    color="green"
-                                    icon={faEdit}
-                                    onClick={() => routeChange(appointmentId)}
-                                ></ActionButton>
+
                                 <ConfirmActionModal
                                     title={t(
                                         "appointmentDetails.modal.cancel.title"

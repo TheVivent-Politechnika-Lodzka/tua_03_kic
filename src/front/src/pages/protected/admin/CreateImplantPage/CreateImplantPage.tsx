@@ -104,7 +104,7 @@ export const CreateImplantPage = () => {
                         )}
 
                         <input
-                            id="file-input"
+                            id={style.file_input}
                             type="file"
                             onChange={async (event) => {
                                 const u = await uploadPhoto(event);
