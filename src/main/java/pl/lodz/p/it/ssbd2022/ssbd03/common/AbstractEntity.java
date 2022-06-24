@@ -9,6 +9,8 @@ import java.util.UUID;
 @MappedSuperclass
 public abstract class AbstractEntity {
 
+    private static final long serialVersionUID = 1L;
+
     @Id
     @Basic(optional = false)
     @Column(name = "id", nullable = false)

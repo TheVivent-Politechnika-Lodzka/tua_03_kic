@@ -8,10 +8,6 @@
     border-radius: 1vw;
 }
 
-.margin {
-    margin-top: 6vh;
-}
-
 .create_implant_page {
     width: 100%;
     display: flex;
@@ -27,9 +23,9 @@
         display: flex;
         justify-content: center;
         align-items: center;
-        font-size: 1.75rem;
+        font-size: 2rem;
         font-weight: bold;
-        padding: 2rem;
+        padding: 3rem;
         color: white;
     }
 
@@ -37,8 +33,8 @@
         display: flex;
         flex-direction: row;
         justify-content: space-evenly;
-        width: 80%;
-        margin-block: 3rem;
+        width: 80rem;
+        animation: 0.5s fadeInFromBottom ease-in-out;
 
         .create_data_account_wrapper {
             display: flex;
@@ -53,7 +49,7 @@
                 display: flex;
                 justify-content: flex-start;
                 flex-direction: row;
-                margin-bottom: 3rem;
+                margin-bottom: 1rem;
 
                 & > * {
                     width: 13rem;
@@ -67,7 +63,30 @@
                 flex-direction: column;
                 align-items: center;
                 width: 90%;
-                margin-top: 3rem;
+
+                .description_input {
+                    width: 70%;
+                    height: 80%;
+                    overflow: scroll;
+                    resize: none;
+
+                    background-color: $secondary-color;
+                    outline: none;
+
+                    font-size: 1rem;
+                    color: $white;
+                    border: 2px solid $light-gray;
+                    border-radius: 0.5rem;
+                }
+                .description_input::-webkit-scrollbar {
+                    display: none;
+                }
+
+                .description_length {
+                    font-size: 1rem;
+                    color: white;
+                    align-self: flex-end;
+                }
 
                 .edit_field {
                     display: flex;
@@ -80,34 +99,34 @@
                 }
 
                 .edit_field_validation {
-                    // display: flex;
-                    // align-items: flex-start;
-                    // flex-direction: row;
                     color: white;
                     padding-left: 5rem;
                     padding-top: 3rem;
                 }
-                .option {
-                    background: $secondary-color;
-                }
-                .select {
-                    width: 30rem;
-                    background-color: transparent;
-                    border: none;
-                    border-radius: 1rem;
-                    // textAlign: "center",
 
-                    padding: 0.5rem;
-                    height: 4rem;
-                    font-size: 1.75rem;
-                    color: #cccccc;
-                    border-bottom: 1px solid $light-green;
-                }
                 .p {
                     font-weight: bold;
                     font-size: 1.25rem;
                 }
             }
         }
+    }
+}
+
+#file_input {
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    cursor: pointer;
+}
+
+@keyframes fadeInFromBottom {
+    from {
+        opacity: 0;
+        transform: translateY(10rem);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
     }
 }

@@ -26,6 +26,8 @@ import java.util.List;
 @TransactionAttribute(TransactionAttributeType.MANDATORY)
 public class RefreshTokenFacade extends AbstractFacade<RefreshToken> {
 
+    private static final long serialVersionUID = 1L;
+
     @PersistenceContext(unitName = "ssbd03mokPU")
     @Getter
     private EntityManager entityManager;

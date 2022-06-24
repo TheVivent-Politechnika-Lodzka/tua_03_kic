@@ -28,6 +28,8 @@ import java.util.UUID;
 @TransactionAttribute(TransactionAttributeType.MANDATORY)
 public class ImplantReviewFacade extends AbstractFacade<ImplantReview> {
 
+    private static final long serialVersionUID = 1L;
+
     public ImplantReviewFacade() {
         super(ImplantReview.class);
     }
@@ -117,20 +119,21 @@ public class ImplantReviewFacade extends AbstractFacade<ImplantReview> {
     @RolesAllowed({Roles.ANONYMOUS, Roles.AUTHENTICATED})
     public PaginationData findInRangeWithPhrase(int pageNumber, int perPage, UUID id) {
         try {
-            TypedQuery<ImplantReview> typedQuery = entityManager.createNamedQuery("Review.findByImplantId", ImplantReview.class);
-
-            pageNumber--;
-
-            List<ImplantReview> data = typedQuery.setParameter("implantId", id)
+            List<ImplantReview> data = entityManager
+                    .createNamedQuery("Review.findByImplantId", ImplantReview.class)
+                    .setParameter("implantId", id)
                     .setMaxResults(perPage)
-                    .setFirstResult(pageNumber * perPage)
+                    .setFirstResult((pageNumber-1) * perPage)
                     .getResultList();
 
-            pageNumber++;
-            int totalCount = this.count();
+            Long totalCount = entityManager
+                    .createNamedQuery("Review.findByImplantId.count", Long.class)
+                    .setParameter("implantId", id)
+                    .getSingleResult();
+
             int totalPages = (int) Math.ceil((double) totalCount / perPage);
 
-            return new PaginationData(totalCount, totalPages, pageNumber, data);
+            return new PaginationData(totalCount.intValue(), totalPages, pageNumber, data);
         } catch (IllegalArgumentException e) {
             throw new InvalidParametersException(e.getCause());
         } catch (PersistenceException e) {

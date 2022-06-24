@@ -2,10 +2,11 @@
 
 .account_details {
     width: 70rem;
-    height: 45rem;
+    height: 35rem;
     border-radius: 30.8px;
-    padding: 2.21rem 2.6rem;
+    padding: 2.5rem 2.6rem;
     background-color: $secondary-color;
+    animation: 0.5s zoomIn ease-in-out;
 
     .account_details_title {
         font-size: 2rem;
@@ -21,7 +22,7 @@
         flex-direction: row;
         flex-wrap: wrap;
         justify-content: space-evenly;
-        height: 80%;
+        height: 65%;
 
         .detail_wrapper {
             display: flex;
@@ -77,9 +78,21 @@
     position: relative;
 }
 .button_holder {
+    margin-top: 3rem;
     height: 4rem;
     width: 100%;
     display: flex;
     flex-direction: row;
     justify-content: space-around;
+}
+
+@keyframes zoomIn {
+    from {
+        opacity: 0;
+        transform: scale(0.85);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
 }

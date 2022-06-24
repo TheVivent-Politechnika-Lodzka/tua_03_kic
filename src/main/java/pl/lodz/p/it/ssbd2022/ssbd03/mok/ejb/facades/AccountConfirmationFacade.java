@@ -26,6 +26,8 @@ import java.util.List;
 @TransactionAttribute(TransactionAttributeType.MANDATORY)
 public class AccountConfirmationFacade extends AbstractFacade<AccountConfirmationToken> {
 
+    private static final long serialVersionUID = 1L;
+
     @PersistenceContext(unitName = "ssbd03mokPU")
     @Getter
     private EntityManager entityManager;

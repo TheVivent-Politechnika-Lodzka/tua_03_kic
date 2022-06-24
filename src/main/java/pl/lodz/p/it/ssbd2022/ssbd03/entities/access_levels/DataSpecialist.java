@@ -8,13 +8,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
-import pl.lodz.p.it.ssbd2022.ssbd03.entities.Appointment;
-import pl.lodz.p.it.ssbd2022.ssbd03.entities.access_levels.AccessLevel;
 import pl.lodz.p.it.ssbd2022.ssbd03.validation.PhoneNumber;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Collection;
 
 @Entity
 @Table(name = "data_specialist")
@@ -23,6 +19,8 @@ import java.util.Collection;
         @NamedQuery(name = "DataSpecialist.findAll", query = "select d from DataSpecialist d"),
         @NamedQuery(name = "DataSpecialist.findById", query = "select d from DataSpecialist d where d.id = :id"),
         @NamedQuery(name = "DataSpecialist.searchSpecialistByPhrase", query = "select d.account from DataSpecialist d where" +
+                " lower(concat(d.account.firstName, ' ', d.account.lastName)) like lower(:phrase) order by d.account.lastName, d.account.firstName asc"),
+        @NamedQuery(name = "DataSpecialist.searchSpecialistByPhrase.count", query = "select count(d.account) from DataSpecialist d where" +
                 " lower(concat(d.account.firstName, ' ', d.account.lastName)) like lower(:phrase)"),
 })
 
@@ -37,13 +35,16 @@ public class DataSpecialist extends AccessLevel implements Serializable {
     @Basic(optional = false)
     @Pattern(regexp = "^[0-9]{9}$", message = "Phone number must be 9 digits")
     @Column(name = "phone_number", nullable = true, length = 9)
-    @Getter @Setter
+    @Getter
+    @Setter
     @PhoneNumber
     private String phoneNumber;
 
     @Basic(optional = false)
     @Column(name = "email", nullable = false, length = 128)
-    @Getter @Setter
-    @Email @NotNull
+    @Getter
+    @Setter
+    @Email
+    @NotNull
     private String contactEmail;
 }

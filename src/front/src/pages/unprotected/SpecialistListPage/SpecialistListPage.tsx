@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
 import { listSpecialist, SpecialistListElementDto } from "../../../api/mop";
-import Pagination from "../../../components/Pagination/Pagination";
 import SpecialistCard from "../../../components/SpecialistCard/SpecialistCard";
 import ReactLoading from "react-loading";
 
 import style from "./style.module.scss";
 import { useTranslation } from "react-i18next";
+import Pagination from "../../../components/Pagination/Pagination";
 
 const SpecialistListPage = () => {
     const [specialists, setSpecialists] =
@@ -68,31 +68,34 @@ const SpecialistListPage = () => {
             <div className={style.specialist_list}>
                 {loading.pageLoading ? (
                     <ReactLoading
-                        type="cylon"
+                        type="bars"
                         color="#fff"
                         width="10rem"
                         height="10rem"
+                        className={style.loading}
                     />
                 ) : (
                     <>
                         {specialists?.map((specialist) => (
                             <div className={style.list}>
                                 <SpecialistCard
-                                    firstName={specialist.name}
-                                    lastName={specialist.surname}
+                                    firstName={specialist.firstName}
+                                    lastName={specialist.lastName}
                                     email={specialist.email}
                                     tel={specialist.phoneNumber}
                                     img={specialist.url}
                                 />
                             </div>
-                        ))}
+                        ))}{" "}
                     </>
                 )}
             </div>
-            <Pagination
-                pagination={pagination}
-                handleFunction={setPagination}
-            />
+            {!loading.pageLoading && (
+                <Pagination
+                    pagination={pagination}
+                    handleFunction={setPagination}
+                />
+            )}
         </div>
     );
 };

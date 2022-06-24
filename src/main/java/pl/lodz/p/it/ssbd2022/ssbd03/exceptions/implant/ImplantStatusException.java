@@ -9,6 +9,9 @@ import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.AppBaseException;
  */
 @ApplicationException(rollback = true)
 public class ImplantStatusException extends AppBaseException {
+
+    private static final long serialVersionUID = 1L;
+
     private static final String IMPLANT_STATUS_ALREDY_ARCHIVE = "server.error.appBase.implantAlreadyArchived";
 
     /**

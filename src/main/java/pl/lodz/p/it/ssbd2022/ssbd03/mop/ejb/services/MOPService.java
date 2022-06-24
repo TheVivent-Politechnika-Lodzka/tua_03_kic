@@ -56,8 +56,10 @@ import static pl.lodz.p.it.ssbd2022.ssbd03.entities.Status.*;
 @Stateful
 @DenyAll
 @Interceptors(TrackerInterceptor.class)
-@TransactionAttribute(TransactionAttributeType.REQUIRED)
+@TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
 public class MOPService extends AbstractService implements MOPServiceInterface, SessionSynchronization {
+
+    private static final long serialVersionUID = 1L;
 
     protected static final Logger LOGGER = Logger.getGlobal();
 
@@ -412,7 +414,7 @@ public class MOPService extends AbstractService implements MOPServiceInterface, 
      */
     @Override
     @RolesAllowed({Roles.ADMINISTRATOR, Roles.CLIENT})
-    public void deleteReview(UUID id, String login) {
+    public boolean deleteReview(UUID id, String login) {
 
         ImplantReview review = implantReviewFacade.findByUUID(id);
         Account account = accountFacade.findByLogin(login);
@@ -424,6 +426,7 @@ public class MOPService extends AbstractService implements MOPServiceInterface, 
             throw new ClientRemovesOtherReviewsException();
         }
         implantReviewFacade.remove(review);
+        return true;
     }
 
 

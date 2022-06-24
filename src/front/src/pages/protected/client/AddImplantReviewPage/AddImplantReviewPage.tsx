@@ -4,7 +4,7 @@ import { Rating } from "@mui/material";
 import { t } from "i18next";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
-import { addImplantReview } from "../../../../api";
+import { addImplantsReview } from "../../../../api";
 import ActionButton from "../../../../components/shared/ActionButton/ActionButton";
 import Modal from "../../../../components/shared/Modal/Modal";
 import { useStoreSelector } from "../../../../redux/reduxHooks";
@@ -36,7 +36,7 @@ const AddImplantReviewPage = ({
     const handleAddReview = async () => {
         if (!implantId) return;
         setLoading(true);
-        const data = await addImplantReview({
+        const data = await addImplantsReview({
             implantId: implantId,
             rating: rate,
             review: review,

@@ -5,12 +5,29 @@ import { useNavigate } from "react-router";
 import styles from "./style.module.scss";
 import Clocker from "./Clocker";
 import { useTranslation } from "react-i18next";
+import { getOwnAccount } from "../../api";
+import { useEffect, useState } from "react";
 
 const Navbar = () => {
     const login = useStoreSelector((state) => state.user.sub);
     const accessLevel = useStoreSelector((state) => state.user.cur);
     const navigate = useNavigate();
     const { t } = useTranslation();
+    const [account, setAccount] = useState<AccountDetails>();
+
+    const handleGetOwnAccount = async () => {
+        try {
+            const data = await getOwnAccount();
+            setAccount(data as AccountDetails);
+        } catch (error: ApiError | any) {
+            console.error(`${error?.status} ${error?.errorMessage}`);
+        }
+    };
+
+    useEffect(() => {
+        handleGetOwnAccount();
+    }, []);
+
     return (
         <nav
             className={`${styles.navbar} ${styles[accessLevel.toLowerCase()]}`}
@@ -26,7 +43,7 @@ const Navbar = () => {
                         <UserAccessLevel accessLevel={accessLevel} />
                     </div>
                     <img
-                        src={avatar}
+                        src={account?.url}
                         alt={t("navbar.avatar_alt")}
                         className={styles.avatar}
                     />
@@ -39,7 +56,7 @@ const Navbar = () => {
                         }}
                         className={styles.login}
                     >
-                        Zaloguj
+                        {t("navbar.log")}
                     </div>
                     <div
                         onClick={() => {

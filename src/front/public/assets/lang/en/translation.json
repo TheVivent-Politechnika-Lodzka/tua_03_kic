@@ -4,6 +4,19 @@
         "no": "No"
     },
 
+    "title": {
+        "main_page": "Main Page",
+        "specialist": "Specialists",
+        "implants": "Implants",
+        "visits": "Visits",
+        "profile": "My profile",
+        "manage": {
+            "implants": "Manage implants",
+            "visits": "Manage visits",
+            "profile": "Manage users"
+        }
+    },
+
     "firm_name": "Cyber Implant Installation Clinic",
     "why_us": "WHY CHOOSE US?",
     "many_reason": "there are many reasons",
@@ -122,16 +135,22 @@
         }
     },
 
-    "ChangeAccountPassword": {
+    "changeUserPasswordPage": {
         "title": "Change password for user",
-        "input_placeholder": "Type new password",
-        "change_password_button": "Change",
-        "go_back_button": "Return to user page",
-        "too_short_password_error": "Password is too short!",
+        "labelPassword": "Password",
+        "repeatPassword": "Repeat password",
+        "validationMessage": "The password must be longer than 8 characters and must contain one uppercase letter, one number and one special character",
+        "validationMessageRepeat": "Both passwords must be the same",
         "successNotficiationItems": {
             "first": "User password",
             "second": "has been successfully changed"
-        }
+        },
+        "confirm": "Confirm",
+        "cancel": "Cancel",
+        "modalTitle": "Change user password",
+        "modalDescription": "Are you sure you want to change user password?",
+        "modalConfirm": "Yes",
+        "modalCancel": "No"
     },
 
     "email_send": "Check your email",
@@ -175,6 +194,7 @@
         "cancel": "Cancel",
         "addReview": "Add a review",
         "confirmMsg": "Are you sure you want to add a review?",
+        "confirmMsg2": "Are you sure you want to delete a review?",
         "reviewAdded": "Review added successfully",
         "reviewsNotFound": "Implant has no reviews",
         "reviewDeleted": "Review deleted successfully",
@@ -239,8 +259,8 @@
         "language": "Language",
         "sign_in": "Sign in",
         "cancel": "Cancel",
-        "polish": "polish",
-        "english": "english",
+        "polish": "Polish",
+        "english": "English",
         "send_email": "We send you an email with confirmation link"
     },
 
@@ -250,8 +270,8 @@
     },
 
     "specialistCard": {
-        "alt": "specialist image",
-        "tel": "phone:"
+        "alt": "Specialist image",
+        "tel": "Phone:"
     },
 
     "accessLevel": {
@@ -261,9 +281,9 @@
     },
 
     "userRecord": {
-        "alt": "user",
-        "approved": "approved",
-        "unapproved": "unapproved",
+        "alt": "User",
+        "approved": "Approved",
+        "unapproved": "Unapproved",
         "active": "Active",
         "inactive": "Inactive"
     },
@@ -275,15 +295,22 @@
         "alt": "General accoount: Avatar",
         "title": "Access level",
         "editAccountTitle": "Edit account",
-        "changePasswordTitle": "Edit account",
+        "changePasswordTitle": "Change password",
         "deactivateAccountTitle": "Deactive account",
         "activateAccountTitle": "Active account",
         "accountDetailsTitle": "Details",
         "name": "Firstname:",
         "surname": "Lastname:",
-        "email": "Email:",
+        "email": {
+            "regularEmail": "Email: ",
+            "adminEmail": "Administrator email: ",
+            "specEmail": "Specialist email: "
+        },
         "pesel": "PESEL:",
-        "telephone": "Phone number:",
+        "telephone": {
+            "adminPhone": "Administrator phone number:",
+            "specPhone": "Specialist phone number:"
+        },
         "language": "Language:",
         "confirmActionModal": {
             "deactivateAccount": "Block account",
@@ -390,7 +417,9 @@
 
     "ownAppointmentListPage": {
         "cell": {
-            "clientName": "ClientNam",
+            "clientLogin": "Client login",
+            "specialistLogin": "Specialist login",
+            "clientName": "Client name",
             "specialistName": "Specialist name",
             "name": "Implant name",
             "status": "Visit status",
@@ -424,7 +453,7 @@
 
     "implantDetails": {
         "successNotficiationItems": "Edited successfully",
-        "title": "Speciication",
+        "title": "Specification",
         "alt": "Implant image",
         "name": "Name:",
         "price": "Price:",
@@ -479,6 +508,10 @@
     },
 
     "editOwnAppointment": {
+        "implantName":  "Implant name:",
+        "implantDuration": "Implant duration:",
+        "implantPrice": "Implant price:",
+        "implantManufacturer": "Implant manufacturer:",
         "title": "Edit visit",
         "clientName": "Client name:",
         "specialistName": "Specialist name:",
@@ -552,7 +585,7 @@
     },
 
     "createUserPage": {
-        "successNotficiationItems": "account have been added",
+        "successNotficiationItems": "Account has been added",
         "header": "Create new account",
         "email": "Email ",
         "emailTitle": "email",
@@ -563,8 +596,8 @@
         "surname": "Lastname ",
         "surnameTitle": "Lastname",
         "surnameMsg": "At least 3 to 30 characters",
-        "id": "ID",
-        "idTitle": "ID",
+        "id": "Login",
+        "idTitle": "Login",
         "idMsg": "At least 3 to 30 characters",
         "password": "Password ",
         "passwordTitle": "password",
@@ -583,7 +616,8 @@
     },
     "navbar": {
         "avatar_alt": "User's Avatar",
-        "register": "Sign In"
+        "register": "Sign In",
+        "log": "Log in"
     },
 
     "addAccessLevelPage": {
@@ -616,5 +650,4 @@
         "choosenSpecialist": "Specialist:",
         "reserveButton": "Reserve"
     }
-
 }

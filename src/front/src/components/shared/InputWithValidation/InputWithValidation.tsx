@@ -70,6 +70,7 @@ const InputWithValidation = ({
                     autoComplete="off"
                     type={type}
                     value={input}
+                    style={styleWidth}
                     onChange={handleChange}
                     className={`${styles.input} ${
                         isValid ? styles.valid : styles.invalid

@@ -15,6 +15,8 @@ import pl.lodz.p.it.ssbd2022.ssbd03.validation.PhoneNumber;
 @AllArgsConstructor
 public class SpecialistDataDto {
 
+    private static final long serialVersionUID = 1L;
+
     @Email
     String contactEmail;
 

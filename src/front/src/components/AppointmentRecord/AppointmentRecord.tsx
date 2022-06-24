@@ -1,6 +1,5 @@
 import { faInfoCircle } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { AppointmentListElementDto } from "../../api/mop";
 import { useStoreSelector } from "../../redux/reduxHooks";
 import styles from "./style.module.scss";
 import { LocalDateTime, Instant, ChronoUnit } from "@js-joda/core";
@@ -21,15 +20,23 @@ export const AppointmentRecord = ({ appointment }: AppointmentRecordProps) => {
         <div className={styles.appointment_record_wrapper}>
             <div className={styles.detail_wrapper}>
                 <p className={styles.detail}>
-                    {aLevel === "SPECIALIST"
-                        ? appointment?.client.firstName +
-                          " " +
-                          appointment?.client.lastName
-                        : appointment?.specialist.firstName +
-                          " " +
-                          appointment?.specialist.lastName}
+                    {aLevel === "SPECIALIST" &&
+                        appointment?.client.firstName +
+                            " " +
+                            appointment?.client.lastName}
+                    {aLevel === "CLIENT" &&
+                        appointment?.specialist.firstName +
+                            " " +
+                            appointment?.specialist.lastName}
+                    {aLevel === "ADMINISTRATOR" &&
+                        appointment?.specialist.login}
                 </p>
             </div>
+            {aLevel === "ADMINISTRATOR" && (
+                <div className={styles.detail_wrapper}>
+                    <p className={styles.detail}>{appointment?.client.login}</p>
+                </div>
+            )}
             <div className={styles.detail_wrapper}>
                 <p className={styles.detail}>{appointment?.implant.name}</p>
             </div>

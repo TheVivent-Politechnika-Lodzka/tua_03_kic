@@ -16,4 +16,6 @@ import pl.lodz.p.it.ssbd2022.ssbd03.utils.HashAlgorithm;
 @ApplicationScoped
 public class AuthenticationIdentityStore implements IdentityStore {
 
+    private static final long serialVersionUID = 1L;
+
 }

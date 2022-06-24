@@ -13,6 +13,8 @@ import pl.lodz.p.it.ssbd2022.ssbd03.utils.InternationalizationProvider;
 @Provider
 public class AppBaseExceptionMapper implements ExceptionMapper<AppBaseException> {
 
+    private static final long serialVersionUID = 1L;
+
     @Inject
     InternationalizationProvider provider;
 

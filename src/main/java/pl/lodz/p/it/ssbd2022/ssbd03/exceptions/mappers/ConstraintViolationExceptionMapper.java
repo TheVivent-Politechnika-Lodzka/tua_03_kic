@@ -18,6 +18,8 @@ import java.util.Iterator;
 @Provider
 public class ConstraintViolationExceptionMapper implements ExceptionMapper<ConstraintViolationException> {
 
+    private static final long serialVersionUID = 1L;
+
     @Inject
     InternationalizationProvider provider;
 

@@ -57,7 +57,7 @@ const OwnAccountDetailsPage = () => {
                         <div className={styles.account_general_details}>
                             <img
                                 className={styles.avatar}
-                                src={avatar}
+                                src={account?.url}
                                 alt={t("ownAccountDetailsPage.alt")}
                             />
                             <p className={styles.login}>{account?.login}</p>

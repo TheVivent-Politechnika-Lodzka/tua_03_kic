@@ -62,7 +62,7 @@ const Sidebar = () => {
                                 active={index === currentRoute}
                                 key={title}
                                 expanded={expanded}
-                                title={title}
+                                title={t(title)}
                                 icon={icon}
                                 onClick={() => {
                                     handleChange(index);

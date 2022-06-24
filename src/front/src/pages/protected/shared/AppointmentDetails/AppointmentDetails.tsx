@@ -1,16 +1,14 @@
-import { faClose, faInfoCircle } from "@fortawesome/free-solid-svg-icons";
+import {
+    faCancel,
+    faClose,
+    faEdit,
+    faInfoCircle,
+} from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { ChronoUnit, Instant, LocalDateTime } from "@js-joda/core";
 import { showNotification } from "@mantine/notifications";
 import { useEffect, useState } from "react";
 import ReactLoading from "react-loading";
-import {
-    AppointmentListElementDto,
-    getAppointmentDetails,
-    cancelAnyVisit,
-    finishVisit,
-    cancelOwnVisit,
-} from "../../../../api/mop";
 import ImplantDetails from "../../../../components/ImplantDetails/ImplantDetails";
 import ActionButton from "../../../../components/shared/ActionButton/ActionButton";
 import Modal from "../../../../components/shared/Modal/Modal";
@@ -23,6 +21,12 @@ import styles from "./style.module.scss";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import ConfirmActionModal from "../../../../components/shared/ConfirmActionModal/ConfirmActionModal";
+import {
+    cancelAnyAppointment,
+    cancelOwnAppointment,
+    finishAppointment,
+    getAppointmentDetails,
+} from "../../../../api";
 
 interface AccountDetailsProps {
     isOpened: boolean;
@@ -45,7 +49,7 @@ export const AppointmentDetails = ({
         navigate(path);
     };
     const [implantModal, setImplantModal] = useState<boolean>(false);
-    const [appointment, setAppointment] = useState<AppointmentListElementDto>();
+    const [appointment, setAppointment] = useState<AppointmentDto>();
     const [startDate, setStartDate] = useState<string>("");
     const [endDate, setEndDate] = useState<string>("");
     const [implantId, setImplantId] = useState<string>("");
@@ -63,8 +67,8 @@ export const AppointmentDetails = ({
             showNotification(failureNotificationItems(data.errorMessage));
             return;
         }
-        setAppointment(data.data);
-        setImplantId(data.data.implant.id);
+        setAppointment(data);
+        setImplantId(data.implant.id);
         setEtag(data.etag);
         setLoading({ pageLoading: false, actionLoading: false });
     };
@@ -73,7 +77,7 @@ export const AppointmentDetails = ({
 
     const handleCancelVisit = async () => {
         setLoading({ ...loading, actionLoading: true });
-        const response = await cancelAnyVisit(
+        const response = await cancelAnyAppointment(
             appointmentId as string,
             etag as string
         );
@@ -90,7 +94,7 @@ export const AppointmentDetails = ({
 
     const handleCancelOwnVisit = async () => {
         setLoading({ ...loading, actionLoading: true });
-        const response = await cancelOwnVisit(
+        const response = await cancelOwnAppointment(
             appointmentId as string,
             etag as string
         );
@@ -107,7 +111,7 @@ export const AppointmentDetails = ({
 
     const handleFinishVisit = async () => {
         setLoading({ ...loading, actionLoading: true });
-        const response = await finishVisit(
+        const response = await finishAppointment(
             appointmentId as string,
             etag as string
         );
@@ -141,7 +145,7 @@ export const AppointmentDetails = ({
                 .replace("T", " ")
         );
     }, [appointment]);
-    
+
     useEffect(() => {
         handleGetAppointmentDetails();
     }, [isOpened]);
@@ -266,8 +270,8 @@ export const AppointmentDetails = ({
                                             title={t(
                                                 "appointmentDetails.buttonCancel"
                                             )}
-                                            color="cyan"
-                                            icon={faInfoCircle}
+                                            color="red"
+                                            icon={faCancel}
                                             onClick={() => {
                                                 setFinishOwnVisitModalOpen(
                                                     true
@@ -282,13 +286,19 @@ export const AppointmentDetails = ({
                                         title={t(
                                             "appointmentDetails.buttonFinish"
                                         )}
-                                        color="cyan"
+                                        color="orange"
                                         icon={faInfoCircle}
                                         onClick={() => {
                                             setFinishVisitModalOpen(true);
                                         }}
                                     ></ActionButton>
                                 ) : null}
+                                <ActionButton
+                                    title={t("appointmentDetails.buttonEdit")}
+                                    color="green"
+                                    icon={faEdit}
+                                    onClick={() => routeChange(appointmentId)}
+                                ></ActionButton>
                                 {appointment?.status !== "REJECTED" &&
                                 appointment?.status !== "FINISHED" &&
                                 aLevel === "ADMINISTRATOR" ? (
@@ -296,19 +306,14 @@ export const AppointmentDetails = ({
                                         title={t(
                                             "appointmentDetails.buttonCancel"
                                         )}
-                                        color="purple"
-                                        icon={faInfoCircle}
+                                        color="red"
+                                        icon={faCancel}
                                         onClick={() => {
                                             setAppointmentBlockModalOpen(true);
                                         }}
                                     ></ActionButton>
                                 ) : null}
-                                <ActionButton
-                                    title={t("appointmentDetails.buttonEdit")}
-                                    color="cyan"
-                                    icon={faInfoCircle}
-                                    onClick={() => routeChange(appointmentId)}
-                                ></ActionButton>
+
                                 <ConfirmActionModal
                                     title={t(
                                         "appointmentDetails.modal.cancel.title"

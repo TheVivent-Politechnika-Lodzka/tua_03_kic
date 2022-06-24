@@ -11,6 +11,8 @@ import jakarta.ws.rs.core.Response;
 @ApplicationException(rollback = true)
 public class AppBaseException extends WebApplicationException {
 
+    private static final long serialVersionUID = 1L;
+
     protected AppBaseException(String message, Response.Status status) {
         super(message, status);
     }

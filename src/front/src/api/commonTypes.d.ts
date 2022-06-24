@@ -49,18 +49,18 @@ interface AccountDetails extends Taggable {
     };
     active: boolean;
     confirmed: boolean;
-    url?: string;
     accessLevels: AccessLevel[];
-    url: string;
+    url?: string;
 }
 
-interface ImplantReview extends Taggable {
+interface ImplantReview {
+    id: string;
     clientLogin: string;
     createdAt: string;
     implantId: string;
     rating: number;
     review: string;
-
+    clientImage: string;
 }
 
 interface Etag {
@@ -77,16 +77,12 @@ interface Loading {
 }
 
 interface Pagination {
-    currentPage?: number;
-    pageSize?: number;
-    totalPages?: number;
+    currentPage: number;
+    pageSize: number;
+    totalPages: number;
 }
 
-type Status =
-    | "PENDING"
-    | "REJECTED"
-    | "ACCEPTED"
-    | "FINISHED";
+type Status = "PENDING" | "REJECTED" | "ACCEPTED" | "FINISHED";
 
 interface ConfirmActionModal {
     title: string;
@@ -96,10 +92,39 @@ interface ConfirmActionModal {
 interface AppointmentDto extends Taggable {
     client: AccountDetails;
     specialist: AccountDetails;
-    implant: ImplantDetails;
+    implant: ImplantDto;
     startDate: string;
     endDate: string;
     price: number;
     description: string;
     status: Status;
+    appointmentImplant: ImplantDto;
+}
+
+interface CreateImplantDto {
+    name: string;
+    description: string;
+    manufacturer: string;
+    price: number;
+    duration: number;
+    url: string;
+}
+
+interface PaginationRequest {
+    page: number;
+    size: number;
+    phrase?: string;
+}
+
+interface AppointmentListElementDto {
+    id: string;
+    client: AccountDetails;
+    specialist: AccountDetails;
+    implant: ImplantDto;
+    status: Status;
+    startDate: string;
+    endDate: string;
+    description: string;
+    price: number;
+    appointmentImplant: ImplantDto;
 }

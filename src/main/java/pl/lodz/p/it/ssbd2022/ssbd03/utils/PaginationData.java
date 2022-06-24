@@ -15,6 +15,8 @@ import java.util.List;
 @AllArgsConstructor
 public class PaginationData {
 
+    private static final long serialVersionUID = 1L;
+
     @NotNull
     private int totalCount;
     @NotNull

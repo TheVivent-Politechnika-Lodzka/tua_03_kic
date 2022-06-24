@@ -5,14 +5,13 @@ import ReactLoading from "react-loading";
 import styles from "./style.module.scss";
 import {
     getImplantsReviews,
-    ListImplantReviewsResponse,
+    GetImplantsReviewsResponse,
 } from "../../../../api";
 import { showNotification } from "@mantine/notifications";
 import { failureNotificationItems } from "../../../../utils/showNotificationsItems";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faClose } from "@fortawesome/free-solid-svg-icons";
 import Pagination from "../../../../components/Pagination/Pagination";
-import { useStoreSelector } from "../../../../redux/reduxHooks";
 import { useTranslation } from "react-i18next";
 
 interface ImplantReviewsListPageProps {
@@ -26,7 +25,7 @@ const ImplantReviewsListPage = ({
     onClose,
     implantId,
 }: ImplantReviewsListPageProps) => {
-    const [reviews, setReviews] = useState<ListImplantReviewsResponse>();
+    const [reviews, setReviews] = useState<GetImplantsReviewsResponse>();
     const [loading, setLoading] = useState<Loading>({
         pageLoading: true,
         actionLoading: false,
@@ -40,11 +39,11 @@ const ImplantReviewsListPage = ({
     const handleGetImplantReviews = async () => {
         if (!implantId) return;
         setLoading({ ...loading, pageLoading: true });
-        const data = await getImplantsReviews(
+        const data = await getImplantsReviews({
             implantId,
-            pagination.currentPage as number,
-            pagination.pageSize as number
-        );
+            page: pagination.currentPage as number,
+            size: pagination.pageSize as number,
+        });
         if ("errorMessage" in data) {
             setLoading({ ...loading, pageLoading: false });
             showNotification(failureNotificationItems(data.errorMessage));

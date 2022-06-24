@@ -36,6 +36,7 @@ import static pl.lodz.p.it.ssbd2022.ssbd03.entities.tokens.RefreshToken.UNIQUE_T
 @NoArgsConstructor
 public class RefreshToken implements Serializable {
 
+        private static final long serialVersionUID = 1L;
         public static final String UNIQUE_TOKEN_CONSTRAINT = "unique_token_constraint";
 
         @Id

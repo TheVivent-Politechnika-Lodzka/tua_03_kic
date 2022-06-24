@@ -2,6 +2,8 @@ package pl.lodz.p.it.ssbd2022.ssbd03.common;
 
 public class Config {
 
+    private static final long serialVersionUID = 1L;
+
     private static final int SECOND = 1;
     private static final int MINUTE = 60 * SECOND;
     private static final int HOUR = 60 * MINUTE;

@@ -36,6 +36,7 @@ const ChangeOwnPasswordInternal = ({
     const [account, setAccount] = useState<GetAccountResponse>();
     const [password, setPassword] = useState({
         oldPassword: "",
+        repeatPassword: "",
         newPassword: "",
     });
     const [opened, setOpened] = useState<boolean>(false);
@@ -87,7 +88,7 @@ const ChangeOwnPasswordInternal = ({
         setLoading({ ...loading, actionLoading: false });
         setOpened(false);
         onClose();
-        setPassword({ oldPassword: "", newPassword: "" });
+        setPassword({ oldPassword: "", repeatPassword: "", newPassword: "" });
         dispatch({ type: "RESET_VALIDATION", payload: { ...state } });
         showNotification(
             successNotficiationItems(
@@ -96,6 +97,7 @@ const ChangeOwnPasswordInternal = ({
         );
     };
 
+    const [isReapetPasswordValid, setIsReapetPasswordValid] = useState(false);
     const arePasswordsValid = isOldPasswordValid && isNewPasswordValid;
     const arePasswordsSame = password.newPassword === password.oldPassword;
 
@@ -107,6 +109,15 @@ const ChangeOwnPasswordInternal = ({
     useEffect(() => {
         handleGetOwnAccount();
     }, [opened]);
+
+    useEffect(() => {
+        if (
+            password.newPassword === password.repeatPassword &&
+            password.repeatPassword !== ""
+        )
+            setIsReapetPasswordValid(true);
+        else setIsReapetPasswordValid(false);
+    }, [password.newPassword, password.repeatPassword]);
 
     return (
         <Modal isOpen={isOpen}>
@@ -159,8 +170,25 @@ const ChangeOwnPasswordInternal = ({
                                         }
                                         type="password"
                                         required
+                                    />{" "}
+                                    <InputWithValidation
+                                        required
+                                        title={t(
+                                            "registerPage.repaet_password"
+                                        )}
+                                        type="password"
+                                        value={password.repeatPassword}
+                                        validationType="REPEAT_PASSWORD"
+                                        isValid={isReapetPasswordValid}
+                                        onChange={(e) => {
+                                            setPassword({
+                                                ...password,
+                                                repeatPassword: e.target.value,
+                                            });
+                                        }}
                                     />
                                 </div>
+
                                 <div className={styles.action_buttons_wrapper}>
                                     <ActionButton
                                         onClick={() => {
@@ -199,6 +227,12 @@ const ChangeOwnPasswordInternal = ({
                                         "changeOwnPasswordInternal.error.same"
                                     )}
                                 />
+                                <ValidationMessage
+                                    isValid={isReapetPasswordValid}
+                                    message={t(
+                                        "registerPage.repaet_passwordMsg"
+                                    )}
+                                />
                             </div>
                         </div>
 
@@ -216,7 +250,6 @@ const ChangeOwnPasswordInternal = ({
                                 "changeOwnPasswordInternal.confirmActionModal.title"
                             )}
                         >
-                            title=
                             {t(
                                 "changeOwnPasswordInternal.confirmActionModal.message"
                             )}

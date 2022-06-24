@@ -16,6 +16,8 @@ import java.util.List;
 @Stateless
 public class ImplantReviewMapper {
 
+    private static final long serialVersionUID = 1L;
+
     @Inject
     private ImplantFacade implantFacade;
 
@@ -58,6 +60,7 @@ public class ImplantReviewMapper {
         implantReviewDto.setReview(review.getReview());
         implantReviewDto.setCreatedAt(review.getCreatedAt());
         implantReviewDto.setRating(review.getRating());
+        implantReviewDto.setClientImage(review.getClient().getUrl());
 
         return implantReviewDto;
     }

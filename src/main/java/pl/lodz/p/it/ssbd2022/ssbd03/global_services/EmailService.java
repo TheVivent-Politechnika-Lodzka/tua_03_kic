@@ -12,6 +12,9 @@ import java.util.Properties;
 
 @Stateless
 public class EmailService {
+
+    private static final long serialVersionUID = 1L;
+
     Properties properties = System.getProperties();
     Session session;
 

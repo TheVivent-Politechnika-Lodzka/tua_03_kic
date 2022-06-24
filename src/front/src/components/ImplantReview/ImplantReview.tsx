@@ -1,22 +1,14 @@
-import {
-    faDeleteLeft,
-    faRemove,
-    faTrashAlt,
-} from "@fortawesome/free-solid-svg-icons";
+import { faTrashAlt } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { showNotification } from "@mantine/notifications";
 import { Rating } from "@mui/material";
-import { Api } from "@reduxjs/toolkit/dist/query";
-import { t } from "i18next";
 import { useState } from "react";
-import { deleteImplantReview } from "../../api";
+import { deleteImplantsReview } from "../../api";
 import { useStoreSelector } from "../../redux/reduxHooks";
-import {
-    failureNotificationItems,
-    successNotficiationItems,
-} from "../../utils/showNotificationsItems";
+import { successNotficiationItems } from "../../utils/showNotificationsItems";
 import ConfirmActionModal from "../shared/ConfirmActionModal/ConfirmActionModal";
 import styles from "./style.module.scss";
+import { useTranslation } from "react-i18next";
 
 interface ImplantReviewProps {
     review: ImplantReview;
@@ -24,6 +16,7 @@ interface ImplantReviewProps {
 }
 
 const ImplantReview = ({ review, onClose }: ImplantReviewProps) => {
+    const { t } = useTranslation();
     const [modal, setModal] = useState<boolean>(false);
     const [loading, setLoading] = useState<boolean>(false);
 
@@ -33,7 +26,7 @@ const ImplantReview = ({ review, onClose }: ImplantReviewProps) => {
     const handleDeleteImplantReview = async () => {
         if (!review.id) return;
         setLoading(true);
-        await deleteImplantReview(review.id);
+        await deleteImplantsReview(review.id);
         setLoading(false);
         setModal(false);
         onClose();
@@ -47,7 +40,7 @@ const ImplantReview = ({ review, onClose }: ImplantReviewProps) => {
             <div className={styles.general_info_wrapper}>
                 <img
                     className={styles.avatar}
-                    src="https://media.discordapp.net/attachments/948268830222848183/988127000336138280/dgTUsgBf_400x400.jpg"
+                    src={review?.clientImage}
                     alt="user_avatar"
                 />
                 <div className={styles.stars}>
@@ -82,10 +75,11 @@ const ImplantReview = ({ review, onClose }: ImplantReviewProps) => {
                     setModal(false);
                 }}
                 handleFunction={handleDeleteImplantReview}
-                title={t("addImplantReviewPage.addImplantReview")}
+                title={t("addImplantReviewPage.removeReviewTitle")}
                 isLoading={loading}
-                children={"addImplantReviewPage.confirmMsg"}
-            />
+            >
+                {t("addImplantReviewPage.confirmMsg2")}
+            </ConfirmActionModal>
         </div>
     );
 };

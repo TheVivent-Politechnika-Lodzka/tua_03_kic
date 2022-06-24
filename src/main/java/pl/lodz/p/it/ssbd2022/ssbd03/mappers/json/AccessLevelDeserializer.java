@@ -18,6 +18,8 @@ import java.lang.reflect.Type;
 
 public class AccessLevelDeserializer implements JsonbDeserializer<AccessLevelDto> {
 
+    private static final long serialVersionUID = 1L;
+
 
     private static final Jsonb jsonb = JsonbBuilder.create();
 

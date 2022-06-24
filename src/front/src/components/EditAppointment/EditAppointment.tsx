@@ -1,33 +1,23 @@
 import { faInfoCircle } from "@fortawesome/free-solid-svg-icons";
-import {
-    ChronoUnit,
-    Instant,
-    LocalDateTime,
-    ZoneId,
-    ZoneOffset,
-} from "@js-joda/core";
+import { ChronoUnit, Instant, LocalDateTime } from "@js-joda/core";
 import { showNotification } from "@mantine/notifications";
 import { useEffect, useState } from "react";
 import ReactLoading from "react-loading";
 import { useNavigate, useParams } from "react-router";
-import {
-    AppointmentListElementDto,
-    editAppointmentByAdmin,
-    editOwnAppointment,
-    getAppointmentDetails,
-} from "../../api/mop";
 import ActionButton from "../../components/shared/ActionButton/ActionButton";
 import { useStoreSelector } from "../../redux/reduxHooks";
 import { failureNotificationItems } from "../../utils/showNotificationsItems";
 import { useTranslation } from "react-i18next";
 import styles from "./style.module.scss";
+import { editAppointmentByAdmin, getAppointmentDetails } from "../../api";
 
 export const EditAppointment = () => {
     const { t } = useTranslation();
     const aLevel = useStoreSelector((state) => state.user.cur);
-    const [appointment, setAppointment] = useState<AppointmentListElementDto>();
+    const [appointment, setAppointment] = useState<AppointmentDto>();
+    const [count, setCount] = useState<number>(0);
     const [etag, setEtag] = useState<string>("");
-    const [inputStatus, setInputStatus] = useState<string>("");
+    const [inputStatus, setInputStatus] = useState<Status>("PENDING");
     const [loading, setLoading] = useState<Loading>({
         pageLoading: true,
         actionLoading: false,
@@ -46,10 +36,13 @@ export const EditAppointment = () => {
             return;
         }
         setEtag(data.etag);
-        setInputStatus(data.data.status);
-        setInputDescription(data.data.description);
-        setAppointment(data.data);
+        setInputStatus(data.status);
+        setInputDescription(data.description);
+        setAppointment(data);
         setLoading({ pageLoading: false, actionLoading: false });
+        if (data) {
+            setCount(data.description.length);
+        }
     };
     useEffect(() => {
         handleGetAppointmentDetails();
@@ -127,22 +120,6 @@ export const EditAppointment = () => {
                         </div>
                         <div className={styles.detail_wrapper}>
                             <p className={styles.title}>
-                                {t("editOwnAppointment.description")}
-                            </p>
-                            <p className={styles.description}>
-                                {appointment?.description}
-                            </p>
-                            <input
-                                className={styles.description_input}
-                                type="text"
-                                value={inputDescription}
-                                onChange={(e) =>
-                                    setInputDescription(e.target.value)
-                                }
-                            />
-                        </div>
-                        <div className={styles.detail_wrapper}>
-                            <p className={styles.title}>
                                 {t("editOwnAppointment.price")}
                             </p>
                             <p className={styles.description}>
@@ -169,6 +146,7 @@ export const EditAppointment = () => {
                                 {appointment?.status}
                             </p>
                             <input
+                                className={styles.input_checkbox}
                                 type="checkbox"
                                 value={inputDescription}
                                 onChange={(e) => {
@@ -179,6 +157,23 @@ export const EditAppointment = () => {
                             <p className={styles.title}>
                                 {t("editOwnAppointment.cancel")}
                             </p>
+                        </div>
+                        <div className={styles.detail_wrapper}>
+                            <p className={styles.title}>
+                                {t("editOwnAppointment.description")}
+                            </p>
+                            <textarea
+                                className={styles.description_input}
+                                value={inputDescription}
+                                maxLength={950}
+                                onChange={(e) => {
+                                    setInputDescription(e.target.value);
+                                    setCount(e.target.value.length);
+                                }}
+                            />
+                            <div className={styles.description_length}>
+                                {count}/950
+                            </div>
                         </div>
                         <div className={styles.detail_wrapper}>
                             <ActionButton

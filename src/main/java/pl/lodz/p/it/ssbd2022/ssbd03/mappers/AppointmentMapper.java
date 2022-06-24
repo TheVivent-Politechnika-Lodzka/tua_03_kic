@@ -2,17 +2,17 @@ package pl.lodz.p.it.ssbd2022.ssbd03.mappers;
 
 import jakarta.inject.Inject;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.Appointment;
-import pl.lodz.p.it.ssbd2022.ssbd03.mop.dto.AppointmentEditDto;
-import pl.lodz.p.it.ssbd2022.ssbd03.mop.dto.AppointmentListElementDto;
+import pl.lodz.p.it.ssbd2022.ssbd03.entities.Implant;
+import pl.lodz.p.it.ssbd2022.ssbd03.mop.dto.*;
 
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
-import pl.lodz.p.it.ssbd2022.ssbd03.mop.dto.AppointmentDto;
-import pl.lodz.p.it.ssbd2022.ssbd03.mop.dto.AppointmentOwnEditDto;
 
 public class AppointmentMapper {
+
+    private static final long serialVersionUID = 1L;
 
     @Inject
     private AccountMapper accountMapper;
@@ -65,6 +65,16 @@ public class AppointmentMapper {
         appointmentListElementDto.setEndDate(appointment.getEndDate());
         appointmentListElementDto.setPrice(appointment.getPrice());
         appointmentListElementDto.setStatus(appointment.getStatus());
+        //
+        ImplantDto appointmentImplantDto = new ImplantDto();
+        appointmentImplantDto.setDescription(appointment.getImplantDescription());
+        appointmentImplantDto.setName(appointment.getImplantName());
+        appointmentImplantDto.setManufacturer(appointment.getImplantManufacturer());
+        appointmentImplantDto.setDuration(appointment.getImplantDuration().toSeconds());
+        appointmentImplantDto.setPrice(appointment.getImplantPrice());
+
+
+        appointmentListElementDto.setAppointmentImplant(appointmentImplantDto);
         return appointmentListElementDto;
     }
 
@@ -100,6 +110,15 @@ public class AppointmentMapper {
         appointmentDto.setImplant(
                 implantMapper.createImplantDtoFromImplant(appointment.getImplant())
         );
+        ImplantDto appointmentImplantDto = new ImplantDto();
+        appointmentImplantDto.setDescription(appointment.getImplantDescription());
+        appointmentImplantDto.setName(appointment.getImplantName());
+        appointmentImplantDto.setManufacturer(appointment.getImplantManufacturer());
+        appointmentImplantDto.setDuration(appointment.getImplantDuration().toSeconds());
+        appointmentImplantDto.setPrice(appointment.getImplantPrice());
+
+
+        appointmentDto.setAppointmentImplant(appointmentImplantDto);
         return appointmentDto;
     }
     /**

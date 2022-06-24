@@ -17,6 +17,9 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 public class AppointmentOwnEditDto implements Taggable {
+
+    private static final long serialVersionUID = 1L;
+
     @NotNull(message = "server.error.validation.constraints.notNull.id")
     private UUID id;
     @NotNull(message = "server.error.validation.constraints.notNull.version")

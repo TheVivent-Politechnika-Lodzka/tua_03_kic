@@ -33,7 +33,7 @@ interface HourInterface {
     value: Instant;
 }
 
-const CreateAppointmentPage = () => {
+export const CreateAppointmentPage = () => {
     const { implantId } = useParams();
     const { t } = useTranslation();
     const [specialistList, setSpecialistList] = useState<
@@ -72,7 +72,7 @@ const CreateAppointmentPage = () => {
         if (!implant) return;
         const response = await getSpecialistAvailability(
             specialist?.id,
-            Instant.now(),
+            Instant.ofEpochMilli(currentMonth.getTime()),
             implant.duration
         );
         if ("errorMessage" in response) {
@@ -247,6 +247,7 @@ const SummaryModal = ({
 
     const handleSubmit = async () => {
         if (!choosenDate || !choosenSpecialist || !choosenImplant) return;
+
         const response = await createAppointment({
             specialistId: choosenSpecialist.id,
             implantId: choosenImplant.id,
@@ -318,7 +319,8 @@ const SummaryModal = ({
                 <div className={style.choosen_specialist}>
                     <h2>
                         {t("createAppointmentPage.choosenSpecialist")}:{" "}
-                        {choosenSpecialist?.name} {choosenSpecialist?.surname}
+                        {choosenSpecialist?.firstName}{" "}
+                        {choosenSpecialist?.lastName}
                     </h2>
                 </div>
                 <div style={{ width: "20rem" }}>
@@ -431,11 +433,11 @@ const SpecialistItem = ({
         >
             <img
                 className={style.specialist_image}
-                src="https://picsum.photos/200"
+                src={spec.url}
                 alt="specialist"
             />
             <h3 className={style.specialist_name}>
-                {spec.name} {spec.surname}
+                {spec.firstName} {spec.lastName}
             </h3>
         </div>
     );

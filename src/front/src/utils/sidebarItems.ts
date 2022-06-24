@@ -8,6 +8,7 @@ import {
     IconDefinition,
 } from "@fortawesome/free-solid-svg-icons";
 
+
 interface SideBarRoute {
     title: string;
     icon: IconDefinition;
@@ -15,31 +16,31 @@ interface SideBarRoute {
 }
 
 const unauthenticatedSidebarItems: SideBarRoute[] = [
-    { title: "Strona główna", icon: faHome, path: "/" },
-    { title: "Specjaliści", icon: faStethoscope, path: "/specialists" },
-    { title: "Cyberwszczepy", icon: faMicrochip, path: "/implants" },
+    { title: "title.main_page", icon: faHome, path: "/" },
+    { title: "title.specialist", icon: faStethoscope, path: "/specialists" },
+    { title: "title.implants", icon: faMicrochip, path: "/implants" },
 ];
 
 const authorizedSidebarItems: SideBarRoute[] = [
-    { title: "Strona główna", icon: faHome, path: "/" },
-    { title: "Profil użytkownika", icon: faUser, path: "/account" },
-    { title: "Wizyty", icon: faCalendarAlt, path: "/visits" },
-    { title: "Specjaliści", icon: faStethoscope, path: "/specialists" },
-    { title: "Cyberwszczepy", icon: faMicrochip, path: "/implants" },
+    { title: "title.main_page", icon: faHome, path: "/" },
+    { title: "title.profile", icon: faUser, path: "/account" },
+    { title: "title.visits", icon: faCalendarAlt, path: "/visits" },
+    { title: "title.specialist", icon: faStethoscope, path: "/specialists" },
+    { title: "title.implants", icon: faMicrochip, path: "/implants" },
 ];
 
 const adminSidebarItems: SideBarRoute[] = [
-    { title: "Strona główna", icon: faHome, path: "/" },
-    { title: "Profil użytkownika", icon: faUser, path: "/account" },
-    { title: "Zarządzaj kontami", icon: faUserCog, path: "/accounts" },
-    { title: "Zarządzaj wizytami", icon: faCalendarAlt, path: "/visits" },
+    { title: "title.main_page", icon: faHome, path: "/" },
+    { title: "title.profile", icon: faUser, path: "/account" },
+    { title: "title.manage.profile", icon: faUserCog, path: "/accounts" },
+    { title: "title.manage.visits", icon: faCalendarAlt, path: "/visits" },
     {
-        title: "Specjaliści",
+        title: "title.specialist",
         icon: faStethoscope,
         path: "/specialists",
     },
     {
-        title: "Zarządzaj cyberwszczepami",
+        title: "title.manage.implants",
         icon: faMicrochip,
         path: "/implants",
     },

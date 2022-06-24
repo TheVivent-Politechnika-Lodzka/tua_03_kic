@@ -18,6 +18,8 @@ import java.util.Locale;
 
 public class LocaleSerializerDeserializer implements JsonbSerializer<Locale>, JsonbDeserializer<Locale> {
 
+    private static final long serialVersionUID = 1L;
+
     @Getter @Setter
     @NoArgsConstructor
     @AllArgsConstructor

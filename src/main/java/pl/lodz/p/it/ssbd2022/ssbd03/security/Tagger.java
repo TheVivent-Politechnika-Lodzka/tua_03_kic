@@ -17,6 +17,8 @@ import java.util.UUID;
 @Stateless
 public class Tagger {
 
+    private static final long serialVersionUID = 1L;
+
     @Context
     private HttpHeaders headers;
 

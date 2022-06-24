@@ -65,6 +65,7 @@ const Clocker = () => {
 
     return (
         <Countdown
+            key={time.toString()}
             date={new Date(time * 1000 - 600000)}
             renderer={({ minutes, seconds, completed }) => {
                 if (completed) {

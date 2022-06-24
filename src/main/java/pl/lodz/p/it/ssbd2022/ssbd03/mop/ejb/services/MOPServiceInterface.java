@@ -230,7 +230,7 @@ public interface MOPServiceInterface extends ServiceLocalInterface {
      * @param id Identyfikator recenzji wszczepu, która ma zostać usunięta
      * @throws MethodNotImplementedException w momencie, gdy metoda jest niezaimplementowana
      */
-    default void deleteReview(UUID id, String login) {
+    default boolean deleteReview(UUID id, String login) {
         throw new MethodNotImplementedException();
     }
 

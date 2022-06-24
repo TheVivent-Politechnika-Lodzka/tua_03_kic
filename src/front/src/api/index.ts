@@ -14,10 +14,10 @@ axios.interceptors.request.use((config) => {
 });
 // dodawanie języka
 axios.interceptors.request.use((config) => {
-    const lang = navigator.language;
-    // const lang = localStorage.getItem("i18nextLng"); // zakładam, że to będzie preferowane
+    // const lang = navigator.language;
+    const lang = localStorage.getItem("i18nextLng"); // zakładam, że to będzie preferowane
     config.headers = config.headers ?? {};
-    config.headers["Accept-Language"] = lang;
+    config.headers["Accept-Language"] = lang ?? "pl";
     return config;
 });
 // usunięcie cudzysłowia z If-Match

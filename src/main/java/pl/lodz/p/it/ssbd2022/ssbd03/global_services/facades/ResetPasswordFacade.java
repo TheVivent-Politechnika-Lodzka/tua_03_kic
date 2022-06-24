@@ -26,6 +26,8 @@ import java.util.List;
 @RunAs(Roles.ADMINISTRATOR)
 public class ResetPasswordFacade extends AbstractFacade<ResetPasswordToken> {
 
+    private static final long serialVersionUID = 1L;
+
     @PersistenceContext(unitName = "ssbd03mokPU")
     @Getter
     private EntityManager entityManager;
