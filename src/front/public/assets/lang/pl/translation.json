@@ -260,6 +260,7 @@
         "cancel": "Anuluj",
         "addReview": "Dodaj recenzję",
         "confirmMsg": "Czy na pewno chcesz dodać recenzję?",
+        "confirmMsg2": "Czy na pewno chcesz usunąć recenzję?",
         "reviewAdded": "Pomyślnie dodano recenzję",
         "reviewsNotFound": "Implant nie posiada żadnych recenzji",
         "removeReviewTitle": "Usunięcie recenzji",
