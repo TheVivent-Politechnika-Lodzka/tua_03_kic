@@ -40,6 +40,9 @@ export const EditAppointment = () => {
         setInputDescription(data.description);
         setAppointment(data);
         setLoading({ pageLoading: false, actionLoading: false });
+        if (data) {
+            setCount(data.description.length);
+        }
     };
     useEffect(() => {
         handleGetAppointmentDetails();

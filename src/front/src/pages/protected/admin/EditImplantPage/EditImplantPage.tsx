@@ -42,16 +42,12 @@ export const EditImplantPage = () => {
             isManufacturerValid,
             isPriceValid,
             isDurationValid,
-            isDescriptionValid,
         },
         dispatch,
     } = useContext(validationContext);
 
     useEffect(() => {
         handleGetImplant();
-        if (implant) {
-            setCount(implant.description.length);
-        }
     }, []);
 
     const navigate = useNavigate();
@@ -61,7 +57,7 @@ export const EditImplantPage = () => {
         isManufacturerValid &&
         isPriceValid &&
         isDurationValid &&
-        isDescriptionValid;
+        count > 100;
 
     const handleGetImplant = async () => {
         if (!id) return;
@@ -76,6 +72,9 @@ export const EditImplantPage = () => {
             ...response,
             duration: Math.round(response.duration / 60),
         });
+        if (response) {
+            setCount(response.description.length);
+        }
         setLoading({ ...loading, pageLoading: false });
     };
 
