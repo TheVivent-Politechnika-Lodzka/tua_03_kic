@@ -133,7 +133,7 @@ const EditAnyAccountPage = () => {
                                             }
                                         }
                                     }}
-                                /> */}
+                                /> 
                                 <div
                                     className={styles.edit_avatar_icon_wrapper}
                                 >
@@ -141,7 +141,7 @@ const EditAnyAccountPage = () => {
                                         icon={faEdit}
                                         className={styles.edit_avatar_icon}
                                     />
-                                </div>
+                                </div>*/}
                             </div>
                             <div className={styles.edit_fields_wrapper}>
                                 <div className={styles.edit_field}>

@@ -130,12 +130,12 @@ const EditOwnAccountPageInternal = () => {
                                     alt="User avatar"
                                     className={style.change_avatar}
                                 />
-                                <div className={style.edit_avatar_icon_wrapper}>
+                                {/* <div className={style.edit_avatar_icon_wrapper}>
                                     <FontAwesomeIcon
                                         icon={faEdit}
                                         className={style.edit_avatar_icon}
                                     />
-                                </div>
+                                </div> */}
                             </div>
                             <div className={style.edit_fields_wrapper}>
                                 <div className={style.edit_field}>
