@@ -245,8 +245,8 @@
         "language": "Język",
         "sign_in": "Zaloguj się",
         "cancel": "Anuluj",
-        "polish": "polski",
-        "english": "angielski",
+        "polish": "Polski",
+        "english": "Angielski",
         "send_email": "Wysłaliśmy Ci maila z linkiem powierdzającym"
     },
     "clocker": {
@@ -267,8 +267,8 @@
     },
 
     "specialistCard": {
-        "alt": "zdjęcie specjalisty",
-        "tel": "telefon:"
+        "alt": "Zdjęcie specjalisty",
+        "tel": "Telefon:"
     },
 
     "accessLevel": {
@@ -278,7 +278,7 @@
     },
 
     "userRecord": {
-        "alt": "użytkownik",
+        "alt": "Użytkownik",
         "approved": "Zatwierdzone",
         "unapproved": "Niezatwierdzone",
         "active": "Aktywny",

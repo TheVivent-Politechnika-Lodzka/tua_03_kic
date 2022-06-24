@@ -258,8 +258,8 @@
         "language": "Language",
         "sign_in": "Sign in",
         "cancel": "Cancel",
-        "polish": "polish",
-        "english": "english",
+        "polish": "Polish",
+        "english": "English",
         "send_email": "We send you an email with confirmation link"
     },
 
@@ -269,8 +269,8 @@
     },
 
     "specialistCard": {
-        "alt": "specialist image",
-        "tel": "phone:"
+        "alt": "Specialist image",
+        "tel": "Phone:"
     },
 
     "accessLevel": {
@@ -280,7 +280,7 @@
     },
 
     "userRecord": {
-        "alt": "user",
+        "alt": "User",
         "approved": "Approved",
         "unapproved": "Unapproved",
         "active": "Active",

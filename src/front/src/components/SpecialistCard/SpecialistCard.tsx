@@ -52,7 +52,7 @@ const SpecialistCard = (props: SpecialistCardProps) => {
                             </th>
                         </tr>
                         <tr>
-                            <td>email:</td>
+                            <td>Email:</td>
                             <td>{email}</td>
                         </tr>
                         <tr>

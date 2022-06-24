@@ -68,10 +68,11 @@ const SpecialistListPage = () => {
             <div className={style.specialist_list}>
                 {loading.pageLoading ? (
                     <ReactLoading
-                        type="cylon"
+                        type="bars"
                         color="#fff"
                         width="10rem"
                         height="10rem"
+                        className={style.loading}
                     />
                 ) : (
                     <>
@@ -85,14 +86,16 @@ const SpecialistListPage = () => {
                                     img={specialist.url}
                                 />
                             </div>
-                        ))}
+                        ))}{" "}
                     </>
                 )}
             </div>
-            <Pagination
-                pagination={pagination}
-                handleFunction={setPagination}
-            />
+            {!loading.pageLoading && (
+                <Pagination
+                    pagination={pagination}
+                    handleFunction={setPagination}
+                />
+            )}
         </div>
     );
 };
