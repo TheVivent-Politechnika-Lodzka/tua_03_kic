@@ -70,7 +70,7 @@ export const ListElement = (props: { element: ImplantDto }) => {
                 </div>
                 <div className={styles.buttons}>
                     <div className={styles.price}>
-                        {`${props.element.price}${" ZL"}`}
+                        {`${props.element.price}${" ZŁ"}`}
                     </div>
 
                     <div className={styles.button}>
