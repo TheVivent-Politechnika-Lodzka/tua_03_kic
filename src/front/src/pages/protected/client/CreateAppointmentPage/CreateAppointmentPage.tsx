@@ -108,10 +108,6 @@ export const CreateAppointmentPage = () => {
         setSelectedHour(undefined);
     }, [specialist, implant, currentMonth]);
 
-    useEffect(() => {
-        console.log(selectedDate);
-    }, [selectedDate]);
-
     return (
         <section className={style.create_appointment_page}>
             <h1>{t("createAppointmentPage.title")}</h1>
@@ -252,6 +248,7 @@ const SummaryModal = ({
 
     const handleSubmit = async () => {
         if (!choosenDate || !choosenSpecialist || !choosenImplant) return;
+
         const response = await createAppointment({
             specialistId: choosenSpecialist.id,
             implantId: choosenImplant.id,

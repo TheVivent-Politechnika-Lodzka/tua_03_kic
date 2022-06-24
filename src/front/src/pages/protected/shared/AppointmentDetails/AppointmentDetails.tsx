@@ -1,4 +1,4 @@
-import { faClose, faInfoCircle } from "@fortawesome/free-solid-svg-icons";
+import { faCancel, faClose, faEdit, faInfoCircle } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { ChronoUnit, Instant, LocalDateTime } from "@js-joda/core";
 import { showNotification } from "@mantine/notifications";
@@ -265,8 +265,8 @@ export const AppointmentDetails = ({
                                             title={t(
                                                 "appointmentDetails.buttonCancel"
                                             )}
-                                            color="cyan"
-                                            icon={faInfoCircle}
+                                            color="red"
+                                            icon={faCancel}
                                             onClick={() => {
                                                 setFinishOwnVisitModalOpen(
                                                     true
@@ -281,7 +281,7 @@ export const AppointmentDetails = ({
                                         title={t(
                                             "appointmentDetails.buttonFinish"
                                         )}
-                                        color="cyan"
+                                        color="orange"
                                         icon={faInfoCircle}
                                         onClick={() => {
                                             setFinishVisitModalOpen(true);
@@ -295,8 +295,8 @@ export const AppointmentDetails = ({
                                         title={t(
                                             "appointmentDetails.buttonCancel"
                                         )}
-                                        color="purple"
-                                        icon={faInfoCircle}
+                                        color="red"
+                                        icon={faCancel}
                                         onClick={() => {
                                             setAppointmentBlockModalOpen(true);
                                         }}
@@ -304,8 +304,8 @@ export const AppointmentDetails = ({
                                 ) : null}
                                 <ActionButton
                                     title={t("appointmentDetails.buttonEdit")}
-                                    color="cyan"
-                                    icon={faInfoCircle}
+                                    color="green"
+                                    icon={faEdit}
                                     onClick={() => routeChange(appointmentId)}
                                 ></ActionButton>
                                 <ConfirmActionModal
