@@ -105,43 +105,37 @@ const RegisterPageInternal = () => {
                     {t("registerPage.register")}
                 </div>
                 <div className={styles.edit_field}>
-                        {account.url.length === 0 ? (
-                            <Image
-                                withPlaceholder
-                                radius={100}
-                                width={"8rem"}
-                                height={"8rem"}
-                                styles={{
-                                    root: { marginTop: "2vh" },
-                                }}
-                            />
-                        ) : (
-                            <Image
-                                src={account.url}
-                                radius={100}
-                                width={"8rem"}
-                                height={"8rem"}
-                                alt="image create"
-                                styles={{
-                                    root: { marginTop: "2vh" },
-                                }}
-                            />
-                        )}
-
-                        <input
-                            id="file-input"
-                            type="file"
-                            onChange={async (event) => {
-                                const u = await uploadPhoto(event);
-                                if (u) {
-                                    setAccount({
-                                        ...account,
-                                        url: u,
-                                    });
-                                }
-                            }}
+                    {account.url.length === 0 ? (
+                        <Image
+                            withPlaceholder
+                            radius={9999}
+                            width={"13rem"}
+                            height={"13rem"}
                         />
-                    </div>
+                    ) : (
+                        <Image
+                            src={account.url}
+                            radius={9999}
+                            width={"13rem"}
+                            height={"13rem"}
+                            alt="image create"
+                        />
+                    )}
+
+                    <input
+                        id={styles.file_input}
+                        type="file"
+                        onChange={async (event) => {
+                            const u = await uploadPhoto(event);
+                            if (u) {
+                                setAccount({
+                                    ...account,
+                                    url: u,
+                                });
+                            }
+                        }}
+                    />
+                </div>
                 <div className={styles.edit_field} title="email">
                     <InputWithValidation
                         required
