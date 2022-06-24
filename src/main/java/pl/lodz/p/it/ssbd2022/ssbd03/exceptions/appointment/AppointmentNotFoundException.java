@@ -11,6 +11,8 @@ import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.AppBaseException;
 @ApplicationException(rollback = true)
 public class AppointmentNotFoundException extends AppBaseException {
 
+    private static final long serialVersionUID = 1L;
+
     private static final String APPOINTMENT_NOT_FOUND = "server.error.appBase.appointmentNotFound";
 
     /**

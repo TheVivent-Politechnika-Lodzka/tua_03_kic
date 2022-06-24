@@ -34,7 +34,7 @@ export const EditImplantPage = () => {
     const [opened, setOpened] = useState<boolean>(false);
     const [implant, setImplant] = useState<GetImplantResponse>();
     const { id } = useParams();
-
+    const [count, setCount] = useState(0);
     const {
         state,
         state: {
@@ -42,7 +42,6 @@ export const EditImplantPage = () => {
             isManufacturerValid,
             isPriceValid,
             isDurationValid,
-            isDescriptionValid,
         },
         dispatch,
     } = useContext(validationContext);
@@ -58,7 +57,7 @@ export const EditImplantPage = () => {
         isManufacturerValid &&
         isPriceValid &&
         isDurationValid &&
-        isDescriptionValid;
+        count > 100;
 
     const handleGetImplant = async () => {
         if (!id) return;
@@ -73,6 +72,9 @@ export const EditImplantPage = () => {
             ...response,
             duration: Math.round(response.duration / 60),
         });
+        if (response) {
+            setCount(response.description.length);
+        }
         setLoading({ ...loading, pageLoading: false });
     };
 
@@ -119,7 +121,7 @@ export const EditImplantPage = () => {
                         )}
 
                         <input
-                            id="file-input"
+                            id={style.file_input}
                             type="file"
                             onChange={async (event) => {
                                 const u = await uploadPhoto(event);
@@ -228,23 +230,27 @@ export const EditImplantPage = () => {
 
                     <div className={style.edit_fields_wrapper}>
                         <div className={style.edit_field}>
-                            <InputWithValidation
-                                title={t("editImplantPage.description")}
+                            <textarea
+                                className={style.description_input}
                                 value={implant?.description}
-                                validationType="VALIDATE_DESCRIPTION"
-                                isValid={isDescriptionValid}
+                                maxLength={950}
                                 onChange={(e) => {
                                     if (implant)
                                         setImplant({
                                             ...implant,
                                             description: e.target.value,
                                         });
+                                    setCount(e.target.value.length);
                                 }}
-                                required
                             />
+
+                            <div className={style.description_length}>
+                                {count}/1000
+                            </div>
+
                             <ValidationMessage
-                                isValid={isDescriptionValid}
-                                message={t("editImplantPage.descriptionMsg")}
+                                isValid={count > 100}
+                                message={t("createImplantPage.descriptionMsg")}
                             />
                         </div>
                     </div>

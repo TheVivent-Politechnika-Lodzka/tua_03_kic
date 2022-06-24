@@ -19,6 +19,7 @@ import { showNotification } from "@mantine/notifications";
 import { successNotficiationItems } from "../../../../utils/showNotificationsItems";
 import ConfirmActionModal from "../../../../components/shared/ConfirmActionModal/ConfirmActionModal";
 import styles from "./style.module.scss";
+import { uploadPhoto } from "../../../../utils/upload";
 
 const EditAnyAccountPage = () => {
     const [account, setAccount] = useState<GetAccountResponse>();
@@ -114,10 +115,25 @@ const EditAnyAccountPage = () => {
                         <div className={styles.edit_data_account_wrapper}>
                             <div className={styles.avatar_wrapper}>
                                 <img
-                                    src={avatar}
+                                    src={account?.url}
                                     alt="User avatar"
                                     className={styles.change_avatar}
                                 />
+                                {/* <input
+                                    id="file-input"
+                                    type="file"
+                                    onChange={async (event) => {
+                                        const u = await uploadPhoto(event);
+                                        if (u) {
+                                            if (account !== undefined) {
+                                                setAccount({
+                                                    ...account,
+                                                    url: u,
+                                                });
+                                            }
+                                        }
+                                    }}
+                                /> 
                                 <div
                                     className={styles.edit_avatar_icon_wrapper}
                                 >
@@ -125,7 +141,7 @@ const EditAnyAccountPage = () => {
                                         icon={faEdit}
                                         className={styles.edit_avatar_icon}
                                     />
-                                </div>
+                                </div>*/}
                             </div>
                             <div className={styles.edit_fields_wrapper}>
                                 <div className={styles.edit_field}>

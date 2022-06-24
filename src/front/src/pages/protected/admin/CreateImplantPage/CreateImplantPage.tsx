@@ -12,8 +12,7 @@ import {
     successNotficiationItems,
 } from "../../../../utils/showNotificationsItems";
 import { useTranslation } from "react-i18next";
-import { Center, Image } from "@mantine/core";
-import { HiOutlinePhotograph } from "react-icons/hi";
+import { Image } from "@mantine/core";
 import { uploadPhoto } from "../../../../utils/upload";
 import { createImplant } from "../../../../api/mop";
 import ConfirmActionModal from "../../../../components/shared/ConfirmActionModal/ConfirmActionModal";
@@ -24,8 +23,6 @@ export const CreateImplantPage = () => {
         pageLoading: true,
         actionLoading: false,
     });
-
-    const [error, setError] = useState<ApiError>();
     const [opened, setOpened] = useState<boolean>(false);
     const [implant, setImplant] = useState({
         name: "",
@@ -35,7 +32,7 @@ export const CreateImplantPage = () => {
         duration: "",
         url: "",
     });
-
+    const [count, setCount] = useState(implant.description.length);
     const {
         state,
         state: {
@@ -43,7 +40,6 @@ export const CreateImplantPage = () => {
             isManufacturerValid,
             isPriceValid,
             isDurationValid,
-            isDescriptionValid,
         },
         dispatch,
     } = useContext(validationContext);
@@ -55,7 +51,7 @@ export const CreateImplantPage = () => {
         isManufacturerValid &&
         isPriceValid &&
         isDurationValid &&
-        isDescriptionValid;
+        count > 100;
 
     const handleSubmit = async () => {
         const response = await createImplant({
@@ -85,25 +81,30 @@ export const CreateImplantPage = () => {
                 <div className={style.create_data_account_wrapper}>
                     <div className={style.edit_fields_wrapper}>
                         {implant.url.length === 0 ? (
-                            <div className={`${style.image} ${style.margin}`}>
-                                <Center>
-                                    <HiOutlinePhotograph size="80px" />
-                                </Center>
-                            </div>
+                            <Image
+                                radius="md"
+                                withPlaceholder
+                                height="15rem"
+                                width="25rem"
+                                styles={{
+                                    root: { marginTop: "2vh" },
+                                }}
+                            />
                         ) : (
                             <Image
                                 radius="md"
                                 src={implant.url}
-                                height="20vw"
+                                height="15rem"
+                                width="25rem"
                                 alt="image create"
                                 styles={{
-                                    root: { marginTop: "6vh" },
+                                    root: { marginTop: "2vh" },
                                 }}
                             />
                         )}
 
                         <input
-                            id="file-input"
+                            id={style.file_input}
                             type="file"
                             onChange={async (event) => {
                                 const u = await uploadPhoto(event);
@@ -123,6 +124,7 @@ export const CreateImplantPage = () => {
                                 value={implant?.name}
                                 validationType="VALIDATE_IMPLANT_NAME"
                                 isValid={isImplantNameValid}
+                                styleWidth={{ width: "20rem" }}
                                 onChange={(e) => {
                                     setImplant({
                                         ...implant,
@@ -144,6 +146,7 @@ export const CreateImplantPage = () => {
                                 value={implant?.manufacturer}
                                 validationType="VALIDATE_MANUFACTURER"
                                 isValid={isManufacturerValid}
+                                styleWidth={{ width: "20rem" }}
                                 onChange={(e) => {
                                     setImplant({
                                         ...implant,
@@ -166,6 +169,8 @@ export const CreateImplantPage = () => {
                                 value={implant?.price}
                                 validationType="VALIDATE_PRICE"
                                 isValid={isPriceValid}
+                                type="number"
+                                styleWidth={{ width: "20rem" }}
                                 onChange={(e) => {
                                     setImplant({
                                         ...implant,
@@ -187,7 +192,9 @@ export const CreateImplantPage = () => {
                                 title={t("createImplantPage.duration")}
                                 value={implant?.duration}
                                 validationType="VALIDATE_DURATION"
+                                type="number"
                                 isValid={isDurationValid}
+                                styleWidth={{ width: "20rem" }}
                                 onChange={(e) => {
                                     setImplant({
                                         ...implant,
@@ -205,21 +212,25 @@ export const CreateImplantPage = () => {
 
                     <div className={style.edit_fields_wrapper}>
                         <div className={style.edit_field}>
-                            <InputWithValidation
-                                title={t("createImplantPage.description")}
+                            <textarea
+                                className={style.description_input}
                                 value={implant?.description}
-                                validationType="VALIDATE_DESCRIPTION"
-                                isValid={isDescriptionValid}
+                                maxLength={950}
                                 onChange={(e) => {
                                     setImplant({
                                         ...implant,
                                         description: e.target.value,
                                     });
+                                    setCount(e.target.value.length);
                                 }}
-                                required
                             />
+
+                            <div className={style.description_length}>
+                                {count}/1000
+                            </div>
+
                             <ValidationMessage
-                                isValid={isDescriptionValid}
+                                isValid={count > 100}
                                 message={t("createImplantPage.descriptionMsg")}
                             />
                         </div>
@@ -233,7 +244,7 @@ export const CreateImplantPage = () => {
                             isDisabled={!isEveryFieldValid}
                             icon={faCheck}
                             color="green"
-                            title="Zatwierdź"
+                            title={t("addImplantReviewPage.confirm")}
                         />
                         <ActionButton
                             onClick={() => {
@@ -241,7 +252,7 @@ export const CreateImplantPage = () => {
                             }}
                             icon={faCancel}
                             color="red"
-                            title="Anuluj"
+                            title={t("addImplantReviewPage.cancel")}
                         />
                     </div>
                 </div>

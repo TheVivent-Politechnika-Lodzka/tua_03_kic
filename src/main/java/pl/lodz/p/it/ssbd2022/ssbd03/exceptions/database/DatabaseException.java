@@ -12,6 +12,8 @@ import pl.lodz.p.it.ssbd2022.ssbd03.utils.InternationalizationProvider;
 @ApplicationException(rollback = true)
 public class DatabaseException extends AppBaseException {
 
+    private static final long serialVersionUID = 1L;
+
 
     private static final String DATABASE_ERROR = "server.error.appBase.databaseError";
 

@@ -23,6 +23,8 @@ import java.util.logging.Logger;
 @Singleton
 public class StartupConfig {
 
+    private static final long serialVersionUID = 1L;
+
     private static final Logger logger = Logger.getLogger(StartupConfig.class.toString());
 
     @PersistenceContext(unitName = "ssbd03adminPU")
@@ -212,10 +214,20 @@ public class StartupConfig {
         implant.setDuration(Duration.ofMinutes(30));
         implant.setImage("https://api.culture.pl/sites/default/files/styles/440_auto/public/2020-11/cyberpunk2077-outnumbered_but_not_outgunned-rgb-en.jpg?itok=ktGxus53");
 
-
         em.persist(implant);
 
-        for (int i = 0; i < 20; i++) {
+        Implant implant2 = new Implant();
+        implant2.setName("Włosy-kable");
+        implant2.setDescription("Pierwszą przełomową innowacją jest nasza funkcja „powiększania według własnego uznania”. Korzystając z unikalnego podwójnego FOV i 2-krotnego zoomu optycznego, użytkownik może szybko ręcznie przełączać podwójne FOV. Większe FOV o ogniskowej 25 mm jest używane do wyszukiwania celu, a mniejsze FOV o ogniskowej 50 mm do identyfikacji celu. Spełnij potrzebę patrzenia daleko, dokładnie i wyraźnie.");
+        implant2.setPrice(250);
+        implant2.setManufacturer("Nokto S.A.");
+        implant2.setPopularity(0);
+        implant2.setDuration(Duration.ofMinutes(30));
+        implant2.setImage("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSHTlU2gK88_xJfgB5Wm0Rk0qYY4bf_-Y-gfw&usqp=CAU");
+
+        em.persist(implant2);
+
+        for (int i = 0; i < 3; i++) {
             Instant now = Instant.now().minus(i + 1, ChronoUnit.DAYS);
             Appointment appointment = new Appointment();
             appointment.setClient(clientAdmin); // TUTAJ ZMIENIAĆ DO TESTÓW
@@ -224,7 +236,22 @@ public class StartupConfig {
             appointment.setStartDate(now);
             appointment.setEndDate(now.plus(2, ChronoUnit.HOURS)); // zmieniono do testow
             appointment.setStatus(Status.ACCEPTED); // TUTAJ ZMIENIAĆ DO TESTÓW
-            appointment.setPrice(100);
+            appointment.setPrice(implant.getPrice());
+            appointment.setDescription("8 godzin przed zabiegiem nie można nic spożywać. Na rekonwalenscencje należy przeznaczyć 10 dni. ");
+
+            em.persist(appointment);
+        }
+
+        for (int i = 0; i < 3; i++) {
+            Instant now = Instant.now().plus(i + 1, ChronoUnit.DAYS);
+            Appointment appointment = new Appointment();
+            appointment.setClient(clientAdmin); // TUTAJ ZMIENIAĆ DO TESTÓW
+            appointment.setSpecialist(specialist);
+            appointment.setImplant(implant2);
+            appointment.setStartDate(now);
+            appointment.setEndDate(now.plus(2, ChronoUnit.HOURS)); // zmieniono do testow
+            appointment.setStatus(Status.PENDING); // TUTAJ ZMIENIAĆ DO TESTÓW
+            appointment.setPrice(implant2.getPrice());
             appointment.setDescription("8 godzin przed zabiegiem nie można nic spożywać. Na rekonwalenscencje należy przeznaczyć 10 dni. ");
 
             em.persist(appointment);

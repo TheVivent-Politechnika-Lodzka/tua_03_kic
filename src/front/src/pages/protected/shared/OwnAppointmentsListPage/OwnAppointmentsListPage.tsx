@@ -2,10 +2,7 @@ import { showNotification } from "@mantine/notifications";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import ReactLoading from "react-loading";
-import {
-    AppointmentListElementDto,
-    listOwnAppointments,
-} from "../../../../api/mop";
+import { listMyAppointments } from "../../../../api";
 import { AppointmentRecord } from "../../../../components/AppointmentRecord";
 import Pagination from "../../../../components/Pagination/Pagination";
 import { useStoreSelector } from "../../../../redux/reduxHooks";
@@ -14,6 +11,7 @@ import styles from "./style.module.scss";
 
 const OwnAppointmentsListPage = () => {
     const aLevel = useStoreSelector((state) => state.user.cur);
+    const [phrase, setPhrase] = useState<string>("");
     const [appointments, setAppointments] =
         useState<AppointmentListElementDto[]>();
     const [loading, setLoading] = useState<Loading>({
@@ -29,14 +27,13 @@ const OwnAppointmentsListPage = () => {
     });
 
     useEffect(() => {
-        handleGetOwnAppointments();
+        handleGetAppointments();
     }, [rerender, pagination.currentPage]);
 
     const { t } = useTranslation();
-
-    const handleGetOwnAppointments = async () => {
+    const handleGetAppointments = async () => {
         setLoading({ ...loading, actionLoading: true });
-        const data = await listOwnAppointments({
+        const data = await listMyAppointments({
             page: pagination?.currentPage as number,
             size: pagination?.pageSize as number,
         });
@@ -49,6 +46,7 @@ const OwnAppointmentsListPage = () => {
         setLoading({ pageLoading: false, actionLoading: false });
         setRerender(false);
     };
+
     return (
         <section className={styles.appointment_managment_page}>
             <div className={styles.table_container}>

@@ -6,7 +6,7 @@
     
     .title {
         font-weight: bold;
-        font-size: 1.25rem;
+        font-size: 1rem;
     }
 
     .input_wrapper {
@@ -17,7 +17,7 @@
         .input {
             outline: none;
             border: none;
-            font-size: 1.25rem;
+            font-size: 1rem;
             padding-block: 1rem;
             background: none;
             color: white;
@@ -32,7 +32,7 @@
         }
 
         .icon {
-            font-size: 2rem;
+            font-size: 1.5rem;
 
             &.valid {
                 color: $light-green;

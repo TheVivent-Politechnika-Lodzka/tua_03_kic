@@ -12,6 +12,8 @@ import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.AppBaseException;
 @ApplicationException(rollback = true)
 public class CantInstallArchivedImplant extends AppBaseException {
 
+    private static final long serialVersionUID = 1L;
+
     private static final String MESSAGE = "server.error.appBase.cantInstallArchivedImplant";
 
     /**

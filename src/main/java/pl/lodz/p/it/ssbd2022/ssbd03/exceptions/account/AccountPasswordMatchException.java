@@ -10,6 +10,8 @@ import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.AppBaseException;
 @ApplicationException(rollback = true)
 public class AccountPasswordMatchException extends AppBaseException {
 
+    private static final long serialVersionUID = 1L;
+
     private static final String ACCOUNT_PASSWORD_MATCH_EXCEPTION = "server.error.appBase.accountPasswordMatch";
 
     public AccountPasswordMatchException() {

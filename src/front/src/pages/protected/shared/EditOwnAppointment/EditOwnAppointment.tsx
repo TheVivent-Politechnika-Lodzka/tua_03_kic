@@ -11,11 +11,7 @@ import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import ReactLoading from "react-loading";
 import { useNavigate, useParams } from "react-router";
-import {
-    AppointmentListElementDto,
-    editOwnAppointment,
-    getAppointmentDetails,
-} from "../../../../api/mop";
+import { editOwnAppointment, getAppointmentDetails } from "../../../../api";
 import ActionButton from "../../../../components/shared/ActionButton/ActionButton";
 import { useStoreSelector } from "../../../../redux/reduxHooks";
 import { failureNotificationItems } from "../../../../utils/showNotificationsItems";
@@ -24,9 +20,10 @@ import styles from "./style.module.scss";
 export const EditOwnAppointment = () => {
     const aLevel = useStoreSelector((state) => state.user.cur);
     const [count, setCount] = useState<number>(0);
-    const [appointment, setAppointment] = useState<AppointmentListElementDto>();
+    const [version, setVersion] = useState(0);
+    const [appointment, setAppointment] = useState<AppointmentDto>();
     const [etag, setEtag] = useState<string>("");
-    const [inputStatus, setInputStatus] = useState<string>("");
+    const [inputStatus, setInputStatus] = useState<Status>("PENDING");
     const [loading, setLoading] = useState<Loading>({
         pageLoading: true,
         actionLoading: false,
@@ -45,10 +42,11 @@ export const EditOwnAppointment = () => {
             return;
         }
         setEtag(data.etag);
-        setInputStatus(data.data.status);
-        setInputDescription(data.data.description);
-        setAppointment(data.data);
-        setCount(data.data.description.length);
+        setVersion(data.version);
+        setInputStatus(data.status);
+        setInputDescription(data.description);
+        setAppointment(data);
+        setCount(data.description.length);
         setLoading({ pageLoading: false, actionLoading: false });
     };
     useEffect(() => {
@@ -60,7 +58,6 @@ export const EditOwnAppointment = () => {
         let status;
         if (aLevel === "SPECIALIST") status = inputStatus;
         else status = appointment.status;
-        const version = appointment.version;
         let description;
         if (aLevel === "SPECIALIST") description = inputDescription;
         else description = appointment.description;
@@ -69,10 +66,10 @@ export const EditOwnAppointment = () => {
         );
         editedDate = editedDate.minus(2, ChronoUnit.HOURS);
         const data = await editOwnAppointment({
+            version,
             id,
             etag,
             status,
-            version,
             description,
             startDate: editedDate,
         });
@@ -152,7 +149,7 @@ export const EditOwnAppointment = () => {
                                                 if (e.target.value)
                                                     setInputStatus("ACCEPTED");
                                                 else {
-                                                    setInputStatus("PENDIG");
+                                                    setInputStatus("PENDING");
                                                 }
                                             }}
                                         />
@@ -188,6 +185,38 @@ export const EditOwnAppointment = () => {
                                 {t("editOwnAppointment.dateEnd")}
                             </p>
                             <p className={styles.description}>{endDate}</p>
+                        </div>
+                        <div className={styles.detail_wrapper}>
+                            <p className={styles.title}>
+                                {t("editOwnAppointment.implantName")}
+                            </p>
+                            <p className={styles.description}>
+                                {appointment?.appointmentImplant.name}
+                            </p>
+                        </div>
+                        <div className={styles.detail_wrapper}>
+                            <p className={styles.title}>
+                                {t("editOwnAppointment.implantPrice")}
+                            </p>
+                            <p className={styles.description}>
+                                {appointment?.appointmentImplant.price + "zł"}
+                            </p>
+                        </div>
+                        <div className={styles.detail_wrapper}>
+                            <p className={styles.title}>
+                                {t("editOwnAppointment.implantDuration")}
+                            </p>
+                            <p className={styles.description}>
+                                {appointment!.appointmentImplant.duration/60 + ' min'}
+                            </p>
+                        </div>
+                        <div className={styles.detail_wrapper}>
+                            <p className={styles.title}>
+                                {t("editOwnAppointment.implantManufacturer")}
+                            </p>
+                            <p className={styles.description}>
+                                {appointment?.appointmentImplant.manufacturer + "zł"}
+                            </p>
                         </div>
                         <div className={styles.detail_wrapper}>
                             <p className={styles.title}>

@@ -4,6 +4,19 @@
         "no": "Nie"
     },
 
+    "title": {
+        "main_page": "Strona główna",
+        "specialist": "Specjaliści",
+        "implants": "Cyberwszczepy",
+        "visits": "Wizyty",
+        "profile": "Profil użytkownika",
+        "manage": {
+            "implants": "Zarządzaj cyberwszczepami",
+            "visits": "Zarządaj wizytami",
+            "profile": "Zarządzaj użytkownikami"
+        }
+    },
+
     "firm_name": "Klinika Instalacji Cyberwszczepów",
     "why_us": "DLACZEGO MY?",
     "many_reason": "jest wiele powodów a to tylko parę z nich",
@@ -133,12 +146,23 @@
     "createAccount": "Stwórz konto",
     "detailsAccount": "Moje konto",
     "editAccount": "Edytuj moje konto",
-    "ChangeAccountPassword": {
-        "title": "Zmiana hasła dla użytkownika",
-        "input_placeholder": "Wpisz nowe hasło",
-        "change_password_button": "Zmień",
-        "go_back_button": "Powrót do strony użytkowników",
-        "too_short_password_error": "Haslo jest za krótkie!"
+
+    "changeUserPasswordPage": {
+        "title": "Zmień hasło użytkownika",
+        "labelPassword": "Hasło",
+        "repeatPassword": "Powtórz hasło",
+        "validationMessage": "Hasło musi być dłuższe niż 8 znaków oraz musi zawierać jedną dużą literę, jedną cyfrę i jeden znak specjalny",
+        "validationMessageRepeat": "Both passwords must be the same",
+        "successNotficiationItems": {
+            "first": "Hasło użytkownika",
+            "second": "zostało zmienione"
+        },
+        "confirm": "Zatwierdź",
+        "cancel": "Anuluj",
+        "modalTitle": "Zmień hasło użytkownika",
+        "modalDescription": "Czy na pewno chcesz zmienić hasło użytkownika?",
+        "modalConfirm": "Tak",
+        "modalCancel": "Nie"
     },
 
     "implantListPage": {
@@ -221,8 +245,8 @@
         "language": "Język",
         "sign_in": "Zaloguj się",
         "cancel": "Anuluj",
-        "polish": "polski",
-        "english": "angielski",
+        "polish": "Polski",
+        "english": "Angielski",
         "send_email": "Wysłaliśmy Ci maila z linkiem powierdzającym"
     },
     "clocker": {
@@ -236,6 +260,7 @@
         "cancel": "Anuluj",
         "addReview": "Dodaj recenzję",
         "confirmMsg": "Czy na pewno chcesz dodać recenzję?",
+        "confirmMsg2": "Czy na pewno chcesz usunąć recenzję?",
         "reviewAdded": "Pomyślnie dodano recenzję",
         "reviewsNotFound": "Implant nie posiada żadnych recenzji",
         "removeReviewTitle": "Usunięcie recenzji",
@@ -243,8 +268,8 @@
     },
 
     "specialistCard": {
-        "alt": "zdjęcie specjalisty",
-        "tel": "telefon:"
+        "alt": "Zdjęcie specjalisty",
+        "tel": "Telefon:"
     },
 
     "accessLevel": {
@@ -254,7 +279,7 @@
     },
 
     "userRecord": {
-        "alt": "użytkownik",
+        "alt": "Użytkownik",
         "approved": "Zatwierdzone",
         "unapproved": "Niezatwierdzone",
         "active": "Aktywny",
@@ -268,15 +293,22 @@
         "alt": "Ogólne konto: Avatar",
         "title": "Poziomy dostępu:",
         "editAccountTitle": "Edytuj konto",
-        "changePasswordTitle": "Edytuj konto",
+        "changePasswordTitle": "Zmień hasło",
         "deactivateAccountTitle": "Deaktywuj konto",
         "activateAccountTitle": "Aktywuj konto",
         "accountDetailsTitle": "Dane szczegółowe",
         "name": "Imię:",
         "surname": "Nazwisko:",
-        "email": "Email:",
+        "email": {
+            "regularEmail": "Email: ",
+            "adminEmail": "Email administratora: ",
+            "specEmail": "Email specjalisty: "
+        },
         "pesel": "Numer PESEL:",
-        "telephone": "Numer telefonu:",
+        "telephone": {
+            "adminPhone": "Numer telefonu administratora:",
+            "specPhone": "Numer telefonu specjalisty:"
+        },
         "language": "Język:",
         "confirmActionModal": {
             "deactivateAccount": "Zablokuj konto",
@@ -383,6 +415,8 @@
 
     "ownAppointmentListPage": {
         "cell": {
+            "clientLogin": "Login klienta",
+            "specialistLogin": "Login specjalisty",
             "clientName": "Imię i nazwisko klienta",
             "specialistName": "Imie i nazwisko specjalisty",
             "name": "Nazwa implantu",
@@ -472,6 +506,10 @@
     },
 
     "editOwnAppointment": {
+        "implantName":  "Nazwa implantu:",
+        "implantDuration": "Długość wizyty:",
+        "implantPrice": "Cena implantu:",
+        "implantManufacturer": "Producent implantu:",
         "title": "Edytuj wizytę",
         "clientName": "Imię i nazwisko klienta:",
         "specialistName": "Imie i nazwisko specjalisty:",
@@ -576,7 +614,8 @@
     },
     "navbar": {
         "avatar_alt": "Avatar użytkownika",
-        "register": "Zarejestruj się"
+        "register": "Zarejestruj się",
+        "log": "Zaloguj się"
     },
 
     "addAccessLevelPage": {

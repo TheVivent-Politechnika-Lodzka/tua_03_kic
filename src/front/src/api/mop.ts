@@ -2,79 +2,50 @@ import { Instant } from "@js-joda/core";
 import axios from "axios";
 import { StringLiteralLike } from "typescript";
 
-export interface ListImplantsRequest {
-    page: number;
-    size: number;
-    phrase?: string;
-    archived?: boolean;
-}
+//----------------------------------------------------- MOP 1 -------------------------------------------------------//
 
-export interface ImplantListElementDto {
-    id: string;
-    name: string;
-    description: string;
-    price: number;
-    url: string;
-}
+export interface CreateImplantResponse extends ImplantDto, Etag {}
 
-export interface ListImplantResponse {
-    totalCounts: number;
-    totalPages: number;
-    currentPage: number;
-    data: ImplantListElementDto[];
-}
-
-export interface ListImplantReviewsResponse {
-    totalCounts: number;
-    totalPages: number;
-    currentPage: number;
-    data: ImplantReview[];
-}
-
-export interface AppointmentListElementDto {
-    id: string;
-    client: AccountDetails;
-    specialist: AccountDetails;
-    implant: ImplantDto;
-    status: Status;
-    startDate: string;
-    endDate: string;
-    price: number;
-    description: string;
-    version: number;
-}
-
-interface ListOwnAppointmentsRequest {
-    page: number;
-    size: number;
-}
-
-export interface ListOwnAppointmentsResponse {
-    totalCount: number;
-    totalPages: number;
-    currentPage: number;
-    data: AppointmentListElementDto[];
-}
-
-export interface GetImplantResponse extends ImplantDto, Etag {}
-
-/**
- * zwraca listę implantów i informacje o paginacji
- * @params page aktualna strone,
- * @params size ilosc pozycji na stronie
- * @params phrase szukana fraze
- * @params archived implant zarchiwizowane
- * @returns @example {totalCount, totalPages, currentPage, data} | {errorMessage, status}
- */
-export async function listImplants(params: ListImplantsRequest) {
+export async function createImplant(newImplant: CreateImplantDto) {
     try {
-        const { data } = await axios.get<ListImplantResponse>(
-            "/mop/implant/list",
+        const { data, headers } = await axios.put<ImplantDto>(
+            "mop/implant/create",
+            newImplant
+        );
+        const newEtag = headers["etag"];
+        return { ...data, etag: newEtag } as CreateImplantResponse;
+    } catch (error) {
+        if (axios.isAxiosError(error) && error.response) {
+            return {
+                errorMessage: error.response.data as string,
+                status: error.response.status,
+            } as ApiError;
+        }
+        throw error;
+    }
+}
+
+//-------------------------------------------------------------------------------------------------------------------//
+//
+//
+//
+//----------------------------------------------------- MOP 2 -------------------------------------------------------//
+
+export interface ArchiveImplantResponse extends ImplantDto, Etag {}
+
+export async function archiveImplant(id: string, implantEtag: string) {
+    try {
+        const { data, headers } = await axios.patch(
+            `/mop/implant/archive/${id}`,
+            {},
             {
-                params,
+                headers: {
+                    "If-Match": implantEtag,
+                },
             }
         );
-        return data;
+        const newEtag = headers["etag"];
+        return { ...data, etag: newEtag } as ArchiveImplantResponse;
     } catch (error) {
         if (axios.isAxiosError(error) && error.response) {
             return {
@@ -85,50 +56,16 @@ export async function listImplants(params: ListImplantsRequest) {
         throw error;
     }
 }
-export async function listOwnAppointments(params: ListOwnAppointmentsRequest) {
-    try {
-        const { data } = await axios.get<ListOwnAppointmentsResponse>(
-            "/mop/list/visits/my",
-            { params }
-        );
-        return data;
-    } catch (error) {
-        if (axios.isAxiosError(error) && error.response) {
-            return {
-                errorMessage: error.response.data as string,
-                status: error.response.status,
-            } as ApiError;
-        }
-        throw error;
-    }
-}
-export async function getAppointmentDetails(id: string) {
-    try {
-        const { data, headers } = await axios.get<AppointmentListElementDto>(
-            "/mop/visit/" + id
-        );
-        const etag = headers["etag"];
-        return { data, etag };
-    } catch (error) {
-        if (axios.isAxiosError(error) && error.response) {
-            return {
-                errorMessage: error.response.data as string,
-                status: error.response.status,
-            } as ApiError;
-        }
-        throw error;
-    }
-}
+
+//-------------------------------------------------------------------------------------------------------------------//
+//
+//
+//
+//----------------------------------------------------- MOP 3 -------------------------------------------------------//
 
 export interface EditImplantRequest extends ImplantDto, Etag {}
 export interface EditImplantResponse extends ImplantDto, Etag {}
 
-/**
- *
- * @param id - identyfikator wszczepu
- * @param implantDetails - nowe dane wszczepu i etag
- * @returns @example EditImplantResponse | {errorMessage, status}
- */
 export async function editImplant(
     id: string,
     implantDetails: EditImplantRequest
@@ -157,7 +94,14 @@ export async function editImplant(
     }
 }
 
+//-------------------------------------------------------------------------------------------------------------------//
+//
+//
+//
+//----------------------------------------------------- MOP 4 -------------------------------------------------------//
+
 export interface GetImplantResponse extends ImplantDto, Etag {}
+
 /**
  * Pobierz szczegóły implantu
  *
@@ -182,30 +126,32 @@ export async function getImplant(id: string) {
     }
 }
 
-export interface AppointmentListResponse {
-    totalCounts: number;
-    totalPages: number;
-    currentPage: number;
-    data: AppointmentListElementDto[];
+//-------------------------------------------------------------------------------------------------------------------//
+//
+//
+//
+//----------------------------------------------------- MOP 5 -------------------------------------------------------//
+
+export interface ListImplantsRequest extends PaginationRequest {
+    archived?: boolean;
 }
 
-export interface AppointmentsListRequest {
-    page: number;
-    size: number;
-    phrase?: string;
+export interface ListImplantResponse extends Pagination {
+    data: ImplantDto[];
 }
 
-interface AppointmentDetails extends Taggable {
-    description: string;
-    status: Status;
-}
-
-export interface GetAppointmentResponse extends AppointmentDetails, Etag {}
-
-export async function listAppointments(params: AppointmentsListRequest) {
+/**
+ * zwraca listę implantów i informacje o paginacji
+ * @params page aktualna strone,
+ * @params size ilosc pozycji na stronie
+ * @params phrase szukana fraze
+ * @params archived implant zarchiwizowane
+ * @returns @example {totalCount, totalPages, currentPage, data} | {errorMessage, status}
+ */
+export async function listImplants(params: ListImplantsRequest) {
     try {
-        const { data } = await axios.get<AppointmentListResponse>(
-            "/mop/list/visits",
+        const { data } = await axios.get<ListImplantResponse>(
+            "/mop/implant/list",
             {
                 params,
             }
@@ -221,168 +167,27 @@ export async function listAppointments(params: AppointmentsListRequest) {
         throw error;
     }
 }
-/**
- * tworzy wszczep
- * @params name aktualna strone,
- * @params description ilosc pozycji na stronie
- * @params manufacturer szukana fraze
- * @params price implant zarchiwizowane
- * @params duration implant zarchiwizowane
- * @params url implant zarchiwizowane
- * @returns @example {archived, name, description, manufacturer, price, duration, id, image, popularity, version} | {errorMessage, status}
- */
-export interface CreateImplantRequest {
-    name: string;
-    description: string;
-    manufacturer: string;
-    price: number;
-    duration: number;
-    url: string;
-}
-export interface CreateImplantResponse {
-    archived: boolean;
-    name: string;
-    description: string;
-    manufacturer: string;
-    price: number;
-    duration: number;
-    id: string;
-    image: string;
-    popularity: number;
-    version: number;
-}
 
-interface EditOwnAppointmentRequest {
-    id: string;
-    version: number;
-    description: string;
-    etag: string;
-    startDate: Instant;
-    status: string;
-}
-
-interface EditAppointmentRequest {
-    id: string;
-    version: number;
-    description: string;
-    etag: string;
-    status: string;
-}
-
-interface EditOwnAppointmentRespone {
-    appointment: AppointmentListElementDto;
-    etag: string;
-}
-
-export async function createImplant(params: CreateImplantRequest) {
-    try {
-        const { data } = await axios.put<CreateImplantResponse>(
-            "/mop/implant/create",
-
-            params
-        );
-        return data;
-    } catch (error) {
-        if (axios.isAxiosError(error) && error.response) {
-            return {
-                errorMessage: error.response.data as string,
-                status: error.response.status,
-            } as ApiError;
-        }
-        throw error;
-    }
-}
-
-export async function editOwnAppointment(params: EditOwnAppointmentRequest) {
-    try {
-        const { etag, ...body } = params;
-        const { data, headers } = await axios.put<EditOwnAppointmentRespone>(
-            `/mop/edit/visit/my/${body.id}`,
-            body,
-            {
-                headers: {
-                    "If-Match": etag,
-                },
-            }
-        );
-        const newEtag = headers["etag"];
-        return { ...data, etag: newEtag };
-    } catch (error) {
-        if (axios.isAxiosError(error) && error.response) {
-            return {
-                errorMessage: error.response.data as string,
-                status: error.response.status,
-            } as ApiError;
-        }
-        throw error;
-    }
-}
-
-interface EditAppointmentRequest {
-    id: string;
-    version: number;
-    description: string;
-    etag: string;
-    status: string;
-}
-
-interface EditAppointmentResponse extends Etag {
-    id: string;
-    version: number;
-    description: string;
-    etag: string;
-    status: string;
-}
-
-export async function editAppointmentByAdmin(params: EditAppointmentRequest) {
-    try {
-        const { etag, ...body } = params;
-        const { data, headers } = await axios.put<EditAppointmentResponse>(
-            `/mop/edit/visit/${body.id}`,
-            body,
-            {
-                headers: {
-                    "If-Match": etag,
-                },
-            }
-        );
-        const newEtag = headers["etag"];
-        return { ...data, etag: newEtag };
-    } catch (error) {
-        if (axios.isAxiosError(error) && error.response) {
-            return {
-                errorMessage: error.response.data as string,
-                status: error.response.status,
-            } as ApiError;
-        }
-        throw error;
-    }
-}
-
+//-------------------------------------------------------------------------------------------------------------------//
+//
+//
+//
 //----------------------------------------------------- MOP 6 -------------------------------------------------------//
+
 export interface SpecialistListElementDto {
     id: string;
-    name: string;
-    surname: string;
+    firstName: string;
+    lastName: string;
+    url: string;
     email: string;
     phoneNumber: string;
-    url: string;
 }
 
-export interface SpecialistListResponse {
-    totalCounts: number;
-    totalPages: number;
-    currentPage: number;
+export interface SpecialistListResponse extends Pagination {
     data: SpecialistListElementDto[];
 }
 
-export interface SpecialistListRequest {
-    page: number;
-    size: number;
-    phrase?: string;
-}
-
-export async function listSpecialist(params: SpecialistListRequest) {
+export async function listSpecialist(params: PaginationRequest) {
     try {
         const { data } = await axios.get<SpecialistListResponse>(
             "/mop/specialist/list",
@@ -401,28 +206,26 @@ export async function listSpecialist(params: SpecialistListRequest) {
         throw error;
     }
 }
-//------------------------------------------------- KONIEC MOP 6 ----------------------------------------------------//
-//
-//
-//
-//----------------------------------------------------- MOP 2 -------------------------------------------------------//
 
-export interface ArchiveImplantRequest extends Etag {}
-export interface ArchiveImplantResponse extends ImplantDto, Etag {}
+//-------------------------------------------------------------------------------------------------------------------//
+//
+//
+//
+//----------------------------------------------------- MOP 7 -------------------------------------------------------//
 
-export async function archiveImplant(id: string, implantEtag: string) {
+export interface AppointmentListResponse extends Pagination {
+    data: AppointmentListElementDto[];
+}
+
+export async function listAppointments(params: PaginationRequest) {
     try {
-        const { data, headers } = await axios.patch(
-            `/mop/implant/archive/${id}`,
-            {},
+        const { data } = await axios.get<AppointmentListResponse>(
+            "/mop/list/visits",
             {
-                headers: {
-                    "If-Match": implantEtag,
-                },
+                params,
             }
         );
-        const newEtag = headers["etag"];
-        return { ...data, etag: newEtag } as ArchiveImplantResponse;
+        return data;
     } catch (error) {
         if (axios.isAxiosError(error) && error.response) {
             return {
@@ -433,32 +236,20 @@ export async function archiveImplant(id: string, implantEtag: string) {
         throw error;
     }
 }
-//------------------------------------------------- KONIEC MOP 2 ----------------------------------------------------//
 
-//------------------------------------------------- MOP 13 ----------------------------------------------------//
+//-------------------------------------------------------------------------------------------------------------------//
+//
+//
+//
+//----------------------------------------------------- MOP 8 -------------------------------------------------------//
 
-export interface GetAppointmentResponse
-    extends AppointmentListElementDto,
-        Etag {}
-
-/**
- * Odwołaj dowolną wizytę
- *
- * @param id identyfikator wizyty
- * @returns GetAppointmentResponse | {errorMessage, status}
- */
-export async function cancelAnyVisit(id: string, etag: string) {
+export async function listMyAppointments(params: PaginationRequest) {
     try {
-        const { data, headers } = await axios.delete(
-            `/mop/cancel/visit/${id}`,
-            {
-                headers: {
-                    "If-Match": etag,
-                },
-            }
+        const { data } = await axios.get<AppointmentListResponse>(
+            "/mop/list/visits/my",
+            { params }
         );
-        const newEtag = headers["etag"];
-        return { ...data, etag: newEtag } as GetAppointmentResponse;
+        return data;
     } catch (error) {
         if (axios.isAxiosError(error) && error.response) {
             return {
@@ -469,9 +260,39 @@ export async function cancelAnyVisit(id: string, etag: string) {
         throw error;
     }
 }
-//------------------------------------------------- KONIEC MOP 13 ----------------------------------------------------//
 
+//-------------------------------------------------------------------------------------------------------------------//
+//
+//
+//
 //----------------------------------------------------- MOP 9 -------------------------------------------------------//
+
+interface CreateAppointmentRequest {
+    specialistId: string;
+    implantId: string;
+    startDate: string;
+}
+interface CreateAppointmentResponse extends AppointmentDto, Etag {}
+
+export async function createAppointment(request: CreateAppointmentRequest) {
+    try {
+        const { data, headers } = await axios.post<AppointmentDto>(
+            `/mop/visit/create`,
+            request
+        );
+
+        const etag = headers["etag"];
+        return { ...data, etag } as CreateAppointmentResponse;
+    } catch (error) {
+        if (axios.isAxiosError(error) && error.response) {
+            return {
+                errorMessage: error.response.data as string,
+                status: error.response.status,
+            } as ApiError;
+        }
+        throw error;
+    }
+}
 
 export async function getSpecialistAvailability(
     specialistId: string,
@@ -500,23 +321,34 @@ export async function getSpecialistAvailability(
     }
 }
 
-interface CreateAppointmentRequest {
-    specialistId: string;
-    implantId: string;
-    startDate: string;
+//-------------------------------------------------------------------------------------------------------------------//
+//
+//
+//
+//---------------------------------------------------- MOP 10 -------------------------------------------------------//
+
+interface EditOwnAppointmentRequest extends Taggable, Etag {
+    description: string;
+    startDate: Instant;
+    status: Status;
 }
 
-interface CreateAppointmentResponse extends AppointmentDto, Etag {}
+interface EditOwnAppointmentResponse extends AppointmentDto, Etag {}
 
-export async function createAppointment(request: CreateAppointmentRequest) {
+export async function editOwnAppointment(params: EditOwnAppointmentRequest) {
     try {
-        const { data, headers } = await axios.post<AppointmentDto>(
-            `/mop/visit/create`,
-            request
+        const { etag, ...body } = params;
+        const { data, headers } = await axios.put<AppointmentDto>(
+            `/mop/edit/visit/my/${body.id}`,
+            body,
+            {
+                headers: {
+                    "If-Match": etag,
+                },
+            }
         );
-
-        const etag = headers["etag"];
-        return { ...data, etag } as CreateAppointmentResponse;
+        const newEtag = headers["etag"];
+        return { ...data, etag: newEtag } as EditOwnAppointmentResponse;
     } catch (error) {
         if (axios.isAxiosError(error) && error.response) {
             return {
@@ -528,16 +360,256 @@ export async function createAppointment(request: CreateAppointmentRequest) {
     }
 }
 
-//------------------------------------------------- KONIEC MOP 6 ----------------------------------------------------//
+//-------------------------------------------------------------------------------------------------------------------//
+//
+//
+//
+//---------------------------------------------------- MOP 11 -------------------------------------------------------//
 
-export async function getImplantsReviews(
-    implantId: string,
-    page: number,
-    size: number
+interface EditAppointmentRequest extends Taggable, Etag {
+    description: string;
+    status: Status;
+}
+
+interface EditAppointmentResponse extends AppointmentDto, Etag {}
+
+export async function editAppointmentByAdmin(params: EditAppointmentRequest) {
+    try {
+        const { etag, ...body } = params;
+        const { data, headers } = await axios.put<AppointmentDto>(
+            `/mop/edit/visit/${body.id}`,
+            body,
+            {
+                headers: {
+                    "If-Match": etag,
+                },
+            }
+        );
+        const newEtag = headers["etag"];
+        return { ...data, etag: newEtag } as EditAppointmentResponse;
+    } catch (error) {
+        if (axios.isAxiosError(error) && error.response) {
+            return {
+                errorMessage: error.response.data as string,
+                status: error.response.status,
+            } as ApiError;
+        }
+        throw error;
+    }
+}
+
+//-------------------------------------------------------------------------------------------------------------------//
+//
+//
+//
+//---------------------------------------------------- MOP 12 -------------------------------------------------------//
+
+export interface CancelOwnAppointmentResponse extends AppointmentDto, Etag {}
+
+export async function cancelOwnAppointment(
+    appointmentId: string,
+    etag: string
 ) {
     try {
-        const { data } = await axios.get<ListImplantReviewsResponse>(
-            `/mop/implant/${implantId}/reviews?page=${page}&size=${size}`
+        const { data, headers } = await axios.patch<AppointmentDto>(
+            `/mop/visit/cancel/my/${appointmentId}`,
+            {},
+            {
+                headers: {
+                    "If-Match": etag,
+                },
+            }
+        );
+        const newEtag = headers["etag"];
+        return { ...data, etag: newEtag } as CancelOwnAppointmentResponse;
+    } catch (error) {
+        if (axios.isAxiosError(error) && error.response) {
+            return {
+                errorMessage: error.response.data as string,
+                status: error.response.status,
+            } as ApiError;
+        }
+        throw error;
+    }
+}
+
+//-------------------------------------------------------------------------------------------------------------------//
+//
+//
+//
+//---------------------------------------------------- MOP 13 -------------------------------------------------------//
+
+export interface CancelAppointmentResponse extends AppointmentDto, Etag {}
+
+/**
+ * Odwołaj dowolną wizytę
+ *
+ * @param id identyfikator wizyty
+ * @returns GetAppointmentResponse | {errorMessage, status}
+ */
+export async function cancelAnyAppointment(id: string, etag: string) {
+    try {
+        const { data, headers } = await axios.delete<AppointmentDto>(
+            `/mop/cancel/visit/${id}`,
+            {
+                headers: {
+                    "If-Match": etag,
+                },
+            }
+        );
+        const newEtag = headers["etag"];
+        return { ...data, etag: newEtag } as CancelAppointmentResponse;
+    } catch (error) {
+        if (axios.isAxiosError(error) && error.response) {
+            return {
+                errorMessage: error.response.data as string,
+                status: error.response.status,
+            } as ApiError;
+        }
+        throw error;
+    }
+}
+
+//-------------------------------------------------------------------------------------------------------------------//
+//
+//
+//
+//---------------------------------------------------- MOP 14 -------------------------------------------------------//
+
+export interface FinishAppointmentResponse
+    extends AppointmentListElementDto,
+        Etag {}
+
+/**
+ * Odwołaj dowolną wizytę
+ *
+ * @param id identyfikator wizyty
+ * @returns GetAppointmentResponse | {errorMessage, status}
+ */
+export async function finishAppointment(id: string, etag: string) {
+    try {
+        const { data, headers } = await axios.patch<AppointmentDto>(
+            `/mop/finish/visit/${id}`,
+            {},
+            {
+                headers: {
+                    "If-Match": etag,
+                },
+            }
+        );
+        const newEtag = headers["etag"];
+        return { ...data, etag: newEtag } as FinishAppointmentResponse;
+    } catch (error) {
+        if (axios.isAxiosError(error) && error.response) {
+            return {
+                errorMessage: error.response.data as string,
+                status: error.response.status,
+            } as ApiError;
+        }
+        throw error;
+    }
+}
+
+//-------------------------------------------------------------------------------------------------------------------//
+//
+//
+//
+//---------------------------------------------------- MOP 15 -------------------------------------------------------//
+
+interface CreateImplantReviewResponse extends ImplantReview {}
+
+interface CreateImplantReviewDto {
+    implantId: string;
+    clientLogin: string;
+    review: string;
+    rating: number;
+}
+
+export async function addImplantsReview(request: CreateImplantReviewDto) {
+    try {
+        const { data } = await axios.put<ImplantReview>(
+            `/mop/implant/review`,
+            request
+        );
+        return data as CreateImplantReviewResponse;
+    } catch (error) {
+        if (axios.isAxiosError(error) && error.response) {
+            return {
+                errorMessage: error.response.data as string,
+                status: error.response.status,
+            } as ApiError;
+        }
+        throw error;
+    }
+}
+
+//-------------------------------------------------------------------------------------------------------------------//
+//
+//
+//
+//---------------------------------------------------- MOP 16 -------------------------------------------------------//
+
+export async function deleteImplantsReview(implantId: string) {
+    try {
+        const { data, status } = await axios.delete(
+            `/mop/implant/review/${implantId}`
+        );
+        return { status };
+    } catch (error) {
+        if (axios.isAxiosError(error) && error.response) {
+            return {
+                errorMessage: error.response.data as string,
+                status: error.response.status,
+            } as ApiError;
+        }
+        throw error;
+    }
+}
+
+//-------------------------------------------------------------------------------------------------------------------//
+//
+//
+//
+//---------------------------------------------------- MOP 17 -------------------------------------------------------//
+
+interface GetAppointmentDetailsResponse extends AppointmentDto, Etag {}
+
+export async function getAppointmentDetails(id: string) {
+    try {
+        const { data, headers } = await axios.get<AppointmentDto>(
+            "/mop/visit/" + id
+        );
+        const etag = headers["etag"];
+        return { ...data, etag } as GetAppointmentDetailsResponse;
+    } catch (error) {
+        if (axios.isAxiosError(error) && error.response) {
+            return {
+                errorMessage: error.response.data as string,
+                status: error.response.status,
+            } as ApiError;
+        }
+        throw error;
+    }
+}
+
+//-------------------------------------------------------------------------------------------------------------------//
+//
+//
+//
+//---------------------------------------------------- MOP 18 -------------------------------------------------------//
+
+interface GetImplantsReviewsRequest extends PaginationRequest {
+    implantId: string;
+}
+
+export interface GetImplantsReviewsResponse extends Pagination {
+    data: ImplantReview[];
+}
+
+export async function getImplantsReviews(request: GetImplantsReviewsRequest) {
+    try {
+        const { data } = await axios.get<GetImplantsReviewsResponse>(
+            `/mop/implant/${request.implantId}/reviews?page=${request.page}&size=${request.size}`
         );
         return data;
     } catch (error) {
@@ -551,106 +623,4 @@ export async function getImplantsReviews(
     }
 }
 
-interface GetResponse {
-    data: any;
-}
-
-export async function deleteImplantReview(implantId: string) {
-    try {
-        const {data} = await axios.delete<GetResponse>(`/mop/implant/review/${implantId}`);
-        return data as GetResponse;
-    } catch (error) {
-        if (axios.isAxiosError(error) && error.response) {
-            return {
-                errorMessage: error.response.data as string,
-                status: error.response.status,
-            } as ApiError;
-        }
-        throw error;
-    }
-}
-
-interface CreateImplantReviewRequest {
-    implantId: string;
-    clientLogin: string;
-    rating: number;
-    review: string;
-}
-
-interface CreateImplantReviewResponse extends ImplantReview {}
-
-export async function addImplantReview(request: CreateImplantReviewRequest) {
-    try {
-        const {data} = await axios.put<CreateImplantReviewResponse>(`/mop/implant/review`, request);
-        return data as CreateImplantReviewResponse;
-    } catch (error) {
-        if (axios.isAxiosError(error) && error.response) {
-            return {
-                errorMessage: error.response.data as string,
-                status: error.response.status,
-            } as ApiError;
-        }
-        throw error;
-    }
-}
-
-//------------------------------------------------- MOP 14 ----------------------------------------------------//
-
-export interface GetAppointmentResponse
-    extends AppointmentListElementDto,
-        Etag {}
-
-/**
- * Odwołaj dowolną wizytę
- *
- * @param id identyfikator wizyty
- * @returns GetAppointmentResponse | {errorMessage, status}
- */
-export async function finishVisit(id: string, etag: string) {
-    try {
-        const { data, headers } = await axios.patch(
-            `/mop/finish/visit/${id}`,
-            {},
-            {
-                headers: {
-                    "If-Match": etag,
-                },
-            }
-        );
-        const newEtag = headers["etag"];
-        return { ...data, etag: newEtag } as GetAppointmentResponse;
-    } catch (error) {
-        if (axios.isAxiosError(error) && error.response) {
-            return {
-                errorMessage: error.response.data as string,
-                status: error.response.status,
-            } as ApiError;
-        }
-        throw error;
-    }
-}
-//------------------------------------------------- KONIEC MOP 14 ----------------------------------------------------//
-
-export async function cancelOwnVisit(appointmentId: string, etag: string) {
-    try {
-        const { data, headers } = await axios.patch(
-            `/mop/visit/cancel/my/${appointmentId}`,
-            {},
-            {
-                headers: {
-                    "If-Match": etag,
-                },
-            }
-        );
-        const newEtag = headers["etag"];
-        return { ...data, etag: newEtag } as GetAppointmentResponse;
-    } catch (error) {
-        if (axios.isAxiosError(error) && error.response) {
-            return {
-                errorMessage: error.response.data as string,
-                status: error.response.status,
-            } as ApiError;
-        }
-        throw error;
-    }
-}
+//-------------------------------------------------------------------------------------------------------------------//

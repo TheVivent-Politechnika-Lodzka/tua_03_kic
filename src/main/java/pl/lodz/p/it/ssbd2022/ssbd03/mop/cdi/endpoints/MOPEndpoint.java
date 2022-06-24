@@ -5,6 +5,7 @@ import jakarta.enterprise.context.RequestScoped;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.core.Response;
+import pl.lodz.p.it.ssbd2022.ssbd03.common.AbstractEndpoint;
 import pl.lodz.p.it.ssbd2022.ssbd03.common.Config;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.Account;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.Appointment;
@@ -30,7 +31,9 @@ import java.util.UUID;
 @RequestScoped
 @DenyAll
 @Path("/mop")
-public class MOPEndpoint implements MOPEndpointInterface {
+public class MOPEndpoint extends AbstractEndpoint implements MOPEndpointInterface {
+
+    private static final long serialVersionUID = 1L;
 
     @Inject
     AuthContext authContext;
@@ -61,22 +64,13 @@ public class MOPEndpoint implements MOPEndpointInterface {
      */
     @Override
     public Response createImplant(CreateImplantDto createImplantDto) {
-
-        int TXCounter = Config.MAX_TX_RETRIES;
-        boolean commitedTX;
         Implant implant = implantMapper.createImplantFromDto(createImplantDto);
-        Implant createdImplant;
-        do {
-            createdImplant = mopService.createImplant(implant);
-            commitedTX = mopService.isLastTransactionCommited();
-        } while (!commitedTX && --TXCounter > 0);
 
-        if (!commitedTX) {
-            throw new TransactionException();
-        }
+        Implant createdImplant = repeat(mopService, () -> mopService.createImplant(implant));
+
         ImplantDto implantDto = implantMapper.createImplantDtoFromImplant(createdImplant);
 
-        return Response.ok(implantDto).build();
+        return Response.ok(implantDto).tag(tagger.tag(implantDto)).build();
     }
 
     /**
@@ -88,23 +82,10 @@ public class MOPEndpoint implements MOPEndpointInterface {
      */
     @Override
     public Response archiveImplant(UUID id) {
-
         tagger.verifyTag();
+        Implant archivedImplant = repeat(mopService, () -> mopService.archiveImplant(id));
 
-        Implant archiveImplant;
-        int TXCounter = Config.MAX_TX_RETRIES;
-        boolean commitedTX;
-
-        do {
-            archiveImplant = mopService.archiveImplant(id);
-            commitedTX = mopService.isLastTransactionCommited();
-        } while (!commitedTX && --TXCounter > 0);
-
-        if (!commitedTX) {
-            throw new TransactionException();
-        }
-
-        ImplantDto imp = implantMapper.createImplantDtoFromImplant(archiveImplant);
+        ImplantDto imp = implantMapper.createImplantDtoFromImplant(archivedImplant);
 
         return Response.ok(imp).tag(tagger.tag(imp)).build();
     }
@@ -114,17 +95,7 @@ public class MOPEndpoint implements MOPEndpointInterface {
     public Response editImplant(UUID id, ImplantDto implantDto) {
         tagger.verifyTag(implantDto);
 
-        Implant implant;
-        int TXCounter = Config.MAX_TX_RETRIES;
-        boolean commitedTX;
-        do {
-            implant = mopService.editImplant(id, implantMapper.createImplantFromImplantDto(implantDto));
-            commitedTX = mopService.isLastTransactionCommited();
-        } while (!commitedTX && --TXCounter > 0);
-
-        if (!commitedTX) {
-            throw new TransactionException();
-        }
+        Implant implant = repeat(mopService, () -> mopService.editImplant(id, implantMapper.createImplantFromImplantDto(implantDto)));
 
         ImplantDto updatedImplant = implantMapper.createImplantDtoFromImplant(implant);
 
@@ -134,18 +105,7 @@ public class MOPEndpoint implements MOPEndpointInterface {
     //MOP.4 - Przegladaj szczegoły wszczepu
     @Override
     public Response getImplant(UUID id) {
-        Implant implant;
-        int TXCounter = Config.MAX_TX_RETRIES;
-        boolean commitedTX;
-        do {
-            implant = mopService.findImplantByUuid(id);
-
-            commitedTX = mopService.isLastTransactionCommited();
-        } while (!commitedTX && TXCounter-- > 0);
-
-        if (!commitedTX) {
-            throw new TransactionException();
-        }
+        Implant implant = repeat(mopService, () -> mopService.findImplantByUuid(id));
 
         ImplantDto dto = implantMapper.createImplantDtoFromImplant(implant);
         return Response.ok(dto).tag(tagger.tag(dto)).build();
@@ -163,20 +123,10 @@ public class MOPEndpoint implements MOPEndpointInterface {
      */
     @Override
     public Response listImplants(int page, int size, String phrase, boolean archived) {
-        PaginationData paginationData;
-        int TXCounter = Config.MAX_TX_RETRIES;
-        boolean commitedTX;
-        do {
-            paginationData = mopService.findImplants(page, size, phrase, archived);
-            commitedTX = mopService.isLastTransactionCommited();
-        } while (!commitedTX && TXCounter-- > 0);
-
-        if (!commitedTX) {
-            throw new TransactionException();
-        }
+        PaginationData paginationData = repeat(mopService, () -> mopService.findImplants(page, size, phrase, archived));
 
         List<Implant> implants = paginationData.getData();
-        List<ImplantListElementDto> implantsDto = implantMapper.getListFromImplantListElementDtoFromImplant(implants);
+        List<ImplantDto> implantsDto = implantMapper.getListFromImplantListElementDtoFromImplant(implants);
         paginationData.setData(implantsDto);
         return Response.ok().entity(paginationData).build();
     }
@@ -193,17 +143,7 @@ public class MOPEndpoint implements MOPEndpointInterface {
      */
     @Override
     public Response listSpecialists(int page, int size, String phrase) {
-        PaginationData paginationData;
-        int TXCounter = Config.MAX_TX_RETRIES;
-        boolean commitedTX;
-        do {
-            paginationData = mopService.findSpecialists(page, size, phrase);
-            commitedTX = mopService.isLastTransactionCommited();
-        } while (!commitedTX && TXCounter-- > 0);
-
-        if (!commitedTX) {
-            throw new TransactionException();
-        }
+        PaginationData paginationData = repeat(mopService, () -> mopService.findSpecialists(page, size, phrase));
 
         List<Account> accounts = paginationData.getData();
         List<SpecialistForMopDto> accountsDTO = accountMapper.accountSpecialistListElementDtoList(accounts);
@@ -222,18 +162,8 @@ public class MOPEndpoint implements MOPEndpointInterface {
      * @throws TransactionException w przypadku braku zatwierdzenia transakcji
      */
     @Override
-    public Response listVisits(int page, int size, String phrase) {
-        PaginationData paginationData;
-        int TXCounter = Config.MAX_TX_RETRIES;
-        boolean commitedTX;
-        do {
-            paginationData = mopService.findVisits(page, size, phrase);
-            commitedTX = mopService.isLastTransactionCommited();
-        } while (!commitedTX && TXCounter-- > 0);
-
-        if (!commitedTX) {
-            throw new TransactionException();
-        }
+    public Response listAppointments(int page, int size, String phrase) {
+        PaginationData paginationData = repeat(mopService, () -> mopService.findVisits(page, size, phrase));
 
         List<Appointment> appointments = paginationData.getData();
         List<AppointmentListElementDto> appointmentDtos = appointmentMapper.appointmentListElementDtoList(appointments);
@@ -250,19 +180,9 @@ public class MOPEndpoint implements MOPEndpointInterface {
      * @throws TransactionException w przypadku braku zatwierdzenia transakcji
      */
     @Override
-    public Response listMyVisits(int page, int size) {
-        PaginationData paginationData;
+    public Response listMyAppointments(int page, int size) {
         String login = authContext.getCurrentUserLogin();
-        int TXCounter = Config.MAX_TX_RETRIES;
-        boolean commitedTX;
-        do {
-            paginationData = mopService.findVisitsByLogin(page, size, login);
-            commitedTX = mopService.isLastTransactionCommited();
-        } while (!commitedTX && TXCounter-- > 0);
-
-        if (!commitedTX) {
-            throw new TransactionException();
-        }
+        PaginationData paginationData = repeat(mopService, () -> mopService.findVisitsByLogin(page, size, login));
 
         List<Appointment> appointments = paginationData.getData();
         List<AppointmentListElementDto> appointmentDtos = appointmentMapper.appointmentListElementDtoList(appointments);
@@ -285,22 +205,13 @@ public class MOPEndpoint implements MOPEndpointInterface {
         UUID implantId = createAppointmentDto.getImplantId();
         Instant startDate = createAppointmentDto.getStartDate();
 
-        Appointment createdAppointment;
-        int TXCounter = Config.MAX_TX_RETRIES;
-        boolean commitedTX;
-        do {
-            createdAppointment = mopService.createAppointment(
-                    clientLogin,
-                    specialistId,
-                    implantId,
-                    startDate
-            );
-            commitedTX = mopService.isLastTransactionCommited();
-        } while (!commitedTX && TXCounter-- > 0);
+        Appointment createdAppointment = repeat(mopService, () -> mopService.createAppointment(
+                clientLogin,
+                specialistId,
+                implantId,
+                startDate
+        ));
 
-        if (!commitedTX) {
-            throw new TransactionException();
-        }
         AppointmentDto appointmentDto = appointmentMapper.createAppointmentDtoFromAppointment(createdAppointment);
 
         return Response.ok(appointmentDto).tag(tagger.tag(appointmentDto)).build();
@@ -322,16 +233,7 @@ public class MOPEndpoint implements MOPEndpointInterface {
         Duration durationObj = Duration.ofSeconds(duration);
         Instant monthObj = Instant.parse(month);
 
-        int TXCounter = Config.MAX_TX_RETRIES;
-        boolean commitedTX;
-        do {
-            availability = mopService.getSpecialistAvailabilityInMonth(specialistId, monthObj, durationObj);
-            commitedTX = mopService.isLastTransactionCommited();
-        } while (!commitedTX && TXCounter-- > 0);
-
-        if (!commitedTX) {
-            throw new TransactionException();
-        }
+        availability = repeat(mopService, () -> mopService.getSpecialistAvailabilityInMonth(specialistId, monthObj, durationObj));
 
         return Response.ok(availability).build();
     }
@@ -345,20 +247,12 @@ public class MOPEndpoint implements MOPEndpointInterface {
      * @throws TransactionException jeśli transakcja nie została zatwierdzona
      */
     @Override
-    public Response editOwnVisit(UUID id, AppointmentOwnEditDto appointmentOwnEditDto) {
+    public Response editOwnAppointment(UUID id, AppointmentOwnEditDto appointmentOwnEditDto) {
         tagger.verifyTag(appointmentOwnEditDto);
         String login = authContext.getCurrentUserLogin();
         Appointment update = appointmentMapper.createAppointmentFromAppointmentOwnEditDto(appointmentOwnEditDto);
-        Appointment editedAppointment;
-        int TXCounter = Config.MAX_TX_RETRIES;
-        boolean commitedTX;
-        do {
-            editedAppointment = mopService.editOwnAppointment(id, update, login);
-            commitedTX = mopService.isLastTransactionCommited();
-        } while (!commitedTX && --TXCounter > 0);
-        if (!commitedTX) {
-            throw new TransactionException();
-        }
+        Appointment editedAppointment = repeat(mopService, () -> mopService.editOwnAppointment(id, update, login));
+
         AppointmentDto app = appointmentMapper.createAppointmentDtoFromAppointment(editedAppointment);
         return Response.ok(app).tag(tagger.tag(app)).build();
     }
@@ -371,22 +265,11 @@ public class MOPEndpoint implements MOPEndpointInterface {
      * @return odpowiedz HTTP
      */
     @Override
-    public Response editVisit(UUID id, AppointmentEditDto appointmentEditDto) {
+    public Response editAppointment(UUID id, AppointmentEditDto appointmentEditDto) {
         tagger.verifyTag(appointmentEditDto);
 
         Appointment update = appointmentMapper.createAppointmentFromEditDto(appointmentEditDto);
-        Appointment editedAppointment;
-
-        int TXCounter = Config.MAX_TX_RETRIES;
-        boolean commitedTX;
-        do {
-            editedAppointment = mopService.editAppointmentByAdministrator(id, update);
-            commitedTX = mopService.isLastTransactionCommited();
-        } while (!commitedTX && --TXCounter > 0);
-
-        if (!commitedTX) {
-            throw new TransactionException();
-        }
+        Appointment editedAppointment = repeat(mopService, () -> mopService.editAppointmentByAdministrator(id, update));
 
         AppointmentEditDto app = appointmentMapper.createEditDtoFromAppointment(editedAppointment);
 
@@ -402,20 +285,9 @@ public class MOPEndpoint implements MOPEndpointInterface {
      * @throws TransactionException, gdy transakcja się nie powiedzie
      */
     @Override
-    public Response cancelOwnVisit(UUID id) {
+    public Response cancelOwnAppointment(UUID id) {
         tagger.verifyTag();
-        Appointment cancelledAppointment;
-
-        int TXCounter = Config.MAX_TX_RETRIES;
-        boolean commitedTX;
-        do {
-            cancelledAppointment = mopService.cancelOwnAppointment(id);
-            commitedTX = mopService.isLastTransactionCommited();
-        } while (!commitedTX && --TXCounter > 0);
-
-        if (!commitedTX) {
-            throw new TransactionException();
-        }
+        Appointment cancelledAppointment = repeat(mopService, () -> mopService.cancelOwnAppointment(id));
 
         AppointmentDto appointmentDto = appointmentMapper.createAppointmentDtoFromAppointment(cancelledAppointment);
 
@@ -431,20 +303,9 @@ public class MOPEndpoint implements MOPEndpointInterface {
      * @return odpowiedź HTTP
      */
     @Override
-    public Response cancelAnyVisit(UUID id) {
+    public Response cancelAnyAppointment(UUID id) {
         tagger.verifyTag();
-        Appointment cancelledAppointment;
-
-        int TXCounter = Config.MAX_TX_RETRIES;
-        boolean commitedTX;
-        do {
-            cancelledAppointment = mopService.cancelAnyAppointment(id);
-            commitedTX = mopService.isLastTransactionCommited();
-        } while (!commitedTX && --TXCounter > 0);
-
-        if (!commitedTX) {
-            throw new TransactionException();
-        }
+        Appointment cancelledAppointment = repeat(mopService, () -> mopService.cancelAnyAppointment(id));
 
         AppointmentDto appointmentDto = appointmentMapper.createAppointmentDtoFromAppointment(cancelledAppointment);
 
@@ -458,29 +319,11 @@ public class MOPEndpoint implements MOPEndpointInterface {
      * @return zakończona wizyta
      */
     @Override
-    public Response finishVisit(UUID id) {
+    public Response finishAppointment(UUID id) {
         tagger.verifyTag();
 
         String login = authContext.getCurrentUserLogin();
-        Appointment finishedAppointment = null;
-
-        int TXCounter = Config.MAX_TX_RETRIES;
-        boolean commitedTX = false;
-
-        do {
-            try {
-                finishedAppointment = mopService.finishAppointment(id, login);
-                commitedTX = mopService.isLastTransactionCommited();
-            } catch (InAppOptimisticLockException ex) {
-                if (TXCounter - 1 <= 0) {
-                    throw ex;
-                }
-            }
-        } while (!commitedTX && --TXCounter > 0);
-
-        if (!commitedTX || finishedAppointment == null) {
-            throw new TransactionException();
-        }
+        Appointment finishedAppointment = repeat(mopService, () -> mopService.finishAppointment(id, login), List.of(InAppOptimisticLockException.class));
 
         AppointmentDto appointmentDto = appointmentMapper.createAppointmentDtoFromAppointment(finishedAppointment);
         return Response.ok(appointmentDto).tag(tagger.tag(appointmentDto)).build();
@@ -495,18 +338,8 @@ public class MOPEndpoint implements MOPEndpointInterface {
      */
     @Override
     public Response addImplantsReview(CreateImplantReviewDto createImplantReviewDto) {
-        int TXCounter = Config.MAX_TX_RETRIES;
-        boolean commitedTX;
         ImplantReview implantReview = implantReviewMapper.createImplantReviewFromDto(createImplantReviewDto);
-        ImplantReview createdReview;
-        do {
-            createdReview = mopService.createReview(implantReview);
-            commitedTX = mopService.isLastTransactionCommited();
-        } while (!commitedTX && --TXCounter > 0);
-
-        if (!commitedTX) {
-            throw new TransactionException();
-        }
+        ImplantReview createdReview = repeat(mopService, () -> mopService.createReview(implantReview));
 
         ImplantReviewDto createdReviewDto = implantReviewMapper.implantReviewDtofromImplantReview(createdReview);
         return Response.ok().entity(createdReviewDto).build();
@@ -521,36 +354,17 @@ public class MOPEndpoint implements MOPEndpointInterface {
      */
     @Override
     public Response deleteImplantsReview(UUID id) {
-        int TXCounter = Config.MAX_TX_RETRIES;
-        boolean commitedTX;
-
         String login = authContext.getCurrentUserLogin();
-        do {
-            mopService.deleteReview(id, login);
-            commitedTX = mopService.isLastTransactionCommited();
-        } while (!commitedTX && --TXCounter > 0);
-
-        if (!commitedTX) {
-            throw new TransactionException();
-        }
+        repeat(mopService, () -> mopService.deleteReview(id, login));
 
         return Response.ok().build();
     }
 
     @Override
-    public Response getVisitDetails(UUID uuid) {
+    public Response getAppointmentDetails(UUID uuid) {
         String login = authContext.getCurrentUserLogin();
-        Appointment appointment;
-        int TXCounter = Config.MAX_TX_RETRIES;
-        boolean commitedTX;
-        do {
-            appointment = mopService.findVisit(uuid, login);
-            commitedTX = mopService.isLastTransactionCommited();
-        } while (!commitedTX && --TXCounter > 0);
+        Appointment appointment = repeat(mopService, () -> mopService.findVisit(uuid, login));
 
-        if (!commitedTX) {
-            throw new TransactionException();
-        }
         AppointmentDto appointmentDto = appointmentMapper.createAppointmentDtoFromAppointment(appointment);
         return Response.ok(appointmentDto).tag(tagger.tag(appointmentDto)).build();
     }
@@ -566,18 +380,8 @@ public class MOPEndpoint implements MOPEndpointInterface {
      */
     @Override
     public Response getAllImplantReviews(int page, int size, UUID id) {
-        int TXCounter = Config.MAX_TX_RETRIES;
-        boolean commitedTX;
-        PaginationData paginationData;
+        PaginationData paginationData = repeat(mopService, () -> mopService.getAllImplantReviews(page, size, id));
 
-        do {
-            paginationData = mopService.getAllImplantReviews(page, size, id);
-            commitedTX = mopService.isLastTransactionCommited();
-        } while (!commitedTX && --TXCounter > 0);
-
-        if (!commitedTX) {
-            throw new TransactionException();
-        }
         List<ImplantReview> implantReviews = paginationData.getData();
         List<ImplantReviewDto> implantReviewDtos = implantReviewMapper.implantReviewDtoListfromImplantReviewList(implantReviews);
         paginationData.setData(implantReviewDtos);

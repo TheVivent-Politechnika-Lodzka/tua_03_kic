@@ -17,6 +17,8 @@ import java.util.Arrays;
 @Setter
 public class ReCaptcha implements Serializable {
 
+    private static final long serialVersionUID = 1L;
+
     private boolean success;
     private float score;
     private String action;

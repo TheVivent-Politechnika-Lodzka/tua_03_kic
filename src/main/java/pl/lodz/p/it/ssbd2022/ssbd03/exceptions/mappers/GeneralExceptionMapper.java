@@ -10,6 +10,8 @@ import jakarta.ws.rs.ext.Provider;
 @Provider
 public class GeneralExceptionMapper implements ExceptionMapper<Exception> {
 
+    private static final long serialVersionUID = 1L;
+
     /**
      * Metoda zwracająca odpowiedź w przypadku wyrzuconego wyjątku
      * Zwraca kod 500 oraz wiadomość wyjątku

@@ -18,6 +18,8 @@ import java.util.Locale;
 @NoArgsConstructor
 @AllArgsConstructor
 public class RegisterClientDto {
+
+    private static final long serialVersionUID = 1L;
     
     @Password
     private String password;

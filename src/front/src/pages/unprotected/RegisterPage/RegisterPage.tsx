@@ -13,6 +13,8 @@ import InputWithValidation from "../../../components/shared/InputWithValidation/
 import ValidationMessage from "../../../components/shared/ValidationMessage/ValidationMessage";
 import { RegisterModal } from "../../../components/RegisterModal";
 import styles from "./style.module.scss";
+import { Image } from "@mantine/core";
+import { uploadPhoto } from "../../../utils/upload";
 
 const RegisterPageInternal = () => {
     const [account, setAccount] = useState<RegisterRequest>({
@@ -59,7 +61,6 @@ const RegisterPageInternal = () => {
         const captcha = await executeRecaptcha("register");
         const request = {
             ...account,
-            url: "https://t2.tudocdn.net/543326?w=1920&h=1440",
             captcha: captcha,
         };
 
@@ -103,7 +104,38 @@ const RegisterPageInternal = () => {
                 <div className={styles.register_page_header}>
                     {t("registerPage.register")}
                 </div>
-                <div className={styles.edit_fields_wrapper}></div>
+                <div className={styles.edit_field}>
+                    {account.url.length === 0 ? (
+                        <Image
+                            withPlaceholder
+                            radius={9999}
+                            width={"13rem"}
+                            height={"13rem"}
+                        />
+                    ) : (
+                        <Image
+                            src={account.url}
+                            radius={9999}
+                            width={"13rem"}
+                            height={"13rem"}
+                            alt="image create"
+                        />
+                    )}
+
+                    <input
+                        id={styles.file_input}
+                        type="file"
+                        onChange={async (event) => {
+                            const u = await uploadPhoto(event);
+                            if (u) {
+                                setAccount({
+                                    ...account,
+                                    url: u,
+                                });
+                            }
+                        }}
+                    />
+                </div>
                 <div className={styles.edit_field} title="email">
                     <InputWithValidation
                         required
@@ -177,6 +209,7 @@ const RegisterPageInternal = () => {
                         required
                         styleWidth={{ width: "20rem" }}
                         title="PESEL "
+                        type="number"
                         value={account.pesel}
                         validationType="VALIDATE_PESEL"
                         isValid={isPESELValid}
@@ -224,6 +257,7 @@ const RegisterPageInternal = () => {
                         styleWidth={{ width: "20rem" }}
                         title={t("registerPage.phoneNumber")}
                         value={account.phoneNumber}
+                        type="number"
                         validationType="VALIDATE_PHONENUMBER_CLIENT"
                         isValid={isPhoneNumberValidClient}
                         onChange={(e: any) =>

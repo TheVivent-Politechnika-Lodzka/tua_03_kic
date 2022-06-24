@@ -1,9 +1,6 @@
 @import "../../variables.scss";
 
 .specialist_card {
-    // margin-left: 2.5%;
-    // margin-right: 2.5%;
-    // width: 95%;
     margin-top: 5px;
     height: 12rem;
     padding: 2rem 3rem 2rem 3rem;
@@ -11,20 +8,13 @@
     display: grid;
     border-radius: 3rem;
     grid-template-columns: 3fr 7fr;
+    animation: 0.5s fadeInFromBottom ease-in-out;
 
     .image {
         width: 8rem;
         margin-right: 3rem;
         border-radius: 100px;
-        background: $white;
         position: relative;
-
-        .svg {
-            color: $white;
-            max-width: 60%;
-            margin-left: 20%;
-            margin-top: 15%;
-        }
 
         .access_level {
             position: absolute;
@@ -32,27 +22,43 @@
             left: -74%;
             display: flex;
             justify-content: center;
-            // align-items: center;
             width: 20rem;
             transform: scale(0.9);
         }
     }
 
     .table {
-        color: $white;
-        // height: 6rem;
-        padding-top: 1rem;
         overflow: hidden;
+        border: none;
     }
     .span {
         text-align: center;
     }
 
-    th {
-        color: $white;
-    }
+    tbody {
+        border: none;
+        tr {
+            border: none;
+            th {
+                color: $white;
+                font-size: 1.75rem;
+            }
 
-    td {
-        color: $white;
+            td {
+                color: $white;
+                font-size: 1.25rem;
+            }
+        }
+    }
+}
+
+@keyframes fadeInFromBottom {
+    from {
+        opacity: 0;
+        transform: translateY(2.5rem);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
     }
 }

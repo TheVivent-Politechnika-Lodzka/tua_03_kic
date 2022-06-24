@@ -22,6 +22,8 @@ import java.util.UUID;
 @AllArgsConstructor
 public class AppointmentDto implements Taggable {
 
+    private static final long serialVersionUID = 1L;
+
     @NotNull(message = "server.error.validation.constraints.notNull.id")
     private UUID id;
 
@@ -51,5 +53,7 @@ public class AppointmentDto implements Taggable {
 
     @NotNull
     private Status status;
+
+    private ImplantDto appointmentImplant;
 
 }

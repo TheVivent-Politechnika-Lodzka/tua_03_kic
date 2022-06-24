@@ -9,6 +9,8 @@ import jakarta.ws.rs.core.Response;
 @ApplicationException(rollback = true)
 public class InvalidParametersException extends AppBaseException {
 
+    private static final long serialVersionUID = 1L;
+
     private static final String INVALID_PARAMETERS = "server.error.appBase.invalidParameters";
 
     public InvalidParametersException() {
