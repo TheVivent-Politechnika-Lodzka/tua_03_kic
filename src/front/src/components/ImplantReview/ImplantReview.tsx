@@ -40,7 +40,7 @@ const ImplantReview = ({ review, onClose }: ImplantReviewProps) => {
             <div className={styles.general_info_wrapper}>
                 <img
                     className={styles.avatar}
-                    src={review.clientImage}
+                    src={review?.clientImage}
                     alt="user_avatar"
                 />
                 <div className={styles.stars}>
