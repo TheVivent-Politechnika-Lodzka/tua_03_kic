@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import {BrowserRouter as Router, HashRouter, Route, Routes} from "react-router-dom";
 import HomePage from "./pages/unprotected/HomePage/HomePage";
 import ErrorPage from "./pages/unprotected/ErrorPage/ErrorPage";
 import { RegisterPage } from "./pages/unprotected/RegisterPage";
@@ -34,7 +34,7 @@ function App() {
     }
 
     return (
-        <Router>
+        <HashRouter>
             <ValidationProvider>
                 <Routes>
                     <Route path="/*" element={<ErrorPage />} />
@@ -77,7 +77,7 @@ function App() {
                     </Route>
                 </Routes>
             </ValidationProvider>
-        </Router>
+        </HashRouter>
     );
 }
 
