@@ -1,7 +1,7 @@
 import axios from "axios";
 
-axios.defaults.baseURL = "https://localhost:8181/api";
-// axios.defaults.baseURL = "https://kic.agency:8403/api";
+// axios.defaults.baseURL = "https://localhost:8181/api";
+axios.defaults.baseURL = "https://kic.agency:8403/api";
 axios.defaults.headers.post["Content-Type"] = "application/json";
 // auto-logowanie
 axios.interceptors.request.use((config) => {
@@ -14,10 +14,10 @@ axios.interceptors.request.use((config) => {
 });
 // dodawanie języka
 axios.interceptors.request.use((config) => {
-    const lang = navigator.language;
-    // const lang = localStorage.getItem("i18nextLng"); // zakładam, że to będzie preferowane
+    // const lang = navigator.language;
+    const lang = localStorage.getItem("i18nextLng"); // zakładam, że to będzie preferowane
     config.headers = config.headers ?? {};
-    config.headers["Accept-Language"] = lang;
+    config.headers["Accept-Language"] = lang ?? "pl";
     return config;
 });
 // usunięcie cudzysłowia z If-Match
