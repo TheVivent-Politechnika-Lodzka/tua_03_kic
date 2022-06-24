@@ -3,7 +3,6 @@
     height: 22vh;
     border-radius: 1.5rem;
 
-   
     .text {
         color: white;
         width: 130%;
@@ -46,6 +45,9 @@
             grid-column: 4;
             grid-row: 2;
             margin-left: 4vw;
+        }
+        .button > * {
+            margin-bottom: 15px;
         }
     }
 }
