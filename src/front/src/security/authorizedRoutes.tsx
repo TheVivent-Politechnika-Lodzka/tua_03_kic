@@ -4,7 +4,7 @@ import EditAnyAccountPage from "../pages/protected/admin/EditAnyAccountPage/Edit
 import UserManagment from "../pages/protected/admin/UsersManagmentPage/UsersManagmentPage";
 import { AppointmentListPage } from "../pages/protected/admin/AppointmentListPage";
 import { CreateImplantPage } from "../pages/protected/admin/CreateImplantPage";
-import CreateAppointmentPage from "../pages/protected/client/CreateAppointmentPage";
+import {CreateAppointmentPage} from "../pages/protected/client/CreateAppointmentPage";
 import OwnAppointmentsListPage from "../pages/protected/shared/OwnAppointmentsListPage/OwnAppointmentsListPage";
 import { EditOwnAppointment } from "../pages/protected/shared/EditOwnAppointment";
 import { EditImplantPage } from "../pages/protected/admin/EditImplantPage";

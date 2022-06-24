@@ -12,7 +12,7 @@ import {
     successNotficiationItems,
 } from "../../../../utils/showNotificationsItems";
 import { useTranslation } from "react-i18next";
-import {  Image } from "@mantine/core";
+import { Image } from "@mantine/core";
 import { uploadPhoto } from "../../../../utils/upload";
 import { createImplant } from "../../../../api/mop";
 import ConfirmActionModal from "../../../../components/shared/ConfirmActionModal/ConfirmActionModal";

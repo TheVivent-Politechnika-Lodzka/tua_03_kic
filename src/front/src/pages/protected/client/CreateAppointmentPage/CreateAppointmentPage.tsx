@@ -72,7 +72,7 @@ export const CreateAppointmentPage = () => {
         if (!implant) return;
         const response = await getSpecialistAvailability(
             specialist?.id,
-            Instant.ofEpochSecond(currentMonth.getSeconds()),
+            Instant.now(),
 
             implant.duration
         );
