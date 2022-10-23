@@ -16,12 +16,12 @@ public class Config {
     // Dla JDBCConfig
     public static final String password = "cyberpunk2077";
     public static final String databaseName = "ssbd03";
-//    public static final String serverName = "127.0.0.1";
-    public static final String serverName = "studdev.it.p.lodz.pl";
+    public static final String serverName = "127.0.0.1";
+//    public static final String serverName = "studdev.it.p.lodz.pl";
 
     // Do SPA
-//    public static final String WEBSITE_URL = "http://localhost:3000/#";
-    public static final String WEBSITE_URL = "https://kic.agency:8403/#";
+    public static final String WEBSITE_URL = "http://localhost:3000/#";
+//    public static final String WEBSITE_URL = "https://kic.agency:8403/#";
 
     // Dla EmailConfig
     public static final String MAIL_LOGIN = "szury@kic.agency";

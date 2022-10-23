@@ -1,0 +1,23 @@
+services:
+  db:
+    container_name: "KIC_DB"
+    image: mysql:8.0.31-oracle
+    environment:
+      MYSQL_ROOT_PASSWORD: 'cyberpunk2077'
+      MYSQL_USER: 'test'
+      MYSQL_PASS: 'pass'
+    volumes:
+      - db_data:/var/lib/mysql
+  web:
+    container_name: "KIC_APP"
+    depends_on: [ "db" ]
+    build: .
+    environment:
+      WILDFLY_USERNAME: 'admin'
+      WILDFLY_PASSWORD: 'admin'
+    ports:
+      - "8080:8080"
+      - "9990:9990"
+volumes:
+  db_data:
+    driver: local

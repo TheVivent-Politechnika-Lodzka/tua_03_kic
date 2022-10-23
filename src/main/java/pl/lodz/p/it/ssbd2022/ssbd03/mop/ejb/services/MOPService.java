@@ -397,7 +397,7 @@ public class MOPService extends AbstractService implements MOPServiceInterface, 
     public Appointment editAppointmentByAdministrator(UUID uuid, Appointment appointment) {
         Appointment appointmentFromDb = appointmentFacade.findById(uuid);
         if(Instant.now().isAfter(appointmentFromDb.getEndDate())) {
-        throw new AppointmentCannotBeChangedAnymoreException();
+            throw new AppointmentCannotBeChangedAnymoreException();
         }
         appointmentFromDb.setDescription(appointment.getDescription());
         if (appointmentFromDb.getStatus() == Status.ACCEPTED) {
