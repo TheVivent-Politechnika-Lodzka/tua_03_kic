@@ -1,11 +1,11 @@
 package pl.lodz.p.it.ssbd2022.ssbd03.mappers.json;
 
-import jakarta.json.JsonObject;
-import jakarta.json.bind.Jsonb;
-import jakarta.json.bind.JsonbBuilder;
-import jakarta.json.bind.serializer.DeserializationContext;
-import jakarta.json.bind.serializer.JsonbDeserializer;
-import jakarta.json.stream.JsonParser;
+import javax.json.JsonObject;
+import javax.json.bind.Jsonb;
+import javax.json.bind.JsonbBuilder;
+import javax.json.bind.serializer.DeserializationContext;
+import javax.json.bind.serializer.JsonbDeserializer;
+import javax.json.stream.JsonParser;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.access_levels.DataAdministrator;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.access_levels.DataClient;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.access_levels.DataSpecialist;
@@ -31,12 +31,17 @@ public class AccessLevelDeserializer implements JsonbDeserializer<AccessLevelDto
     }
 
     private Class<? extends AccessLevelDto> getAccessLevelClass(String level) {
-        return switch (level) {
-            case DataAdministrator.LEVEL_NAME -> DataAdministratorDto.class;
-            case DataClient.LEVEL_NAME -> DataClientDto.class;
-            case DataSpecialist.LEVEL_NAME -> DataSpecialistDto.class;
-            default -> throw new IllegalArgumentException("Unknown access level: " + level);
-        };
+        switch (level) {
+            case DataAdministrator.LEVEL_NAME:
+                return DataAdministratorDto.class;
+            case DataClient.LEVEL_NAME:
+                return DataClientDto.class;
+            case DataSpecialist.LEVEL_NAME:
+                return DataSpecialistDto.class;
+            default:
+                throw new IllegalArgumentException("Unknown access level: " + level);
+        }
+
     }
 
 }

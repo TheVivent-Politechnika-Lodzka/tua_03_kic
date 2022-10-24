@@ -1,6 +1,6 @@
 package pl.lodz.p.it.ssbd2022.ssbd03.entities.tokens;
 
-import jakarta.persistence.*;
+import javax.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import pl.lodz.p.it.ssbd2022.ssbd03.common.AbstractEntity;

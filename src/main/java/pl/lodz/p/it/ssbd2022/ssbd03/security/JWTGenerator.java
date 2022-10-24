@@ -2,9 +2,9 @@ package pl.lodz.p.it.ssbd2022.ssbd03.security;
 
 
 import io.jsonwebtoken.*;
-import jakarta.ejb.Stateless;
-import jakarta.enterprise.context.ApplicationScoped;
-import jakarta.security.enterprise.identitystore.CredentialValidationResult;
+import javax.ejb.Stateless;
+import javax.enterprise.context.ApplicationScoped;
+import javax.security.enterprise.identitystore.CredentialValidationResult;
 import pl.lodz.p.it.ssbd2022.ssbd03.common.Config;
 
 import java.time.Instant;

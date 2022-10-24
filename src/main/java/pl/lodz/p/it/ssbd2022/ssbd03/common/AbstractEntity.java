@@ -1,6 +1,6 @@
 package pl.lodz.p.it.ssbd2022.ssbd03.common;
 
-import jakarta.persistence.*;
+import javax.persistence.*;
 import lombok.Getter;
 
 import java.time.Instant;

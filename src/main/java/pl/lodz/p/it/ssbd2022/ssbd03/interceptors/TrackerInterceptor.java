@@ -1,9 +1,9 @@
 package pl.lodz.p.it.ssbd2022.ssbd03.interceptors;
 
-import jakarta.annotation.Resource;
-import jakarta.ejb.SessionContext;
-import jakarta.interceptor.AroundInvoke;
-import jakarta.interceptor.InvocationContext;
+import javax.annotation.Resource;
+import javax.ejb.SessionContext;
+import javax.interceptor.AroundInvoke;
+import javax.interceptor.InvocationContext;
 import lombok.extern.java.Log;
 
 import java.util.Arrays;

@@ -1,6 +1,6 @@
 package pl.lodz.p.it.ssbd2022.ssbd03.mok.ejb.services;
 
-import jakarta.ejb.Local;
+import javax.ejb.Local;
 import pl.lodz.p.it.ssbd2022.ssbd03.common.ServiceLocalInterface;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.Account;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.tokens.AccountConfirmationToken;

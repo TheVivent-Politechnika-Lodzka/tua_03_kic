@@ -1,7 +1,7 @@
 package pl.lodz.p.it.ssbd2022.ssbd03.mappers;
 
-import jakarta.ejb.Stateless;
-import jakarta.inject.Inject;
+import javax.ejb.Stateless;
+import javax.inject.Inject;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.access_levels.AccessLevel;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.access_levels.DataAdministrator;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.access_levels.DataClient;
@@ -170,16 +170,16 @@ public class AccessLevelMapper {
      */
     public AccessLevel createAccessLevelFromDto(AccessLevelDto accessLevelDto) {
 
-        if (accessLevelDto instanceof DataAdministratorDto dataAdministratorDto) {
-            return createDataAdministratorFromDto(dataAdministratorDto);
+        if (accessLevelDto instanceof DataAdministratorDto) {
+            return createDataAdministratorFromDto((DataAdministratorDto)accessLevelDto);
         }
 
-        if (accessLevelDto instanceof DataClientDto dataClientDto) {
-            return createDataClientFromDto(dataClientDto);
+        if (accessLevelDto instanceof DataClientDto ) {
+            return createDataClientFromDto((DataClientDto)accessLevelDto);
         }
 
-        if (accessLevelDto instanceof DataSpecialistDto dataSpecialistDto) {
-            return createDataSpecialistFromDto(dataSpecialistDto);
+        if (accessLevelDto instanceof DataSpecialistDto ) {
+            return createDataSpecialistFromDto((DataSpecialistDto)accessLevelDto);
         }
 
         throw new IllegalArgumentException("Unknown access level type");

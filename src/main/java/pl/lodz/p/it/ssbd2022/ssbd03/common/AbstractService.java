@@ -1,15 +1,15 @@
 package pl.lodz.p.it.ssbd2022.ssbd03.common;
 
-import jakarta.annotation.Resource;
-import jakarta.annotation.security.PermitAll;
-import jakarta.ejb.SessionContext;
-import jakarta.ejb.TransactionAttribute;
+import javax.annotation.Resource;
+import javax.annotation.security.PermitAll;
+import javax.ejb.SessionContext;
+import javax.ejb.TransactionAttribute;
 
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import static jakarta.ejb.TransactionAttributeType.NOT_SUPPORTED;
+import static javax.ejb.TransactionAttributeType.NOT_SUPPORTED;
 
 public abstract class AbstractService {
 

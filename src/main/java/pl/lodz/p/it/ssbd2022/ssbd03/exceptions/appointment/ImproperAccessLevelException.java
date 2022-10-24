@@ -1,7 +1,7 @@
 package pl.lodz.p.it.ssbd2022.ssbd03.exceptions.appointment;
 
-import jakarta.ejb.ApplicationException;
-import jakarta.ws.rs.core.Response;
+import javax.ejb.ApplicationException;
+import javax.ws.rs.core.Response;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.AppBaseException;
 
 

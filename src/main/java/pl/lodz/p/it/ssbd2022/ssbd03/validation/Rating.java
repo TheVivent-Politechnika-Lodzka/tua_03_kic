@@ -1,8 +1,8 @@
 package pl.lodz.p.it.ssbd2022.ssbd03.validation;
 
-import jakarta.validation.Constraint;
-import jakarta.validation.Payload;
-import jakarta.validation.constraints.*;
+import javax.validation.Constraint;
+import javax.validation.Payload;
+import javax.validation.constraints.*;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

@@ -1,9 +1,8 @@
 package pl.lodz.p.it.ssbd2022.ssbd03.utils;
 
-import jakarta.enterprise.context.RequestScoped;
-import jakarta.inject.Inject;
-import jakarta.servlet.http.HttpServletRequest;
-import pl.lodz.p.it.ssbd2022.ssbd03.mok.ejb.facades.AccountFacade;
+import javax.enterprise.context.RequestScoped;
+import javax.inject.Inject;
+import javax.servlet.http.HttpServletRequest;
 
 import java.util.ResourceBundle;
 

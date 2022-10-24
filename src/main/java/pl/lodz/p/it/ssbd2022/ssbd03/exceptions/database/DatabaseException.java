@@ -1,8 +1,8 @@
 package pl.lodz.p.it.ssbd2022.ssbd03.exceptions.database;
 
-import jakarta.ejb.ApplicationException;
-import jakarta.inject.Inject;
-import jakarta.ws.rs.core.Response;
+import javax.ejb.ApplicationException;
+import javax.inject.Inject;
+import javax.ws.rs.core.Response;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.AppBaseException;
 import pl.lodz.p.it.ssbd2022.ssbd03.utils.InternationalizationProvider;
 

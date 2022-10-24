@@ -1,14 +1,14 @@
 package pl.lodz.p.it.ssbd2022.ssbd03.global_services;
 
-import jakarta.annotation.security.RunAs;
-import jakarta.ejb.*;
-import jakarta.inject.Inject;
-import jakarta.interceptor.Interceptors;
+import javax.annotation.security.RunAs;
+import javax.ejb.*;
+import javax.inject.Inject;
+import javax.interceptor.Interceptors;
 import pl.lodz.p.it.ssbd2022.ssbd03.common.Roles;
-import pl.lodz.p.it.ssbd2022.ssbd03.global_services.facades.AccountConfirmationFacade;
-import pl.lodz.p.it.ssbd2022.ssbd03.global_services.facades.AccountFacade;
-import pl.lodz.p.it.ssbd2022.ssbd03.global_services.facades.RefreshTokenFacade;
-import pl.lodz.p.it.ssbd2022.ssbd03.global_services.facades.ResetPasswordFacade;
+import pl.lodz.p.it.ssbd2022.ssbd03.global_services.facades.AccountConfirmationGLOBALFacade;
+import pl.lodz.p.it.ssbd2022.ssbd03.global_services.facades.AccountGLOBALFacade;
+import pl.lodz.p.it.ssbd2022.ssbd03.global_services.facades.RefreshTokenGLOBALFacade;
+import pl.lodz.p.it.ssbd2022.ssbd03.global_services.facades.ResetPasswordGLOBALFacade;
 import pl.lodz.p.it.ssbd2022.ssbd03.interceptors.TrackerInterceptor;
 
 @Startup
@@ -21,13 +21,13 @@ public class CleanerService {
     private static final long serialVersionUID = 1L;
 
     @Inject
-    AccountConfirmationFacade accountConfirmationFacade;
+    AccountConfirmationGLOBALFacade accountConfirmationFacade;
     @Inject
-    AccountFacade accountFacade;
+    AccountGLOBALFacade accountFacade;
     @Inject
-    ResetPasswordFacade resetPasswordFacade;
+    ResetPasswordGLOBALFacade resetPasswordFacade;
     @Inject
-    RefreshTokenFacade refreshTokenFacade;
+    RefreshTokenGLOBALFacade refreshTokenFacade;
 
     /**
      * Metoda wywoływana przez serwer aplikacji co minutę.

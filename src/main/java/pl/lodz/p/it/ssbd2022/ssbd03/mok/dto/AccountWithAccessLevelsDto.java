@@ -1,8 +1,8 @@
 package pl.lodz.p.it.ssbd2022.ssbd03.mok.dto;
 
-import jakarta.json.bind.annotation.JsonbTypeDeserializer;
-import jakarta.json.bind.annotation.JsonbTypeSerializer;
-import jakarta.validation.constraints.NotNull;
+import javax.json.bind.annotation.JsonbTypeDeserializer;
+import javax.json.bind.annotation.JsonbTypeSerializer;
+import javax.validation.constraints.NotNull;
 import lombok.NoArgsConstructor;
 import lombok.*;
 import pl.lodz.p.it.ssbd2022.ssbd03.mappers.json.LocaleSerializerDeserializer;

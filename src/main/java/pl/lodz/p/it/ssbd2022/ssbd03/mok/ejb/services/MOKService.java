@@ -1,20 +1,19 @@
 package pl.lodz.p.it.ssbd2022.ssbd03.mok.ejb.services;
 
 import io.jsonwebtoken.*;
-import jakarta.annotation.security.DenyAll;
-import jakarta.annotation.security.PermitAll;
-import jakarta.annotation.security.RolesAllowed;
-import jakarta.ejb.SessionSynchronization;
-import jakarta.ejb.Stateful;
-import jakarta.ejb.TransactionAttribute;
-import jakarta.ejb.TransactionAttributeType;
-import jakarta.inject.Inject;
-import jakarta.interceptor.Interceptors;
-import jakarta.security.enterprise.credential.Password;
-import jakarta.security.enterprise.credential.UsernamePasswordCredential;
-import jakarta.security.enterprise.identitystore.CredentialValidationResult;
-import jakarta.security.enterprise.identitystore.IdentityStoreHandler;
-import jakarta.servlet.http.HttpServletRequest;
+import javax.annotation.security.DenyAll;
+import javax.annotation.security.RolesAllowed;
+import javax.ejb.SessionSynchronization;
+import javax.ejb.Stateful;
+import javax.ejb.TransactionAttribute;
+import javax.ejb.TransactionAttributeType;
+import javax.inject.Inject;
+import javax.interceptor.Interceptors;
+import javax.security.enterprise.credential.Password;
+import javax.security.enterprise.credential.UsernamePasswordCredential;
+import javax.security.enterprise.identitystore.CredentialValidationResult;
+import javax.security.enterprise.identitystore.IdentityStoreHandler;
+import javax.servlet.http.HttpServletRequest;
 import pl.lodz.p.it.ssbd2022.ssbd03.common.AbstractService;
 import pl.lodz.p.it.ssbd2022.ssbd03.common.Roles;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.Account;
@@ -32,7 +31,6 @@ import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.account.AccountPasswordIsTheSameE
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.account.AccountPasswordMatchException;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.account.AccountStatusException;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.account.InvalidCredentialException;
-import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.database.InAppOptimisticLockException;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.token.TokenDecodeInvalidException;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.token.TokenExpiredException;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.token.TokenInvalidException;
@@ -40,14 +38,12 @@ import pl.lodz.p.it.ssbd2022.ssbd03.interceptors.TrackerInterceptor;
 import pl.lodz.p.it.ssbd2022.ssbd03.mok.ejb.facades.*;
 import pl.lodz.p.it.ssbd2022.ssbd03.security.JWTGenerator;
 import pl.lodz.p.it.ssbd2022.ssbd03.mok.dto.no_etag.LoginResponseDto;
-import pl.lodz.p.it.ssbd2022.ssbd03.security.Taggable;
 import pl.lodz.p.it.ssbd2022.ssbd03.utils.HashAlgorithm;
 import pl.lodz.p.it.ssbd2022.ssbd03.utils.PaginationData;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.Objects;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -65,17 +61,17 @@ public class MOKService extends AbstractService implements MOKServiceInterface, 
     @Inject
     private JWTGenerator jwtGenerator;
     @Inject
-    private AccountFacade accountFacade;
+    private AccountMOKFacade accountFacade;
     @Inject
-    private RefreshTokenFacade refreshTokenFacade;
+    private RefreshTokenMOKFacade refreshTokenFacade;
     @Inject
     private HashAlgorithm hashAlgorithm;
     @Inject
-    private AccountConfirmationFacade accountConfirmationFacade;
+    private AccountConfirmationMOKFacade accountConfirmationFacade;
     @Inject
-    private AccessLevelFacade accessLevelFacade;
+    private AccessLevelMOKFacade accessLevelFacade;
     @Inject
-    private ResetPasswordFacade resetPasswordFacade;
+    private ResetPasswordMOKFacade resetPasswordFacade;
     @Inject
     private HttpServletRequest httpServletRequest;
 
@@ -180,7 +176,8 @@ public class MOKService extends AbstractService implements MOKServiceInterface, 
 
         for (AccessLevel accessLevel : accountFromDb.getAccessLevelCollection()) {
             // ------------ DataAdministrator ------------
-            if (accessLevel instanceof DataAdministrator dataAdministratorDB) {
+            if (accessLevel instanceof DataAdministrator) {
+                DataAdministrator dataAdministratorDB = (DataAdministrator) accessLevel;
                 DataAdministrator dataAdministrator =
                         (DataAdministrator) findAccessLevelByName(account.getAccessLevelCollection(), accessLevel.getClass());
                 if (dataAdministrator != null) {
@@ -190,7 +187,8 @@ public class MOKService extends AbstractService implements MOKServiceInterface, 
                 }
             }
             // ------------ DataSpecialist ------------
-            if (accessLevel instanceof DataSpecialist dataSpecialistDB) {
+            if (accessLevel instanceof DataSpecialist) {
+                DataSpecialist dataSpecialistDB = (DataSpecialist) accessLevel;
                 DataSpecialist dataSpecialist =
                         (DataSpecialist) findAccessLevelByName(account.getAccessLevelCollection(), accessLevel.getClass());
                 if (dataSpecialist != null) {
@@ -200,7 +198,8 @@ public class MOKService extends AbstractService implements MOKServiceInterface, 
                 }
             }
             // ------------ DataClient ------------
-            if (accessLevel instanceof DataClient dataClientDB) {
+            if (accessLevel instanceof DataClient) {
+                DataClient dataClientDB = (DataClient) accessLevel;
                 DataClient dataClient =
                         (DataClient) findAccessLevelByName(account.getAccessLevelCollection(), accessLevel.getClass());
                 if (dataClient != null) {

@@ -1,7 +1,7 @@
 package pl.lodz.p.it.ssbd2022.ssbd03;
 
-import jakarta.ws.rs.ApplicationPath;
-import jakarta.ws.rs.core.Application;
+import javax.ws.rs.ApplicationPath;
+import javax.ws.rs.core.Application;
 
 
 @ApplicationPath("/api")

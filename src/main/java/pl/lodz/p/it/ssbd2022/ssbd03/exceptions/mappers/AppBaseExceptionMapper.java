@@ -1,9 +1,9 @@
 package pl.lodz.p.it.ssbd2022.ssbd03.exceptions.mappers;
 
-import jakarta.inject.Inject;
-import jakarta.ws.rs.core.Response;
-import jakarta.ws.rs.ext.ExceptionMapper;
-import jakarta.ws.rs.ext.Provider;
+import javax.inject.Inject;
+import javax.ws.rs.core.Response;
+import javax.ws.rs.ext.ExceptionMapper;
+import javax.ws.rs.ext.Provider;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.AppBaseException;
 import pl.lodz.p.it.ssbd2022.ssbd03.utils.InternationalizationProvider;
 

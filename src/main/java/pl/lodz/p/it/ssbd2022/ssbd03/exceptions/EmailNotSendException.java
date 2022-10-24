@@ -1,6 +1,6 @@
 package pl.lodz.p.it.ssbd2022.ssbd03.exceptions;
 
-import jakarta.ws.rs.core.Response;
+import javax.ws.rs.core.Response;
 
 /**
  * wyjątek rzucany w przypadku niepowodzenia wysyłania wiadomości

@@ -1,9 +1,9 @@
 package pl.lodz.p.it.ssbd2022.ssbd03.security;
 
-import jakarta.annotation.PostConstruct;
-import jakarta.ejb.Stateless;
-import jakarta.ws.rs.core.Context;
-import jakarta.ws.rs.core.HttpHeaders;
+import javax.annotation.PostConstruct;
+import javax.ejb.Stateless;
+import javax.ws.rs.core.Context;
+import javax.ws.rs.core.HttpHeaders;
 import pl.lodz.p.it.ssbd2022.ssbd03.common.Config;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.database.InAppOptimisticLockException;
 

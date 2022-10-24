@@ -1,10 +1,10 @@
 package pl.lodz.p.it.ssbd2022.ssbd03.global_services;
 
-import jakarta.annotation.PostConstruct;
-import jakarta.ejb.Stateless;
-import jakarta.mail.*;
-import jakarta.mail.internet.InternetAddress;
-import jakarta.mail.internet.MimeMessage;
+import javax.annotation.PostConstruct;
+import javax.ejb.Stateless;
+import javax.mail.*;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
 import pl.lodz.p.it.ssbd2022.ssbd03.common.Config;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.EmailNotSendException;
 

@@ -1,6 +1,6 @@
 package pl.lodz.p.it.ssbd2022.ssbd03.mappers;
 
-import jakarta.inject.Inject;
+import javax.inject.Inject;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.Appointment;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.Implant;
 import pl.lodz.p.it.ssbd2022.ssbd03.mop.dto.*;

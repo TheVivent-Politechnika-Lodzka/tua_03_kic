@@ -1,13 +1,13 @@
 package pl.lodz.p.it.ssbd2022.ssbd03.mop.ejb.facades;
 
-import jakarta.annotation.security.RolesAllowed;
-import jakarta.ejb.Stateless;
-import jakarta.ejb.TransactionAttribute;
-import jakarta.ejb.TransactionAttributeType;
-import jakarta.inject.Inject;
-import jakarta.interceptor.Interceptors;
-import jakarta.persistence.*;
-import jakarta.validation.ConstraintViolationException;
+import javax.annotation.security.RolesAllowed;
+import javax.ejb.Stateless;
+import javax.ejb.TransactionAttribute;
+import javax.ejb.TransactionAttributeType;
+import javax.inject.Inject;
+import javax.interceptor.Interceptors;
+import javax.persistence.*;
+import javax.validation.ConstraintViolationException;
 import lombok.Getter;
 import pl.lodz.p.it.ssbd2022.ssbd03.common.AbstractFacade;
 import pl.lodz.p.it.ssbd2022.ssbd03.common.Roles;
@@ -28,11 +28,11 @@ import java.util.List;
 @Interceptors(TrackerInterceptor.class)
 @Stateless
 @TransactionAttribute(TransactionAttributeType.MANDATORY)
-public class ImplantFacade extends AbstractFacade<Implant> {
+public class ImplantMOPFacade extends AbstractFacade<Implant> {
 
     private static final long serialVersionUID = 1L;
 
-    @PersistenceContext(unitName = "ssbd03mopPU")
+    @PersistenceContext(unitName = "ssbd03mop")
     @Getter
     private EntityManager entityManager;
 
@@ -40,7 +40,7 @@ public class ImplantFacade extends AbstractFacade<Implant> {
     @Getter
     private Tagger tagger;
 
-    public ImplantFacade() {
+    public ImplantMOPFacade() {
         super(Implant.class);
     }
 

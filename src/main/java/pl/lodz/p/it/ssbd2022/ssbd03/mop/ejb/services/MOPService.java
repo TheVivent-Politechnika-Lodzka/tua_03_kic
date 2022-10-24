@@ -1,14 +1,13 @@
 package pl.lodz.p.it.ssbd2022.ssbd03.mop.ejb.services;
 
-import jakarta.annotation.security.DenyAll;
-import jakarta.annotation.security.PermitAll;
-import jakarta.annotation.security.RolesAllowed;
-import jakarta.ejb.SessionSynchronization;
-import jakarta.ejb.Stateful;
-import jakarta.ejb.TransactionAttribute;
-import jakarta.ejb.TransactionAttributeType;
-import jakarta.inject.Inject;
-import jakarta.interceptor.Interceptors;
+import javax.annotation.security.DenyAll;
+import javax.annotation.security.RolesAllowed;
+import javax.ejb.SessionSynchronization;
+import javax.ejb.Stateful;
+import javax.ejb.TransactionAttribute;
+import javax.ejb.TransactionAttributeType;
+import javax.inject.Inject;
+import javax.interceptor.Interceptors;
 import pl.lodz.p.it.ssbd2022.ssbd03.common.AbstractService;
 import pl.lodz.p.it.ssbd2022.ssbd03.common.Roles;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.*;
@@ -22,12 +21,11 @@ import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.implant.ImplantStatusException;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.appointment.AppointmentNotFinishedException;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.appointment.AppointmentNotFoundException;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.implant.ImplantArchivedException;
-import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.implant.ImplantStatusException;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.implant_review.ClientRemovesOtherReviewsException;
 import pl.lodz.p.it.ssbd2022.ssbd03.interceptors.TrackerInterceptor;
-import pl.lodz.p.it.ssbd2022.ssbd03.mop.ejb.facades.AccountFacade;
-import pl.lodz.p.it.ssbd2022.ssbd03.mop.ejb.facades.ImplantFacade;
-import pl.lodz.p.it.ssbd2022.ssbd03.mop.ejb.facades.ImplantReviewFacade;
+import pl.lodz.p.it.ssbd2022.ssbd03.mop.ejb.facades.AccountMOPFacade;
+import pl.lodz.p.it.ssbd2022.ssbd03.mop.ejb.facades.ImplantMOPFacade;
+import pl.lodz.p.it.ssbd2022.ssbd03.mop.ejb.facades.ImplantReviewMOPFacade;
 import pl.lodz.p.it.ssbd2022.ssbd03.security.AuthContext;
 import pl.lodz.p.it.ssbd2022.ssbd03.utils.PaginationData;
 
@@ -37,9 +35,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-import pl.lodz.p.it.ssbd2022.ssbd03.mop.ejb.facades.AppointmentFacade;
-
-import javax.management.relation.Role;
+import pl.lodz.p.it.ssbd2022.ssbd03.mop.ejb.facades.AppointmentMOPFacade;
 
 import static pl.lodz.p.it.ssbd2022.ssbd03.entities.Status.FINISHED;
 import static pl.lodz.p.it.ssbd2022.ssbd03.entities.Status.REJECTED;
@@ -47,7 +43,6 @@ import static pl.lodz.p.it.ssbd2022.ssbd03.entities.Status.REJECTED;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZoneId;
-import java.util.UUID;
 
 import java.util.logging.Logger;
 
@@ -64,16 +59,16 @@ public class MOPService extends AbstractService implements MOPServiceInterface, 
     protected static final Logger LOGGER = Logger.getGlobal();
 
     @Inject
-    AppointmentFacade appointmentFacade;
+    AppointmentMOPFacade appointmentFacade;
 
     @Inject
-    private ImplantFacade implantFacade;
+    private ImplantMOPFacade implantFacade;
 
     @Inject
-    private ImplantReviewFacade implantReviewFacade;
+    private ImplantReviewMOPFacade implantReviewFacade;
 
     @Inject
-    private AccountFacade accountFacade;
+    private AccountMOPFacade accountFacade;
 
     @Inject
     private AuthContext authContext;

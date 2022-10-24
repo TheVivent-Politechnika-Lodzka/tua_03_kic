@@ -1,7 +1,7 @@
 package pl.lodz.p.it.ssbd2022.ssbd03.exceptions;
 
-import jakarta.ejb.ApplicationException;
-import jakarta.ws.rs.core.Response;
+import javax.ejb.ApplicationException;
+import javax.ws.rs.core.Response;
 
 /**
  * Wyjątek reprezentujący błąd związany z niepoprawnie podanymi parametrami w żądaniu

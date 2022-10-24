@@ -1,7 +1,7 @@
 package pl.lodz.p.it.ssbd2022.ssbd03.utils;
 
-import jakarta.enterprise.context.ApplicationScoped;
-import jakarta.security.enterprise.identitystore.PasswordHash;
+import javax.enterprise.context.ApplicationScoped;
+import javax.security.enterprise.identitystore.PasswordHash;
 import org.apache.commons.codec.digest.DigestUtils;
 
 import java.util.Map;

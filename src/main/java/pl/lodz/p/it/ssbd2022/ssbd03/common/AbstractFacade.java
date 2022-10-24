@@ -1,19 +1,13 @@
 package pl.lodz.p.it.ssbd2022.ssbd03.common;
 
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.OptimisticLockException;
-import jakarta.persistence.PersistenceException;
-import jakarta.persistence.TypedQuery;
-import jakarta.persistence.criteria.CriteriaBuilder;
-import jakarta.persistence.criteria.CriteriaQuery;
-import jakarta.validation.ConstraintViolationException;
+import javax.persistence.EntityManager;
+import javax.persistence.OptimisticLockException;
+import javax.persistence.PersistenceException;
+import javax.validation.ConstraintViolationException;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.database.DatabaseException;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.database.InAppOptimisticLockException;
 import pl.lodz.p.it.ssbd2022.ssbd03.security.Taggable;
 import pl.lodz.p.it.ssbd2022.ssbd03.security.Tagger;
-
-import java.util.List;
-import java.util.Map;
 
 public abstract class AbstractFacade<T> {
 
@@ -69,8 +63,8 @@ public abstract class AbstractFacade<T> {
      * @throws ConstraintViolationException
      */
     protected void edit(T entity) {
-        if (entity instanceof AbstractEntity abstractEntity)
-            verifyTag(abstractEntity);
+        if (entity instanceof AbstractEntity)
+            verifyTag((AbstractEntity) entity);
         unsafeEdit(entity);
     }
 
@@ -103,8 +97,8 @@ public abstract class AbstractFacade<T> {
      * @throws ConstraintViolationException
      */
     protected void remove(T entity) {
-        if (entity instanceof AbstractEntity abstractEntity)
-            verifyTag(abstractEntity);
+        if (entity instanceof AbstractEntity)
+            verifyTag((AbstractEntity)entity);
         unsafeRemove(entity);
     }
 

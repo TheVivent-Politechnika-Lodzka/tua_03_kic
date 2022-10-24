@@ -23,7 +23,12 @@ services:
         password: "admin"
     ports:
       - "8080:8080"
+      - "8443:8443"
       - "9990:9990"
+    volumes:
+      - app_data:/
 volumes:
   db_data:
+    driver: local
+  app_data:
     driver: local

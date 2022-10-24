@@ -3,7 +3,7 @@ package pl.lodz.p.it.ssbd2022.ssbd03.security;
 
 
 import com.google.gson.annotations.SerializedName;
-import jakarta.persistence.SecondaryTable;
+import javax.persistence.SecondaryTable;
 import lombok.Getter;
 import lombok.Setter;
 

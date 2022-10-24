@@ -1,14 +1,14 @@
 package pl.lodz.p.it.ssbd2022.ssbd03.mappers;
 
-import jakarta.ejb.Stateless;
-import jakarta.inject.Inject;
+import javax.ejb.Stateless;
+import javax.inject.Inject;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.Account;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.Implant;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.ImplantReview;
 import pl.lodz.p.it.ssbd2022.ssbd03.mop.dto.CreateImplantReviewDto;
 import pl.lodz.p.it.ssbd2022.ssbd03.mop.dto.ImplantReviewDto;
-import pl.lodz.p.it.ssbd2022.ssbd03.mop.ejb.facades.AccountFacade;
-import pl.lodz.p.it.ssbd2022.ssbd03.mop.ejb.facades.ImplantFacade;
+import pl.lodz.p.it.ssbd2022.ssbd03.mop.ejb.facades.AccountMOPFacade;
+import pl.lodz.p.it.ssbd2022.ssbd03.mop.ejb.facades.ImplantMOPFacade;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,10 +19,10 @@ public class ImplantReviewMapper {
     private static final long serialVersionUID = 1L;
 
     @Inject
-    private ImplantFacade implantFacade;
+    private ImplantMOPFacade implantFacade;
 
     @Inject
-    private AccountFacade accountFacade;
+    private AccountMOPFacade accountFacade;
 
 
     /**

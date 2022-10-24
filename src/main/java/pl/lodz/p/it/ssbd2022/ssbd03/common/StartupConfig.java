@@ -1,11 +1,11 @@
 package pl.lodz.p.it.ssbd2022.ssbd03.common;
 
-import jakarta.annotation.PostConstruct;
-import jakarta.ejb.Singleton;
-import jakarta.ejb.Startup;
-import jakarta.inject.Inject;
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.PersistenceContext;
+import javax.annotation.PostConstruct;
+import javax.ejb.Singleton;
+import javax.ejb.Startup;
+import javax.inject.Inject;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.*;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.access_levels.DataAdministrator;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.access_levels.DataClient;
@@ -27,7 +27,7 @@ public class StartupConfig {
 
     private static final Logger logger = Logger.getLogger(StartupConfig.class.toString());
 
-    @PersistenceContext(unitName = "ssbd03adminPU")
+    @PersistenceContext(unitName = "ssbd03admin")
     private EntityManager em;
 
     @Inject

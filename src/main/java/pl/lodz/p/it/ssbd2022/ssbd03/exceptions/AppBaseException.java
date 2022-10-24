@@ -1,8 +1,8 @@
 package pl.lodz.p.it.ssbd2022.ssbd03.exceptions;
 
-import jakarta.ejb.ApplicationException;
-import jakarta.ws.rs.WebApplicationException;
-import jakarta.ws.rs.core.Response;
+import javax.ejb.ApplicationException;
+import javax.ws.rs.WebApplicationException;
+import javax.ws.rs.core.Response;
 
 /**
  * Główny wyjątek aplikacyjny będący reprezentacją wyjatkiem generycznym, po którym

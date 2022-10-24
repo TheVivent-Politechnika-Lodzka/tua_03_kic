@@ -1,7 +1,7 @@
 package pl.lodz.p.it.ssbd2022.ssbd03.mok.dto.access_levels;
 
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotNull;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotNull;
 import lombok.*;
 import pl.lodz.p.it.ssbd2022.ssbd03.validation.PhoneNumber;
 
