@@ -8,8 +8,8 @@ import jakarta.ejb.TransactionAttributeType;
 import jakarta.inject.Inject;
 import jakarta.interceptor.Interceptors;
 import jakarta.persistence.*;
+import jakarta.validation.ConstraintViolationException;
 import lombok.Getter;
-import org.hibernate.exception.ConstraintViolationException;
 import pl.lodz.p.it.ssbd2022.ssbd03.common.AbstractFacade;
 import pl.lodz.p.it.ssbd2022.ssbd03.common.Roles;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.Account;
@@ -162,9 +162,9 @@ public class AccountFacade extends AbstractFacade<Account> {
         try {
             super.create(entity);
         } catch (ConstraintViolationException e) {
-            if (e.getConstraintName().contains(Account.CONSTRAINT_LOGIN_UNIQUE)) {
+            if (e.getConstraintViolations().contains(Account.CONSTRAINT_LOGIN_UNIQUE)) {
                 throw AccountAlreadyExistsException.loginExists();
-            } else if (e.getConstraintName().contains(Account.CONSTRAINT_EMAIL_UNIQUE)) {
+            } else if (e.getConstraintViolations().contains(Account.CONSTRAINT_EMAIL_UNIQUE)) {
                 throw AccountAlreadyExistsException.emailExists();
             }
             throw new DatabaseException(e);

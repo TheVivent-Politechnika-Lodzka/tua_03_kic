@@ -7,8 +7,8 @@ import jakarta.ejb.TransactionAttributeType;
 import jakarta.inject.Inject;
 import jakarta.interceptor.Interceptors;
 import jakarta.persistence.*;
+import jakarta.validation.ConstraintViolationException;
 import lombok.Getter;
-import org.hibernate.exception.ConstraintViolationException;
 import pl.lodz.p.it.ssbd2022.ssbd03.common.AbstractFacade;
 import pl.lodz.p.it.ssbd2022.ssbd03.common.Roles;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.Implant;
@@ -56,7 +56,7 @@ public class ImplantFacade extends AbstractFacade<Implant> {
         try {
             super.create(entity);
         } catch (ConstraintViolationException e) {
-            if (e.getConstraintName().contains(Implant.CONSTRAINT_NAME_UNIQUE)) {
+            if (e.getConstraintViolations().contains(Implant.CONSTRAINT_NAME_UNIQUE)) {
                 throw ImplantAlreadyExistExceptions.nameExists();
             }
             throw new DatabaseException(e);
@@ -76,7 +76,7 @@ public class ImplantFacade extends AbstractFacade<Implant> {
         try {
             super.edit(entity);
         } catch (ConstraintViolationException e) {
-            if (e.getConstraintName().contains(Implant.CONSTRAINT_NAME_UNIQUE)) {
+            if (e.getConstraintViolations().contains(Implant.CONSTRAINT_NAME_UNIQUE)) {
                 throw ImplantAlreadyExistExceptions.nameExists();
             }
             throw new DatabaseException(e);

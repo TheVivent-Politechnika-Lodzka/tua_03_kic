@@ -10,8 +10,8 @@ import jakarta.inject.Inject;
 import jakarta.interceptor.Interceptors;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
+import jakarta.validation.ConstraintViolationException;
 import lombok.Getter;
-import org.hibernate.exception.ConstraintViolationException;
 import pl.lodz.p.it.ssbd2022.ssbd03.common.AbstractFacade;
 import pl.lodz.p.it.ssbd2022.ssbd03.common.Roles;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.access_levels.AccessLevel;
@@ -64,7 +64,7 @@ public class AccessLevelFacade extends AbstractFacade<AccessLevel> {
         try {
             super.create(entity);
         } catch (ConstraintViolationException e) {
-            if (e.getConstraintName().contains(AccessLevel.CONSTRAINT_ACCESS_LEVEL_FOR_ACCOUNT_UNIQUE)) {
+            if (e.getConstraintViolations().contains(AccessLevel.CONSTRAINT_ACCESS_LEVEL_FOR_ACCOUNT_UNIQUE)) {
                 throw new AccessLevelExistsException();
             }
 

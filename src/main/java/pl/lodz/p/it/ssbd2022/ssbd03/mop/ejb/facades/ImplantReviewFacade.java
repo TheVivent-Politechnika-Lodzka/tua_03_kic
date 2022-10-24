@@ -7,8 +7,8 @@ import jakarta.ejb.TransactionAttributeType;
 import jakarta.inject.Inject;
 import jakarta.interceptor.Interceptors;
 import jakarta.persistence.*;
+import jakarta.validation.ConstraintViolationException;
 import lombok.Getter;
-import org.hibernate.exception.ConstraintViolationException;
 import pl.lodz.p.it.ssbd2022.ssbd03.common.AbstractFacade;
 import pl.lodz.p.it.ssbd2022.ssbd03.common.Roles;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.ImplantReview;
@@ -82,7 +82,7 @@ public class ImplantReviewFacade extends AbstractFacade<ImplantReview> {
         try {
             super.create(entity);
         } catch (ConstraintViolationException e) {
-            if (e.getConstraintName().equals(ImplantReview.CONSTRAINT_ONE_REVIEW_PER_CLIENT_PER_IMPLANT)) {
+            if (e.getConstraintViolations().contains(ImplantReview.CONSTRAINT_ONE_REVIEW_PER_CLIENT_PER_IMPLANT)) {
                 throw new ImplantReviewAlreadyExistsException();
             }
             throw new DatabaseException(e);
