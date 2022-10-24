@@ -2,13 +2,16 @@ version: "3.9"
 services:
   db:
     container_name: "KIC_DB"
-    image: mysql:8.0.31-oracle
+    image: mariadb:10.9.3
     environment:
+      MYSQL_DATABASE: 'ssbd03'
       MYSQL_ROOT_PASSWORD: 'cyberpunk2077'
-      MYSQL_USER: 'test'
-      MYSQL_PASS: 'pass'
+      MYSQL_USER: 'ssbd03'
+      MYSQL_PASSWORD: 'cyberpunk2077'
     volumes:
       - db_data:/var/lib/mysql
+    ports:
+      - "3306:3306"
   web:
     container_name: "KIC_APP"
     depends_on: [ "db" ]

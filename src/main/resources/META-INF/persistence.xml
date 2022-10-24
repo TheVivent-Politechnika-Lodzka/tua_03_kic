@@ -3,15 +3,15 @@
              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
              xsi:schemaLocation="https://jakarta.ee/xml/ns/persistence https://jakarta.ee/xml/ns/persistence/persistence_3_0.xsd"
              version="3.0">
-    <persistence-unit name="ssbd03adminPU" transaction-type="JTA">
+    <persistence-unit name="ssbd03admin" transaction-type="JTA">
         <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
-        <jta-data-source>java:app/jdbc/ssbd03admin</jta-data-source>
+        <jta-data-source>java:jboss/jdbc/ssbd03admin</jta-data-source>
         <exclude-unlisted-classes>false</exclude-unlisted-classes>
         <properties>
-            <property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQLDialect"/>
-            <property name="hibernate.connection.driver_class" value="org.postgresql.Driver"/>
+            <property name="hibernate.dialect" value="org.hibernate.dialect.MariaDBDialect"/>
+            <property name="hibernate.connection.driver_class" value="org.mariadb.jdbc.Driver"/>
             <property name="hibernate.transaction.jta.platform"
-                      value="org.hibernate.service.jta.platform.internal.SunOneJtaPlatform"/>
+                      value="org.hibernate.service.jta.platform.internal.JBossStandAloneJtaPlatform"/>
             <property name="hibernate.hbm2ddl.auto" value="create-drop"/>
 
             <property name="javax.persistence.sql-load-script-source" value="init.sql"/>
@@ -20,9 +20,9 @@
             <property name="hibernate.format_sql" value="true"/>
         </properties>
     </persistence-unit>
-    <persistence-unit name="ssbd03mokPU" transaction-type="JTA">
+    <persistence-unit name="ssbd03mok" transaction-type="JTA">
         <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
-        <jta-data-source>java:app/jdbc/ssbd03mok</jta-data-source>
+        <jta-data-source>java:jboss/jdbc/ssbd03mok</jta-data-source>
         <class>pl.lodz.p.it.ssbd2022.ssbd03.entities.Account</class>
         <class>pl.lodz.p.it.ssbd2022.ssbd03.entities.access_levels.AccessLevel</class>
         <class>pl.lodz.p.it.ssbd2022.ssbd03.entities.access_levels.DataAdministrator</class>
@@ -38,18 +38,17 @@
         <class>pl.lodz.p.it.ssbd2022.ssbd03.entities.ImplantReview</class>
         <exclude-unlisted-classes>true</exclude-unlisted-classes>
         <properties>
-            <property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQLDialect"/>
-            <property name="hibernate.connection.driver_class" value="org.postgresql.Driver"/>
+            <property name="hibernate.dialect" value="org.hibernate.dialect.MariaDBDialect"/>
+            <property name="hibernate.connection.driver_class" value="org.mariadb.jdbc.Driver"/>
             <property name="hibernate.transaction.jta.platform"
-                      value="org.hibernate.service.jta.platform.internal.SunOneJtaPlatform"/>
-
+                      value="org.hibernate.service.jta.platform.internal.JBossStandAloneJtaPlatform"/>
             <property name="hibernate.show_sql" value="true"/>
             <property name="hibernate.format_sql" value="true"/>
         </properties>
     </persistence-unit>
-    <persistence-unit name="ssbd03mopPU" transaction-type="JTA">
+    <persistence-unit name="ssbd03mop" transaction-type="JTA">
         <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
-        <jta-data-source>java:app/jdbc/ssbd03mop</jta-data-source>
+        <jta-data-source>java:jboss/jdbc/ssbd03mop</jta-data-source>
         <class>pl.lodz.p.it.ssbd2022.ssbd03.entities.Appointment</class>
         <class>pl.lodz.p.it.ssbd2022.ssbd03.entities.ImplantPopularityAggregate</class>
         <class>pl.lodz.p.it.ssbd2022.ssbd03.entities.Implant</class>
@@ -62,11 +61,10 @@
         <class>pl.lodz.p.it.ssbd2022.ssbd03.entities.access_levels.DataAdministrator</class>
         <exclude-unlisted-classes>true</exclude-unlisted-classes>
         <properties>
-            <property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQLDialect"/>
-            <property name="hibernate.connection.driver_class" value="org.postgresql.Driver"/>
+            <property name="hibernate.dialect" value="org.hibernate.dialect.MariaDBDialect"/>
+            <property name="hibernate.connection.driver_class" value="org.mariadb.jdbc.Driver"/>
             <property name="hibernate.transaction.jta.platform"
-                      value="org.hibernate.service.jta.platform.internal.SunOneJtaPlatform"/>
-
+                      value="org.hibernate.service.jta.platform.internal.JBossStandAloneJtaPlatform"/>
             <property name="hibernate.show_sql" value="true"/>
             <property name="hibernate.format_sql" value="true"/>
         </properties>
