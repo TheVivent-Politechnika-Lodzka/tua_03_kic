@@ -41,72 +41,72 @@ public class StartupConfig {
         logger.warning("##############################################################");
         logger.warning("                       STARTING UP");
         logger.warning("##############################################################");
-        try {
-            createImplant();
-        } catch (Exception e) {
-            logger.warning("implant");
-            logger.info("Error during startup config: " + e.getMessage());
-            throw e;
-        }
-        try {
-            createImplantSecond();
-        } catch (Exception e) {
-            logger.warning("implant second");
-            logger.info("Error during startup config: " + e.getMessage());
-            throw e;
-        }
-
-        try {
-            createAdmin();
-        } catch (Exception e) {
-            logger.warning("account admin");
-            logger.info("Error during startup config: " + e.getMessage());
-            throw e;
-        }
-        try {
-            createSpecialistAdmin();
-        } catch (Exception e) {
-            logger.warning("account specialist admin");
-            logger.info("Error during startup config: " + e.getMessage());
-            throw e;
-        }
-        try {
-            createClientAdmin();
-        } catch (Exception e) {
-            logger.warning("account client admin");
-            logger.info("Error during startup config: " + e.getMessage());
-            throw e;
-        }
-        try {
-            createSpecialist();
-        } catch (Exception e) {
-            logger.warning("account specialist");
-            logger.info("Error during startup config: " + e.getMessage());
-            throw e;
-        }
-        try {
-            createClient();
-        } catch (Exception e) {
-            logger.warning("account client");
-            logger.info("Error during startup config: " + e.getMessage());
-            throw e;
-        }
-
-        try {
-            createAppointment();
-        } catch (Exception e) {
-            logger.warning("appointment");
-            logger.info("Error during startup config: " + e.getMessage());
-            throw e;
-        }
-
-        try {
-            createImplantReview();
-        } catch (Exception e) {
-            logger.warning("implant review");
-            logger.info("Error during startup config: " + e.getMessage());
-            throw e;
-        }
+//        try {
+//            createImplant();
+//        } catch (Exception e) {
+//            logger.warning("implant");
+//            logger.info("Error during startup config: " + e.getMessage());
+//            throw e;
+//        }
+//        try {
+//            createImplantSecond();
+//        } catch (Exception e) {
+//            logger.warning("implant second");
+//            logger.info("Error during startup config: " + e.getMessage());
+//            throw e;
+//        }
+//
+//        try {
+//            createAdmin();
+//        } catch (Exception e) {
+//            logger.warning("account admin");
+//            logger.info("Error during startup config: " + e.getMessage());
+//            throw e;
+//        }
+//        try {
+//            createSpecialistAdmin();
+//        } catch (Exception e) {
+//            logger.warning("account specialist admin");
+//            logger.info("Error during startup config: " + e.getMessage());
+//            throw e;
+//        }
+//        try {
+//            createClientAdmin();
+//        } catch (Exception e) {
+//            logger.warning("account client admin");
+//            logger.info("Error during startup config: " + e.getMessage());
+//            throw e;
+//        }
+//        try {
+//            createSpecialist();
+//        } catch (Exception e) {
+//            logger.warning("account specialist");
+//            logger.info("Error during startup config: " + e.getMessage());
+//            throw e;
+//        }
+//        try {
+//            createClient();
+//        } catch (Exception e) {
+//            logger.warning("account client");
+//            logger.info("Error during startup config: " + e.getMessage());
+//            throw e;
+//        }
+//
+//        try {
+//            createAppointment();
+//        } catch (Exception e) {
+//            logger.warning("appointment");
+//            logger.info("Error during startup config: " + e.getMessage());
+//            throw e;
+//        }
+//
+//        try {
+//            createImplantReview();
+//        } catch (Exception e) {
+//            logger.warning("implant review");
+//            logger.info("Error during startup config: " + e.getMessage());
+//            throw e;
+//        }
         logger.warning("##############################################################");
         logger.warning("                        STARTED");
         logger.warning("##############################################################");

@@ -86,6 +86,16 @@
             <version>1.18.22</version>
             <scope>provided</scope>
         </dependency>
+        <dependency>
+            <groupId>org.jboss.resteasy</groupId>
+            <artifactId>resteasy-jaxrs</artifactId>
+            <version>2.2.1.GA</version>
+        </dependency>
+        <dependency>
+            <groupId>org.jboss.resteasy</groupId>
+            <artifactId>resteasy-jaxb-provider</artifactId>
+            <version>2.2.0.GA</version>
+        </dependency>
         <!-- ############### hash ############### -->
         <dependency>
             <groupId>commons-codec</groupId>
@@ -139,17 +149,6 @@
 
     <build>
         <plugins>
-            <plugin>
-                <groupId>org.wildfly.plugins</groupId>
-                <artifactId>wildfly-maven-plugin</artifactId>
-                <version>3.0.2.Final</version>
-                <configuration>
-                    <commands>
-                        <command>/subsystem=undertow/application-security-domain=other:write-attribute(name=integrated-jaspi, value=false)</command>
-                        <command>reload</command>
-                    </commands>
-                </configuration>
-            </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
