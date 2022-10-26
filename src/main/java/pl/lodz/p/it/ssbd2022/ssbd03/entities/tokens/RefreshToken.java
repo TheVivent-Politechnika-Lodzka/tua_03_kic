@@ -64,11 +64,15 @@ public class RefreshToken implements Serializable {
 
         @Basic(optional = false)
         @Column(name="expdate", nullable = false )
-        @Getter
-        private Instant expDate;
+        private Long expDate;
+
+        public Instant getExpDate() {
+                return Instant.ofEpochSecond(expDate);
+        }
 
         @PrePersist
         public void prePersist() {
-                this.expDate = Instant.now().plusSeconds(Config.REFRESH_TOKEN_EXPIRATION_SECONDS);
+                this.expDate = Instant.now().getEpochSecond()
+                        + Config.REFRESH_TOKEN_EXPIRATION_SECONDS;
         }
 }

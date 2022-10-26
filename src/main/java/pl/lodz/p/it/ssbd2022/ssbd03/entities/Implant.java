@@ -65,19 +65,26 @@ public class Implant extends AbstractEntity implements Serializable {
     @Getter @Setter
     private boolean archived = false;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "popularity", referencedColumnName = "id")
-    private ImplantPopularityAggregate popularity = new ImplantPopularityAggregate();
-
     @Basic(optional = false)
     @Column(name = "duration", nullable = false)
-    @Getter @Setter
-    private Duration duration;
+    private Long duration;
+
+    public Duration getDuration() {
+        return Duration.ofSeconds(duration);
+    }
+
+    public void setDuration(Duration duration) {
+        this.duration = duration.getSeconds();
+    }
 
     @Column(name = "image")
     @Getter @Setter
     @Url
     private String image;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "popularity", referencedColumnName = "id")
+    private ImplantPopularityAggregate popularity = new ImplantPopularityAggregate();
 
     public int getPopularity() {
         return this.popularity.getPopularity();

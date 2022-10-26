@@ -1,17 +1,19 @@
 package pl.lodz.p.it.ssbd2022.ssbd03.common;
 
-import javax.annotation.PostConstruct;
-import javax.ejb.Singleton;
-import javax.ejb.Startup;
-import javax.inject.Inject;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.*;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.access_levels.DataAdministrator;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.access_levels.DataClient;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.access_levels.DataSpecialist;
 import pl.lodz.p.it.ssbd2022.ssbd03.utils.HashAlgorithm;
 
+import javax.annotation.PostConstruct;
+import javax.ejb.Singleton;
+import javax.ejb.Startup;
+import javax.ejb.TransactionAttribute;
+import javax.ejb.TransactionAttributeType;
+import javax.inject.Inject;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import java.time.Duration;
 import java.time.Instant;
 import java.time.LocalTime;
@@ -21,6 +23,7 @@ import java.util.logging.Logger;
 
 @Startup
 @Singleton
+@TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
 public class StartupConfig {
 
     private static final long serialVersionUID = 1L;
@@ -35,42 +38,82 @@ public class StartupConfig {
 
     @PostConstruct
     public void init() {
-
+        logger.warning("##############################################################");
+        logger.warning("                       STARTING UP");
+        logger.warning("##############################################################");
         try {
             createImplant();
-            createImplantSecond();
-            em.flush();
         } catch (Exception e) {
+            logger.warning("implant");
             logger.info("Error during startup config: " + e.getMessage());
+            throw e;
+        }
+        try {
+            createImplantSecond();
+        } catch (Exception e) {
+            logger.warning("implant second");
+            logger.info("Error during startup config: " + e.getMessage());
+            throw e;
         }
 
         try {
             createAdmin();
-            createSpecialistAdmin();
-            createClientAdmin();
-            createClient();
-            createSpecialist();
-            em.flush();
         } catch (Exception e) {
+            logger.warning("account admin");
             logger.info("Error during startup config: " + e.getMessage());
+            throw e;
+        }
+        try {
+            createSpecialistAdmin();
+        } catch (Exception e) {
+            logger.warning("account specialist admin");
+            logger.info("Error during startup config: " + e.getMessage());
+            throw e;
+        }
+        try {
+            createClientAdmin();
+        } catch (Exception e) {
+            logger.warning("account client admin");
+            logger.info("Error during startup config: " + e.getMessage());
+            throw e;
+        }
+        try {
+            createSpecialist();
+        } catch (Exception e) {
+            logger.warning("account specialist");
+            logger.info("Error during startup config: " + e.getMessage());
+            throw e;
+        }
+        try {
+            createClient();
+        } catch (Exception e) {
+            logger.warning("account client");
+            logger.info("Error during startup config: " + e.getMessage());
+            throw e;
         }
 
         try {
             createAppointment();
-            em.flush();
         } catch (Exception e) {
+            logger.warning("appointment");
             logger.info("Error during startup config: " + e.getMessage());
+            throw e;
         }
 
         try {
             createImplantReview();
-            em.flush();
         } catch (Exception e) {
+            logger.warning("implant review");
             logger.info("Error during startup config: " + e.getMessage());
+            throw e;
         }
+        logger.warning("##############################################################");
+        logger.warning("                        STARTED");
+        logger.warning("##############################################################");
     }
 
     public void createImplant() {
+        em.getTransaction().begin();
         Implant implant = new Implant();
         implant.setName("Zestaw słuchowy");
         implant.setDescription("Implant słuchowy montowany po obu skroniach pozwala usłyszeć na odległość do 300m. Dodatkowo w zestawie naprowadzacz laserowy do precyzyjnego określenia źródła dźwięku. Zabieg nieinwazyjny wykonany w znieczuleniu miejscowym, nie jest wymagana opieka pozabiegowa.");
@@ -79,10 +122,16 @@ public class StartupConfig {
         implant.setPopularity(0);
         implant.setDuration(Duration.between(LocalTime.NOON, LocalTime.MAX));
         implant.setImage("https://cdn3.whatculture.com/images/2020/06/f9c87f9aba31102e-600x338.jpg");
+        if (em == null) {
+            logger.severe("em is null");
+        }
         em.persist(implant);
+        em.flush();
+        em.getTransaction().commit();
     }
 
     public void createImplantSecond() {
+        em.getTransaction().begin();
         Implant implant = new Implant();
         implant.setName("Ręka z tytanu");
         implant.setDescription("Ręka wykonana z tytanu z 4 siłownikami klasy AB pozwalającymi wygenerować siłę 1582J czyli 3 razy wiekszą niż MAG-08. Zabieg wykonany na pełnym znieczuleniu, zabieg można wykonać zrówno mając rekę, jak również już z amputowaną ręką.");
@@ -92,9 +141,12 @@ public class StartupConfig {
         implant.setDuration(Duration.between(LocalTime.NOON, LocalTime.MAX));
         implant.setImage("https://i.wpimg.pl/c/646x/m.gadzetomania.pl/joihnny-720x405-ec53e56439bdc8de.png");
         em.persist(implant);
+        em.flush();
+        em.getTransaction().commit();
     }
 
     private void createAdmin() {
+        em.getTransaction().begin();
         Account admin = new Account();
         admin.setLogin("administrator");
         admin.setPassword(hashAlgorithm.generate("Password123!".toCharArray()));
@@ -111,9 +163,12 @@ public class StartupConfig {
 
         admin.addAccessLevel(dataAdministrator);
         em.persist(admin);
+        em.flush();
+        em.getTransaction().commit();
     }
 
     private void createSpecialistAdmin() {
+        em.getTransaction().begin();
         Account admin = new Account();
         admin.setLogin("specAdmin");
         admin.setPassword(hashAlgorithm.generate("Password123!".toCharArray()));
@@ -134,9 +189,12 @@ public class StartupConfig {
         admin.addAccessLevel(dataAdministrator);
         admin.addAccessLevel(dataSpecialist);
         em.persist(admin);
+        em.flush();
+        em.getTransaction().commit();
     }
 
     private void createClientAdmin() {
+        em.getTransaction().begin();
         Account admin = new Account();
         admin.setLogin("clientAdmin");
         admin.setPassword(hashAlgorithm.generate("Password123!".toCharArray()));
@@ -159,9 +217,12 @@ public class StartupConfig {
         admin.addAccessLevel(dataAdministrator);
         admin.addAccessLevel(dataClient);
         em.persist(admin);
+        em.flush();
+        em.getTransaction().commit();
     }
 
     public void createClient() {
+        em.getTransaction().begin();
         Account client = new Account();
         client.setLogin("client");
         client.setPassword(hashAlgorithm.generate("Password123!".toCharArray()));
@@ -179,9 +240,12 @@ public class StartupConfig {
 
         client.addAccessLevel(dataClient);
         em.persist(client);
+        em.flush();
+        em.getTransaction().commit();
     }
 
     public void createSpecialist() {
+        em.getTransaction().begin();
         Account specialist = new Account();
         specialist.setLogin("spec");
         specialist.setPassword(hashAlgorithm.generate("Password123!".toCharArray()));
@@ -198,9 +262,12 @@ public class StartupConfig {
 
         specialist.addAccessLevel(dataSpecialist);
         em.persist(specialist);
+        em.flush();
+        em.getTransaction().commit();
     }
 
     public void createAppointment() {
+        em.getTransaction().begin();
 
         Account clientAdmin = em.createNamedQuery("Account.findByLogin", Account.class).setParameter("login", "clientAdmin").getSingleResult();
         Account specialist = em.createNamedQuery("Account.findByLogin", Account.class).setParameter("login", "spec").getSingleResult();
@@ -256,9 +323,12 @@ public class StartupConfig {
 
             em.persist(appointment);
         }
+        em.flush();
+        em.getTransaction().commit();
     }
 
     public void createImplantReview() {
+        em.getTransaction().begin();
         ImplantReview review = new ImplantReview();
         review.setReview("Wszystko sprawnie, Pani wykonująca zabieg bardzo miła, przyjemna. Polecam");
         review.setRating(5);
@@ -282,5 +352,7 @@ public class StartupConfig {
         review.setClient(client);
         review.setImplant(implant);
         em.persist(review);
+        em.flush();
+        em.getTransaction().commit();
     }
 }

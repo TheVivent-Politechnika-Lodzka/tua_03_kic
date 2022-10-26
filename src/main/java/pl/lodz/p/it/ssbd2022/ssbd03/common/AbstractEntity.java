@@ -2,11 +2,14 @@ package pl.lodz.p.it.ssbd2022.ssbd03.common;
 
 import javax.persistence.*;
 import lombok.Getter;
+import org.eclipse.persistence.annotations.UuidGenerator;
+import org.eclipse.persistence.jpa.jpql.parser.DateTime;
 
 import java.time.Instant;
 import java.util.UUID;
 
 @MappedSuperclass
+@UuidGenerator(name = "EMP_ID_GEN")
 public abstract class AbstractEntity {
 
     private static final long serialVersionUID = 1L;
@@ -14,9 +17,12 @@ public abstract class AbstractEntity {
     @Id
     @Basic(optional = false)
     @Column(name = "id", nullable = false)
-    @GeneratedValue()
-    @Getter
-    private UUID id;
+    @GeneratedValue(generator = "EMP_ID_GEN")
+    private String id;
+
+    public UUID getId() {
+        return UUID.fromString(id);
+    }
 
     @Basic(optional = false)
     @Column(name = "version")
@@ -27,25 +33,39 @@ public abstract class AbstractEntity {
     //pole zawierające datę utworzenia encji
     @Basic(optional = false)
     @Column(name = "created_at", updatable = false, nullable = false)
-    @Getter
-    private Instant createdAt;
+    private Long createdAt;
+
+    public Instant getCreatedAt() {
+        return Instant.ofEpochSecond(createdAt);
+    }
+
+    private void setCreatedAt(Instant createdAt) {
+        this.createdAt = createdAt.getEpochSecond();
+    }
 
     //pole zawierające ostatnio modyfikację encji
     @Basic(optional = false)
     @Column(name = "last_modified", nullable = false)
-    @Getter
-    private Instant lastModified;
+    private Long lastModified;
+
+    public Instant getLastModified() {
+        return Instant.ofEpochSecond(lastModified);
+    }
+
+    private void setLastModified(Instant lastModified) {
+        this.lastModified = lastModified.getEpochSecond();
+    }
 
     @PrePersist
     public void prePersist() {
         Instant start = Instant.now();
-        createdAt = start;
-        lastModified = start;
+        setCreatedAt(start);
+        setLastModified(start);
     }
 
     @PreUpdate
     public void preUpdate() {
-        lastModified = Instant.now();
+        setLastModified(Instant.now());
     }
 
     // implementacja equals i hashCode,

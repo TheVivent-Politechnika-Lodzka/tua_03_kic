@@ -21,7 +21,7 @@ public class ImplantPopularityAggregate extends AbstractEntity {
     @Setter
     private int popularity = 0;
 
-    @OneToOne(mappedBy = "popularity")
-    private Implant implant;
+//    @OneToOne(mappedBy = "popularity")
+//    private Implant implant;
 
 }

@@ -1,6 +1,8 @@
 package pl.lodz.p.it.ssbd2022.ssbd03.entities;
 
 import javax.persistence.*;
+
+import com.sun.jdi.request.DuplicateRequestException;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -76,15 +78,27 @@ public class Appointment extends AbstractEntity implements Serializable {
 
     @Basic(optional = false)
     @Column(name = "startDate", nullable = false)
-    @Getter
-    @Setter
-    private Instant startDate;
+    private Long startDate;
+
+    public Instant getStartDate() {
+        return Instant.ofEpochSecond(startDate);
+    }
+
+    public void setStartDate(Instant startDate) {
+        this.startDate = startDate.getEpochSecond();
+    }
 
     @Basic(optional = false)
     @Column(name = "endDate", nullable = false)
-    @Getter
-    @Setter
-    private Instant endDate;
+    private Long endDate;
+
+    public Instant getEndDate() {
+        return Instant.ofEpochSecond(endDate);
+    }
+
+    public void setEndDate(Instant endDate) {
+        this.endDate = endDate.getEpochSecond();
+    }
 
     @Basic(optional = false)
     @Column(name = "price", nullable = false)
@@ -133,14 +147,17 @@ public class Appointment extends AbstractEntity implements Serializable {
 
     @Basic(optional = false)
     @Column(name = "duration", nullable = false, table = "implant_backup_in_appointment", updatable = false)
-    @Getter
-    private Duration implantDuration;
+    private Long implantDuration;
+
+    public Duration getImplantDuration() {
+        return Duration.ofSeconds(implantDuration);
+    }
 
     // własny setter dla lepszej spójności danych
     public void setImplant(Implant implant) {
         this.implant = implant;
         implantDescription = implant.getDescription();
-        implantDuration = implant.getDuration();
+        implantDuration = implant.getDuration().toSeconds();
         implantManufacturer = implant.getManufacturer();
         implantName = implant.getName();
         implantPrice = implant.getPrice();

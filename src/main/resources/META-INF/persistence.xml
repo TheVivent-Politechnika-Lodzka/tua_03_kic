@@ -1,32 +1,44 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<persistence xmlns="https://jakarta.ee/xml/ns/persistence"
+<persistence xmlns="http://xmlns.jcp.org/xml/ns/persistence"
              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-             xsi:schemaLocation="https://jakarta.ee/xml/ns/persistence https://jakarta.ee/xml/ns/persistence/persistence_3_0.xsd"
-             version="3.0">
+             version="2.1"
+             xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd">
     <persistence-unit name="ssbd03admin" transaction-type="JTA">
         <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
-<!--        <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>-->
+        <!--        <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>-->
         <jta-data-source>java:jboss/jdbc/ssbd03admin</jta-data-source>
-        <exclude-unlisted-classes>false</exclude-unlisted-classes>
+        <class>pl.lodz.p.it.ssbd2022.ssbd03.entities.Account</class>
+        <class>pl.lodz.p.it.ssbd2022.ssbd03.entities.access_levels.AccessLevel</class>
+        <class>pl.lodz.p.it.ssbd2022.ssbd03.entities.access_levels.DataAdministrator</class>
+        <class>pl.lodz.p.it.ssbd2022.ssbd03.entities.access_levels.DataClient</class>
+        <class>pl.lodz.p.it.ssbd2022.ssbd03.entities.access_levels.DataSpecialist</class>
+        <class>pl.lodz.p.it.ssbd2022.ssbd03.entities.tokens.ResetPasswordToken</class>
+        <class>pl.lodz.p.it.ssbd2022.ssbd03.entities.tokens.RefreshToken</class>
+        <class>pl.lodz.p.it.ssbd2022.ssbd03.entities.tokens.AccountConfirmationToken</class>
+        <class>pl.lodz.p.it.ssbd2022.ssbd03.entities.Appointment</class>
+        <class>pl.lodz.p.it.ssbd2022.ssbd03.entities.ImplantPopularityAggregate</class>
+        <class>pl.lodz.p.it.ssbd2022.ssbd03.entities.Implant</class>
+        <class>pl.lodz.p.it.ssbd2022.ssbd03.entities.ImplantReview</class>
         <properties>
-            <property name="jakarta.persistence.jdbc.driver" value="org.mariadb.jdbc.Driver"/>
-            <property name="eclipselink.logging.level" value="FINE" />
-            <property name="eclipselink.ddl-generation" value="create-tables" />
-<!--            <property name="hibernate.dialect" value="org.hibernate.dialect.MariaDBDialect"/>-->
-<!--            <property name="hibernate.connection.driver_class" value="org.mariadb.jdbc.Driver"/>-->
-<!--            <property name="hibernate.transaction.jta.platform"-->
-<!--                      value="org.hibernate.service.jta.platform.internal.JBossStandAloneJtaPlatform"/>-->
-<!--            <property name="hibernate.hbm2ddl.auto" value="create-drop"/>-->
+            <property name="javax.persistence.jdbc.driver" value="org.mariadb.jdbc.Driver"/>
+            <property name="eclipselink.logging.level" value="FINE"/>
+            <property name="eclipselink.target-database" value="MySQL"/>
+            <!--            <property name="eclipselink.ddl-generation" value="create-tables" />-->
+            <!--            <property name="hibernate.dialect" value="org.hibernate.dialect.MariaDBDialect"/>-->
+            <!--            <property name="hibernate.connection.driver_class" value="org.mariadb.jdbc.Driver"/>-->
+            <!--            <property name="hibernate.transaction.jta.platform"-->
+            <!--                      value="org.hibernate.service.jta.platform.internal.JBossStandAloneJtaPlatform"/>-->
+            <!--            <property name="hibernate.hbm2ddl.auto" value="create-drop"/>-->
 
-<!--            <property name="hibernate.show_sql" value="true"/>-->
-<!--            <property name="hibernate.format_sql" value="true"/>-->
+            <!--            <property name="hibernate.show_sql" value="true"/>-->
+            <!--            <property name="hibernate.format_sql" value="true"/>-->
 
-            <property name="javax.persistence.sql-load-script-source" value="init.sql"/>
+<!--            <property name="javax.persistence.sql-load-script-source" value="init.sql"/>-->
         </properties>
     </persistence-unit>
     <persistence-unit name="ssbd03mok" transaction-type="JTA">
         <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
-<!--        <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>-->
+        <!--        <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>-->
         <jta-data-source>java:jboss/jdbc/ssbd03mok</jta-data-source>
         <class>pl.lodz.p.it.ssbd2022.ssbd03.entities.Account</class>
         <class>pl.lodz.p.it.ssbd2022.ssbd03.entities.access_levels.AccessLevel</class>
@@ -43,19 +55,20 @@
         <class>pl.lodz.p.it.ssbd2022.ssbd03.entities.ImplantReview</class>
         <exclude-unlisted-classes>true</exclude-unlisted-classes>
         <properties>
-            <property name="jakarta.persistence.jdbc.driver" value="org.mariadb.jdbc.Driver"/>
-            <property name="eclipselink.logging.level" value="FINE" />
-<!--            <property name="hibernate.dialect" value="org.hibernate.dialect.MariaDBDialect"/>-->
-<!--            <property name="hibernate.connection.driver_class" value="org.mariadb.jdbc.Driver"/>-->
-<!--            <property name="hibernate.transaction.jta.platform"-->
-<!--                      value="org.hibernate.service.jta.platform.internal.JBossStandAloneJtaPlatform"/>-->
-<!--            <property name="hibernate.show_sql" value="true"/>-->
-<!--            <property name="hibernate.format_sql" value="true"/>-->
+            <property name="javax.persistence.jdbc.driver" value="org.mariadb.jdbc.Driver"/>
+            <property name="eclipselink.logging.level" value="FINE"/>
+            <property name="eclipselink.target-database" value="MySQL"/>
+            <!--            <property name="hibernate.dialect" value="org.hibernate.dialect.MariaDBDialect"/>-->
+            <!--            <property name="hibernate.connection.driver_class" value="org.mariadb.jdbc.Driver"/>-->
+            <!--            <property name="hibernate.transaction.jta.platform"-->
+            <!--                      value="org.hibernate.service.jta.platform.internal.JBossStandAloneJtaPlatform"/>-->
+            <!--            <property name="hibernate.show_sql" value="true"/>-->
+            <!--            <property name="hibernate.format_sql" value="true"/>-->
         </properties>
     </persistence-unit>
     <persistence-unit name="ssbd03mop" transaction-type="JTA">
         <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
-<!--        <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>-->
+        <!--        <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>-->
         <jta-data-source>java:jboss/jdbc/ssbd03mop</jta-data-source>
         <class>pl.lodz.p.it.ssbd2022.ssbd03.entities.Appointment</class>
         <class>pl.lodz.p.it.ssbd2022.ssbd03.entities.ImplantPopularityAggregate</class>
@@ -69,14 +82,15 @@
         <class>pl.lodz.p.it.ssbd2022.ssbd03.entities.access_levels.DataAdministrator</class>
         <exclude-unlisted-classes>true</exclude-unlisted-classes>
         <properties>
-            <property name="jakarta.persistence.jdbc.driver" value="org.mariadb.jdbc.Driver"/>
-            <property name="eclipselink.logging.level" value="FINE" />
-<!--            <property name="hibernate.dialect" value="org.hibernate.dialect.MariaDBDialect"/>-->
-<!--            <property name="hibernate.connection.driver_class" value="org.mariadb.jdbc.Driver"/>-->
-<!--            <property name="hibernate.transaction.jta.platform"-->
-<!--                      value="org.hibernate.service.jta.platform.internal.JBossStandAloneJtaPlatform"/>-->
-<!--            <property name="hibernate.show_sql" value="true"/>-->
-<!--            <property name="hibernate.format_sql" value="true"/>-->
+            <property name="javax.persistence.jdbc.driver" value="org.mariadb.jdbc.Driver"/>
+            <property name="eclipselink.logging.level" value="FINE"/>
+            <property name="eclipselink.target-database" value="MySQL"/>
+            <!--            <property name="hibernate.dialect" value="org.hibernate.dialect.MariaDBDialect"/>-->
+            <!--            <property name="hibernate.connection.driver_class" value="org.mariadb.jdbc.Driver"/>-->
+            <!--            <property name="hibernate.transaction.jta.platform"-->
+            <!--                      value="org.hibernate.service.jta.platform.internal.JBossStandAloneJtaPlatform"/>-->
+            <!--            <property name="hibernate.show_sql" value="true"/>-->
+            <!--            <property name="hibernate.format_sql" value="true"/>-->
         </properties>
     </persistence-unit>
 </persistence>

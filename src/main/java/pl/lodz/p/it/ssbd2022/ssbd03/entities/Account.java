@@ -5,6 +5,7 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import lombok.*;
+import org.apache.commons.codec.language.bm.Languages;
 import pl.lodz.p.it.ssbd2022.ssbd03.common.AbstractEntity;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.access_levels.AccessLevel;
 import pl.lodz.p.it.ssbd2022.ssbd03.validation.FirstName;
@@ -82,8 +83,6 @@ public class Account extends AbstractEntity implements Serializable {
     @NotNull
     private boolean active;
 
-
-
     @OneToMany(fetch = FetchType.EAGER, cascade = {CascadeType.REMOVE, CascadeType.ALL}, mappedBy = "account", orphanRemoval = true)
     @Getter
     private Collection<AccessLevel> accessLevelCollection = new ArrayList<>();
@@ -114,12 +113,19 @@ public class Account extends AbstractEntity implements Serializable {
     private String email;
     @Basic(optional = false)
     @Column(name = "language", table = "account_details", nullable = false, length = 16)
-    @Getter
-    @Setter
     @NotNull
-    private Locale language;
+    private String language;
 
-    @Column(name = "url", table = "account_details", length = 2000)
+    public Locale getLanguage() {
+        return new Locale(language);
+    }
+
+    public void setLanguage(Locale language) {
+        this.language = language.getLanguage();
+    }
+
+    @Column(name = "url", length = 2000)
+//    @Column(name = "url", table = "account_details", length = 2000)
     @Size(min = 8, max = 2000)
     @Getter
     @Setter
