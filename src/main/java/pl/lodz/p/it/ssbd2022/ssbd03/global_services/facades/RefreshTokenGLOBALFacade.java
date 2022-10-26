@@ -59,7 +59,7 @@ public class RefreshTokenGLOBALFacade extends AbstractFacade<RefreshToken> {
     @PermitAll
     public List<RefreshToken> findExpiredTokens() {
         TypedQuery<RefreshToken> typedQuery = entityManager.createNamedQuery("RefreshToken.findExpired", RefreshToken.class);
-        typedQuery.setParameter("now", Instant.now());
+        typedQuery.setParameter("now", Instant.now().getEpochSecond());
         return typedQuery.getResultList();
     }
 

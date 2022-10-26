@@ -3,6 +3,7 @@ package pl.lodz.p.it.ssbd2022.ssbd03.entities.tokens;
 import javax.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import org.eclipse.persistence.annotations.UuidGenerator;
 import pl.lodz.p.it.ssbd2022.ssbd03.common.AbstractEntity;
 import pl.lodz.p.it.ssbd2022.ssbd03.common.Config;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.Account;
@@ -22,6 +23,7 @@ import java.util.UUID;
         @NamedQuery(name = "ResetPassword.findByLogin", query = "select r from ResetPasswordToken r where r.account.login = :login"),
         @NamedQuery(name = "ResetPassword.findBeforeDate", query = "select r from ResetPasswordToken r where r.expDate < :now")
 })
+@UuidGenerator(name = "EMP_ID_GEN")
 public class ResetPasswordToken implements Serializable {
 
         private static final long serialVersionUID = 1L;
@@ -29,9 +31,12 @@ public class ResetPasswordToken implements Serializable {
         @Id
         @Basic(optional = false)
         @Column(name = "id", nullable = false)
-        @GeneratedValue()
-        @Getter
-        private UUID id;
+        @GeneratedValue(generator = "EMP_ID_GEN")
+        private String id;
+
+        public UUID getId() {
+                return UUID.fromString(id);
+        }
 
         @Basic(optional = false)
         @Column(name = "version")

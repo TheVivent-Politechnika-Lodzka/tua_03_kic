@@ -113,7 +113,7 @@ public class StartupConfig {
     }
 
     public void createImplant() {
-        em.getTransaction().begin();
+//        em.getTransaction().begin();
         Implant implant = new Implant();
         implant.setName("Zestaw słuchowy");
         implant.setDescription("Implant słuchowy montowany po obu skroniach pozwala usłyszeć na odległość do 300m. Dodatkowo w zestawie naprowadzacz laserowy do precyzyjnego określenia źródła dźwięku. Zabieg nieinwazyjny wykonany w znieczuleniu miejscowym, nie jest wymagana opieka pozabiegowa.");
@@ -127,11 +127,11 @@ public class StartupConfig {
         }
         em.persist(implant);
         em.flush();
-        em.getTransaction().commit();
+//        em.getTransaction().commit();
     }
 
     public void createImplantSecond() {
-        em.getTransaction().begin();
+//        em.getTransaction().begin();
         Implant implant = new Implant();
         implant.setName("Ręka z tytanu");
         implant.setDescription("Ręka wykonana z tytanu z 4 siłownikami klasy AB pozwalającymi wygenerować siłę 1582J czyli 3 razy wiekszą niż MAG-08. Zabieg wykonany na pełnym znieczuleniu, zabieg można wykonać zrówno mając rekę, jak również już z amputowaną ręką.");
@@ -142,11 +142,11 @@ public class StartupConfig {
         implant.setImage("https://i.wpimg.pl/c/646x/m.gadzetomania.pl/joihnny-720x405-ec53e56439bdc8de.png");
         em.persist(implant);
         em.flush();
-        em.getTransaction().commit();
+//        em.getTransaction().commit();
     }
 
     private void createAdmin() {
-        em.getTransaction().begin();
+//        em.getTransaction().begin();
         Account admin = new Account();
         admin.setLogin("administrator");
         admin.setPassword(hashAlgorithm.generate("Password123!".toCharArray()));
@@ -164,11 +164,11 @@ public class StartupConfig {
         admin.addAccessLevel(dataAdministrator);
         em.persist(admin);
         em.flush();
-        em.getTransaction().commit();
+//        em.getTransaction().commit();
     }
 
     private void createSpecialistAdmin() {
-        em.getTransaction().begin();
+//        em.getTransaction().begin();
         Account admin = new Account();
         admin.setLogin("specAdmin");
         admin.setPassword(hashAlgorithm.generate("Password123!".toCharArray()));
@@ -190,11 +190,11 @@ public class StartupConfig {
         admin.addAccessLevel(dataSpecialist);
         em.persist(admin);
         em.flush();
-        em.getTransaction().commit();
+//        em.getTransaction().commit();
     }
 
     private void createClientAdmin() {
-        em.getTransaction().begin();
+//        em.getTransaction().begin();
         Account admin = new Account();
         admin.setLogin("clientAdmin");
         admin.setPassword(hashAlgorithm.generate("Password123!".toCharArray()));
@@ -218,11 +218,11 @@ public class StartupConfig {
         admin.addAccessLevel(dataClient);
         em.persist(admin);
         em.flush();
-        em.getTransaction().commit();
+//        em.getTransaction().commit();
     }
 
     public void createClient() {
-        em.getTransaction().begin();
+//        em.getTransaction().begin();
         Account client = new Account();
         client.setLogin("client");
         client.setPassword(hashAlgorithm.generate("Password123!".toCharArray()));
@@ -241,11 +241,11 @@ public class StartupConfig {
         client.addAccessLevel(dataClient);
         em.persist(client);
         em.flush();
-        em.getTransaction().commit();
+//        em.getTransaction().commit();
     }
 
     public void createSpecialist() {
-        em.getTransaction().begin();
+//        em.getTransaction().begin();
         Account specialist = new Account();
         specialist.setLogin("spec");
         specialist.setPassword(hashAlgorithm.generate("Password123!".toCharArray()));
@@ -263,11 +263,11 @@ public class StartupConfig {
         specialist.addAccessLevel(dataSpecialist);
         em.persist(specialist);
         em.flush();
-        em.getTransaction().commit();
+//        em.getTransaction().commit();
     }
 
     public void createAppointment() {
-        em.getTransaction().begin();
+//        em.getTransaction().begin();
 
         Account clientAdmin = em.createNamedQuery("Account.findByLogin", Account.class).setParameter("login", "clientAdmin").getSingleResult();
         Account specialist = em.createNamedQuery("Account.findByLogin", Account.class).setParameter("login", "spec").getSingleResult();
@@ -324,11 +324,11 @@ public class StartupConfig {
             em.persist(appointment);
         }
         em.flush();
-        em.getTransaction().commit();
+//        em.getTransaction().commit();
     }
 
     public void createImplantReview() {
-        em.getTransaction().begin();
+//        em.getTransaction().begin();
         ImplantReview review = new ImplantReview();
         review.setReview("Wszystko sprawnie, Pani wykonująca zabieg bardzo miła, przyjemna. Polecam");
         review.setRating(5);
@@ -353,6 +353,6 @@ public class StartupConfig {
         review.setImplant(implant);
         em.persist(review);
         em.flush();
-        em.getTransaction().commit();
+//        em.getTransaction().commit();
     }
 }

@@ -60,7 +60,7 @@ public class AccountConfirmationGLOBALFacade extends AbstractFacade<AccountConfi
     public List<AccountConfirmationToken> findExpiredTokens() {
         TypedQuery<AccountConfirmationToken> typedQuery = entityManager
                 .createNamedQuery("AccountConfirmationToken.findExpired", AccountConfirmationToken.class);
-        typedQuery.setParameter("now", Instant.now());
+        typedQuery.setParameter("now", Instant.now().getEpochSecond());
         return typedQuery.getResultList();
     }
 

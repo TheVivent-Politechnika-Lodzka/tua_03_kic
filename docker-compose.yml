@@ -29,7 +29,7 @@ services:
       - "8443:8443"
       - "9990:9990"
     volumes:
-      - app_data:/opt/jboss/wildfly/standalone/deployments
+      - app_data:/opt/bitnami/wildfly/standalone
 volumes:
   db_data:
     driver: local

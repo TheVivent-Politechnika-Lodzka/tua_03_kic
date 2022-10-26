@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.eclipse.persistence.annotations.UuidGenerator;
 import pl.lodz.p.it.ssbd2022.ssbd03.common.Config;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.Account;
 
@@ -31,9 +32,9 @@ import static pl.lodz.p.it.ssbd2022.ssbd03.entities.tokens.RefreshToken.UNIQUE_T
         @NamedQuery(name = "RefreshToken.findByToken", query = "select a from RefreshToken a where a.token = :token"),
         @NamedQuery(name = "RefreshToken.findExpired", query = "select a from RefreshToken a where a.expDate < :now"),
 })
-
 @AllArgsConstructor
 @NoArgsConstructor
+@UuidGenerator(name = "EMP_ID_GEN")
 public class RefreshToken implements Serializable {
 
         private static final long serialVersionUID = 1L;
@@ -42,9 +43,12 @@ public class RefreshToken implements Serializable {
         @Id
         @Basic(optional = false)
         @Column(name = "id", nullable = false)
-        @GeneratedValue()
-        @Getter
-        private UUID id;
+        @GeneratedValue(generator = "EMP_ID_GEN")
+        private String id;
+
+        public UUID getId() {
+                return UUID.fromString(id);
+        }
 
         @Basic(optional = false)
         @Column(name = "version")

@@ -11,8 +11,8 @@ import javax.servlet.http.HttpServletResponse;
 import pl.lodz.p.it.ssbd2022.ssbd03.common.Roles;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.token.TokenExpiredException;
 
-import java.util.Arrays;
-import java.util.HashSet;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class AuthenticationMechanism implements HttpAuthenticationMechanism {
 
@@ -47,7 +47,7 @@ public class AuthenticationMechanism implements HttpAuthenticationMechanism {
         String headerAuth = httpServletRequest.getHeader("Authorization");
 
         if (headerAuth == null || !headerAuth.startsWith("Bearer")) {
-            return httpMessageContext.notifyContainerAboutLogin("Unauthorized", new HashSet<>(Arrays.asList(Roles.ANONYMOUS)));
+            return httpMessageContext.notifyContainerAboutLogin("Unauthorized", getGroups(Roles.ANONYMOUS));
         }
 
         String jwtToken = headerAuth.substring("Bearer ".length()).trim();
@@ -59,7 +59,7 @@ public class AuthenticationMechanism implements HttpAuthenticationMechanism {
             String groups = claims.get("auth").toString();
             groups += "," + Roles.AUTHENTICATED;
 
-            return httpMessageContext.notifyContainerAboutLogin(login, new HashSet<>(Arrays.asList(groups.split(","))));
+            return httpMessageContext.notifyContainerAboutLogin(login, getGroups(groups));
 
         }
         catch (ExpiredJwtException e) {
@@ -68,5 +68,20 @@ public class AuthenticationMechanism implements HttpAuthenticationMechanism {
         catch (UnsupportedJwtException | MalformedJwtException | SignatureException | IllegalArgumentException e) {
             return httpMessageContext.responseUnauthorized();
         }
+    }
+
+    private static Map<String, Set<String>> mapRoles = Map.of(
+            Roles.CLIENT, Set.of(Roles.CLIENT, Roles.AUTHENTICATED),
+            Roles.ADMINISTRATOR, Set.of(Roles.ADMINISTRATOR, Roles.AUTHENTICATED),
+            Roles.SPECIALIST, Set.of(Roles.SPECIALIST, Roles.AUTHENTICATED),
+            Roles.ANONYMOUS, Set.of(Roles.ANONYMOUS),
+            Roles.AUTHENTICATED, Set.of(Roles.AUTHENTICATED)
+    );
+
+    private Set<String> getGroups(String groups) {
+        return Arrays.stream(groups.split(","))
+                .map(x-> mapRoles.get(x))
+                .flatMap(Collection::stream)
+                .collect(Collectors.toSet());
     }
 }
