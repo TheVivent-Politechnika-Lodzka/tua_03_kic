@@ -31,6 +31,7 @@ public interface MOPEndpointInterface {
     @PUT
     @RolesAllowed(Roles.ADMINISTRATOR)
     @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
     @Path("/implant/create")
     default Response createImplant(CreateImplantDto createImplantDto) {
         throw new MethodNotImplementedException();
@@ -47,6 +48,7 @@ public interface MOPEndpointInterface {
     @PATCH
     @RolesAllowed(Roles.ADMINISTRATOR)
     @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
     @Path("/implant/archive/{id}")
     default Response archiveImplant(@PathParam("id") UUID id) {
         throw new MethodNotImplementedException();
@@ -63,6 +65,7 @@ public interface MOPEndpointInterface {
     @PUT
     @RolesAllowed(Roles.ADMINISTRATOR)
     @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
     @Path("/implant/edit/{id}")
     default Response editImplant(@PathParam("id") UUID id, @Valid ImplantDto implantDto) {
         throw new MethodNotImplementedException();
@@ -78,6 +81,7 @@ public interface MOPEndpointInterface {
     @GET
     @RolesAllowed({Roles.ANONYMOUS, Roles.AUTHENTICATED})
     @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
     @Path("/implant/details/{id}")
     default Response getImplant(@PathParam("id") UUID id) {
         throw new MethodNotImplementedException();
@@ -96,6 +100,7 @@ public interface MOPEndpointInterface {
     @GET
     @RolesAllowed({Roles.ANONYMOUS, Roles.AUTHENTICATED})
     @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
     @Path("/implant/list")
     default Response listImplants(@QueryParam("page") int page, @QueryParam("size") int size, @QueryParam("phrase") @DefaultValue("") String phrase, @QueryParam("archived") @DefaultValue("false") boolean archived) {
         throw new MethodNotImplementedException();
@@ -114,6 +119,7 @@ public interface MOPEndpointInterface {
     @GET
     @RolesAllowed({Roles.ANONYMOUS, Roles.AUTHENTICATED})
     @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
     @Path("/specialist/list")
     default Response listSpecialists(@QueryParam("page") int page, @QueryParam("size") int size, @QueryParam("phrase") @DefaultValue("") String phrase) {
         throw new MethodNotImplementedException();
@@ -131,6 +137,7 @@ public interface MOPEndpointInterface {
     @GET
     @RolesAllowed(Roles.ADMINISTRATOR)
     @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
     @Path("/list/visits")
     default Response listAppointments(@QueryParam("page") int page, @QueryParam("size") int size, @QueryParam("phrase") @DefaultValue("") String phrase) {
         throw new MethodNotImplementedException();
@@ -148,6 +155,7 @@ public interface MOPEndpointInterface {
     @GET
     @RolesAllowed({Roles.CLIENT, Roles.SPECIALIST})
     @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
     @Path("/list/visits/my")
     default Response listMyAppointments(@QueryParam("page") int page, @QueryParam("size") int size) {
         throw new MethodNotImplementedException();
@@ -163,6 +171,7 @@ public interface MOPEndpointInterface {
     @POST // ze względu na dodatkowe akcje zawierające się na utworzenie wizyty (obliczenie ceny, daty końcowej, itp.)
     @RolesAllowed(Roles.CLIENT)
     @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
     @Path("/visit/create")
     default Response createAppointment(@Valid CreateAppointmentDto dto) {
         throw new MethodNotImplementedException();
@@ -200,6 +209,7 @@ public interface MOPEndpointInterface {
     @PUT
     @RolesAllowed({Roles.CLIENT, Roles.SPECIALIST})
     @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
     @Path("/edit/visit/my/{id}")
     default Response editOwnAppointment(@PathParam("id") UUID id, @Valid AppointmentOwnEditDto appointmentOwnEditDto) {
         throw new MethodNotImplementedException();
@@ -216,6 +226,7 @@ public interface MOPEndpointInterface {
     @PUT
     @RolesAllowed(Roles.ADMINISTRATOR)
     @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
     @Path("/edit/visit/{id}")
     default Response editAppointment(@PathParam("id") UUID id, AppointmentEditDto appointmentEditDto) {
         throw new MethodNotImplementedException();
@@ -232,6 +243,7 @@ public interface MOPEndpointInterface {
     @PATCH
     @RolesAllowed({Roles.CLIENT, Roles.SPECIALIST})
     @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
     @Path("/visit/cancel/my/{id}")
     default Response cancelOwnAppointment(@PathParam("id") UUID id) {
         throw new MethodNotImplementedException();
@@ -248,6 +260,7 @@ public interface MOPEndpointInterface {
     @DELETE
     @RolesAllowed(Roles.ADMINISTRATOR)
     @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
     @Path("/cancel/visit/{id}")
     default Response cancelAnyAppointment(@PathParam("id") UUID id) {
         throw new MethodNotImplementedException();
@@ -263,6 +276,7 @@ public interface MOPEndpointInterface {
     @PATCH
     @RolesAllowed(Roles.SPECIALIST)
     @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
     @Path("/finish/visit/{id}")
     default Response finishAppointment(@PathParam("id") UUID id) {
         throw new MethodNotImplementedException();
@@ -279,6 +293,7 @@ public interface MOPEndpointInterface {
     @PUT
     @RolesAllowed(Roles.CLIENT)
     @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
     @Path("/implant/review")
     default Response addImplantsReview(CreateImplantReviewDto createImplantReviewDto) {
         throw new MethodNotImplementedException();
@@ -293,6 +308,8 @@ public interface MOPEndpointInterface {
      */
     @DELETE
     @RolesAllowed({Roles.ADMINISTRATOR, Roles.CLIENT})
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
     @Path("/implant/review/{id}")
     default Response deleteImplantsReview(@PathParam("id") UUID id) {
         throw new MethodNotImplementedException();
@@ -308,6 +325,7 @@ public interface MOPEndpointInterface {
     @GET
     @RolesAllowed(Roles.AUTHENTICATED)
     @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
     @Path("/visit/{id}")
     default Response getAppointmentDetails(@PathParam("id") UUID uuid) {
         throw new MethodNotImplementedException();

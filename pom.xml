@@ -86,16 +86,6 @@
             <version>1.18.22</version>
             <scope>provided</scope>
         </dependency>
-        <dependency>
-            <groupId>org.jboss.resteasy</groupId>
-            <artifactId>resteasy-jaxrs</artifactId>
-            <version>2.2.1.GA</version>
-        </dependency>
-        <dependency>
-            <groupId>org.jboss.resteasy</groupId>
-            <artifactId>resteasy-jaxb-provider</artifactId>
-            <version>2.2.0.GA</version>
-        </dependency>
         <!-- ############### hash ############### -->
         <dependency>
             <groupId>commons-codec</groupId>
@@ -108,12 +98,6 @@
             <artifactId>eclipselink</artifactId>
             <version>2.7.9</version>
         </dependency>
-
-        <!--        <dependency>-->
-<!--            <groupId>org.hibernate.orm</groupId>-->
-<!--            <artifactId>hibernate-core</artifactId>-->
-<!--            <version>6.1.4.Final</version>-->
-<!--        </dependency>-->
         <dependency>
             <groupId>org.mariadb.jdbc</groupId>
             <artifactId>mariadb-java-client</artifactId>

@@ -22,6 +22,7 @@ public interface MOKEndpointInterface {
     @GET
     @Path("/ping")
     @RolesAllowed({Roles.ADMINISTRATOR, Roles.SPECIALIST})
+    @Produces(MediaType.TEXT_PLAIN)
     default Response ping() {
         return Response.ok("pong").build();
     }
@@ -37,6 +38,7 @@ public interface MOKEndpointInterface {
     @Path("/register")
     @RolesAllowed(Roles.ANONYMOUS)
     @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
     default Response register(@Valid RegisterClientDto registerClientDto) {
         throw new MethodNotImplementedException();
     }
@@ -52,6 +54,7 @@ public interface MOKEndpointInterface {
     @Path("/register-confirm")
     @RolesAllowed(Roles.ANONYMOUS)
     @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
     default Response confirmRegistration(@Valid RegisterClientConfirmDto registerConfirmDto) {
         throw new MethodNotImplementedException();
     }
@@ -67,6 +70,7 @@ public interface MOKEndpointInterface {
     @Path("/create")
     @RolesAllowed(Roles.ADMINISTRATOR)
     @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
     default Response createAccount(@Valid CreateAccountDto createAccountDto) {
         throw new MethodNotImplementedException();
     }
@@ -84,6 +88,7 @@ public interface MOKEndpointInterface {
     @Path("/deactivate/{login}")
     @RolesAllowed(Roles.ADMINISTRATOR)
     @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
     default Response deactivateAccount(@PathParam("login") String login) {
         throw new MethodNotImplementedException();
     }
@@ -101,6 +106,7 @@ public interface MOKEndpointInterface {
     @Path("/activate/{login}")
     @RolesAllowed(Roles.ADMINISTRATOR)
     @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
     default Response activateAccount(@PathParam("login") String login) {
         throw new MethodNotImplementedException();
     }
@@ -118,6 +124,7 @@ public interface MOKEndpointInterface {
     @Path("/access-level/{login}")
     @RolesAllowed(Roles.ADMINISTRATOR)
     @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
     default Response addAccessLevel(@PathParam("login") String login, @Valid AccessLevelDto accessLevelDto) {
         throw new MethodNotImplementedException();
     }
@@ -137,6 +144,8 @@ public interface MOKEndpointInterface {
     @DELETE
     @Path("/access-level/{login}/{accessLevel}")
     @RolesAllowed(Roles.ADMINISTRATOR)
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
     default Response removeAccessLevel(@PathParam("login") String login, @PathParam("accessLevel") String accessLevel) {
         throw new MethodNotImplementedException();
     }
@@ -154,6 +163,7 @@ public interface MOKEndpointInterface {
     @Path("/password")
     @RolesAllowed(Roles.AUTHENTICATED)
     @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
     default Response changeOwnPassword(@Valid ChangeOwnPasswordDto changeOwnPasswordDto) {
         throw new MethodNotImplementedException();
     }
@@ -172,6 +182,7 @@ public interface MOKEndpointInterface {
     @Path("/password/{login}")
     @RolesAllowed(Roles.ADMINISTRATOR)
     @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
     default Response changePassword(@PathParam("login") String login, @Valid ChangePasswordDto changePasswordDto) {
         throw new MethodNotImplementedException();
     }
@@ -188,6 +199,7 @@ public interface MOKEndpointInterface {
     @Path("/")
     @RolesAllowed(Roles.AUTHENTICATED)
     @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
     default Response editOwnAccount(@Valid AccountWithAccessLevelsDto accountWithAccessLevelsDto) {
         throw new MethodNotImplementedException();
     }
@@ -206,6 +218,7 @@ public interface MOKEndpointInterface {
     @Path("/{login}")
     @RolesAllowed(Roles.ADMINISTRATOR)
     @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
     default Response editAccount(@PathParam("login") String login, @Valid AccountWithAccessLevelsDto accountWithAccessLevelsDto) {
         throw new MethodNotImplementedException();
     }
@@ -225,6 +238,7 @@ public interface MOKEndpointInterface {
     @Path("/login")
     @RolesAllowed(Roles.ANONYMOUS)
     @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
     default Response login(@Valid LoginCredentialsDto loginCredentialsDto) {
         throw new MethodNotImplementedException();
     }
@@ -239,10 +253,10 @@ public interface MOKEndpointInterface {
     @Path("/refresh-token")
     @RolesAllowed({Roles.ANONYMOUS, Roles.AUTHENTICATED})
     @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
     default Response refreshToken(@Valid RefreshTokenDto refreshTokenDto) {
         throw new MethodNotImplementedException();
     }
-
 
     /**
      * MOK.13 przeglądaj listę wszystkich kont
@@ -259,11 +273,13 @@ public interface MOKEndpointInterface {
     @GET
     @Path("/list")
     @RolesAllowed(Roles.ADMINISTRATOR)
+    @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     default Response getAllAccounts(@QueryParam("page") int page, @QueryParam("limit") int limit,
                                     @QueryParam("phrase") @DefaultValue("") String phrase) {
         throw new MethodNotImplementedException();
     }
+
 
     // MOK.14 Zresetuj hasło
 
@@ -278,6 +294,7 @@ public interface MOKEndpointInterface {
     @Path("/reset-password/{login}")
     @RolesAllowed(Roles.ANONYMOUS)
     @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
     default Response resetPassword(@PathParam("login") String login) {
         throw new MethodNotImplementedException();
     }
@@ -296,6 +313,7 @@ public interface MOKEndpointInterface {
     @Path("/reset-password-token")
     @RolesAllowed(Roles.ANONYMOUS)
     @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
     default Response resetPasswordToken(@Valid ResetPasswordTokenDto resetPasswordDto) {
         throw new MethodNotImplementedException();
     }
@@ -311,6 +329,7 @@ public interface MOKEndpointInterface {
     @GET
     @Path("/")
     @RolesAllowed(Roles.AUTHENTICATED)
+    @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     default Response getOwnAccount() {
         throw new MethodNotImplementedException();
@@ -328,6 +347,7 @@ public interface MOKEndpointInterface {
     @GET
     @Path("/{login}")
     @RolesAllowed(Roles.ADMINISTRATOR)
+    @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     default Response getAccount(@PathParam("login") String login) {
         throw new MethodNotImplementedException();
