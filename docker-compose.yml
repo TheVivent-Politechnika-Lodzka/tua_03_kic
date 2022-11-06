@@ -3,6 +3,8 @@ services:
   db:
     image: mariadb:10.9.3
     container_name: "KIC_DB"
+    networks:
+      - db_network
     environment:
       MYSQL_DATABASE: ${MYSQL_DATABASE}
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
@@ -15,9 +17,13 @@ services:
       - ./db:/docker-entrypoint-initdb.d
   app:
     container_name: "KIC_APP"
+    networks:
+      - db_network
+      - http_network
     depends_on: [ "db" ]
     build:
-      context: app
+      context: .
+      dockerfile: app/Dockerfile
       args:
         username: ${WILDFLY_USERNAME}
         password: ${WILDFLY_PASSWORD}
@@ -27,8 +33,20 @@ services:
       - "9990:9990"
     volumes:
       - app_data:/opt/bitnami/wildfly/standalone
+      - ./app:/docker-entrypoint-initdb.d
+#  proxy:
+#    image: nginx:1.23.2
+#    container_name: "KIC_PROXY"
+#    networks:
+#      - http_network
+#    depends_on: ["app"]
+#    ports:
+#      - "443:443"
 volumes:
   db_data:
     driver: local
   app_data:
     driver: local
+networks:
+  db_network: {}
+  http_network: {}
