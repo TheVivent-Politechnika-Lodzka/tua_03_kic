@@ -34,14 +34,16 @@ services:
     volumes:
       - app_data:/opt/bitnami/wildfly/standalone
       - ./app:/docker-entrypoint-initdb.d
-#  proxy:
-#    image: nginx:1.23.2
-#    container_name: "KIC_PROXY"
-#    networks:
-#      - http_network
-#    depends_on: ["app"]
-#    ports:
-#      - "443:443"
+  proxy:
+    image: jlesage/nginx-proxy-manager:v1.26.1
+    container_name: "KIC_PROXY"
+    networks:
+      - http_network
+    depends_on: [ "app" ]
+    ports:
+      - "5001:8181"
+      - "5000:8080"
+      - "6000:4443"
 volumes:
   db_data:
     driver: local
