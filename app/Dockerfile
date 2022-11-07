@@ -5,8 +5,8 @@ USER root
 ARG username
 ARG password
 
-ADD ./target/ssbd03-v1.0.1.war /opt/wildfly/standalone/deployments/
-#COPY ./app/startup-config.cli /opt/jboss/startup-scripts/startup-config.cli
+COPY ./app/standalone.xml /opt/bitnami/wildfly/standalone/configuration/standalone.xml
+ADD ./target/ssbd03-v1.0.1.war /opt/bitnami/wildfly/standalone/deployments/
 
 RUN /opt/bitnami/wildfly/bin/add-user.sh $username $password --silent
 #    /opt/bitnami/wildfly/bin/jboss-cli.sh --connect --controller=127.0.0.1:9990 --user=$username --password=$password  && \
