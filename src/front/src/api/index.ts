@@ -1,6 +1,6 @@
 import axios from "axios";
 
-axios.defaults.baseURL = "https://localhost:8443/api";
+axios.defaults.baseURL = "https://localhost:9000/api";
 // axios.defaults.baseURL = "https://kic.agency:8403/api";
 axios.defaults.headers.post["Content-Type"] = "application/json";
 // auto-logowanie
