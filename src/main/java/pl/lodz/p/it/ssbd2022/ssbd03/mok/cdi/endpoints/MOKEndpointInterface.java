@@ -21,7 +21,7 @@ public interface MOKEndpointInterface {
     // ping
     @GET
     @Path("/ping")
-    @RolesAllowed({Roles.ADMINISTRATOR, Roles.SPECIALIST})
+    @RolesAllowed({Roles.ANONYMOUS, Roles.AUTHENTICATED})
     @Produces(MediaType.TEXT_PLAIN)
     default Response ping() {
         return Response.ok("pong").build();
