@@ -13,6 +13,7 @@ import pl.lodz.p.it.ssbd2022.ssbd03.entities.Account;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.Appointment;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.Implant;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.ImplantReview;
+import pl.lodz.p.it.ssbd2022.ssbd03.entities.access_levels.AccessLevel;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.TransactionException;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.database.InAppOptimisticLockException;
 import pl.lodz.p.it.ssbd2022.ssbd03.mappers.AccountMapper;

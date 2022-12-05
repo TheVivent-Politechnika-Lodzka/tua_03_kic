@@ -78,8 +78,8 @@ public class ImplantMapper {
      */
     public List<ImplantDto> getListFromImplantListElementDtoFromImplant(Collection<Implant> implants) {
         return null == implants ? null : implants.stream()
-                .filter(Objects::nonNull)
                 .map(this::createImplantDtoFromImplant)
+                .filter(Objects::nonNull)
                 .collect(Collectors.toList());
     }
 

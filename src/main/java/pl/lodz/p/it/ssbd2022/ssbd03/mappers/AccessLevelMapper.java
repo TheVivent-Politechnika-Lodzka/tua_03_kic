@@ -120,8 +120,8 @@ public class AccessLevelMapper {
      */
     public List<AccessLevelDto> createListOfAccessLevelDTO(Collection<AccessLevel> accessLevels) {
         return null == accessLevels ? null : accessLevels.stream()
-                .filter(Objects::nonNull)
                 .map(this::createAccessLevelDtoFromEntity)
+                .filter(Objects::nonNull)
                 .collect(Collectors.toList());
     }
 
@@ -157,8 +157,8 @@ public class AccessLevelMapper {
      */
     public SpecialistDataDto dataSpecialistListElementDtoList(Collection<AccessLevel> accessLevels) {
         return null == accessLevels ? null : accessLevels.stream()
-                .filter(Objects::nonNull)
                 .map(this::dataSpecialistListElementDto)
+                .filter(Objects::nonNull)
                 .collect(Collectors.toList()).get(0);
     }
 

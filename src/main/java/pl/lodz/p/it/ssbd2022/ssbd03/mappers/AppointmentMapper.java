@@ -87,8 +87,8 @@ public class AppointmentMapper {
      */
     public List<AppointmentListElementDto> appointmentListElementDtoList(Collection<Appointment> appointments) {
         return null == appointments ? null : appointments.stream()
-                .filter(Objects::nonNull)
                 .map(this::appointmentListElementDtoFromAppointment)
+                .filter(Objects::nonNull)
                 .collect(Collectors.toList());
     }
 
