@@ -1,15 +1,14 @@
 package pl.lodz.p.it.ssbd2022.ssbd03.common;
 
+import static javax.ejb.TransactionAttributeType.NOT_SUPPORTED;
+
 import javax.annotation.Resource;
 import javax.annotation.security.PermitAll;
 import javax.ejb.SessionContext;
 import javax.ejb.TransactionAttribute;
-
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
-import static javax.ejb.TransactionAttributeType.NOT_SUPPORTED;
 
 public abstract class AbstractService {
 

@@ -1,7 +1,5 @@
 package pl.lodz.p.it.ssbd2022.ssbd03.mappers;
 
-import javax.ejb.Stateless;
-import javax.inject.Inject;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.access_levels.AccessLevel;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.access_levels.DataAdministrator;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.access_levels.DataClient;
@@ -12,6 +10,7 @@ import pl.lodz.p.it.ssbd2022.ssbd03.mok.dto.access_levels.DataClientDto;
 import pl.lodz.p.it.ssbd2022.ssbd03.mok.dto.access_levels.DataSpecialistDto;
 import pl.lodz.p.it.ssbd2022.ssbd03.mop.dto.SpecialistDataDto;
 
+import javax.ejb.Stateless;
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
@@ -171,15 +170,15 @@ public class AccessLevelMapper {
     public AccessLevel createAccessLevelFromDto(AccessLevelDto accessLevelDto) {
 
         if (accessLevelDto instanceof DataAdministratorDto) {
-            return createDataAdministratorFromDto((DataAdministratorDto)accessLevelDto);
+            return createDataAdministratorFromDto((DataAdministratorDto) accessLevelDto);
         }
 
-        if (accessLevelDto instanceof DataClientDto ) {
-            return createDataClientFromDto((DataClientDto)accessLevelDto);
+        if (accessLevelDto instanceof DataClientDto) {
+            return createDataClientFromDto((DataClientDto) accessLevelDto);
         }
 
-        if (accessLevelDto instanceof DataSpecialistDto ) {
-            return createDataSpecialistFromDto((DataSpecialistDto)accessLevelDto);
+        if (accessLevelDto instanceof DataSpecialistDto) {
+            return createDataSpecialistFromDto((DataSpecialistDto) accessLevelDto);
         }
 
         throw new IllegalArgumentException("Unknown access level type");

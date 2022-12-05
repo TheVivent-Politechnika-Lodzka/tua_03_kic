@@ -1,11 +1,15 @@
 package pl.lodz.p.it.ssbd2022.ssbd03.mok.dto.access_levels;
 
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotNull;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
 import pl.lodz.p.it.ssbd2022.ssbd03.validation.PhoneNumber;
 
-@Getter @Setter
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotNull;
+
+@Getter
+@Setter
 @AllArgsConstructor
 public class DataSpecialistDto extends AccessLevelDto {
 

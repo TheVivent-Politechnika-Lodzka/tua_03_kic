@@ -1,17 +1,19 @@
 package pl.lodz.p.it.ssbd2022.ssbd03.mok.dto.no_etag;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
+import pl.lodz.p.it.ssbd2022.ssbd03.mappers.json.LocaleSerializerDeserializer;
+import pl.lodz.p.it.ssbd2022.ssbd03.validation.FirstName;
+import pl.lodz.p.it.ssbd2022.ssbd03.validation.LastName;
+import pl.lodz.p.it.ssbd2022.ssbd03.validation.Login;
+import pl.lodz.p.it.ssbd2022.ssbd03.validation.Password;
+import pl.lodz.p.it.ssbd2022.ssbd03.validation.Url;
+
 import javax.json.bind.annotation.JsonbTypeDeserializer;
 import javax.json.bind.annotation.JsonbTypeSerializer;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import org.apache.http.nio.entity.NStringEntity;
-import pl.lodz.p.it.ssbd2022.ssbd03.mappers.json.LocaleSerializerDeserializer;
-import pl.lodz.p.it.ssbd2022.ssbd03.validation.*;
-
 import java.util.Locale;
 
 @Getter

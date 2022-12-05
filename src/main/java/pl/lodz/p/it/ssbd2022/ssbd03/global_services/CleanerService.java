@@ -1,15 +1,20 @@
 package pl.lodz.p.it.ssbd2022.ssbd03.global_services;
 
-import javax.annotation.security.RunAs;
-import javax.ejb.*;
-import javax.inject.Inject;
-import javax.interceptor.Interceptors;
 import pl.lodz.p.it.ssbd2022.ssbd03.common.Roles;
 import pl.lodz.p.it.ssbd2022.ssbd03.global_services.facades.AccountConfirmationGLOBALFacade;
 import pl.lodz.p.it.ssbd2022.ssbd03.global_services.facades.AccountGLOBALFacade;
 import pl.lodz.p.it.ssbd2022.ssbd03.global_services.facades.RefreshTokenGLOBALFacade;
 import pl.lodz.p.it.ssbd2022.ssbd03.global_services.facades.ResetPasswordGLOBALFacade;
 import pl.lodz.p.it.ssbd2022.ssbd03.interceptors.TrackerInterceptor;
+
+import javax.annotation.security.RunAs;
+import javax.ejb.Schedule;
+import javax.ejb.Singleton;
+import javax.ejb.Startup;
+import javax.ejb.TransactionAttribute;
+import javax.ejb.TransactionAttributeType;
+import javax.inject.Inject;
+import javax.interceptor.Interceptors;
 
 @Startup
 @Singleton

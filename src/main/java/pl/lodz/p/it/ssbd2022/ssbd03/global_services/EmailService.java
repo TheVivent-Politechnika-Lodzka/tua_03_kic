@@ -1,13 +1,18 @@
 package pl.lodz.p.it.ssbd2022.ssbd03.global_services;
 
-import javax.annotation.PostConstruct;
-import javax.ejb.Stateless;
-import javax.mail.*;
-import javax.mail.internet.InternetAddress;
-import javax.mail.internet.MimeMessage;
 import pl.lodz.p.it.ssbd2022.ssbd03.common.Config;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.EmailNotSendException;
 
+import javax.annotation.PostConstruct;
+import javax.ejb.Stateless;
+import javax.mail.Authenticator;
+import javax.mail.Message;
+import javax.mail.MessagingException;
+import javax.mail.PasswordAuthentication;
+import javax.mail.Session;
+import javax.mail.Transport;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
 import java.util.Properties;
 
 @Stateless
@@ -37,7 +42,8 @@ public class EmailService {
 
     /**
      * Wysyła wiadomość email
-     * @param to - adres odbiorcy
+     *
+     * @param to      - adres odbiorcy
      * @param subject - temat wiadomości
      * @param content - treść wiadomości
      */

@@ -1,5 +1,7 @@
 package pl.lodz.p.it.ssbd2022.ssbd03.exceptions.mappers;
 
+import pl.lodz.p.it.ssbd2022.ssbd03.utils.InternationalizationProvider;
+
 import javax.inject.Inject;
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
@@ -7,8 +9,6 @@ import javax.validation.Path;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.ext.ExceptionMapper;
 import javax.ws.rs.ext.Provider;
-import pl.lodz.p.it.ssbd2022.ssbd03.utils.InternationalizationProvider;
-
 import java.util.Iterator;
 
 

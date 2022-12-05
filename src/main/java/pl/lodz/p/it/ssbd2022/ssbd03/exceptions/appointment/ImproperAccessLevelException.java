@@ -1,8 +1,9 @@
 package pl.lodz.p.it.ssbd2022.ssbd03.exceptions.appointment;
 
+import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.AppBaseException;
+
 import javax.ejb.ApplicationException;
 import javax.ws.rs.core.Response;
-import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.AppBaseException;
 
 
 /**
@@ -22,6 +23,7 @@ public class ImproperAccessLevelException extends AppBaseException {
 
     /**
      * Zwraca wyjątek z informacją, że konto nie jest specjalistą
+     *
      * @return
      */
     public static ImproperAccessLevelException accountNotSpecialist() {
@@ -30,6 +32,7 @@ public class ImproperAccessLevelException extends AppBaseException {
 
     /**
      * Zwraca wyjątek z informacją, że konto nie jest klientem
+     *
      * @return
      */
     public static ImproperAccessLevelException accountNotClient() {

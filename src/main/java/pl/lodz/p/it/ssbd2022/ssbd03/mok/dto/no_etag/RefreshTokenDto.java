@@ -6,8 +6,10 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Getter @Setter
+@Getter
+@Setter
 @AllArgsConstructor
+@NoArgsConstructor
 public class RefreshTokenDto {
 
     private static final long serialVersionUID = 1L;

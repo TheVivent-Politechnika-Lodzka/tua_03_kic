@@ -5,6 +5,7 @@ import java.util.UUID;
 public interface Taggable {
 
     UUID getId();
+
     Long getVersion();
 
     default String generateMessage() {

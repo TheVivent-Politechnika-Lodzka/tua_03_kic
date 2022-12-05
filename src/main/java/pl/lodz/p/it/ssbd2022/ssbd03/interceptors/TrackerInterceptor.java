@@ -1,11 +1,11 @@
 package pl.lodz.p.it.ssbd2022.ssbd03.interceptors;
 
+import lombok.extern.java.Log;
+
 import javax.annotation.Resource;
 import javax.ejb.SessionContext;
 import javax.interceptor.AroundInvoke;
 import javax.interceptor.InvocationContext;
-import lombok.extern.java.Log;
-
 import java.util.Arrays;
 
 /**
@@ -21,7 +21,6 @@ public class TrackerInterceptor {
 
 
     /**
-     *
      * @param invocationContext Interfejs reprezentujący kontekst wywołania
      * @return Wynik wywołania metody
      * @throws Exception Wyjątek napotkany podczas wywoływania metody

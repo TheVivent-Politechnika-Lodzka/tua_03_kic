@@ -3,7 +3,6 @@ package pl.lodz.p.it.ssbd2022.ssbd03.utils;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
-
 import java.util.ResourceBundle;
 
 /**

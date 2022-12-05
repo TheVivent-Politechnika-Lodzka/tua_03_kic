@@ -1,10 +1,13 @@
 package pl.lodz.p.it.ssbd2022.ssbd03.mappers;
 
-import javax.inject.Inject;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.Appointment;
-import pl.lodz.p.it.ssbd2022.ssbd03.entities.Implant;
-import pl.lodz.p.it.ssbd2022.ssbd03.mop.dto.*;
+import pl.lodz.p.it.ssbd2022.ssbd03.mop.dto.AppointmentDto;
+import pl.lodz.p.it.ssbd2022.ssbd03.mop.dto.AppointmentEditDto;
+import pl.lodz.p.it.ssbd2022.ssbd03.mop.dto.AppointmentListElementDto;
+import pl.lodz.p.it.ssbd2022.ssbd03.mop.dto.AppointmentOwnEditDto;
+import pl.lodz.p.it.ssbd2022.ssbd03.mop.dto.ImplantDto;
 
+import javax.inject.Inject;
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
@@ -121,17 +124,19 @@ public class AppointmentMapper {
         appointmentDto.setAppointmentImplant(appointmentImplantDto);
         return appointmentDto;
     }
+
     /**
      * Metoda mapująca dane z DTO z danymi do edycji wizyty na wizytę
      *
      * @param appointmentOwnEditDto DTO z danymi do edycji wizyty
      * @return wizyta ze zmianami
      */
-    public Appointment createAppointmentFromAppointmentOwnEditDto(AppointmentOwnEditDto appointmentOwnEditDto){
+    public Appointment createAppointmentFromAppointmentOwnEditDto(AppointmentOwnEditDto appointmentOwnEditDto) {
         Appointment appointment = new Appointment();
         appointment.setDescription(appointmentOwnEditDto.getDescription());
         appointment.setStatus(appointmentOwnEditDto.getStatus());
         appointment.setStartDate(appointmentOwnEditDto.getStartDate());
         return appointment;
-    };
+    }
+
 }

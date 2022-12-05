@@ -1,19 +1,34 @@
 package pl.lodz.p.it.ssbd2022.ssbd03.mok.cdi.endpoints;
 
-import javax.annotation.security.PermitAll;
-import javax.annotation.security.RolesAllowed;
-import javax.validation.Valid;
-import javax.ws.rs.*;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
 import pl.lodz.p.it.ssbd2022.ssbd03.common.Roles;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.MethodNotImplementedException;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.TransactionException;
-import pl.lodz.p.it.ssbd2022.ssbd03.mok.dto.*;
+import pl.lodz.p.it.ssbd2022.ssbd03.mok.dto.AccountWithAccessLevelsDto;
+import pl.lodz.p.it.ssbd2022.ssbd03.mok.dto.ChangeOwnPasswordDto;
+import pl.lodz.p.it.ssbd2022.ssbd03.mok.dto.ChangePasswordDto;
 import pl.lodz.p.it.ssbd2022.ssbd03.mok.dto.access_levels.AccessLevelDto;
-import pl.lodz.p.it.ssbd2022.ssbd03.mok.dto.no_etag.*;
+import pl.lodz.p.it.ssbd2022.ssbd03.mok.dto.no_etag.CreateAccountDto;
+import pl.lodz.p.it.ssbd2022.ssbd03.mok.dto.no_etag.LoginCredentialsDto;
+import pl.lodz.p.it.ssbd2022.ssbd03.mok.dto.no_etag.RefreshTokenDto;
+import pl.lodz.p.it.ssbd2022.ssbd03.mok.dto.no_etag.RegisterClientConfirmDto;
+import pl.lodz.p.it.ssbd2022.ssbd03.mok.dto.no_etag.RegisterClientDto;
+import pl.lodz.p.it.ssbd2022.ssbd03.mok.dto.no_etag.ResetPasswordTokenDto;
 
-import javax.management.relation.Role;
+import javax.annotation.security.RolesAllowed;
+import javax.validation.Valid;
+import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
+import javax.ws.rs.DefaultValue;
+import javax.ws.rs.GET;
+import javax.ws.rs.PATCH;
+import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 
 
 public interface MOKEndpointInterface {
@@ -80,7 +95,7 @@ public interface MOKEndpointInterface {
      * Metoda blokująca konto użytkownika.
      * Wymaga nagłówka If-Match zawierającego etag blokowanego konta.
      *
-     * @param login   Login konta, które ma zostać zablokowane
+     * @param login Login konta, które ma zostać zablokowane
      * @return Odpowiedź HTTP
      * @throws MethodNotImplementedException w momencie, gdy metoda jest niezaimplementowana
      */
@@ -98,7 +113,7 @@ public interface MOKEndpointInterface {
      * Metoda odblokowująca konto użytkownika, które zostało uprzednio zablokowane przez administratora
      * Wymaga nagłówka If-Match zawierającego eTag odblokowywanego konta
      *
-     * @param login   Login konta, które ma zostać odblokowane
+     * @param login Login konta, które ma zostać odblokowane
      * @return Odpowiedź HTTP
      * @throws MethodNotImplementedException w momencie, gdy metoda jest niezaimplementowana
      */

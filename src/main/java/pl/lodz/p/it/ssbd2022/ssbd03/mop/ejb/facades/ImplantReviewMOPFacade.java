@@ -1,13 +1,5 @@
 package pl.lodz.p.it.ssbd2022.ssbd03.mop.ejb.facades;
 
-import javax.annotation.security.RolesAllowed;
-import javax.ejb.Stateless;
-import javax.ejb.TransactionAttribute;
-import javax.ejb.TransactionAttributeType;
-import javax.inject.Inject;
-import javax.interceptor.Interceptors;
-import javax.persistence.*;
-import javax.validation.ConstraintViolationException;
 import lombok.Getter;
 import pl.lodz.p.it.ssbd2022.ssbd03.common.AbstractFacade;
 import pl.lodz.p.it.ssbd2022.ssbd03.common.Roles;
@@ -20,6 +12,18 @@ import pl.lodz.p.it.ssbd2022.ssbd03.interceptors.TrackerInterceptor;
 import pl.lodz.p.it.ssbd2022.ssbd03.security.Tagger;
 import pl.lodz.p.it.ssbd2022.ssbd03.utils.PaginationData;
 
+import javax.annotation.security.RolesAllowed;
+import javax.ejb.Stateless;
+import javax.ejb.TransactionAttribute;
+import javax.ejb.TransactionAttributeType;
+import javax.inject.Inject;
+import javax.interceptor.Interceptors;
+import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
+import javax.persistence.PersistenceContext;
+import javax.persistence.PersistenceException;
+import javax.persistence.TypedQuery;
+import javax.validation.ConstraintViolationException;
 import java.util.List;
 import java.util.UUID;
 
@@ -109,12 +113,12 @@ public class ImplantReviewMOPFacade extends AbstractFacade<ImplantReview> {
     /**
      * Metoda zwracająca recenzje dla danego implantu
      *
-     * @param id Identyfikator implantu
+     * @param id         Identyfikator implantu
      * @param pageNumber numer aktualnie przeglądanej strony
-     * @param perPage ilość rekordów na danej stronie
+     * @param perPage    ilość rekordów na danej stronie
      * @return Lista wizyt użytkownika o podanym loginie
      * @throws InvalidParametersException w przypadku podania nieprawidłowych parametrów
-     * @throws DatabaseException w przypadku wystąpienia błędu bazy danych
+     * @throws DatabaseException          w przypadku wystąpienia błędu bazy danych
      */
     @RolesAllowed({Roles.ANONYMOUS, Roles.AUTHENTICATED})
     public PaginationData findInRangeWithPhrase(int pageNumber, int perPage, UUID id) {
@@ -123,7 +127,7 @@ public class ImplantReviewMOPFacade extends AbstractFacade<ImplantReview> {
                     .createNamedQuery("Review.findByImplantId", ImplantReview.class)
                     .setParameter("implantId", id.toString())
                     .setMaxResults(perPage)
-                    .setFirstResult((pageNumber-1) * perPage)
+                    .setFirstResult((pageNumber - 1) * perPage)
                     .getResultList();
 
             Long totalCount = entityManager

@@ -10,7 +10,8 @@ import pl.lodz.p.it.ssbd2022.ssbd03.validation.Description;
 
 import java.util.UUID;
 
-@Getter @Setter
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 public class AppointmentEditDto implements Taggable {

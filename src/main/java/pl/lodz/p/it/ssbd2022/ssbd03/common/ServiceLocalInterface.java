@@ -4,5 +4,5 @@ import javax.ejb.Local;
 
 @Local
 public interface ServiceLocalInterface {
-    public boolean isLastTransactionCommited();
+    boolean isLastTransactionCommited();
 }

@@ -1,8 +1,9 @@
 package pl.lodz.p.it.ssbd2022.ssbd03.exceptions.account;
 
+import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.AppBaseException;
+
 import javax.ejb.ApplicationException;
 import javax.ws.rs.core.Response;
-import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.AppBaseException;
 
 /**
  * Wyjątek reprezentujący błąd związany z nie odnalezieniem konta w bazie danych
@@ -14,11 +15,12 @@ public class AccountNotFoundException extends AppBaseException {
 
     private static final String ACCOUNT_NOT_FOUND = "server.error.appBase.accountNotFound";
     private static final String ACCOUNT_NOT_FOUND_BY_LOGIN = "server.error.appBase.accountNotFoundByLogin";
-    private static final String ACCOUNT_NOT_FOUND_BY_ID= "server.error.appBase.accountNotFoundById";
+    private static final String ACCOUNT_NOT_FOUND_BY_ID = "server.error.appBase.accountNotFoundById";
 
     /**
      * Metoda statyczna zwracająca wyjątek AccountNotFoundException
      * w przypadku gdy nie odnaleziono użytkownika z podanym loginem
+     *
      * @return wyjatek typu AccountNotFoundException
      */
     public static AccountNotFoundException notFoundByLogin() {
@@ -28,6 +30,7 @@ public class AccountNotFoundException extends AppBaseException {
     /**
      * Metoda statyczna zwracająca wyjątek AccountNotFoundException
      * w przypadku gdy nie odnaleziono użytkownika z podanym id
+     *
      * @return wyjatek typu AccountNotFoundException
      */
     public static AccountNotFoundException notFoundById() {
@@ -37,6 +40,7 @@ public class AccountNotFoundException extends AppBaseException {
     /**
      * Konstruktor, o dostępie prywatnym, potrzebny do budowania wyjątku przy statycznych metodach
      * znajdujących się w klasie AccountNotFoundException
+     *
      * @param string Wiadomość zawarta w wyjątku
      * @return wyjatek typu AccountNotFoundException
      */

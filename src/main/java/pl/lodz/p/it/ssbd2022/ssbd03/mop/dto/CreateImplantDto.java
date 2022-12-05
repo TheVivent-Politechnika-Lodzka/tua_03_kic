@@ -4,7 +4,12 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import pl.lodz.p.it.ssbd2022.ssbd03.validation.*;
+import pl.lodz.p.it.ssbd2022.ssbd03.validation.Description;
+import pl.lodz.p.it.ssbd2022.ssbd03.validation.DurationValue;
+import pl.lodz.p.it.ssbd2022.ssbd03.validation.Manufacturer;
+import pl.lodz.p.it.ssbd2022.ssbd03.validation.Name;
+import pl.lodz.p.it.ssbd2022.ssbd03.validation.Price;
+import pl.lodz.p.it.ssbd2022.ssbd03.validation.Url;
 
 @Getter
 @Setter

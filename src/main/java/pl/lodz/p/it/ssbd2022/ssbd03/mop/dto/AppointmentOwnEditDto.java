@@ -1,6 +1,5 @@
 package pl.lodz.p.it.ssbd2022.ssbd03.mop.dto;
 
-import javax.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -9,6 +8,7 @@ import pl.lodz.p.it.ssbd2022.ssbd03.entities.Status;
 import pl.lodz.p.it.ssbd2022.ssbd03.security.Taggable;
 import pl.lodz.p.it.ssbd2022.ssbd03.validation.Description;
 
+import javax.validation.constraints.NotNull;
 import java.time.Instant;
 import java.util.UUID;
 

@@ -1,5 +1,14 @@
 package pl.lodz.p.it.ssbd2022.ssbd03.mok.ejb.facades;
 
+import lombok.Getter;
+import pl.lodz.p.it.ssbd2022.ssbd03.common.AbstractFacade;
+import pl.lodz.p.it.ssbd2022.ssbd03.common.Roles;
+import pl.lodz.p.it.ssbd2022.ssbd03.entities.access_levels.AccessLevel;
+import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.access_level.AccessLevelExistsException;
+import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.database.DatabaseException;
+import pl.lodz.p.it.ssbd2022.ssbd03.interceptors.TrackerInterceptor;
+import pl.lodz.p.it.ssbd2022.ssbd03.security.Tagger;
+
 import javax.annotation.security.RolesAllowed;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
@@ -9,14 +18,6 @@ import javax.interceptor.Interceptors;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.validation.ConstraintViolationException;
-import lombok.Getter;
-import pl.lodz.p.it.ssbd2022.ssbd03.common.AbstractFacade;
-import pl.lodz.p.it.ssbd2022.ssbd03.common.Roles;
-import pl.lodz.p.it.ssbd2022.ssbd03.entities.access_levels.AccessLevel;
-import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.access_level.AccessLevelExistsException;
-import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.database.DatabaseException;
-import pl.lodz.p.it.ssbd2022.ssbd03.interceptors.TrackerInterceptor;
-import pl.lodz.p.it.ssbd2022.ssbd03.security.Tagger;
 
 @Interceptors(TrackerInterceptor.class)
 @Stateless

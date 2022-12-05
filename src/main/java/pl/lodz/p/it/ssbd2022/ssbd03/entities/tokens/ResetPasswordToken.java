@@ -1,20 +1,31 @@
 package pl.lodz.p.it.ssbd2022.ssbd03.entities.tokens;
 
-import javax.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import org.eclipse.persistence.annotations.UuidGenerator;
-import pl.lodz.p.it.ssbd2022.ssbd03.common.AbstractEntity;
 import pl.lodz.p.it.ssbd2022.ssbd03.common.Config;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.Account;
 
+import javax.persistence.Basic;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.Index;
+import javax.persistence.JoinColumn;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+import javax.persistence.OneToOne;
+import javax.persistence.PrePersist;
+import javax.persistence.Table;
+import javax.persistence.Version;
 import java.io.Serializable;
 import java.time.Instant;
 import java.util.UUID;
 
 @Entity
 @Table(
-        name="reset_password_token",
+        name = "reset_password_token",
         indexes = {
                 @Index(name = "account_id", columnList = "account_id"),
         }
@@ -26,45 +37,47 @@ import java.util.UUID;
 @UuidGenerator(name = "EMP_ID_GEN")
 public class ResetPasswordToken implements Serializable {
 
-        private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-        @Id
-        @Basic(optional = false)
-        @Column(name = "id", nullable = false)
-        @GeneratedValue(generator = "EMP_ID_GEN")
-        private String id;
+    @Id
+    @Basic(optional = false)
+    @Column(name = "id", nullable = false)
+    @GeneratedValue(generator = "EMP_ID_GEN")
+    private String id;
 
-        public UUID getId() {
-                return UUID.fromString(id);
-        }
+    public UUID getId() {
+        return UUID.fromString(id);
+    }
 
-        @Basic(optional = false)
-        @Column(name = "version")
-        @Version // oznaczenie wersji rekordu w bazie
-        @Getter
-        private Long version;
+    @Basic(optional = false)
+    @Column(name = "version")
+    @Version // oznaczenie wersji rekordu w bazie
+    @Getter
+    private Long version;
 
-        @JoinColumn(name = "account_id", referencedColumnName = "id", updatable = false)
-        @OneToOne(optional = false)
-        @Getter @Setter
-        private Account account;
+    @JoinColumn(name = "account_id", referencedColumnName = "id", updatable = false)
+    @OneToOne(optional = false)
+    @Getter
+    @Setter
+    private Account account;
 
-        @Basic(optional = false)
-        @Column(name="token", unique = true,nullable = false)
-        @Getter @Setter
-        private String token;
+    @Basic(optional = false)
+    @Column(name = "token", unique = true, nullable = false)
+    @Getter
+    @Setter
+    private String token;
 
-        @Basic(optional = false)
-        @Column(name="expdate", nullable = false )
-        private Long expDate;
+    @Basic(optional = false)
+    @Column(name = "expdate", nullable = false)
+    private Long expDate;
 
-        public Instant getExpDate() {
-                return Instant.ofEpochSecond(expDate);
-        }
+    public Instant getExpDate() {
+        return Instant.ofEpochSecond(expDate);
+    }
 
-        @PrePersist
-        public void prePersist() {
-                this.expDate = Instant.now().getEpochSecond()
-                        + Config.RESET_PASSWORD_TOKEN_EXPIRATION_SECONDS;
-        }
+    @PrePersist
+    public void prePersist() {
+        this.expDate = Instant.now().getEpochSecond()
+                + Config.RESET_PASSWORD_TOKEN_EXPIRATION_SECONDS;
+    }
 }

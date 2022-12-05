@@ -1,8 +1,5 @@
 package pl.lodz.p.it.ssbd2022.ssbd03.entities;
 
-import javax.persistence.*;
-
-import com.sun.jdi.request.DuplicateRequestException;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -13,6 +10,19 @@ import pl.lodz.p.it.ssbd2022.ssbd03.validation.Manufacturer;
 import pl.lodz.p.it.ssbd2022.ssbd03.validation.Name;
 import pl.lodz.p.it.ssbd2022.ssbd03.validation.Price;
 
+import javax.persistence.Basic;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.Index;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+import javax.persistence.SecondaryTable;
+import javax.persistence.Table;
 import java.io.Serializable;
 import java.time.Duration;
 import java.time.Instant;
@@ -42,12 +52,12 @@ import java.time.Instant;
                         "order by a.startDate, a.endDate asc"
         ), // nie mogę użyć BETWEEN, ponieważ JPA nie wspiera BETWEEN na Instant
         @NamedQuery(name = "Appointment.findSpecialistAppointmentsInGivenPeriod.count", query =
-                "select count(a) from Appointment a where "+
-                "a.specialist.id = :specialistId and (" +
-                    "(a.startDate >= :startDate and a.startDate < :endDate) or" +
-                    "(a.endDate > :startDate and a.endDate <= :endDate)" +
-                ")"
-                ), // nie mogę użyć BETWEEN, ponieważ JPA nie wspiera BETWEEN na Instant
+                "select count(a) from Appointment a where " +
+                        "a.specialist.id = :specialistId and (" +
+                        "(a.startDate >= :startDate and a.startDate < :endDate) or" +
+                        "(a.endDate > :startDate and a.endDate <= :endDate)" +
+                        ")"
+        ), // nie mogę użyć BETWEEN, ponieważ JPA nie wspiera BETWEEN na Instant
         @NamedQuery(name = "Appointment.findByLogin", query = "select a from Appointment a where a.client.login = :login or a.specialist.login = :login"),
         @NamedQuery(name = "Appointment.findBetweenDates", query = "select a from Appointment a where a.startDate >= :startDate and a.startDate <= :endDate"),
         @NamedQuery(name = "Appointment.searchByPhrase", query = "select a from Appointment a where a.client.login like concat('%', :phrase, '%') or a.specialist.login like concat('%', :phrase, '%') order by a.startDate, a.endDate asc"),

@@ -1,17 +1,17 @@
 package pl.lodz.p.it.ssbd2022.ssbd03.mappers;
 
-import javax.ejb.Stateless;
-import javax.inject.Inject;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.Account;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.access_levels.DataClient;
 import pl.lodz.p.it.ssbd2022.ssbd03.mok.dto.AccountWithAccessLevelsDto;
+import pl.lodz.p.it.ssbd2022.ssbd03.mok.dto.access_levels.AccessLevelDto;
 import pl.lodz.p.it.ssbd2022.ssbd03.mok.dto.no_etag.CreateAccountDto;
 import pl.lodz.p.it.ssbd2022.ssbd03.mok.dto.no_etag.RegisterClientDto;
-import pl.lodz.p.it.ssbd2022.ssbd03.mok.dto.access_levels.AccessLevelDto;
 import pl.lodz.p.it.ssbd2022.ssbd03.mop.dto.SpecialistDataDto;
 import pl.lodz.p.it.ssbd2022.ssbd03.mop.dto.SpecialistForMopDto;
 import pl.lodz.p.it.ssbd2022.ssbd03.utils.HashAlgorithm;
 
+import javax.ejb.Stateless;
+import javax.inject.Inject;
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;

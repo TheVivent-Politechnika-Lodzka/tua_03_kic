@@ -1,12 +1,5 @@
 package pl.lodz.p.it.ssbd2022.ssbd03.mop.ejb.facades;
 
-import javax.annotation.security.RolesAllowed;
-import javax.ejb.Stateless;
-import javax.ejb.TransactionAttribute;
-import javax.ejb.TransactionAttributeType;
-import javax.inject.Inject;
-import javax.interceptor.Interceptors;
-import javax.persistence.*;
 import lombok.Getter;
 import pl.lodz.p.it.ssbd2022.ssbd03.common.AbstractFacade;
 import pl.lodz.p.it.ssbd2022.ssbd03.common.Roles;
@@ -18,6 +11,17 @@ import pl.lodz.p.it.ssbd2022.ssbd03.interceptors.TrackerInterceptor;
 import pl.lodz.p.it.ssbd2022.ssbd03.security.Tagger;
 import pl.lodz.p.it.ssbd2022.ssbd03.utils.PaginationData;
 
+import javax.annotation.security.RolesAllowed;
+import javax.ejb.Stateless;
+import javax.ejb.TransactionAttribute;
+import javax.ejb.TransactionAttributeType;
+import javax.inject.Inject;
+import javax.interceptor.Interceptors;
+import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
+import javax.persistence.PersistenceContext;
+import javax.persistence.PersistenceException;
+import javax.persistence.TypedQuery;
 import java.time.Instant;
 import java.util.List;
 import java.util.UUID;
@@ -78,13 +82,13 @@ public class AppointmentMOPFacade extends AbstractFacade<Appointment> {
     @RolesAllowed({Roles.SPECIALIST, Roles.CLIENT})
     public PaginationData findSpecialistAppointmentsInGivenPeriod(UUID specialistId, Instant startDate, Instant endDate, int pageNumber, int perPage) {
         List<Appointment> data = entityManager
-                        .createNamedQuery("Appointment.findSpecialistAppointmentsInGivenPeriod", Appointment.class)
-                        .setParameter("specialistId", specialistId.toString())
-                        .setParameter("startDate", startDate)
-                        .setParameter("endDate", endDate)
-                        .setFirstResult((pageNumber - 1) * perPage)
-                        .setMaxResults(perPage)
-                        .getResultList();
+                .createNamedQuery("Appointment.findSpecialistAppointmentsInGivenPeriod", Appointment.class)
+                .setParameter("specialistId", specialistId.toString())
+                .setParameter("startDate", startDate)
+                .setParameter("endDate", endDate)
+                .setFirstResult((pageNumber - 1) * perPage)
+                .setMaxResults(perPage)
+                .getResultList();
 
         Long totalCount = entityManager
                 .createNamedQuery("Appointment.findSpecialistAppointmentsInGivenPeriod.count", Long.class)
@@ -157,7 +161,7 @@ public class AppointmentMOPFacade extends AbstractFacade<Appointment> {
                     .createNamedQuery("Appointment.searchByPhrase", Appointment.class)
                     .setParameter("phrase", "%" + phrase + "%")
                     .setMaxResults(perPage)
-                    .setFirstResult((pageNumber-1) * perPage)
+                    .setFirstResult((pageNumber - 1) * perPage)
                     .getResultList();
 
             Long totalCount = entityManager
@@ -187,13 +191,13 @@ public class AppointmentMOPFacade extends AbstractFacade<Appointment> {
      * @throws DatabaseException          w przypadku wystąpienia błędu bazy danych
      */
     @RolesAllowed({Roles.CLIENT, Roles.SPECIALIST})
-    public PaginationData findByClientLoginInRange(int pageNumber, int perPage,String login) {
+    public PaginationData findByClientLoginInRange(int pageNumber, int perPage, String login) {
         try {
             List<Appointment> data = entityManager
                     .createNamedQuery("Appointment.findByLogin", Appointment.class)
                     .setParameter("login", login)
                     .setMaxResults(perPage)
-                    .setFirstResult((pageNumber-1) * perPage)
+                    .setFirstResult((pageNumber - 1) * perPage)
                     .getResultList();
 
             int totalCount = entityManager

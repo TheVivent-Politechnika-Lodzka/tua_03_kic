@@ -1,10 +1,10 @@
 package pl.lodz.p.it.ssbd2022.ssbd03.mok.dto.no_etag;
 
-import javax.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import javax.validation.constraints.NotNull;
 
 @Getter
 @Setter

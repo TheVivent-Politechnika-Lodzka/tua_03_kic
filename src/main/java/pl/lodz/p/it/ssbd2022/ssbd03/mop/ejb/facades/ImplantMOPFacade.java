@@ -1,13 +1,5 @@
 package pl.lodz.p.it.ssbd2022.ssbd03.mop.ejb.facades;
 
-import javax.annotation.security.RolesAllowed;
-import javax.ejb.Stateless;
-import javax.ejb.TransactionAttribute;
-import javax.ejb.TransactionAttributeType;
-import javax.inject.Inject;
-import javax.interceptor.Interceptors;
-import javax.persistence.*;
-import javax.validation.ConstraintViolationException;
 import lombok.Getter;
 import pl.lodz.p.it.ssbd2022.ssbd03.common.AbstractFacade;
 import pl.lodz.p.it.ssbd2022.ssbd03.common.Roles;
@@ -18,12 +10,22 @@ import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.database.DatabaseException;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.implant.ImplantAlreadyExistExceptions;
 import pl.lodz.p.it.ssbd2022.ssbd03.interceptors.TrackerInterceptor;
 import pl.lodz.p.it.ssbd2022.ssbd03.security.Tagger;
-
-import java.util.UUID;
-
 import pl.lodz.p.it.ssbd2022.ssbd03.utils.PaginationData;
 
+import javax.annotation.security.RolesAllowed;
+import javax.ejb.Stateless;
+import javax.ejb.TransactionAttribute;
+import javax.ejb.TransactionAttributeType;
+import javax.inject.Inject;
+import javax.interceptor.Interceptors;
+import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
+import javax.persistence.PersistenceContext;
+import javax.persistence.PersistenceException;
+import javax.persistence.TypedQuery;
+import javax.validation.ConstraintViolationException;
 import java.util.List;
+import java.util.UUID;
 
 @Interceptors(TrackerInterceptor.class)
 @Stateless
@@ -68,7 +70,7 @@ public class ImplantMOPFacade extends AbstractFacade<Implant> {
      *
      * @param entity
      * @throws ImplantAlreadyExistExceptions - wyjątek rzucany w przypadku, gdy implant o podanej nazwie już istnieje w bazie danych
-     * @throws DatabaseException - gdy wystąpi błąd związany z bazą danych
+     * @throws DatabaseException             - gdy wystąpi błąd związany z bazą danych
      */
     @Override
     @RolesAllowed({Roles.ADMINISTRATOR, Roles.SPECIALIST})
@@ -90,7 +92,7 @@ public class ImplantMOPFacade extends AbstractFacade<Implant> {
      * @param uuid - uuid implantu
      * @return implant
      * @throws InvalidParametersException, gdy podano niepoprawną wartość parametru
-     * @throws DatabaseException, gdy wystąpi błąd związany z bazą danych
+     * @throws DatabaseException,          gdy wystąpi błąd związany z bazą danych
      */
     @RolesAllowed({Roles.ANONYMOUS, Roles.AUTHENTICATED})
     public Implant findByUUID(UUID uuid) {
@@ -116,7 +118,7 @@ public class ImplantMOPFacade extends AbstractFacade<Implant> {
      * @param archived   określa czy zwracac archiwalne czy niearchiwalne wszczepy
      * @return lista wszczepów
      * @throws InvalidParametersException jeśli podano nieprawidłowe parametry
-     * @throws DatabaseException jeśli wystąpił błąd z bazą danych
+     * @throws DatabaseException          jeśli wystąpił błąd z bazą danych
      */
     @RolesAllowed({Roles.ANONYMOUS, Roles.AUTHENTICATED})
     public PaginationData findInRangeWithPhrase(int pageNumber, int perPage, String phrase, boolean archived) {

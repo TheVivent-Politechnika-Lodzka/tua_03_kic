@@ -7,7 +7,7 @@ import javax.ws.rs.core.Response;
  * Wyjątek reprezentujący błąd związany z niezaimplementowaniem metody z interfejsu do komponentu EJB
  */
 @ApplicationException(rollback = true)
-public class MethodNotImplementedException extends AppBaseException{
+public class MethodNotImplementedException extends AppBaseException {
 
     private static final long serialVersionUID = 1L;
 

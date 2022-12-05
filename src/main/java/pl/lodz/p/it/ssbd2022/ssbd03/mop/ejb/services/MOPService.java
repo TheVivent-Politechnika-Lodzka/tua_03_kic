@@ -1,5 +1,41 @@
 package pl.lodz.p.it.ssbd2022.ssbd03.mop.ejb.services;
 
+import pl.lodz.p.it.ssbd2022.ssbd03.common.AbstractService;
+import pl.lodz.p.it.ssbd2022.ssbd03.common.Roles;
+import pl.lodz.p.it.ssbd2022.ssbd03.entities.Account;
+import pl.lodz.p.it.ssbd2022.ssbd03.entities.Appointment;
+import pl.lodz.p.it.ssbd2022.ssbd03.entities.Implant;
+import pl.lodz.p.it.ssbd2022.ssbd03.entities.ImplantReview;
+import pl.lodz.p.it.ssbd2022.ssbd03.entities.Status;
+import static pl.lodz.p.it.ssbd2022.ssbd03.entities.Status.ACCEPTED;
+import static pl.lodz.p.it.ssbd2022.ssbd03.entities.Status.FINISHED;
+import static pl.lodz.p.it.ssbd2022.ssbd03.entities.Status.PENDING;
+import static pl.lodz.p.it.ssbd2022.ssbd03.entities.Status.REJECTED;
+import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.InvalidParametersException;
+import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.appointment.AppointmentCannotBeCancelledAnymoreException;
+import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.appointment.AppointmentCannotBeChangedAnymoreException;
+import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.appointment.AppointmentDoesNotBelongToYouException;
+import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.appointment.AppointmentFinishAttemptBeforeEndDateException;
+import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.appointment.AppointmentFinishAttemptByInvalidSpecialistException;
+import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.appointment.AppointmentNotFinishedException;
+import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.appointment.AppointmentNotFoundException;
+import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.appointment.AppointmentStatusException;
+import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.appointment.CantInstallArchivedImplant;
+import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.appointment.ImproperAccessLevelException;
+import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.appointment.SpecialistHasNoTimeException;
+import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.appointment.StartDateIsInPast;
+import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.appointment.UserNotPartOfAppointment;
+import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.implant.ImplantArchivedException;
+import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.implant.ImplantStatusException;
+import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.implant_review.ClientRemovesOtherReviewsException;
+import pl.lodz.p.it.ssbd2022.ssbd03.interceptors.TrackerInterceptor;
+import pl.lodz.p.it.ssbd2022.ssbd03.mop.ejb.facades.AccountMOPFacade;
+import pl.lodz.p.it.ssbd2022.ssbd03.mop.ejb.facades.AppointmentMOPFacade;
+import pl.lodz.p.it.ssbd2022.ssbd03.mop.ejb.facades.ImplantMOPFacade;
+import pl.lodz.p.it.ssbd2022.ssbd03.mop.ejb.facades.ImplantReviewMOPFacade;
+import pl.lodz.p.it.ssbd2022.ssbd03.security.AuthContext;
+import pl.lodz.p.it.ssbd2022.ssbd03.utils.PaginationData;
+
 import javax.annotation.security.DenyAll;
 import javax.annotation.security.RolesAllowed;
 import javax.ejb.SessionSynchronization;
@@ -8,45 +44,16 @@ import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.inject.Inject;
 import javax.interceptor.Interceptors;
-import pl.lodz.p.it.ssbd2022.ssbd03.common.AbstractService;
-import pl.lodz.p.it.ssbd2022.ssbd03.common.Roles;
-import pl.lodz.p.it.ssbd2022.ssbd03.entities.*;
-import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.InvalidParametersException;
-import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.appointment.*;
-import pl.lodz.p.it.ssbd2022.ssbd03.entities.Implant;
-import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.appointment.AppointmentFinishAttemptBeforeEndDateException;
-import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.appointment.AppointmentFinishAttemptByInvalidSpecialistException;
-import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.appointment.AppointmentStatusException;
-import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.implant.ImplantStatusException;
-import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.appointment.AppointmentNotFinishedException;
-import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.appointment.AppointmentNotFoundException;
-import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.implant.ImplantArchivedException;
-import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.implant_review.ClientRemovesOtherReviewsException;
-import pl.lodz.p.it.ssbd2022.ssbd03.interceptors.TrackerInterceptor;
-import pl.lodz.p.it.ssbd2022.ssbd03.mop.ejb.facades.AccountMOPFacade;
-import pl.lodz.p.it.ssbd2022.ssbd03.mop.ejb.facades.ImplantMOPFacade;
-import pl.lodz.p.it.ssbd2022.ssbd03.mop.ejb.facades.ImplantReviewMOPFacade;
-import pl.lodz.p.it.ssbd2022.ssbd03.security.AuthContext;
-import pl.lodz.p.it.ssbd2022.ssbd03.utils.PaginationData;
-
-import java.time.*;
+import java.time.Duration;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.YearMonth;
+import java.time.ZoneId;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
-
-import pl.lodz.p.it.ssbd2022.ssbd03.mop.ejb.facades.AppointmentMOPFacade;
-
-import static pl.lodz.p.it.ssbd2022.ssbd03.entities.Status.FINISHED;
-import static pl.lodz.p.it.ssbd2022.ssbd03.entities.Status.REJECTED;
-
-import java.time.Instant;
-import java.time.LocalDate;
-import java.time.ZoneId;
-
 import java.util.logging.Logger;
-
-import static pl.lodz.p.it.ssbd2022.ssbd03.entities.Status.*;
 
 @Stateful
 @DenyAll
@@ -91,7 +98,7 @@ public class MOPService extends AbstractService implements MOPServiceInterface, 
             throw AppointmentStatusException.appointmentStatusAlreadyCancelled();
         if (appointment.getStatus().equals(FINISHED))
             throw AppointmentStatusException.appointmentStatusAlreadyFinished();
-        if(Instant.now().isAfter(appointment.getEndDate())) {
+        if (Instant.now().isAfter(appointment.getEndDate())) {
             throw new AppointmentCannotBeCancelledAnymoreException();
         }
 
@@ -297,11 +304,11 @@ public class MOPService extends AbstractService implements MOPServiceInterface, 
 
     @Override
     @RolesAllowed(Roles.AUTHENTICATED)
-    public Appointment findVisit(UUID uuid, String clientLogin){
+    public Appointment findVisit(UUID uuid, String clientLogin) {
         Account account = accountFacade.findByLogin(clientLogin);
         Appointment appointment = appointmentFacade.findById(uuid);
         if (!account.isInRole(Roles.ADMINISTRATOR)) {
-            if(!(appointment.getClient().getLogin().equals(clientLogin)
+            if (!(appointment.getClient().getLogin().equals(clientLogin)
                     || appointment.getSpecialist().getLogin().equals(clientLogin))) {
                 throw new UserNotPartOfAppointment();
             }
@@ -322,7 +329,7 @@ public class MOPService extends AbstractService implements MOPServiceInterface, 
      */
     @Override
     @RolesAllowed({Roles.CLIENT, Roles.SPECIALIST})
-    public Appointment editOwnAppointment(UUID id, Appointment update,String login){
+    public Appointment editOwnAppointment(UUID id, Appointment update, String login) {
         Appointment appointmentFromDb = appointmentFacade.findById(id);
         boolean didStartDateChange = false;
         if (!(appointmentFromDb.getClient().getLogin().equals(login) || appointmentFromDb.getSpecialist().getLogin().equals(login))) {
@@ -340,12 +347,12 @@ public class MOPService extends AbstractService implements MOPServiceInterface, 
         if (today.getDayOfYear() >= appointmentDate.getDayOfYear())
             throw new AppointmentCannotBeChangedAnymoreException();
 
-        if(!update.getStartDate().equals(appointmentFromDb.getStartDate())){
-        Instant endDate = update.getStartDate().plus(appointmentFromDb.getImplantDuration());
-        checkDateAvailabilityForAppointment(appointmentFromDb.getSpecialist().getId(),update.getStartDate(),endDate);
-        appointmentFromDb.setStartDate(update.getStartDate());
-        appointmentFromDb.setEndDate(endDate);
-        didStartDateChange = true;
+        if (!update.getStartDate().equals(appointmentFromDb.getStartDate())) {
+            Instant endDate = update.getStartDate().plus(appointmentFromDb.getImplantDuration());
+            checkDateAvailabilityForAppointment(appointmentFromDb.getSpecialist().getId(), update.getStartDate(), endDate);
+            appointmentFromDb.setStartDate(update.getStartDate());
+            appointmentFromDb.setEndDate(endDate);
+            didStartDateChange = true;
         }
         if (appointmentFromDb.getClient().getLogin().equals(login) && didStartDateChange) {
             appointmentFromDb.setStatus(PENDING);
@@ -391,7 +398,7 @@ public class MOPService extends AbstractService implements MOPServiceInterface, 
     @RolesAllowed(Roles.ADMINISTRATOR)
     public Appointment editAppointmentByAdministrator(UUID uuid, Appointment appointment) {
         Appointment appointmentFromDb = appointmentFacade.findById(uuid);
-        if(Instant.now().isAfter(appointmentFromDb.getEndDate())) {
+        if (Instant.now().isAfter(appointmentFromDb.getEndDate())) {
             throw new AppointmentCannotBeChangedAnymoreException();
         }
         appointmentFromDb.setDescription(appointment.getDescription());

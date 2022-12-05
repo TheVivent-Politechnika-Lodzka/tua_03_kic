@@ -1,11 +1,8 @@
 package pl.lodz.p.it.ssbd2022.ssbd03.common;
 
-import javax.annotation.sql.DataSourceDefinition;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-
-import java.sql.Connection;
 
 //@DataSourceDefinition( // Tworzenie struktur przy wdrażaniu aplikacji
 //        name = "java:jboss/jdbc/ssbd03admin",

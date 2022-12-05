@@ -43,7 +43,7 @@ public interface MOPServiceInterface extends ServiceLocalInterface {
     /**
      * Metoda zwracająca liste wszczepów
      *
-     * @param uuid  uuid implantu do edycji
+     * @param uuid    uuid implantu do edycji
      * @param implant dane do modyfikacji implantu
      * @return zmodyfikowany implant
      * @throws MethodNotImplementedException metoda nie jest zaimplementowana
@@ -77,7 +77,7 @@ public interface MOPServiceInterface extends ServiceLocalInterface {
      * @return wszczep
      * @throws MethodNotImplementedException metoda nie jest zaimplementowana
      */
-    default public Implant findImplantByUuid(UUID uuid) {
+    default Implant findImplantByUuid(UUID uuid) {
         throw new MethodNotImplementedException();
     }
 
@@ -111,36 +111,38 @@ public interface MOPServiceInterface extends ServiceLocalInterface {
     default PaginationData findVisits(int page, int pageSize, String phrase) {
         throw new MethodNotImplementedException();
     }
+
     /**
      * Metoda zwracająca wizytę
      *
-     * @param uuid     id wizyty
+     * @param uuid id wizyty
      * @return szczegóły wizyty
      * @throws MethodNotImplementedException w przypadku niezaimplementowanej metody
      */
-    default Appointment findVisit(UUID uuid, String clientLogin){
+    default Appointment findVisit(UUID uuid, String clientLogin) {
         throw new MethodNotImplementedException();
     }
+
     /**
      * Metoda zwracająca listę wszystkich wizyt dla podanego loginu
      *
-     * @param page numer aktualnie przeglądanej strony
+     * @param page     numer aktualnie przeglądanej strony
      * @param pageSize ilość rekordów na danej stronie
-     * @param login wyszukiwana fraza
+     * @param login    wyszukiwana fraza
      * @return Lista wizyt zgodnych z parametrami wyszukiwania
      * @throws MethodNotImplementedException w przypadku niezaimplementowanej metody
      */
-    default PaginationData findVisitsByLogin(int page, int pageSize, String login){
+    default PaginationData findVisitsByLogin(int page, int pageSize, String login) {
         throw new MethodNotImplementedException();
     }
 
     /**
      * Metoda tworząca nową wizytę
      *
-     * @param clientLogin       - login klienta
-     * @param specialistId      - identyfikator specjalisty
-     * @param implantId         - identyfikator wszczepu
-     * @param startDate         - data rozpoczęcia wizyty
+     * @param clientLogin  - login klienta
+     * @param specialistId - identyfikator specjalisty
+     * @param implantId    - identyfikator wszczepu
+     * @param startDate    - data rozpoczęcia wizyty
      * @return nowa wizyta
      * @throws MethodNotImplementedException w przypadku niezaimplementowanej metody
      */
@@ -150,8 +152,9 @@ public interface MOPServiceInterface extends ServiceLocalInterface {
 
     /**
      * MOP.9 - Zarezerwuj wizytę, dostępność specjalisty
-     * @param specialistId  - id specjalisty
-     * @param month         - miesiąc
+     *
+     * @param specialistId - id specjalisty
+     * @param month        - miesiąc
      * @return lista dostępności
      * @throws MethodNotImplementedException w przypadku braku implementacji metody
      */
@@ -171,10 +174,10 @@ public interface MOPServiceInterface extends ServiceLocalInterface {
         throw new MethodNotImplementedException();
     }
 
-//    default Appointment editAppointment(UUID id, Appointment appointment) {
+    //    default Appointment editAppointment(UUID id, Appointment appointment) {
 //        throw new MethodNotImplementedException();
 //    }
-    default Appointment editOwnAppointment(UUID id, Appointment appointment,String login) {
+    default Appointment editOwnAppointment(UUID id, Appointment appointment, String login) {
         throw new MethodNotImplementedException();
     }
 
@@ -204,7 +207,8 @@ public interface MOPServiceInterface extends ServiceLocalInterface {
 
     /**
      * Metoda zapewniająca możliwość oznaczenia wizyty jako zakończonej
-     * @param id identyfikator wizyty
+     *
+     * @param id    identyfikator wizyty
      * @param login login specjalisty oznaczającego wizytę jako zakończoną
      * @return wizyta oznaczona jako zakończona
      * @throws MethodNotImplementedException gdy metoda nie jest zaimplementowana
@@ -237,12 +241,12 @@ public interface MOPServiceInterface extends ServiceLocalInterface {
 
     /**
      * Metoda zwracająca listę wszystkich recenzji dla danego wszczepu
-     * @param page Aktualny numer strony
+     *
+     * @param page     Aktualny numer strony
      * @param pageSize Ilość recenzji na pojedynczej stronie
-     * @param id Identyfikator wszczepu
+     * @param id       Identyfikator wszczepu
      * @return Lista recenzji dla wszczepu
      * @throws MethodNotImplementedException w przypadku niezaimplementowanej metody
-     *
      */
     default PaginationData getAllImplantReviews(int page, int pageSize, UUID id) {
         throw new MethodNotImplementedException();

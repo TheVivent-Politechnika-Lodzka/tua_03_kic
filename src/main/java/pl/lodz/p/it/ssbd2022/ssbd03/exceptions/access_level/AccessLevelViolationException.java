@@ -1,8 +1,9 @@
 package pl.lodz.p.it.ssbd2022.ssbd03.exceptions.access_level;
 
+import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.AppBaseException;
+
 import javax.ejb.ApplicationException;
 import javax.ws.rs.core.Response;
-import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.AppBaseException;
 
 /**
  * Wyjątek reprezentujący błąd związany z dodawaniem poziomu dostępu konta
@@ -18,6 +19,7 @@ public class AccessLevelViolationException extends AppBaseException {
     /**
      * Konstruktor, o dostępie prywatnym, potrzebny do budowania wyjątku przy statycznych metodach
      * znajdujących się w klasie AccessLevelViolationException
+     *
      * @param message Wiadomość zawarta w wyjątku
      * @return wyjatek typu AccessLevelViolationException
      */
@@ -28,6 +30,7 @@ public class AccessLevelViolationException extends AppBaseException {
     /**
      * Metoda statyczna zwracająca wyjątek AccessLevelViolationException
      * w przypadku dodawaniu poziomu dostępu specjalisty dla klienta
+     *
      * @return wyjatek typu AccessLevelViolationException
      */
     public static AccessLevelViolationException clientCantBeSpecialist() {
@@ -37,6 +40,7 @@ public class AccessLevelViolationException extends AppBaseException {
     /**
      * Metoda statyczna zwracająca wyjątek AccessLevelViolationException
      * w przypadku dodawaniu poziomu dostępu klienta dla specjalisty
+     *
      * @return wyjatek typu AccessLevelViolationException
      */
     public static AccessLevelViolationException specialistCantBeClient() {

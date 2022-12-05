@@ -1,12 +1,5 @@
 package pl.lodz.p.it.ssbd2022.ssbd03.mop.ejb.facades;
 
-import javax.annotation.security.RolesAllowed;
-import javax.ejb.Stateless;
-import javax.ejb.TransactionAttribute;
-import javax.ejb.TransactionAttributeType;
-import javax.inject.Inject;
-import javax.interceptor.Interceptors;
-import javax.persistence.*;
 import lombok.Getter;
 import pl.lodz.p.it.ssbd2022.ssbd03.common.AbstractFacade;
 import pl.lodz.p.it.ssbd2022.ssbd03.common.Roles;
@@ -18,6 +11,17 @@ import pl.lodz.p.it.ssbd2022.ssbd03.interceptors.TrackerInterceptor;
 import pl.lodz.p.it.ssbd2022.ssbd03.security.Tagger;
 import pl.lodz.p.it.ssbd2022.ssbd03.utils.PaginationData;
 
+import javax.annotation.security.RolesAllowed;
+import javax.ejb.Stateless;
+import javax.ejb.TransactionAttribute;
+import javax.ejb.TransactionAttributeType;
+import javax.inject.Inject;
+import javax.interceptor.Interceptors;
+import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
+import javax.persistence.PersistenceContext;
+import javax.persistence.PersistenceException;
+import javax.persistence.TypedQuery;
 import java.util.List;
 import java.util.UUID;
 
@@ -46,7 +50,7 @@ public class AccountMOPFacade extends AbstractFacade<Account> {
      * @param login Login użytkownika, którego szukamy
      * @return Obiekt znalezionego konta
      * @throws InvalidParametersException, gdy podano niepoprawną wartość parametru
-     * @throws DatabaseException, gdy wystąpi błąd związany z bazą danych
+     * @throws DatabaseException,          gdy wystąpi błąd związany z bazą danych
      */
     @RolesAllowed(Roles.AUTHENTICATED)
     public Account findByLogin(String login) {
@@ -71,8 +75,8 @@ public class AccountMOPFacade extends AbstractFacade<Account> {
      * @param perPage    - liczba rekordów na stronie (int)
      * @param phrase     - fraza do wyszukania (String)
      * @return lista specialistów (PaginationData)
-     * @throws  InvalidParametersException przy błędnym podaniu parametrów
-     * @throws DatabaseException przy błędzie bazy danych
+     * @throws InvalidParametersException przy błędnym podaniu parametrów
+     * @throws DatabaseException          przy błędzie bazy danych
      */
     @RolesAllowed({Roles.ANONYMOUS, Roles.AUTHENTICATED})
     public PaginationData findInRangeWithPhrase(int pageNumber, int perPage, String phrase) {
@@ -81,7 +85,7 @@ public class AccountMOPFacade extends AbstractFacade<Account> {
                     .createNamedQuery("DataSpecialist.searchSpecialistByPhrase", Account.class)
                     .setParameter("phrase", "%" + phrase + "%")
                     .setMaxResults(perPage)
-                    .setFirstResult((pageNumber-1) * perPage)
+                    .setFirstResult((pageNumber - 1) * perPage)
                     .getResultList();
 
             Long totalCount = entityManager
@@ -105,8 +109,8 @@ public class AccountMOPFacade extends AbstractFacade<Account> {
      * @param id - id użytkownika, którego szukamy
      * @return Obiekt znalezionego konta
      * @throws InvalidParametersException, gdy podano niepoprawną wartość parametru
-     * @throws DatabaseException - gdy wystąpi błąd związany z bazą danych
-     * @throws ResourceNotFoundException, gdy nie znaleziono zasobu
+     * @throws DatabaseException           - gdy wystąpi błąd związany z bazą danych
+     * @throws ResourceNotFoundException,  gdy nie znaleziono zasobu
      */
     @RolesAllowed(Roles.CLIENT)
     public Account findByUUID(UUID id) {

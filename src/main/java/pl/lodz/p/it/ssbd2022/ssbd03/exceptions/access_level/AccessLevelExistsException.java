@@ -1,8 +1,9 @@
 package pl.lodz.p.it.ssbd2022.ssbd03.exceptions.access_level;
 
+import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.AppBaseException;
+
 import javax.ejb.ApplicationException;
 import javax.ws.rs.core.Response;
-import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.AppBaseException;
 
 /**
  * Wyjątek reprezentujący błąd związany z istnieniem poziomu dostępu

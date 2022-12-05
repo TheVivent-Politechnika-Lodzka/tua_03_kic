@@ -16,7 +16,7 @@ public class ResourceNotFoundException extends AppBaseException {
      * Kod odpowiedzi HTTP 404.
      * Zawiera zlokalizowany komunikat o braku zasobu.
      */
-    public ResourceNotFoundException(){
+    public ResourceNotFoundException() {
         super(MESSAGE, Response.Status.NOT_FOUND);
     }
 

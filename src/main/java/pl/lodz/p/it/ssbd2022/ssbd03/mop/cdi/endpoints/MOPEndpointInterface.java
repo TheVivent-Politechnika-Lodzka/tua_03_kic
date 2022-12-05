@@ -1,22 +1,32 @@
 package pl.lodz.p.it.ssbd2022.ssbd03.mop.cdi.endpoints;
 
-import javax.annotation.security.DenyAll;
-import javax.annotation.security.RolesAllowed;
-import javax.validation.Valid;
-import javax.ws.rs.*;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
 import pl.lodz.p.it.ssbd2022.ssbd03.common.Roles;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.MethodNotImplementedException;
-import pl.lodz.p.it.ssbd2022.ssbd03.mop.dto.*;
 import pl.lodz.p.it.ssbd2022.ssbd03.mop.dto.AppointmentEditDto;
+import pl.lodz.p.it.ssbd2022.ssbd03.mop.dto.AppointmentOwnEditDto;
+import pl.lodz.p.it.ssbd2022.ssbd03.mop.dto.CreateAppointmentDto;
 import pl.lodz.p.it.ssbd2022.ssbd03.mop.dto.CreateImplantDto;
 import pl.lodz.p.it.ssbd2022.ssbd03.mop.dto.CreateImplantReviewDto;
 import pl.lodz.p.it.ssbd2022.ssbd03.mop.dto.ImplantDto;
-
-import java.util.UUID;
-
 import pl.lodz.p.it.ssbd2022.ssbd03.validation.DurationValue;
+
+import javax.annotation.security.DenyAll;
+import javax.annotation.security.RolesAllowed;
+import javax.validation.Valid;
+import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
+import javax.ws.rs.DefaultValue;
+import javax.ws.rs.GET;
+import javax.ws.rs.PATCH;
+import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+import java.util.UUID;
 
 @DenyAll
 public interface MOPEndpointInterface {
@@ -181,8 +191,8 @@ public interface MOPEndpointInterface {
      * MOP.9 - Zarezerwuj wizytę, dostępność specjalisty
      *
      * @param specialistId - id specjalisty
-     * @param month         - miesiąc wizyty (Instant)
-     * @param duration      - długość wizyty
+     * @param month        - miesiąc wizyty (Instant)
+     * @param duration     - długość wizyty
      * @return lista dostępności
      * @throws MethodNotImplementedException w przypadku braku implementacji metody
      */

@@ -18,8 +18,8 @@ public class ReCaptchaException extends AppBaseException {
      * Metoda będąca konstruktorem odpowiadającym za tworzenie wyjątków dotyczących błędów
      * w ramach reCaptcha
      *
-     * @param message Wiadomość zawarta w wyjątku
-     * @param response  Status, jaki zwróci wyjątek
+     * @param message  Wiadomość zawarta w wyjątku
+     * @param response Status, jaki zwróci wyjątek
      */
     private ReCaptchaException(String message, Response.Status response) {
         super(message, response);

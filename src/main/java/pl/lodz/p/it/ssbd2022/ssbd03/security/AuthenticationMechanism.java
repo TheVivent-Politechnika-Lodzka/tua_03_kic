@@ -1,6 +1,13 @@
 package pl.lodz.p.it.ssbd2022.ssbd03.security;
 
-import io.jsonwebtoken.*;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.MalformedJwtException;
+import io.jsonwebtoken.SignatureException;
+import io.jsonwebtoken.UnsupportedJwtException;
+import pl.lodz.p.it.ssbd2022.ssbd03.common.Roles;
+import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.token.TokenExpiredException;
+
 import javax.inject.Inject;
 import javax.security.enterprise.AuthenticationException;
 import javax.security.enterprise.AuthenticationStatus;
@@ -8,10 +15,10 @@ import javax.security.enterprise.authentication.mechanism.http.HttpAuthenticatio
 import javax.security.enterprise.authentication.mechanism.http.HttpMessageContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import pl.lodz.p.it.ssbd2022.ssbd03.common.Roles;
-import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.token.TokenExpiredException;
-
-import java.util.*;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 public class AuthenticationMechanism implements HttpAuthenticationMechanism {
@@ -61,16 +68,14 @@ public class AuthenticationMechanism implements HttpAuthenticationMechanism {
 
             return httpMessageContext.notifyContainerAboutLogin(login, getGroups(groups));
 
-        }
-        catch (ExpiredJwtException e) {
+        } catch (ExpiredJwtException e) {
             throw new TokenExpiredException();
-        }
-        catch (UnsupportedJwtException | MalformedJwtException | SignatureException | IllegalArgumentException e) {
+        } catch (UnsupportedJwtException | MalformedJwtException | SignatureException | IllegalArgumentException e) {
             return httpMessageContext.responseUnauthorized();
         }
     }
 
-    private static Map<String, Set<String>> mapRoles = Map.of(
+    private static final Map<String, Set<String>> mapRoles = Map.of(
             Roles.CLIENT, Set.of(Roles.CLIENT, Roles.AUTHENTICATED),
             Roles.ADMINISTRATOR, Set.of(Roles.ADMINISTRATOR, Roles.AUTHENTICATED),
             Roles.SPECIALIST, Set.of(Roles.SPECIALIST, Roles.AUTHENTICATED),
@@ -80,7 +85,7 @@ public class AuthenticationMechanism implements HttpAuthenticationMechanism {
 
     private Set<String> getGroups(String groups) {
         return Arrays.stream(groups.split(","))
-                .map(x-> mapRoles.get(x))
+                .map(x -> mapRoles.get(x))
                 .flatMap(Collection::stream)
                 .collect(Collectors.toSet());
     }

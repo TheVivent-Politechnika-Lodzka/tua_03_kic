@@ -1,17 +1,30 @@
 package pl.lodz.p.it.ssbd2022.ssbd03.entities;
 
-import javax.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 import pl.lodz.p.it.ssbd2022.ssbd03.common.AbstractEntity;
-import pl.lodz.p.it.ssbd2022.ssbd03.validation.*;
+import static pl.lodz.p.it.ssbd2022.ssbd03.entities.Implant.CONSTRAINT_NAME_UNIQUE;
+import pl.lodz.p.it.ssbd2022.ssbd03.validation.Description;
+import pl.lodz.p.it.ssbd2022.ssbd03.validation.Manufacturer;
+import pl.lodz.p.it.ssbd2022.ssbd03.validation.Name;
+import pl.lodz.p.it.ssbd2022.ssbd03.validation.Price;
+import pl.lodz.p.it.ssbd2022.ssbd03.validation.Url;
 
+import javax.persistence.Basic;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Index;
+import javax.persistence.JoinColumn;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 import java.io.Serializable;
 import java.time.Duration;
-
-import static pl.lodz.p.it.ssbd2022.ssbd03.entities.Implant.CONSTRAINT_NAME_UNIQUE;
 
 @Entity
 @Table(name = "implant",
@@ -38,31 +51,36 @@ public class Implant extends AbstractEntity implements Serializable {
 
     @Basic(optional = false)
     @Column(name = "name", nullable = false, length = 50)
-    @Getter @Setter
+    @Getter
+    @Setter
     @Name
     private String name;
 
     @Basic(optional = false)
     @Column(name = "description", nullable = false, columnDefinition = "TEXT", length = 1000)
-    @Getter @Setter
+    @Getter
+    @Setter
     @Description
     private String description;
 
     @Basic(optional = false)
     @Column(name = "manufacturer", nullable = false, length = 50)
-    @Getter @Setter
+    @Getter
+    @Setter
     @Manufacturer
     private String manufacturer;
 
     @Basic(optional = false)
     @Column(name = "price", nullable = false)
-    @Getter @Setter
+    @Getter
+    @Setter
     @Price
     private int price;
 
     @Basic(optional = false)
     @Column(name = "archived", nullable = false)
-    @Getter @Setter
+    @Getter
+    @Setter
     private boolean archived = false;
 
     @Basic(optional = false)
@@ -78,7 +96,8 @@ public class Implant extends AbstractEntity implements Serializable {
     }
 
     @Column(name = "image")
-    @Getter @Setter
+    @Getter
+    @Setter
     @Url
     private String image;
 

@@ -7,8 +7,10 @@ import lombok.Setter;
 import pl.lodz.p.it.ssbd2022.ssbd03.validation.Login;
 import pl.lodz.p.it.ssbd2022.ssbd03.validation.Password;
 
-@Getter @Setter
+@Getter
+@Setter
 @AllArgsConstructor
+@NoArgsConstructor
 public class LoginCredentialsDto {
 
     private static final long serialVersionUID = 1L;

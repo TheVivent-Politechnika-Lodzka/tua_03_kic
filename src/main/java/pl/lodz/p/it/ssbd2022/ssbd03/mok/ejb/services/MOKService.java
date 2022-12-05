@@ -1,19 +1,10 @@
 package pl.lodz.p.it.ssbd2022.ssbd03.mok.ejb.services;
 
-import io.jsonwebtoken.*;
-import javax.annotation.security.DenyAll;
-import javax.annotation.security.RolesAllowed;
-import javax.ejb.SessionSynchronization;
-import javax.ejb.Stateful;
-import javax.ejb.TransactionAttribute;
-import javax.ejb.TransactionAttributeType;
-import javax.inject.Inject;
-import javax.interceptor.Interceptors;
-import javax.security.enterprise.credential.Password;
-import javax.security.enterprise.credential.UsernamePasswordCredential;
-import javax.security.enterprise.identitystore.CredentialValidationResult;
-import javax.security.enterprise.identitystore.IdentityStoreHandler;
-import javax.servlet.http.HttpServletRequest;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.MalformedJwtException;
+import io.jsonwebtoken.SignatureException;
+import io.jsonwebtoken.UnsupportedJwtException;
 import pl.lodz.p.it.ssbd2022.ssbd03.common.AbstractService;
 import pl.lodz.p.it.ssbd2022.ssbd03.common.Roles;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.Account;
@@ -35,12 +26,29 @@ import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.token.TokenDecodeInvalidException
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.token.TokenExpiredException;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.token.TokenInvalidException;
 import pl.lodz.p.it.ssbd2022.ssbd03.interceptors.TrackerInterceptor;
-import pl.lodz.p.it.ssbd2022.ssbd03.mok.ejb.facades.*;
-import pl.lodz.p.it.ssbd2022.ssbd03.security.JWTGenerator;
 import pl.lodz.p.it.ssbd2022.ssbd03.mok.dto.no_etag.LoginResponseDto;
+import pl.lodz.p.it.ssbd2022.ssbd03.mok.ejb.facades.AccessLevelMOKFacade;
+import pl.lodz.p.it.ssbd2022.ssbd03.mok.ejb.facades.AccountConfirmationMOKFacade;
+import pl.lodz.p.it.ssbd2022.ssbd03.mok.ejb.facades.AccountMOKFacade;
+import pl.lodz.p.it.ssbd2022.ssbd03.mok.ejb.facades.RefreshTokenMOKFacade;
+import pl.lodz.p.it.ssbd2022.ssbd03.mok.ejb.facades.ResetPasswordMOKFacade;
+import pl.lodz.p.it.ssbd2022.ssbd03.security.JWTGenerator;
 import pl.lodz.p.it.ssbd2022.ssbd03.utils.HashAlgorithm;
 import pl.lodz.p.it.ssbd2022.ssbd03.utils.PaginationData;
 
+import javax.annotation.security.DenyAll;
+import javax.annotation.security.RolesAllowed;
+import javax.ejb.SessionSynchronization;
+import javax.ejb.Stateful;
+import javax.ejb.TransactionAttribute;
+import javax.ejb.TransactionAttributeType;
+import javax.inject.Inject;
+import javax.interceptor.Interceptors;
+import javax.security.enterprise.credential.Password;
+import javax.security.enterprise.credential.UsernamePasswordCredential;
+import javax.security.enterprise.identitystore.CredentialValidationResult;
+import javax.security.enterprise.identitystore.IdentityStoreHandler;
+import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -97,7 +105,7 @@ public class MOKService extends AbstractService implements MOKServiceInterface, 
 
     }
 
-//    @PermitAll
+    //    @PermitAll
     @Override
     @RolesAllowed({Roles.ANONYMOUS, Roles.AUTHENTICATED})
     public String createRefreshToken(String login) {

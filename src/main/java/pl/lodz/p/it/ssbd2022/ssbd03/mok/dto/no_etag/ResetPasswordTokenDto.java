@@ -1,10 +1,14 @@
 package pl.lodz.p.it.ssbd2022.ssbd03.mok.dto.no_etag;
 
-import javax.validation.constraints.NotNull;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
 import pl.lodz.p.it.ssbd2022.ssbd03.validation.Password;
 
-@Getter @Setter
+import javax.validation.constraints.NotNull;
+
+@Getter
+@Setter
 @AllArgsConstructor
 public class ResetPasswordTokenDto {
 

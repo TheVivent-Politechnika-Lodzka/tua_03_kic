@@ -6,7 +6,6 @@ import javax.ws.rs.container.ContainerRequestContext;
 import javax.ws.rs.container.ContainerResponseContext;
 import javax.ws.rs.container.ContainerResponseFilter;
 import javax.ws.rs.ext.Provider;
-
 import java.io.IOException;
 
 /**
@@ -20,7 +19,8 @@ public class CORSFilter implements ContainerResponseFilter {
 
     /**
      * Metoda służąca do dodawania nagłówków w odpowiedziach
-     * @param containerRequestContext Kontekst żądań kontenera
+     *
+     * @param containerRequestContext  Kontekst żądań kontenera
      * @param containerResponseContext Kontekst odpowiedzi kontenera
      * @throws IOException, gdy wystąpi błąd w metodzie
      */

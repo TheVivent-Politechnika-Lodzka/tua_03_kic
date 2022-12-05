@@ -1,9 +1,7 @@
 package pl.lodz.p.it.ssbd2022.ssbd03.security;
 
 
-
 import com.google.gson.annotations.SerializedName;
-import javax.persistence.SecondaryTable;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -31,6 +29,7 @@ public class ReCaptcha implements Serializable {
 
     /**
      * Funkcja sprawdzająca czy jest to błąd związany z klientem (odpowiedz)
+     *
      * @return true jeżeli bład jest związany z parametrem odpowiedzi recaptcha
      * @return false jeżeli błąd nie jest związany z parametrem odpowiedzi recaptcha
      */
@@ -55,6 +54,7 @@ public class ReCaptcha implements Serializable {
 
     /**
      * Funkcja odpowiadająca za wygenetreowanie do stringa zawartości odpowiedzi z recaptcha
+     *
      * @return string zawierający czytelną odpowiedź recaptcha
      */
     @Override

@@ -1,24 +1,37 @@
 package pl.lodz.p.it.ssbd2022.ssbd03.entities;
 
-import javax.persistence.*;
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
-import lombok.*;
-import org.apache.commons.codec.language.bm.Languages;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 import pl.lodz.p.it.ssbd2022.ssbd03.common.AbstractEntity;
+import static pl.lodz.p.it.ssbd2022.ssbd03.entities.Account.CONSTRAINT_EMAIL_UNIQUE;
+import static pl.lodz.p.it.ssbd2022.ssbd03.entities.Account.CONSTRAINT_LOGIN_UNIQUE;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.access_levels.AccessLevel;
 import pl.lodz.p.it.ssbd2022.ssbd03.validation.FirstName;
 import pl.lodz.p.it.ssbd2022.ssbd03.validation.LastName;
 import pl.lodz.p.it.ssbd2022.ssbd03.validation.Login;
 
+import javax.persistence.Basic;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.Index;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
+import javax.persistence.SecondaryTable;
+import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Locale;
-
-import static pl.lodz.p.it.ssbd2022.ssbd03.entities.Account.CONSTRAINT_EMAIL_UNIQUE;
-import static pl.lodz.p.it.ssbd2022.ssbd03.entities.Account.CONSTRAINT_LOGIN_UNIQUE;
 
 @Entity
 @Table(

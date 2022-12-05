@@ -1,18 +1,16 @@
 package pl.lodz.p.it.ssbd2022.ssbd03.mok.ejb.services;
 
-import javax.ejb.Local;
 import pl.lodz.p.it.ssbd2022.ssbd03.common.ServiceLocalInterface;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.Account;
+import pl.lodz.p.it.ssbd2022.ssbd03.entities.access_levels.AccessLevel;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.tokens.AccountConfirmationToken;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.tokens.ResetPasswordToken;
-import pl.lodz.p.it.ssbd2022.ssbd03.entities.access_levels.AccessLevel;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.MethodNotImplementedException;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.access_level.AccessLevelNotFoundException;
 import pl.lodz.p.it.ssbd2022.ssbd03.mok.dto.no_etag.LoginResponseDto;
-import pl.lodz.p.it.ssbd2022.ssbd03.security.Taggable;
 import pl.lodz.p.it.ssbd2022.ssbd03.utils.PaginationData;
 
-import java.util.UUID;
+import javax.ejb.Local;
 
 
 @Local
@@ -32,16 +30,18 @@ public interface MOKServiceInterface extends ServiceLocalInterface {
 
     /**
      * Metoda tworząca refreshToken dla konta
+     *
      * @param login Login konta, dla którego ma zostać utworzony refreshToken
      * @return RefreshToken
      */
-    default String createRefreshToken(String login)  {
+    default String createRefreshToken(String login) {
         throw new MethodNotImplementedException();
     }
 
 
     /**
      * Metoda odświeża accessToken użytkownika
+     *
      * @param refreshToken
      * @return JWTStruct z odświeżonym accessToken
      */

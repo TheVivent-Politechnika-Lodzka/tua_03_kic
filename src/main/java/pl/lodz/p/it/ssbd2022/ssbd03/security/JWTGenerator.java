@@ -1,12 +1,13 @@
 package pl.lodz.p.it.ssbd2022.ssbd03.security;
 
 
-import io.jsonwebtoken.*;
-import javax.ejb.Stateless;
-import javax.enterprise.context.ApplicationScoped;
-import javax.security.enterprise.identitystore.CredentialValidationResult;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
 import pl.lodz.p.it.ssbd2022.ssbd03.common.Config;
 
+import javax.ejb.Stateless;
+import javax.security.enterprise.identitystore.CredentialValidationResult;
 import java.time.Instant;
 import java.util.Date;
 import java.util.List;
@@ -25,7 +26,7 @@ public class JWTGenerator {
         return token;
     }
 
-    public  String createJWT(String login, List<String> accessLevels) {
+    public String createJWT(String login, List<String> accessLevels) {
         String token = Jwts.builder().
                 setSubject(login)
                 .claim("auth", String.join(",", accessLevels))
@@ -55,7 +56,7 @@ public class JWTGenerator {
                 .setExpiration(Date.from(Instant.now().plusSeconds(Config.REFRESH_TOKEN_EXPIRATION_SECONDS))).compact();
     }
 
-    public  Claims decodeJWT(String jwt) {
+    public Claims decodeJWT(String jwt) {
         //chwilowe rozwiazanie
         //Ta linia rzuci wyjątek jeśli token nie jest podpisany jak powinien.
         return Jwts.parser()

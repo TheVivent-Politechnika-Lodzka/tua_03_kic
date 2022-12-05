@@ -17,8 +17,9 @@ public class SerializationDeserializationException extends AppBaseException {
     /**
      * Metoda statyczna zwracająca wyjątek SerializationDeserializationException
      * w przypadku gdy wystąpił błąd z deserializacją obiektu
+     *
      * @param message Wiadomość o niepowodzeniu deserializacji obiektu
-     * @param cause Przyczynę niepowodzenia deserializacji obiektu
+     * @param cause   Przyczynę niepowodzenia deserializacji obiektu
      * @return wyjatek typu SerializationDeserializationException
      */
     public static SerializationDeserializationException deserializationError(String message, Throwable cause) {
@@ -28,8 +29,9 @@ public class SerializationDeserializationException extends AppBaseException {
     /**
      * Metoda statyczna zwracająca wyjątek SerializationDeserializationException
      * w przypadku gdy wystąpił błąd z serializacją obiektu
+     *
      * @param message Wiadomość o niepowodzeniu serializacji obiektu
-     * @param cause Przyczynę niepowodzenia serializacji obiektu
+     * @param cause   Przyczynę niepowodzenia serializacji obiektu
      * @return wyjatek typu SerializationDeserializationException
      */
     public static SerializationDeserializationException serializationError(String message, Throwable cause) {
@@ -39,6 +41,7 @@ public class SerializationDeserializationException extends AppBaseException {
     /**
      * Konstruktor, o dostępie prywatnym, potrzebny do budowania wyjątku przy statycznych metodach
      * znajdujących się w klasie SerializationDeserializationException
+     *
      * @param message Wiadomość zawarta w wyjątku
      */
     private SerializationDeserializationException(String message, Throwable cause) {

@@ -1,12 +1,5 @@
 package pl.lodz.p.it.ssbd2022.ssbd03.mok.cdi.endpoints;
 
-import javax.annotation.security.DenyAll;
-import javax.ejb.TransactionAttribute;
-import javax.ejb.TransactionAttributeType;
-import javax.enterprise.context.RequestScoped;
-import javax.inject.Inject;
-import javax.ws.rs.Path;
-import javax.ws.rs.core.Response;
 import pl.lodz.p.it.ssbd2022.ssbd03.common.AbstractEndpoint;
 import pl.lodz.p.it.ssbd2022.ssbd03.common.Config;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.Account;
@@ -21,7 +14,13 @@ import pl.lodz.p.it.ssbd2022.ssbd03.mok.dto.AccountWithAccessLevelsDto;
 import pl.lodz.p.it.ssbd2022.ssbd03.mok.dto.ChangeOwnPasswordDto;
 import pl.lodz.p.it.ssbd2022.ssbd03.mok.dto.ChangePasswordDto;
 import pl.lodz.p.it.ssbd2022.ssbd03.mok.dto.access_levels.AccessLevelDto;
-import pl.lodz.p.it.ssbd2022.ssbd03.mok.dto.no_etag.*;
+import pl.lodz.p.it.ssbd2022.ssbd03.mok.dto.no_etag.CreateAccountDto;
+import pl.lodz.p.it.ssbd2022.ssbd03.mok.dto.no_etag.LoginCredentialsDto;
+import pl.lodz.p.it.ssbd2022.ssbd03.mok.dto.no_etag.LoginResponseDto;
+import pl.lodz.p.it.ssbd2022.ssbd03.mok.dto.no_etag.RefreshTokenDto;
+import pl.lodz.p.it.ssbd2022.ssbd03.mok.dto.no_etag.RegisterClientConfirmDto;
+import pl.lodz.p.it.ssbd2022.ssbd03.mok.dto.no_etag.RegisterClientDto;
+import pl.lodz.p.it.ssbd2022.ssbd03.mok.dto.no_etag.ResetPasswordTokenDto;
 import pl.lodz.p.it.ssbd2022.ssbd03.mok.ejb.services.MOKServiceInterface;
 import pl.lodz.p.it.ssbd2022.ssbd03.security.AuthContext;
 import pl.lodz.p.it.ssbd2022.ssbd03.security.ReCaptchaService;
@@ -29,6 +28,13 @@ import pl.lodz.p.it.ssbd2022.ssbd03.security.Tagger;
 import pl.lodz.p.it.ssbd2022.ssbd03.utils.InternationalizationProvider;
 import pl.lodz.p.it.ssbd2022.ssbd03.utils.PaginationData;
 
+import javax.annotation.security.DenyAll;
+import javax.ejb.TransactionAttribute;
+import javax.ejb.TransactionAttributeType;
+import javax.enterprise.context.RequestScoped;
+import javax.inject.Inject;
+import javax.ws.rs.Path;
+import javax.ws.rs.core.Response;
 import java.util.List;
 
 @RequestScoped
@@ -70,10 +76,9 @@ public class MOKEndpoint extends AbstractEndpoint implements MOKEndpointInterfac
         Account account = accountMapper.createAccountfromRegisterClientDto(registerClientDto);
         AccountConfirmationToken token = repeat(mokServiceInterface, () -> mokServiceInterface.registerAccount((account)));
 
-        StringBuilder title = new StringBuilder();
         StringBuilder content = new StringBuilder();
 
-        title.append(provider.getMessage("account.register.email.title"));
+        String title = provider.getMessage("account.register.email.title");
 
         content.append(provider.getMessage("account.register.email.content.localAddress")
                 .replace("{baseUrl}", Config.WEBSITE_URL)
@@ -82,7 +87,7 @@ public class MOKEndpoint extends AbstractEndpoint implements MOKEndpointInterfac
 
         emailService.sendEmail(
                 token.getAccount().getEmail(),
-                title.toString(),
+                title,
                 content.toString());
 
         return Response.ok().build();
@@ -109,7 +114,7 @@ public class MOKEndpoint extends AbstractEndpoint implements MOKEndpointInterfac
     @Override
     public Response createAccount(CreateAccountDto createAccountDto) {
         Account account = accountMapper.createAccountfromCreateAccountDto(createAccountDto);
-        Account registeredAccount = repeat(mokServiceInterface, ()->mokServiceInterface.createAccount(account));
+        Account registeredAccount = repeat(mokServiceInterface, () -> mokServiceInterface.createAccount(account));
 
         AccountWithAccessLevelsDto acc = accountMapper.createAccountWithAccessLevelsDtoFromAccount(registeredAccount);
 
@@ -281,20 +286,17 @@ public class MOKEndpoint extends AbstractEndpoint implements MOKEndpointInterfac
         ResetPasswordToken token = repeat(mokServiceInterface, () -> mokServiceInterface.resetPassword(login));
 
         Account account = token.getAccount();
-        StringBuilder message = new StringBuilder();
 
-        message.append(
-                        provider.getMessage("account.resetPassword.email.content.link")
-                                .replace("{token}", token.getToken())
-                                .replace("{baseUrl}", Config.WEBSITE_URL)
-                )
-                .append(provider.getMessage("account.resetPassword.email.content.login"))
-                .append(" ").append(login);
+        String message = provider.getMessage("account.resetPassword.email.content.link")
+                .replace("{token}", token.getToken())
+                .replace("{baseUrl}", Config.WEBSITE_URL) +
+                provider.getMessage("account.resetPassword.email.content.login") +
+                " " + login;
 
         emailService.sendEmail(
                 account.getEmail(),
                 provider.getMessage("account.resetPassword.email.title"),
-                message.toString()
+                message
         );
 
         return Response.ok().build();

@@ -30,6 +30,7 @@ public enum ErrorCodeForCaptchaEnum {
 
     /**
      * Funkcja zwracająca kod błędu dla kontrolera Captcha
+     *
      * @param code kod błędu
      * @return zwraca obiekt typu ErrorCodeForCaptchaEnum
      */

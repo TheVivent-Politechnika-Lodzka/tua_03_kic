@@ -1,14 +1,14 @@
 package pl.lodz.p.it.ssbd2022.ssbd03.validation;
 
+import static java.lang.annotation.RetentionPolicy.RUNTIME;
+
 import javax.validation.Constraint;
 import javax.validation.Payload;
-import javax.validation.constraints.*;
-
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Positive;
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
-
-import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 @Target({ElementType.FIELD, ElementType.PARAMETER})
 @Constraint(validatedBy = {})

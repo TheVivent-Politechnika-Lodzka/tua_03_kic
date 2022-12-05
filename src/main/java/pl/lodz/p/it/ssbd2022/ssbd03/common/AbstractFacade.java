@@ -1,13 +1,14 @@
 package pl.lodz.p.it.ssbd2022.ssbd03.common;
 
-import javax.persistence.EntityManager;
-import javax.persistence.OptimisticLockException;
-import javax.persistence.PersistenceException;
-import javax.validation.ConstraintViolationException;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.database.DatabaseException;
 import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.database.InAppOptimisticLockException;
 import pl.lodz.p.it.ssbd2022.ssbd03.security.Taggable;
 import pl.lodz.p.it.ssbd2022.ssbd03.security.Tagger;
+
+import javax.persistence.EntityManager;
+import javax.persistence.OptimisticLockException;
+import javax.persistence.PersistenceException;
+import javax.validation.ConstraintViolationException;
 
 public abstract class AbstractFacade<T> {
 
@@ -98,7 +99,7 @@ public abstract class AbstractFacade<T> {
      */
     protected void remove(T entity) {
         if (entity instanceof AbstractEntity)
-            verifyTag((AbstractEntity)entity);
+            verifyTag((AbstractEntity) entity);
         unsafeRemove(entity);
     }
 

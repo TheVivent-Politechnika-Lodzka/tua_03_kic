@@ -1,10 +1,16 @@
 package pl.lodz.p.it.ssbd2022.ssbd03.common;
 
-import javax.persistence.*;
 import lombok.Getter;
 import org.eclipse.persistence.annotations.UuidGenerator;
-import org.eclipse.persistence.jpa.jpql.parser.DateTime;
 
+import javax.persistence.Basic;
+import javax.persistence.Column;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.MappedSuperclass;
+import javax.persistence.PrePersist;
+import javax.persistence.PreUpdate;
+import javax.persistence.Version;
 import java.time.Instant;
 import java.util.UUID;
 
@@ -83,9 +89,6 @@ public abstract class AbstractEntity {
             return false;
         }
         AbstractEntity other = (AbstractEntity) object;
-        if ((this.getId() == null && other.getId() != null) || (this.getId() != null && !this.getId().equals(other.getId()))) {
-            return false;
-        }
-        return true;
+        return (this.getId() != null || other.getId() == null) && (this.getId() == null || this.getId().equals(other.getId()));
     }
 }

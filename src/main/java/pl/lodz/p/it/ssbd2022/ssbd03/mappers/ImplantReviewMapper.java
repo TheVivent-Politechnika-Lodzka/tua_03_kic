@@ -1,7 +1,5 @@
 package pl.lodz.p.it.ssbd2022.ssbd03.mappers;
 
-import javax.ejb.Stateless;
-import javax.inject.Inject;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.Account;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.Implant;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.ImplantReview;
@@ -10,6 +8,8 @@ import pl.lodz.p.it.ssbd2022.ssbd03.mop.dto.ImplantReviewDto;
 import pl.lodz.p.it.ssbd2022.ssbd03.mop.ejb.facades.AccountMOPFacade;
 import pl.lodz.p.it.ssbd2022.ssbd03.mop.ejb.facades.ImplantMOPFacade;
 
+import javax.ejb.Stateless;
+import javax.inject.Inject;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -67,6 +67,7 @@ public class ImplantReviewMapper {
 
     /**
      * Metoda mapuje listę obiektów typu ImplantReview na listę obiektów typu ImplantReviewDto.
+     *
      * @param reviews Lista obiektów typu ImplantReview
      * @return Lista obiektów typu ImplantReviewDto
      */
