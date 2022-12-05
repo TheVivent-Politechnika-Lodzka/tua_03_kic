@@ -23,7 +23,6 @@ create TABLE access_level (
 );
 
 
---
 ----
 ---- Name: account; Type: TABLE; Schema: public; Owner: ssbd03admin
 ----
