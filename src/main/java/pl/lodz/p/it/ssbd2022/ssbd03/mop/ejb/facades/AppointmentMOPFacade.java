@@ -79,7 +79,7 @@ public class AppointmentMOPFacade extends AbstractFacade<Appointment> {
     public PaginationData findSpecialistAppointmentsInGivenPeriod(UUID specialistId, Instant startDate, Instant endDate, int pageNumber, int perPage) {
         List<Appointment> data = entityManager
                         .createNamedQuery("Appointment.findSpecialistAppointmentsInGivenPeriod", Appointment.class)
-                        .setParameter("specialistId", specialistId)
+                        .setParameter("specialistId", specialistId.toString())
                         .setParameter("startDate", startDate)
                         .setParameter("endDate", endDate)
                         .setFirstResult((pageNumber - 1) * perPage)
@@ -128,7 +128,7 @@ public class AppointmentMOPFacade extends AbstractFacade<Appointment> {
     public Appointment findById(UUID id) {
         try {
             TypedQuery<Appointment> typedQuery = entityManager.createNamedQuery("Appointment.findById", Appointment.class);
-            typedQuery.setParameter("id", id);
+            typedQuery.setParameter("id", id.toString());
             return typedQuery.getSingleResult();
         } catch (NoResultException e) {
             throw new ResourceNotFoundException();

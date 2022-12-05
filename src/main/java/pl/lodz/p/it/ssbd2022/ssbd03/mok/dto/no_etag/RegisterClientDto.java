@@ -15,7 +15,6 @@ import java.util.Locale;
 
 @Getter
 @Setter
-@NoArgsConstructor
 @AllArgsConstructor
 public class RegisterClientDto {
 

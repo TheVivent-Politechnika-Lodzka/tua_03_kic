@@ -1,5 +1,6 @@
 package pl.lodz.p.it.ssbd2022.ssbd03.security;
 
+import javax.annotation.Resource;
 import javax.ejb.Stateful;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;

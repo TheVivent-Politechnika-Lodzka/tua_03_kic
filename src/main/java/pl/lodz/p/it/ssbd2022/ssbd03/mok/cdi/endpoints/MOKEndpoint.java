@@ -228,7 +228,7 @@ public class MOKEndpoint extends AbstractEndpoint implements MOKEndpointInterfac
 
         AccountWithAccessLevelsDto acc = accountMapper.createAccountWithAccessLevelsDtoFromAccount(editedAccount);
 
-        return Response.ok(acc).tag(tagger.tag(acc)).build();
+        return Response.ok().entity(acc).tag(tagger.tag(acc)).build();
     }
 
     /**
@@ -332,7 +332,7 @@ public class MOKEndpoint extends AbstractEndpoint implements MOKEndpointInterfac
 
         AccountWithAccessLevelsDto acc = accountMapper.createAccountWithAccessLevelsDtoFromAccount(account);
 
-        return Response.ok(acc).tag(tagger.tag(acc)).build();
+        return Response.ok().entity(acc).tag(tagger.tag(acc)).build();
     }
 
 

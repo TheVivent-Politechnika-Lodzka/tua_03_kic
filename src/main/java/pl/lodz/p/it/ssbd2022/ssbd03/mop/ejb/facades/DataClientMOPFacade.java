@@ -49,7 +49,7 @@ public class DataClientMOPFacade extends AbstractFacade<DataClient> {
     public String getLoginFromId(UUID id) throws AccountNotFoundException {
         try {
             TypedQuery<String> typedQuery = entityManager.createNamedQuery("DataClient.getLoginFromId", String.class);
-            typedQuery.setParameter("id", id);
+            typedQuery.setParameter("id", id.toString());
             return typedQuery.getSingleResult();
         } catch (NoResultException e) {
             throw AccountNotFoundException.notFoundById();

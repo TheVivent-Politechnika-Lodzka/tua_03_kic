@@ -112,7 +112,7 @@ public class AccountMOPFacade extends AbstractFacade<Account> {
     public Account findByUUID(UUID id) {
         try {
             TypedQuery<Account> typedQuery = entityManager.createNamedQuery("Account.findById", Account.class);
-            typedQuery.setParameter("id", id);
+            typedQuery.setParameter("id", id.toString());
             return typedQuery.getSingleResult();
         } catch (NoResultException e) {
             throw new ResourceNotFoundException();

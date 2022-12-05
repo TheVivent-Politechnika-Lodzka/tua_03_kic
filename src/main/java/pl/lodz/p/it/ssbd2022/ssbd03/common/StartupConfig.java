@@ -1,5 +1,6 @@
 package pl.lodz.p.it.ssbd2022.ssbd03.common;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.*;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.access_levels.DataAdministrator;
 import pl.lodz.p.it.ssbd2022.ssbd03.entities.access_levels.DataClient;

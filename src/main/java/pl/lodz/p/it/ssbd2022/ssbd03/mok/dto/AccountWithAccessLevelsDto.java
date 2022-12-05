@@ -1,5 +1,6 @@
 package pl.lodz.p.it.ssbd2022.ssbd03.mok.dto;
 
+import javax.json.bind.annotation.JsonbProperty;
 import javax.json.bind.annotation.JsonbTypeDeserializer;
 import javax.json.bind.annotation.JsonbTypeSerializer;
 import javax.validation.constraints.NotNull;
@@ -19,11 +20,8 @@ import java.util.Locale;
 import java.util.UUID;
 
 @Getter @Setter
-@NoArgsConstructor
 @AllArgsConstructor
 public class AccountWithAccessLevelsDto implements Taggable {
-
-    private static final long serialVersionUID = 1L;
 
     private UUID id;
     private Long version;
@@ -53,7 +51,7 @@ public class AccountWithAccessLevelsDto implements Taggable {
 
     private String captcha;
 
-    private List<AccessLevelDto> accessLevels = new ArrayList<>();
+    private List<AccessLevelDto> accessLevels = new ArrayList<AccessLevelDto>();
 
 
 

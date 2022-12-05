@@ -12,7 +12,6 @@ import pl.lodz.p.it.ssbd2022.ssbd03.validation.Password;
 import java.util.UUID;
 
 @Getter @Setter
-@NoArgsConstructor
 @AllArgsConstructor
 public class ChangeOwnPasswordDto implements Taggable {
 

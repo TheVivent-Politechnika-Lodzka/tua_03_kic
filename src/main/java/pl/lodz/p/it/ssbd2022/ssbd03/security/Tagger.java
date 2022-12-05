@@ -9,12 +9,14 @@ import pl.lodz.p.it.ssbd2022.ssbd03.exceptions.database.InAppOptimisticLockExcep
 
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
+import javax.ws.rs.ext.Provider;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.util.Base64;
 import java.util.UUID;
 
 @Stateless
+@Provider
 public class Tagger {
 
     private static final long serialVersionUID = 1L;

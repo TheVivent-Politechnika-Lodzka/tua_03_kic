@@ -130,8 +130,8 @@ public class AccountMapper {
      */
     public List<AccountWithAccessLevelsDto> createListOfAccountWithAccessLevelDTO(Collection<Account> accounts) {
         return null == accounts ? null : accounts.stream()
-                .map(this::createAccountWithAccessLevelsDtoFromAccount)
                 .filter(Objects::nonNull)
+                .map(this::createAccountWithAccessLevelsDtoFromAccount)
                 .collect(Collectors.toList());
     }
 

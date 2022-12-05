@@ -96,7 +96,7 @@ public class ImplantMOPFacade extends AbstractFacade<Implant> {
     public Implant findByUUID(UUID uuid) {
         try {
             TypedQuery<Implant> typedQuery = entityManager.createNamedQuery("Implant.findById", Implant.class);
-            typedQuery.setParameter("id", uuid);
+            typedQuery.setParameter("id", uuid.toString());
             return typedQuery.getSingleResult();
         } catch (NoResultException e) {
             throw new ResourceNotFoundException();

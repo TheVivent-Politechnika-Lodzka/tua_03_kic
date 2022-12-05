@@ -7,7 +7,6 @@ import pl.lodz.p.it.ssbd2022.ssbd03.validation.PhoneNumber;
 
 @Getter
 @Setter
-@NoArgsConstructor
 @AllArgsConstructor
 public class DataClientDto extends AccessLevelDto {
 

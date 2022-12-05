@@ -55,7 +55,7 @@ public class ImplantReviewMOPFacade extends AbstractFacade<ImplantReview> {
     public ImplantReview findByUUID(UUID uuid) {
         try {
             TypedQuery<ImplantReview> typedQuery = entityManager.createNamedQuery("Review.findById", ImplantReview.class);
-            typedQuery.setParameter("id", uuid);
+            typedQuery.setParameter("id", uuid.toString());
             return typedQuery.getSingleResult();
         } catch (NoResultException e) {
             throw new ResourceNotFoundException();
@@ -121,14 +121,14 @@ public class ImplantReviewMOPFacade extends AbstractFacade<ImplantReview> {
         try {
             List<ImplantReview> data = entityManager
                     .createNamedQuery("Review.findByImplantId", ImplantReview.class)
-                    .setParameter("implantId", id)
+                    .setParameter("implantId", id.toString())
                     .setMaxResults(perPage)
                     .setFirstResult((pageNumber-1) * perPage)
                     .getResultList();
 
             Long totalCount = entityManager
                     .createNamedQuery("Review.findByImplantId.count", Long.class)
-                    .setParameter("implantId", id)
+                    .setParameter("implantId", id.toString())
                     .getSingleResult();
 
             int totalPages = (int) Math.ceil((double) totalCount / perPage);
