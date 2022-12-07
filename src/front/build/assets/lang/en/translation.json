@@ -1,0 +1,653 @@
+{
+    "confirmationModal": {
+        "yes": "Yes",
+        "no": "No"
+    },
+
+    "title": {
+        "main_page": "Main Page",
+        "specialist": "Specialists",
+        "implants": "Implants",
+        "visits": "Visits",
+        "profile": "My profile",
+        "manage": {
+            "implants": "Manage implants",
+            "visits": "Manage visits",
+            "profile": "Manage users"
+        }
+    },
+
+    "firm_name": "Cyber Implant Installation Clinic",
+    "why_us": "WHY CHOOSE US?",
+    "many_reason": "there are many reasons",
+    "own_lab": "Own laboratory",
+    "best_specialist": "The best of the best specialist",
+    "satisfied_clients": "Thousands of satisfied clients ",
+    "our_clinic": "OUR CLINIC",
+    "good_location": "three clinic in good locations",
+
+    "edit_account_data_confirm": "Confirm editing account data",
+
+    "language": "Language",
+    "contact": "Contact",
+    "social_media": "Social media",
+    "more_inf": "Find out more",
+    "log_in": "LOG IN",
+    "log_out": "LOG OUT",
+    "log_outdown": "LOG OUT",
+    "sign_in": "SIGN IN",
+    "cyber": "CYBER IMPLANT",
+    "account_service": "ACCOUNTS",
+    "specialist": "SPECIALIST",
+    "appointment": "APPOINTMENT",
+    "password": "Password",
+    "first_name": "First name*",
+    "last_name": "Last name*",
+    "phone_number": "Phone number*",
+    "password*": "Password*",
+    "rpassword": "Reapet password*",
+
+    "active": "Active account",
+    "deactive": "Deactivate account",
+
+    "c_password": "Current Password",
+    "n_password": "New Password",
+    "change_password": "Change Password",
+    "forget_password": "Forget password?",
+    "reset_password": "Reset password",
+    "password_changed": "Password changed",
+
+    "error_page": "Sorry, page doesn't exist",
+    "invite_main_page": "Go to Home Page",
+    "main_page": "HOME",
+
+    "wrong_data": "Wrong data",
+    "insert_token": "Insert token from e-mail",
+    "active_account": "Active account",
+    "confirmed_account": "Account confirmed",
+    "nav_log": "Go to Login Page",
+
+    "server_error": "Server Error, try again for a moment",
+    "refill_data": "Refill login data",
+
+    "edit_details": "Edit account details",
+    "first_name_edit": "First name",
+    "last_name_edit": "Last name",
+    "edit": "Edit",
+
+    "access_level": "Access level",
+    "remove_level": "Remove access level from an account",
+    "REMOVE": "REMOVE",
+
+    "users_administration_page": "Users",
+    "search_by_phrase_placeholder": "Search by phrase",
+    "header_login": "Login",
+    "header_first_name": "First name",
+    "header_last_name": "Last name",
+    "header_level_access_level": "Access levels",
+    "header_email": "Email",
+    "header_is_active": "Is active",
+    "header_change_password": "Change password",
+    "header_manage_activity": "Block or unblock account",
+    "header_account_details": "Details",
+    "header_language": "Language",
+    "header_created_at": "Created at",
+    "header_last_modified": "Last modified",
+    "header_is_confirmed": "Is confirmed",
+    "cell_active": "Active",
+    "cell_inctive": "Inactive",
+    "cell_confirmed": "Confirmed",
+    "cell_unconfirmed": "Unconfirmed",
+
+    "CreateAccountForm": {
+        "form_title": "Create account",
+        "email": "Email*",
+        "first_name": "First name*",
+        "last_name": "Last name*",
+        "login": "Login*",
+        "password": "Password*",
+        "language": "Language*",
+        "submit": "Create account"
+    },
+
+    "button": {
+        "addAccessLevel": {
+            "buttonText": "Add Access Level",
+            "dialog": {
+                "title": "Add Access Level",
+                "cancel": "Cancel",
+                "add": "Add",
+                "select": {
+                    "client": "CLIENT",
+                    "specialist": "SPECIALIST",
+                    "administrator": "ADMINISTRATOR"
+                },
+                "email": {
+                    "placeholder": "Email"
+                },
+                "phone": {
+                    "placeholder": "Phone Number"
+                },
+                "pesel": {
+                    "placeholder": "Pesel"
+                }
+            }
+        }
+    },
+
+    "changeUserPasswordPage": {
+        "title": "Change password for user",
+        "labelPassword": "Password",
+        "repeatPassword": "Repeat password",
+        "validationMessage": "The password must be longer than 8 characters and must contain one uppercase letter, one number and one special character",
+        "validationMessageRepeat": "Both passwords must be the same",
+        "successNotficiationItems": {
+            "first": "User password",
+            "second": "has been successfully changed"
+        },
+        "confirm": "Confirm",
+        "cancel": "Cancel",
+        "modalTitle": "Change user password",
+        "modalDescription": "Are you sure you want to change user password?",
+        "modalConfirm": "Yes",
+        "modalCancel": "No"
+    },
+
+    "email_send": "Check your email",
+    "email_error": "Wrong login",
+
+    "CLIENT": "Client",
+    "SPECIALIST": "Specialist",
+    "ADMINISTRATOR": "Administrator",
+
+    "listAccount": "Accounts list",
+    "createAccount": "Create account",
+    "detailsAccount": "My account",
+    "editAccount": "Edit my account",
+
+    "implantListPage": {
+        "addImplant": "ADD IMPLANT",
+        "status": "Status",
+        "search": "Search ...",
+        "amount": "Amount",
+        "active": "Available",
+        "archived": "Archived",
+        "items": "items",
+        "listElement": {
+            "details": "Details"
+        }
+    },
+
+    "appointmentListPage": {
+        "addImplant": "ADD APPOINTMENT",
+        "search": "Search ...",
+        "amount": "Amount",
+        "items": "items",
+        "listElement": {
+            "details": "Details"
+        }
+    },
+
+    "addImplantReviewPage": {
+        "addImplantReview": "Add a review",
+        "confirm": "Confirm",
+        "cancel": "Cancel",
+        "addReview": "Add a review",
+        "confirmMsg": "Are you sure you want to add a review?",
+        "confirmMsg2": "Are you sure you want to delete a review?",
+        "reviewAdded": "Review added successfully",
+        "reviewsNotFound": "Implant has no reviews",
+        "reviewDeleted": "Review deleted successfully",
+        "removeReviewTitle": "Delete review",
+        "removeConfirmMsg": "Are you sure?"
+    },
+
+    "createImplantPage": {
+        "addImplant": "Add implant",
+        "choosePhoto": "CHOOOSE PHOTO",
+        "name": "Name",
+        "nameMsg": "At least 5 to 50 characters",
+        "manufacturer": "Manufacturer",
+        "manufacturerMsg": "At least 10 to 50 characters",
+        "price": "Price (ZŁ)",
+        "priceMsg": "Price have to be positive number",
+        "duration": "Duration (min)",
+        "durationMsg": "Duration have to be positive number",
+        "description": "Description",
+        "descriptionMsg": "At least 100 to 1000 characters",
+        "modalTitle": "Create new implant",
+        "confirmMsg": "Are you sure to create new implant",
+        "implantCreated": "Implant created successfully"
+    },
+    "editImplantPage": {
+        "addImplant": "Edit implant",
+        "choosePhoto": "CHOOOSE PHOTO",
+        "name": "Name",
+        "nameMsg": "At least 5 to 50 characters",
+        "manufacturer": "Manufacturer",
+        "manufacturerMsg": "At least 10 to 50 characters",
+        "price": "Price (ZŁ)",
+        "priceMsg": "Price have to be positive number",
+        "duration": "Duration (min)",
+        "durationMsg": "Duration have to be positive number",
+        "description": "Description",
+        "descriptionMsg": "At least 100 to 1000 characters",
+        "modalTitle": "Edit implant",
+        "confirmMsg": "Are you sure to edit implant",
+        "implantEdited": "Implant edited successfully",
+        "cancel": "Cancel",
+        "confirm": "Confirm"
+    },
+
+    "registerPage": {
+        "register": "Register",
+        "email": "Email",
+        "emailMsg": "Enter correct e-mail address",
+        "firstName": "Firstname",
+        "firstNameMsg": "At least 3 to 30 characters",
+        "lastName": "Lastname",
+        "lastNameMsg": "At least 3 to 30 characters",
+        "peselMsg": "PESEL consist of 11 numbers",
+        "login": "Login",
+        "loginMsg": "At least 3 to 30 characters",
+        "phoneNumber": "Phone Number",
+        "phoneNumberMsg": "Phone Number consist of 9 numbers",
+        "password": "Password",
+        "passwordMsg": "At least 8 characters, uppercase, lowercase and number",
+        "repaet_password": "Reapet password",
+        "repaet_passwordMsg": "Passwords have to match",
+        "language": "Language",
+        "sign_in": "Sign in",
+        "cancel": "Cancel",
+        "polish": "Polish",
+        "english": "English",
+        "send_email": "We send you an email with confirmation link"
+    },
+
+    "clocker": {
+        "refresh": "Refresh session",
+        "logInAgain": "Sorry, log in again"
+    },
+
+    "specialistCard": {
+        "alt": "Specialist image",
+        "tel": "Phone:"
+    },
+
+    "accessLevel": {
+        "client": "Client",
+        "specialist": "Specialist",
+        "administrator": "Administrator"
+    },
+
+    "userRecord": {
+        "alt": "User",
+        "approved": "Approved",
+        "unapproved": "Unapproved",
+        "active": "Active",
+        "inactive": "Inactive"
+    },
+
+    "accountDetailsPage": {
+        "successNotficiationItemsRemove": "Access level has been deleted",
+        "successNotficiationItemsDeactivateAccount": "Account has been deactivated",
+        "successNotficiationItemsActivateAccount": "Account has been activated",
+        "alt": "General accoount: Avatar",
+        "title": "Access level",
+        "editAccountTitle": "Edit account",
+        "changePasswordTitle": "Change password",
+        "deactivateAccountTitle": "Deactive account",
+        "activateAccountTitle": "Active account",
+        "accountDetailsTitle": "Details",
+        "name": "Firstname:",
+        "surname": "Lastname:",
+        "email": {
+            "regularEmail": "Email: ",
+            "adminEmail": "Administrator email: ",
+            "specEmail": "Specialist email: "
+        },
+        "pesel": "PESEL:",
+        "telephone": {
+            "adminPhone": "Administrator phone number:",
+            "specPhone": "Specialist phone number:"
+        },
+        "language": "Language:",
+        "confirmActionModal": {
+            "deactivateAccount": "Block account",
+            "activateAccount": "Unblock account",
+            "firstPart": "Are you sure to ",
+            "secondPart": "account?",
+            "activated": "unblock",
+            "deactivated": "block"
+        },
+        "confirmActionModalDeleteAccessLevel": {
+            "title": "Delete access level",
+            "text": "Are you sure?"
+        }
+    },
+
+    "resetPasswordPage": {
+        "successNotficiationItems": "Password changed",
+        "header": "Reset password",
+        "password": "Password",
+        "repeatPassword": "Repeat password",
+        "button": "Change password",
+        "error": {
+            "password": "At least 8 characters, uppercase, lowercase and number",
+            "repeatPassword": "Passwords have to match"
+        }
+    },
+
+    "loginPage": {
+        "header": "Log in",
+        "login": {
+            "title": "Login",
+            "placeholder": "Enter login"
+        },
+        "password": {
+            "title": "Password",
+            "placeholder": "Enter password"
+        },
+        "button": "Log in",
+        "buttonText": "Forgot password",
+        "failureNotificationItems": "Credentials cannot be empty!"
+    },
+
+    "resetPasswordModal": {
+        "failureNotificationItems": "Login cannot be smaller than 3 characters",
+        "successNotficiationItems": "Sent reset password link. Check e-mail",
+        "title": "Reset password",
+        "login": {
+            "title": "Login",
+            "placeholder": "Enter account login"
+        },
+        "button": "Restore password"
+    },
+
+    "homePage": {
+        "title": "WHY CHOOSE US?",
+        "secondTitle": "there are many reasons",
+        "ownLab": "Own laboratory",
+        "loremIpsum": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book",
+        "bestSpecialist": "The best of the best specialist",
+        "satisfiedClients": "Thousands of satisfied clients ",
+        "ourClinic": "OUR CLINIC",
+        "goodLocation": "three clinic in good locations",
+        "kicOne": {
+            "city": "KIC Badlandy",
+            "street": "ul. Oak Lawn 204"
+        },
+        "kicTwo": {
+            "city": "KIC Pacifica",
+            "street": "ul. Racine Avenue 23"
+        },
+        "kicThree": {
+            "city": "KIC Westbrook",
+            "street": "ul. Paul 342"
+        }
+    },
+
+    "slider": {
+        "firmName": "Cyber Implant Installation Clinic",
+        "loremIpsum": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book",
+        "moreInf": "Find out more"
+    },
+
+    "contentBar": {
+        "contact": "Contact",
+        "tel": "+48 303 030 300",
+        "email": "KIC@kic.agency",
+        "socialMedia": "Social media",
+        "kic": "KIC",
+        "kicTwo": "@KIC"
+    },
+
+    "errorPage": {
+        "errorPage": "Sorry, page doesn't exist",
+        "inviteMainPage": "Go to Home Page",
+        "mainPage": "HOME"
+    },
+
+    "activeAccountPage": {
+        "insertToken": "Insert token from e-mail",
+        "activeAccount": "Active account",
+        "confirmedAccount": "Account confirmed",
+        "navLog": "Go to Login Page"
+    },
+
+    "ownAppointmentListPage": {
+        "cell": {
+            "clientLogin": "Client login",
+            "specialistLogin": "Specialist login",
+            "clientName": "Client name",
+            "specialistName": "Specialist name",
+            "name": "Implant name",
+            "status": "Visit status",
+            "date": "Visit date",
+            "details": "Details"
+        }
+    },
+
+    "appointmentDetails": {
+        "title": "Visit details",
+        "clientName": "Client name",
+        "specialistName": "Specialist name",
+        "email": "Contact email:",
+        "status": "Visit status:",
+        "price": "Price:",
+        "dateStart": "Visit start date:",
+        "dateEnd": "Visit end date:",
+        "implant": "Current selected implant:",
+        "button": "Display",
+        "description": "Description:",
+        "buttonCancel": "Cancel visit",
+        "buttonEdit": "Edit visit",
+        "buttonFinish": "Finish visit",
+        "modal": {
+            "cancel.title": "Cancel visit",
+            "cancel.text": "Are you sure, you want to cancel this visit?",
+            "finish.title": "Finish visit",
+            "finish.text": "Are you sure, you want to finish this visit?"
+        }
+    },
+
+    "implantDetails": {
+        "successNotficiationItems": "Edited successfully",
+        "title": "Specification",
+        "alt": "Implant image",
+        "name": "Name:",
+        "price": "Price:",
+        "producer": "Producer:",
+        "time": "Installation time:",
+        "applied": "Aplied",
+        "times": "times",
+        "state": "State:",
+        "available": "Available",
+        "notAvailable": "Not available",
+        "edit": "Edit",
+        "archive": "Archive",
+        "confirmActionModal": {
+            "title": "Archieve an implant",
+            "message": "Are you sure you want to archive the implant? The operation is irreversible!"
+        },
+        "reserveButton": "Reserve",
+        "reviews": "Reviews",
+        "addReview": "Add review"
+    },
+
+    "ownAccountDetailsPage": {
+        "alt": "General account: Avatar",
+        "accessLevel": "Access levels:",
+        "edit": "Edit account",
+        "change": "Change password",
+        "title": "Details",
+        "name": "Name:",
+        "surname": "Surname:",
+        "email": "Email:",
+        "phone": "Phone number:",
+        "pesel": "Pesel number:",
+        "language": "Language:",
+        "altLanguage": "Details: language"
+    },
+
+    "changeOwnPasswordInternal": {
+        "successNotficiationItems": "Your password has changed",
+        "titleWrapper": "Change your password",
+        "oldPassword": "Old password",
+        "newPassword": "New password",
+        "confirm": "Confirm",
+        "cancel": "Cancel",
+        "error": {
+            "valid": "Both passwords must be longer than 8 characters and must contain one uppercase letter, one number and one special character",
+            "same": "Passwords cannot be the same"
+        },
+        "confirmActionModal": {
+            "title": "Changing own password",
+            "message": "Are you sure you want to change your password? The operation is irreversible!"
+        }
+    },
+
+    "editOwnAppointment": {
+        "implantName":  "Implant name:",
+        "implantDuration": "Implant duration:",
+        "implantPrice": "Implant price:",
+        "implantManufacturer": "Implant manufacturer:",
+        "title": "Edit visit",
+        "clientName": "Client name:",
+        "specialistName": "Specialist name:",
+        "email": "Contact email:",
+        "status": "Visit status:",
+        "accept": "Accept visit",
+        "cancel": "Cancel visit",
+        "price": "Price:",
+        "dateStart": "Visit start date:",
+        "dateEnd": "Visit end date:",
+        "description": "Description:",
+        "button": "Submit your change"
+    },
+
+    "editOwnAccountPage": {
+        "updateSuccessfully": "The account has been updated",
+        "editOwnAccount": "Edit account details",
+        "firstName": "Name",
+        "firstNameMsg": "3 to 30 characters required",
+        "lastName": "Surname",
+        "lastNameMsg": "3 to 30 characters required",
+        "peselMsg": "Pesel consist of 11 numbers",
+        "phoneNumber": "Phone number",
+        "phoneNumberMsg": "Phone Number consist of 9 numbers",
+        "confirm": "Confirm",
+        "cancel": "Cancel",
+        "email": "Mail",
+        "emailMsg": "Enter correct e-mail address",
+        "confirmation": "Are you sure you want to change your own details? The operation is irreversible!"
+    },
+
+    "usersManagmentPage": {
+        "searchPlaceholder": "Search for users ...",
+        "cell": {
+            "login": "Login",
+            "name": "Name",
+            "surname": "Surname",
+            "approved": "Is approved",
+            "active": "Is active",
+            "more": "More"
+        }
+    },
+
+    "editAnyAccountPage": {
+        "updateSuccessfully": "Account has been updated",
+        "editAccount": "Edit account details",
+        "firstName": "Name",
+        "firstNameMsg": "At least 3 to 30 characters",
+        "lastName": "Nazwisko",
+        "lastNameMsg": "At least 3 to 30 characters",
+        "peselMsg": "PESEL consist of 11 numbers",
+
+        "email": "Mail",
+        "emailMsg": "Enter correct e-mail address",
+
+        "login": "Login",
+        "loginMsg": "At least 3 to 30 characters",
+        "phoneNumber": "Numer telefonu",
+        "phoneNumberMsg": "Phone Number consist of 9 numbers",
+        "password": "Password",
+        "passwordMsg": "At least 8 characters, uppercase, lowercase and number",
+        "cancel": "Cancel",
+        "confirm": "Confirm",
+        "polish": "polish",
+        "english": "english",
+        "send_email": "We send you an email with confirmation link",
+        "confirmation": "Are you sure? Operation is permanent",
+        "editForAdmin": "Edit details for Administrator",
+        "editForSpec": "Edit details for Specialist",
+        "editForClient": " Edit details for Client"
+    },
+
+    "createUserPage": {
+        "successNotficiationItems": "Account has been added",
+        "header": "Create new account",
+        "email": "Email ",
+        "emailTitle": "email",
+        "emailMsg": "Enter correct e-mail address",
+        "name": "Firstname ",
+        "nameTitle": "firstname",
+        "nameMsg": "At least 3 to 30 characters",
+        "surname": "Lastname ",
+        "surnameTitle": "Lastname",
+        "surnameMsg": "At least 3 to 30 characters",
+        "id": "Login",
+        "idTitle": "Login",
+        "idMsg": "At least 3 to 30 characters",
+        "password": "Password ",
+        "passwordTitle": "password",
+        "passwordMsg": "At least 8 characters, uppercase, lowercase and number",
+        "languageTitle": "language",
+        "language": "Language ",
+        "languagePL": "polish",
+        "lenguageToCreate": "languageToCreate",
+        "languageEN": "english",
+        "accept": "Confirm",
+        "cancel": "Cancel",
+        "confirmActionModal": {
+            "title": "Create new user",
+            "message": "Are you sure?"
+        }
+    },
+    "navbar": {
+        "avatar_alt": "User's Avatar",
+        "register": "Sign In",
+        "log": "Log in"
+    },
+
+    "addAccessLevelPage": {
+        "admin": "administrator",
+        "spec": "specialist",
+        "client": "client",
+        "added": "Access level was added",
+        "addAccess": "Add access level",
+        "peselMsg": "PESEL consist of 11 numbers",
+        "phoneNumber": "Phone Number",
+        "phoneNumberMsg": "Phone Number consist of 9 numbers",
+        "email": "Email",
+        "emailMsg": "Enter correct e-mail address"
+    },
+    "sidebar": {
+        "logout": "Sign out"
+    },
+
+    "activateAccountPage": {
+        "accountActivated": "Account activated successfully"
+    },
+
+    "createAppointmentPage": {
+        "title": "Request visit",
+        "successNotficiationItems": "Visit has been added",
+        "summaryButton": "Summary",
+        "loadMoreButton": "Load more",
+        "choosenDate": "Date:",
+        "choosenImplant": "Implant:",
+        "choosenSpecialist": "Specialist:",
+        "reserveButton": "Reserve"
+    }
+}
