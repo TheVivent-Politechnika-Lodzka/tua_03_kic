@@ -2,9 +2,9 @@
              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
              xsi:schemaLocation="http://www.jboss.org/ironjacamar/schema http://docs.jboss.org/ironjacamar/schema/datasources_1_0.xsd">
     <datasource jndi-name="java:jboss/jdbc/ssbd03auth" pool-name="ssbd03auth">
-        <connection-url>jdbc:mariadb://mariadb:3306/ssbd03</connection-url>
-        <driver-class>org.mariadb.jdbc.Driver</driver-class>
-        <driver>mariadb-java-client-2.7.6.jar</driver>
+        <connection-url>jdbc:mysql://mysql:3306/ssbd03</connection-url>
+        <driver-class>com.mysql.cj.jdbc.Driver</driver-class>
+        <driver>mysql</driver>
         <security>
             <user-name>ssbd03</user-name>
             <password>cyberpunk2077</password>
@@ -16,9 +16,9 @@
         </validation>
     </datasource>
     <datasource jndi-name="java:jboss/jdbc/ssbd03admin" pool-name="ssbd03admin">
-        <connection-url>jdbc:mariadb://mariadb:3306/ssbd03</connection-url>
-        <driver-class>org.mariadb.jdbc.Driver</driver-class>
-        <driver>mariadb-java-client-2.7.6.jar</driver>
+        <connection-url>jdbc:mysql://mysql:3306/ssbd03</connection-url>
+        <driver-class>com.mysql.cj.jdbc.Driver</driver-class>
+        <driver>mysql</driver>
         <security>
             <user-name>ssbd03</user-name>
             <password>cyberpunk2077</password>
@@ -30,9 +30,9 @@
         </validation>
     </datasource>
     <datasource jndi-name="java:jboss/jdbc/ssbd03mok" pool-name="ssbd03mok">
-        <connection-url>jdbc:mariadb://mariadb:3306/ssbd03</connection-url>
-        <driver-class>org.mariadb.jdbc.Driver</driver-class>
-        <driver>mariadb-java-client-2.7.6.jar</driver>
+        <connection-url>jdbc:mysql://mysql:3306/ssbd03</connection-url>
+        <driver-class>com.mysql.cj.jdbc.Driver</driver-class>
+        <driver>mysql</driver>
         <security>
             <user-name>ssbd03</user-name>
             <password>cyberpunk2077</password>
@@ -44,9 +44,9 @@
         </validation>
     </datasource>
     <datasource jndi-name="java:jboss/jdbc/ssbd03mop" pool-name="ssbd03mop">
-        <connection-url>jdbc:mariadb://mariadb:3306/ssbd03</connection-url>
-        <driver-class>org.mariadb.jdbc.Driver</driver-class>
-        <driver>mariadb-java-client-2.7.6.jar</driver>
+        <connection-url>jdbc:mysql://mysql:3306/ssbd03</connection-url>
+        <driver-class>com.mysql.cj.jdbc.Driver</driver-class>
+        <driver>mysql</driver>
         <security>
             <user-name>ssbd03</user-name>
             <password>cyberpunk2077</password>
